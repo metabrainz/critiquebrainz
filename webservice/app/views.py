@@ -1,7 +1,7 @@
 from flask import request, abort, jsonify
-from app import app, db
-from utils.decorators import require_uuid 
+from . import app, db
 from models import Review
+from utils.decorators import require_uuid 
 
 @app.route('/review/<uuid:review_id>', methods=['GET'])
 def show_review(review_id):
