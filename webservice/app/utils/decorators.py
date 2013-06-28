@@ -2,7 +2,10 @@ from uuid import validate
 from flask import request, abort
 from functools import wraps
 
-def uuid_or_400(key):
+def require_uuid(key):
+    '''
+    Checks whether a request contains specified argument of UUID type.
+    '''
     def decorator(func):
         @wraps(func)
         def new_func(*args, **kwargs):
