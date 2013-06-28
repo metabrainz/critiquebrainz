@@ -1,0 +1,4 @@
+AMOUNT_PARAM = [100, 10, 1]
+RATIO_PARAM = [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0]
+RATING_SEQ = [3, 2, 2, 1, 1, 0, 0, 0, -1, -1, -1, -1, -1]
+RATING_ARRAY = [RATING_SEQ[0:10], RATING_SEQ[1:11], RATING_SEQ[3:13]]
