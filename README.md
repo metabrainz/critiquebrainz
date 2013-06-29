@@ -28,3 +28,34 @@ value.
 
 *Notice* In order to run the tests, you need to create a second database with
 `_test` suffix.
+
+##Configuring environment
+
+First, you need to create and setup a new python environment.
+
+    cd webservice
+    virtualenv venv
+    . venv/bin/activate
+    pip install -r requirements.txt
+
+This will install all necessary python packages to your new virtual environment.
+
+##Running
+
+Remeber to enter your virtual environment at first.
+
+    cd webservice
+    . venv/bin/activate
+
+Before running the webservice, you should init your database
+
+    python manage.py tables
+
+You could also apply fixtures
+
+    python manage.py fixtures
+
+Now you can safely run the webservice app
+
+    python manage.py runserver
+
