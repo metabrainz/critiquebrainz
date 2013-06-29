@@ -9,8 +9,8 @@ def require_uuid(key):
     def decorator(func):
         @wraps(func)
         def new_func(*args, **kwargs):
-            kwargs[key] = request.args.get(key)
-            if not validate(request.args.get(key)):
+            kwargs[key] = request.values.get(key)
+            if not validate(request.values.get(key)):
                 abort(400)
             return func(*args, **kwargs)
         return new_func

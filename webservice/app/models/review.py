@@ -24,7 +24,12 @@ class Review(db.Model):
     votes_down = db.relationship('Vote', 
         primaryjoin='and_(Vote.review_id == Review.id, Vote.placet == False)',
         foreign_keys=[Vote.review_id, Vote.placet])
-        
+
+    def __init__(self, user=None, text=None, release_group=None):
+        self.user = user
+        self.text = text
+        self.release_group = release_group
+
     def to_dict(self):
         return dict(id = self.id, 
                 release_group = self.release_group,
