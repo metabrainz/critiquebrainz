@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from flask.ext.script import Manager
 
 from app import fixtures as _fixtures
