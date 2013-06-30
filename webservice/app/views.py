@@ -5,6 +5,10 @@ from utils.decorators import require_uuid
 def register_views(app):
     app.add_url_rule('/review/<uuid:review_id>', view_func=show_review,
             methods=['GET'])
+    app.add_url_rule('/review/<uuid:review_id>', view_func=update_review,
+            methods=['PUT'])
+    app.add_url_rule('/review/<uuid:review_id>', view_func=delete_review,
+            methods=['DELETE'])
     app.add_url_rule('/review', view_func=list_review, methods = ['GET'])
     app.add_url_rule('/review', view_func=post_review, methods = ['POST'])
 
@@ -13,7 +17,25 @@ def show_review(review_id):
     review = Review.query.get_or_404(review_id)
     response = jsonify(review=review.to_dict())
     return response
-    
+
+def update_review(review_id):
+    ''' Updating a review '''
+    review = Review.query.get_or_404(review_id)
+    text = request.json.get('text')
+    if text:
+        review.text = text
+    db.session.commit()
+    response = jsonify(review=review.to_dict())
+    return response
+
+def delete_review(review_id):
+    ''' Delete a review '''
+    review = Review.query.get_or_404(review_id)
+    db.session.delete(review)
+    db.session.commit()
+    response = jsonify(id=review_id)
+    return response
+
 @require_uuid(arg='release_group')
 def list_review(release_group):
     ''' Fetching a list of reviews relevant to a specified release group '''
@@ -26,7 +48,7 @@ def list_review(release_group):
 @require_uuid(json='user_id') # used temporary for tests until oauth is done
 def post_review(release_group, user_id):
     ''' Posting a review '''
-    user = User.query.get(user_id)
+    user = db.session.query(User).filter(User.id==user_id).first()
     text = request.json.get('text') 
     review = Review(user, text, release_group)
     db.session.add(review)
