@@ -1,6 +1,7 @@
 from flask import request, abort, jsonify
 from models import db, User, Review
 from utils.decorators import require_uuid 
+import oauth.decorators as oauth 
 
 def register_views(app):
     app.add_url_rule('/review/<uuid:review_id>', view_func=show_review,
@@ -18,9 +19,12 @@ def show_review(review_id):
     response = jsonify(review=review.to_dict())
     return response
 
-def update_review(review_id):
+@oauth.require_user
+def update_review(review_id, user_id):
     ''' Updating a review '''
     review = Review.query.get_or_404(review_id)
+    if review.user_id != user_id:
+        abort(403)
     text = request.json.get('text')
     if text:
         review.text = text
@@ -28,9 +32,12 @@ def update_review(review_id):
     response = jsonify(review=review.to_dict())
     return response
 
-def delete_review(review_id):
+@oauth.require_user
+def delete_review(review_id, user_id):
     ''' Delete a review '''
     review = Review.query.get_or_404(review_id)
+    if review.user_id != user_id:
+        abort(403)
     db.session.delete(review)
     db.session.commit()
     response = jsonify(id=review_id)
@@ -44,8 +51,8 @@ def list_review(release_group):
     response = jsonify(reviews=[r.to_dict() for r in reviews])
     return response
 
+@oauth.require_user
 @require_uuid(json='release_group')
-@require_uuid(json='user_id') # used temporary for tests until oauth is done
 def post_review(release_group, user_id):
     ''' Posting a review '''
     user = db.session.query(User).filter(User.id==user_id).first()

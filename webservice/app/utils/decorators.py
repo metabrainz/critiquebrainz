@@ -1,5 +1,5 @@
 from uuid import validate
-from flask import request, abort,jsonify
+from flask import request, abort, jsonify
 from functools import wraps
 
 def require_uuid(arg=None, json=None):
