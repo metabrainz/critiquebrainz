@@ -1,11 +1,11 @@
 from . import db
 from sqlalchemy.dialects.postgresql import UUID
-from vote import Vote
+from rate import Rate
 from datetime import datetime
 
-class Review(db.Model):
+class Publication(db.Model):
 
-    __tablename__ = 'review'
+    __tablename__ = 'publication'
     
     id = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), primary_key=True)
     release_group = db.Column(UUID, index=True)
@@ -16,14 +16,14 @@ class Review(db.Model):
     edits = db.Column(db.Integer, nullable=False, default=0)
     rating = db.Column(db.Integer, nullable=False, default=0)
     
-    votes = db.relationship('Vote', backref=db.backref('review'))
-    spam_reports = db.relationship('SpamReport', backref=db.backref('review'))
-    votes_up = db.relationship('Vote', 
-        primaryjoin='and_(Vote.review_id == Review.id, Vote.placet == True)',
-        foreign_keys=[Vote.review_id, Vote.placet])
-    votes_down = db.relationship('Vote', 
-        primaryjoin='and_(Vote.review_id == Review.id, Vote.placet == False)',
-        foreign_keys=[Vote.review_id, Vote.placet])
+    rates = db.relationship('Rate', backref=db.backref('publication'))
+    spam_reports = db.relationship('SpamReport', backref=db.backref('publication'))
+    rates_positive = db.relationship('Rate', 
+        primaryjoin='and_(Rate.publication_id == Publication.id, Rate.placet == True)',
+        foreign_keys=[Rate.publication_id, Rate.placet])
+    rates_negative = db.relationship('Rate', 
+        primaryjoin='and_(Rate.publication_id == Publication.id, Rate.placet == False)',
+        foreign_keys=[Rate.publication_id, Rate.placet])
 
     def __init__(self, user=None, text=None, release_group=None):
         self.user = user
@@ -39,5 +39,6 @@ class Review(db.Model):
                 last_updated = str(self.last_updated), 
                 edits = self.edits, 
                 rating = self.rating, 
-                votes_overall = len(self.votes),
-                votes_up = len(self.votes_up))
+                rates = len(self.rates),
+                rates_positive = len(self.rates_positive),
+                rates_negative = len(self.rates_negative))

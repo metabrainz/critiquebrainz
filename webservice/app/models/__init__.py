@@ -13,9 +13,9 @@ def create_tables(app):
     db.metadata.create_all(engine)
     return engine
 
-from .review import Review
+from .publication import Publication
 from .user import User
-from .vote import Vote
+from .rate import Rate
 from .report import SpamReport
 
 
