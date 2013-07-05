@@ -25,18 +25,18 @@ class AppTestCase(TestCase):
         self.db.session.remove()
         self.db.drop_all()
 
-    def test_show_review(self):
-        response = self.client.get('/review/%s' % (fixtures.ReviewData.review01.id))
+    def test_show_publication(self):
+        response = self.client.get('/publication/%s' % (fixtures.PublicationData.publication01.id))
         self.assert_200(response)
         
-        self.assertEqual(response.json['review']['id'], fixtures.ReviewData.review01.id)
-        response = self.client.get('/review/%s' % ('not-valid-uuid'))
+        self.assertEqual(response.json['publication']['id'], fixtures.PublicationData.publication01.id)
+        response = self.client.get('/publication/%s' % ('not-valid-uuid'))
         self.assert_404(response)
         
-        review = self.db.session.query(models.Review).get(fixtures.ReviewData.review01.id)
-        self.db.session.delete(review)
+        publication = self.db.session.query(models.Publication).get(fixtures.PublicationData.publication01.id)
+        self.db.session.delete(publication)
         self.db.session.commit()
-        response = self.client.get('/review/%s' % (fixtures.ReviewData.review01.id))
+        response = self.client.get('/publication/%s' % (fixtures.PublicationData.publication01.id))
         self.assert_404(response)
 
 if __name__ == '__main__':
