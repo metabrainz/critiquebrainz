@@ -1,7 +1,9 @@
 from flask import request, abort, jsonify
 from models import db, User, Publication, Rate
-from utils.decorators import field 
-from utils.uuid import validate
+from utils import field 
+from utils import validate_uuid
+
+split_includes = lambda x: x.split('+')
 
 def register_views(app):
     app.add_url_rule('/publication/<uuid:publication_id>', 
@@ -15,7 +17,7 @@ def register_views(app):
     app.add_url_rule('/publication', 
             view_func=post_publication, methods=['POST'])
             
-@field(arg='include', converter=(lambda x: x.split('+')), optional=True)
+@field(arg='include', converter=split_includes, optional=True)
 def show_publication(publication_id, include=[]):
     ''' Fetching a single publication entry '''
     #TODO: If-Modified-Since support
@@ -39,7 +41,7 @@ def update_publication(publication_id, user_id=None, text=None):
 @field(json='user_id')
 def delete_publication(publication_id, user_id=None):
     ''' Delete a publication '''
-    if not validate(user_id): abort(400)
+    if not validate_uuid(user_id): abort(400)
     publication = Publication.query.get_or_404(publication_id)
     if publication.user_id != user_id: abort(403)
     db.session.delete(publication)
@@ -49,7 +51,7 @@ def delete_publication(publication_id, user_id=None):
 
 @field(arg='user_id', optional=True)
 @field(arg='release_group', optional=True)
-@field(arg='include', converter=(lambda x: x.split('+')), optional=True)
+@field(arg='include', converter=split_includes, optional=True)
 @field(arg='rating', converter=int, optional=True)
 @field(arg='limit', converter=int, optional=True)
 @field(arg='offset', converter=int, optional=True)
@@ -90,8 +92,8 @@ def list_publication(user_id=None, release_group=None, include=[],
 @field(json='text')
 def post_publication(user_id=None, release_group=None, text=None):
     ''' Posting a publication '''
-    if not validate(user_id): abort(400)
-    if not validate(release_group): abort(400)
+    if not validate_uuid(user_id): abort(400)
+    if not validate_uuid(release_group): abort(400)
     if not text: abort(400)
     
     user = User.query.get(user_id) or abort(403)
