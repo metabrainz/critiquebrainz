@@ -3,15 +3,11 @@ from flask import Flask
 from flask.ext.testing import TestCase
 from sqlalchemy.engine.url import URL
 from app.utils import UUIDConverter
-from app import fixtures
-from app import models
-from app import views
+from app import app, db, fixtures, models, views
 
 class AppTestCase(TestCase):
 
     def create_app(self):
-        app = Flask(__name__)
-        app.config.from_object('config')
         app.config['SQLALCHEMY_DATABASE_URI'] = \
             str(app.config['SQLALCHEMY_DATABASE_URI'])+'_test'
         app.config['TESTING'] = True

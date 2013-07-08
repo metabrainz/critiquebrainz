@@ -1,26 +1,73 @@
-import re
 from werkzeug.routing import BaseConverter, ValidationError
-from flask import request, abort
+from flask import request
 from functools import wraps
+from exceptions import *
+import re
+    
+# useful fetching functions
+def fetch_from_json_uuid(key):
+    return fetch_from_json(key, validate_uuid)
+    
+def fetch_from_json_int(key):
+    return fetch_from_json(key, converter=int)
+    
+def fetch_from_json_int_range(key, _min, _max):
+    return fetch_from_json(key, lambda x: x in range(_min,_max+1), int)
+    
+def fetch_from_url_uuid(key):
+    return fetch_from_url(key, validate_uuid)
+    
+def fetch_from_url_int(key):
+    return fetch_from_url(key, converter=int)
+    
+def fetch_from_url_int_range(key, _min, _max):
+    return fetch_from_url(key, lambda x: x in range(_min,_max+1), int)
 
-# decorators
-def field(arg=None, json=None, converter=(lambda x: x), optional=False):
-    """ Checks whether a request contains specified argument of UUID type,
-        converts it using `converter` function, and passes it to the decorated
-        function. """
-    def decorator(func):
-        @wraps(func)
-        def new_func(*args, **kwargs):
-            try:
-                if arg: kwargs[arg] = converter(request.values.get(arg))
-                if json: kwargs[json] = converter(request.json.get(json))
-            except:
-                if not optional:
-                    abort(400)
-            return func(*args, **kwargs)
-        return new_func
-    return decorator
+def fetch_from_url_include(key, _model):
+    return fetch_from_url(key, 
+        lambda x: x in _model.VALID_INCLUDES,
+        lambda x: x.split('+'))
 
+# parameter fetching
+def fetch_from_json(key, validator=None, converter=None):
+    try:
+        _dict = request.get_json()
+    except:
+        raise RequestBodyNotValidJSONError
+    return fetch_from_dict(_dict, key, validator, converter)
+    
+def fetch_from_url(key, validator=None, converter=None):
+    return fetch_from_dict(request.args, key, validator, converter)
+    
+def fetch_from_dict(_dict, key, validator=None, converter=None):
+    """ Function used to fetch data from the `dict` dictionary object.
+        The desired value can be validated using a function passed in
+        `validator` parameter. It can also be coverted to desired format
+        using a function passed in `converter` parameter. If the value is
+        missing in the dictionary, MissingDataError exception is raised.
+        If `validator` function returned False, or converter raised an 
+        exception, the function raises NotValidData. """
+    # fetching
+    try:
+        resp = _dict[key]
+        if not resp: raise Exception
+    except:
+        raise MissingDataError(key) 
+    # converting
+    if converter is not None:
+        try:
+            resp = converter(resp)
+        except:
+            raise NotValidDataError(key)
+    # validating
+    if validator is not None:
+        try:
+            if not validator(resp): raise Exception
+        except:
+            raise NotValidDataError(key)
+    return resp
+        
+    
 # uuid-related utils
 uuid_re = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     
