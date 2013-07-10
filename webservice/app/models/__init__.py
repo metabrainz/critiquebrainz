@@ -17,5 +17,6 @@ from .publication import Publication
 from .user import User
 from .rate import Rate
 from .report import SpamReport
+from .oauth import OAuthConsumer
 
 

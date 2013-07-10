@@ -44,5 +44,17 @@ class PublicationData(DataSet):
         user = UserData.user02
         text = 'Another publication concerning this album.'      
         created = datetime(2013, 06, 29, 10, 30, 20)
+        
+class OAuthConsumerData(DataSet):
 
-all_data = (UserData, PublicationData, )
+    class oauth_consumer01:
+        id = 'f1debd62-aad8-43ff-9814-f1c75cad2441'
+        consumer_key = 'b9481301-8adc-452a-83d2-180c8eec53fb'
+        consumer_secret = 'e03fbc0e-2308-46d4-a5a2-c3e54706db9f'
+        user = UserData.user01
+        name = 'CritiqueBrainz'
+        desc = 'A CritiqueBrainz frontend.'
+        website = 'http://critiquebrainz.org/'
+        callback = 'http://critiquebrainz.org/post_login'
+        
+all_data = (UserData, PublicationData, OAuthConsumerData, )
