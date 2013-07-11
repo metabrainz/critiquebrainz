@@ -2,8 +2,17 @@ from werkzeug.routing import BaseConverter, ValidationError
 from flask import request
 from functools import wraps
 from exceptions import *
+from urllib import urlencode
+from urlparse import urlparse
 import re
-    
+
+def append_params_to_url(url, params):
+    params = urlencode(params)
+    if urlparse(url)[4]:
+        return url + '&' + params
+    else:
+        return url + '?' + params
+
 # useful fetching functions
 def fetch_from_json_uuid(key):
     return fetch_from_json(key, validate_uuid)

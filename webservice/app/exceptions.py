@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import request, redirect, jsonify
 from app import app
 
 class CritiqueBrainzError(Exception):
@@ -42,3 +42,29 @@ class MissingDataError(ParameterError):
 class NotValidDataError(ParameterError):
     """ Exception raised when request data is not valid. """
     pass
+
+class AuthorizationError(CritiqueBrainzError):
+    """ Excpetion raised when authorization process fails. """
+
+    description = {'invalid_request': 'The request is missing a required '\
+                        'parameter, includes an invalid parameter value, '\
+                        'includes a parameter more than once, or is otherwise '\
+                        'malformed.',
+                   'server_error': 'The authorization server encountered an '\
+                        'unexpected condition that prevented it from '\
+                        'fulfilling the request.',
+                   'unsupported_response_type': 'Requested response type is '\
+                        'unsupported.',
+                   'unauthorized_client': 'Client is not authorized.',
+                   'invalid_scope': 'The requested scope is invalid, unknown, '\
+                        'or malformed.',
+                   'access_denied': 'The resource owner or authorization '\
+                        'server denied the request.'}
+
+    def __init__(self, error):
+        self.error = error
+
+    def to_dict(self):
+        resp = dict(error=self.error, 
+                    error_description=self.description[self.error])
+        return resp

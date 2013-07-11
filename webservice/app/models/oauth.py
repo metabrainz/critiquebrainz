@@ -2,71 +2,66 @@ from . import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
 
-class OAuthConsumer(db.Model):
+class OAuthClient(db.Model):
 
-    __tablename__ = 'oauth_consumer'
-    id = db.Column(UUID, server_default=db.text('uuid_generate_v4()'),
-                   primary_key=True)
-    consumer_key = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), 
-                             index=True)
-    consumer_secret = db.Column(UUID, 
-                                server_default=db.text('uuid_generate_v4()'))
+    __tablename__ = 'oauth_client'
+    id = db.Column(db.String(64), primary_key=True)
+    secret = db.Column(db.String(64))
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
     name = db.Column(db.String(128))
     desc = db.Column(db.String)
     website = db.Column(db.String(128))
-    callback = db.Column(db.String)
+    redirect_uri = db.Column(db.String)
     
     user = db.relationship('User')
     
-    def __init__(self, user=None, name=None, desc=None, website=None, 
-                 callback=None, consumer_key=None, consumer_secret=None):
-        self.consumer_key = consumer_key
-        self.consumer_secret = consumer_secret
+    def __init__(self, id=None, secret=None, user=None, 
+                 name=None, desc=None, website=None, redirect_uri=None):
+        self.id = id
+        self.secret = secret
         self.user = user
         self.name = name
         self.desc = desc
         self.website = website
-        self.callback = callback
+        self.redirect_uri = redirect_uri
         
 class OAuthAuthorizationCode(db.Model):
 
     __tablename__ = 'oauth_authorization_code'
     
-    code = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), 
-                     primary_key=True)
-    consumer_id = db.Column(UUID, db.ForeignKey('oauth_consumer.id'))
+    code = db.Column(db.String(64), primary_key=True)
+    client_id = db.Column(db.String(64), db.ForeignKey('oauth_client.id', onupdate='CASCADE'))
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    state = db.Column(db.String(128))
     scope = db.Column(db.String(128))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     
-    consumer = db.relationship('OAuthConsumer')
+    client = db.relationship('OAuthClient')
     user = db.relationship('User')
     
-    def __init__(self, consumer=None, user=None, state=None, scope=None):
-        self.consumer = consumer
+    def __init__(self, code=None, client=None, user=None, scope=None):
+        self.code = code
+        self.client = client
         self.user = user
-        self.state = state
         self.scope = scope
         
 class OAuthAccessToken(db.Model):
 
     __tablename__ = 'oauth_access_token'
     
-    token = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), 
-                      primary_key=True)
-    consumer_id = db.Column(UUID, db.ForeignKey('oauth_consumer.id'))
+    token = db.Column(db.String(64), primary_key=True)
+    client_id = db.Column(db.String(64), db.ForeignKey('oauth_client.id', onupdate='CASCADE'))
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    scope = db.Column(db.String(128))
+    scope = db.Column(db.String(64))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expire = db.Column(db.DateTime)
     
-    consumer = db.relationship('OAuthConsumer')
+    client = db.relationship('OAuthClient')
     user = db.relationship('User')
     
-    def __init__(self, consumer=None, user=None, scope=None, expire=None):
-        self.consumer = consumer
+    def __init__(self, token=None, client=None, user=None, scope=None, 
+                 expire=None):
+        self.token = token
+        self.client = client
         self.user = user
         self.scope = scope
         self.expire = expire
@@ -75,17 +70,17 @@ class OAuthRefreshToken(db.Model):
 
     __tablename__ = 'oauth_refresh_token'
     
-    token = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), 
-                      primary_key=True)
-    consumer_id = db.Column(UUID, db.ForeignKey('oauth_consumer.id'))
+    token = db.Column(db.String(64), primary_key=True)
+    client_id = db.Column(db.String(64), db.ForeignKey('oauth_client.id', onupdate='CASCADE'))
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    scope = db.Column(db.String(128))
+    scope = db.Column(db.String(64))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     
-    consumer = db.relationship('OAuthConsumer')
+    client = db.relationship('OAuthClient')
     user = db.relationship('User')
     
-    def __init__(self, consumer=None, user=None, scope=None):
-        self.consumer = consumer
+    def __init__(self, token=None, client=None, user=None, scope=None):
+        self.token = token
+        self.client = client
         self.user = user
         self.scope = scope

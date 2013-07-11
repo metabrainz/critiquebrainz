@@ -14,6 +14,9 @@ class UserData(DataSet):
 
     class user01:
         id = '92cbeff4-7dd4-48e9-8a0c-5daeaae0f0a8'
+        display_name = 'mjjc'
+        twitter_id = '1577950832'
+        musicbrainz = 'mjjc'
         
     class user02:
         id = '6603dd7f-6833-4df0-93ee-fba0a4249792'
@@ -45,16 +48,16 @@ class PublicationData(DataSet):
         text = 'Another publication concerning this album.'      
         created = datetime(2013, 06, 29, 10, 30, 20)
         
-class OAuthConsumerData(DataSet):
+class OAuthClientData(DataSet):
 
-    class oauth_consumer01:
+    class oauth_client01:
         id = 'f1debd62-aad8-43ff-9814-f1c75cad2441'
-        consumer_key = 'b9481301-8adc-452a-83d2-180c8eec53fb'
-        consumer_secret = 'e03fbc0e-2308-46d4-a5a2-c3e54706db9f'
+        client_id = 'b9481301-8adc-452a-83d2-180c8eec53fb'
+        client_secret = 'e03fbc0e-2308-46d4-a5a2-c3e54706db9f'
         user = UserData.user01
         name = 'CritiqueBrainz'
         desc = 'A CritiqueBrainz frontend.'
         website = 'http://critiquebrainz.org/'
-        callback = 'http://critiquebrainz.org/post_login'
+        redirect_uri = 'http://critiquebrainz.org/post_login'
         
-all_data = (UserData, PublicationData, OAuthConsumerData, )
+all_data = (UserData, PublicationData, OAuthClientData, )
