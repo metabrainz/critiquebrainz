@@ -5,82 +5,100 @@ from datetime import datetime
 class OAuthClient(db.Model):
 
     __tablename__ = 'oauth_client'
-    id = db.Column(db.String(64), primary_key=True)
-    secret = db.Column(db.String(64))
+    id = db.Column(db.Unicode, primary_key=True)
+    secret = db.Column(db.Unicode, nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    name = db.Column(db.String(128))
-    desc = db.Column(db.String)
-    website = db.Column(db.String(128))
-    redirect_uri = db.Column(db.String)
-    
+    name = db.Column(db.Unicode)
+    desc = db.Column(db.Unicode)
+    website = db.Column(db.Unicode)
+    _redirect_uris = db.Column(db.UnicodeText)
+    _default_scopes = db.Column(db.UnicodeText)
+    is_confidential = db.Column(db.Boolean)
+
     user = db.relationship('User')
     
-    def __init__(self, id=None, secret=None, user=None, 
-                 name=None, desc=None, website=None, redirect_uri=None):
-        self.id = id
-        self.secret = secret
-        self.user = user
-        self.name = name
-        self.desc = desc
-        self.website = website
-        self.redirect_uri = redirect_uri
-        
-class OAuthAuthorizationCode(db.Model):
+    @property
+    def client_type(self):
+        if self.is_confidential:
+            return 'confidential'
+        return 'public'
 
-    __tablename__ = 'oauth_authorization_code'
+    @property
+    def redirect_uris(self):
+        if self._redirect_uris:
+            return self._redirect_uris.split()
+        return []
+
+    @property
+    def default_redirect_uri(self):
+        return self.redirect_uris[0]
+
+    @property
+    def default_scopes(self):
+        if self._default_scopes:
+            return self._default_scopes.split()
+        return []
+
+    def validate_redirect_uri(self, redirect_uri):
+        redirect_uri = redirect_uri.split('?')[0]
+        return redirect_uri in self.redirect_uris
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return self
+        
+class OAuthGrant(db.Model):
+
+    __tablename__ = 'oauth_grant'
     
-    code = db.Column(db.String(64), primary_key=True)
-    client_id = db.Column(db.String(64), db.ForeignKey('oauth_client.id', onupdate='CASCADE'))
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.Unicode, index=True, nullable=False)
+    client_id = db.Column(db.Unicode, db.ForeignKey('oauth_client.id', 
+        onupdate='CASCADE'), nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    scope = db.Column(db.String(128))
-    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    
+    expires = db.Column(db.DateTime)
+    redirect_uri = db.Column(db.UnicodeText)
+    _scopes = db.Column(db.UnicodeText)
+
     client = db.relationship('OAuthClient')
     user = db.relationship('User')
-    
-    def __init__(self, code=None, client=None, user=None, scope=None):
-        self.code = code
-        self.client = client
-        self.user = user
-        self.scope = scope
-        
-class OAuthAccessToken(db.Model):
 
-    __tablename__ = 'oauth_access_token'
+    @property
+    def scopes(self):
+        if self._scopes:
+            return self._scopes.split()
+        return []
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return self
+        
+class OAuthToken(db.Model):
+
+    __tablename__ = 'oauth_token'
     
-    token = db.Column(db.String(64), primary_key=True)
-    client_id = db.Column(db.String(64), db.ForeignKey('oauth_client.id', onupdate='CASCADE'))
+    id = db.Column(db.Integer, primary_key=True)
+    access_token = db.Column(db.Unicode, unique=True)
+    refresh_token = db.Column(db.Unicode, unique=True)
+    client_id = db.Column(db.Unicode, db.ForeignKey('oauth_client.id', 
+        onupdate='CASCADE'), nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    scope = db.Column(db.String(64))
-    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expire = db.Column(db.DateTime)
-    
+    expires = db.Column(db.DateTime)
+    _scopes = db.Column(db.UnicodeText)
+
     client = db.relationship('OAuthClient')
     user = db.relationship('User')
-    
-    def __init__(self, token=None, client=None, user=None, scope=None, 
-                 expire=None):
-        self.token = token
-        self.client = client
-        self.user = user
-        self.scope = scope
-        self.expire = expire
-        
-class OAuthRefreshToken(db.Model):
 
-    __tablename__ = 'oauth_refresh_token'
-    
-    token = db.Column(db.String(64), primary_key=True)
-    client_id = db.Column(db.String(64), db.ForeignKey('oauth_client.id', onupdate='CASCADE'))
-    user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    scope = db.Column(db.String(64))
-    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    
-    client = db.relationship('OAuthClient')
-    user = db.relationship('User')
-    
-    def __init__(self, token=None, client=None, user=None, scope=None):
-        self.token = token
-        self.client = client
-        self.user = user
-        self.scope = scope
+    @property
+    def scopes(self):
+        if self._scopes:
+            return self._scopes.split()
+        return []
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return self
+
