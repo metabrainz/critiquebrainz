@@ -45,8 +45,8 @@ class NotValidDataError(ParameterError):
 
 class AuthorizationError(CritiqueBrainzError):
     """ Excpetion raised when authorization process fails. """
-
-    description = {'invalid_request': 'The request is missing a required '\
+    #TODO: implementation of this exception in OAuthlib class
+    _description = {'invalid_request': 'The request is missing a required '\
                         'parameter, includes an invalid parameter value, '\
                         'includes a parameter more than once, or is otherwise '\
                         'malformed.',
@@ -64,7 +64,14 @@ class AuthorizationError(CritiqueBrainzError):
     def __init__(self, error):
         self.error = error
 
+    @property
+    def description(self):
+        return self._description[self.error]
+
     def to_dict(self):
         resp = dict(error=self.error, 
-                    error_description=self.description[self.error])
+                    error_description=self.description)
         return resp
+
+class AuthenticationError(CritiqueBrainzError):
+    """ Exception raised when authentication process fails. """

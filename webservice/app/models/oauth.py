@@ -5,18 +5,18 @@ from datetime import datetime
 class OAuthClient(db.Model):
 
     __tablename__ = 'oauth_client'
-    id = db.Column(db.Unicode, primary_key=True)
-    secret = db.Column(db.Unicode, nullable=False)
+    client_id = db.Column(db.Unicode, primary_key=True)
+    client_secret = db.Column(db.Unicode, nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
     name = db.Column(db.Unicode)
     desc = db.Column(db.Unicode)
     website = db.Column(db.Unicode)
     _redirect_uris = db.Column(db.UnicodeText)
-    _default_scopes = db.Column(db.UnicodeText)
-    is_confidential = db.Column(db.Boolean)
+    _default_scopes = db.Column(db.UnicodeText, default=u'user publication')
+    is_confidential = db.Column(db.Boolean, default=True)
 
     user = db.relationship('User')
-    
+
     @property
     def client_type(self):
         if self.is_confidential:
@@ -54,7 +54,7 @@ class OAuthGrant(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.Unicode, index=True, nullable=False)
-    client_id = db.Column(db.Unicode, db.ForeignKey('oauth_client.id', 
+    client_id = db.Column(db.Unicode, db.ForeignKey('oauth_client.client_id', 
         onupdate='CASCADE'), nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
     expires = db.Column(db.DateTime)
@@ -82,7 +82,8 @@ class OAuthToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     access_token = db.Column(db.Unicode, unique=True)
     refresh_token = db.Column(db.Unicode, unique=True)
-    client_id = db.Column(db.Unicode, db.ForeignKey('oauth_client.id', 
+    token_type = db.Column(db.Unicode)
+    client_id = db.Column(db.Unicode, db.ForeignKey('oauth_client.client_id', 
         onupdate='CASCADE'), nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
     expires = db.Column(db.DateTime)

@@ -1,6 +1,5 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask_oauthlib.provider import OAuth2Provider
 
 # app init
 app = Flask(__name__)
@@ -15,7 +14,8 @@ import models
 db = models.init_app(app)
 
 # oauth init
-oauth = OAuth2Provider(app)
+from oauth import AuthProvider
+oauth = AuthProvider(app)
 
 # register views
 import views

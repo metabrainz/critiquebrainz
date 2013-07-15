@@ -51,8 +51,8 @@ class PublicationData(DataSet):
 class OAuthClientData(DataSet):
 
     class oauth_client01:
-        id = u'b9481301-8adc-452a-83d2-180c8eec53fb'
-        secret = u'e03fbc0e-2308-46d4-a5a2-c3e54706db9f'
+        client_id = u'b9481301-8adc-452a-83d2-180c8eec53fb'
+        client_secret = u'e03fbc0e-2308-46d4-a5a2-c3e54706db9f'
         user = UserData.user01
         name = u'CritiqueBrainz'
         desc = u'A CritiqueBrainz frontend.'
