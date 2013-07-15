@@ -9,8 +9,8 @@ class User(db.Model):
         server_default=db.text("uuid_generate_v4()"))
     display_name = db.Column(db.Unicode)
     email = db.Column(db.Unicode)
-    twitter_id = db.Column(db.Unicode, index=True)
-    musicbrainz_id = db.Column(db.Unicode, index=True)
+    twitter_id = db.Column(db.Unicode, unique=True)
+    musicbrainz_id = db.Column(db.Unicode, unique=True)
 
     publications = db.relationship('Publication')
     rates = db.relationship('Rate')

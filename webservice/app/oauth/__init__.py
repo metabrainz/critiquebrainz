@@ -1,4 +1,4 @@
-from authentication import TwitterAuthentication
+from authentication import TwitterAuthentication, MusicBrainzAuthentication
 from authorization import AuthProvider
 from app import app
 
@@ -11,11 +11,10 @@ twitter = TwitterAuthentication(
     request_token_url='https://api.twitter.com/oauth/request_token',
     base_url='https://api.twitter.com/1.1/')
 
-"""  
-musicbrainz = OAuth2Service(
+musicbrainz = MusicBrainzAuthentication(
     client_id=app.config['MUSICBRAINZ_CLIENT_ID'],
     client_secret=app.config['MUSICBRAINZ_CLIENT_SECRET'],
     name='musicbrainz',
     authorize_url='https://musicbrainz.org/oauth2/authorize',
     access_token_url='https://musicbrainz.org/oauth2/token',
-    base_url='https://musicbrainz.org/')"""
+    base_url='https://musicbrainz.org/')

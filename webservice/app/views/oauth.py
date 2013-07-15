@@ -1,7 +1,7 @@
 from flask import request, session, redirect, url_for, g, render_template, flash
 from app import app, db, oauth
 from app.exceptions import *
-from app.oauth import twitter#, musicbrainz
+from app.oauth import twitter, musicbrainz
 from app.models import User, OAuthClient
 from functools import wraps
 
@@ -26,6 +26,7 @@ def register_global_user():
 # Authentication
 @app.route('/oauth/login', methods=['GET'])
 @twitter.error_handler
+@musicbrainz.error_handler
 def oauth_login():
     """ Login endpoint. If a `provider` argument is specified in uri query,
         it will automaticaly redirect to the relevant authentication
@@ -58,13 +59,15 @@ def oauth_post_login_twitter():
     return 'Now we have nowhere to go to'
 
 # MusicBrainz authentication
-@app.route('/oauth/authorize/musicbrainz', methods=['GET'])
+@app.route('/oauth/login/musicbrainz', methods=['GET'])
+@musicbrainz.login_handler
 def oauth_login_musicbrainz():
     pass
 
-@app.route('/oauth/authorize/musicbrainz/post_login', methods=['GET'])
+@app.route('/oauth/login/musicbrainz/post', methods=['GET'])
+@musicbrainz.post_login_handler
 def oauth_post_login_musicbrainz():
-    pass
+    return 'Now we have nowhere to go to'
 
 # Authorization
 @app.route('/oauth/authorize', methods=['GET', 'POST'])

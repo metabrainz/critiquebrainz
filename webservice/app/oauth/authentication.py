@@ -1,5 +1,6 @@
 from flask import request, session, redirect, flash, url_for, g
 from rauth import OAuth1Service, OAuth2Service
+from app import db
 from app.models import User
 from app.exceptions import *
 from functools import wraps
@@ -34,17 +35,16 @@ class BaseAuthentication(object):
         self._login_handler = f
         @wraps(f)
         def decorated(*args, **kwargs):
-            next=request.args.get('next', None)
             if self.is_user():
-                return redirect(url_for(self._error_handler.__name__,
-                    next=next))
+                return redirect(url_for(self._error_handler.__name__))
             f(*args, **kwargs)
-            return redirect(self.get_authentication_uri(
-                next=next))
+            return redirect(self.get_authentication_uri())
         return decorated
 
     def persist_data(self, **kwargs):
         """ Save data in session """
+        if self._session_key not in session:
+            session[self._session_key] = dict()
         session[self._session_key].update(**kwargs)
 
     def fetch_data(self, key, default=None):
@@ -112,7 +112,7 @@ class TwitterAuthentication(BaseAuthentication):
         return self._service.get_authorize_url(request_token)
 
     def get_user(self):
-        oauth_verifier = request.args.get('oauth_verifier')
+        oauth_verifier = self.fetch_data('oauth_verifier')
         request_token = self.fetch_data('request_token')
         request_token_secret = self.fetch_data('request_token_secret')
 
@@ -125,14 +125,14 @@ class TwitterAuthentication(BaseAuthentication):
             raise AuthenticationError('Could not access data from Twitter')
 
         twitter_id = data.get('id_str')
-        twitter_display_name = data.get('screen_name')
+        display_name = data.get('screen_name')
 
         # user lookup
         user = User.query.filter_by(twitter_id=twitter_id).first()
 
         if user is None:
             # if no user found, create a new one
-            user = User(display_name=twitter_display_name, twitter_id=twitter_id)
+            user = User(display_name=display_name, twitter_id=twitter_id)
             db.session.add(user)
             db.session.commit()
             
@@ -142,22 +142,91 @@ class TwitterAuthentication(BaseAuthentication):
         if 'denied' in request.args:
             raise AuthenticationError('You did not authorize the request')
 
-        try:
-            oauth_token = request.args.get('oauth_token')
-            oauth_verifier = request.args.get('oauth_verifier')
-        except:
-            raise AuthenticationError('Server response missing data')
+        oauth_token = request.args.get('oauth_token', None)
+        oauth_verifier = request.args.get('oauth_verifier', None)
+
+        if oauth_token is None or oauth_verifier is None:
+            return AuthenticationError
 
         request_token = self.fetch_data('request_token')
         request_token_secret = self.fetch_data('request_token_secret')
 
         if request_token is None or request_token_secret is None:
-            raise AuthenticationError('Server is missing request data')
+            raise AuthenticationError
 
         if request_token != oauth_token:
-            raise AuthenticationError('Returned token is not valid')
+            raise AuthenticationError
+
+        # persist verifier
+        self.persist_data(oauth_verifier=oauth_verifier)
 
     def __init__(self, service=None, session_key='twitter', **kwargs):
         if service is None:
             service = OAuth1Service(**kwargs)
         super(TwitterAuthentication,self).__init__(service, session_key)
+
+class MusicBrainzAuthentication(BaseAuthentication):
+
+    def generate_csrf(self, length=10):
+        import random
+        string = ''.join(random.choice('0123456789ABCDEF') for i in range(length))
+        return string
+  
+    def get_authentication_uri(self, **kwargs):
+        csrf = self.generate_csrf()
+        self.persist_data(csrf=csrf)
+        params = dict(response_type='code',
+            redirect_uri=url_for(self._post_login_handler.__name__, _external=True),
+            scope='profile',
+            state=csrf)
+        return self._service.get_authorize_url(**params)
+
+    def get_user(self):
+        import json
+        data = dict(code=self.fetch_data('code'),
+                    grant_type='authorization_code',
+                    redirect_uri=url_for(self._post_login_handler.__name__, _external=True))
+        try:
+            r = self._service.get_raw_access_token(data=data).json()
+            s = self._service.get_session(r['access_token'])
+            data = s.get('oauth2/userinfo').json()
+        except:
+            raise AuthenticationError('Could not access data from MusicBrainz')
+
+        musicbrainz_id = data.get('sub')
+        display_name = data.get('sub')
+
+        # user lookup
+        user = User.query.filter_by(musicbrainz_id=musicbrainz_id).first()
+
+        if user is None:
+            # if no user found, create a new one
+            user = User(display_name=display_name,
+                email=email, 
+                musicbrainz_id=musicbrainz_id)
+            db.session.add(user)
+            db.session.commit()
+            
+        return user
+
+    def validate_post_login(self):
+        state = request.args.get('state', None)
+        if state != self.fetch_data('csrf'):
+            raise AuthenticationError
+
+        error = request.args.get('error', None)
+        if error is not None:
+            if error == 'access_denied':
+                raise AuthenticationError('You did not authorize the request')
+            else:
+                raise AuthenticationError
+
+        code = request.args.get('code', None)
+        if code is None:
+            raise AuthenticationError
+        self.persist_data(code=code)
+
+    def __init__(self, service=None, session_key='musicbrainz', **kwargs):
+        if service is None:
+            service = OAuth2Service(**kwargs)
+        super(MusicBrainzAuthentication, self).__init__(service, session_key)
