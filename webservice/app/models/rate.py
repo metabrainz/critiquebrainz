@@ -10,7 +10,7 @@ class Rate(db.Model):
     publication_id = db.Column(UUID, db.ForeignKey('publication.id', 
         ondelete='CASCADE'), primary_key=True)
     placet = db.Column(db.Boolean, nullable=False)
-    created = db.Column(db.DateTime, default=datetime.utcnow)
+    rated_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     
     user = db.relationship('User')
     publication = db.relationship('Publication')

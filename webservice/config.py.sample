@@ -1,5 +1,5 @@
 # configuration
-SQLALCHEMY_DATABASE_URI = "postgres://<user>:<password>@<host>:<port>/<database>"
+SQLALCHEMY_DATABASE_URI = "postgres://<user>:<pass>@<host>:<port>/<db>"
 DEBUG = True # set False in production mode
 SECRET_KEY = "<your secret key>"
 TWITTER_CONSUMER_KEY = "<your twitter consumer key>"

@@ -8,7 +8,7 @@ class Publication(db.Model):
     __tablename__ = 'publication'
     
     id = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), primary_key=True)
-    release_group = db.Column(UUID, index=True)
+    release_group = db.Column(UUID, index=True, nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id'), nullable=False)
     text = db.Column(db.Unicode, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -20,6 +20,7 @@ class Publication(db.Model):
     spam_reports = db.relationship('SpamReport')
     _rates = db.relationship('Rate', lazy='dynamic')
         
+    # a list of `inc` parameter values in API calls
     allowed_includes = ['user']
 
     def to_dict(self, includes=None):

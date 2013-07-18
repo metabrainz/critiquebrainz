@@ -8,12 +8,12 @@ class OAuthClient(db.Model):
     client_id = db.Column(db.Unicode, primary_key=True)
     client_secret = db.Column(db.Unicode, nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    name = db.Column(db.Unicode)
-    desc = db.Column(db.Unicode)
-    website = db.Column(db.Unicode)
-    _redirect_uris = db.Column(db.UnicodeText)
+    name = db.Column(db.Unicode, nullable=False)
+    desc = db.Column(db.Unicode, nullable=False)
+    website = db.Column(db.Unicode, nullable=False)
+    _redirect_uris = db.Column(db.UnicodeText, nullable=False)
     _default_scopes = db.Column(db.UnicodeText, default=u'user publication')
-    is_confidential = db.Column(db.Boolean, default=True)
+    is_confidential = db.Column(db.Boolean, nullable=False, default=True)
 
     user = db.relationship('User')
 
@@ -56,9 +56,9 @@ class OAuthGrant(db.Model):
     code = db.Column(db.Unicode, index=True, nullable=False)
     client_id = db.Column(db.Unicode, db.ForeignKey('oauth_client.client_id', 
         onupdate='CASCADE'), nullable=False)
-    user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    expires = db.Column(db.DateTime)
-    redirect_uri = db.Column(db.UnicodeText)
+    user_id = db.Column(UUID, db.ForeignKey('user.id'), nullable=False)
+    expires = db.Column(db.DateTime, nullable=False)
+    redirect_uri = db.Column(db.UnicodeText, nullable=False)
     _scopes = db.Column(db.UnicodeText)
 
     client = db.relationship('OAuthClient')
@@ -80,13 +80,13 @@ class OAuthToken(db.Model):
     __tablename__ = 'oauth_token'
     
     id = db.Column(db.Integer, primary_key=True)
-    access_token = db.Column(db.Unicode, unique=True)
-    refresh_token = db.Column(db.Unicode, unique=True)
-    token_type = db.Column(db.Unicode)
+    access_token = db.Column(db.Unicode, unique=True, nullable=False)
+    refresh_token = db.Column(db.Unicode, unique=True, nullable=False)
+    token_type = db.Column(db.Unicode, nullable=False)
     client_id = db.Column(db.Unicode, db.ForeignKey('oauth_client.client_id', 
         onupdate='CASCADE'), nullable=False)
-    user_id = db.Column(UUID, db.ForeignKey('user.id'))
-    expires = db.Column(db.DateTime)
+    user_id = db.Column(UUID, db.ForeignKey('user.id'), nullable=False)
+    expires = db.Column(db.DateTime, nullable=False)
     _scopes = db.Column(db.UnicodeText)
 
     client = db.relationship('OAuthClient')

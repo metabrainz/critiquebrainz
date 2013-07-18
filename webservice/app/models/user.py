@@ -7,7 +7,7 @@ class User(db.Model):
     
     id = db.Column(UUID, primary_key=True, 
         server_default=db.text("uuid_generate_v4()"))
-    display_name = db.Column(db.Unicode)
+    display_name = db.Column(db.Unicode, nullable=False)
     email = db.Column(db.Unicode)
     twitter_id = db.Column(db.Unicode, unique=True)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
@@ -25,3 +25,16 @@ class User(db.Model):
         db.session.delete(self)
         db.session.commit()
         return self
+
+    @classmethod
+    def get_or_create(cls, display_name, **kwargs):
+        user = cls.query.filter_by(**kwargs).first()
+
+        if user is None:
+            user = cls(display_name=display_name,
+                **kwargs)
+            db.session.add(user)
+            db.session.commit()
+
+        return user
+

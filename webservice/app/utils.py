@@ -6,8 +6,8 @@ from urllib import urlencode
 from urlparse import urlparse
 import re
 
-def append_params_to_url(url, params):
-    params = urlencode(params)
+def append_params_to_url(url, **kwargs):
+    params = urlencode(kwargs)
     if urlparse(url)[4]:
         return url + '&' + params
     else:

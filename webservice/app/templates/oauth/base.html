@@ -18,7 +18,7 @@
   <body>
     {% if g.user %}
     <div class="container">
-      You are logged in as {{ g.user.display_name }}. Not you? <a href="{{ url_for('oauth_logout', next=request.url) }}">Click here to logout.</a>
+      You are logged in as {{ g.user.display_name }}.
     </div>
     <hr>
     {% endif %}

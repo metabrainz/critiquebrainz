@@ -9,7 +9,8 @@ class SpamReport(db.Model):
         primary_key=True)
     publication_id = db.Column(UUID, db.ForeignKey('publication.id', 
         ondelete='CASCADE'), primary_key=True)
-    created = db.Column(db.DateTime, default=datetime.utcnow)
+    reported_at = db.Column(db.DateTime, default=datetime.utcnow, 
+        nullable=False)
     
     def __init__(self, user, publication):
         self.user = user

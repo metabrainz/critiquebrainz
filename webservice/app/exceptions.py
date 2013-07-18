@@ -44,34 +44,20 @@ class NotValidDataError(ParameterError):
     pass
 
 class AuthorizationError(CritiqueBrainzError):
-    """ Excpetion raised when authorization process fails. """
-    #TODO: implementation of this exception in OAuthlib class
-    _description = {'invalid_request': 'The request is missing a required '\
-                        'parameter, includes an invalid parameter value, '\
-                        'includes a parameter more than once, or is otherwise '\
-                        'malformed.',
-                   'server_error': 'The authorization server encountered an '\
+    """ Exception raised when authentication process fails. """
+    _description = {'server_error': 'The authorization server encountered an '\
                         'unexpected condition that prevented it from '\
                         'fulfilling the request.',
-                   'unsupported_response_type': 'Requested response type is '\
-                        'unsupported.',
-                   'unauthorized_client': 'Client is not authorized.',
-                   'invalid_scope': 'The requested scope is invalid, unknown, '\
+                    'invalid_scope': 'The requested scope is invalid, unknown, '\
                         'or malformed.',
-                   'access_denied': 'The resource owner or authorization '\
-                        'server denied the request.'}
+                    'access_denied': 'The resource owner or authorization '\
+                        'server denied the request.',
+                    'invalid_client_id': 'Invalid client id.',
+                    'mismatching_redirect_uri': 'Mismatching redirect uri.',
+                    'missing_redirect_uri': 'Missing redirect uri.',
+                    'invalid_redirect_uri': 'Invalid redirect uri.'}
 
-    def __init__(self, error):
+    def __init__(self, error='server_error', redirect_uri=None):
         self.error = error
-
-    @property
-    def description(self):
-        return self._description[self.error]
-
-    def to_dict(self):
-        resp = dict(error=self.error, 
-                    error_description=self.description)
-        return resp
-
-class AuthenticationError(CritiqueBrainzError):
-    """ Exception raised when authentication process fails. """
+        self.description = self._description[error]
+        self.redirect_uri = redirect_uri

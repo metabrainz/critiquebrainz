@@ -2,9 +2,9 @@ from flask import request, jsonify
 from app.models import db, User, Publication, Rate
 from app.utils import *
 from app.exceptions import *
-from app import app
+from app import app, oauth
 
-@app.route('/publication/<uuid:publication_id>', methods=['GET'])            
+@app.route('/publication/<uuid:publication_id>', methods=['GET'])
 def show_publication(publication_id, include=[]):
     """ Fetching a single publication entry """
     #TODO: If-Modified-Since support
@@ -19,18 +19,15 @@ def show_publication(publication_id, include=[]):
     return response
     
 @app.route('/publication/<uuid:publication_id>', methods=['PUT'])
-def update_publication(publication_id, user_id=None, text=None):
+@oauth.require_oauth('publication')
+def update_publication(publication_id, data):
     """ Updating a publication """
-    # fetching data
-    user_id = fetch_from_json_uuid('user_id') # temporary
     text = fetch_from_json('text')
-    
+    user = data.user
     publication = Publication.query.get_or_404(publication_id)
     
-    # temporary BEGIN
-    if publication.user_id != user_id:
+    if publication.user_id != user.id:
         raise AbortError('No authorization', 403)
-    # temporary END
     
     publication.text = text
     db.session.commit()
@@ -39,17 +36,14 @@ def update_publication(publication_id, user_id=None, text=None):
     return response
     
 @app.route('/publication/<uuid:publication_id>', methods=['DELETE'])
-def delete_publication(publication_id):
+@oauth.require_oauth('publication')
+def delete_publication(publication_id, data):
     """ Delete a publication """
-    # fetching data
-    user_id = fetch_from_json_uuid('user_id') # temporary
-    
+    user = data.user    
     publication = Publication.query.get_or_404(publication_id)
     
-    # temporary BEGIN
-    if publication.user_id != user_id:
+    if publication.user_id != user.id:
         raise AbortError('No authorization', 403)
-    # temporary END
     
     db.session.delete(publication)
     db.session.commit()
@@ -61,7 +55,7 @@ def list_publication():
     """ Fetching a list of publications """
     # fetch `user_id`
     try:
-        user_id = fetch_from_url_uuid('user_id') # temporary
+        user_id = fetch_from_url_uuid('user_id')
     except MissingDataError:
         user_id = None
         
@@ -123,19 +117,14 @@ def list_publication():
     return response    
 
 @app.route('/publication', methods=['POST'])
-def post_publication():
+@oauth.require_oauth('publication')
+def post_publication(data):
     """ Posting a publication """
-    # fetching data
-    user_id = fetch_from_json_uuid('user_id') # temporary
     release_group = fetch_from_json_uuid('release_group')
     text = fetch_from_json('text')
+    user = data.user
     
-    # temporary BEGIN
-    user = User.query.get(user_id)
-    if not user: raise AbortError('No such user')
-    # temporary END
-    
-    publication = Publication(user, text, release_group)
+    publication = Publication(user=user, text=text, release_group=release_group)
     db.session.add(publication)
     db.session.commit()
     response = jsonify(message='Request processed successfully',

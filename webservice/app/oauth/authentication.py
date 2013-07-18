@@ -27,69 +27,72 @@ class BaseAuthentication(object):
         """
         raise NotImplementedError
 
-    def login_handler(self, f):
-        """ Decorator for a login endpoint. In body of the function you may 
-            specify code which will be run before redirecting to authentication 
-            provider.
+    def authorize_handler(self, f):
+        """ Decorator for an authorization endpoint.
         """
-        self._login_handler = f
+        self._authorize_handler = f
         @wraps(f)
-        def decorated(*args, **kwargs):
-            if self.is_user():
-                return redirect(url_for(self._error_handler.__name__))
-            f(*args, **kwargs)
-            return redirect(self.get_authentication_uri())
+        def decorated(provider, *args, **kwargs):
+            user_id = self.fetch_data('user_id')
+
+            if provider == self._name:
+                user_id = self.fetch_data('user_id')
+                if user_id is None:
+                    self.persist_data(args=request.args.to_dict())
+                    try:
+                        return redirect(self.get_authentication_uri())
+                    except:
+                        AuthorizationError
+                else:
+                    user = User.query.get(user_id)
+                    g.user = user
+                    if request.method == 'POST':
+                        # wipe session after user's decision
+                        session.pop(self._session_key, None)
+            else:
+                session.pop(self._session_key, None)
+
+            return f(provider, *args, **kwargs)
         return decorated
 
     def persist_data(self, **kwargs):
         """ Save data in session """
         if self._session_key not in session:
             session[self._session_key] = dict()
+
         session[self._session_key].update(**kwargs)
 
     def fetch_data(self, key, default=None):
         """ Fetch data from session """
-        return session[self._session_key].get(key, default)
+        if self._session_key not in session:
+            return None
+        else:
+            return session[self._session_key].get(key, default)
 
     def post_login_handler(self, f):
         """ Decorator for a post login endpoint. In body of the function 
-            you should specify code which will return a relevant response
-            in case there is no `next` parameter defined in uri query.
+            you should specify code which will be run before redirecting
+            to authorization endpoint.
         """
         self._post_login_handler = f
         @wraps(f)
         def decorated(*args, **kwargs):
-            next = request.args.get('next', None)
-            try:
-                self.validate_post_login()
-                user = self.get_user()
-                self.register_user(user)
-            except AuthenticationError as e:
-                flash(str(e))
-                return redirect(url_for(self._error_handler.__name__,
-                    next=next))
+            self.validate_post_login()
 
-            if next:
-                return redirect(next)
-            else:
-                return f(*args, **kwargs)
+            user = self.get_user()
+            self.persist_data(user_id=user.id)
+
+            f(*args, **kwargs)
+
+            args = self.fetch_data('args')
+            if args is None:
+                raise AuthorizationError
+            return redirect(url_for(self._authorize_handler.__name__, 
+                provider=self._name, **args))
         return decorated
 
-    def error_handler(self, f):
-        self._error_handler = f
-        return f
-
-    def register_user(self, user):
-        g.user = user
-        session.update(user_id=user.id)
-
-    def is_user(self):
-        try:
-            return g.user is not None
-        except:
-            return False
-
-    def __init__(self, service, session_key):
+    def __init__(self, name, service, session_key):
+        self._name = name
         self._service = service
         self._session_key = session_key
 
@@ -122,40 +125,37 @@ class TwitterAuthentication(BaseAuthentication):
                 method='POST', data={'oauth_verifier': oauth_verifier})
             data = s.get('account/verify_credentials.json').json()
         except:
-            raise AuthenticationError('Could not access data from Twitter')
+            raise AuthorizationError
 
         twitter_id = data.get('id_str')
         display_name = data.get('screen_name')
 
-        # user lookup
-        user = User.query.filter_by(twitter_id=twitter_id).first()
-
-        if user is None:
-            # if no user found, create a new one
-            user = User(display_name=display_name, twitter_id=twitter_id)
-            db.session.add(user)
-            db.session.commit()
+        user = User.get_or_create(display_name, twitter_id=twitter_id)
             
         return user
 
     def validate_post_login(self):
         if 'denied' in request.args:
-            raise AuthenticationError('You did not authorize the request')
+            try:
+                redirect_uri = self.fetch_data('args').get('redirect_uri')
+            except:
+                redirect_uri = None
+            raise AuthorizationError('access_denied', redirect_uri)
 
         oauth_token = request.args.get('oauth_token', None)
         oauth_verifier = request.args.get('oauth_verifier', None)
 
         if oauth_token is None or oauth_verifier is None:
-            return AuthenticationError
+            return AuthorizationError
 
         request_token = self.fetch_data('request_token')
         request_token_secret = self.fetch_data('request_token_secret')
 
         if request_token is None or request_token_secret is None:
-            raise AuthenticationError
+            raise AuthorizationError
 
         if request_token != oauth_token:
-            raise AuthenticationError
+            raise AuthorizationError
 
         # persist verifier
         self.persist_data(oauth_verifier=oauth_verifier)
@@ -163,7 +163,8 @@ class TwitterAuthentication(BaseAuthentication):
     def __init__(self, service=None, session_key='twitter', **kwargs):
         if service is None:
             service = OAuth1Service(**kwargs)
-        super(TwitterAuthentication,self).__init__(service, session_key)
+        super(TwitterAuthentication,self).__init__(kwargs.get('name'), 
+            service, session_key)
 
 class MusicBrainzAuthentication(BaseAuthentication):
 
@@ -191,42 +192,38 @@ class MusicBrainzAuthentication(BaseAuthentication):
             s = self._service.get_session(r['access_token'])
             data = s.get('oauth2/userinfo').json()
         except:
-            raise AuthenticationError('Could not access data from MusicBrainz')
+            raise AuthorizationError
 
         musicbrainz_id = data.get('sub')
         display_name = data.get('sub')
 
-        # user lookup
-        user = User.query.filter_by(musicbrainz_id=musicbrainz_id).first()
-
-        if user is None:
-            # if no user found, create a new one
-            user = User(display_name=display_name,
-                email=email, 
-                musicbrainz_id=musicbrainz_id)
-            db.session.add(user)
-            db.session.commit()
+        user = User.get_or_create(display_name, musicbrainz_id=musicbrainz_id)
             
         return user
 
     def validate_post_login(self):
         state = request.args.get('state', None)
         if state != self.fetch_data('csrf'):
-            raise AuthenticationError
+            raise AuthorizationError
 
         error = request.args.get('error', None)
-        if error is not None:
-            if error == 'access_denied':
-                raise AuthenticationError('You did not authorize the request')
-            else:
-                raise AuthenticationError
+        if error == 'access_denied':
+            try:
+                redirect_uri = self.fetch_data('args').get('redirect_uri')
+            except:
+                redirect_uri = None
+            raise AuthorizationError('access_denied', redirect_uri)
+        elif error is not None:
+            raise AuthorizationError
 
         code = request.args.get('code', None)
         if code is None:
-            raise AuthenticationError
+            raise AuthorizationError
+
         self.persist_data(code=code)
 
     def __init__(self, service=None, session_key='musicbrainz', **kwargs):
         if service is None:
             service = OAuth2Service(**kwargs)
-        super(MusicBrainzAuthentication, self).__init__(service, session_key)
+        super(MusicBrainzAuthentication, self).__init__(kwargs.get('name'), 
+            service, session_key)
