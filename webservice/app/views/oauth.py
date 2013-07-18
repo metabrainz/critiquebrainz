@@ -14,7 +14,6 @@ from functools import wraps
 def oauth_authorize(provider, *args, **kwargs):
     """ OAuth authorization endpoint. If user is logged in, it prompts
         for authorization. Otherwise, it redirects to login form.
-        You should re
     """
     if hasattr(g, 'user') is False:
         raise AuthorizationError('server_error')
@@ -37,6 +36,7 @@ def oauth_errors():
     # ugly way to handle errors from the oauthlib package.
     # thankfully, we only need to show them to user, without
     # performing any redirections.
+    #TODO: rewrite oauth validator to manage exceptions better
     error = request.args.get('error')
     raise AuthorizationError(error)
 
