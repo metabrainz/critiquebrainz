@@ -131,9 +131,3 @@ def post_publication(data):
                        id=publication.id)
     return response
     
-# exceptions and error handling
-@app.errorhandler(AbortError)
-def handle_abort_error(error):
-    resp = jsonify(error.to_dict())
-    resp.status_code = error.status_code
-    return resp
