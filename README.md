@@ -28,6 +28,13 @@ and open `critiquebrainz/config.py` in your favourite text editor. Now fill the
 *Notice* In order to run the tests, you need to create a second database with
 `_test` suffix.
 
+##Preparing login 
+
+Before you begin using authentication with Twitter and/or MusicBrainz accounts, 
+you need to set `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, 
+`MUSICBRAINZ_CLIENT_ID`, and `MUSICBRAINZ_CLIENT_SECRET` in 
+`critiquebrainz/config.py`.
+  
 ##Configuring environment
 
 First, you need to create and setup a new python environment.
