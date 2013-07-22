@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>OAuth error</h3>
+{% if reason %}
+<p>{{ reason }}</p>
+{% else %}
+<p>Could not complete the request.</p>
+{% endif %}
+{% endblock %}

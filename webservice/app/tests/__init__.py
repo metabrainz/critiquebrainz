@@ -1,1 +1,0 @@
-from test_publication import PublicationTestCase

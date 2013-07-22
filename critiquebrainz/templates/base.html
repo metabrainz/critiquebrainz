@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head %}
+    <title>{% block title %}CritiqueBrainz{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
+    <style type="text/css">
+        body {
+          padding-top: 20px;
+          color: #5a5a5a;
+        }
+    </style>
+    {% endblock %}
+  </head>
+  <body>
+    <div class="container">
+      {% block header %}
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Developers</a></li>
+          {% if current_user.is_anonymous() %}
+          <li><a href="{{ url_for('login.index') }}">Sign in</a></li>
+          {% else %}
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              {{ current_user.display_name }} <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">Settings</a></li>
+              <li class="dropdown-submenu">
+                <a href="#">Publications</a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Album reviews</a></li>
+                </ul>
+              </li>
+              <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
+            </ul>
+          </li>
+          {% endif %}
+        </ul>
+        <h2 class="muted"><span style="font-weight: normal">Critique</span>Brainz</h2>
+      </div>
+      <hr>
+      {% endblock %}
+    </div>
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+      <hr>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="span4">
+          <ul class="inline">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Developers</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  </body>
+</html>

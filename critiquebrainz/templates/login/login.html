@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-error">
+        <strong>Attention!</strong> {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<h3>Sign in</h3>
+<p>To sign in, simply choose a service you'd like to authenticate with, and
+authorize CritiqueBrainz to access your profile data.</p>
+<hr />
+<div class="well" style="max-width: 600px; margin: 0 auto;">
+<a href="{{ url_for('login.twitter', next=request.args.get('next')) }}" class="btn btn-large btn-block btn-primary">Sign in with Twitter</a>
+<a href="{{ url_for('login.musicbrainz', next=request.args.get('next')) }}" class="btn btn-large btn-block">Sign in with MusicBrainz</a>
+</p>
+</div>
+{% endblock %}
