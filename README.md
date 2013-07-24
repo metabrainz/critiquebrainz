@@ -15,50 +15,101 @@ To get an instance of critiquebrainz server, simply clone the master branch
 
     git clone https://github.com/mjjc/critiquebrainz.git
 
-##Preparing database
+##How to start
 
-First, you need to create a database on your PostgreSQL server. Then enter
-your critiquebrainz directory and create a configuration from a template
+###Creating virtualenv (optional)
+
+This step is not required, but highly recommended for development instances.
+You may find it useful to keep libraries needed by CritiqueBrainz seperated
+from your global python libraries. To achieve this, you will need a
+`virtualenv` package. You may install it with `pip` or `apt-get` on Debian/Ubuntu
+systems
+
+    sudo pip install virtualenv (or)
+    sudo apt-get install python-virtualenv
+
+Then, `cd` into your `critiquebrainz/` directory and run
+
+    scripts/virtualenv.sh
+
+It will create a symbolic link `env` to virtualenv's entry point in your
+`critiquebrainz/` directory. To enter newly created virtualenv, type in
+
+    source ./env
+
+You should do this before executing any other file from CritiqueBrainz package. 
+
+###Installing dependencies
+
+If you're in your desired python environment, simply run
+
+    python setup.py install
+
+to install all required dependencies.
+
+###Preparing database
+
+First, you need to configure your critiquebrainz instance. Copy the skeleton
+configuration
 
     cp critiquebrainz/config.py.example critiquebrainz/config.py
 
-and open `critiquebrainz/config.py` in your favourite text editor. Now fill the
-`SQLALCHEMY_DATABASE_URI` with your database configuration.
+Then, open `critiquebrainz/config.py` in your favourite text editor and fill in
+the fields in angle brackets in `SQLALCHEMY_DATABASE_URI` body.
 
-*Notice* In order to run the tests, you need to create a second database with
-`_test` suffix.
+Now, you may want to create and configure the database with
 
-##Preparing login 
+    python manage.py create_db
+
+This command will
+* create new PostgreSQL role, if needed
+* create new PostgreSQL database, if needed
+* register `uuid-ossp` PostgreSQL extension, if needed
+
+You may also want to update the newly created database with default schema
+and testing data. To do this type
+
+    python manage.py fixtures
+
+###Preparing login 
 
 Before you begin using authentication with Twitter and/or MusicBrainz accounts, 
 you need to set `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, 
 `MUSICBRAINZ_CLIENT_ID`, and `MUSICBRAINZ_CLIENT_SECRET` in 
-`critiquebrainz/config.py`.
-  
-##Configuring environment
+`critiquebrainz/config.py`. To obtain these keys, you need to register your
+client app on Twitter and Musicbrainz websites.
 
-First, you need to create and setup a new python environment.
+**Note** `<your domain>` field in the urls listed below should probably be set
+to `127.0.0.1:5000`, if you plan to run your CritiqueBrainz instance locally 
+in development mode.
 
-    cd critiquebrainz-master (your repository directory)
-    virtualenv venv
-    . venv/bin/activate
-    python setup.py install
+####Twitter
+You need Twitter account to register your application. Then head to
+https://dev.twitter.com/apps/new and follow the instructions. In `Callback URL`
+field type
 
-This will install all necessary python packages to your new virtual environment.
+    http://<your domain>/login/twitter/post
+
+Finally, save the obtained `Consumer key` and `Consumer secret` fields in your
+`config.py` fields `TWITTER_CONSUMER_KEY` and `TWITTER_CONSUMER_SECRET` 
+respectively.
+
+####MusicBrainz
+You need MusicBrainz account to register your application. Then head to
+http://musicbrainz.org/account/applications/register and follow the instructions.
+In `Callback URL` field type
+
+    http://<your domain>/login/musicbrainz/post
+
+Finally, save the obtained `OAuth Client ID` and `OAuth Client Secret` fields 
+in your `config.py` fields `MUSICBRAINZ_CLIENT_ID` and `MUSICBRAINZ_CLIENT_SECRET` 
+respectively.
 
 ##Running
 
-Remeber to enter your virtual environment at first.
+Remeber to enter your virtual environment first.
 
-    . venv/bin/activate
-
-Before running the webservice, you should init your database
-
-    python manage.py tables
-
-You could also apply fixtures
-
-    python manage.py fixtures
+    source ./env
 
 Now you can safely run the webservice app
 
