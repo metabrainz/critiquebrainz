@@ -36,7 +36,7 @@
               <li class="dropdown-submenu">
                 <a href="#">Publications</a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Album reviews</a></li>
+                    <li><a href="{{ url_for("ui_publication.album") }}">Album reviews</a></li>
                 </ul>
               </li>
               <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
@@ -49,11 +49,13 @@
       <hr>
       {% endblock %}
     </div>
+    {% block wrapper %}
     <div class="container">
       {% block content %}
       {% endblock %}
       <hr>
     </div>
+    {% endblock %}
     <div class="container">
       <div class="row">
         <div class="span4">
@@ -65,7 +67,9 @@
         </div>
       </div>
     </div>
+    {% block scripts %}
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    {% endblock %}
   </body>
 </html>

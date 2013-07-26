@@ -2,6 +2,7 @@ from . import db
 from sqlalchemy.dialects.postgresql import UUID
 from rate import Rate
 from datetime import datetime
+from critiquebrainz.musicbrainz import MusicBrainzClient
 
 class Publication(db.Model):
 
@@ -28,13 +29,18 @@ class Publication(db.Model):
             release_group = self.release_group,
             user_id = self.user_id, 
             text = self.text, 
-            created = str(self.created),
-            last_updated = str(self.last_updated), 
+            created = self.created,
+            last_updated = self.last_updated, 
             edits = self.edits, 
             rating = self.rating, 
             rates = self._rates.count(),
             rates_positive = self._rates_positive.count(),
             rates_negative = self._rates_negative.count())
+        
+        if response['rates'] == 0:
+            response['rates_ratio'] = 0
+        else:
+            response['rates_ratio'] = float(response['rates_positive'])/float(response['rates'])
 
         if includes and 'user' in includes:
             response['user'] = self.user.to_dict()
@@ -93,3 +99,9 @@ class Publication(db.Model):
         db.session.add(publication)
         db.session.commit()
         return publication
+
+    def album_details(self):
+        if hasattr(self, '_album_details') is False:
+            self._album_details = MusicBrainzClient.album_details(self.release_group)
+        return self._album_details
+

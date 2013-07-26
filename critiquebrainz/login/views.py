@@ -10,7 +10,7 @@ login = Blueprint('login', __name__, url_prefix='/login')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('ui.index'))
+    return redirect(url_for('index'))
     
 @login.route('/', endpoint='index')
 @login_forbidden
@@ -22,7 +22,7 @@ def login_handler():
 def login_twitter_handler():
     next = request.args.get('next') or \
            request.referrer or \
-           url_for('ui.index')
+           url_for('index')
     callback_url = url_for('.twitter_post', next=next, _external=True)
     return twitter.authorize(callback=callback_url)
     
@@ -44,7 +44,7 @@ def login_twitter_post_handler(resp):
 def login_musicbrainz_handler():
     next = request.args.get('next') or \
            request.referrer or \
-           url_for('ui.index')
+           url_for('index')
     session['musicbrainz_next'] = next
     callback_url = url_for('.musicbrainz_post', _external=True)
     return musicbrainz.authorize(callback=callback_url)
@@ -67,3 +67,4 @@ def login_musicbrainz_post_handler(resp):
         musicbrainz_id=me.get('sub'))
     login_user(user)
     return redirect(next)
+

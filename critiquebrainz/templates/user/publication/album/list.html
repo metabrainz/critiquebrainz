@@ -1,0 +1,62 @@
+{% extends 'user/base.html' %}
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">Album reviews</h2>
+  <a href="#" class="btn btn-success pull-right" style="margin-top: 20px;">
+    <i class="icon-asterisk icon-white"></i>
+    Create
+  </a>
+</div>
+<hr>
+{% if not publications %}
+<p class="lead" style="text-align: center;">No publication found</p>
+{% else %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Hash</th>
+      <th>Artist</th>
+      <th>Album</th>
+      <th>Created on</th>
+      <th>Rates</th>
+      <th>Rating</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for publication in publications %}
+    {% set p = publication.to_dict() %}
+    {% set a = publication.album_details() %}
+    <tr data-publication-id="{{ p.id }}">
+      <td>{{ p.id[:5] }}</td>
+      <td>{{ a.artist }}</td>
+      <td>
+        {{ a.title }} 
+        <span class="muted">({{ a.release_date }})</span>
+      </td>
+      <td>{{ p.created.strftime("%d %b %Y") }}</td>
+      <td>{{ p.rates }}</td>
+      
+      {% if p.rating == 3 %}
+        {% set badge_color="success" %}
+      {% elif p.rating == 2 %} 
+        {% set badge_color="info" %}
+      {% elif p.rating == 1 %}
+        {% set badge_color="warning" %}
+      {% elif p.rating == 0 %}
+        {% set badge_color="important" %}
+      {% elif p.rating == -1 %}
+        {% set badge_color="inverse" %}
+      {% endif %}
+
+      <td><span class="badge badge-{{ badge_color }}">{{ "{0:.0f}%".format(p.rates_ratio * 100) }}</span></td>
+      <td>
+          <a href="{{ url_for("ui_publication.delete", publication_id=p.id) }}"><i class="icon-edit"></i></a>
+        <a href="#"><i class="icon-remove"></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

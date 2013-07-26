@@ -23,6 +23,7 @@ setup(
         'Flask-RESTful',
         'nose',
         'psycopg2',
+        'musicbrainzngs',
     ],
     classifiers=[
         'Environment :: Web Environment',

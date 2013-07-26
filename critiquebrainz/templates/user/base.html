@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block wrapper %}
+<div class="container">
+  <div class="row">
+    <div class="span2">
+      <ul class="nav nav-list">
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Settings</a></li>
+        <li class="nav-header">Publications</li>
+        <li><a href="{{ url_for("ui_publication.album") }}">Album reviews</a></li>
+      </ul>
+    </div>
+    <div class="span10">
+    {% block content %}
+    {% endblock %}
+    </div>
+  </div>
+  <hr>
+</div>
+{% endblock %}

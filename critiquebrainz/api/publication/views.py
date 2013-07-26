@@ -5,14 +5,14 @@ from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from parsers import *
 
-publication = Blueprint('publication', __name__, url_prefix='/publication')
+publication = Blueprint('api_publication', __name__)
 
 @publication.route('/<uuid:publication_id>', endpoint='publication_by_id', methods=['GET'])
 def publication_by_id_handler(publication_id):
 	publication = Publication.query.get(publication_id)
 	if publication is None:
 		raise AbortError('Publication not found', 404)
-	(include, ) = parse_include_param()
+	include = parse_include_param()
 	return jsonify(publication=publication.to_dict(include))
 
 @publication.route('/', endpoint='publication_list', methods=['GET'])
