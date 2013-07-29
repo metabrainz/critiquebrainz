@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block wrapper %}
+<div class="container">
+  <div class="row">
+    <div class="span2">
+      <ul class="nav nav-list">
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="{{ url_for("user_publication.index") }}">Publications</a></li>
+      </ul>
+    </div>
+    <div class="span10">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}
+    {% endblock %}
+    </div>
+  </div>
+  <hr>
+</div>
+{% endblock %}

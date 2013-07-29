@@ -1,0 +1,49 @@
+{% extends 'user/base.html' %}
+{% from 'user/macros.html' import rating_badge %}
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">Publications</h2>
+  <a href="{{ url_for("user_publication.create") }}" class="btn btn-success pull-right" style="margin-top: 20px;">
+    <i class="icon-asterisk icon-white"></i>
+    Create
+  </a>
+</div>
+<hr>
+{% if not publications %}
+<p class="lead" style="text-align: center;">No publication found</p>
+{% else %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Hash</th>
+      <th>Artist</th>
+      <th>Album</th>
+      <th>Created on</th>
+      <th>Rates</th>
+      <th>Rating</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for publication in publications %}
+    {% set album = publication.release_group|album_details %}
+    <tr data-publication-id="{{ publication.id }}">
+      <td>{{ publication.id[:5] }}</td>
+      <td>{{ album.artist }}</td>
+      <td>
+        {{ album.title }} 
+        <span class="muted">({{ album.release_date }})</span>
+      </td>
+      <td>{{ publication.created | datetime }}</td>
+      <td>{{ publication.rates }}</td>
+      <td>{{ rating_badge(publication.rating, publication.rates_ratio) }}</td>
+      <td>
+          <a href="{{ url_for("user_publication.edit", id=publication.id) }}"><i class="icon-edit"></i></a>
+        <a href="{{ url_for("user_publication.delete", id=publication.id) }}"><i class="icon-remove"></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

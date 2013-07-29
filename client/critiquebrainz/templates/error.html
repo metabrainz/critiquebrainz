@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Error{%if code %}: {{code}}{% endif %}</h3>
+{% if description %}
+<p>{{ description }}</p>
+{% else %}
+<p>Could not complete the request.</p>
+{% endif %}
+{% endblock %}

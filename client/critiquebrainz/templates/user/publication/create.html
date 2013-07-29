@@ -1,0 +1,46 @@
+{% extends 'user/base.html' %}
+{% block content %}
+{% for field in form.errors %}
+  {% for error in form.errors[field] %}
+  <div class="alert alert-error">
+    {{ error }}
+  </div>
+  {% endfor %}
+{% endfor %}
+<h2>Create publication</h2>
+<hr>
+<form method="POST" class="form-horizontal">
+  {{ form.hidden_tag() }}
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label">Release group MBID</label>
+      <div class="controls">
+        {{ form.release_group(class="input-xxlarge", placeholder="e.g. 055dc3ac-83cc-494c-bc4f-6cb8754af2f9") | safe }}
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        {{ form.text(class="input-xxlarge", rows="5") | safe }}
+      </div>
+    </div>
+  </fieldset>
+  <hr>
+  <div class="control-group">
+    <div class="control-label">
+      <img src="{{ url_for('static', filename='img/cc/by.png') }}" />
+      <img src="{{ url_for('static', filename='img/cc/sa.png') }}" />
+    </div>
+    <div class="controls">
+      <label class="checkbox">
+        {{ form.licence() | safe }}
+          <p>
+          You acknowledge and agree that the CritiqueBrainz and its contents are generally licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported</a>. You agree to license your work under such license. You represent and warrant that you own or control all rights in and to the work, that nothing in the work infringes the rights of any third-party, and that you have the permission to use and to license the work under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported</a>.
+          </p>
+        </label>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Publish</button>
+  </div>
+</form>
+{% endblock %}

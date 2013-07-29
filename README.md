@@ -1,4 +1,5 @@
 critiquebrainz
 ==============
 
-A GSoC project for MetaBrainz Foundation
+A GSoC project for MetaBrainz Foundation. 
+

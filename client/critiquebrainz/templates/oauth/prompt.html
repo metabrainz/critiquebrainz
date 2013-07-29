@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+  <h3>Do you want to give access to your account to {{ client.name }}?</h3>
+  <div class="alert alert-info">
+    <strong>Don't panic!</strong> You can withdraw any time in your profile settings.
+  </div>
+  <div class="well">
+  <div class="row-fluid">
+    <div class="span6">
+      <dl class="dl-horizontal">
+        <dt>Website</dt>
+        <dd>{{ client.website }}</dd>
+        <dt>Name</dt>
+        <dd>{{ client.name }}</dd>
+        <dt>Description</dt>
+        <dd>{{ client.desc }}</dd>
+      </dl>
+    </div>
+    <div class="span6">
+      {% set scopes = scope.split() %}
+      {{ client.name }} is requesting permission to
+      <ul>
+        {% if 'user' in scopes %}
+        <li>
+          Modify your profile data
+        </li>
+        {% endif %}
+        {% if 'publication' in scopes %}
+        <li>
+          Publish new publications
+        </li>
+        <li>
+          Modify and delete existing publications
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  </div>
+  <form action="{{ request.url }}" method="post">
+  <button type="submit" name="confirm" value="yes" class="btn btn-primary">Agree</button>
+  <a href="{{ cancel_url }}" class="btn">No, thanks</a>
+  </form>
+{% endblock %}
