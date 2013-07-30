@@ -6,6 +6,7 @@ A GSoC project for MetaBrainz Foundation.
 ##Requirements
 
 * PostgreSQL (tested on 9.1.9)
+* `postgres-contrib`
 * Python (tested on 2.7.4)
 * virtualenv
 

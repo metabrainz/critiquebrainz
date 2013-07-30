@@ -40,7 +40,7 @@ def create_db():
     
     exit_code = system('scripts/create_database_extension.sh %s %s' % (db, 'uuid-ossp'))
     if exit_code != 0: 
-        raise Exception('Failed to create PostgreSQL exception')
+        raise Exception('Failed to create PostgreSQL extension')
 
 if __name__ == '__main__':
     manager.run()
