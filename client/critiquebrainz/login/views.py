@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, render_template, url_for, session
+from flask import Blueprint, request, redirect, render_template, url_for, session, flash
 from flask.ext.login import login_user, logout_user, login_required
 from critiquebrainz.api import api
 from critiquebrainz.login import User, login_forbidden
@@ -32,21 +32,16 @@ def login_post_handler():
     error = request.args.get('error')
     next = session.get('next')
     if code:
-        error, access_token, refresh_token, expires_in = api.get_token_from_code(code)
-        if error:
-            raise OAuthError(error)
+        access_token, refresh_token, expires_in = api.get_token_from_code(code)
         user = User(refresh_token)
         user.access_token, user.expires_in = (access_token, expires_in)
         login_user(user)
-
         if next:
             return redirect(next)
         else:
             return redirect(url_for('index'))
-    elif error == 'access_token':
-        flash('You did not authorize the request')
     elif error:
-        raise OAuthError(error)
+        flash('Login failed', 'error')
 
     return redirect(url_for('.index'))
 

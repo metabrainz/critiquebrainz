@@ -1,2 +1,4 @@
 env
 venv
+fcgi.sock
+client.fcgi

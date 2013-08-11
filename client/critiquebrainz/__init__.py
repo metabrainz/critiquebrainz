@@ -29,6 +29,9 @@ app.jinja_env.filters['datetime'] = format_datetime
 # register index
 import views
 
+# register error handlers
+import errors
+
 # register blueprints
 from login.views import bp as bp1
 app.register_blueprint(bp1, url_prefix='/login')

@@ -11,7 +11,3 @@ bp = Blueprint('user', __name__)
 def user_me_handler(user):
     inc = parse_include_param() or []
     return jsonify(user=user.to_dict(inc))
-
-@bp.errorhandler(AbortError)
-def abort_error_handler(error):
-    return (jsonify(message=error.message), error.status_code)

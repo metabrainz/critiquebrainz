@@ -1,7 +1,7 @@
 from flask import request
 from critiquebrainz.db import db, OAuthClient, OAuthGrant, OAuthToken
-from critiquebrainz.exceptions import OAuthError
 from critiquebrainz.utils import generate_string
+from exceptions import *
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -131,37 +131,33 @@ class CritiqueBrainzAuthorizationProvider(object):
 
     def validate_authorization_request(self, client_id, response_type, redirect_uri, scope):
         if self.validate_client_id(client_id) is False:
-            return (False, 'unauthorized_client')
+            raise InvalidClient
         if response_type != 'code':
-            return (False, 'unsupported_response_type')
+            raise UnsupportedResponseType
         if self.validate_client_redirect_uri(client_id, redirect_uri) is False:
-            return (False, 'invalid_redirect_uri')
+            raise InvalidRedirectURI
         if self.validate_client_scope(client_id, scope) is False:
-            return (False, 'invalid_scope')
-
-        return (True, '')
+            raise InvalidScope
 
     def validate_token_request(self, client_id, client_secret, grant_type, scope, code, refresh_token, redirect_uri):
         if self.validate_client_id(client_id) is False:
-            return (False, 'invalid_client')
+            raise InvalidClient
         if self.validate_client_secret(client_id, client_secret) is False:
-            return (False, 'invalid_client')
+            raise InvalidClient
         if grant_type == 'code':
             if self.validate_grant(client_id, code) is False:
-                return (False, 'invalid_grant')
+                raise InvalidGrant
             if self.validate_grant_scope(client_id, code, scope) is False:
-                return (False, 'invalid_scope')
+                raise InvalidScope
             if self.validate_grant_redirect_uri(client_id, code, redirect_uri) is False:
-                return (False, 'invalid_redirect_uri')
+                raise InvalidRedirectURI
         elif grant_type == 'refresh_token':
             if self.validate_token(client_id, refresh_token) is False:
-                return (False, 'invalid_grant')
+                raise InvalidGrant
             if self.validate_token_scope(client_id, refresh_token, scope) is False:
-                return (False, 'invalid_scope')
+                raise InvalidScope
         else:
-            return (False, 'unsupported_grant_type')
-
-        return (True, '')
+            raise UnsupportedGrantType
 
     def generate_grant(self, client_id, scope, redirect_uri, user_id):
         code = generate_string(self.token_length)
@@ -188,16 +184,16 @@ class CritiqueBrainzAuthorizationProvider(object):
             def decorated(*args, **kwargs):
                 authorization = request.headers.get('Authorization')
                 if self.validate_authorization_header(authorization) is False:
-                    raise OAuthError('access_denied', 401)
+                    raise NotAuthorized
 
                 access_token = authorization.split()[1]
                 token = self.fetch_access_token(access_token)
                 if token is None:
-                    raise OAuthError('access_denied', 401)
+                    raise AccessDenied
 
                 for scope in scopes:
                     if scope not in token.get_scopes():
-                        raise OAuthError('access_denied', 401)
+                        raise AccessDenied
 
                 user = token.user
                 kwargs.update(dict(user=user))

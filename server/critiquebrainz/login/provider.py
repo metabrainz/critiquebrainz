@@ -94,7 +94,7 @@ class TwitterAuthentication(BaseAuthentication):
             else:
                 raise LoginError('server_error')
 
-        if oauth_token!= request_token:
+        if oauth_token != request_token:
             raise LoginError('server_error')
 
         self.persist_data(oauth_verifier=oauth_verifier)

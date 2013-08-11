@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, current_app, abort
 from critiquebrainz.db import db, Publication
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
@@ -8,20 +8,16 @@ bp = Blueprint('publication', __name__)
 
 @bp.route('/<uuid:publication_id>', endpoint='entity', methods=['GET'])
 def publication_entity_handler(publication_id):
-    publication = Publication.query.get(str(publication_id))
-    if publication is None:
-        raise AbortError('Publication not found', 404)
+    publication = Publication.query.get_or_404(str(publication_id))
     include = parse_include_param() or []
     return jsonify(publication=publication.to_dict(include))
 
 @bp.route('/<uuid:publication_id>', endpoint='delete', methods=['DELETE'])
 @oauth.require_auth('publication')
 def publication_delete_handler(publication_id, user):
-    publication = Publication.query.get(str(publication_id))
-    if publication is None:
-        raise AbortError('Publication not found', 404)
+    publication = Publication.query.get_or_404(str(publication_id))
     if publication.user_id != user.id:
-        raise AbortError('Access denied', 403)
+        abort(403)
     db.session.delete(publication)
     db.session.commit()
     return jsonify(message='Request processed successfully')
@@ -31,9 +27,9 @@ def publication_delete_handler(publication_id, user):
 def publication_update_handler(publication_id, user):
     publication = Publication.query.get(str(publication_id))
     if publication is None:
-        raise AbortError('Publication not found', 404)
+        abort(404)
     if publication.user_id != user.id:
-        raise AbortError('Access denied', 403)
+        abort(403)
 
     text = parse_text_param(min=25, max=2500)
     publication.text = text
@@ -53,7 +49,7 @@ def publication_list_handler():
     include = parse_include_param() or []
 
     if (release_group, user_id) == (None, None):
-        raise AbortError('Neither `release_group` nor `user_id` was defined', 400)
+        raise InvalidRequest(desc='Neither `release_group` nor `user_id` was defined')
 
     publications, count = Publication.fetch_sorted_by_rating(release_group, 
         user_id, limit, offset, rating)
@@ -67,10 +63,10 @@ def publication_post_handler(user):
     release_group = parse_release_group_param(source='json')
     text = parse_text_param(min=25, max=2500)
 
-    try:
-        publication = Publication.create(user=user, text=text, release_group=release_group)
-    except:
-        raise AbortError('Server could not complete the request', 500)
+    if Publication.query.filter_by(user=user, release_group=release_group).count():
+        raise InvalidRequest(desc='You have already published a review for this album')
+
+    publication = Publication.create(user=user, text=text, release_group=release_group)
 
     return jsonify(message='Request processed successfully',
                    id=publication.id)

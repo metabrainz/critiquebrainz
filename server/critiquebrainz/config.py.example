@@ -9,3 +9,4 @@ MUSICBRAINZ_CLIENT_SECRET = "<your musicbrainz client secret>"
 OAUTH_TOKEN_LENGTH = 40
 OAUTH_GRANT_EXPIRE = 60
 OAUTH_TOKEN_EXPIRE = 3600
+LOG_FILE = "server.log"

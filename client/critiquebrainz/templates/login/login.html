@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import print_error %}
 {% block content %}
-{% with messages = get_flashed_messages() %}
+{% with messages = get_flashed_messages(with_categories=true)  %}
   {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-error">
-        <strong>Attention!</strong> {{ message }}
-      </div>
+    {% for category, message in messages %}
+      {{ print_error(message, category) }}
     {% endfor %}
   {% endif %}
 {% endwith %}

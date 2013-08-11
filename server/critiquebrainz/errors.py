@@ -1,18 +1,23 @@
 from critiquebrainz.exceptions import *
 from critiquebrainz import app
+from flask import abort, jsonify
 
-@app.errorhandler(AbortError)
-def abort_error_handler(error):
-    return (jsonify(error=error.message), error.status_code)
+@app.errorhandler(BaseError)
+def base_error_handler(error):
+    return (jsonify(error=error.code, description=error.desc), error.status)
 
-@app.errorhandler(OAuthError)
+@app.errorhandler(401)
 def oauth_error_handler(error):
-    return abort_error_handler(AbortError('Not authorized', 401))
+    return base_error_handler(NotAuthorized())
 
-@app.errorhandler(505)
-def exception_handler(error):
-    return abort_error_handler(AbortError('Server error', 500))
+@app.errorhandler(403)
+def oauth_error_handler(error):
+    return base_error_handler(AccessDenied())
 
 @app.errorhandler(404)
 def not_found_handler(error):
-    return abort_error_handler(AbortError('Not found', 404))
+    return base_error_handler(NotFound())
+
+@app.errorhandler(500)
+def exception_handler(error):
+    return base_error_handler(ServerError())

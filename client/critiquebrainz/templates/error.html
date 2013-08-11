@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3>Error{%if code %}: {{code}}{% endif %}</h3>
+<h3>Error{%if code %} ({{code}}){% endif %}</h3>
 {% if description %}
 <p>{{ description }}</p>
 {% else %}

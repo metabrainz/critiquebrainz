@@ -1,0 +1,16 @@
+{% macro print_error(message, category) -%}
+  {% if category == "error" %}
+    {% set head = "Error!" %}
+    {% set alert_class="alert-danger" %}
+  {% elif category == "success" %}
+    {% set head = "Success!" %}
+    {% set alert_class="alert-success" %}
+  {% else %}
+    {% set head = "Notice!" %}
+    {% set alert_class="alert-info" %}
+  {% endif %}
+<div class="alert {{ alert_class }}">
+  <strong>{{ head }}</strong>
+  {{ message }}
+</div>
+{% endmacro %}

@@ -31,7 +31,7 @@ def login_musicbrainz_post_handler():
 
 @bp.route('/twitter', endpoint='twitter')
 def login_twitter_handler():
-    (client_id, _, redirect_uri, scope, state)= login_parse_parameters()
+    (client_id, _, redirect_uri, scope, state) = login_parse_parameters()
     twitter.persist_data(query=(client_id, redirect_uri, scope, state))
     url = twitter.get_authentication_uri()
     return redirect(url)
@@ -72,9 +72,7 @@ def login_parse_parameters():
     state = request.args.get('state')
 
     # validate request
-    valid, error = oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
-    if valid is False:
-        raise LoginError(error, redirect_uri)
+    oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
 
     # client MUST define `authorization` in the scope
     scopes = scope.split()

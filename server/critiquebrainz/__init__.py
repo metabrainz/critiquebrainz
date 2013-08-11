@@ -24,6 +24,11 @@ FlaskUUID(app)
 # register error handlers
 import errors
 
+# register loggers
+import loggers
+if app.debug is False:
+    loggers.init_app(app)
+
 # register blueprints
 from oauth.views import bp as bp1
 app.register_blueprint(bp1, url_prefix='/oauth')

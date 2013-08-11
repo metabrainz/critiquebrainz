@@ -23,16 +23,18 @@ class User(UserMixin):
         self.refresh_token = refresh_token
 
     def regenerate_token(self):
-        error, access_token, _, expires_in = api.get_token_from_refresh_token(self.refresh_token)
-        if error:
+        try:
+            access_token, _, expires_in = api.get_token_from_refresh_token(self.refresh_token)
+        except APIError:
             raise SessionError
+
         self.access_token = access_token
         self.expires_in = expires_in
 
     @property
     def me(self):
         if hasattr(self, '_me') is False:
-            _, self._me = api.get_me(self.access_token)
+            self._me = api.get_me(self.access_token)
         return self._me
 
     @property

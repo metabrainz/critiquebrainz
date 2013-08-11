@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from critiquebrainz.oauth import oauth
-from critiquebrainz.exceptions import OAuthError
+from critiquebrainz.exceptions import *
 from critiquebrainz.db import OAuthClient
 from critiquebrainz.decorators import nocache
 
@@ -16,9 +16,7 @@ def oauth_authorize_handler(user):
     scope = request.form.get('scope')
 
     # validate request
-    valid, error = oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
-    if valid is False:
-        raise OAuthError(error)
+    oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
 
     # generate new grant
     (code, ) = oauth.generate_grant(client_id, scope, redirect_uri, user.id)
@@ -37,9 +35,7 @@ def oauth_token_handler():
     scope = request.form.get('scope')
 
     # validate request
-    valid, error = oauth.validate_token_request(client_id, client_secret, grant_type, scope, code, refresh_token, redirect_uri)
-    if valid is False:
-        raise OAuthError(error)
+    oauth.validate_token_request(client_id, client_secret, grant_type, scope, code, refresh_token, redirect_uri)
 
     if grant_type == 'code':
         user_id = oauth.fetch_grant(client_id, code).user.id
@@ -68,9 +64,7 @@ def oauth_client_handler():
     scope = request.form.get('scope')
 
     # validate request
-    valid, error = oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
-    if valid is False:
-        raise OAuthError(error)
+    oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
 
     client = OAuthClient.query.get(client_id)
 
@@ -78,11 +72,3 @@ def oauth_client_handler():
                                     name=client.name,
                                     desc=client.desc,
                                     website=client.website)))
-
-@bp.errorhandler(OAuthError)
-def oauth_error_handler(error):
-    return jsonify(dict(error=error.code)), error.status
-
-@bp.errorhandler(Exception)
-def exception_handler(error):
-    return oauth_error_handler(OAuthError('server_error'))
