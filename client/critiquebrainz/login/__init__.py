@@ -1,7 +1,7 @@
 from flask.ext.login import LoginManager, UserMixin, current_user
 from flask import redirect, url_for, session
 from critiquebrainz.api import api
-from critiquebrainz.exceptions import SessionError
+from critiquebrainz.exceptions import APIError, SessionError
 from functools import wraps
 from datetime import datetime
 import time

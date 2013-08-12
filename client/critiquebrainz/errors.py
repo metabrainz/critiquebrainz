@@ -1,6 +1,7 @@
-from critiquebrainz.exceptions import APIError
+from critiquebrainz.exceptions import APIError, SessionError
 from critiquebrainz import app
-from flask import render_template, abort
+from flask import redirect, url_for, render_template, abort
+from flask.ext.login import logout_user
 
 @app.errorhandler(404)
 def not_found_handler(error):
@@ -13,3 +14,8 @@ def exception_handler(error):
 @app.errorhandler(APIError)
 def api_error_handler(error):
     return render_template('error.html', code=error.code, description=error.desc), error.status
+
+@app.errorhandler(SessionError)
+def session_error_handler(error):
+    logout_user()
+    return redirect(url_for('index'))
