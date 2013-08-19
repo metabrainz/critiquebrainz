@@ -68,12 +68,12 @@ class CritiqueBrainzAPI(object):
         me = resp.get('user')
         return me
 
-    def get_client(self, client_id, response_type, redirect_uri, scope):
+    def validate_oauth_request(self, client_id, response_type, redirect_uri, scope):
         data = dict(client_id=client_id,
                     response_type=response_type,
                     redirect_uri=redirect_uri,
                     scope=scope)
-        resp = requests.post(self.base_url+'oauth/client', data=data).json()
+        resp = requests.post(self.base_url+'oauth/validate', data=data).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')

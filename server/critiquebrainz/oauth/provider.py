@@ -177,25 +177,31 @@ class CritiqueBrainzAuthorizationProvider(object):
 
         return (access_token, 'Bearer', self.token_expire, refresh_token, scope)
 
-    def require_auth(self, *args):
-        scopes = args
+    def get_authorized_user(self, scopes):
+        authorization = request.headers.get('Authorization')
+        if self.validate_authorization_header(authorization) is False:
+            raise NotAuthorized
+
+        access_token = authorization.split()[1]
+        token = self.fetch_access_token(access_token)
+        if token is None:
+            raise AccessDenied
+
+        print token.expires, datetime.now()
+        if token.expires < datetime.now():
+            raise AccessDenied
+
+        for scope in scopes:
+            if scope not in token.get_scopes():
+                raise AccessDenied
+
+        return token.user
+
+    def require_auth(self, *scopes):
         def decorator(f):
             @wraps(f)
             def decorated(*args, **kwargs):
-                authorization = request.headers.get('Authorization')
-                if self.validate_authorization_header(authorization) is False:
-                    raise NotAuthorized
-
-                access_token = authorization.split()[1]
-                token = self.fetch_access_token(access_token)
-                if token is None:
-                    raise AccessDenied
-
-                for scope in scopes:
-                    if scope not in token.get_scopes():
-                        raise AccessDenied
-
-                user = token.user
+                user = self.get_authorized_user(scopes)
                 kwargs.update(dict(user=user))
                 return f(*args, **kwargs)
             return decorated

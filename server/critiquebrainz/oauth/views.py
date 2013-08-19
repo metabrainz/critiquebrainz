@@ -55,7 +55,7 @@ def oauth_token_handler():
                         refresh_token=refresh_token,
                         scope=scope))
 
-@bp.route('/client', methods=['POST'], endpoint='client')
+@bp.route('/validate', methods=['POST'], endpoint='validate')
 @nocache
 def oauth_client_handler():
     client_id = request.form.get('client_id')

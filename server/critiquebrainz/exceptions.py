@@ -44,3 +44,14 @@ class InvalidRequest(BaseError):
         super(InvalidRequest, self).__init__(code='invalid_request',
             desc=desc,
             status=400)
+
+class ParserError(CritiqueBrainzError):
+    def __init__(self, key, desc):
+        self.key = key
+        self.desc = desc
+
+class MissingDataError(ParserError):
+    def __init__(self, key):
+        super(MissingDataError, self).__init__(key=key,
+            desc='missing')
+

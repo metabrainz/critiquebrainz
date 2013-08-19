@@ -19,9 +19,13 @@ class User(db.Model):
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ['publications']
 
-    def to_dict(self, includes=[]):
+    def to_dict(self, includes=[], confidental=False):
         response = dict(id = self.id,
             display_name = self.display_name)
+        if confidental is True:
+            response.update(dict(email=self.email, 
+                                 twitter_id=self.twitter_id,
+                                 musicbrainz_id=self.musicbrainz_id))
         if 'publications' in includes:
             response['publications'] = [p.to_dict() for p in self.publications]
         return response

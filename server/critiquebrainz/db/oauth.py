@@ -16,6 +16,8 @@ class OAuthClient(db.Model):
 
     user = db.relationship('User')
 
+    allowed_includes = []
+
     def get_scopes(self):
         if hasattr(self, '_scopes') is False:
             self._scopes = self.scopes.split()
@@ -25,6 +27,18 @@ class OAuthClient(db.Model):
         db.session.delete(self)
         db.session.commit()
         return self
+
+    def to_dict(self, includes=[]):
+        response = dict(client_id=self.client_id,
+            client_secret=self.client_secret,
+            user_id=self.user_id,
+            name=self.name,
+            desc=self.desc,
+            website=self.website,
+            redirect_uri=self.redirect_uri,
+            scopes=self.scopes)
+        return response
+
         
 class OAuthGrant(db.Model):
 

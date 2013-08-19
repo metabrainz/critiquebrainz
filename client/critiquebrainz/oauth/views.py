@@ -18,6 +18,6 @@ def oauth_authorize_prompt_handler():
         code = api.authorize(client_id, response_type, redirect_uri, scope, current_user.access_token)
         return redirect(build_url(redirect_uri, dict(code=code, state=state)))
     if request.method == 'GET':
-        client = api.get_client(client_id, response_type, redirect_uri, scope)
+        client = api.validate_oauth_request(client_id, response_type, redirect_uri, scope)
         return render_template('oauth/prompt.html', client=client, scope=scope, 
             cancel_url=build_url(redirect_uri, dict(error='access_denied')))
