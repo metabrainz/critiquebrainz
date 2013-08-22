@@ -14,3 +14,16 @@
   {{ message }}
 </div>
 {% endmacro %}
+
+{% macro scope_desc(scope) %}
+  {% if scope == "user" %}
+    Profile data
+  {% elif scope == "publication" %}
+    Publications
+  {% elif scope == "client" %}
+    API clients
+  {% elif scope == "authorization" %}
+    Authorization
+  {% endif %}
+{% endmacro %}
+

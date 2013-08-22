@@ -11,5 +11,3 @@ class APIError(CritiqueBrainzError):
 class OAuthError(APIError):
     pass
 
-class SessionError(CritiqueBrainzError):
-    pass

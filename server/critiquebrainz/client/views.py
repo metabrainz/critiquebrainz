@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, abort
-from critiquebrainz.db import db, OAuthClient
+from critiquebrainz.db import db, OAuthClient, OAuthToken
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
@@ -13,10 +13,7 @@ def client_entity_handler(client_id, user):
     client = OAuthClient.query.get_or_404(client_id)
     if client.user_id != user.id:
         abort(403)
-    try:
-        inc = Parser.list('uri', 'inc', OAuthClient.allowed_includes)
-    except MissingDataError:
-        inc = []
+    inc = Parser.list('uri', 'inc', OAuthClient.allowed_includes, optional=True) or []
     return jsonify(client=client.to_dict(inc))
 
 @bp.route('/<client_id>', methods=['POST'], endpoint='modify')
@@ -25,31 +22,21 @@ def client_modify_handler(client_id, user):
     client = OAuthClient.query.get_or_404(client_id)
     if client.user_id != user.id:
         abort(403)
-    try:
-        name = Parser.string('json', 'name', min=3, max=64)
+    name = Parser.string('json', 'name', min=3, max=64, optional=True)
+    if name:
         client.name = name
-    except MissingDataError:
-        pass
-    try:
-        desc = Parser.string('json', 'desc', min=3, max=512)
+    desc = Parser.string('json', 'desc', min=3, max=512, optional=True)
+    if desc:
         client.desc = desc
-    except MissingDataError:
-        pass
-    try:
-        website = Parser.uri('json', 'website')
+    website = Parser.uri('json', 'website', optional=True)
+    if website:
         client.website = website
-    except MissingDataError:
-        pass
-    try:
-        redirect_uri = Parser.uri('json', 'redirect_uri')
+    redirect_uri = Parser.uri('json', 'redirect_uri', optional=True)
+    if redirect_uri:
         client.redirect_uri = redirect_uri
-    except MissingDataError:
-        pass
-    try:
-        scopes = Parser.list('json', 'scopes')
+    scopes = Parser.list('json', 'scopes', optional=True)
+    if scopes:
         client.scopes = ' '.join(scopes)
-    except MissingDataError:
-        pass
     db.session.commit()
     return jsonify(message='Request processed successfully')
 
@@ -59,8 +46,7 @@ def client_delete_handler(client_id, user):
     client = OAuthClient.query.get_or_404(client_id)
     if client.user_id != user.id:
         abort(403)
-    db.session.delete(client)
-    db.session.commit()
+    client.delete()
     return jsonify(message='Request processed successfully')
 
 @bp.route('/', methods=['POST'], endpoint='create')
@@ -78,3 +64,11 @@ def client_create_handler(user):
     db.session.add(client)
     db.session.commit()
     return jsonify(message='Request processed successfully', client=dict(id=client_id, secret=client_secret))
+
+@bp.route('/<client_id>/tokens', methods=['DELETE'], endpoint='delete_token')
+@oauth.require_auth('client')
+def token_delete_handler(client_id, user):
+    token = OAuthToken.query.filter_by(client_id=client_id, user_id=user.id).delete()
+    db.session.commit()
+    return jsonify(message='Request processed successfully')
+

@@ -1,7 +1,7 @@
 from flask.ext.login import LoginManager, UserMixin, current_user
 from flask import redirect, url_for, session
 from critiquebrainz.api import api
-from critiquebrainz.exceptions import APIError, SessionError
+from critiquebrainz.exceptions import APIError
 from functools import wraps
 from datetime import datetime
 import time
@@ -23,11 +23,7 @@ class User(UserMixin):
         self.refresh_token = refresh_token
 
     def regenerate_token(self):
-        try:
-            access_token, _, expires_in = api.get_token_from_refresh_token(self.refresh_token)
-        except APIError:
-            raise SessionError
-
+        access_token, _, expires_in = api.get_token_from_refresh_token(self.refresh_token)
         self.access_token = access_token
         self.expires_in = expires_in
 
@@ -62,3 +58,4 @@ def login_forbidden(f):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated
+

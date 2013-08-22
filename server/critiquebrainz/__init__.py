@@ -10,8 +10,8 @@ app = Flask(__name__)
 app.config.from_object('critiquebrainz.config')
 
 # db init
-from db import db
-db.init_app(app)
+from db import db as _db
+_db.init_app(app)
 
 # oauth init
 from oauth import oauth

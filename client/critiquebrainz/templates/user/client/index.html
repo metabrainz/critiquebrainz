@@ -1,0 +1,78 @@
+{% extends 'user/base.html' %}
+{% from 'macros.html' import scope_desc %}
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">API clients</h2>
+  <a href="{{ url_for("user_client.create") }}" class="btn btn-success pull-right" style="margin-top: 20px;">
+    <i class="icon-asterisk icon-white"></i>
+    Create
+  </a>
+</div>
+<hr>
+<h4>Your applications</h4>
+{% if not clients %}
+<p class="lead" style="text-align: center;">No API client found</p>
+{% else %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Website</th>
+      <th>Client ID</th>
+      <th>Client secret</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for client in clients %}
+    <tr>
+      <td>{{ client.name }}</td>
+      <td>{{ client.website }}</td>
+      <td>{{ client.client_id }}</td>
+      <td>{{ client.client_secret }}</td>
+      <td>
+        <a href="{{ url_for("user_client.edit", client_id=client.client_id) }}"><i class="icon-edit"></i></a>
+        <a href="{{ url_for("user_client.delete", client_id=client.client_id) }}"><i class="icon-remove"></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+<hr>
+<h4>Authorized applications</h4>
+{% if not tokens %}
+<p class="lead" style="text-align: center;">No authorized applications found</p>
+{% else %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Website</th>
+      <th>Access</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for token in tokens %}
+    <tr>
+      <td>{{ token.client.name }}</td>
+      <td>{{ token.client.website }}</td>
+      
+      <td>
+        <ul>
+        {% set scopes = token.client.scopes.split() %}
+        {% for scope in scopes %}
+          <li>{{ scope_desc(scope) }}</li>
+        {% endfor %}
+        </ul>
+      </td>
+      <td>
+        <a href="{{ url_for("user_client.token_delete", client_id=token.client.client_id) }}">Revoke access</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

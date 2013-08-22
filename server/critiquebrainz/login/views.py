@@ -80,3 +80,4 @@ def login_parse_parameters():
         raise LoginError('access_denied', redirect_uri)
 
     return (client_id, response_type, redirect_uri, scope, state)
+

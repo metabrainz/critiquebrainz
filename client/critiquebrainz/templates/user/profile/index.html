@@ -1,0 +1,26 @@
+{% extends 'user/base.html' %}
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">Profile</h2>
+  <a href="{{ url_for("user_profile.edit") }}" class="btn btn-primary pull-right" style="margin-top: 20px;">
+    <i class="icon-edit icon-white"></i>
+    Edit
+  </a>
+</div>
+<hr>
+<p>
+  <h4>General information</h4>
+  <dl class="dl-horizontal">
+    <dt>Display name</dt>
+    <dd>{{ current_user.me.display_name }}</dd>
+    <dt>Email</dt>
+    <dd>{{ current_user.me.email }}</dd>
+    <dt>Member since</dt>
+    <dd>{{ current_user.me.created | datetime }}</dd>
+    <dt>User type</dt>
+    <dd>Beginner</dd>
+    <dt>Karma</dt>
+    <dd>{{ current_user.me.karma }}</dd>
+  </dl>
+</p>
+{% endblock %}

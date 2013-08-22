@@ -31,10 +31,10 @@
               {{ current_user.me.display_name }} <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="#">Profile</a></li>
-              <li><a href="#">Settings</a></li>
+              <li><a href="{{ url_for("user_profile.index") }}">Profile</a></li>
               <li class="divider"></li>
               <li><a href="{{ url_for("user_publication.index") }}">Publications</a></li>
+              <li><a href="{{ url_for("user_client.index") }}">API clients</a></li>
               <li class="divider"></li>
               <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
             </ul>

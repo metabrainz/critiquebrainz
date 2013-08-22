@@ -72,3 +72,4 @@ def oauth_client_handler():
                                     name=client.name,
                                     desc=client.desc,
                                     website=client.website)))
+

@@ -9,16 +9,15 @@ class Publication(db.Model):
     
     id = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), primary_key=True)
     release_group = db.Column(UUID, index=True, nullable=False)
-    user_id = db.Column(UUID, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     text = db.Column(db.Unicode, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_updated = db.Column(db.DateTime, onupdate=datetime.utcnow)
     edits = db.Column(db.Integer, nullable=False, default=0)
     rating = db.Column(db.Integer, nullable=False, default=0)
     
-    user = db.relationship('User')
-    spam_reports = db.relationship('SpamReport')
-    _rates = db.relationship('Rate', lazy='dynamic')
+    spam_reports = db.relationship('SpamReport', cascade='delete', backref='publication')
+    _rates = db.relationship('Rate', cascade='delete', lazy='dynamic', backref='publication')
     
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 

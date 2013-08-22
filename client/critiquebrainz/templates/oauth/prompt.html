@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from 'macros.html' import scope_desc %}
 {% block content %}
   <h3>Do you want to give access to your account to {{ client.name }}?</h3>
   <div class="alert alert-info">
@@ -18,21 +19,13 @@
     </div>
     <div class="span6">
       {% set scopes = scope.split() %}
-      {{ client.name }} is requesting permission to
+      {{ client.name }} is requesting permission to your
       <ul>
-        {% if 'user' in scopes %}
+        {% for scope in scopes %}
         <li>
-          Modify your profile data
+          {{ scope_desc(scope) }}
         </li>
-        {% endif %}
-        {% if 'publication' in scopes %}
-        <li>
-          Publish new publications
-        </li>
-        <li>
-          Modify and delete existing publications
-        </li>
-        {% endif %}
+        {% endfor %}
       </ul>
     </div>
   </div>

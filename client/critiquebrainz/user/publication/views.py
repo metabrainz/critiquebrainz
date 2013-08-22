@@ -9,8 +9,7 @@ bp = Blueprint('user_publication', __name__)
 @bp.route('/', endpoint='index')
 @login_required
 def index_handler():
-    me = api.get_me_publications(current_user.access_token)
-    publications = me.get('publications')
+    publications = api.get_me_publications(current_user.access_token)
     return render_template('user/publication/list.html',
         publications=publications)
 
@@ -39,7 +38,7 @@ def edit_handler(id):
     form = EditForm()
     if form.validate_on_submit():
         try:
-            message = api.update_publication(id, form.text.data, current_user.access_token)
+            message = api.update_publication(id, current_user.access_token, text=form.text.data)
         except APIError as e:
             flash(e.desc, 'error')
         else:

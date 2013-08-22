@@ -9,10 +9,7 @@ bp = Blueprint('publication', __name__)
 @bp.route('/<uuid:publication_id>', endpoint='entity', methods=['GET'])
 def publication_entity_handler(publication_id):
     publication = Publication.query.get_or_404(str(publication_id))
-    try:
-        include = Parser.list('uri', 'inc', Publication.allowed_includes)
-    except MissingDataError:
-        include = []
+    include = Parser.list('uri', 'inc', Publication.allowed_includes, optional=True) or []
     return jsonify(publication=publication.to_dict(include))
 
 @bp.route('/<uuid:publication_id>', endpoint='delete', methods=['DELETE'])
@@ -21,8 +18,7 @@ def publication_delete_handler(publication_id, user):
     publication = Publication.query.get_or_404(str(publication_id))
     if publication.user_id != user.id:
         abort(403)
-    db.session.delete(publication)
-    db.session.commit()
+    publication.delete()
     return jsonify(message='Request processed successfully')
 
 @bp.route('/<uuid:publication_id>', endpoint='modify', methods=['POST'])
@@ -39,30 +35,12 @@ def publication_modify_handler(publication_id, user):
     
 @bp.route('/', endpoint='list', methods=['GET'])
 def publication_list_handler():
-    try:
-        release_group = Parser.uuid('uri', 'release_group')
-    except MissingDataError:
-        release_group = None
-    try:
-        user_id = Parser.uuid('uri', 'user_id')
-    except MissingDataError:
-        user_id = None
-    try:
-        limit = Parser.int('uri', 'limit', min=1, max=50)
-    except MissingDataError:
-        limit = 50
-    try:
-        offset = Parser.int('uri', 'offset')
-    except MissingDataError:
-        offset = 0
-    try:
-        rating = Parser.int('uri', 'rating', min=-1, max=3)
-    except MissingDataError:
-        rating = 0
-    try:
-        include = Parser.list('uri', 'inc', Publication.allowed_includes)
-    except MissingDataError:
-        include = []
+    release_group = Parser.uuid('uri', 'release_group', optional=True)
+    user_id = Parser.uuid('uri', 'user_id', optional=True)
+    limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
+    offset = Parser.int('uri', 'offset', optional=True) or 0
+    rating = Parser.int('uri', 'rating', min=-1, max=3, optional=True) or 0
+    include = Parser.list('uri', 'inc', Publication.allowed_includes, optional=True) or []
 
     if (release_group, user_id) == (None, None):
         raise InvalidRequest(desc='Neither `release_group` nor `user_id` was defined')
@@ -86,3 +64,4 @@ def publication_post_handler(user):
 
     return jsonify(message='Request processed successfully',
                    id=publication.id)
+

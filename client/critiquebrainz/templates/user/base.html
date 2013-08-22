@@ -5,9 +5,9 @@
   <div class="row">
     <div class="span2">
       <ul class="nav nav-list">
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Settings</a></li>
+        <li><a href="{{ url_for("user_profile.index") }}">Profile</a></li>
         <li><a href="{{ url_for("user_publication.index") }}">Publications</a></li>
+        <li><a href="{{ url_for("user_client.index") }}">API clients</a></li>
       </ul>
     </div>
     <div class="span10">

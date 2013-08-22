@@ -1,0 +1,33 @@
+{% extends 'user/base.html' %}
+{% block content %}
+{% for field in form.errors %}
+  {% for error in form.errors[field] %}
+  <div class="alert alert-error">
+    {{ error }}
+  </div>
+  {% endfor %}
+{% endfor %}
+<h2>Editing profile</h2>
+<hr>
+<form method="POST" class="form-horizontal">
+  {{ form.hidden_tag() }}
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label">Display name</label>
+      <div class="controls">
+        {{ form.display_name() | safe }}
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">E-mail</label>
+      <div class="controls">
+        {{ form.email() | safe }}
+      </div>
+    </div>
+  </fieldset>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{{ url_for('user_profile.delete') }}" class="btn btn-danger">Delete account</a>
+  </div>
+</form>
+{% endblock %}
