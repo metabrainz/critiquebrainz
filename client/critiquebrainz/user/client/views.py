@@ -29,7 +29,7 @@ def create_handler():
         return redirect(url_for('.index'))
     return render_template('user/client/create.html', form=form)
 
-@bp.route('/<client_id>', endpoint='edit', methods=['GET', 'POST'])
+@bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
 @login_required
 def edit_handler(client_id):
     form = ClientForm()
