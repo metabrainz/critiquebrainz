@@ -9,9 +9,11 @@ bp = Blueprint('user_publication', __name__)
 @bp.route('/', endpoint='index')
 @login_required
 def index_handler():
-    publications = api.get_me_publications(current_user.access_token)
+    limit = int(request.args.get('limit', default=5))
+    offset = int(request.args.get('offset', default=0))
+    count, publications = api.get_me_publications(current_user.access_token, sort='created', limit=limit, offset=offset)
     return render_template('user/publication/list.html',
-        publications=publications)
+        publications=publications, limit=limit, offset=offset, count=count)
 
 @bp.route('/create', methods=('GET', 'POST'), endpoint='create')
 @login_required
@@ -19,7 +21,7 @@ def create_handler():
     form = CreateForm()
     if form.validate_on_submit():
         try:
-            message, id = api.create_publication(form.release_group.data, 
+            message, id = api.create_publication(form.release_group.data,
                 form.text.data, current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')

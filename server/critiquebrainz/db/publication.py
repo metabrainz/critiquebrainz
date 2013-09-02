@@ -6,7 +6,7 @@ from datetime import datetime
 class Publication(db.Model):
 
     __tablename__ = 'publication'
-    
+
     id = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), primary_key=True)
     release_group = db.Column(UUID, index=True, nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
@@ -15,24 +15,24 @@ class Publication(db.Model):
     last_updated = db.Column(db.DateTime, onupdate=datetime.utcnow)
     edits = db.Column(db.Integer, nullable=False, default=0)
     rating = db.Column(db.Integer, nullable=False, default=0)
-    
+
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='publication')
     _rates = db.relationship('Rate', cascade='delete', lazy='dynamic', backref='publication')
-    
+
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
     # a list of allowed values of `inc` parameter in API calls
-    allowed_includes = ['user']
+    allowed_includes = ('user', )
 
     def to_dict(self, includes=[]):
-        response = dict(id = self.id, 
+        response = dict(id = self.id,
             release_group = self.release_group,
-            user_id = self.user_id, 
-            text = self.text, 
+            user_id = self.user_id,
+            text = self.text,
             created = self.created,
-            last_updated = self.last_updated, 
-            edits = self.edits, 
-            rating = self.rating, 
+            last_updated = self.last_updated,
+            edits = self.edits,
+            rating = self.rating,
             rates = self._rates.count(),
             rates_positive = self._rates_positive.count(),
             rates_negative = self._rates_negative.count(),
@@ -75,26 +75,28 @@ class Publication(db.Model):
             return float(self._rates_positive.count())/float(self._rates.count())
 
     @classmethod
-    def fetch_sorted_by_rating(cls, release_group, user_id, limit, offset, rating):
-        # subquery counting rates
-        subquery = db.session.query(Rate.publication_id, db.func.count('*').\
-                   label('count')).group_by(Rate.publication_id).subquery()
-                   
-        # query with outerjoined subquery
-        query = db.session.query(cls).\
-                outerjoin((subquery, cls.id == subquery.c.publication_id))
-
-        if user_id: 
+    def list(cls, release_group, user_id, sort, limit, offset, rating):
+        query = db.session.query(cls)
+        # FILTER
+        if user_id:
             query = query.filter(cls.user_id==user_id)
-        if release_group: 
+        if release_group:
             query = query.filter(cls.release_group==release_group)
-        
         query = query.filter(cls.rating>=rating)
+        # SORT
+        if sort == 'rating':
+            # subquery counting rates
+            subquery = db.session.query(Rate.publication_id, db.func.count('*').label('count')).group_by(Rate.publication_id).subquery()
+            query = query.outerjoin((subquery, cls.id == subquery.c.publication_id))
+            query = query.order_by(cls.rating.desc(), subquery.c.count.desc())
+        elif sort == 'created':
+            query = query.order_by(cls.created.desc())
+        # EXECUTE
+        # count all records
         count = query.count()
-        query = query.order_by(cls.rating.desc(), subquery.c.count.desc()).\
-                      limit(limit).\
-                      offset(offset)
-        return (query.all(), count)
+        # fetch rows
+        publications = query.limit(limit).offset(offset).all()
+        return (publications, count)
 
     @classmethod
     def create(cls, release_group, user, text):
@@ -103,3 +105,9 @@ class Publication(db.Model):
         db.session.commit()
         return publication
 
+    def update(self, release_group=None, text=None):
+        if release_group is not None:
+            self.release_group = release_group
+        if text is not None:
+            self.text = text
+        db.session.commit()

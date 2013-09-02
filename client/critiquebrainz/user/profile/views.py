@@ -17,8 +17,8 @@ def edit_handler():
     form = EditForm()
     if form.validate_on_submit():
         try:
-            message = api.update_profile(current_user.access_token, 
-                display_name=form.display_name.data, 
+            message = api.update_profile(current_user.access_token,
+                display_name=form.display_name.data,
                 email=form.email.data)
         except APIError as e:
             flash(e.desc, 'error')

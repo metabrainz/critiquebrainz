@@ -7,7 +7,7 @@ class BaseError(CritiqueBrainzError):
         self.code = code
         self.desc = desc
         self.status = status
-                    
+
 class LoginError(CritiqueBrainzError):
     def __init__(self, code, redirect_uri=None):
         self.code = code
@@ -38,6 +38,12 @@ class ServerError(BaseError):
                  'unexpected condition that prevented it from '\
                  'fulfilling the request.',
             status=500)
+
+class LimitExceeded(BaseError):
+    def __init__(self, desc=''):
+        super(LimitExceeded, self).__init__(code='limit_exceeded',
+            desc=desc,
+            status=403)
 
 class InvalidRequest(BaseError):
     def __init__(self, desc=''):

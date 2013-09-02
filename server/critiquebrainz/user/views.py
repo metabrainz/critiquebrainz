@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request, redirect, url_for
 from critiquebrainz.db import db, User
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
@@ -15,28 +15,27 @@ def user_me_handler(user):
 @bp.route('/me/publications', endpoint='publications')
 @oauth.require_auth()
 def user_publications_handler(user):
-    return jsonify(publications=[p.to_dict() for p in user.publications])
+    return redirect(url_for('publication.list', user_id=user.id, **request.args))
 
 @bp.route('/me/clients', endpoint='clients')
 @oauth.require_auth()
 def user_clients_handler(user):
     return jsonify(clients=[c.to_dict() for c in user.clients])
-    
+
 @bp.route('/me/tokens', endpoint='tokens')
 @oauth.require_auth()
 def user_tokens_handler(user):
     return jsonify(tokens=[t.to_dict() for t in user.tokens])
-    
+
 @bp.route('/me', endpoint='modify', methods=['POST'])
 @oauth.require_auth('user')
 def user_modify_handler(user):
-    display_name = Parser.string('json', 'display_name', optional=True)
-    if display_name:
-        user.display_name = display_name
-    email = Parser.email('json', 'email', optional=True)
-    if email:
-        user.email = email
-    db.session.commit()
+    def fetch_params():
+        display_name = Parser.string('json', 'display_name', optional=True)
+        email = Parser.email('json', 'email', optional=True)
+        return display_name, email
+    display_name, email = fetch_params()
+    user.update(display_name, email)
     return jsonify(message='Request processed successfully')
 
 @bp.route('/me', endpoint='delete', methods=['DELETE'])

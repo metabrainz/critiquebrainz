@@ -20,7 +20,7 @@ def oauth_authorize_handler(user):
 
     # generate new grant
     (code, ) = oauth.generate_grant(client_id, scope, redirect_uri, user.id)
-    
+
     return jsonify(dict(code=code))
 
 @bp.route('/token', methods=['POST'], endpoint='token')
@@ -48,7 +48,7 @@ def oauth_token_handler():
 
     # generate new token
     (access_token, token_type, expires_in, refresh_token, scope) = oauth.generate_token(client_id, scope, refresh_token, user_id)
-    
+
     return jsonify(dict(access_token=access_token,
                         token_type=token_type,
                         expires_in=expires_in,

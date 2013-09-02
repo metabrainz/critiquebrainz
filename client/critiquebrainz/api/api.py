@@ -7,7 +7,7 @@ import requests
 import json
 
 class CritiqueBrainzAPI(object):
-    
+
     def __init__(self, base_url, client_id, **kwargs):
         self.base_url = base_url
         self.client_id = client_id
@@ -104,16 +104,18 @@ class CritiqueBrainzAPI(object):
         publication = resp.get('publication')
         return publication
 
-    def get_me_publications(self, access_token):
+    def get_me_publications(self, access_token, sort, limit, offset):
+        params = dict(sort=sort, limit=limit, offset=offset)
         session = self._service.get_session(access_token)
-        resp = session.get('user/me/publications').json()
+        resp = session.get('user/me/publications', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
             raise APIError(code=error, desc=desc)
+        count = resp.get('count')
         publications = resp.get('publications')
-        return publications
-        
+        return count, publications
+
     def get_me_clients(self, access_token):
         session = self._service.get_session(access_token)
         resp = session.get('user/me/clients').json()
@@ -123,7 +125,7 @@ class CritiqueBrainzAPI(object):
             raise APIError(code=error, desc=desc)
         clients = resp.get('clients')
         return clients
-        
+
     def get_me_tokens(self, access_token):
         session = self._service.get_session(access_token)
         resp = session.get('user/me/tokens').json()
@@ -133,7 +135,7 @@ class CritiqueBrainzAPI(object):
             raise APIError(code=error, desc=desc)
         tokens = resp.get('tokens')
         return tokens
-        
+
     def get_client(self, id, access_token):
         session = self._service.get_session(access_token)
         resp = session.get('client/%s' % id).json()
@@ -162,7 +164,7 @@ class CritiqueBrainzAPI(object):
         client_id = client.get('id')
         client_secret = client.get('secret')
         return message, client_id, client_secret
-        
+
     def create_publication(self, release_group, text, access_token):
         session = self._service.get_session(access_token)
         data = dict(release_group=release_group,
@@ -200,7 +202,7 @@ class CritiqueBrainzAPI(object):
             raise APIError(code=error, desc=desc)
         message = resp.get('message')
         return message
-        
+
     def update_client(self, id, access_token, **kwargs):
         session = self._service.get_session(access_token)
         data = kwargs
@@ -222,7 +224,7 @@ class CritiqueBrainzAPI(object):
             raise APIError(code=error, desc=desc)
         message = resp.get('message')
         return message
-        
+
     def delete_profile(self, access_token):
         session = self._service.get_session(access_token)
         resp = session.delete('user/me').json()
@@ -232,7 +234,7 @@ class CritiqueBrainzAPI(object):
             raise APIError(code=error, desc=desc)
         message = resp.get('message')
         return message
-        
+
     def delete_client(self, id, access_token):
         session = self._service.get_session(access_token)
         resp = session.delete('client/%s' % id).json()
@@ -242,7 +244,7 @@ class CritiqueBrainzAPI(object):
             raise APIError(code=error, desc=desc)
         message = resp.get('message')
         return message
-        
+
     def delete_token(self, client_id, access_token):
         session = self._service.get_session(access_token)
         resp = session.delete('client/%s/tokens' % client_id).json()
