@@ -36,7 +36,7 @@ class CritiqueBrainzAuthorizationProvider(object):
             return False
         else:
             return client.client_secret == client_secret
-            
+
     def validate_client_redirect_uri(self, client_id, redirect_uri):
         client = OAuthClient.query.get(client_id)
 
@@ -187,7 +187,6 @@ class CritiqueBrainzAuthorizationProvider(object):
         if token is None:
             raise AccessDenied
 
-        print token.expires, datetime.now()
         if token.expires < datetime.now():
             raise AccessDenied
 
