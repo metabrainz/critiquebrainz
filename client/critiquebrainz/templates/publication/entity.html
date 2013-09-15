@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import rating_badge %}
+{% block content %}
+<div class="container">
+  <div class="row-fluid">
+    <div class="span3">
+      <h4>Author</h4>
+      {{ publication.user.display_name }} <a href="#">(view profile)</a><br />
+      Karma: {{ publication.user.karma }}<br />
+      Joined on {{ publication.user.created | datetime }}<br />
+    </div>
+    <div class="span9">
+      <div class="row-fluid">
+        <div class="span6">
+          {% set album = publication.release_group|album_details %}
+          <dl class="dl-horizontal">
+            <dt>Published on</dt>
+            <dd>{{ publication.created | datetime }}</dd>
+            <dt>Artist</dt>
+            <dd>{{ album.artist }}</dd>
+            <dt>Album</dt>
+            <dd>{{ album.title }}
+            <span class="muted">({{ album.release_date }})</span>
+            </dd>
+          </dl>
+        </div>
+        <div class="span6">
+          <dl class="dl-horizontal">
+            <dt>Rates (+/-)</dt>
+            <dd>{{ publication.rates_positive }}/{{ publication.rates_negative }}</dd>
+            <dt>Rating</dt>
+            <dd>{{ publication.publication_class }}</dd>
+          </dl>
+        </div>
+      </div>
+      <hr>
+      <p style="word-wrap: break-word; white-space: pre-wrap;">{{ publication.text }}</p>
+      <hr>
+      {% if current_user.is_authenticated() %}
+        {% if current_user.me.id != publication.user_id %}
+        <form method="POST" action="{{ url_for('publication.rate_submit', id=publication.id) }}">
+        Did you find this review useful?
+        <button type="submit" class="btn btn-mini" name="yes" {% if rate.placet == True %}disabled{% endif %}>Yes</button>
+        <button type="submit" class="btn btn-mini" name="no" {% if rate.placet == False %}disabled{% endif %}>No</button>
+          {% if rate.placet == True or rate.placet == False %}
+          <a href="{{ url_for('publication.rate_delete', id=publication.id) }}">(delete your rate)</a>
+          {% endif %}
+        {% else %}
+        You cannot rate your own review
+      </form>
+      {% endif %}
+      {% else %}
+      <a href="{{ url_for('login.index', next=url_for('publication.entity', id=publication.id)) }}">Sign up</a> to rate this review
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+

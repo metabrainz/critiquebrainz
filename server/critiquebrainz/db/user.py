@@ -2,6 +2,7 @@ from . import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime, date
 from publication import Publication
+from rate import Rate
 from critiquebrainz.constants import user_types
 
 class User(db.Model):
@@ -13,12 +14,11 @@ class User(db.Model):
     display_name = db.Column(db.Unicode, nullable=False)
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    karma = db.Column(db.Integer, nullable=False, default=0)
     twitter_id = db.Column(db.Unicode, unique=True)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
 
     _publications = db.relationship('Publication', cascade='delete', lazy='dynamic', backref='user')
-    _rates = db.relationship('Rate', cascade='delete', backref='user')
+    _rates = db.relationship('Rate', cascade='delete', lazy='dynamic', backref='user')
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
     clients = db.relationship('OAuthClient', cascade='delete', backref='user')
     grants = db.relationship('OAuthGrant', cascade='delete', backref='user')
@@ -42,12 +42,57 @@ class User(db.Model):
             db.session.commit()
         return user
 
-    @property
-    def is_publication_limit_exceeded(self):
-        if self.publications_today_count() >= self.user_type.get('publications_per_day'):
+    def has_rated(self, publication):
+        if self._rates.filter_by(publication=publication).count() > 0:
             return True
         else:
             return False
+
+    @property
+    def is_publication_limit_exceeded(self):
+        if self.publications_today_count() >= self.user_type.publications_per_day:
+            return True
+        else:
+            return False
+
+    @property
+    def is_rate_limit_exceeded(self):
+        if self.rates_today_count() >= self.user_type.rates_per_day:
+            return True
+        else:
+            return False
+
+    @property
+    def karma(self):
+        if hasattr(self, '_karma') is False:
+            # karma = sum of user's publications ratings
+            r_q = db.session.query(Rate.publication_id, Rate.placet, db.func.count('*').\
+                label('c')).group_by(Rate.publication_id, Rate.placet)
+            r_pos = r_q.subquery('r_pos')
+            r_neg = r_q.subquery('r_neg')
+            subquery = db.session.query(
+                Publication.id,
+                (db.func.coalesce(r_pos.c.c, 0) -
+                 db.func.coalesce(r_neg.c.c, 0)).label('rating'))
+            # left join negative rates
+            subquery = subquery.outerjoin(
+                r_neg,
+                db.and_(
+                    r_neg.c.publication_id==Publication.id,
+                    r_neg.c.placet==False))
+            # left join positive rates
+            subquery = subquery.outerjoin(
+                r_pos,
+                db.and_(
+                    r_pos.c.publication_id==Publication.id,
+                    r_pos.c.placet==True))
+            subquery = subquery.filter(Publication.user_id==self.id)
+            # group and create a subquery
+            subquery = subquery.group_by(Publication.id, r_neg.c.c, r_pos.c.c)
+            subquery = subquery.subquery('subquery')
+            query = db.session.query(db.func.coalesce(db.func.sum(subquery.c.rating), 0))
+            self._karma = int(query.scalar())
+        return self._karma
 
     @property
     def publications(self):
@@ -78,12 +123,21 @@ class User(db.Model):
     def rates_since(self, date):
         return self._rates_since(date).all()
 
+    def rates_since_count(self, date):
+        return self._rates_since(date).count()
+
+    def rates_today(self):
+        return self.rates_since(date.today())
+
+    def rates_today_count(self):
+        return self.rates_since_count(date.today())
+
     def to_dict(self, includes=[], confidental=False):
         response = dict(id = self.id,
             display_name = self.display_name,
             created = self.created,
             karma = self.karma,
-            user_type = self.user_type, )
+            user_type = self.user_type.label)
         if confidental is True:
             response.update(dict(email=self.email,
                                  twitter_id=self.twitter_id,
@@ -94,12 +148,12 @@ class User(db.Model):
 
     @property
     def user_type(self):
-        def get_user_type(karma):
+        def get_user_type(user):
             for user_type in user_types:
-                if user_type is None or karma > user_type.get('karma'):
+                if user_type.is_instance(user):
                     return user_type
         if hasattr(self, '_user_type') is False:
-            self._user_type = get_user_type(self.karma)
+            self._user_type = get_user_type(self)
         return self._user_type
 
     def update(self, display_name=None, email=None):
@@ -108,3 +162,4 @@ class User(db.Model):
         if email is not None:
             self.email = email
         db.session.commit()
+

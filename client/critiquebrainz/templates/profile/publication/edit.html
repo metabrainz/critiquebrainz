@@ -1,5 +1,4 @@
-{% extends 'user/base.html' %}
-{% from 'user/macros.html' import rating_badge %}
+{% extends 'profile/base.html' %}
 {% block content %}
 {% for field in form.errors %}
   {% for error in form.errors[field] %}
@@ -18,8 +17,10 @@
     <dd>{{ album.title }} <span class="muted">({{ album.release_date }})</span></dd>
     <dt>Created on</dt>
     <dd>{{ publication.created | datetime }}</dd>
+    <dt>Rates (+/-)</dt>
+    <dd>{{ publication.rates_positive }}/{{ publication.rates_negative }}</dd>
     <dt>Rating</dt>
-    <dd>{{ rating_badge(publication.rating, publication.rates_ratio) }}</dd>
+    <dd>{{ publication.publication_class }}</dd>
   </dl>
 </p>
 <hr>

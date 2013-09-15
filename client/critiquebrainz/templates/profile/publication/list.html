@@ -1,5 +1,5 @@
-{% extends 'user/base.html' %}
-{% from 'user/macros.html' import rating_badge %}
+{% extends 'profile/base.html' %}
+{% from 'macros.html' import rating_badge %}
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">Publications</h2>
@@ -19,7 +19,7 @@
       <th>Artist</th>
       <th>Album</th>
       <th>Created on</th>
-      <th>Rates</th>
+      <th>Rates (+/-)</th>
       <th>Rating</th>
       <th>Action</th>
     </tr>
@@ -35,10 +35,11 @@
         <span class="muted">({{ album.release_date }})</span>
       </td>
       <td>{{ publication.created | datetime }}</td>
-      <td>{{ publication.rates }}</td>
-      <td>{{ rating_badge(publication.rating, publication.rates_ratio) }}</td>
+      <td>{{ publication.rates_positive }}/{{ publication.rates_negative }}</td>
+      <td>{{ publication.publication_class }}</td>
       <td>
-          <a href="{{ url_for("user_publication.edit", id=publication.id) }}"><i class="icon-edit"></i></a>
+        <a href="{{ url_for("publication.entity", id=publication.id) }}"><i class="icon-eye-open"></i></a>
+        <a href="{{ url_for("user_publication.edit", id=publication.id) }}"><i class="icon-edit"></i></a>
         <a href="{{ url_for("user_publication.delete", id=publication.id) }}"><i class="icon-remove"></i></a>
       </td>
     </tr>

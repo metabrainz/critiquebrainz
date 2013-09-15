@@ -38,3 +38,10 @@ class InvalidGrant(OAuthError):
             desc='The provided authorization grant or '\
                  'refresh token is invalid, expired, revoked, or was '\
                  'issued to another client.')
+
+class InvalidToken(OAuthError):
+    def __init__(self):
+        super(InvalidToken, self).__init__(code='invalid_token',
+            desc='The provided authorization token is invalid, '\
+                 'expired, revoked, or was issued to another client.')
+

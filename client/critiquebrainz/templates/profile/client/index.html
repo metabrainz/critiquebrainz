@@ -1,4 +1,4 @@
-{% extends 'user/base.html' %}
+{% extends 'profile/base.html' %}
 {% from 'macros.html' import scope_desc %}
 {% block content %}
 <div class="clearfix">
@@ -58,7 +58,7 @@
     <tr>
       <td>{{ token.client.name }}</td>
       <td>{{ token.client.website }}</td>
-      
+
       <td>
         <ul>
         {% set scopes = token.client.scopes.split() %}

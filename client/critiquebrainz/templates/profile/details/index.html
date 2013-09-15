@@ -1,4 +1,4 @@
-{% extends 'user/base.html' %}
+{% extends 'profile/base.html' %}
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">Profile</h2>
@@ -10,7 +10,7 @@
 <hr>
 <p>
   <h4>General information</h4>
-  <dl class="dl-horizontal">
+  <dl class="dl-horizontal"">
     <dt>Display name</dt>
     <dd>{{ current_user.me.display_name }}</dd>
     <dt>Email</dt>
@@ -18,7 +18,7 @@
     <dt>Member since</dt>
     <dd>{{ current_user.me.created | datetime }}</dd>
     <dt>User type</dt>
-    <dd>{{ current_user.me.user_type.label }}</dd>
+    <dd>{{ current_user.me.user_type }}</dd>
     <dt>Karma</dt>
     <dd>{{ current_user.me.karma }}</dd>
   </dl>

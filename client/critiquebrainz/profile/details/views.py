@@ -2,14 +2,14 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user, logout_user
 from critiquebrainz.api import api
 from critiquebrainz.exceptions import APIError
-from critiquebrainz.forms.user.profile import EditForm
+from critiquebrainz.forms.profile.details import EditForm
 
 bp = Blueprint('user_profile', __name__)
 
 @bp.route('/', endpoint='index')
 @login_required
 def index_handler():
-    return render_template('user/profile/index.html')
+    return render_template('profile/details/index.html')
 
 @bp.route('/edit', methods=['GET', 'POST'], endpoint='edit')
 @login_required
@@ -28,7 +28,7 @@ def edit_handler():
     else:
         form.display_name.data = current_user.me.get('display_name')
         form.email.data = current_user.me.get('email')
-    return render_template('user/profile/edit.html', form=form)
+    return render_template('profile/details/edit.html', form=form)
 
 @bp.route('/delete', methods=['GET', 'POST'], endpoint='delete')
 @login_required
@@ -41,5 +41,5 @@ def delete_handler():
         else:
             logout_user()
         return redirect(url_for('index'))
-    return render_template('user/profile/delete.html')
+    return render_template('profile/details/delete.html')
 

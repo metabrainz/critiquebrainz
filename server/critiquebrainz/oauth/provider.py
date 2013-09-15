@@ -185,14 +185,14 @@ class CritiqueBrainzAuthorizationProvider(object):
         access_token = authorization.split()[1]
         token = self.fetch_access_token(access_token)
         if token is None:
-            raise AccessDenied
+            raise InvalidToken
 
         if token.expires < datetime.now():
-            raise AccessDenied
+            raise InvalidToken
 
         for scope in scopes:
             if scope not in token.get_scopes():
-                raise AccessDenied
+                raise InvalidToken
 
         return token.user
 

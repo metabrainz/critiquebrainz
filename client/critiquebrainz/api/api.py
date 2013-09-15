@@ -8,6 +8,8 @@ import json
 
 class CritiqueBrainzAPI(object):
 
+    scope = 'user authorization publication rate client'
+
     def __init__(self, base_url, client_id, **kwargs):
         self.base_url = base_url
         self.client_id = client_id
@@ -18,21 +20,21 @@ class CritiqueBrainzAPI(object):
     def generate_twitter_authorization_uri(self):
         params = dict(response_type='code',
                       redirect_uri=url_for('login.post', _external=True),
-                      scope='user authorization publication client',
+                      scope=self.scope,
                       client_id=self.client_id)
         return build_url(self.base_url+'login/twitter', params)
 
     def generate_musicbrainz_authorization_uri(self):
         params = dict(response_type='code',
                       redirect_uri=url_for('login.post', _external=True),
-                      scope='user authorization publication client',
+                      scope=self.scope,
                       client_id=self.client_id)
         return build_url(self.base_url+'login/musicbrainz', params)
 
     def get_token_from_code(self, code):
         data = dict(grant_type='code',
                     code=code,
-                    scope='user authorization publication client',
+                    scope=self.scope,
                     redirect_uri=url_for('login.post', _external=True))
         resp = self._service.get_raw_access_token(data=data).json()
         error = resp.get('error')
@@ -47,7 +49,7 @@ class CritiqueBrainzAPI(object):
     def get_token_from_refresh_token(self, refresh_token):
         data = dict(grant_type='refresh_token',
                     refresh_token=refresh_token,
-                    scope='user authorization publication client')
+                    scope=self.scope)
         resp = self._service.get_raw_access_token(data=data).json()
         error = resp.get('error')
         if error:
@@ -95,8 +97,11 @@ class CritiqueBrainzAPI(object):
         code = resp.get('code')
         return code
 
-    def get_publication(self, id):
-        resp = requests.get(self.base_url+'publication/%s' % id).json()
+    def get_publication(self, id, include_user=False):
+        params = dict(inc=[])
+        if include_user is True:
+            params['inc'].append('user')
+        resp = requests.get(self.base_url+'publication/%s' % id, params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -104,7 +109,7 @@ class CritiqueBrainzAPI(object):
         publication = resp.get('publication')
         return publication
 
-    def get_me_publications(self, access_token, sort, limit, offset):
+    def get_me_publications(self, sort, limit, offset, access_token):
         params = dict(sort=sort, limit=limit, offset=offset)
         session = self._service.get_session(access_token)
         resp = session.get('user/me/publications', params=params).json()
@@ -145,6 +150,16 @@ class CritiqueBrainzAPI(object):
             raise APIError(code=error, desc=desc)
         client = resp.get('client')
         return client
+
+    def get_rate(self, publication_id, access_token):
+        session = self._service.get_session(access_token)
+        resp = session.get('publication/%s/rate' % publication_id).json()
+        error = resp.get('error')
+        if error:
+            desc = resp.get('description')
+            raise APIError(code=error, desc=desc)
+        rate = resp.get('rate')
+        return rate
 
     def create_client(self, name, desc, website, redirect_uri, scopes, access_token):
         session = self._service.get_session(access_token)
@@ -215,9 +230,31 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
+    def update_publication_rate(self, publication_id, access_token, **kwargs):
+        session = self._service.get_session(access_token)
+        data = kwargs
+        headers = {'Content-type': 'application/json'}
+        resp = session.put('publication/%s/rate' % publication_id, data=json.dumps(data), headers=headers).json()
+        error = resp.get('error')
+        if error:
+            desc = resp.get('description')
+            raise APIError(code=error, desc=desc)
+        message = resp.get('message')
+        return message
+
     def delete_publication(self, id, access_token):
         session = self._service.get_session(access_token)
         resp = session.delete('publication/%s' % id).json()
+        error = resp.get('error')
+        if error:
+            desc = resp.get('description')
+            raise APIError(code=error, desc=desc)
+        message = resp.get('message')
+        return message
+
+    def delete_publication_rate(self, publication_id, access_token):
+        session = self._service.get_session(access_token)
+        resp = session.delete('publication/%s/rate' % publication_id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')

@@ -1,9 +1,11 @@
+{% from 'macros.html' import print_error %}
 <!DOCTYPE html>
 <html>
   <head>
     {% block head %}
     <title>{% block title %}CritiqueBrainz{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
     <!-- Bootstrap -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
@@ -48,6 +50,13 @@
     </div>
     {% block wrapper %}
     <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true)  %}
+        {% if messages %}
+          {% for category, message in messages %}
+            {{ print_error(message, category) }}
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
       {% block content %}
       {% endblock %}
       <hr>

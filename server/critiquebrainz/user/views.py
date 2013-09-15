@@ -47,6 +47,7 @@ def user_delete_handler(user):
 @bp.route('/<uuid:user_id>', endpoint='entity', methods=['GET'])
 def user_entity_handler(user_id):
     user = User.query.get_or_404(str(user_id))
-    include = Parser.list('uri', 'inc', User.allowed_includes) or []
+    inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
+    user.karma
     return jsonify(user=user.to_dict(inc))
 

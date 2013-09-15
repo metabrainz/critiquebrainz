@@ -23,7 +23,7 @@ class OAuthClient(db.Model):
 
     @classmethod
     def generate(cls, user, name, desc, website, redirect_uri, scopes):
-        client_id = generate_string(40)
+        client_id = generate_string(20)
         client_secret = generate_string(40)
         client = cls(client_id=client_id, client_secret=client_secret, user=user,
             name=name, desc=desc, website=website, redirect_uri=redirect_uri, scopes=' '.join(scopes))

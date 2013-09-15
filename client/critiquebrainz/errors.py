@@ -5,7 +5,8 @@ from flask.ext.login import logout_user
 
 @app.errorhandler(APIError)
 def api_error_handler(error):
-    if error.code == 'access_denied':
+    # logout, if the user is logged in with an invalid access and/or refresh token
+    if error.code in ('invalid_token', 'invalid_grant'):
         logout_user()
     return render_template('error.html', code=error.code, description=error.desc), error.status
 

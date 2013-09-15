@@ -23,7 +23,19 @@ class Parser(object):
         return _k
 
     @classmethod
-    def string(cls, src, key, min=None, max=None, optional=False):
+    def bool(cls, src, key, optional=False):
+        _b = cls.get_key(src, key)
+        if _b is None:
+            if optional:
+                return None
+            else:
+                raise MissingDataError(key)
+        if isinstance(_b, bool) is False:
+            raise ParserError(key, 'is not bool')
+        return _b
+
+    @classmethod
+    def string(cls, src, key, min=None, max=None, valid_values=None, optional=False):
         _s = cls.get_key(src, key)
         if _s is None:
             if optional:
@@ -35,6 +47,8 @@ class Parser(object):
             raise ParserError(key, 'too long (max=%d)' % max)
         if min is not None and _s_len < min:
             raise ParserError(key, 'too short (min=%d)' % min)
+        if valid_values is not None and _s not in valid_values:
+            raise ParserError(key, 'is not valid')
         return _s
 
     @classmethod
