@@ -7,7 +7,7 @@ twitter = TwitterAuthentication(
     consumer_secret=app.config['TWITTER_CONSUMER_SECRET'],
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
-    authorize_url='https://api.twitter.com/oauth/authorize',
+    authorize_url='https://api.twitter.com/oauth/authenticate',
     base_url='https://api.twitter.com/1.1/')
 
 musicbrainz = MusicBrainzAuthentication(

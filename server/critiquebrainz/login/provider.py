@@ -113,8 +113,7 @@ class MusicBrainzAuthentication(BaseAuthentication):
         params = dict(response_type='code',
                       redirect_uri=url_for('login.musicbrainz_post', _external=True),
                       scope='profile',
-                      state=csrf,
-                      approval_prompt='force')
+                      state=csrf)
         return self._service.get_authorize_url(**params)
 
     def get_user(self):
