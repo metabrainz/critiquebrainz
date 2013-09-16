@@ -3,7 +3,7 @@
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">Publications</h2>
-  <a href="{{ url_for("user_publication.create") }}" class="btn btn-success pull-right" style="margin-top: 20px;">
+  <a href="{{ url_for("profile_publication.create") }}" class="btn btn-success pull-right" style="margin-top: 20px;">
     <i class="icon-asterisk icon-white"></i>
     Create
   </a>
@@ -20,8 +20,8 @@
       <th>Album</th>
       <th>Created on</th>
       <th>Rates (+/-)</th>
-      <th>Rating</th>
-      <th>Action</th>
+      <th>Class</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -39,8 +39,8 @@
       <td>{{ publication.publication_class }}</td>
       <td>
         <a href="{{ url_for("publication.entity", id=publication.id) }}"><i class="icon-eye-open"></i></a>
-        <a href="{{ url_for("user_publication.edit", id=publication.id) }}"><i class="icon-edit"></i></a>
-        <a href="{{ url_for("user_publication.delete", id=publication.id) }}"><i class="icon-remove"></i></a>
+        <a href="{{ url_for("profile_publication.edit", id=publication.id) }}"><i class="icon-edit"></i></a>
+        <a href="{{ url_for("profile_publication.delete", id=publication.id) }}"><i class="icon-remove"></i></a>
       </td>
     </tr>
     {% endfor %}
@@ -54,7 +54,7 @@
   {% endif %}
   {% for p in range(pages) %}
     {% set p_offset = p*limit %}
-    <li {% if offset == p_offset %}class="active"{% endif %}><a href="{{ url_for("user_publication.index", limit=limit, offset=p*limit) }}"#">{{ p }}</a></li>
+    <li {% if offset == p_offset %}class="active"{% endif %}><a href="{{ url_for("profile_publication.index", limit=limit, offset=p*limit) }}">{{ p }}</a></li>
   {% endfor %}
   </ul>
 </div>

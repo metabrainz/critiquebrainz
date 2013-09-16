@@ -52,8 +52,7 @@ def publication_list_handler():
         include = Parser.list('uri', 'inc', Publication.allowed_includes, optional=True) or []
         return release_group, user_id, sort, limit, offset, include
     release_group, user_id, sort, limit, offset, include = fetch_params()
-    publications = Publication.list(release_group, user_id, sort, limit, offset)
-    count = len(publications)
+    publications, count = Publication.list(release_group, user_id, sort, limit, offset)
     return jsonify(limit=limit, offset=offset, count=count,
                    publications=[p.to_dict(include) for p in publications])
 

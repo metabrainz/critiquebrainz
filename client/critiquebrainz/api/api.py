@@ -60,9 +60,10 @@ class CritiqueBrainzAPI(object):
         expires_in = resp.get('expires_in')
         return access_token, refresh_token, expires_in
 
-    def get_me(self, access_token):
+    def get_me(self, access_token, inc=[]):
+        params = dict(inc=' '.join(inc))
         session = self._service.get_session(access_token)
-        resp = session.get('user/me').json()
+        resp = session.get('user/me', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -121,6 +122,18 @@ class CritiqueBrainzAPI(object):
         publications = resp.get('publications')
         return count, publications
 
+    def get_publications(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=None):
+        params = dict(release_group=release_group, 
+            user_id=user_id, sort=sort, limit=limit, offset=offset, inc=inc)
+        resp = requests.get(self.base_url+'publication/', params=params).json()
+        error = resp.get('error')
+        if error:
+            desc = resp.get('description')
+            raise APIError(code=error, desc=desc)
+        count = resp.get('count')
+        publications = resp.get('publications')
+        return count, publications
+
     def get_me_clients(self, access_token):
         session = self._service.get_session(access_token)
         resp = session.get('user/me/clients').json()
@@ -160,6 +173,16 @@ class CritiqueBrainzAPI(object):
             raise APIError(code=error, desc=desc)
         rate = resp.get('rate')
         return rate
+
+    def get_user(self, user_id, inc=[]):
+        params = dict(inc=' '.join(inc))
+        resp = requests.get(self.base_url+'user/%s' % user_id, params=params).json()
+        error = resp.get('error')
+        if error:
+            desc = resp.get('description')
+            raise APIError(code=error, desc=desc)
+        user = resp.get('user')
+        return user
 
     def create_client(self, name, desc, website, redirect_uri, scopes, access_token):
         session = self._service.get_session(access_token)

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">API clients</h2>
-  <a href="{{ url_for("user_client.create") }}" class="btn btn-success pull-right" style="margin-top: 20px;">
+  <a href="{{ url_for("profile_client.create") }}" class="btn btn-success pull-right" style="margin-top: 20px;">
     <i class="icon-asterisk icon-white"></i>
     Create
   </a>
@@ -31,8 +31,8 @@
       <td>{{ client.client_id }}</td>
       <td>{{ client.client_secret }}</td>
       <td>
-        <a href="{{ url_for("user_client.edit", client_id=client.client_id) }}"><i class="icon-edit"></i></a>
-        <a href="{{ url_for("user_client.delete", client_id=client.client_id) }}"><i class="icon-remove"></i></a>
+        <a href="{{ url_for("profile_client.edit", client_id=client.client_id) }}"><i class="icon-edit"></i></a>
+        <a href="{{ url_for("profile_client.delete", client_id=client.client_id) }}"><i class="icon-remove"></i></a>
       </td>
     </tr>
     {% endfor %}
@@ -68,7 +68,7 @@
         </ul>
       </td>
       <td>
-        <a href="{{ url_for("user_client.token_delete", client_id=token.client.client_id) }}">Revoke access</a>
+        <a href="{{ url_for("profile_client.token_delete", client_id=token.client.client_id) }}">Revoke access</a>
       </td>
     </tr>
     {% endfor %}

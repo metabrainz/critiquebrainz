@@ -4,7 +4,7 @@ from critiquebrainz.api import api
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.publication import CreateForm, EditForm
 
-bp = Blueprint('user_publication', __name__)
+bp = Blueprint('profile_publication', __name__)
 
 @bp.route('/', endpoint='index')
 @login_required

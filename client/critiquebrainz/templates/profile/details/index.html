@@ -2,25 +2,55 @@
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">Profile</h2>
-  <a href="{{ url_for("user_profile.edit") }}" class="btn btn-primary pull-right" style="margin-top: 20px;">
+  <a href="{{ url_for("profile_details.edit") }}" class="btn btn-primary pull-right" style="margin-top: 20px;">
     <i class="icon-edit icon-white"></i>
     Edit
   </a>
 </div>
 <hr>
-<p>
-  <h4>General information</h4>
-  <dl class="dl-horizontal"">
-    <dt>Display name</dt>
-    <dd>{{ current_user.me.display_name }}</dd>
-    <dt>Email</dt>
-    <dd>{{ current_user.me.email }}</dd>
-    <dt>Member since</dt>
-    <dd>{{ current_user.me.created | datetime }}</dd>
-    <dt>User type</dt>
-    <dd>{{ current_user.me.user_type }}</dd>
-    <dt>Karma</dt>
-    <dd>{{ current_user.me.karma }}</dd>
-  </dl>
-</p>
+<div class="row-fluid">
+  <div class="span6">
+    <h4>General information</h4>
+    <dl class="dl-horizontal">
+      <dt>Display name</dt>
+      <dd>{{ current_user.me.display_name }}</dd>
+      <dt>E-mail</dt>
+      <dd>{{ current_user.me.email }}</dd>
+      <dt>Member since</dt>
+      <dd>{{ current_user.me.created | datetime }}</dd>
+      <dt>User type</dt>
+      <dd>{{ current_user.me.user_type.label }}</dd>
+      <dt>Karma</dt>
+      <dd>{{ current_user.me.karma }}</dd>
+    </dl>
+    <h4>Limits</h4>
+    <dl class="dl-horizontal">
+      <dt>Publications/day</dt>
+      <dd>{{ current_user.me.user_type.publications_per_day }}</dd>
+      <dt>Rates/day</dt>
+      <dd>{{ current_user.me.user_type.rates_per_day }}</dd>
+    </dl>
+  </div>
+  <div class="span6">
+    <h4>Statistics</h4>
+    <h5>Publications</h5>
+    <dl class="dl-horizontal">
+      <dt>Today</dt>
+      <dd>{{ current_user.me.stats.publications_today }}</dd>
+      <dt>Last 7 days</dt>
+      <dd>{{ current_user.me.stats.publications_last_7_days }}</dd>
+      <dt>This month</dt>
+      <dd>{{ current_user.me.stats.publications_this_month }}</dd>
+    </dl>
+    <h5>Rates</h5>
+    <dl class="dl-horizontal">
+      <dt>Today</dt>
+      <dd>{{ current_user.me.stats.rates_today }}</dd>
+      <dt>Last 7 days</dt>
+      <dd>{{ current_user.me.stats.rates_last_7_days }}</dd>
+      <dt>This month</dt>
+      <dd>{{ current_user.me.stats.rates_this_month }}</dd>
+    </dl>
+  </div>
+</div>
 {% endblock %}

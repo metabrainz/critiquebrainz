@@ -4,7 +4,7 @@ from critiquebrainz.api import api
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.client import ClientForm
 
-bp = Blueprint('user_client', __name__)
+bp = Blueprint('profile_client', __name__)
 
 @bp.route('/', endpoint='index')
 @login_required

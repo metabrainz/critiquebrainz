@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row-fluid">
+    <div class="span8">
+      <div class="hero-unit">
+        <h2>Some catchy phase</h2>
+        <p>And another one</p>
+        <p>
+          <a class="btn btn-primary btn-large">
+            Learn more
+          </a>
+        </p>
+      </div>
+    </div>
+    <div class="span4">
+      <h4>Last publications</h4>
+      {% if not publications %}
+      <p class="lead" style="text-align: center;">No publication found</p>
+      {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>Artist</th>
+            <th>Album</th>
+            <th>Author</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for publication in publications %}
+          {% set album = publication.release_group|album_details %}
+          <tr data-publication-id="{{ publication.id }}">
+            <td>{{ album.artist }}</td>
+            <td>
+              {{ album.title }}
+              <span class="muted">({{ album.release_date }})</span>
+            </td>
+            <td>{{ publication.user.display_name }}</td>
+            <td>
+              <a href="{{ url_for("publication.entity", id=publication.id) }}"><i class="icon-eye-open"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

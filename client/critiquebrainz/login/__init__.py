@@ -30,7 +30,7 @@ class User(UserMixin):
     @property
     def me(self):
         if hasattr(self, '_me') is False:
-            self._me = api.get_me(self.access_token)
+            self._me = api.get_me(self.access_token, inc=['user_type', 'stats'])
         return self._me
 
     @property

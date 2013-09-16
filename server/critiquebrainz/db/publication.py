@@ -135,6 +135,8 @@ class Publication(db.Model):
         # filter by user_id
         if user_id is not None:
             query = query.filter(Publication.user_id==user_id)
+        # count all rows
+        count = query.count()
         # set limit
         if limit is not None:
             query = query.limit(limit)
@@ -143,8 +145,7 @@ class Publication(db.Model):
             query = query.offset(offset)
         # execute query
         publications = query.all()
-        print query
-        return publications
+        return publications, count
 
     @classmethod
     def create(cls, release_group, user, text):

@@ -1,6 +1,6 @@
 from . import db
 from sqlalchemy.dialects.postgresql import UUID
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from publication import Publication
 from rate import Rate
 from critiquebrainz.constants import user_types
@@ -25,7 +25,7 @@ class User(db.Model):
     tokens = db.relationship('OAuthToken', cascade='delete', backref='user')
 
     # a list of allowed values of `inc` parameter in API calls
-    allowed_includes = ('publications', )
+    allowed_includes = ('user_type', 'stats')
 
     def delete(self):
         db.session.delete(self)
@@ -142,8 +142,24 @@ class User(db.Model):
             response.update(dict(email=self.email,
                                  twitter_id=self.twitter_id,
                                  musicbrainz_id=self.musicbrainz_id))
-        if 'publications' in includes:
-            response['publications'] = [p.to_dict() for p in self.publications]
+        if 'user_type' in includes:
+            response['user_type'] = dict(
+                label = self.user_type.label,
+                publications_per_day = self.user_type.publications_per_day,
+                rates_per_day = self.user_type.rates_per_day)
+        if 'stats' in includes:
+            today = date.today()
+            response['stats'] = dict(
+                publications_today = self.publications_today_count(),
+                publications_last_7_days = self.publications_since_count(
+                    today-timedelta(days=7)),
+                publications_this_month = self.publications_since_count(
+                    date(today.year, today.month, 1)),
+                rates_today = self.rates_today_count(),
+                rates_last_7_days = self.rates_since_count(
+                    today-timedelta(days=7)),
+                rates_this_month = self.rates_since_count(
+                    date(today.year, today.month, 1)))
         return response
 
     @property

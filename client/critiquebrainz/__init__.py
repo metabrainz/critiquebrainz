@@ -45,4 +45,5 @@ from profile.client.views import bp as bp5
 app.register_blueprint(bp5, url_prefix='/profile/client')
 from publication.views import bp as bp6
 app.register_blueprint(bp6, url_prefix='/publication')
-
+from user.views import bp as bp7
+app.register_blueprint(bp7, url_prefix='/user')

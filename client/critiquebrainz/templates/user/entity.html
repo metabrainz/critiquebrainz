@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row-fluid">
+    <div class="span6">
+      <h4>General information</h4>
+      <dl class="dl-horizontal">
+        <dt>Display name</dt>
+        <dd>{{ user.display_name }}</dd>
+        <dt>Member since</dt>
+        <dd>{{ user.created | datetime }}</dd>
+        <dt>User type</dt>
+        <dd>{{ user.user_type.label }}</dd>
+        <dt>Karma</dt>
+        <dd>{{ user.karma }}</dd>
+      </dl>
+    </div>
+    <div class="span6">
+      <h4>Statistics</h4>
+      <dl class="dl-horizontal">
+        <dt>Today</dt>
+        <dd>{{ user.stats.publications_today }}</dd>
+        <dt>Last 7 days</dt>
+        <dd>{{ user.stats.publications_last_7_days }}</dd>
+        <dt>This month</dt>
+        <dd>{{ user.stats.publications_this_month }}</dd>
+      </dl>
+    </div>
+  </div>
+  <hr>
+  <h4>Publications</h4>
+  {% if not publications %}
+  <p class="lead" style="text-align: center;">No publication found</p>
+  {% else %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Hash</th>
+        <th>Artist</th>
+        <th>Album</th>
+        <th>Created on</th>
+        <th>Rates (+/-)</th>
+        <th>Class</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for publication in publications %}
+      {% set album = publication.release_group|album_details %}
+      <tr data-publication-id="{{ publication.id }}">
+        <td>{{ publication.id[:5] }}</td>
+        <td>{{ album.artist }}</td>
+        <td>
+          {{ album.title }}
+          <span class="muted">({{ album.release_date }})</span>
+        </td>
+        <td>{{ publication.created | datetime }}</td>
+        <td>{{ publication.rates_positive }}/{{ publication.rates_negative }}</td>
+        <td>{{ publication.publication_class }}</td>
+        <td>
+          <a href="{{ url_for("publication.entity", id=publication.id) }}"><i class="icon-eye-open"></i></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="pagination">
+    <ul>
+    {% set pages = count//limit %}
+    {% if count%limit %}
+      {% set pages = pages+1 %}
+    {% endif %}
+    {% for p in range(pages) %}
+      {% set p_offset = p*limit %}
+      <li {% if offset == p_offset %}class="active"{% endif %}><a href="{{ url_for("user.entity", id=user.id, limit=limit, offset=p*limit) }}">{{ p }}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
