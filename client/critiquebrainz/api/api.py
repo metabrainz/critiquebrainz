@@ -98,10 +98,8 @@ class CritiqueBrainzAPI(object):
         code = resp.get('code')
         return code
 
-    def get_publication(self, id, include_user=False):
-        params = dict(inc=[])
-        if include_user is True:
-            params['inc'].append('user')
+    def get_publication(self, id, inc=[]):
+        params = dict(inc=' '.join(inc))
         resp = requests.get(self.base_url+'publication/%s' % id, params=params).json()
         error = resp.get('error')
         if error:
@@ -124,7 +122,7 @@ class CritiqueBrainzAPI(object):
 
     def get_publications(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=None):
         params = dict(release_group=release_group, 
-            user_id=user_id, sort=sort, limit=limit, offset=offset, inc=inc)
+            user_id=user_id, sort=sort, limit=limit, offset=offset, inc=' '.join(inc))
         resp = requests.get(self.base_url+'publication/', params=params).json()
         error = resp.get('error')
         if error:

@@ -7,7 +7,7 @@ bp = Blueprint('publication', __name__)
 
 @bp.route('/<uuid:id>', endpoint='entity')
 def publication_entity_handler(id):
-    publication = api.get_publication(id, include_user=True)
+    publication = api.get_publication(id, inc=['user'])
     # if user is logged in, get his rate of this publication
     if current_user.is_authenticated():
         try:

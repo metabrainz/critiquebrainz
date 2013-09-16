@@ -5,5 +5,5 @@ from critiquebrainz.exceptions import APIError
 
 @app.route('/', endpoint='index')
 def index_handler():
-    _, publications = api.get_publications(sort='created', limit=5, inc='user')
+    _, publications = api.get_publications(sort='created', limit=5, inc=['user'])
     return render_template('index.html', publications=publications)
