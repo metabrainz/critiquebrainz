@@ -120,7 +120,7 @@ class CritiqueBrainzAPI(object):
         publications = resp.get('publications')
         return count, publications
 
-    def get_publications(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=None):
+    def get_publications(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=[]):
         params = dict(release_group=release_group, 
             user_id=user_id, sort=sort, limit=limit, offset=offset, inc=' '.join(inc))
         resp = requests.get(self.base_url+'publication/', params=params).json()
