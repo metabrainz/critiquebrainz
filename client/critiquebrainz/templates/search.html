@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h3>Album search</h3>
+  <form method="GET" class="form-horizontal">
+    <div class="control-group">
+      <label class="control-label">Artist</label>
+      <div class="controls">
+        <input class="span3" name="artist" type="text" value="{{ request.args.get('artist', default='') }}">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Album</label>
+      <div class="controls">
+        <input class="span3" name="album" type="text" value="{{ request.args.get('album', default='') }}">
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <input class="btn" type="submit" value="Search">
+      </div>
+    </div>
+    <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+  <hr>
+  {% if not results %}
+  <p class="lead" style="text-align: center;">No results found</p>
+  {% else %}
+  <form action="{{ next }}" method="GET">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Artist</th>
+          <th>Album</th>
+          <th>Type</th>
+          <th>Score</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for result in results %}
+        <tr>
+          <td>{{ result['artist-credit-phrase'] }}</td>
+          <td>{{ result['title'] }}</td>
+          <td>{{ result['primary-type'] or '-' }}</td>
+          <td>{{ result['ext:score'] }}</td>
+          <td>
+            <input type="radio" name="release_group" value="{{ result['id'] }}">
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="form-actions">
+      <button type="submit" class="pull-right btn btn-primary">Continue</button>
+    </div>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

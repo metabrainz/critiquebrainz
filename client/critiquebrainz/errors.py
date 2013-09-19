@@ -5,10 +5,13 @@ from flask.ext.login import logout_user
 
 @app.errorhandler(APIError)
 def api_error_handler(error):
-    # logout, if the user is logged in with an invalid access and/or refresh token
     if error.code in ('invalid_token', 'invalid_grant'):
+        # logout, if the user is logged in with an invalid access and/or refresh token
         logout_user()
-    return render_template('error.html', code=error.code, description=error.desc), error.status
+        flash('Your login session has expired. Please log in again.', 'error')
+        return redirect(url_for('index'))
+    else:
+        return render_template('error.html', code=error.code, description=error.desc), error.status
 
 @app.errorhandler(404)
 def not_found_handler(error):

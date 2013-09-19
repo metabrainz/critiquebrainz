@@ -19,17 +19,20 @@ def index_handler():
 @bp.route('/create', methods=('GET', 'POST'), endpoint='create')
 @login_required
 def create_handler():
+    release_group = request.args.get('release_group')
+    if not release_group:
+        flash('Please choose the album you want to review.')
+        return redirect(url_for('search.release_group', next=url_for('.create')))
     form = CreateForm()
     if form.validate_on_submit():
         try:
-            message, id = api.create_publication(form.release_group.data,
-                form.text.data, current_user.access_token)
+            message, id = api.create_publication(release_group, form.text.data, current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:
             flash(u'You have published the review!', 'success')
         return redirect(url_for('.index'))
-    return render_template('profile/publication/create.html', form=form)
+    return render_template('profile/publication/create.html', form=form, release_group=release_group)
 
 @bp.route('/<uuid:id>/edit', methods=('GET', 'POST'), endpoint='edit')
 @login_required

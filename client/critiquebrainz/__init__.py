@@ -47,3 +47,5 @@ from publication.views import bp as bp6
 app.register_blueprint(bp6, url_prefix='/publication')
 from user.views import bp as bp7
 app.register_blueprint(bp7, url_prefix='/user')
+from search.views import bp as bp8
+app.register_blueprint(bp8, url_prefix='/search')

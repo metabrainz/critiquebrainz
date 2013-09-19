@@ -10,4 +10,3 @@ class APIError(CritiqueBrainzError):
 
 class OAuthError(APIError):
     pass
-
