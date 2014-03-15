@@ -4,7 +4,7 @@
   <div class="row-fluid">
     <div class="span3">
       <h4>Author</h4>
-      {{ publication.user.display_name }} <a href="{{ url_for('user.entity', id=publication.user_id) }}">(view profile)</a><br />
+      <a href="{{ url_for('user.entity', id=publication.user_id) }}">{{ publication.user.display_name }}</a><br />
       Joined on {{ publication.user.created | datetime }}<br />
     </div>
     <div class="span9">

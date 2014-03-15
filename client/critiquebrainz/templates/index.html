@@ -36,7 +36,7 @@
               {{ album.title }}
               <span class="muted">({{ album.release_date }})</span>
             </td>
-            <td>{{ publication.user.display_name }}</td>
+            <td><a href="{{ url_for('user.entity', id=publication.user_id) }}">{{ publication.user.display_name }}</a></td>
             <td>
               <a href="{{ url_for("publication.entity", id=publication.id) }}"><i class="icon-eye-open"></i></a>
             </td>
