@@ -675,9 +675,9 @@ cite {
   font-style: normal;
 }
 
-.muted {
+.muted a {
   color: #999999;
-  text-decoration:none;
+  text-decoration: none;
 }
 
 a.muted:hover,
