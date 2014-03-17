@@ -5,7 +5,7 @@
     <title>{% block title %}CritiqueBrainz{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
     <style type="text/css">
         body {
@@ -44,7 +44,7 @@
           </li>
           {% endif %}
         </ul>
-        <h2 class="muted"><span style="font-weight: normal">Critique</span>Brainz</h2>
+        <h2 class="muted"><a href="/"><span style="font-weight: normal">Critique</span>Brainz</a></h2>
       </div>
       <hr>
       {% endblock %}
