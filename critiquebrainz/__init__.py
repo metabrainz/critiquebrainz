@@ -1,6 +1,8 @@
-from flask import Flask
+from flask import Flask, Blueprint, flash, request, redirect, url_for, session, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 import config
+from flask.ext.login import login_user, logout_user, login_required
+from critiquebrainz.db import User
 
 _name = "CritiqueBrainz"
 _version = "0.1"
@@ -41,4 +43,5 @@ user.register_blueprints(app, '/user')
 
 @app.route('/', endpoint='index')
 def index_handler():
-    return 'Temporary index.'
+    return render_template('base.html')
+
