@@ -14,7 +14,7 @@ def logout():
     
 @login.route('/', endpoint='index')
 @login_forbidden
-def login_handler():
+def login_handler(): 
     return render_template('login/login.html')
     
 @login.route('/twitter', endpoint='twitter')
