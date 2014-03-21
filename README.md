@@ -13,7 +13,7 @@ A GSoC project for MetaBrainz Foundation.
 
 To get an instance of critiquebrainz server, simply clone the master branch
 
-    git clone https://github.com/mjjc/critiquebrainz.git
+    git clone https://github.com/metabrainz/critiquebrainz
 
 ##How to start
 
@@ -52,7 +52,7 @@ to install all required dependencies.
 First, you need to configure your critiquebrainz instance. Copy the skeleton
 configuration
 
-    cp critiquebrainz/config.py.example critiquebrainz/config.py
+    cp critiquebrainz/config.py.sample critiquebrainz/config.py
 
 Then, open `critiquebrainz/config.py` in your favourite text editor and fill in
 the fields in angle brackets in `SQLALCHEMY_DATABASE_URI` body.
