@@ -17,7 +17,7 @@
             <dt>Artist</dt>
             <dd>{{ album.artist }}</dd>
             <dt>Album</dt>
-            <dd>{{ album.title }}
+            <dd><a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a>
             <span class="muted">({{ album.release_date }})</span>
             </dd>
           </dl>
