@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>{{ album.title }} - {{ album.artist }}</h2>
+  <small class="muted">Release date: {{ album.release_date }}</small>
+  <h4>Last reviews</h4>
+  {% if not reviews %}
+  <p class="lead" style="text-align: center;">No reviews found</p>
+  {% else %}
+  <table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+      <th>Author</th>
+      <th>Read</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for review in reviews %}
+    {% set album = review.release_group|album_details %}
+    <tr data-review-id="{{ review.id }}">
+      <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
+      <td>
+        <a href="{{ url_for("review.entity", id=review.id) }}"><i class="icon-eye-open"></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="pagination">
+    <ul>
+      {% set pages = count//limit %}
+      {% if count%limit %}
+      {% set pages = pages+1 %}
+      {% endif %}
+      {% for p in range(pages) %}
+      {% set p_offset = p*limit %}
+      <li {% if offset == p_offset %}class="active"{% endif %}><a href="{{ url_for("album.entity", id=id, limit=limit, offset=p*limit) }}">{{ p }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
