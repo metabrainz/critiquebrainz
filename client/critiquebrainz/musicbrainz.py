@@ -17,7 +17,7 @@ class MusicBrainzClient:
         return resp
 
     def search_release_group(self, artist, album, limit, offset):
-        api_resp = search_release_groups(album, limit, offset, artist=artist)
+        api_resp = search_release_groups(album, limit, offset, artistname=artist)
         return api_resp.get('release-group-list')
 
 musicbrainz = MusicBrainzClient()
