@@ -21,7 +21,7 @@ systems
     sudo pip install virtualenv (or)
     sudo apt-get install python-virtualenv
 
-Then, `cd` into your `critiquebrainz/` directory and run
+Then run
 
     scripts/virtualenv.sh
 
