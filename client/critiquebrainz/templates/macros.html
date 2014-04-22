@@ -18,13 +18,13 @@
 {% macro scope_desc(scope) %}
   {% if scope == "user" %}
     Profile data
-  {% elif scope == "publication" %}
-    Publications
+  {% elif scope == "review" %}
+    Reviews
   {% elif scope == "client" %}
     API clients
   {% elif scope == "authorization" %}
     Authorization
   {% elif scope == "rate" %}
-    Publication rates
+    Review rates
   {% endif %}
 {% endmacro %}

@@ -12,10 +12,10 @@ def user_me_handler(user):
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
     return jsonify(user=user.to_dict(inc, confidental=True))
 
-@bp.route('/me/publications', endpoint='publications')
+@bp.route('/me/reviews', endpoint='reviews')
 @oauth.require_auth()
-def user_publications_handler(user):
-    return redirect(url_for('publication.list', user_id=user.id, **request.args))
+def user_reviews_handler(user):
+    return redirect(url_for('review.list', user_id=user.id, **request.args))
 
 @bp.route('/me/clients', endpoint='clients')
 @oauth.require_auth()

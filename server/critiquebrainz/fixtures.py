@@ -26,6 +26,6 @@ class OAuthClientData(object):
         desc = u'A CritiqueBrainz frontend.',
         website = u'http://critiquebrainz.org',
         redirect_uri = u'http://127.0.0.1:5001/login/post',
-        scopes = u'user publication authorization rate client')
+        scopes = u'user review authorization rate client')
         
 all_data = (OAuthClientData, )

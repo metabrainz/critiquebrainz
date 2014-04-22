@@ -34,8 +34,8 @@ from oauth.views import bp as bp1
 app.register_blueprint(bp1, url_prefix='/oauth')
 from login.views import bp as bp2
 app.register_blueprint(bp2, url_prefix='/login')
-from publication.views import bp as bp3
-app.register_blueprint(bp3, url_prefix='/publication')
+from review.views import bp as bp3
+app.register_blueprint(bp3, url_prefix='/review')
 from user.views import bp as bp4
 app.register_blueprint(bp4, url_prefix='/user')
 from client.views import bp as bp5

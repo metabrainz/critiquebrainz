@@ -25,8 +25,8 @@
     </dl>
     <h4>Limits</h4>
     <dl class="dl-horizontal">
-      <dt>Publications/day</dt>
-      <dd>{{ current_user.me.user_type.publications_per_day }}</dd>
+      <dt>Reviews/day</dt>
+      <dd>{{ current_user.me.user_type.reviews_per_day }}</dd>
       <dt>Rates/day</dt>
       <dd>{{ current_user.me.user_type.rates_per_day }}</dd>
     </dl>
@@ -35,14 +35,14 @@
     <h4>Statistics</h4>
     <div class="row-fluid">
       <div class="span6">
-        <h5>Publications</h5>
+        <h5>Reviews</h5>
         <dl class="dl-horizontal">
           <dt>Today</dt>
-          <dd>{{ current_user.me.stats.publications_today }}</dd>
+          <dd>{{ current_user.me.stats.reviews_today }}</dd>
           <dt>Last 7 days</dt>
-          <dd>{{ current_user.me.stats.publications_last_7_days }}</dd>
+          <dd>{{ current_user.me.stats.reviews_last_7_days }}</dd>
           <dt>This month</dt>
-          <dd>{{ current_user.me.stats.publications_this_month }}</dd>
+          <dd>{{ current_user.me.stats.reviews_this_month }}</dd>
         </dl>
       </div>
       <div class="span6">

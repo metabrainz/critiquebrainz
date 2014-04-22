@@ -2,11 +2,11 @@ from . import db
 from sqlalchemy.dialects.postgresql import UUID
 from rate import Rate
 from datetime import datetime
-from critiquebrainz.constants import publication_classes
+from critiquebrainz.constants import review_classes
 
-class Publication(db.Model):
+class Review(db.Model):
 
-    __tablename__ = 'publication'
+    __tablename__ = 'review'
 
     id = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), primary_key=True)
     release_group = db.Column(UUID, index=True, nullable=False)
@@ -17,8 +17,8 @@ class Publication(db.Model):
     edits = db.Column(db.Integer, nullable=False, default=0)
     is_archived = db.Column(db.Boolean, nullable=False, default=False)
 
-    spam_reports = db.relationship('SpamReport', cascade='delete', backref='publication')
-    _rates = db.relationship('Rate', cascade='delete', lazy='dynamic', backref='publication')
+    spam_reports = db.relationship('SpamReport', cascade='delete', backref='review')
+    _rates = db.relationship('Rate', cascade='delete', lazy='dynamic', backref='review')
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
@@ -36,7 +36,7 @@ class Publication(db.Model):
             rates_positive = self.rates_positive_count,
             rates_negative = self.rates_negative_count,
             rating = self.rating,
-            publication_class = self.publication_class.label)
+            review_class = self.review_class.label)
 
         if 'user' in includes:
             response['user'] = self.user.to_dict()
@@ -48,14 +48,14 @@ class Publication(db.Model):
         return self
 
     @property
-    def publication_class(self):
-        def get_publication_class(publication):
-            for p_class in publication_classes:
-                if p_class.is_instance(publication) is True:
+    def review_class(self):
+        def get_review_class(review):
+            for p_class in review_classes:
+                if p_class.is_instance(review) is True:
                     return p_class
-        if hasattr(self, '_publication_class') is False:
-            self._publication_class = get_publication_class(self)
-        return self._publication_class
+        if hasattr(self, '_review_class') is False:
+            self._review_class = get_review_class(self)
+        return self._review_class
 
     @property
     def rates(self):
@@ -99,25 +99,25 @@ class Publication(db.Model):
     @classmethod
     def list(cls, release_group, user_id, sort, limit, offset):
         # query init
-        query = Publication.query
+        query = Review.query
 
         if sort == 'rating':
             # prepare subqueries
-            r_q = db.session.query(Rate.publication_id, Rate.placet, db.func.count('*').\
-                label('c')).group_by(Rate.publication_id, Rate.placet)
+            r_q = db.session.query(Rate.review_id, Rate.placet, db.func.count('*').\
+                label('c')).group_by(Rate.review_id, Rate.placet)
             r_pos = r_q.subquery('r_pos')
             r_neg = r_q.subquery('r_neg')
             # left join negative rates
             query = query.outerjoin(
                         r_neg,
                         db.and_(
-                            r_neg.c.publication_id==Publication.id,
+                            r_neg.c.review_id==Review.id,
                             r_neg.c.placet==False))
             # left join positive rates
             query = query.outerjoin(
                         r_pos,
                         db.and_(
-                            r_pos.c.publication_id==Publication.id,
+                            r_pos.c.review_id==Review.id,
                             r_pos.c.placet==True))
             # order by (positive rates - negative rates) formula
             query = query.order_by(
@@ -126,15 +126,15 @@ class Publication(db.Model):
                              db.func.coalesce(r_neg.c.c, 0))))
         elif sort == 'created':
             # order by creation date
-            query = query.order_by(db.desc(Publication.created))
-        # filter out archived publications
-        query = query.filter(Publication.is_archived==False)
+            query = query.order_by(db.desc(Review.created))
+        # filter out archived reviews
+        query = query.filter(Review.is_archived==False)
         # filter by release_group
         if release_group is not None:
-            query = query.filter(Publication.release_group==release_group)
+            query = query.filter(Review.release_group==release_group)
         # filter by user_id
         if user_id is not None:
-            query = query.filter(Publication.user_id==user_id)
+            query = query.filter(Review.user_id==user_id)
         # count all rows
         count = query.count()
         # set limit
@@ -144,15 +144,15 @@ class Publication(db.Model):
         if offset is not None:
             query = query.offset(offset)
         # execute query
-        publications = query.all()
-        return publications, count
+        reviews = query.all()
+        return reviews, count
 
     @classmethod
     def create(cls, release_group, user, text):
-        publication = Publication(release_group=release_group, user=user, text=text)
-        db.session.add(publication)
+        review = Review(release_group=release_group, user=user, text=text)
+        db.session.add(review)
         db.session.commit()
-        return publication
+        return review
 
     def update(self, release_group=None, text=None):
         if release_group is not None:

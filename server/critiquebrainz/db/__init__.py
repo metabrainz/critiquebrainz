@@ -8,7 +8,7 @@ def create_tables(app):
     db.metadata.create_all(engine)
     return engine
 
-from .publication import Publication
+from .review import Review
 from .user import User
 from .rate import Rate
 from .report import SpamReport

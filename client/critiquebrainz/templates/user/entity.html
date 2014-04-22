@@ -19,14 +19,14 @@
       <h4>Statistics</h4>
       <div class="row-fluid">
         <div class="span6">
-          <h5>Publications</h5>
+          <h5>Reviews</h5>
           <dl class="dl-horizontal">
             <dt>Today</dt>
-            <dd>{{ user.stats.publications_today }}</dd>
+            <dd>{{ user.stats.reviews_today }}</dd>
             <dt>Last 7 days</dt>
-            <dd>{{ user.stats.publications_last_7_days }}</dd>
+            <dd>{{ user.stats.reviews_last_7_days }}</dd>
             <dt>This month</dt>
-            <dd>{{ user.stats.publications_this_month }}</dd>
+            <dd>{{ user.stats.reviews_this_month }}</dd>
           </dl>
         </div>
         <div class="span6">
@@ -44,9 +44,9 @@
     </div>
   </div>
   <hr>
-  <h4>Publications</h4>
-  {% if not publications %}
-  <p class="lead" style="text-align: center;">No publication found</p>
+  <h4>Reviews</h4>
+  {% if not reviews %}
+  <p class="lead" style="text-align: center;">No review found</p>
   {% else %}
   <table class="table">
     <thead>
@@ -61,20 +61,20 @@
       </tr>
     </thead>
     <tbody>
-      {% for publication in publications %}
-      {% set album = publication.release_group|album_details %}
-      <tr data-publication-id="{{ publication.id }}">
-        <td>{{ publication.id[:5] }}</td>
+      {% for review in reviews %}
+      {% set album = review.release_group|album_details %}
+      <tr data-review-id="{{ review.id }}">
+        <td>{{ review.id[:5] }}</td>
         <td>{{ album.artist }}</td>
         <td>
           {{ album.title }}
           <span class="muted">({{ album.release_date }})</span>
         </td>
-        <td>{{ publication.created | datetime }}</td>
-        <td>{{ publication.rates_positive }}/{{ publication.rates_negative }}</td>
-        <td>{{ publication.publication_class }}</td>
+        <td>{{ review.created | datetime }}</td>
+        <td>{{ review.rates_positive }}/{{ review.rates_negative }}</td>
+        <td>{{ review.review_class }}</td>
         <td>
-          <a href="{{ url_for("publication.entity", id=publication.id) }}"><i class="icon-eye-open"></i></a>
+          <a href="{{ url_for("review.entity", id=review.id) }}"><i class="icon-eye-open"></i></a>
         </td>
       </tr>
       {% endfor %}

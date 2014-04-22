@@ -8,7 +8,7 @@ import json
 
 class CritiqueBrainzAPI(object):
 
-    scope = 'user authorization publication rate client'
+    scope = 'user authorization review rate client'
 
     def __init__(self, base_url, client_id, **kwargs):
         self.base_url = base_url
@@ -98,39 +98,39 @@ class CritiqueBrainzAPI(object):
         code = resp.get('code')
         return code
 
-    def get_publication(self, id, inc=[]):
+    def get_review(self, id, inc=[]):
         params = dict(inc=' '.join(inc))
-        resp = requests.get(self.base_url+'publication/%s' % id, params=params).json()
+        resp = requests.get(self.base_url+'review/%s' % id, params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
             raise APIError(code=error, desc=desc)
-        publication = resp.get('publication')
-        return publication
+        review = resp.get('review')
+        return review
 
-    def get_me_publications(self, sort, limit, offset, access_token):
+    def get_me_reviews(self, sort, limit, offset, access_token):
         params = dict(sort=sort, limit=limit, offset=offset)
         session = self._service.get_session(access_token)
-        resp = session.get('user/me/publications', params=params).json()
+        resp = session.get('user/me/reviews', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
             raise APIError(code=error, desc=desc)
         count = resp.get('count')
-        publications = resp.get('publications')
-        return count, publications
+        reviews = resp.get('reviews')
+        return count, reviews
 
-    def get_publications(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=[]):
+    def get_reviews(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=[]):
         params = dict(release_group=release_group, 
             user_id=user_id, sort=sort, limit=limit, offset=offset, inc=' '.join(inc))
-        resp = requests.get(self.base_url+'publication/', params=params).json()
+        resp = requests.get(self.base_url+'review/', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
             raise APIError(code=error, desc=desc)
         count = resp.get('count')
-        publications = resp.get('publications')
-        return count, publications
+        reviews = resp.get('reviews')
+        return count, reviews
 
     def get_me_clients(self, access_token):
         session = self._service.get_session(access_token)
@@ -162,9 +162,9 @@ class CritiqueBrainzAPI(object):
         client = resp.get('client')
         return client
 
-    def get_rate(self, publication_id, access_token):
+    def get_rate(self, review_id, access_token):
         session = self._service.get_session(access_token)
-        resp = session.get('publication/%s/rate' % publication_id).json()
+        resp = session.get('review/%s/rate' % review_id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -201,12 +201,12 @@ class CritiqueBrainzAPI(object):
         client_secret = client.get('secret')
         return message, client_id, client_secret
 
-    def create_publication(self, release_group, text, access_token):
+    def create_review(self, release_group, text, access_token):
         session = self._service.get_session(access_token)
         data = dict(release_group=release_group,
                     text=text)
         headers = {'Content-type': 'application/json'}
-        resp = session.post('publication/', data=json.dumps(data), headers=headers).json()
+        resp = session.post('review/', data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -215,11 +215,11 @@ class CritiqueBrainzAPI(object):
         id = resp.get('id')
         return message, id
 
-    def update_publication(self, id, access_token, **kwargs):
+    def update_review(self, id, access_token, **kwargs):
         session = self._service.get_session(access_token)
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        resp = session.post('publication/%s' % id, data=json.dumps(data), headers=headers).json()
+        resp = session.post('review/%s' % id, data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -251,11 +251,11 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
-    def update_publication_rate(self, publication_id, access_token, **kwargs):
+    def update_review_rate(self, review_id, access_token, **kwargs):
         session = self._service.get_session(access_token)
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        resp = session.put('publication/%s/rate' % publication_id, data=json.dumps(data), headers=headers).json()
+        resp = session.put('review/%s/rate' % review_id, data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -263,9 +263,9 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
-    def delete_publication(self, id, access_token):
+    def delete_review(self, id, access_token):
         session = self._service.get_session(access_token)
-        resp = session.delete('publication/%s' % id).json()
+        resp = session.delete('review/%s' % id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -273,9 +273,9 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
-    def delete_publication_rate(self, publication_id, access_token):
+    def delete_review_rate(self, review_id, access_token):
         session = self._service.get_session(access_token)
-        resp = session.delete('publication/%s/rate' % publication_id).json()
+        resp = session.delete('review/%s/rate' % review_id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')

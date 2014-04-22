@@ -10,7 +10,7 @@ def user_entity_handler(id):
     user = api.get_user(id, inc=['user_type', 'stats'])
     limit = int(request.args.get('limit', default=5))
     offset = int(request.args.get('offset', default=0))
-    count, publications = api.get_publications(user_id=id, sort='created',
+    count, reviews = api.get_reviews(user_id=id, sort='created',
         limit=limit, offset=offset)
-    return render_template('user/entity.html', user=user, publications=publications,
+    return render_template('user/entity.html', user=user, reviews=reviews,
         limit=limit, offset=offset, count=count)

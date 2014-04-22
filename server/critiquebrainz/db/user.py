@@ -1,7 +1,7 @@
 from . import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime, date, timedelta
-from publication import Publication
+from review import Review
 from rate import Rate
 from critiquebrainz.constants import user_types
 
@@ -17,7 +17,7 @@ class User(db.Model):
     twitter_id = db.Column(db.Unicode, unique=True)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
 
-    _publications = db.relationship('Publication', cascade='delete', lazy='dynamic', backref='user')
+    _reviews = db.relationship('Review', cascade='delete', lazy='dynamic', backref='user')
     _rates = db.relationship('Rate', cascade='delete', lazy='dynamic', backref='user')
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
     clients = db.relationship('OAuthClient', cascade='delete', backref='user')
@@ -42,15 +42,15 @@ class User(db.Model):
             db.session.commit()
         return user
 
-    def has_rated(self, publication):
-        if self._rates.filter_by(publication=publication).count() > 0:
+    def has_rated(self, review):
+        if self._rates.filter_by(review=review).count() > 0:
             return True
         else:
             return False
 
     @property
-    def is_publication_limit_exceeded(self):
-        if self.publications_today_count() >= self.user_type.publications_per_day:
+    def is_review_limit_exceeded(self):
+        if self.reviews_today_count() >= self.user_type.reviews_per_day:
             return True
         else:
             return False
@@ -65,53 +65,53 @@ class User(db.Model):
     @property
     def karma(self):
         if hasattr(self, '_karma') is False:
-            # karma = sum of user's publications ratings
-            r_q = db.session.query(Rate.publication_id, Rate.placet, db.func.count('*').\
-                label('c')).group_by(Rate.publication_id, Rate.placet)
+            # karma = sum of user's reviews ratings
+            r_q = db.session.query(Rate.review_id, Rate.placet, db.func.count('*').\
+                label('c')).group_by(Rate.review_id, Rate.placet)
             r_pos = r_q.subquery('r_pos')
             r_neg = r_q.subquery('r_neg')
             subquery = db.session.query(
-                Publication.id,
+                Review.id,
                 (db.func.coalesce(r_pos.c.c, 0) -
                  db.func.coalesce(r_neg.c.c, 0)).label('rating'))
             # left join negative rates
             subquery = subquery.outerjoin(
                 r_neg,
                 db.and_(
-                    r_neg.c.publication_id==Publication.id,
+                    r_neg.c.review_id==Review.id,
                     r_neg.c.placet==False))
             # left join positive rates
             subquery = subquery.outerjoin(
                 r_pos,
                 db.and_(
-                    r_pos.c.publication_id==Publication.id,
+                    r_pos.c.review_id==Review.id,
                     r_pos.c.placet==True))
-            subquery = subquery.filter(Publication.user_id==self.id)
+            subquery = subquery.filter(Review.user_id==self.id)
             # group and create a subquery
-            subquery = subquery.group_by(Publication.id, r_neg.c.c, r_pos.c.c)
+            subquery = subquery.group_by(Review.id, r_neg.c.c, r_pos.c.c)
             subquery = subquery.subquery('subquery')
             query = db.session.query(db.func.coalesce(db.func.sum(subquery.c.rating), 0))
             self._karma = int(query.scalar())
         return self._karma
 
     @property
-    def publications(self):
-        return self._publications.all()
+    def reviews(self):
+        return self._reviews.all()
 
-    def _publications_since(self, date):
-        return self._publications.filter(Publication.created >= date)
+    def _reviews_since(self, date):
+        return self._reviews.filter(Review.created >= date)
 
-    def publications_since(self, date):
-        return self._publications_since(date).all()
+    def reviews_since(self, date):
+        return self._reviews_since(date).all()
 
-    def publications_since_count(self, date):
-        return self._publications_since(date).count()
+    def reviews_since_count(self, date):
+        return self._reviews_since(date).count()
 
-    def publications_today(self):
-        return self.publications_since(date.today())
+    def reviews_today(self):
+        return self.reviews_since(date.today())
 
-    def publications_today_count(self):
-        return self.publications_since_count(date.today())
+    def reviews_today_count(self):
+        return self.reviews_since_count(date.today())
 
     @property
     def rates(self):
@@ -145,15 +145,15 @@ class User(db.Model):
         if 'user_type' in includes:
             response['user_type'] = dict(
                 label = self.user_type.label,
-                publications_per_day = self.user_type.publications_per_day,
+                reviews_per_day = self.user_type.reviews_per_day,
                 rates_per_day = self.user_type.rates_per_day)
         if 'stats' in includes:
             today = date.today()
             response['stats'] = dict(
-                publications_today = self.publications_today_count(),
-                publications_last_7_days = self.publications_since_count(
+                reviews_today = self.reviews_today_count(),
+                reviews_last_7_days = self.reviews_since_count(
                     today-timedelta(days=7)),
-                publications_this_month = self.publications_since_count(
+                reviews_this_month = self.reviews_since_count(
                     date(today.year, today.month, 1)),
                 rates_today = self.rates_today_count(),
                 rates_last_7_days = self.rates_since_count(

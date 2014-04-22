@@ -14,7 +14,7 @@ class OAuthClient(db.Model):
     desc = db.Column(db.Unicode, nullable=False)
     website = db.Column(db.Unicode, nullable=False)
     redirect_uri = db.Column(db.UnicodeText, nullable=False)
-    scopes = db.Column(db.UnicodeText, default=u'user publication')
+    scopes = db.Column(db.UnicodeText, default=u'user review')
 
     grants = db.relationship('OAuthGrant', cascade='all', backref='client')
     tokens = db.relationship('OAuthToken', cascade='all', backref='client')

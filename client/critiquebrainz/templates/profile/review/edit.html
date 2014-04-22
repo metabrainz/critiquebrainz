@@ -7,20 +7,20 @@
   </div>
   {% endfor %}
 {% endfor %}
-<h2>Editing publication ({{ publication.id[:5] }})</h2>
+<h2>Editing review ({{ review.id[:5] }})</h2>
 <p>
   <dl class="dl-horizontal">
-    {% set album = publication.release_group|album_details %}
+    {% set album = review.release_group|album_details %}
     <dt>Artist</dt>
     <dd>{{ album.artist }}</dd>
     <dt>Album</dt>
     <dd>{{ album.title }} <span class="muted">({{ album.release_date }})</span></dd>
     <dt>Created on</dt>
-    <dd>{{ publication.created | datetime }}</dd>
+    <dd>{{ review.created | datetime }}</dd>
     <dt>Rates (+/-)</dt>
-    <dd>{{ publication.rates_positive }}/{{ publication.rates_negative }}</dd>
+    <dd>{{ review.rates_positive }}/{{ review.rates_negative }}</dd>
     <dt>Rating</dt>
-    <dd>{{ publication.publication_class }}</dd>
+    <dd>{{ review.review_class }}</dd>
   </dl>
 </p>
 <hr>
