@@ -2,7 +2,7 @@ from . import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime, date, timedelta
 from review import Review
-from rate import Rate
+from vote import Vote
 from critiquebrainz.constants import user_types
 
 class User(db.Model):
@@ -18,7 +18,7 @@ class User(db.Model):
     musicbrainz_id = db.Column(db.Unicode, unique=True)
 
     _reviews = db.relationship('Review', cascade='delete', lazy='dynamic', backref='user')
-    _rates = db.relationship('Rate', cascade='delete', lazy='dynamic', backref='user')
+    _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='user')
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
     clients = db.relationship('OAuthClient', cascade='delete', backref='user')
     grants = db.relationship('OAuthGrant', cascade='delete', backref='user')
@@ -42,8 +42,8 @@ class User(db.Model):
             db.session.commit()
         return user
 
-    def has_rated(self, review):
-        if self._rates.filter_by(review=review).count() > 0:
+    def has_voted(self, review):
+        if self._votes.filter_by(review=review).count() > 0:
             return True
         else:
             return False
@@ -56,8 +56,8 @@ class User(db.Model):
             return False
 
     @property
-    def is_rate_limit_exceeded(self):
-        if self.rates_today_count() >= self.user_type.rates_per_day:
+    def is_vote_limit_exceeded(self):
+        if self.votes_today_count() >= self.user_type.votes_per_day:
             return True
         else:
             return False
@@ -66,21 +66,21 @@ class User(db.Model):
     def karma(self):
         if hasattr(self, '_karma') is False:
             # karma = sum of user's reviews ratings
-            r_q = db.session.query(Rate.review_id, Rate.placet, db.func.count('*').\
-                label('c')).group_by(Rate.review_id, Rate.placet)
+            r_q = db.session.query(Vote.review_id, Vote.placet, db.func.count('*').\
+                label('c')).group_by(Vote.review_id, Vote.placet)
             r_pos = r_q.subquery('r_pos')
             r_neg = r_q.subquery('r_neg')
             subquery = db.session.query(
                 Review.id,
                 (db.func.coalesce(r_pos.c.c, 0) -
                  db.func.coalesce(r_neg.c.c, 0)).label('rating'))
-            # left join negative rates
+            # left join negative votes
             subquery = subquery.outerjoin(
                 r_neg,
                 db.and_(
                     r_neg.c.review_id==Review.id,
                     r_neg.c.placet==False))
-            # left join positive rates
+            # left join positive votes
             subquery = subquery.outerjoin(
                 r_pos,
                 db.and_(
@@ -114,23 +114,23 @@ class User(db.Model):
         return self.reviews_since_count(date.today())
 
     @property
-    def rates(self):
-        return self._rates.all()
+    def votes(self):
+        return self._votes.all()
 
-    def _rates_since(self, date):
-        return self._rates.filter(Rate.rated_at >= date)
+    def _votes_since(self, date):
+        return self._votes.filter(Vote.rated_at >= date)
 
-    def rates_since(self, date):
-        return self._rates_since(date).all()
+    def votes_since(self, date):
+        return self._votes_since(date).all()
 
-    def rates_since_count(self, date):
-        return self._rates_since(date).count()
+    def votes_since_count(self, date):
+        return self._votes_since(date).count()
 
-    def rates_today(self):
-        return self.rates_since(date.today())
+    def votes_today(self):
+        return self.votes_since(date.today())
 
-    def rates_today_count(self):
-        return self.rates_since_count(date.today())
+    def votes_today_count(self):
+        return self.votes_since_count(date.today())
 
     def to_dict(self, includes=[], confidental=False):
         response = dict(id = self.id,
@@ -146,7 +146,7 @@ class User(db.Model):
             response['user_type'] = dict(
                 label = self.user_type.label,
                 reviews_per_day = self.user_type.reviews_per_day,
-                rates_per_day = self.user_type.rates_per_day)
+                votes_per_day = self.user_type.votes_per_day)
         if 'stats' in includes:
             today = date.today()
             response['stats'] = dict(
@@ -155,10 +155,10 @@ class User(db.Model):
                     today-timedelta(days=7)),
                 reviews_this_month = self.reviews_since_count(
                     date(today.year, today.month, 1)),
-                rates_today = self.rates_today_count(),
-                rates_last_7_days = self.rates_since_count(
+                votes_today = self.votes_today_count(),
+                votes_last_7_days = self.votes_since_count(
                     today-timedelta(days=7)),
-                rates_this_month = self.rates_since_count(
+                votes_this_month = self.votes_since_count(
                     date(today.year, today.month, 1)))
         return response
 

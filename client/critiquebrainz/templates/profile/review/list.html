@@ -19,7 +19,7 @@
       <th>Artist</th>
       <th>Album</th>
       <th>Created on</th>
-      <th>Rates (+/-)</th>
+      <th>Votes (+/-)</th>
       <th>Class</th>
       <th></th>
     </tr>
@@ -35,7 +35,7 @@
         <span class="muted">({{ album.release_date }})</span>
       </td>
       <td>{{ review.created | datetime }}</td>
-      <td>{{ review.rates_positive }}/{{ review.rates_negative }}</td>
+      <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
       <td>{{ review.review_class }}</td>
       <td>
         <a href="{{ url_for("review.entity", id=review.id) }}"><i class="icon-eye-open"></i></a>

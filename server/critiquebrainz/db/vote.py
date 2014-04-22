@@ -2,9 +2,9 @@ from . import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
 
-class Rate(db.Model):
+class Vote(db.Model):
 
-    __tablename__ = 'rate'
+    __tablename__ = 'vote'
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
     review_id = db.Column(UUID, db.ForeignKey('review.id', ondelete='CASCADE'), primary_key=True)
     placet = db.Column(db.Boolean, nullable=False)
@@ -12,14 +12,14 @@ class Rate(db.Model):
 
     @classmethod
     def create(cls, user, review, placet):
-        # changing rates of an archived review is forbidden
+        # changing votes of an archived review is forbidden
         if review.is_archived is True:
             return
-        # delete the existing rate, if exists
+        # delete the vote if it exists
         cls.query.filter_by(user=user, review=review).delete()
-        # create a new rate
-        rate = cls(user=user, review=review, placet=placet)
-        db.session.add(rate)
+        # create a new vote
+        vote = cls(user=user, review=review, placet=placet)
+        db.session.add(vote)
         db.session.commit()
 
     def delete(self):
@@ -29,10 +29,10 @@ class Rate(db.Model):
 
     @classmethod
     def get(cls, user, review):
-        rate = cls.query.filter_by(user=user, review=review).first()
-        return rate
+        vote = cls.query.filter_by(user=user, review=review).first()
+        return vote
 
     def to_dict(self):
         response = dict(placet=self.placet,
-            rated_at=self.rated_at)
+            voted_at=self.rated_at)
         return response

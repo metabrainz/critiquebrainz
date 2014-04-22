@@ -30,14 +30,14 @@
           </dl>
         </div>
         <div class="span6">
-          <h5>Rates</h5>
+          <h5>Votes</h5>
           <dl class="dl-horizontal">
             <dt>Today</dt>
-            <dd>{{ user.stats.rates_today }}</dd>
+            <dd>{{ user.stats.votes_today }}</dd>
             <dt>Last 7 days</dt>
-            <dd>{{ user.stats.rates_last_7_days }}</dd>
+            <dd>{{ user.stats.votes_last_7_days }}</dd>
             <dt>This month</dt>
-            <dd>{{ user.stats.rates_this_month }}</dd>
+            <dd>{{ user.stats.votes_this_month }}</dd>
           </dl>
         </div>
       </div>
@@ -46,7 +46,7 @@
   <hr>
   <h4>Reviews</h4>
   {% if not reviews %}
-  <p class="lead" style="text-align: center;">No review found</p>
+  <p class="lead" style="text-align: center;">No reviews found</p>
   {% else %}
   <table class="table">
     <thead>
@@ -55,7 +55,7 @@
         <th>Artist</th>
         <th>Album</th>
         <th>Created on</th>
-        <th>Rates (+/-)</th>
+        <th>Votes (+/-)</th>
         <th>Class</th>
         <th></th>
       </tr>
@@ -71,7 +71,7 @@
           <span class="muted">({{ album.release_date }})</span>
         </td>
         <td>{{ review.created | datetime }}</td>
-        <td>{{ review.rates_positive }}/{{ review.rates_negative }}</td>
+        <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
         <td>{{ review.review_class }}</td>
         <td>
           <a href="{{ url_for("review.entity", id=review.id) }}"><i class="icon-eye-open"></i></a>

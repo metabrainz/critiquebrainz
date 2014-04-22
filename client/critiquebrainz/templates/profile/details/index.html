@@ -27,8 +27,8 @@
     <dl class="dl-horizontal">
       <dt>Reviews/day</dt>
       <dd>{{ current_user.me.user_type.reviews_per_day }}</dd>
-      <dt>Rates/day</dt>
-      <dd>{{ current_user.me.user_type.rates_per_day }}</dd>
+      <dt>Votes/day</dt>
+      <dd>{{ current_user.me.user_type.votes_per_day }}</dd>
     </dl>
   </div>
   <div class="span8">
@@ -46,14 +46,14 @@
         </dl>
       </div>
       <div class="span6">
-        <h5>Rates</h5>
+        <h5>Votes</h5>
         <dl class="dl-horizontal">
           <dt>Today</dt>
-          <dd>{{ current_user.me.stats.rates_today }}</dd>
+          <dd>{{ current_user.me.stats.votes_today }}</dd>
           <dt>Last 7 days</dt>
-          <dd>{{ current_user.me.stats.rates_last_7_days }}</dd>
+          <dd>{{ current_user.me.stats.votes_last_7_days }}</dd>
           <dt>This month</dt>
-          <dd>{{ current_user.me.stats.rates_this_month }}</dd>
+          <dd>{{ current_user.me.stats.votes_this_month }}</dd>
         </dl>
       </div>
     </div>

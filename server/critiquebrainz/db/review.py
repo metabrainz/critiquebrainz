@@ -1,6 +1,6 @@
 from . import db
 from sqlalchemy.dialects.postgresql import UUID
-from rate import Rate
+from vote import Vote
 from datetime import datetime
 from critiquebrainz.constants import review_classes
 
@@ -18,7 +18,7 @@ class Review(db.Model):
     is_archived = db.Column(db.Boolean, nullable=False, default=False)
 
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='review')
-    _rates = db.relationship('Rate', cascade='delete', lazy='dynamic', backref='review')
+    _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='review')
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
@@ -33,8 +33,8 @@ class Review(db.Model):
             created = self.created,
             last_updated = self.last_updated,
             edits = self.edits,
-            rates_positive = self.rates_positive_count,
-            rates_negative = self.rates_negative_count,
+            votes_positive = self.votes_positive_count,
+            votes_negative = self.votes_negative_count,
             rating = self.rating,
             review_class = self.review_class.label)
 
@@ -58,42 +58,42 @@ class Review(db.Model):
         return self._review_class
 
     @property
-    def rates(self):
-        return self._rates.all()
+    def votes(self):
+        return self._votes.all()
 
     @property
-    def _rates_positive(self):
-        return self._rates.filter_by(placet=True)
+    def _votes_positive(self):
+        return self._votes.filter_by(placet=True)
 
     @property
-    def _rates_negative(self):
-        return self._rates.filter_by(placet=False)
+    def _votes_negative(self):
+        return self._votes.filter_by(placet=False)
 
     @property
-    def rates_positive(self):
-        return self._rates_positive.all()
+    def votes_positive(self):
+        return self._votes_positive.all()
 
     @property
-    def rates_positive_count(self):
-        if hasattr(self, '_rates_positive_count') is False:
-            self._rates_positive_count = self._rates_positive.count()
-        return self._rates_positive_count
+    def votes_positive_count(self):
+        if hasattr(self, '_votes_positive_count') is False:
+            self._votes_positive_count = self._votes_positive.count()
+        return self._votes_positive_count
 
     @property
-    def rates_negative(self):
-        return self._rates_negative.all()
+    def votes_negative(self):
+        return self._votes_negative.all()
 
     @property
-    def rates_negative_count(self):
-        if hasattr(self, '_rates_negative_count') is False:
-            self._rates_negative_count = self._rates_negative.count()
-        return self._rates_negative_count
+    def votes_negative_count(self):
+        if hasattr(self, '_votes_negative_count') is False:
+            self._votes_negative_count = self._votes_negative.count()
+        return self._votes_negative_count
 
     @property
     def rating(self):
         if hasattr(self, '_rating') is False:
-            # rating formula (positive rates - negative rates)
-            self._rating = self.rates_positive_count - self.rates_negative_count
+            # rating formula (positive votes - negative votes)
+            self._rating = self.votes_positive_count - self.votes_negative_count
         return self._rating
 
     @classmethod
@@ -103,23 +103,23 @@ class Review(db.Model):
 
         if sort == 'rating':
             # prepare subqueries
-            r_q = db.session.query(Rate.review_id, Rate.placet, db.func.count('*').\
-                label('c')).group_by(Rate.review_id, Rate.placet)
+            r_q = db.session.query(Vote.review_id, Vote.placet, db.func.count('*').\
+                label('c')).group_by(Vote.review_id, Vote.placet)
             r_pos = r_q.subquery('r_pos')
             r_neg = r_q.subquery('r_neg')
-            # left join negative rates
+            # left join negative votes
             query = query.outerjoin(
                         r_neg,
                         db.and_(
                             r_neg.c.review_id==Review.id,
                             r_neg.c.placet==False))
-            # left join positive rates
+            # left join positive votes
             query = query.outerjoin(
                         r_pos,
                         db.and_(
                             r_pos.c.review_id==Review.id,
                             r_pos.c.placet==True))
-            # order by (positive rates - negative rates) formula
+            # order by (positive votes - negative votes) formula
             query = query.order_by(
                         db.desc(
                             (db.func.coalesce(r_pos.c.c, 0) -

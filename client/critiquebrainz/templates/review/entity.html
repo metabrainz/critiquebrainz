@@ -24,8 +24,8 @@
         </div>
         <div class="span6">
           <dl class="dl-horizontal">
-            <dt>Rates (+/-)</dt>
-            <dd>{{ review.rates_positive }}/{{ review.rates_negative }}</dd>
+            <dt>Votes (+/-)</dt>
+            <dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
             <dt>Class</dt>
             <dd>{{ review.review_class }}</dd>
           </dl>
@@ -36,12 +36,12 @@
       <hr>
       {% if current_user.is_authenticated() %}
         {% if current_user.me.id != review.user_id %}
-        <form method="POST" action="{{ url_for('review.rate_submit', id=review.id) }}">
+        <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
         Did you find this review useful?
-        <button type="submit" class="btn btn-mini" name="yes" {% if rate.placet == True %}disabled{% endif %}>Yes</button>
-        <button type="submit" class="btn btn-mini" name="no" {% if rate.placet == False %}disabled{% endif %}>No</button>
-          {% if rate.placet == True or rate.placet == False %}
-          <a href="{{ url_for('review.rate_delete', id=review.id) }}">(delete your rate)</a>
+        <button type="submit" class="btn btn-mini" name="yes" {% if vote.placet == True %}disabled{% endif %}>Yes</button>
+        <button type="submit" class="btn btn-mini" name="no" {% if vote.placet == False %}disabled{% endif %}>No</button>
+          {% if vote.placet == True or vote.placet == False %}
+          <a href="{{ url_for('review.vote_delete', id=review.id) }}">(delete your vote)</a>
           {% endif %}
         {% else %}
         You cannot rate your own review

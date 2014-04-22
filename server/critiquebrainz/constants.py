@@ -1,11 +1,11 @@
 # define user types
 class UserType(object):
 
-    def __init__(self, label, karma, reviews_per_day, rates_per_day):
+    def __init__(self, label, karma, reviews_per_day, votes_per_day):
         self.label = label
         self.karma = karma
         self.reviews_per_day = reviews_per_day
-        self.rates_per_day = rates_per_day
+        self.votes_per_day = votes_per_day
 
     def is_instance(self, user):
         return self.karma(user.karma)
@@ -14,31 +14,31 @@ blocked = UserType(
     label=u'Blocked',
     karma=lambda x: (x < -20),
     reviews_per_day=0,
-    rates_per_day=0)
+    votes_per_day=0)
 
 spammer = UserType(
     label=u'Spammer',
     karma=lambda x: (x >= -20 and x < -10),
     reviews_per_day=1,
-    rates_per_day=0)
+    votes_per_day=0)
 
 noob = UserType(
     label=u'Noob',
     karma=lambda x: (x >= -10 and x < 50),
     reviews_per_day=5,
-    rates_per_day=10)
+    votes_per_day=10)
 
 apprentice = UserType(
     label=u'Apprentice',
     karma=lambda x: (x >= 50 and x < 1000),
     reviews_per_day=20,
-    rates_per_day=50)
+    votes_per_day=50)
 
 sorcerer = UserType(
     label=u'Sorcerer',
     karma=lambda x: (x >= 1000),
     reviews_per_day=50,
-    rates_per_day=200)
+    votes_per_day=200)
 
 # register user types
 user_types = (blocked, spammer, noob, apprentice, sorcerer)

@@ -8,7 +8,7 @@ import json
 
 class CritiqueBrainzAPI(object):
 
-    scope = 'user authorization review rate client'
+    scope = 'user authorization review vote client'
 
     def __init__(self, base_url, client_id, **kwargs):
         self.base_url = base_url
@@ -162,15 +162,15 @@ class CritiqueBrainzAPI(object):
         client = resp.get('client')
         return client
 
-    def get_rate(self, review_id, access_token):
+    def get_vote(self, review_id, access_token):
         session = self._service.get_session(access_token)
-        resp = session.get('review/%s/rate' % review_id).json()
+        resp = session.get('review/%s/vote' % review_id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
             raise APIError(code=error, desc=desc)
-        rate = resp.get('rate')
-        return rate
+        vote = resp.get('vote')
+        return vote
 
     def get_user(self, user_id, inc=[]):
         params = dict(inc=' '.join(inc))
@@ -251,11 +251,11 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
-    def update_review_rate(self, review_id, access_token, **kwargs):
+    def update_review_vote(self, review_id, access_token, **kwargs):
         session = self._service.get_session(access_token)
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        resp = session.put('review/%s/rate' % review_id, data=json.dumps(data), headers=headers).json()
+        resp = session.put('review/%s/vote' % review_id, data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -273,9 +273,9 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
-    def delete_review_rate(self, review_id, access_token):
+    def delete_review_vote(self, review_id, access_token):
         session = self._service.get_session(access_token)
-        resp = session.delete('review/%s/rate' % review_id).json()
+        resp = session.delete('review/%s/vote' % review_id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')

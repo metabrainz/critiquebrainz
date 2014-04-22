@@ -21,7 +21,7 @@ def create_handler():
         try:
             message, _, _ = api.create_client(form.name.data, form.desc.data,
                 form.website.data, form.redirect_uri.data,
-                'review rate', current_user.access_token)
+                'review vote', current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:

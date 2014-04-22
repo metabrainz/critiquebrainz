@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, current_app, abort
-from critiquebrainz.db import db, Review, Rate
+from critiquebrainz.db import db, Review, Vote
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
@@ -72,19 +72,19 @@ def review_post_handler(user):
     return jsonify(message='Request processed successfully',
                    id=review.id)
 
-@bp.route('/<uuid:review_id>/rate', methods=['GET'])
-@oauth.require_auth('rate')
-def review_rate_entity_handler(review_id, user):
+@bp.route('/<uuid:review_id>/vote', methods=['GET'])
+@oauth.require_auth('vote')
+def review_vote_entity_handler(review_id, user):
     review = Review.query.get_or_404(str(review_id))
-    rate = Rate.query.filter_by(user=user, review=review).first()
-    if not rate:
+    vote = Vote.query.filter_by(user=user, review=review).first()
+    if not vote:
         raise NotFound
     else:
-        return jsonify(rate=rate.to_dict())
+        return jsonify(vote=vote.to_dict())
 
-@bp.route('/<uuid:review_id>/rate', methods=['PUT'])
-@oauth.require_auth('rate')
-def review_rate_put_handler(review_id, user):
+@bp.route('/<uuid:review_id>/vote', methods=['PUT'])
+@oauth.require_auth('vote')
+def review_vote_put_handler(review_id, user):
     def fetch_params():
         placet = Parser.bool('json', 'placet')
         return placet
@@ -94,24 +94,24 @@ def review_rate_put_handler(review_id, user):
     placet = fetch_params()
     if review.user_id == user.id:
         raise InvalidRequest(desc='You cannot rate your own review.')
-    if user.is_rate_limit_exceeded is True and user.has_rated(review) is False:
-        raise LimitExceeded('You have exceeded your limit of rates per day.')
+    if user.is_vote_limit_exceeded is True and user.has_voted(review) is False:
+        raise LimitExceeded('You have exceeded your limit of votes per day.')
     if placet is True and user.user_type not in review.review_class.upvote:
         raise InvalidRequest(desc='You are not allowed to upvote this review.')
     if placet is False and user.user_type not in review.review_class.downvote:
         raise InvalidRequest(desc='You are not allowed to downvote this review.')
-    # overwrites an existing rate, if needed
-    rate = Rate.create(user, review, placet)
+    # overwrites an existing vote, if needed
+    vote = Vote.create(user, review, placet)
     return jsonify(message='Request processed successfully')
 
-@bp.route('/<uuid:review_id>/rate', methods=['DELETE'])
-@oauth.require_auth('rate')
-def review_rate_delete_handler(review_id, user):
+@bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
+@oauth.require_auth('vote')
+def review_vote_delete_handler(review_id, user):
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound
-    rate = Rate.query.filter_by(user=user, review=review).first()
-    if not rate:
+    vote = Vote.query.filter_by(user=user, review=review).first()
+    if not vote:
         raise InvalidRequest(desc='Review is not rated yet.')
-    rate.delete()
+    vote.delete()
     return jsonify(message='Request processed successfully')
