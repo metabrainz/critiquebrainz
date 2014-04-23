@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
-from critiquebrainz.api import server, musicbrainz
+from critiquebrainz.api import api
+from critiquebrainz import musicbrainz
 
 
 bp = Blueprint('album', __name__)
