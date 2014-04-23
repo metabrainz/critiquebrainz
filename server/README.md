@@ -6,8 +6,10 @@ A GSoC project for MetaBrainz Foundation.
 ##Requirements
 
 * PostgreSQL (tested on 9.1.9)
-* `postgres-contrib`
+* `postgresql-contrib`
+* `postgresql-server-dev-9.1`
 * Python (tested on 2.7.4)
+* `python-dev`
 * virtualenv
 
 ##How to start
@@ -23,7 +25,7 @@ systems
     sudo pip install virtualenv (or)
     sudo apt-get install python-virtualenv
 
-Then, `cd` into your `critiquebrainz/` directory and run
+Then run
 
     scripts/virtualenv.sh
 
