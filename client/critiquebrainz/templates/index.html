@@ -36,7 +36,7 @@
               {{ album.title }}
               <span class="muted">({{ album.release_date }})</span>
             </td>
-            <td>{{ review.user.display_name }}</td>
+            <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
             <td>
               <a href="{{ url_for("review.entity", id=review.id) }}"><i class="icon-eye-open"></i></a>
             </td>
