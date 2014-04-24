@@ -33,7 +33,7 @@
           <tr data-review-id="{{ review.id }}">
             <td>{{ album.artist }}</td>
             <td>
-              {{ album.title }}
+              <a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a>
               <span class="muted">({{ album.release_date }})</span>
             </td>
             <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
