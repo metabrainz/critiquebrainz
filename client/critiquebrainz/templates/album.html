@@ -36,7 +36,9 @@
         {% endif %}
         {% for p in range(pages) %}
           {% set p_offset = p*limit %}
-          <li {% if offset == p_offset %}class="active"{% endif %}><a href="{{ url_for("album.entity", id=id, limit=limit, offset=p*limit) }}">{{ p }}</a></li>
+          <li {% if offset == p_offset %}class="active"{% endif %}>
+            <a href="{{ url_for("album.entity", id=id, limit=limit, offset=p*limit) }}">{{ p }}</a>
+          </li>
         {% endfor %}
       </ul>
     </div>
