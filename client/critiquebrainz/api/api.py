@@ -17,13 +17,6 @@ class CritiqueBrainzAPI(object):
                                       client_id=client_id,
                                       **kwargs)
 
-    def generate_twitter_authorization_uri(self):
-        params = dict(response_type='code',
-                      redirect_uri=url_for('login.post', _external=True),
-                      scope=self.scope,
-                      client_id=self.client_id)
-        return build_url(self.base_url+'login/twitter', params)
-
     def generate_musicbrainz_authorization_uri(self):
         params = dict(response_type='code',
                       redirect_uri=url_for('login.post', _external=True),

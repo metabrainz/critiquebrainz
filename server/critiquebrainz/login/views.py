@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, session, url_for
 from critiquebrainz.oauth import oauth
 from critiquebrainz.exceptions import LoginError
 from critiquebrainz.utils import build_url, generate_string
-from critiquebrainz.login import musicbrainz, twitter
+from critiquebrainz.login import musicbrainz
 
 bp = Blueprint('login', __name__)
 
@@ -27,29 +27,6 @@ def login_musicbrainz_post_handler():
     user_id = musicbrainz.get_user().id
     (code, ) = oauth.generate_grant(client_id, scope, redirect_uri, user_id)
     
-    return redirect(build_url(redirect_uri, dict(state=state, code=code)))
-
-@bp.route('/twitter', endpoint='twitter')
-def login_twitter_handler():
-    (client_id, _, redirect_uri, scope, state) = login_parse_parameters()
-    twitter.persist_data(query=(client_id, redirect_uri, scope, state))
-    url = twitter.get_authentication_uri()
-    return redirect(url)
-
-@bp.route('/twitter/post', endpoint='twitter_post')
-def login_twitter_post_handler():
-    (client_id, redirect_uri, scope, state) = twitter.fetch_data('query')
-
-    try:
-        twitter.validate_post_login()
-    except LoginError as e:
-        raise LoginError(e.code, build_url(redirect_uri, dict(state=state)))
-    except Exception:
-        raise LoginError('server_error', build_url(redirect_uri, dict(state=state)))
-
-    user_id = twitter.get_user().id
-    (code, ) = oauth.generate_grant(client_id, scope, redirect_uri, user_id)
-
     return redirect(build_url(redirect_uri, dict(state=state, code=code)))
 
 @bp.errorhandler(LoginError)

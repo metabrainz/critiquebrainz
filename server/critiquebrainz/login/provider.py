@@ -47,63 +47,6 @@ class BaseAuthentication(object):
         self._service = service
         self._session_key = session_key
 
-class TwitterAuthentication(BaseAuthentication):
-
-    def new_request_token(self, persist=True, **kwargs):
-        # fetch request token from twitter
-        request_token, request_token_secret = self._service.get_request_token(
-            params=kwargs)
-        # persist tokens in session
-        if persist is True:
-            self.persist_data(request_token=request_token,
-                request_token_secret=request_token_secret)
-        return request_token, request_token_secret
-
-    def get_authentication_uri(self, **kwargs):
-        oauth_callback = url_for('login.twitter_post', _external=True, **kwargs)
-        request_token, _ = self.new_request_token(oauth_callback=oauth_callback)
-        return self._service.get_authorize_url(request_token)
-
-    def get_user(self):
-        oauth_verifier = self.fetch_data('oauth_verifier')
-        request_token = self.fetch_data('request_token')
-        request_token_secret = self.fetch_data('request_token_secret')
-
-        # start API session and fetch the data
-        s = self._service.get_auth_session(request_token, request_token_secret, 
-            method='POST', data={'oauth_verifier': oauth_verifier})
-        data = s.get('account/verify_credentials.json').json()
-
-        twitter_id = data.get('id_str')
-        display_name = data.get('screen_name')
-
-        user = User.get_or_create(display_name, twitter_id=twitter_id)
-            
-        return user
-
-    def validate_post_login(self):
-        request_token = self.fetch_data('request_token')
-        request_token_secret = self.fetch_data('request_token_secret')
-        oauth_token= request.args.get('oauth_token')
-        oauth_verifier = request.args.get('oauth_verifier')
-        denied = request.args.get('denied')
-        
-        if denied:
-            if denied == request_token:
-                raise LoginError('access_denied')
-            else:
-                raise LoginError('server_error')
-
-        if oauth_token != request_token:
-            raise LoginError('server_error')
-
-        self.persist_data(oauth_verifier=oauth_verifier)
-
-    def __init__(self, service=None, session_key='twitter', **kwargs):
-        if service is None:
-            service = OAuth1Service(**kwargs)
-        super(TwitterAuthentication,self).__init__(kwargs.get('name'), 
-            service, session_key)
 
 class MusicBrainzAuthentication(BaseAuthentication):
   

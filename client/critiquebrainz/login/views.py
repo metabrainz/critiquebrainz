@@ -8,15 +8,8 @@ bp = Blueprint('login', __name__)
 
 @bp.route('/', endpoint='index')
 @login_forbidden
-def login_twitter_handler():
+def login_handler():
     return render_template('login/login.html')
-
-@bp.route('/twitter', endpoint='twitter')
-@login_forbidden
-def login_twitter_handler():
-    next = request.args.get('next')
-    session['next'] = next
-    return redirect(api.generate_twitter_authorization_uri())
 
 @bp.route('/musicbrainz', endpoint='musicbrainz')
 @login_forbidden
