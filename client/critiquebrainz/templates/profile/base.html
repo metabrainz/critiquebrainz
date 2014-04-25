@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import print_error %}
 {% block wrapper %}
-<div class="container">
-  <div class="row">
-    <div class="span2">
-      <ul class="nav nav-list">
-        <li><a href="{{ url_for("profile_details.index") }}">Profile</a></li>
-        <li><a href="{{ url_for("profile_review.index") }}">Reviews</a></li>
-        <li><a href="{{ url_for("profile_client.index") }}">API clients</a></li>
-      </ul>
-    </div>
-    <div class="span10">
+<div class="row">
+  <div class="col-md-2">
+    <ul class="nav nav-list">
+      <li><a href="{{ url_for('profile_details.index') }}">Profile</a></li>
+      <li><a href="{{ url_for('profile_review.index') }}">Reviews</a></li>
+      <li><a href="{{ url_for('profile_client.index') }}">API clients</a></li>
+    </ul>
+  </div>
+  <div class="col-md-10">
     {% with messages = get_flashed_messages(with_categories=true)  %}
       {% if messages %}
         {% for category, message in messages %}
@@ -19,9 +18,8 @@
       {% endif %}
     {% endwith %}
     {% block content %}
+    <!-- Profile page content -->
     {% endblock %}
-    </div>
   </div>
-  <hr>
 </div>
 {% endblock %}
