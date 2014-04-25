@@ -1,6 +1,7 @@
 {% from 'macros.html' import print_error %}
 <!DOCTYPE html>
 <html>
+
   <head>
     {% block head %}
     <meta charset="utf-8">
@@ -8,21 +9,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
+
     <!-- Bootstrap -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
+
     <style type="text/css">
-        body {
-          padding-top: 20px;
-          color: #5a5a5a;
-        }
+      body { padding-top: 20px; color: #5a5a5a; }
+      .header h2 a { text-decoration: none; }
     </style>
     {% endblock %}
   </head>
+
   <body>
     <div class="container">
+
       {% block header %}
-      <div class="masthead">
+      <div class="header">
         <ul class="nav nav-pills pull-right">
           <li><a href="#">About</a></li>
           <li><a href="#">Blog</a></li>
@@ -32,9 +34,9 @@
           {% else %}
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              {{ current_user.me.display_name }} <b class="caret"></b>
+              {{ current_user.me.display_name }} <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" role="menu">
               <li><a href="{{ url_for("profile_details.index") }}">Profile</a></li>
               <li class="divider"></li>
               <li><a href="{{ url_for("profile_review.index") }}">Reviews</a></li>
@@ -45,36 +47,37 @@
           </li>
           {% endif %}
         </ul>
-        <h2><a href="/"><span style="font-weight: normal">Critique</span>Brainz</a></h2>
+        <h2><a href="/">CritiqueBrainz</a></h2>
       </div>
       <hr>
       {% endblock %}
-    </div>
-    {% block wrapper %}
-    <div class="container">
-      {% with messages = get_flashed_messages(with_categories=true)  %}
-        {% if messages %}
-          {% for category, message in messages %}
-            {{ print_error(message, category) }}
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-      {% block content %}
+
+      {% block wrapper %}
+        {% with messages = get_flashed_messages(with_categories=true)  %}
+          {% if messages %}
+            {% for category, message in messages %}
+              {{ print_error(message, category) }}
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% block content %}
+        <!-- Page content -->
+        {% endblock %}
       {% endblock %}
+
       <hr>
-    </div>
-    {% endblock %}
-    <div class="container">
-      <div class="row">
-        <div class="span4">
-          <ul class="inline">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Developers</a></li>
-          </ul>
-        </div>
+      {% block footer %}
+      <div class="footer">
+        <ul class="list-inline">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Developers</a></li>
+        </ul>
       </div>
-    </div>
+      {% endblock %}
+
+    </div> <!-- /container -->
+
     {% block scripts %}
     <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
