@@ -2,61 +2,51 @@
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">Profile</h2>
-  <a href="{{ url_for("profile_details.edit") }}" class="btn btn-primary pull-right" style="margin-top: 20px;">
-    <i class="icon-edit icon-white"></i>
-    Edit
+  <a href="{{ url_for('profile_details.edit') }}" class="btn btn-primary pull-right" style="margin-top: 20px;">
+    <span class="glyphicon glyphicon-edit"></span> Edit
   </a>
 </div>
 <hr>
-<div class="row-fluid">
-  <div class="span4">
+
+<div class="row">
+
+  <div class="col-md-4">
     <h4>General information</h4>
     <dl class="dl-horizontal">
-      <dt>Display name</dt>
-      <dd>{{ current_user.me.display_name }}</dd>
-      <dt>E-mail</dt>
-      <dd>{{ current_user.me.email }}</dd>
-      <dt>Member since</dt>
-      <dd>{{ current_user.me.created | datetime }}</dd>
-      <dt>User type</dt>
-      <dd>{{ current_user.me.user_type.label }}</dd>
-      <dt>Karma</dt>
-      <dd>{{ current_user.me.karma }}</dd>
+      <dt>Display name</dt><dd>{{ current_user.me.display_name }}</dd>
+      <dt>E-mail</dt><dd>{{ current_user.me.email }}</dd>
+      <dt>Member since</dt><dd>{{ current_user.me.created | datetime }}</dd>
+      <dt>User type</dt><dd>{{ current_user.me.user_type.label }}</dd>
+      <dt>Karma</dt><dd>{{ current_user.me.karma }}</dd>
     </dl>
     <h4>Limits</h4>
     <dl class="dl-horizontal">
-      <dt>Reviews/day</dt>
-      <dd>{{ current_user.me.user_type.reviews_per_day }}</dd>
-      <dt>Votes/day</dt>
-      <dd>{{ current_user.me.user_type.votes_per_day }}</dd>
+      <dt>Reviews/day</dt><dd>{{ current_user.me.user_type.reviews_per_day }}</dd>
+      <dt>Votes/day</dt><dd>{{ current_user.me.user_type.votes_per_day }}</dd>
     </dl>
   </div>
-  <div class="span8">
+
+  <div class="col-md-8">
     <h4>Statistics</h4>
-    <div class="row-fluid">
-      <div class="span6">
+    <div class="row">
+      <div class="col-md-6">
         <h5>Reviews</h5>
         <dl class="dl-horizontal">
-          <dt>Today</dt>
-          <dd>{{ current_user.me.stats.reviews_today }}</dd>
-          <dt>Last 7 days</dt>
-          <dd>{{ current_user.me.stats.reviews_last_7_days }}</dd>
-          <dt>This month</dt>
-          <dd>{{ current_user.me.stats.reviews_this_month }}</dd>
+          <dt>Today</dt><dd>{{ current_user.me.stats.reviews_today }}</dd>
+          <dt>Last 7 days</dt><dd>{{ current_user.me.stats.reviews_last_7_days }}</dd>
+          <dt>This month</dt><dd>{{ current_user.me.stats.reviews_this_month }}</dd>
         </dl>
       </div>
-      <div class="span6">
+      <div class="col-md-6">
         <h5>Votes</h5>
         <dl class="dl-horizontal">
-          <dt>Today</dt>
-          <dd>{{ current_user.me.stats.votes_today }}</dd>
-          <dt>Last 7 days</dt>
-          <dd>{{ current_user.me.stats.votes_last_7_days }}</dd>
-          <dt>This month</dt>
-          <dd>{{ current_user.me.stats.votes_this_month }}</dd>
+          <dt>Today</dt><dd>{{ current_user.me.stats.votes_today }}</dd>
+          <dt>Last 7 days</dt><dd>{{ current_user.me.stats.votes_last_7_days }}</dd>
+          <dt>This month</dt><dd>{{ current_user.me.stats.votes_this_month }}</dd>
         </dl>
       </div>
     </div>
   </div>
+
 </div>
 {% endblock %}
