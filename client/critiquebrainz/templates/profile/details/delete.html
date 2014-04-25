@@ -1,12 +1,13 @@
 {% extends 'profile/base.html' %}
 {% block content %}
-<h2>Deleting profile</h2>
-<hr>
-<form method="POST" class="form-horizontal">
-  <p class="lead">Are you sure you want to delete your account?</p>
-  All your data (i.e. reviews, votes, reports) will be purged. You <strong>cannot</strong>
-  undo this action.
-  <div class="form-actions">
+<h2>Deleting account</h2>
+<hr />
+<form method="POST" role="form">
+  <div class="form-group">
+    <p class="lead">Are you sure you want to delete your account?</p>
+    <p>All your data (i.e. reviews, votes, reports) will be purged. You <strong>cannot</strong> undo this action.</p>
+  </div>
+  <div class="form-group">
     <button type="submit" class="btn btn-danger">Yes, I want to delete my account</button>
     <a href="{{ url_for('profile_details.index') }}" class="btn">No</a>
   </div>
