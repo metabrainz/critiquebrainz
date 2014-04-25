@@ -1,51 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-  <div class="row-fluid">
-    <div class="span6">
-      <div class="hero-unit">
-        <h2>Some catchy phrase</h2>
-        <p>And another one</p>
-        <p>
-          <a class="btn btn-primary btn-large">
-            Learn more
-          </a>
-        </p>
-      </div>
-    </div>
-    <div class="span6">
-      <h4>Last reviews</h4>
-      {% if not reviews %}
-      <p class="lead" style="text-align: center;">No reviews found</p>
-      {% else %}
-      <table class="table table-condensed table-hover">
-        <thead>
-          <tr>
-            <th>Artist</th>
-            <th>Album</th>
-            <th>Author</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for review in reviews %}
-          {% set album = review.release_group|album_details %}
-          <tr data-review-id="{{ review.id }}">
-            <td>{{ album.artist }}</td>
-            <td>
-              {{ album.title }}
-              <span class="muted">({{ album.release_date }})</span>
-            </td>
-            <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
-            <td>
-              <a href="{{ url_for("review.entity", id=review.id) }}"><i class="icon-eye-open"></i></a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% endif %}
-    </div>
-  </div>
-</div>
+<h4>Last reviews</h4>
+{% if not reviews %}
+  <p class="lead" style="text-align: center;">No reviews found</p>
+{% else %}
+  <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Album</th>
+        <th>Author</th>
+        <th><!-- Read button --></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for review in reviews %}
+        {% set album = review.release_group|album_details %}
+        <tr data-review-id="{{ review.id }}">
+          <td>{{ album.artist }}</td>
+          <td>{{ album.title }} <span class="muted">({{ album.release_date }})</span></td>
+          <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
+          <td><a href="{{ url_for('review.entity', id=review.id) }}">
+            <span class="glyphicon glyphicon-eye-open"></span>
+          </a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
 {% endblock %}
