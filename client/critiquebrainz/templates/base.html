@@ -37,10 +37,10 @@
               {{ current_user.me.display_name }} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{{ url_for("profile_details.index") }}">Profile</a></li>
+              <li><a href="{{ url_for('profile_details.index') }}">Profile</a></li>
               <li class="divider"></li>
-              <li><a href="{{ url_for("profile_review.index") }}">Reviews</a></li>
-              <li><a href="{{ url_for("profile_client.index") }}">API clients</a></li>
+              <li><a href="{{ url_for('profile_review.index') }}">Reviews</a></li>
+              <li><a href="{{ url_for('profile_client.index') }}">API clients</a></li>
               <li class="divider"></li>
               <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
             </ul>
@@ -49,7 +49,7 @@
         </ul>
         <h2><a href="/">CritiqueBrainz</a></h2>
       </div>
-      <hr>
+      <hr />
       {% endblock %}
 
       {% block wrapper %}
@@ -64,8 +64,9 @@
         <!-- Page content -->
         {% endblock %}
       {% endblock %}
+      <div class="clearfix"></div>
 
-      <hr>
+      <hr />
       {% block footer %}
       <div class="footer">
         <ul class="list-inline">

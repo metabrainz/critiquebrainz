@@ -5,14 +5,14 @@
 <form method="GET" class="form-horizontal" role="form">
   <div class="form-group">
     <label for="input-artist" class="col-sm-2 control-label">Artist</label>
-    <div class="col-sm-10">
+    <div class="col-sm-4">
       <input id="input-artist" class="form-control" name="artist" type="text"
              value="{{ request.args.get('artist', default='') }}">
     </div>
   </div>
   <div class="form-group">
     <label for="input-album" class="col-sm-2 control-label">Album</label>
-    <div class="col-sm-10">
+    <div class="col-sm-4">
       <input id="input-album" class="form-control" name="album" type="text"
              value="{{ request.args.get('album', default='') }}">
     </div>
@@ -25,7 +25,7 @@
   <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<hr>
+<hr />
 
 {% if not results %}
   <p class="lead" style="text-align: center;">No results found</p>
