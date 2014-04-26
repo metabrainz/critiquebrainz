@@ -34,9 +34,9 @@
           <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
           <td>{{ review.review_class }}</td>
           <td>
-            <a href="{{ url_for('review.entity', id=review.id) }}"><i class="icon-eye-open"></i></a>
-            <a href="{{ url_for('profile_review.edit', id=review.id) }}"><i class="icon-edit"></i></a>
-            <a href="{{ url_for('profile_review.delete', id=review.id) }}"><i class="icon-remove"></i></a>
+            <a href="{{ url_for('review.entity', id=review.id) }}"><span class="glyphicon glyphicon-eye-open"></span></a>
+            <a href="{{ url_for('profile_review.edit', id=review.id) }}"><span class="glyphicon glyphicon-edit"></span></a>
+            <a href="{{ url_for('profile_review.delete', id=review.id) }}"><span class="glyphicon glyphicon-remove"></span></a>
           </td>
         </tr>
       {% endfor %}
