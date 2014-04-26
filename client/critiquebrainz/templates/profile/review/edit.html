@@ -7,28 +7,26 @@
   </div>
   {% endfor %}
 {% endfor %}
-<h2>Editing review ({{ review.id[:5] }})</h2>
-<p>
-  <dl class="dl-horizontal">
-    {% set album = review.release_group|album_details %}
-    <dt>Artist</dt>
-    <dd>{{ album.artist }}</dd>
-    <dt>Album</dt>
-    <dd>{{ album.title }} <span class="muted">({{ album.release_date }})</span></dd>
-    <dt>Created on</dt>
-    <dd>{{ review.created | datetime }}</dd>
-    <dt>Votes (+/-)</dt>
-    <dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
-    <dt>Rating</dt>
-    <dd>{{ review.review_class }}</dd>
-  </dl>
-</p>
-<hr>
-<form method="POST">
+<h2>Editing review <span class="text-muted">({{ review.id[:5] }})</span></h2>
+<dl class="dl-horizontal">
+  {% set album = review.release_group|album_details %}
+  <dt>Artist</dt><dd>{{ album.artist }}</dd>
+  <dt>Album</dt><dd>{{ album.title }} <span class="text-muted">({{ album.release_date }})</span></dd>
+  <dt>Created on</dt><dd>{{ review.created | datetime }}</dd>
+  <dt>Votes (+/-)</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
+  <dt>Rating</dt><dd>{{ review.review_class }}</dd>
+</dl>
+
+<hr />
+<form method="POST" role="form">
   {{ form.hidden_tag() }}
-  {{ form.text(style="width: 100%", rows="5") | safe }}
-  <div class="form-actions">
-    <button type="submit" class="btn btn-primary">Publish</button>
+  <div class="form-group">
+    {{ form.text(style="width: 100%", class="form-control", rows="5") | safe }}
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">Publish</button>
+    </div>
   </div>
 </form>
 {% endblock %}
