@@ -1,53 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-  <div class="row-fluid">
-    <div class="span6">
-      <h4>General information</h4>
-      <dl class="dl-horizontal">
-        <dt>Display name</dt>
-        <dd>{{ user.display_name }}</dd>
-        <dt>Member since</dt>
-        <dd>{{ user.created | datetime }}</dd>
-        <dt>User type</dt>
-        <dd>{{ user.user_type.label }}</dd>
-        <dt>Karma</dt>
-        <dd>{{ user.karma }}</dd>
-      </dl>
-    </div>
-    <div class="span6">
-      <h4>Statistics</h4>
-      <div class="row-fluid">
-        <div class="span6">
-          <h5>Reviews</h5>
-          <dl class="dl-horizontal">
-            <dt>Today</dt>
-            <dd>{{ user.stats.reviews_today }}</dd>
-            <dt>Last 7 days</dt>
-            <dd>{{ user.stats.reviews_last_7_days }}</dd>
-            <dt>This month</dt>
-            <dd>{{ user.stats.reviews_this_month }}</dd>
-          </dl>
-        </div>
-        <div class="span6">
-          <h5>Votes</h5>
-          <dl class="dl-horizontal">
-            <dt>Today</dt>
-            <dd>{{ user.stats.votes_today }}</dd>
-            <dt>Last 7 days</dt>
-            <dd>{{ user.stats.votes_last_7_days }}</dd>
-            <dt>This month</dt>
-            <dd>{{ user.stats.votes_this_month }}</dd>
-          </dl>
-        </div>
+<div class="row">
+  <div class="col-md-6">
+    <h4>General information</h4>
+    <dl class="dl-horizontal">
+      <dt>Display name</dt><dd>{{ user.display_name }}</dd>
+      <dt>Member since</dt><dd>{{ user.created | datetime }}</dd>
+      <dt>User type</dt><dd>{{ user.user_type.label }}</dd>
+      <dt>Karma</dt><dd>{{ user.karma }}</dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    <h4>Statistics</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Reviews</h5>
+        <dl class="dl-horizontal">
+          <dt>Today</dt><dd>{{ user.stats.reviews_today }}</dd>
+          <dt>Last 7 days</dt><dd>{{ user.stats.reviews_last_7_days }}</dd>
+          <dt>This month</dt><dd>{{ user.stats.reviews_this_month }}</dd>
+        </dl>
+      </div>
+      <div class="col-md-6">
+        <h5>Votes</h5>
+        <dl class="dl-horizontal">
+          <dt>Today</dt><dd>{{ user.stats.votes_today }}</dd>
+          <dt>Last 7 days</dt><dd>{{ user.stats.votes_last_7_days }}</dd>
+          <dt>This month</dt><dd>{{ user.stats.votes_this_month }}</dd>
+        </dl>
       </div>
     </div>
   </div>
-  <hr>
-  <h4>Reviews</h4>
-  {% if not reviews %}
+</div>
+
+<hr />
+
+<h4>Reviews</h4>
+{% if not reviews %}
   <p class="lead" style="text-align: center;">No reviews found</p>
-  {% else %}
+{% else %}
   <table class="table">
     <thead>
       <tr>
@@ -62,36 +53,32 @@
     </thead>
     <tbody>
       {% for review in reviews %}
-      {% set album = review.release_group|album_details %}
-      <tr data-review-id="{{ review.id }}">
-        <td>{{ review.id[:5] }}</td>
-        <td>{{ album.artist }}</td>
-        <td>
-          {{ album.title }}
-          <span class="muted">({{ album.release_date }})</span>
-        </td>
-        <td>{{ review.created | datetime }}</td>
-        <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
-        <td>{{ review.review_class }}</td>
-        <td>
-          <a href="{{ url_for("review.entity", id=review.id) }}"><i class="icon-eye-open"></i></a>
-        </td>
-      </tr>
+        {% set album = review.release_group|album_details %}
+        <tr data-review-id="{{ review.id }}">
+          <td>{{ review.id[:5] }}</td>
+          <td>{{ album.artist }}</td>
+          <td>{{ album.title }} <span class="text-muted">({{ album.release_date }})</span> </td>
+          <td>{{ review.created | datetime }}</td>
+          <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
+          <td>{{ review.review_class }}</td>
+          <td><a href="{{ url_for('review.entity', id=review.id) }}">
+            <span class="glyphicon glyphicon-eye-open"></span>
+          </a></td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>
-  <div class="pagination">
-    <ul>
+  <ul class="pagination">
     {% set pages = count//limit %}
     {% if count%limit %}
       {% set pages = pages+1 %}
     {% endif %}
     {% for p in range(pages) %}
       {% set p_offset = p*limit %}
-      <li {% if offset == p_offset %}class="active"{% endif %}><a href="{{ url_for("user.entity", id=user.id, limit=limit, offset=p*limit) }}">{{ p }}</a></li>
+      <li {% if offset == p_offset %}class="active"{% endif %}>
+        <a href="{{ url_for('user.entity', id=user.id, limit=limit, offset=p*limit) }}">{{ p }}</a>
+      </li>
     {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-</div>
+  </ul>
+{% endif %}
 {% endblock %}
