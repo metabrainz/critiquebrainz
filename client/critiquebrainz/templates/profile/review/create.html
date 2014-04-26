@@ -8,42 +8,43 @@
   {% endfor %}
 {% endfor %}
 <h2>Create review</h2>
-<p>
-  <dl class="dl-horizontal">
-    {% set album = release_group | album_details %}
-    <dt>Artist</dt>
-    <dd>{{ album.artist }}</dd>
-    <dt>Album</dt>
-    <dd>{{ album.title }} <span class="muted">({{ album.release_date }})</span></dd>
-  </dl>
-</p>
-<hr>
-<form method="POST" class="form-horizontal">
+<dl class="dl-horizontal">
+  {% set album = release_group | album_details %}
+  <dt>Artist</dt><dd>{{ album.artist }}</dd>
+  <dt>Album</dt><dd>{{ album.title }} <span class="text-muted">({{ album.release_date }})</span></dd>
+</dl>
+<hr />
+<form method="POST" class="form-horizontal" role="form">
   {{ form.hidden_tag() }}
-  <fieldset>
-    <div class="control-group">
-      <div class="controls">
-        {{ form.text(class="input-xxlarge", rows="5") | safe }}
-      </div>
-    </div>
-  </fieldset>
-  <hr>
-  <div class="control-group">
-    <div class="control-label">
-      <img src="{{ url_for('static', filename='img/cc/by.png') }}" />
-      <img src="{{ url_for('static', filename='img/cc/sa.png') }}" />
-    </div>
-    <div class="controls">
-      <label class="checkbox">
-        {{ form.licence() | safe }}
-          <p>
-          You acknowledge and agree that the CritiqueBrainz and its contents are generally licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported</a>. You agree to license your work under such license. You represent and warrant that you own or control all rights in and to the work, that nothing in the work infringes the rights of any third-party, and that you have the permission to use and to license the work under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported</a>.
-          </p>
-        </label>
+  <div class="form-group">
+    <div class="col-sm-12">
+      {{ form.text(class="form-control", rows="5") | safe }}
     </div>
   </div>
-  <div class="form-actions">
-    <button type="submit" class="btn btn-primary">Publish</button>
+  <hr />
+  <div class="form-group">
+    <label class="col-sm-2 control-label">
+      <img src="{{ url_for('static', filename='img/cc/by.png') }}" />
+      <img src="{{ url_for('static', filename='img/cc/sa.png') }}" />
+    </label>
+    <div class="col-sm-10">
+      <div class="checkbox">
+        <label>
+          {{ form.licence() | safe }}
+          You acknowledge and agree that the CritiqueBrainz and its contents are generally licensed under a
+          <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported</a>.
+          You agree to license your work under such license. You represent and warrant that you own or control all
+          rights in and to the work, that nothing in the work infringes the rights of any third-party, and that you
+          have the permission to use and to license the work under a
+          <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported</a>.
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">Publish</button>
+    </div>
   </div>
 </form>
 {% endblock %}
