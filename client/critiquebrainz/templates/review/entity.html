@@ -13,7 +13,7 @@
         <dl class="dl-horizontal">
           <dt>Published on</dt><dd>{{ review.created | datetime }}</dd>
           <dt>Artist</dt><dd>{{ album.artist }}</dd>
-          <dt>Album</dt><dd>{{ album.title }} <span class="text-muted">({{ album.release_date }})</span></dd>
+          <dt>Album</dt><dd><a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a> <span class="text-muted">({{ album.release_date }})</span></dd>
         </dl>
       </div>
       <div class="col-md-6">
