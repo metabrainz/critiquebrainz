@@ -14,7 +14,6 @@ class User(db.Model):
     display_name = db.Column(db.Unicode, nullable=False)
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    twitter_id = db.Column(db.Unicode, unique=True)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
 
     _reviews = db.relationship('Review', cascade='delete', lazy='dynamic', backref='user')
@@ -140,7 +139,6 @@ class User(db.Model):
             user_type = self.user_type.label)
         if confidental is True:
             response.update(dict(email=self.email,
-                                 twitter_id=self.twitter_id,
                                  musicbrainz_id=self.musicbrainz_id))
         if 'user_type' in includes:
             response['user_type'] = dict(

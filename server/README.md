@@ -70,26 +70,14 @@ and testing data. To do this type
 
 ###Preparing login 
 
-Before you begin using authentication with Twitter and/or MusicBrainz accounts, 
-you need to set `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, 
-`MUSICBRAINZ_CLIENT_ID`, and `MUSICBRAINZ_CLIENT_SECRET` in 
+Before you begin using authentication with MusicBrainz accounts,
+you need to set `MUSICBRAINZ_CLIENT_ID` and `MUSICBRAINZ_CLIENT_SECRET` in
 `critiquebrainz/config.py`. To obtain these keys, you need to register your
-client app on Twitter and Musicbrainz websites.
+client app on MusicBrainz.
 
 **Note** `<your domain>` field in the urls listed below should probably be set
 to `127.0.0.1:5000`, if you plan to run your CritiqueBrainz instance locally 
 in development mode.
-
-####Twitter
-You need Twitter account to register your application. Then head to
-https://dev.twitter.com/apps/new and follow the instructions. In `Callback URL`
-field type
-
-    http://<your domain>/login/twitter/post
-
-Finally, save the obtained `Consumer key` and `Consumer secret` fields in your
-`config.py` fields `TWITTER_CONSUMER_KEY` and `TWITTER_CONSUMER_SECRET` 
-respectively.
 
 ####MusicBrainz
 You need MusicBrainz account to register your application. Then head to

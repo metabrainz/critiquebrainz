@@ -2,8 +2,6 @@
 SQLALCHEMY_DATABASE_URI = "postgres://<user>:<pass>@<host>:<port>/<db>"
 DEBUG = True # set False in production mode
 SECRET_KEY = "<your secret key>"
-TWITTER_CONSUMER_KEY = "<your twitter consumer key>"
-TWITTER_CONSUMER_SECRET = "<your twitter consumer secret>"
 MUSICBRAINZ_CLIENT_ID = "<your musicbrainz client id>"
 MUSICBRAINZ_CLIENT_SECRET = "<your musicbrainz client secret>"
 OAUTH_TOKEN_LENGTH = 40
