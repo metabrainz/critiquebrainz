@@ -12,10 +12,12 @@ def tables():
 
 @manager.command
 def fixtures():
+    "Update the newly created database with default schema and testing data"
     _fixtures.install(app, *_fixtures.all_data)
 
 @manager.command
 def create_db():
+    "Create and configure the database"
     from os import system
     def explode_url(url):
         from urlparse import urlsplit
@@ -28,7 +30,7 @@ def create_db():
 
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
     if hostname not in ['localhost', '127.0.0.1']:
-        raise Exception('Cannot configure a remote database.')
+        raise Exception('Cannot configure a remote database')
     
     exit_code = system('scripts/create_database_user.sh %s %s' % (username, password))
     if exit_code != 0: 
