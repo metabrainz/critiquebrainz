@@ -51,3 +51,5 @@ from search.views import bp as bp8
 app.register_blueprint(bp8, url_prefix='/search')
 from album.views import bp as bp9
 app.register_blueprint(bp9, url_prefix='/album')
+from about.views import bp as bp10
+app.register_blueprint(bp10, url_prefix='/about')
