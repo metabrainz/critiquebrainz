@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
+
 {% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <img class="img-responsive" src="//coverartarchive.org/release-group/{{ id }}/front-250" onerror="coverArtMissing(this);">
+  </div>
+  <div class="col-md-9">
 <h2>{{ album.title }} - {{ album.artist }}</h2>
 <small class="muted">Release date: {{ album.release_date }}</small>
 <h4>Last reviews</h4>
@@ -22,7 +28,7 @@
           <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
           <td>{{ review.user.created }}</td>
           <td>{{ review.rating }}</td>
-          <td><a href="{{ url_for('review.entity', id=review.id) }}"><i class="icon-eye-open"></i></a></td>
+          <td><a href="{{ url_for('review.entity', id=review.id) }}"><span class="glyphicon glyphicon-eye-open"></span></a></td>
         </tr>
       {% endfor %}
     </tbody>
@@ -40,4 +46,11 @@
     {% endfor %}
   </ul>
 {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/cover-art-helper.js') }}"></script>
 {% endblock %}

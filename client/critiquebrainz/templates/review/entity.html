@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<style type="text/css">
+  .dl-horizontal dt { width: 100px; }
+  .dl-horizontal dd { margin-left: 120px; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="col-md-3">
-    <h4>Author</h4>
-    <a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a>
-    <br />Joined on {{ review.user.created | datetime }}
+    <img class="img-responsive" src="//coverartarchive.org/release-group/{{ review.release_group }}/front-250" onerror="coverArtMissing(this);">
   </div>
   <div class="col-md-9">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-3">
+        <h4>Author</h4>
+        <a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a>
+        <br />Joined on {{ review.user.created | datetime }}
+      </div>
+      <div class="col-md-5">
         {% set album = review.release_group|album_details %}
         <dl class="dl-horizontal">
           <dt>Published on</dt><dd>{{ review.created | datetime }}</dd>
@@ -16,7 +28,7 @@
           <dt>Album</dt><dd><a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a> <span class="text-muted">({{ album.release_date }})</span></dd>
         </dl>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <dl class="dl-horizontal">
           <dt>Votes (+/-)</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
           <dt>Class</dt><dd>{{ review.review_class }}</dd>
@@ -44,5 +56,10 @@
     {% endif %}
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/cover-art-helper.js') }}"></script>
 {% endblock %}
 
