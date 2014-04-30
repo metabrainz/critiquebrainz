@@ -18,7 +18,10 @@
         {% set album = review.release_group|album_details %}
         <tr data-review-id="{{ review.id }}">
           <td>{{ album.artist }}</td>
-          <td><a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a> <span class="text-muted">({{ album.release_date }})</span></td>
+          <td>
+            <a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a>
+            {% if album.release_date %}<span class="text-muted">({{ album.release_date }})</span>{% endif %}
+          </td>
           <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
           <td><a href="{{ url_for('review.entity', id=review.id) }}">
             <span class="glyphicon glyphicon-eye-open"></span>

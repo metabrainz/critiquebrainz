@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>{{ album.title }} - {{ album.artist }}</h2>
-<small class="muted">Release date: {{ album.release_date }}</small>
+{% if album.release_date %}
+  <small class="muted">Release date: {{ album.release_date }}</small>
+{% endif %}
 <h4>Last reviews</h4>
 {% if not reviews %}
   <p class="lead" style="text-align: center;">No reviews found</p>
