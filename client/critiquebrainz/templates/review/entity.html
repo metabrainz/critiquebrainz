@@ -11,7 +11,12 @@
 {% block content %}
 <div class="row">
   <div class="col-md-3">
-    <img class="img-responsive" src="//coverartarchive.org/release-group/{{ review.release_group }}/front-250" onerror="coverArtMissing(this);">
+    <img class="img-responsive">
+    <script>
+      $("img").last()
+          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+          .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+    </script>
   </div>
   <div class="col-md-9">
     <div class="row">
@@ -56,10 +61,5 @@
     {% endif %}
   </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-{{ super() }}
-<script src="{{ url_for('static', filename='js/cover-art-helper.js') }}"></script>
 {% endblock %}
 
