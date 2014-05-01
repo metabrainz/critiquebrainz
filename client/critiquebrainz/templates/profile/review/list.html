@@ -50,7 +50,7 @@
     {% for p in range(pages) %}
       {% set p_offset = p*limit %}
       <li {% if offset == p_offset %}class="active"{% endif %}>
-        <a href="{{ url_for('profile_review.index', limit=limit, offset=p*limit) }}">{{ p }}</a>
+        <a href="{{ url_for('profile_review.index', limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
       </li>
     {% endfor %}
   </ul>
