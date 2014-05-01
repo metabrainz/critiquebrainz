@@ -57,7 +57,12 @@
         <tr data-review-id="{{ review.id }}">
           <td>{{ review.id[:5] }}</td>
           <td>{{ album.artist }}</td>
-          <td>{{ album.title }} <span class="text-muted">({{ album.release_date }})</span> </td>
+          <td>
+            {{ album.title }}
+            {% if album.release_date %}
+              <span class="text-muted">({{ album.release_date }})</span>
+            {% endif %}
+          </td>
           <td>{{ review.created | datetime }}</td>
           <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
           <td>{{ review.review_class }}</td>

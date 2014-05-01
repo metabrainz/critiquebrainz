@@ -11,7 +11,13 @@
 <dl class="dl-horizontal">
   {% set album = release_group | album_details %}
   <dt>Artist</dt><dd>{{ album.artist }}</dd>
-  <dt>Album</dt><dd>{{ album.title }} <span class="text-muted">({{ album.release_date }})</span></dd>
+  <dt>Album</dt>
+  <dd>
+    {{ album.title }}
+    {% if album.release_date %}
+      <span class="text-muted">({{ album.release_date }})</span>
+    {% endif %}
+  </dd>
 </dl>
 <hr />
 <form method="POST" class="form-horizontal" role="form">
