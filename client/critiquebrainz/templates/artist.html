@@ -4,6 +4,14 @@
 {{ super() }}
 <style type="text/css">
   #releases { margin-top: 20px; }
+  .cover-art-container { height: 203px; width: 203px; }
+  .cover-art-container img {
+    max-height: 203px;
+    max-width: 203px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .release-title {
     white-space: nowrap;
     overflow: hidden;
@@ -20,12 +28,14 @@
   {% for release in artist.release_groups %}
     <div class="col-sm-4 col-md-3 col-lg-3">
       <div class="thumbnail">
-        <img class="img-responsive">
-        <script>
-          $("img").last()
-              .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-              .attr("src", "//coverartarchive.org/release-group/{{ release.id }}/front-250");
-        </script>
+        <div class="cover-art-container">
+          <img class="img-responsive">
+          <script>
+            $("img").last()
+                .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+                .attr("src", "//coverartarchive.org/release-group/{{ release.id }}/front-250");
+          </script>
+        </div>
         <div class="caption">
           <div class="release-title">{{ release.title }}</div>
           <div class="clearfix text-muted">
