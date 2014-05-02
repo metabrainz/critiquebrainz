@@ -11,7 +11,12 @@
 <dl class="dl-horizontal">
   {% set album = review.release_group|album_details %}
   <dt>Artist</dt><dd>{{ album.artist }}</dd>
-  <dt>Album</dt><dd>{{ album.title }} <span class="text-muted">({{ album.release_date }})</span></dd>
+  <dt>Album</dt>
+  <dd>{{ album.title }}
+    {% if album.release_date %}
+      <span class="text-muted">({{ album.release_date }})</span>
+    {% endif %}
+  </dd>
   <dt>Created on</dt><dd>{{ review.created | datetime }}</dd>
   <dt>Votes (+/-)</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
   <dt>Rating</dt><dd>{{ review.review_class }}</dd>
