@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<style type="text/css">
+  #releases { margin-top: 20px; }
+  .release-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>{{ artist.name }}</h2>
+<span class="text-muted">Releases: {{ artist.release_group_count }}</span>
+<div id="releases" class="row">
+  {% for release in artist.release_groups %}
+    <div class="col-sm-4 col-md-3 col-lg-3">
+      <div class="thumbnail">
+        <img class="img-responsive">
+        <script>
+          $("img").last()
+              .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+              .attr("src", "//coverartarchive.org/release-group/{{ release.id }}/front-250");
+        </script>
+        <div class="caption">
+          <div class="release-title">{{ release.title }}</div>
+          <div class="clearfix text-muted">
+            <div class="pull-left">{{ release['primary-type'] }}</div>
+            <div class="pull-right">{{ release['first-release-date'][:4] }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
