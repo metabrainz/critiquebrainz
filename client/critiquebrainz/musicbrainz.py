@@ -1,4 +1,4 @@
-from musicbrainzngs import set_useragent, get_release_group_by_id, search_release_groups
+from musicbrainzngs import set_useragent, get_release_group_by_id, search_release_groups, get_artist_by_id
 from musicbrainzngs.musicbrainz import ResponseError
 
 from critiquebrainz.exceptions import APIError
@@ -26,6 +26,20 @@ class MusicBrainzClient:
     def search_release_group(self, artist, album, limit, offset):
         api_resp = search_release_groups(album, limit, offset, artistname=artist)
         return api_resp.get('release-group-list')
+
+    def artist_details(self, id):
+        try:
+            api_resp = get_artist_by_id(id, includes=['release-groups']).get('artist')
+        except ResponseError as e:
+            if e.cause.code == 404:
+                raise APIError(code=e.cause.code,
+                               desc="Sorry, we could not find an artist with that MusicBrainz ID.")
+            else:
+                raise APIError(code=e.cause.code, desc=e.cause.msg)
+        resp = dict(name=api_resp.get('name'),
+                    release_group_count=api_resp.get('release-group-count'),
+                    release_groups=api_resp.get('release-group-list'))
+        return resp
 
 
 musicbrainz = MusicBrainzClient()
