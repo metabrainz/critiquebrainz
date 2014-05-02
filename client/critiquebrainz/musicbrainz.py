@@ -20,6 +20,7 @@ class MusicBrainzClient:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
         resp = dict(title=api_resp.get('title'),
                     artist=api_resp.get('artist-credit-phrase'),
+                    artist_id=api_resp.get('artist-credit')[0].get('artist').get('id'),
                     release_date=api_resp.get('first-release-date')[:4])
         return resp
 

@@ -10,7 +10,7 @@
     </script>
   </div>
   <div class="col-md-9">
-    <h2>{{ album.title }} - {{ album.artist }}</h2>
+    <h2>{{ album.title }} - <a href="{{ url_for('artist.entity', id=album.artist_id) }}">{{ album.artist }}</a></h2>
     <small class="text-muted">Release date: {{ album.release_date }}</small>
     <h4>Last reviews</h4>
     {% if not reviews %}
