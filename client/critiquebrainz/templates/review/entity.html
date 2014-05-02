@@ -29,7 +29,7 @@
         {% set album = review.release_group|album_details %}
         <dl class="dl-horizontal">
           <dt>Published on</dt><dd>{{ review.created | datetime }}</dd>
-          <dt>Artist</dt><dd>{{ album.artist }}</dd>
+          <dt>Artist</dt><dd><a href="{{ url_for('artist.entity', id=album.artist_id) }}">{{ album.artist }}</a></dd>
           <dt>Album</dt>
           <dd>
             <a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a>
