@@ -5,6 +5,7 @@
 <style type="text/css">
   .dl-horizontal dt { width: 100px; }
   .dl-horizontal dd { margin-left: 120px; }
+  .btn.disabled { cursor: pointer; pointer-events: all; }
 </style>
 {% endblock %}
 
@@ -51,8 +52,8 @@
       {% if current_user.me.id != review.user_id %}
         <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
           Did you find this review useful?
-          <button type="submit" class="btn btn-default btn-xs" name="yes" {% if vote.placet == True %}disabled{% endif %}>Yes</button>
-          <button type="submit" class="btn btn-default btn-xs" name="no" {% if vote.placet == False %}disabled{% endif %}>No</button>
+          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">Yes</button>
+          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">No</button>
           {% if vote.placet == True or vote.placet == False %}
             <a href="{{ url_for('review.vote_delete', id=review.id) }}">(delete your vote)</a>
           {% endif %}
