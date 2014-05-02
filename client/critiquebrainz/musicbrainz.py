@@ -1,4 +1,4 @@
-from musicbrainzngs import set_useragent, get_release_group_by_id, search_release_groups, get_artist_by_id
+from musicbrainzngs import set_useragent, get_release_group_by_id, search_release_groups, get_artist_by_id, browse_release_groups
 from musicbrainzngs.musicbrainz import ResponseError
 
 from critiquebrainz.exceptions import APIError
@@ -30,7 +30,7 @@ class MusicBrainzClient:
 
     def artist_details(self, id):
         try:
-            api_resp = get_artist_by_id(id, includes=['release-groups']).get('artist')
+            api_resp = get_artist_by_id(id).get('artist')
         except ResponseError as e:
             if e.cause.code == 404:
                 raise APIError(code=e.cause.code,
@@ -38,9 +38,15 @@ class MusicBrainzClient:
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
         resp = dict(name=api_resp.get('name'),
-                    release_group_count=api_resp.get('release-group-count'),
-                    release_groups=api_resp.get('release-group-list'))
+                    type=api_resp.get('type'))
         return resp
+
+    def browse_release_groups(self, artist=None, release=None, limit=None, offset=None):
+        try:
+            api_resp = browse_release_groups(artist=artist, release=release, limit=limit, offset=offset)
+        except ResponseError as e:
+            raise APIError(code=e.cause.code, desc=e.cause.msg)
+        return api_resp.get('release-group-count'), api_resp.get('release-group-list')
 
 
 musicbrainz = MusicBrainzClient()
