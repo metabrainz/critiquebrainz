@@ -1,11 +1,13 @@
-from . import db
-from sqlalchemy.dialects.postgresql import UUID
-from vote import Vote
 from datetime import datetime
+
+from sqlalchemy.dialects.postgresql import UUID
+
+from . import db
+from vote import Vote
 from critiquebrainz.constants import review_classes
 
-class Review(db.Model):
 
+class Review(db.Model):
     __tablename__ = 'review'
 
     id = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), primary_key=True)
@@ -17,6 +19,10 @@ class Review(db.Model):
     edits = db.Column(db.Integer, nullable=False, default=0)
     is_archived = db.Column(db.Boolean, nullable=False, default=False)
 
+    content_license = db.Column(db.Unicode, nullable=False)
+    source = db.Column(db.Unicode)
+    source_url = db.Column(db.Unicode)
+
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='review')
     _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='review')
 
@@ -26,17 +32,20 @@ class Review(db.Model):
     allowed_includes = ('user', )
 
     def to_dict(self, includes=[]):
-        response = dict(id = self.id,
-            release_group = self.release_group,
-            user_id = self.user_id,
-            text = self.text,
-            created = self.created,
-            last_updated = self.last_updated,
-            edits = self.edits,
-            votes_positive = self.votes_positive_count,
-            votes_negative = self.votes_negative_count,
-            rating = self.rating,
-            review_class = self.review_class.label)
+        response = dict(id=self.id,
+                        release_group=self.release_group,
+                        user_id=self.user_id,
+                        text=self.text,
+                        created=self.created,
+                        last_updated=self.last_updated,
+                        edits=self.edits,
+                        votes_positive=self.votes_positive_count,
+                        votes_negative=self.votes_negative_count,
+                        rating=self.rating,
+                        content_license=self.content_license,
+                        source=self.source,
+                        source_url=self.source_url,
+                        review_class=self.review_class.label)
 
         if 'user' in includes:
             response['user'] = self.user.to_dict()
