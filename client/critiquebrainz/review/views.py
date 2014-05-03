@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask.ext.login import login_required, current_user
 from critiquebrainz.api import api
 from critiquebrainz.exceptions import *
+import markdown
 
 bp = Blueprint('review', __name__)
 
@@ -21,6 +22,7 @@ def review_entity_handler(id):
     # otherwise set vote to None, its value will not be used
     else:
         vote = None
+    review["text"] = markdown.markdown(review["text"], safe_mode="escape")
     return render_template('review/entity.html', review=review, vote=vote)
 
 @bp.route('/<uuid:id>/vote', methods=['POST'], endpoint='vote_submit')

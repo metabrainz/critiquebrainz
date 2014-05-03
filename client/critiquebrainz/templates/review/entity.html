@@ -46,7 +46,7 @@
       </div>
     </div>
     <hr />
-    <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text }}</p>
+    <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
     {% if review.source %}
       <hr />
       <small class="text-muted">
