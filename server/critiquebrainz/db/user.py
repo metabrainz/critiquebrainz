@@ -1,16 +1,17 @@
-from . import db
-from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime, date, timedelta
+
+from sqlalchemy.dialects.postgresql import UUID
+
+from . import db
 from review import Review
 from vote import Vote
 from critiquebrainz.constants import user_types
 
-class User(db.Model):
 
+class User(db.Model):
     __tablename__ = 'user'
 
-    id = db.Column(UUID, primary_key=True,
-        server_default=db.text("uuid_generate_v4()"))
+    id = db.Column(UUID, primary_key=True, server_default=db.text("uuid_generate_v4()"))
     display_name = db.Column(db.Unicode, nullable=False)
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -33,10 +34,11 @@ class User(db.Model):
 
     @classmethod
     def get_or_create(cls, display_name, **kwargs):
+        # TODO: New user is created if only display_name is passed (review this behavior).
+        # Display names don't have to be unique (see schema)!
         user = cls.query.filter_by(**kwargs).first()
         if user is None:
-            user = cls(display_name=display_name,
-                **kwargs)
+            user = cls(display_name=display_name, **kwargs)
             db.session.add(user)
             db.session.commit()
         return user
