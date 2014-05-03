@@ -157,15 +157,23 @@ class Review(db.Model):
         return reviews, count
 
     @classmethod
-    def create(cls, release_group, user, text):
-        review = Review(release_group=release_group, user=user, text=text)
+    def create(cls, release_group, user, text, content_license="CC BY-SA 3.0", created=None, last_updated=None,
+               source=None, source_url=None):
+        review = Review(release_group=release_group, user=user, text=text, content_license=content_license,
+                        source=source, source_url=source_url, created=created, last_updated=last_updated)
         db.session.add(review)
         db.session.commit()
         return review
 
-    def update(self, release_group=None, text=None):
+    def update(self, release_group=None, text=None, licence="CC BY-SA 3.0", source=None, source_url=None):
         if release_group is not None:
             self.release_group = release_group
         if text is not None:
             self.text = text
+        if licence is not None:
+            self.licence = licence
+        if source is not None:
+            self.source = source
+        if source_url is not None:
+            self.source_url = source_url
         db.session.commit()
