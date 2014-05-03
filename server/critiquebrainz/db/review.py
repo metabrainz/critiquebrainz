@@ -28,6 +28,8 @@ class Review(db.Model):
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
+    DEFAULT_LICENSE = "CC BY-SA 3.0"
+
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user', )
 
@@ -157,7 +159,7 @@ class Review(db.Model):
         return reviews, count
 
     @classmethod
-    def create(cls, release_group, user, text, content_license="CC BY-SA 3.0", created=None, last_updated=None,
+    def create(cls, release_group, user, text, content_license=DEFAULT_LICENSE, created=None, last_updated=None,
                source=None, source_url=None):
         review = Review(release_group=release_group, user=user, text=text, content_license=content_license,
                         source=source, source_url=source_url, created=created, last_updated=last_updated)
@@ -165,7 +167,7 @@ class Review(db.Model):
         db.session.commit()
         return review
 
-    def update(self, release_group=None, text=None, content_license="CC BY-SA 3.0", source=None, source_url=None):
+    def update(self, release_group=None, text=None, content_license=DEFAULT_LICENSE, source=None, source_url=None):
         if release_group is not None:
             self.release_group = release_group
         if text is not None:
