@@ -165,13 +165,13 @@ class Review(db.Model):
         db.session.commit()
         return review
 
-    def update(self, release_group=None, text=None, licence="CC BY-SA 3.0", source=None, source_url=None):
+    def update(self, release_group=None, text=None, content_license="CC BY-SA 3.0", source=None, source_url=None):
         if release_group is not None:
             self.release_group = release_group
         if text is not None:
             self.text = text
-        if licence is not None:
-            self.licence = licence
+        if content_license is not None:
+            self.content_license = content_license
         if source is not None:
             self.source = source
         if source_url is not None:
