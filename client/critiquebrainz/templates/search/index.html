@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Search</h3>
+
+<form method="GET" class="form-horizontal" role="form">
+  <div class="form-group">
+    <label for="input-query" class="col-sm-2 control-label">Query</label>
+    <div class="col-sm-3">
+      <input id="input-query" name="query" class="form-control" value="{{ request.args.get('query', default='') }}">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="type-selector" class="col-sm-2 control-label">Type</label>
+    <div class="col-sm-2">
+      <select id="type-selector" name="type" class="form-control">
+        <option value="artist"{% if type=="artist" %} selected="selected"{% endif %}>Artist</option>
+        <option value="album"{% if type=="album" %} selected="selected"{% endif %}>Album</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Search</button>
+    </div>
+  </div>
+</form>
+
+{% if request.args.get('query', default=False) %}
+  <hr />
+  {% if not results %}
+    <p class="lead" style="text-align: center;">No results found</p>
+  {% else %}
+    {% if type=="artist" %}
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Sort name</th>
+          <th>Type</th>
+          <th>Country</th>
+          <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+          <tr class="clickable-row" data-url="{{ url_for('artist.entity', id=result.id) }}">
+            <td>{{ result['name'] }}</td>
+            <td>{{ result['sort-name'] }}</td>
+            <td>{{ result['type'] or '-' }}</td>
+            <td>{{ result['country'] or '-' }}</td>
+            <td>{{ result['ext:score'] }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% elif type=="album" %}
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Artist</th>
+          <th>Album</th>
+          <th>Type</th>
+          <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+          <tr class="clickable-row" data-url="{{ url_for('album.entity', id=result.id) }}">
+            <td>{{ result['artist-credit-phrase'] }}</td>
+            <td>{{ result['title'] }}</td>
+            <td>{{ result['primary-type'] or '-' }}</td>
+            <td>{{ result['ext:score'] }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  {% endif %}
+{% endif %}
+{% endblock %}
