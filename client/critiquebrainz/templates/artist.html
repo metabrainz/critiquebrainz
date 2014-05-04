@@ -8,10 +8,12 @@
 </h2>
 
 <div class="row">
-  <dl class="dl-horizontal">
-    {% if artist.type %}<dt>Type</dt><dd>{{ artist.type }}</dd>{% endif %}
-    <dt>Releases</dt><dd>{{ count }}</dd>
-  </dl>
+  <div class="col-md-3">
+    <dl class="dl-horizontal">
+      {% if artist.type %}<dt>Type</dt><dd>{{ artist.type }}</dd>{% endif %}
+      <dt>Releases</dt><dd>{{ count }}</dd>
+    </dl>
+  </div>
 </div>
 
 <h4>Discography</h4>
