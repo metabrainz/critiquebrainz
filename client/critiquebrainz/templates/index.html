@@ -1,19 +1,10 @@
 {% extends 'base.html' %}
-
-{% block head %}
-{{ super() }}
-<style type="text/css">
-  .cover-art { width: 50px; height: 50px; }
-  td { vertical-align: middle !important; }
-</style>
-{% endblock %}
-
 {% block content %}
 <h4>Last reviews</h4>
 {% if not reviews %}
   <p class="lead" style="text-align: center;">No reviews found</p>
 {% else %}
-  <table class="table table-condensed table-hover">
+  <table id="last-reviews" class="table table-condensed table-hover">
     <thead>
       <tr>
         <th><!-- Cover art --></th>
