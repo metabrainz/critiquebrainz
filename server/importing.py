@@ -71,7 +71,7 @@ def from_bbc():
 # This function converts HTML in all reviews into Markdown.
 def bbc_html_to_markdown():
     # Preparing regex stuff
-    pattern = re.compile("<a href=\"", re.IGNORECASE)
+    pattern = re.compile("<a href=\"\/", re.IGNORECASE)
     URL_BEGINNING = "http://www.bbc.co.uk"
 
     # Getting all reviews
@@ -85,7 +85,7 @@ def bbc_html_to_markdown():
         iterator = pattern.finditer(review.text)
         current_offset = 0
         for match in iterator:
-            pos = match.end() + current_offset
+            pos = match.end() + current_offset - 1  # -1 because we insert before slash
             review.text = review.text[:pos] + URL_BEGINNING + review.text[pos:]
             current_offset += len(URL_BEGINNING)
 
