@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>{{ artist.name }}</h2>
+<h2>
+  {{ artist.name }}
+  {% if artist.disambiguation %}
+    <small>({{ artist.disambiguation }})</small>
+  {% endif %}
+</h2>
 <span class="text-muted">Releases: {{ count }}</span>
 <div id="releases" class="row">
   {% for release in releases %}
