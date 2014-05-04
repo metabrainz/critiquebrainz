@@ -22,17 +22,15 @@
             <th>Author</th>
             <th>Published on</th>
             <th>Rating</th>
-            <th>Read</th>
           </tr>
         </thead>
         <tbody>
           {% for review in reviews %}
             {% set album = review.release_group|album_details %}
-            <tr data-review-id="{{ review.id }}">
-              <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
+            <tr class="clickable-row" data-url="{{ url_for('review.entity', id=review.id) }}" data-review-id="{{ review.id }}">
+              <td>{{ review.user.display_name }}</td>
               <td>{{ review.user.created }}</td>
               <td>{{ review.rating }}</td>
-              <td><a href="{{ url_for('review.entity', id=review.id) }}"><span class="glyphicon glyphicon-eye-open"></span></a></td>
             </tr>
           {% endfor %}
         </tbody>

@@ -10,18 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
 
-    <!-- Bootstrap -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-
-    <style type="text/css">
-      body { padding-top: 20px; color: #5a5a5a; }
-      .header h2 a { text-decoration: none; }
-    </style>
+    <link href="{{ url_for('static', filename='css/critiquebrainz.css') }}" rel="stylesheet" media="screen">
     {% endblock %}
 
     {% block scripts %}
     <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/critiquebrainz.js') }}"></script>
     {% endblock %}
   </head>
 
