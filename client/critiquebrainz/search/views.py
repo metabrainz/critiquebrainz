@@ -15,6 +15,8 @@ def review_creation_selector_handler():
             results = musicbrainz.search_artist(query, limit=limit, offset=offset)
         elif type == "album":
             results = musicbrainz.search_release_group(query, limit=limit, offset=offset)
+        else:
+            results = []
     else:
         results = []
     return render_template('search/index.html', results=results, type=type)
