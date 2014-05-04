@@ -43,13 +43,13 @@
         </thead>
         <tbody>
         {% for result in results %}
-        <tr>
-          <td>{{ result['name'] }}</td>
-          <td>{{ result['sort-name'] }}</td>
-          <td>{{ result['type'] or '-' }}</td>
-          <td>{{ result['country'] or '-' }}</td>
-          <td>{{ result['ext:score'] }}</td>
-        </tr>
+          <tr class="clickable-row" data-url="{{ url_for('artist.entity', id=result.id) }}">
+            <td>{{ result['name'] }}</td>
+            <td>{{ result['sort-name'] }}</td>
+            <td>{{ result['type'] or '-' }}</td>
+            <td>{{ result['country'] or '-' }}</td>
+            <td>{{ result['ext:score'] }}</td>
+          </tr>
         {% endfor %}
         </tbody>
       </table>
@@ -65,12 +65,12 @@
         </thead>
         <tbody>
         {% for result in results %}
-        <tr>
-          <td>{{ result['artist-credit-phrase'] }}</td>
-          <td>{{ result['title'] }}</td>
-          <td>{{ result['primary-type'] or '-' }}</td>
-          <td>{{ result['ext:score'] }}</td>
-        </tr>
+          <tr class="clickable-row" data-url="{{ url_for('album.entity', id=result.id) }}">
+            <td>{{ result['artist-credit-phrase'] }}</td>
+            <td>{{ result['title'] }}</td>
+            <td>{{ result['primary-type'] or '-' }}</td>
+            <td>{{ result['ext:score'] }}</td>
+          </tr>
         {% endfor %}
         </tbody>
       </table>
