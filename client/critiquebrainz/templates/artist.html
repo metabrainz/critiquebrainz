@@ -21,8 +21,12 @@
   <div id="releases" class="row">
     {% for release in releases %}
       <div class="col-sm-4 col-md-3 col-lg-2">
-        <div class="thumbnail">
+        {% set has_reviews = (release.review_count > 0) %}
+        <div class="thumbnail{% if has_reviews %} reviewed{% endif %}">
           <div class="cover-art-container">
+            {% if has_reviews %}
+              <div class="release-status">Reviewed</div>
+            {% endif %}
             <a href="{{ url_for('album.entity', id=release.id) }}"><img class="img-responsive"></a>
             <script>
               $("img").last()
