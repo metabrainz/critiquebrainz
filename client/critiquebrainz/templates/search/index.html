@@ -44,7 +44,10 @@
         <tbody>
         {% for result in results %}
           <tr class="clickable-row" data-url="{{ url_for('artist.entity', id=result.id) }}">
-            <td>{{ result['name'] }}</td>
+            <td>
+              {{ result['name'] }}
+              {% if result['disambiguation'] %} <span class="text-muted">({{ result['disambiguation'] }})</span>{% endif %}
+            </td>
             <td>{{ result['sort-name'] }}</td>
             <td>{{ result['type'] or '-' }}</td>
             <td>{{ result['country'] or '-' }}</td>
