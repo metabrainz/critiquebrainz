@@ -28,6 +28,10 @@ class MusicBrainzClient:
         api_resp = search_release_groups(query=query, artistname=artist, releasegroup=album, limit=limit, offset=offset)
         return api_resp.get('release-group-list')
 
+    def search_artist(self, query='', limit=None, offset=None):
+        api_resp = search_artists(query=query, sortname=query, alias=query, limit=limit, offset=offset)
+        return api_resp.get('artist-list')
+
     def artist_details(self, id):
         try:
             api_resp = get_artist_by_id(id).get('artist')
