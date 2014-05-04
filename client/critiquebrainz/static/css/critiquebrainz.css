@@ -14,7 +14,7 @@ body { padding-top: 20px; color: #5a5a5a; }
     border-color: rgba(0, 128, 0, 0.4);
     box-shadow: 0px 0px 5px 0px rgba(0, 128, 0, 0.4);
 }
-#releases .thumbnail .release-status {
+#releases .thumbnail .review-count {
     position: absolute;
     padding-left: 5px;
     padding-right: 5px;

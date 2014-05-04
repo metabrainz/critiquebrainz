@@ -27,7 +27,10 @@
         <div class="thumbnail{% if has_reviews %} reviewed{% endif %}">
           <div class="cover-art-container">
             {% if has_reviews %}
-              <div class="release-status">Reviewed</div>
+              <div class="review-count">
+                {{ release.review_count }}
+                {% if release.review_count==1 %}review{% else %}reviews{% endif %}
+              </div>
             {% endif %}
             <a href="{{ url_for('album.entity', id=release.id) }}"><img class="img-responsive"></a>
             <script>
