@@ -1,4 +1,4 @@
-from musicbrainzngs import set_useragent, get_release_group_by_id, search_release_groups, get_artist_by_id, browse_release_groups
+from musicbrainzngs import set_useragent, get_release_group_by_id, get_artist_by_id, search_release_groups, search_artists, browse_release_groups
 from musicbrainzngs.musicbrainz import ResponseError
 
 from critiquebrainz.exceptions import APIError
@@ -24,8 +24,8 @@ class MusicBrainzClient:
                     release_date=api_resp.get('first-release-date')[:4])
         return resp
 
-    def search_release_group(self, artist, album, limit, offset):
-        api_resp = search_release_groups(album, limit, offset, artistname=artist)
+    def search_release_group(self, query='', artist='', album='', limit=None, offset=None):
+        api_resp = search_release_groups(query=query, artistname=artist, releasegroup=album, limit=limit, offset=offset)
         return api_resp.get('release-group-list')
 
     def artist_details(self, id):

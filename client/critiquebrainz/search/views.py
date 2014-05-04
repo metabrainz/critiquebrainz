@@ -16,7 +16,7 @@ def release_group_handler():
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if artist or album:
-        results = musicbrainz.search_release_group(artist, album, limit, offset)
+        results = musicbrainz.search_release_group(artist=artist, album=album, limit=limit, offset=offset)
     else:
         results = []
     return render_template('search.html', results=results, next=next)
