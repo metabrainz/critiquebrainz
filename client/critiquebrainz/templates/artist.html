@@ -1,26 +1,4 @@
 {% extends 'base.html' %}
-
-{% block head %}
-{{ super() }}
-<style type="text/css">
-  #releases { margin-top: 20px; }
-  .cover-art-container { height: 155px; }
-  .cover-art-container img {
-    max-height: 155px;
-    max-width: 155px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .release-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: bold;
-  }
-</style>
-{% endblock %}
-
 {% block content %}
 <h2>{{ artist.name }}</h2>
 <span class="text-muted">Releases: {{ count }}</span>

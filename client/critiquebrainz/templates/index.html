@@ -1,32 +1,22 @@
 {% extends 'base.html' %}
-
-{% block head %}
-{{ super() }}
-<style type="text/css">
-  .cover-art { width: 50px; height: 50px; }
-  td { vertical-align: middle !important; }
-</style>
-{% endblock %}
-
 {% block content %}
 <h4>Last reviews</h4>
 {% if not reviews %}
   <p class="lead" style="text-align: center;">No reviews found</p>
 {% else %}
-  <table class="table table-condensed table-hover">
+  <table id="last-reviews" class="table table-condensed table-hover">
     <thead>
       <tr>
         <th><!-- Cover art --></th>
         <th>Artist</th>
         <th>Album</th>
         <th>Author</th>
-        <th><!-- Read button --></th>
       </tr>
     </thead>
     <tbody>
       {% for review in reviews %}
         {% set album = review.release_group|album_details %}
-        <tr data-review-id="{{ review.id }}">
+        <tr class="clickable-row" data-url="{{ url_for('review.entity', id=review.id) }}" data-review-id="{{ review.id }}">
           <td>
             <img class="cover-art">
             <script>
@@ -35,13 +25,9 @@
                   .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
             </script>
           </td>
-          <td><a href="{{ url_for('artist.entity', id=album.artist_id) }}">{{ album.artist }}</a></td>
-          <td>
-            <a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a>
-            {% if album.release_date %}<span class="text-muted">({{ album.release_date }})</span>{% endif %}
-          </td>
-          <td><a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a></td>
-          <td><a href="{{ url_for('review.entity', id=review.id) }}"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+          <td>{{ album.artist }}</td>
+          <td>{{ album.title }}{% if album.release_date %} <span class="text-muted">({{ album.release_date }})</span>{% endif %}</td>
+          <td>{{ review.user.display_name }}</td>
         </tr>
       {% endfor %}
     </tbody>

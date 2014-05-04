@@ -1,14 +1,4 @@
 {% extends 'base.html' %}
-
-{% block head %}
-{{ super() }}
-<style type="text/css">
-  .dl-horizontal dt { width: 100px; }
-  .dl-horizontal dd { margin-left: 120px; }
-  .btn.disabled { cursor: pointer; pointer-events: all; }
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="row">
   <div class="col-md-3">
@@ -20,7 +10,7 @@
     </script>
   </div>
   <div class="col-md-9">
-    <div class="row">
+    <div id="review-details" class="row">
       <div class="col-md-3">
         <h4>Author</h4>
         <a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a>
