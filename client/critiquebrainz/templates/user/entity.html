@@ -45,7 +45,6 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Hash</th>
         <th>Artist</th>
         <th>Album</th>
         <th>Created on</th>
@@ -57,7 +56,6 @@
       {% for review in reviews %}
         {% set album = review.release_group|album_details %}
         <tr class="clickable-row" data-url="{{ url_for('review.entity', id=review.id) }}" data-review-id="{{ review.id }}">
-          <td>{{ review.id[:5] }}</td>
           <td>{{ album.artist }}</td>
           <td>
             {{ album.title }}
