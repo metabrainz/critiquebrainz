@@ -9,6 +9,22 @@ body { padding-top: 20px; color: #5a5a5a; }
 
 /* Artist page */
 #releases { margin-top: 20px; }
+#releases .thumbnail { height: 223px; }
+#releases .thumbnail.reviewed {
+    border-color: rgba(0, 128, 0, 0.4);
+    box-shadow: 0px 0px 5px 0px rgba(0, 128, 0, 0.4);
+}
+#releases .thumbnail .review-count {
+    position: absolute;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background: rgba(0, 0, 0, 0.57);
+    font-weight: bold;
+    font-size: small;
+    color: #fff;
+}
 #releases .cover-art-container { height: 155px; }
 #releases .cover-art-container img {
     max-height: 155px;

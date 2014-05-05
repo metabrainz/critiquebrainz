@@ -34,16 +34,14 @@ class MusicBrainzClient:
 
     def artist_details(self, id):
         try:
-            api_resp = get_artist_by_id(id).get('artist')
+            api_resp = get_artist_by_id(id)
         except ResponseError as e:
             if e.cause.code == 404:
                 raise APIError(code=e.cause.code,
                                desc="Sorry, we could not find an artist with that MusicBrainz ID.")
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
-        resp = dict(name=api_resp.get('name'),
-                    type=api_resp.get('type'))
-        return resp
+        return api_resp.get('artist')
 
     def browse_release_groups(self, artist=None, release=None, limit=None, offset=None):
         try:
