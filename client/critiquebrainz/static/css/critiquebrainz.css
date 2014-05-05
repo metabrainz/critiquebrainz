@@ -1,5 +1,7 @@
 body { padding-top: 20px; color: #5a5a5a; }
-.header h2 a { text-decoration: none; }
+
+.navbar { margin-top: 20px; margin-bottom: 25px; }
+.navbar .navbar-brand { font-weight: bold; }
 
 .clickable-row { cursor: pointer; }
 
