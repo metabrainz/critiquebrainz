@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
+
+{% block title %}Log in - CritiqueBrainz{% endblock %}
+
 {% from 'macros.html' import print_error %}
+
 {% block content %}
 {% with messages = get_flashed_messages(with_categories=true)  %}
   {% if messages %}
