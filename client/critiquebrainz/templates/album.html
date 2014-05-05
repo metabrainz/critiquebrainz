@@ -15,10 +15,17 @@
   </div>
   <div class="col-md-6">
     <h4 class="pull-left">Reviews</h4>
-    <a id="add-review" href="{{ url_for('profile_review.create', release_group=id) }}"
-       role="button" class="btn btn-success btn-xs pull-right">
-      <span class="glyphicon glyphicon-asterisk"></span> Write review
-    </a>
+    {% if not my_review %}
+      <a id="add-review" href="{{ url_for('profile_review.create', release_group=id) }}"
+         role="button" class="btn btn-success btn-xs pull-right">
+        <span class="glyphicon glyphicon-asterisk"></span> Write review
+      </a>
+    {% else %}
+      <a id="edit-review" href="{{ url_for('profile_review.edit', id=my_review.id) }}"
+         role="button" class="btn btn-primary btn-xs pull-right">
+        <span class="glyphicon glyphicon-edit"></span> Edit my review
+      </a>
+    {% endif %}
     <div class="clearfix"></div>
     {% if not reviews %}
       <p class="lead" style="text-align: center;">No reviews found</p>
