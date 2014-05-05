@@ -42,6 +42,10 @@ body { padding-top: 20px; color: #5a5a5a; }
     font-weight: bold;
 }
 
+/* Album page */
+#album-details #cover-art { margin-top: 10px; }
+#album-details a#add-review { margin-top: 4px; }
+
 /* Review entity page */
 #review-details .dl-horizontal dt { width: 100px; }
 #review-details .dl-horizontal dd { margin-left: 120px; }

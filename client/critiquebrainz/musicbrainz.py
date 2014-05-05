@@ -18,7 +18,8 @@ class MusicBrainzClient:
                                desc="Sorry, we could not find a release group with that MusicBrainz ID.")
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
-        resp = dict(title=api_resp.get('title'),
+        resp = dict(id=api_resp.get('id'),
+                    title=api_resp.get('title'),
                     artist=api_resp.get('artist-credit-phrase'),
                     artist_id=api_resp.get('artist-credit')[0].get('artist').get('id'),
                     release_date=api_resp.get('first-release-date')[:4])

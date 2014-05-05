@@ -3,19 +3,23 @@
 {% block title %}Album "{{ album.title }}" by {{ album.artist }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<div class="row">
+<h2>{{ album.title }} - <a href="{{ url_for('artist.entity', id=album.artist_id) }}">{{ album.artist }}</a></h2>
+<div id="album-details" class="row">
   <div class="col-md-3">
-    <img class="img-responsive">
+    <img id="cover-art" class="img-responsive">
     <script>
       $("img").last()
           .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
           .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
     </script>
   </div>
-  <div class="col-md-9">
-    <h2>{{ album.title }} - <a href="{{ url_for('artist.entity', id=album.artist_id) }}">{{ album.artist }}</a></h2>
-    {% if album.release_date %}<small class="text-muted">Release date: {{ album.release_date }}</small>{% endif %}
-    <h4>Last reviews</h4>
+  <div class="col-md-6">
+    <h4 class="pull-left">Reviews</h4>
+    <a id="add-review" href="{{ url_for('profile_review.create', release_group=id) }}"
+       role="button" class="btn btn-success btn-xs pull-right">
+      <span class="glyphicon glyphicon-asterisk"></span> Write review
+    </a>
+    <div class="clearfix"></div>
     {% if not reviews %}
       <p class="lead" style="text-align: center;">No reviews found</p>
     {% else %}
@@ -43,14 +47,23 @@
         {% if count%limit %}
           {% set pages = pages+1 %}
         {% endif %}
-        {% for p in range(pages) %}
-          {% set p_offset = p*limit %}
-          <li {% if offset == p_offset %}class="active"{% endif %}>
-          <a href="{{ url_for('album.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
-          </li>
-        {% endfor %}
+        {% if pages>1 %}
+          {% for p in range(pages) %}
+            {% set p_offset = p*limit %}
+            <li {% if offset == p_offset %}class="active"{% endif %}>
+            <a href="{{ url_for('album.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
       </ul>
     {% endif %}
+  </div>
+  <div id="album-info" class="col-md-3">
+    <h4>Album info</h4>
+    <p>
+      {% if album.release_date %}Released in {{ album.release_date }}{% endif %}
+    </p>
+    <p><a href="//musicbrainz.org/release-group/{{ album.id }}"><em>Edit on MusicBrainz</em></a></p>
   </div>
 </div>
 {% endblock %}
