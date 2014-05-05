@@ -43,6 +43,6 @@ body { padding-top: 20px; color: #5a5a5a; }
 }
 
 /* Review entity page */
-#review-details .dl-horizontal dt { width: 100px; }
-#review-details .dl-horizontal dd { margin-left: 120px; }
-#review-details .btn.disabled { cursor: pointer; pointer-events: all; }
+#review-entity #review-details .dl-horizontal dt { width: 100px; }
+#review-entity #review-details .dl-horizontal dd { margin-left: 120px; }
+#review-entity .btn.disabled { cursor: pointer; pointer-events: all; }
