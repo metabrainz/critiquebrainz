@@ -40,7 +40,6 @@
             <th>Artist</th>
             <th>Album</th>
             <th>Type</th>
-            <th>Score</th>
             <th></th>
           </tr>
         </thead>
@@ -50,7 +49,6 @@
               <td>{{ result['artist-credit-phrase'] }}</td>
               <td>{{ result['title'] }}</td>
               <td>{{ result['primary-type'] or '-' }}</td>
-              <td>{{ result['ext:score'] }}</td>
               <td>
                 <input type="radio" name="release_group" value="{{ result['id'] }}">
               </td>
