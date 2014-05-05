@@ -43,9 +43,10 @@ class MusicBrainzClient:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
         return api_resp.get('artist')
 
-    def browse_release_groups(self, artist=None, release=None, limit=None, offset=None):
+    def browse_release_groups(self, artist=None, release_type=[], release=None, limit=None, offset=None):
         try:
-            api_resp = browse_release_groups(artist=artist, release=release, limit=limit, offset=offset)
+            api_resp = browse_release_groups(artist=artist, release_type=release_type, release=release,
+                                             limit=limit, offset=offset)
         except ResponseError as e:
             raise APIError(code=e.cause.code, desc=e.cause.msg)
         return api_resp.get('release-group-count'), api_resp.get('release-group-list')

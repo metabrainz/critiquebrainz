@@ -10,16 +10,26 @@
   {% endif %}
 </h2>
 
-<div class="row">
-  <div class="col-md-3">
-    <dl class="dl-horizontal">
-      {% if artist.type %}<dt>Type</dt><dd>{{ artist.type }}</dd>{% endif %}
-      <dt>Releases</dt><dd>{{ count }}</dd>
-    </dl>
-  </div>
-</div>
+{% if artist.type %}<p class="text-muted">{{ artist.type }}</p>{% endif %}
 
 <h4>Discography</h4>
+<ul class="nav nav-tabs">
+  <li {% if release_type=='album' %}class="active"{% endif %}>
+    <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=album">Albums</a>
+  </li>
+  <li {% if release_type=='single' %}class="active"{% endif %}>
+    <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=single">Singles</a>
+  </li>
+  <li {% if release_type=='ep' %}class="active"{% endif %}>
+    <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=ep">EPs</a>
+  </li>
+  <li {% if release_type=='broadcast' %}class="active"{% endif %}>
+    <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=broadcast">Broadcasts</a>
+  </li>
+  <li {% if release_type=='other' %}class="active"{% endif %}>
+    <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=other">Other releases</a>
+  </li>
+</ul>
 {% if count==0 %}
   <p class="lead" style="text-align: center;">No releases found</p>
 {% else %}
@@ -64,7 +74,7 @@
         {% for p in range(pages) %}
           {% set p_offset = p*limit %}
           <li {% if offset == p_offset %}class="active"{% endif %}>
-            <a href="{{ url_for('artist.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+            <a href="{{ url_for('artist.entity', id=id, release_type=release_type, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
           </li>
         {% endfor %}
       </ul>
