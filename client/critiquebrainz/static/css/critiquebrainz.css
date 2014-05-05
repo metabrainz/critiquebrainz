@@ -1,6 +1,6 @@
 body { padding-top: 20px; color: #5a5a5a; }
 
-.navbar { margin-top: 20px; margin-bottom: 25px; }
+.navbar { margin-bottom: 30px; }
 .navbar .navbar-brand { font-size: 20px; font-weight: bold; }
 
 .clickable-row { cursor: pointer; }
