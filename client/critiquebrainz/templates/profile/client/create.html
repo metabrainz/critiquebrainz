@@ -1,4 +1,7 @@
 {% extends 'profile/base.html' %}
+
+{% block title %}Create application - CritiqueBrainz{% endblock %}
+
 {% block content %}
 {% for field in form.errors %}
   {% for error in form.errors[field] %}

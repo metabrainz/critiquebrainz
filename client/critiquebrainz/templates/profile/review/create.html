@@ -1,4 +1,9 @@
 {% extends 'profile/base.html' %}
+
+{% set album = release_group | album_details %}
+
+{% block title %}Create review of "{{ album.title }}" - CritiqueBrainz{% endblock %}
+
 {% block content %}
 {% for field in form.errors %}
   {% for error in form.errors[field] %}
@@ -9,7 +14,6 @@
 {% endfor %}
 <h2>Create review</h2>
 <dl class="dl-horizontal">
-  {% set album = release_group | album_details %}
   <dt>Artist</dt><dd>{{ album.artist }}</dd>
   <dt>Album</dt>
   <dd>

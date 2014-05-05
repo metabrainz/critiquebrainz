@@ -1,4 +1,14 @@
 {% extends 'base.html' %}
+
+{% block title %}
+{% if request.args.get('query', default=False) %}
+  Search results
+{% else %}
+  Search
+{% endif %}
+- CritiqueBrainz
+{% endblock %}
+
 {% block content %}
 <h3>Search</h3>
 
