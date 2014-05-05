@@ -16,7 +16,7 @@ def index_handler():
     return render_template('profile/review/list.html',
         reviews=reviews, limit=limit, offset=offset, count=count)
 
-@bp.route('/create', methods=('GET', 'POST'), endpoint='create')
+@bp.route('/write', methods=('GET', 'POST'), endpoint='create')
 @login_required
 def create_handler():
     release_group = request.args.get('release_group')
@@ -32,7 +32,7 @@ def create_handler():
         else:
             flash(u'You have published the review!', 'success')
         return redirect(url_for('.index'))
-    return render_template('profile/review/create.html', form=form, release_group=release_group)
+    return render_template('profile/review/write.html', form=form, release_group=release_group)
 
 @bp.route('/<uuid:id>/edit', methods=('GET', 'POST'), endpoint='edit')
 @login_required

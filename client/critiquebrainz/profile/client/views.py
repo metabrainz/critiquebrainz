@@ -27,7 +27,7 @@ def create_handler():
         else:
             flash(u'You have created an API client!', 'success')
         return redirect(url_for('.index'))
-    return render_template('profile/client/create.html', form=form)
+    return render_template('profile/client/write.html', form=form)
 
 @bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
 @login_required
