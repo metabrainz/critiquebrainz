@@ -48,7 +48,6 @@
           <th>Sort name</th>
           <th>Type</th>
           <th>Country</th>
-          <th>Score</th>
         </tr>
         </thead>
         <tbody>
@@ -61,7 +60,6 @@
             <td>{{ result['sort-name'] }}</td>
             <td>{{ result['type'] or '-' }}</td>
             <td>{{ result['country'] or '-' }}</td>
-            <td>{{ result['ext:score'] }}</td>
           </tr>
         {% endfor %}
         </tbody>
