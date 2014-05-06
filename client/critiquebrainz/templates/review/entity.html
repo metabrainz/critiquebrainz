@@ -5,9 +5,11 @@
 {% block title %}Review of "{{ release_group.title }}" by {{ review.user.display_name }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
+<h2>Review of "{{ release_group.title }}" by {{ review.user.display_name }}</h2>
+
 <div id="review-entity" class="row">
   <div class="col-md-3">
-    <img class="img-responsive">
+    <img id="cover-art" class="img-responsive">
     <script>
       $("img").last()
           .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
