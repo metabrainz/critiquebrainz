@@ -48,6 +48,6 @@ body { padding-top: 20px; color: #5a5a5a; }
 #release-group-details a#edit-review { margin-top: 4px; }
 
 /* Review entity page */
-#review-entity #review-details .dl-horizontal dt { width: 100px; }
-#review-entity #review-details .dl-horizontal dd { margin-left: 120px; }
+#review-entity #review-details .dl-horizontal dt { width: 105px; }
+#review-entity #review-details .dl-horizontal dd { margin-left: 125px; }
 #review-entity .btn.disabled { cursor: pointer; pointer-events: all; }
