@@ -13,7 +13,7 @@ def search_handler():
     if query:
         if type == "artist":
             results = musicbrainz.search_artist(query, limit=limit, offset=offset)
-        elif type == "release_group":
+        elif type == "release-group":
             results = musicbrainz.search_release_group(query, limit=limit, offset=offset)
         else:
             results = []
