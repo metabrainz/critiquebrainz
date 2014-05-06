@@ -21,7 +21,7 @@
         <a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a>
         <br />Joined on {{ review.user.created | datetime }}
       </div>
-      <div class="col-md-5">
+      <div class="col-md-6">
         <dl class="dl-horizontal">
           <dt>Published on</dt><dd>{{ review.created | datetime }}</dd>
           <dt>Artist</dt><dd><a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group.artist }}</a></dd>
@@ -34,7 +34,7 @@
           </dd>
         </dl>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <dl class="dl-horizontal">
           <dt>Votes (+/-)</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
           <dt>Class</dt><dd>{{ review.review_class }}</dd>
