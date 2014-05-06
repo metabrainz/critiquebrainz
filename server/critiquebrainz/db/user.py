@@ -6,6 +6,7 @@ from . import db
 from review import Review
 from vote import Vote
 from critiquebrainz.constants import user_types
+import hashlib
 
 
 class User(db.Model):
@@ -16,6 +17,7 @@ class User(db.Model):
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
+    show_gravatar = db.Column(db.Boolean, nullable=False, default=True)
 
     _reviews = db.relationship('Review', cascade='delete', lazy='dynamic', backref='user')
     _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='user')
@@ -133,14 +135,20 @@ class User(db.Model):
     def votes_today_count(self):
         return self.votes_since_count(date.today())
 
-    def to_dict(self, includes=[], confidental=False):
+    def to_dict(self, includes=[], confidential=False):
+        if self.show_gravatar:
+            gravatar = "//gravatar.com/avatar/" + hashlib.md5(self.email).hexdigest() + "?d=mm&r=pg"
+        else:
+            gravatar = "//gravatar.com/avatar/placeholder?d=mm"
         response = dict(id = self.id,
             display_name = self.display_name,
             created = self.created,
             karma = self.karma,
+            avatar = gravatar,
             user_type = self.user_type.label)
-        if confidental is True:
+        if confidential is True:
             response.update(dict(email=self.email,
+                                 show_gravatar=self.show_gravatar,
                                  musicbrainz_id=self.musicbrainz_id))
         if 'user_type' in includes:
             response['user_type'] = dict(
@@ -172,10 +180,12 @@ class User(db.Model):
             self._user_type = get_user_type(self)
         return self._user_type
 
-    def update(self, display_name=None, email=None):
+    def update(self, display_name=None, email=None, show_gravatar=None):
         if display_name is not None:
             self.display_name = display_name
         if email is not None:
             self.email = email
+        if show_gravatar is not None:
+            self.show_gravatar = show_gravatar
         db.session.commit()
 

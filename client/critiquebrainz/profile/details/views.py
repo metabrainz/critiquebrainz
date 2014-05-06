@@ -6,10 +6,12 @@ from critiquebrainz.forms.profile.details import EditForm
 
 bp = Blueprint('profile_details', __name__)
 
+
 @bp.route('/', endpoint='index')
 @login_required
 def index_handler():
     return render_template('profile/details/index.html')
+
 
 @bp.route('/edit', methods=['GET', 'POST'], endpoint='edit')
 @login_required
@@ -18,8 +20,9 @@ def edit_handler():
     if form.validate_on_submit():
         try:
             message = api.update_profile(current_user.access_token,
-                display_name=form.display_name.data,
-                email=form.email.data)
+                                         display_name=form.display_name.data,
+                                         email=form.email.data,
+                                         show_gravatar=form.show_gravatar.data)
         except APIError as e:
             flash(e.desc, 'error')
         else:
@@ -28,7 +31,9 @@ def edit_handler():
     else:
         form.display_name.data = current_user.me.get('display_name')
         form.email.data = current_user.me.get('email')
+        form.show_gravatar.data = current_user.me.get('show_gravatar')
     return render_template('profile/details/edit.html', form=form)
+
 
 @bp.route('/delete', methods=['GET', 'POST'], endpoint='delete')
 @login_required

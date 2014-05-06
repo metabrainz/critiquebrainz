@@ -32,7 +32,7 @@
               <span class="text-muted">({{ release_group.first_release_date }})</span>
             {% endif %}
           </td>
-          <td>{{ review.user.display_name }}</td>
+          <td><img class="avatar" src="{{ review.user.avatar }}&s=24" /> {{ review.user.display_name }}</td>
         </tr>
       {% endfor %}
     </tbody>

@@ -18,8 +18,10 @@
     <div id="review-details" class="row">
       <div class="col-md-3">
         <h4>Author</h4>
-        <a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a>
-        <br />Joined on {{ review.user.created | datetime }}
+        <a href="{{ url_for('user.entity', id=review.user_id) }}">
+          <img class="avatar" src="{{ review.user.avatar }}&s=24" />
+          {{ review.user.display_name }}
+        </a>
       </div>
       <div class="col-md-6">
         <dl class="dl-horizontal">
