@@ -136,7 +136,7 @@ class User(db.Model):
         return self.votes_since_count(date.today())
 
     def to_dict(self, includes=[], confidential=False):
-        if self.show_gravatar:
+        if self.show_gravatar and self.email:
             gravatar = "//gravatar.com/avatar/" + hashlib.md5(self.email).hexdigest() + "?d=mm&r=pg"
         else:
             gravatar = "//gravatar.com/avatar/placeholder?d=mm"
