@@ -13,9 +13,12 @@ def release_group_entity_handler(id):
     album = musicbrainz.album_details(id)
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
-    my_count, my_reviews = api.get_reviews(release_group=id, user_id=current_user.me['id'])
-    if my_count != 0:
-        my_review = my_reviews[0]
+    if hasattr(current_user, 'me'):
+        my_count, my_reviews = api.get_reviews(release_group=id, user_id=current_user.me['id'])
+        if my_count != 0:
+            my_review = my_reviews[0]
+        else:
+            my_review = None
     else:
         my_review = None
     count, reviews = api.get_reviews(release_group=id, sort='created',
