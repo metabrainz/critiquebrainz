@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Album "{{ album.title }}" by {{ album.artist }} - CritiqueBrainz{% endblock %}
+{% block title %}Release group "{{ release_group.title }}" by {{ release_group.artist }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<h2>{{ album.title }} - <a href="{{ url_for('artist.entity', id=album.artist_id) }}">{{ album.artist }}</a></h2>
-<div id="album-details" class="row">
+<h2>{{ release_group.title }} - <a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group.artist }}</a></h2>
+<div id="release-group-details" class="row">
   <div class="col-md-3">
     <img id="cover-art" class="img-responsive">
     <script>
@@ -40,7 +40,6 @@
         </thead>
         <tbody>
           {% for review in reviews %}
-            {% set album = review.release_group|album_details %}
             <tr class="clickable-row" data-url="{{ url_for('review.entity', id=review.id) }}" data-review-id="{{ review.id }}">
               <td>{{ review.user.display_name }}</td>
               <td>{{ review.user.created }}</td>
@@ -58,19 +57,19 @@
           {% for p in range(pages) %}
             {% set p_offset = p*limit %}
             <li {% if offset == p_offset %}class="active"{% endif %}>
-            <a href="{{ url_for('album.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+            <a href="{{ url_for('release_group.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
             </li>
           {% endfor %}
         {% endif %}
       </ul>
     {% endif %}
   </div>
-  <div id="album-info" class="col-md-3">
-    <h4>Album info</h4>
+  <div class="col-md-3">
+    <h4>Release group information</h4>
     <p>
-      {% if album.release_date %}Released in {{ album.release_date }}{% endif %}
+      {% if release_group.first_release_date %}First release in {{ release_group.first_release_date }}{% endif %}
     </p>
-    <p><a href="//musicbrainz.org/release-group/{{ album.id }}"><em>Edit on MusicBrainz</em></a></p>
+    <p><a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>Edit on MusicBrainz</em></a></p>
   </div>
 </div>
 {% endblock %}

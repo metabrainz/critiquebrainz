@@ -46,7 +46,7 @@
     <thead>
       <tr>
         <th>Artist</th>
-        <th>Album</th>
+        <th>Release group</th>
         <th>Created on</th>
         <th>Votes (+/-)</th>
         <th>Class</th>
@@ -54,13 +54,13 @@
     </thead>
     <tbody>
       {% for review in reviews %}
-        {% set album = review.release_group|album_details %}
+        {% set release_group = review.release_group|release_group_details %}
         <tr class="clickable-row" data-url="{{ url_for('review.entity', id=review.id) }}" data-review-id="{{ review.id }}">
-          <td>{{ album.artist }}</td>
+          <td>{{ release_group.artist }}</td>
           <td>
-            {{ album.title }}
-            {% if album.release_date %}
-              <span class="text-muted">({{ album.release_date }})</span>
+            {{ release_group.title }}
+            {% if release_group.first_release_date %}
+              <span class="text-muted">({{ release_group.first_release_date }})</span>
             {% endif %}
           </td>
           <td>{{ review.created | datetime }}</td>

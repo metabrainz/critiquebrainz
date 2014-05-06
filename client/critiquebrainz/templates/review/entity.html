@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
-{% set album = review.release_group|album_details %}
+{% set release_group = review.release_group|release_group_details %}
 
-{% block title %}Review of "{{ album.title }}" by {{ review.user.display_name }} - CritiqueBrainz{% endblock %}
+{% block title %}Review of "{{ release_group.title }}" by {{ review.user.display_name }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
 <div id="review-entity" class="row">
@@ -24,11 +24,13 @@
       <div class="col-md-5">
         <dl class="dl-horizontal">
           <dt>Published on</dt><dd>{{ review.created | datetime }}</dd>
-          <dt>Artist</dt><dd><a href="{{ url_for('artist.entity', id=album.artist_id) }}">{{ album.artist }}</a></dd>
-          <dt>Album</dt>
+          <dt>Artist</dt><dd><a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group.artist }}</a></dd>
+          <dt>Release group</dt>
           <dd>
-            <a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a>
-            {% if album.release_date %}<span class="text-muted">({{ album.release_date }})</span>{% endif %}
+            <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
+            {% if release_group.first_release_date %}
+              <span class="text-muted">({{ release_group.first_release_date }})</span>
+            {% endif %}
           </dd>
         </dl>
       </div>

@@ -21,7 +21,7 @@ def index_handler():
 def create_handler():
     release_group = request.args.get('release_group')
     if not release_group:
-        flash('Please choose the album you want to review.')
+        flash('Please choose release group that you want to review.')
         return redirect(url_for('search.selector', next=url_for('.create')))
     form = CreateForm()
     if form.validate_on_submit():
