@@ -56,13 +56,32 @@
 @mb-orange: #ffba58;
 @mb-purple: #736dab;
 
+@brand-primary: @mb-purple;
+
 @link-color: darken(@mb-orange, 30%);
 @link-hover-color: darken(@link-color, 15%);
 
-body { padding-top: 20px; color: #5a5a5a; }
+body { padding-top: 70px; color: #5a5a5a; }
 
-.navbar { margin-bottom: 30px; }
-.navbar .navbar-brand { font-size: 20px; font-weight: bold; }
+
+// Navbar
+@navbar-default-bg: @mb-purple;
+@navbar-default-border: @mb-orange;
+.navbar {
+  border-width: 0 0 2px;
+  margin-bottom: 30px;
+  .navbar-brand { font-size: 20px; font-weight: bold; }
+}
+.navbar-form { height: 26px; }
+
+@navbar-default-link-color: #fff;
+@navbar-default-link-hover-color: darken(@mb-orange, 10%);
+@navbar-default-link-active-color: #fff;
+@navbar-default-link-active-bg: darken(@mb-orange, 10%);
+@navbar-default-brand-color: @navbar-default-link-color;
+@navbar-default-brand-hover-color: @navbar-default-link-hover-color;
+@navbar-default-toggle-icon-bar-bg: #fff;
+
 
 .clickable-row { cursor: pointer; }
 
