@@ -56,13 +56,18 @@
 @mb-orange: #ffba58;
 @mb-purple: #736dab;
 
+body { padding-top: 70px; color: #5a5a5a; }
+
 @brand-primary: @mb-purple;
 
 @link-color: darken(@mb-orange, 30%);
 @link-hover-color: darken(@link-color, 15%);
 
-body { padding-top: 70px; color: #5a5a5a; }
+.table {
+  > thead > tr > th { border-bottom-width: 1px; }
+}
 
+@hr-border: @mb-orange;
 
 // Navbar
 @navbar-default-bg: @mb-purple;
