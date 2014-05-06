@@ -10,13 +10,13 @@ body { padding-top: 20px; color: #5a5a5a; }
 #last-reviews td { vertical-align: middle !important; }
 
 /* Artist page */
-#releases { margin-top: 20px; }
-#releases .thumbnail { height: 223px; }
-#releases .thumbnail.reviewed {
+#release-groups { margin-top: 20px; }
+#release-groups .thumbnail { height: 223px; }
+#release-groups .thumbnail.reviewed {
     border-color: rgba(0, 128, 0, 0.4);
     box-shadow: 0px 0px 5px 0px rgba(0, 128, 0, 0.4);
 }
-#releases .thumbnail .review-count {
+#release-groups .thumbnail .review-count {
     position: absolute;
     padding-left: 5px;
     padding-right: 5px;
@@ -27,27 +27,27 @@ body { padding-top: 20px; color: #5a5a5a; }
     font-size: small;
     color: #fff;
 }
-#releases .cover-art-container { height: 155px; }
-#releases .cover-art-container img {
+#release-groups .cover-art-container { height: 155px; }
+#release-groups .cover-art-container img {
     max-height: 155px;
     max-width: 155px;
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
-.release-title {
+#release-groups .thumbnail .release-group-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: bold;
 }
 
-/* Album page */
-#album-details #cover-art { margin-top: 10px; }
-#album-details a#add-review { margin-top: 4px; }
-#album-details a#edit-review { margin-top: 4px; }
+/* Release group page */
+#release-group-details #cover-art { margin-top: 10px; }
+#release-group-details a#add-review { margin-top: 4px; }
+#release-group-details a#edit-review { margin-top: 4px; }
 
 /* Review entity page */
-#review-entity #review-details .dl-horizontal dt { width: 100px; }
-#review-entity #review-details .dl-horizontal dd { margin-left: 120px; }
+#review-entity #review-details .dl-horizontal dt { width: 105px; }
+#review-entity #review-details .dl-horizontal dd { margin-left: 125px; }
 #review-entity .btn.disabled { cursor: pointer; pointer-events: all; }

@@ -1,8 +1,8 @@
 {% extends 'profile/base.html' %}
 
-{% set album = release_group | album_details %}
+{% set release_group = release_group | release_group_details %}
 
-{% block title %}Write review of "{{ album.title }}" - CritiqueBrainz{% endblock %}
+{% block title %}Write review of "{{ release_group.title }}" - CritiqueBrainz{% endblock %}
 
 {% block content %}
 {% for field in form.errors %}
@@ -14,12 +14,12 @@
 {% endfor %}
 <h2>Write review</h2>
 <dl class="dl-horizontal">
-  <dt>Artist</dt><dd>{{ album.artist }}</dd>
-  <dt>Album</dt>
+  <dt>Artist</dt><dd>{{ release_group.artist }}</dd>
+  <dt>Release group</dt>
   <dd>
-    {{ album.title }}
-    {% if album.release_date %}
-      <span class="text-muted">({{ album.release_date }})</span>
+    {{ release_group.title }}
+    {% if release_group.first_release_date %}
+      <span class="text-muted">({{ release_group.first_release_date }})</span>
     {% endif %}
   </dd>
 </dl>

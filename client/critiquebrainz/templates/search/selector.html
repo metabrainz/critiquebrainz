@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Album selection - CritiqueBrainz{% endblock %}
+{% block title %}Release group selection - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<h3>Album search</h3>
+<h3>Release group search</h3>
 
 <form method="GET" class="form-horizontal" role="form">
   <div class="form-group">
@@ -14,10 +14,10 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="input-album" class="col-sm-2 control-label">Album</label>
+    <label for="input-release-group" class="col-sm-2 control-label">Release group</label>
     <div class="col-sm-4">
-      <input id="input-album" class="form-control" name="album" type="text"
-             value="{{ request.args.get('album', default='') }}">
+      <input id="input-release-group" class="form-control" name="release_group" type="text"
+             value="{{ request.args.get('release_group', default='') }}">
     </div>
   </div>
   <div class="form-group">
@@ -28,7 +28,7 @@
   <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-{% if request.args.get('artist', default=False) or request.args.get('album', default=False) %}
+{% if request.args.get('artist', default=False) or request.args.get('release_group', default=False) %}
   <hr />
   {% if not results %}
     <p class="lead" style="text-align: center;">No results found</p>
@@ -38,7 +38,7 @@
         <thead>
           <tr>
             <th>Artist</th>
-            <th>Album</th>
+            <th>Release group</th>
             <th>Type</th>
             <th></th>
           </tr>
