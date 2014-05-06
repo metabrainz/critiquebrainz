@@ -36,7 +36,7 @@
 //@import "bootstrap/list-group.less";
 //@import "bootstrap/panels.less";
 @import "bootstrap/wells.less";
-@import "bootstrap/close.less";
+//@import "bootstrap/close.less";
 
 // Components w/ JavaScript
 //@import "bootstrap/modals.less";
@@ -48,6 +48,14 @@
 @import "bootstrap/utilities.less";
 @import "bootstrap/responsive-utilities.less";
 
+
+// General suff
+
+@mb-orange: #ffba58;
+@mb-purple: #736dab;
+
+@link-color: darken(@mb-orange, 30%);
+@link-hover-color: darken(@link-color, 15%);
 
 body { padding-top: 20px; color: #5a5a5a; }
 
@@ -65,11 +73,13 @@ img.avatar {
   margin-right: .35em;
 }
 
-/* Index page */
+
+// Index page
 #last-reviews .cover-art { width: 50px; height: 50px; }
 #last-reviews td { vertical-align: middle !important; }
 
-/* Artist page */
+
+// Artist page
 #release-groups { margin-top: 20px; }
 #release-groups .thumbnail { height: 223px; }
 #release-groups .thumbnail.reviewed {
@@ -102,12 +112,14 @@ img.avatar {
   font-weight: bold;
 }
 
-/* Release group page */
+
+// Release group page
 #release-group-details #cover-art { margin-top: 10px; }
 #release-group-details a#add-review { margin-top: 4px; }
 #release-group-details a#edit-review { margin-top: 4px; }
 
-/* Review entity page */
+
+// Review entity page
 #review-entity #review-details .dl-horizontal dt { width: 105px; }
 #review-entity #review-details .dl-horizontal dd { margin-left: 125px; }
 #review-entity .btn.disabled { cursor: pointer; pointer-events: all; }
