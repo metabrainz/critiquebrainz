@@ -3,7 +3,23 @@
 {% block title %}Release group "{{ release_group.title }}" by {{ release_group.artist }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<h2>{{ release_group.title }} - <a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group.artist }}</a></h2>
+<div class="clearfix">
+  <h2 class="pull-left">
+    {{ release_group.title }} -
+    <a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group.artist }}</a>
+  </h2>
+  {% if not my_review %}
+    <a id="write-review" href="{{ url_for('profile_review.create', release_group=id) }}"
+       role="button" class="btn btn-success pull-right">
+      <span class="glyphicon glyphicon-asterisk"></span> Write a review
+    </a>
+  {% else %}
+    <a id="edit-review" href="{{ url_for('profile_review.edit', id=my_review.id) }}"
+       role="button" class="btn btn-primary pull-right">
+      <span class="glyphicon glyphicon-edit"></span> Edit my review
+    </a>
+  {% endif %}
+</div>
 <div id="release-group-details" class="row">
   <div class="col-md-3">
     <img id="cover-art" class="img-responsive">
@@ -14,19 +30,7 @@
     </script>
   </div>
   <div class="col-md-6">
-    <h4 class="pull-left">Reviews</h4>
-    {% if not my_review %}
-      <a id="add-review" href="{{ url_for('profile_review.create', release_group=id) }}"
-         role="button" class="btn btn-success btn-xs pull-right">
-        <span class="glyphicon glyphicon-asterisk"></span> Write review
-      </a>
-    {% else %}
-      <a id="edit-review" href="{{ url_for('profile_review.edit', id=my_review.id) }}"
-         role="button" class="btn btn-primary btn-xs pull-right">
-        <span class="glyphicon glyphicon-edit"></span> Edit my review
-      </a>
-    {% endif %}
-    <div class="clearfix"></div>
+    <h4>Reviews</h4>
     {% if not reviews %}
       <p class="lead" style="text-align: center;">No reviews found</p>
     {% else %}
