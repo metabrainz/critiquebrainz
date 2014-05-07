@@ -49,9 +49,10 @@
 @import "bootstrap/responsive-utilities.less";
 
 
-// General suff
-
 @icon-font-path:"/static/fonts/";
+
+
+// General suff
 
 @mb-orange: #ffba58;
 @mb-purple: #736dab;
@@ -76,13 +77,6 @@ body {
 // Navbar
 @navbar-default-bg: @mb-purple;
 @navbar-default-border: @mb-orange;
-.navbar {
-  border-width: 0 0 2px;
-  margin-bottom: 30px;
-  .navbar-brand { font-size: 20px; font-weight: bold; }
-}
-.navbar-form { height: 26px; }
-
 @navbar-default-link-color: #fff;
 @navbar-default-link-hover-color: darken(@mb-orange, 10%);
 @navbar-default-link-active-color: #fff;
@@ -90,6 +84,11 @@ body {
 @navbar-default-brand-color: @navbar-default-link-color;
 @navbar-default-brand-hover-color: @navbar-default-link-hover-color;
 @navbar-default-toggle-icon-bar-bg: #fff;
+.navbar {
+  border-width: 0 0 2px;
+  margin-bottom: 30px;
+  .navbar-brand { font-size: 20px; font-weight: bold; }
+}
 
 
 .clickable-row { cursor: pointer; }
