@@ -23,10 +23,10 @@ def create_handler():
     if not release_group:
         flash('Please choose release group that you want to review.')
         return redirect(url_for('search.selector', next=url_for('.create')))
-    form = CreateForm()
+    form = CreateForm(license_choice='CC BY-SA 3.0')
     if form.validate_on_submit():
         try:
-            message, id = api.create_review(release_group, form.text.data, current_user.access_token)
+            api.create_review(release_group, form.text.data, form.license_choice.data, current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:

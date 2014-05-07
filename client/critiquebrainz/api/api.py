@@ -194,10 +194,11 @@ class CritiqueBrainzAPI(object):
         client_secret = client.get('secret')
         return message, client_id, client_secret
 
-    def create_review(self, release_group, text, access_token):
+    def create_review(self, release_group, text, license_choice, access_token):
         session = self._service.get_session(access_token)
         data = dict(release_group=release_group,
-                    text=text)
+                    text=text,
+                    license_choice=license_choice)
         headers = {'Content-type': 'application/json'}
         resp = session.post('review/', data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
