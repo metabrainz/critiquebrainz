@@ -29,7 +29,7 @@
     <tbody>
       {% for review in reviews %}
         {% set release_group = review.release_group|release_group_details %}
-        <tr data-review-id="{{ review.id }}">
+        <tr class="clickable-row" data-url="{{ url_for('review.entity', id=review.id) }}" data-review-id="{{ review.id }}">
           <td>{{ release_group.artist }}</td>
           <td>
             {{ release_group.title }}
@@ -41,9 +41,8 @@
           <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
           <td>{{ review.review_class }}</td>
           <td>
-            <a href="{{ url_for('review.entity', id=review.id) }}"><span class="glyphicon glyphicon-eye-open"></span></a>
-            <a href="{{ url_for('profile_review.edit', id=review.id) }}"><span class="glyphicon glyphicon-edit"></span></a>
-            <a href="{{ url_for('profile_review.delete', id=review.id) }}"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="btn btn-default btn-xs" href="{{ url_for('profile_review.edit', id=review.id) }}">Edit</a>
+            <a class="btn btn-danger btn-xs" href="{{ url_for('profile_review.delete', id=review.id) }}">Delete</a>
           </td>
         </tr>
       {% endfor %}
