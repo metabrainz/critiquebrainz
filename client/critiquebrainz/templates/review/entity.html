@@ -47,13 +47,13 @@
     </div>
     <hr />
     <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
-    {% if review.source %}
-      <hr />
-      <small class="text-muted">
-        This review was imported from <a href="{{ review.source_url }}">{{ review.source }}</a>.
-        It is licensed under a {{ review.content_license }} license.
-      </small>
-    {% endif %}
+    <hr />
+    <small class="text-muted">
+      This review is licensed under a {{ review.content_license }} license.
+      {% if review.source %}
+        It was imported from <a href="{{ review.source_url }}">{{ review.source }}</a>.
+      {% endif %}
+    </small>
     <hr />
     {% if current_user.is_authenticated() %}
       {% if current_user.me.id != review.user_id %}
