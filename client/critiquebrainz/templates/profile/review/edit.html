@@ -27,7 +27,11 @@
   <dt>Rating</dt><dd>{{ review.review_class }}</dd>
 </dl>
 
-<hr />
+<div class="clearfix" style="margin-bottom:5px;">
+  <small class="text-muted pull-right" style="font-style:italic;">
+    You can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax to apply custom formatting.
+  </small>
+</div>
 <form method="POST" class="form-horizontal" role="form">
   {{ form.hidden_tag() }}
   <div class="form-group">
@@ -35,6 +39,7 @@
       {{ form.text(class="form-control", rows="5") | safe }}
     </div>
   </div>
+  <hr />
   <div class="form-group">
     <div class="col-sm-12">
       <button type="submit" class="btn btn-primary">Publish</button>
