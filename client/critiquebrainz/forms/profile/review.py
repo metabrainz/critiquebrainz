@@ -8,8 +8,8 @@ class CreateForm(Form):
     license_choice = RadioField(
         'Licence choice',
         choices=[
-            ('CC BY-SA 3.0', 'Allow commercial use of this review'),
-            ('CC BY-NC-SA 3.0', 'Do not allow commercial use of this review, unless approved by MetaBrainz Foundation'),
+            ('CC BY-SA 3.0', 'Allow commercial use of this review (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0 license</a>)'),
+            ('CC BY-NC-SA 3.0', 'Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0 license</a>)'),
         ],
         validators=[validators.DataRequired(message="You need to choose license")])
     licence = BooleanField('Licence', validators=[
