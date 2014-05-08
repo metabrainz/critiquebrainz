@@ -3,7 +3,7 @@ from flask.ext.wtf import Form, TextAreaField, RadioField, BooleanField, validat
 
 class CreateForm(Form):
     text = TextAreaField('Text', validators=[
-        validators.DataRequired(message="Review field is empty"),
+        validators.DataRequired(message="Review is empty"),
         validators.Length(min=25, message="Review needs to be at least 25 characters long")])
     license_choice = RadioField(
         'Licence choice',
@@ -18,5 +18,5 @@ class CreateForm(Form):
 
 class EditForm(Form):
     text = TextAreaField('Text', [
-        validators.DataRequired(message="Review field is empty"),
+        validators.DataRequired(message="Review is empty"),
         validators.Length(min=25, message="Review needs to be at least 25 characters long")])
