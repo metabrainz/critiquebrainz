@@ -115,9 +115,36 @@ img.avatar {
 }
 
 
-// Index page
-#last-reviews .cover-art { width: 50px; height: 50px; }
-#last-reviews td { vertical-align: middle !important; }
+// Home page
+#homepage{
+  .btn-primary { margin-top: 10px; }
+  #lists {
+    margin-top: 25px;
+    ul.reviews {
+      > li {
+        height: 50px;
+        margin-bottom: 10px;
+        img.cover-art {
+          max-width: 50px;
+          max-height: 50px;
+          margin-right: 10px;
+        }
+        img.avatar {
+          margin-right: 0;
+        }
+        .album { margin-top: 4px; }
+        .album, .reviewer {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+      > li:hover {
+        background-color: @table-bg-hover;
+      }
+    }
+  }
+}
 
 
 // Artist page
