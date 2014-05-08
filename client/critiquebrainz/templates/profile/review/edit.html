@@ -28,13 +28,15 @@
 </dl>
 
 <hr />
-<form method="POST" role="form">
+<form method="POST" class="form-horizontal" role="form">
   {{ form.hidden_tag() }}
   <div class="form-group">
-    {{ form.text(style="width: 100%", class="form-control", rows="5") | safe }}
+    <div class="col-sm-12">
+      {{ form.text(class="form-control", rows="5") | safe }}
+    </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
+    <div class="col-sm-12">
       <button type="submit" class="btn btn-primary">Publish</button>
     </div>
   </div>
