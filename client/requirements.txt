@@ -1,5 +1,5 @@
 Flask==0.10.1
-Flask-Login==0.2.6
+Flask-Login==0.2.10
 Flask-Script==0.5.3
 Flask-UUID==0.2
 Flask-WTF==0.8.4
