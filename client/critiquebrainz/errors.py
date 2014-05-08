@@ -8,7 +8,7 @@ def api_error_handler(error):
     if error.code in ('invalid_token', 'invalid_grant'):
         # logout, if the user is logged in with an invalid access and/or refresh token
         logout_user()
-        flash('Your login session has expired. Please log in again.', 'error')
+        flash('Your login session has expired. Please sign in again.', 'error')
         return redirect(url_for('index'))
     else:
         return render_template('error.html', code=error.code, description=error.desc), error.status
