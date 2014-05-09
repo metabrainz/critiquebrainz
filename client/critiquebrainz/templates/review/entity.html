@@ -49,7 +49,12 @@
     <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
     <hr />
     <small class="text-muted">
-      This review is licensed under a {{ review.content_license }} license.
+      This review is licensed under a
+      {% if review.license.info_url %}
+        <a href="{{ review.license.info_url }}">{{ review.license.id }} license</a>.
+      {% else %}
+        {{ review.license.key }} license.
+      {% endif %}
       {% if review.source %}
         It was imported from <a href="{{ review.source_url }}">{{ review.source }}</a>.
       {% endif %}

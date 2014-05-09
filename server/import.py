@@ -57,7 +57,7 @@ for i, row in enumerate(rows):
             review = Review.create(user=user,
                                    text=row[2],
                                    release_group=release_group_id,
-                                   content_license="CC BY-NC-SA 3.0",
+                                   license_id="CC BY-NC-SA 3.0",
                                    created=row[3],
                                    last_updated=row[4],
                                    source="BBC",

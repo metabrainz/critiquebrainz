@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
-
 from . import db
 from vote import Vote
 from critiquebrainz.constants import review_classes
@@ -19,7 +18,7 @@ class Review(db.Model):
     edits = db.Column(db.Integer, nullable=False, default=0)
     is_archived = db.Column(db.Boolean, nullable=False, default=False)
 
-    content_license = db.Column(db.Unicode, nullable=False)
+    license_id = db.Column(db.Unicode, db.ForeignKey('license.id', ondelete='CASCADE'), nullable=False)
     source = db.Column(db.Unicode)
     source_url = db.Column(db.Unicode)
 
@@ -28,7 +27,7 @@ class Review(db.Model):
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
-    DEFAULT_LICENSE = "CC BY-SA 3.0"
+    DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
 
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user', )
@@ -44,11 +43,10 @@ class Review(db.Model):
                         votes_positive=self.votes_positive_count,
                         votes_negative=self.votes_negative_count,
                         rating=self.rating,
-                        content_license=self.content_license,
+                        license=self.license.to_dict(),
                         source=self.source,
                         source_url=self.source_url,
                         review_class=self.review_class.label)
-
         if 'user' in includes:
             response['user'] = self.user.to_dict()
         return response
@@ -159,21 +157,21 @@ class Review(db.Model):
         return reviews, count
 
     @classmethod
-    def create(cls, release_group, user, text, content_license=DEFAULT_LICENSE, created=None, last_updated=None,
+    def create(cls, release_group, user, text, license_id=DEFAULT_LICENSE_ID, created=None, last_updated=None,
                source=None, source_url=None):
-        review = Review(release_group=release_group, user=user, text=text, content_license=content_license,
+        review = Review(release_group=release_group, user=user, text=text, license_id=license_id,
                         source=source, source_url=source_url, created=created, last_updated=last_updated)
         db.session.add(review)
         db.session.commit()
         return review
 
-    def update(self, release_group=None, text=None, content_license=DEFAULT_LICENSE, source=None, source_url=None):
+    def update(self, release_group=None, text=None, license_id=None, source=None, source_url=None):
         if release_group is not None:
             self.release_group = release_group
         if text is not None:
             self.text = text
-        if content_license is not None:
-            self.content_license = content_license
+        if license_id is not None:
+            self.license_id = license_id
         if source is not None:
             self.source = source
         if source_url is not None:

@@ -5,7 +5,7 @@ Flask-Testing==0.4
 Flask-UUID==0.2
 Jinja2==2.7
 MarkupSafe==0.18
-SQLAlchemy==0.8.2
+SQLAlchemy==0.9.4
 Werkzeug==0.9.3
 argparse==1.2.1
 distribute==0.6.34
