@@ -1,17 +1,13 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import print_error %}
+
+{% block title %}Sign in - CritiqueBrainz{% endblock %}
+
 {% block content %}
-{% with messages = get_flashed_messages(with_categories=true)  %}
-  {% if messages %}
-    {% for category, message in messages %}
-      {{ print_error(message, category) }}
-    {% endfor %}
-  {% endif %}
-{% endwith %}
 <h3>Sign in</h3>
 <p>To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to access your profile data.</p>
 <hr />
 <div class="well" style="max-width: 600px; margin: 0 auto;">
   <a href="{{ url_for('login.musicbrainz', next=request.args.get('next')) }}"
-     class="btn btn-large btn-block">Sign in with MusicBrainz</a></div>
+     class="btn btn-primary btn-lg btn-block">Sign in with MusicBrainz</a>
+</div>
 {% endblock %}

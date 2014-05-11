@@ -62,13 +62,14 @@ def review_post_handler(user):
     def fetch_params():
         release_group = Parser.uuid('json', 'release_group')
         text = Parser.string('json', 'text', min=25, max=2500)
+        license_choice = Parser.string('json', 'license_choice')
         if Review.query.filter_by(user=user, release_group=release_group).count():
             raise InvalidRequest(desc='You have already published a review for this album')
-        return release_group, text
+        return release_group, text, license_choice
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
-    release_group, text = fetch_params()
-    review = Review.create(user=user, text=text, release_group=release_group)
+    release_group, text, license_choice = fetch_params()
+    review = Review.create(user=user, release_group=release_group, text=text, content_license=license_choice)
     return jsonify(message='Request processed successfully',
                    id=review.id)
 

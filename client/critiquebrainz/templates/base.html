@@ -10,46 +10,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
 
-    <!-- Bootstrap -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    {% if config.DEBUG %}
+      <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='css/styles.less') }}" />
+      <script src="{{ url_for('static', filename='js/less.min.js') }}"></script>
+    {% else %}
+      <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" media="screen">
+    {% endif %}
+    {% endblock %}
 
-    <style type="text/css">
-      body { padding-top: 20px; color: #5a5a5a; }
-      .header h2 a { text-decoration: none; }
-    </style>
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/critiquebrainz.js') }}"></script>
     {% endblock %}
   </head>
 
   <body>
     <div class="container">
 
-      {% block header %}
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a href="/about/">About</a></li>
-          <li><a href="http://blog.musicbrainz.org/">Blog</a></li>
-          <li><a href="#">Developers</a></li>
-          {% if current_user.is_anonymous() %}
-          <li><a href="{{ url_for('login.index') }}">Sign in</a></li>
-          {% else %}
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              {{ current_user.me.display_name }} <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="{{ url_for('profile_details.index') }}">Profile</a></li>
-              <li class="divider"></li>
-              <li><a href="{{ url_for('profile_review.index') }}">Reviews</a></li>
-              <li><a href="{{ url_for('profile_client.index') }}">API clients</a></li>
-              <li class="divider"></li>
-              <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
+      {% block navbar %}
+      <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#cb-navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">CritiqueBrainz</a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="cb-navbar-collapse">
+            <ul class="nav navbar-nav">
+              {% if current_user.is_anonymous() %}
+                <li><a href="{{ url_for('login.index') }}">Sign in</a></li>
+              {% else %}
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    {{ current_user.me.display_name }} <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="{{ url_for('profile_details.index') }}">Profile</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('profile_review.index') }}">Reviews</a></li>
+                    <li><a href="{{ url_for('profile_client.index') }}">API clients</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('login.logout') }}">Sign out</a></li>
+                  </ul>
+                </li>
+              {% endif %}
+              <li><a href="/about/">About</a></li>
+              <li><a href="http://blog.musicbrainz.org/">Blog</a></li>
+              <li><a href="https://github.com/metabrainz/critiquebrainz/wiki/Developer-documentation">Developers</a></li>
             </ul>
-          </li>
-          {% endif %}
-        </ul>
-        <h2><a href="/">CritiqueBrainz</a></h2>
-      </div>
-      <hr />
+            <form class="navbar-form navbar-right" role="search" method="GET" action="{{ url_for('search.index') }}">
+              <div class="form-group">
+                <input type="text" name="query" class="form-control input-sm" placeholder="Search">
+              </div>
+              <div class="form-group">
+                <select id="type-selector" name="type" class="form-control input-sm">
+                  <option value="artist">Artist</option>
+                  <option value="release-group">Release group</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-default input-sm"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
       {% endblock %}
 
       {% block wrapper %}
@@ -66,22 +97,17 @@
       {% endblock %}
       <div class="clearfix"></div>
 
-      <hr />
       {% block footer %}
+      <hr />
       <div class="footer">
         <ul class="list-inline">
           <li><a href="/about/">About</a></li>
           <li><a href="http://blog.musicbrainz.org/">Blog</a></li>
-          <li><a href="#">Developers</a></li>
+          <li><a href="https://github.com/metabrainz/critiquebrainz/wiki/Developer-documentation">Developers</a></li>
         </ul>
       </div>
       {% endblock %}
 
     </div> <!-- /container -->
-
-    {% block scripts %}
-    <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    {% endblock %}
   </body>
 </html>

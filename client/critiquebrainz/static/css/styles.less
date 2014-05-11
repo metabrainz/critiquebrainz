@@ -1,0 +1,214 @@
+// Core variables and mixins
+@import "bootstrap/variables.less";
+@import "bootstrap/mixins.less";
+
+// Reset
+@import "bootstrap/normalize.less";
+@import "bootstrap/print.less";
+
+// Core CSS
+@import "bootstrap/scaffolding.less";
+@import "bootstrap/type.less";
+//@import "bootstrap/code.less";
+@import "bootstrap/grid.less";
+@import "bootstrap/tables.less";
+@import "bootstrap/forms.less";
+@import "bootstrap/buttons.less";
+
+// Components
+@import "bootstrap/component-animations.less";
+@import "bootstrap/glyphicons.less";
+@import "bootstrap/dropdowns.less";
+@import "bootstrap/button-groups.less";
+@import "bootstrap/input-groups.less";
+@import "bootstrap/navs.less";
+@import "bootstrap/navbar.less";
+//@import "bootstrap/breadcrumbs.less";
+@import "bootstrap/pagination.less";
+@import "bootstrap/pager.less";
+//@import "bootstrap/labels.less";
+//@import "bootstrap/badges.less";
+//@import "bootstrap/jumbotron.less";
+@import "bootstrap/thumbnails.less";
+@import "bootstrap/alerts.less";
+//@import "bootstrap/progress-bars.less";
+//@import "bootstrap/media.less";
+//@import "bootstrap/list-group.less";
+//@import "bootstrap/panels.less";
+@import "bootstrap/wells.less";
+//@import "bootstrap/close.less";
+
+// Components w/ JavaScript
+//@import "bootstrap/modals.less";
+//@import "bootstrap/tooltip.less";
+//@import "bootstrap/popovers.less";
+//@import "bootstrap/carousel.less";
+
+// Utility classes
+@import "bootstrap/utilities.less";
+@import "bootstrap/responsive-utilities.less";
+
+
+@icon-font-path:"/static/fonts/";
+
+
+// General suff
+
+@mb-orange: #ffba58;
+@mb-purple: #736dab;
+
+body {
+  padding-top: 70px;
+  padding-bottom: 25px;
+  color: rgb(90, 90, 90);
+}
+
+@brand-primary: @mb-purple;
+
+@link-color: #6600ff;
+@link-hover-color: #fc6714;
+
+.table {
+  > thead > tr > th { border-bottom-width: 1px; }
+}
+
+// Navbar
+@navbar-default-bg: @mb-purple;
+@navbar-default-border: @mb-orange;
+@navbar-default-link-color: darken(#fff, 10%);
+@navbar-default-link-hover-color: #fff;
+@navbar-default-link-active-color: #fff;
+@navbar-default-link-active-bg: darken(@mb-orange, 10%);
+@navbar-default-brand-color: #fff;
+@navbar-default-brand-hover-color: @navbar-default-link-hover-color;
+@navbar-default-toggle-icon-bar-bg: #fff;
+.navbar {
+  border-width: 0 0 4px;
+  margin-bottom: 30px;
+  .navbar-brand { font-size: 20px; font-weight: bold; }
+
+  form { margin-top: 12px; }
+  .input-sm {
+    height: 25px;
+    padding: 5px 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+  }
+  select.input-sm {
+    height: 25px;
+    line-height: 30px;
+  }
+  button .glyphicon { top: 0; }
+}
+
+
+.clickable-row { cursor: pointer; }
+
+img.avatar {
+  display: inline;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  padding: 1px;
+  background: #fff;
+  margin-right: .35em;
+}
+
+
+// Home page
+#homepage{
+  .btn-primary { margin-top: 10px; }
+  #lists {
+    margin-top: 25px;
+    ul.reviews {
+      > li {
+        height: 50px;
+        margin-bottom: 10px;
+        img.cover-art {
+          max-width: 50px;
+          max-height: 50px;
+          margin-right: 10px;
+        }
+        img.avatar {
+          margin-right: 0;
+        }
+        .album { margin-top: 4px; }
+        .album, .reviewer {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+      > li:hover {
+        background-color: @table-bg-hover;
+      }
+    }
+  }
+}
+
+
+// Artist page
+#release-groups { margin-top: 20px; }
+#release-groups .thumbnail { height: 223px; }
+#release-groups .thumbnail.reviewed {
+  border-color: fadeout(@mb-purple, 40%);
+  box-shadow: 0px 0px 5px 0px @mb-purple;
+}
+#release-groups .thumbnail .review-count {
+  position: absolute;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background: rgba(0, 0, 0, 0.57);
+  font-weight: bold;
+  font-size: small;
+  color: #fff;
+}
+#release-groups .cover-art-container { height: 155px; }
+#release-groups .cover-art-container img {
+  max-height: 155px;
+  max-width: 155px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+#release-groups .thumbnail .release-group-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+}
+
+
+// Release group page
+a#write-review { margin-top: 20px; }
+a#edit-review { margin-top: 20px; }
+#release-group-details {
+  #cover-art { margin-top: 10px; }
+}
+
+
+// Review entity page
+#review-entity {
+  #cover-art { margin-top: 10px; }
+  #review-details {
+    .dl-horizontal dt { width: 105px; }
+    .dl-horizontal dd { margin-left: 125px; }
+  }
+  .btn.disabled { cursor: pointer; pointer-events: all; }
+}
+
+
+// Review editor
+#review-editor {
+  #agreement {
+    font-size: @font-size-base - 2;
+  }
+}
+
+
+// User profile page
+#profile {
+  .nav-list { margin-top: 15px; }
+}

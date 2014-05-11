@@ -1,5 +1,9 @@
 {% extends "base.html" %}
+
+{% block title %}OAuth authorization - CritiqueBrainz{% endblock %}
+
 {% from 'macros.html' import scope_desc %}
+
 {% block content %}
 <h3>Do you want to give access to your account to {{ client.name }}?</h3>
 <div class="alert alert-info">

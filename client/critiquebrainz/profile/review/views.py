@@ -16,23 +16,23 @@ def index_handler():
     return render_template('profile/review/list.html',
         reviews=reviews, limit=limit, offset=offset, count=count)
 
-@bp.route('/create', methods=('GET', 'POST'), endpoint='create')
+@bp.route('/write', methods=('GET', 'POST'), endpoint='create')
 @login_required
 def create_handler():
     release_group = request.args.get('release_group')
     if not release_group:
-        flash('Please choose the album you want to review.')
-        return redirect(url_for('search.release_group', next=url_for('.create')))
-    form = CreateForm()
+        flash('Please choose release group that you want to review.')
+        return redirect(url_for('search.selector', next=url_for('.create')))
+    form = CreateForm(license_choice='CC BY-SA 3.0')
     if form.validate_on_submit():
         try:
-            message, id = api.create_review(release_group, form.text.data, current_user.access_token)
+            api.create_review(release_group, form.text.data, form.license_choice.data, current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:
             flash(u'You have published the review!', 'success')
         return redirect(url_for('.index'))
-    return render_template('profile/review/create.html', form=form, release_group=release_group)
+    return render_template('profile/review/write.html', form=form, release_group=release_group)
 
 @bp.route('/<uuid:id>/edit', methods=('GET', 'POST'), endpoint='edit')
 @login_required

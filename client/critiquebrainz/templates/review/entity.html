@@ -1,22 +1,44 @@
 {% extends 'base.html' %}
+
+{% set release_group = review.release_group|release_group_details %}
+
+{% block title %}Review of "{{ release_group.title }}" by {{ review.user.display_name }} - CritiqueBrainz{% endblock %}
+
 {% block content %}
-<div class="row">
+<h2>Review of "{{ release_group.title }}" by {{ review.user.display_name }}</h2>
+
+<div id="review-entity" class="row">
   <div class="col-md-3">
-    <h4>Author</h4>
-    <a href="{{ url_for('user.entity', id=review.user_id) }}">{{ review.user.display_name }}</a>
-    <br />Joined on {{ review.user.created | datetime }}
+    <img id="cover-art" class="img-responsive">
+    <script>
+      $("img").last()
+          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+          .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+    </script>
   </div>
   <div class="col-md-9">
-    <div class="row">
-      <div class="col-md-6">
-        {% set album = review.release_group|album_details %}
+    <div id="review-details" class="row">
+      <div class="col-md-3">
+        <h4>Author</h4>
+        <a href="{{ url_for('user.entity', id=review.user_id) }}">
+          <img class="avatar" src="{{ review.user.avatar }}&s=24" />
+          {{ review.user.display_name }}
+        </a>
+      </div>
+      <div class="col-md-5">
         <dl class="dl-horizontal">
-          <dt>Published on</dt><dd>{{ review.created | datetime }}</dd>
-          <dt>Artist</dt><dd>{{ album.artist }}</dd>
-          <dt>Album</dt><dd><a href="{{ url_for('album.entity', id=review.release_group) }}">{{ album.title }}</a> <span class="text-muted">({{ album.release_date }})</span></dd>
+          <dt>Reviewed on</dt><dd>{{ review.created | datetime }}</dd>
+          <dt>Artist</dt><dd><a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group.artist }}</a></dd>
+          <dt>Release group</dt>
+          <dd>
+            <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
+            {% if release_group.first_release_date %}
+              <span class="text-muted">({{ release_group.first_release_date }})</span>
+            {% endif %}
+          </dd>
         </dl>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <dl class="dl-horizontal">
           <dt>Votes (+/-)</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
           <dt>Class</dt><dd>{{ review.review_class }}</dd>
@@ -24,14 +46,21 @@
       </div>
     </div>
     <hr />
-    <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text }}</p>
+    <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
+    <hr />
+    <small class="text-muted">
+      This review is licensed under a {{ review.content_license }} license.
+      {% if review.source %}
+        It was imported from <a href="{{ review.source_url }}">{{ review.source }}</a>.
+      {% endif %}
+    </small>
     <hr />
     {% if current_user.is_authenticated() %}
       {% if current_user.me.id != review.user_id %}
         <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
           Did you find this review useful?
-          <button type="submit" class="btn btn-default btn-xs" name="yes" {% if vote.placet == True %}disabled{% endif %}>Yes</button>
-          <button type="submit" class="btn btn-default btn-xs" name="no" {% if vote.placet == False %}disabled{% endif %}>No</button>
+          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">Yes</button>
+          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">No</button>
           {% if vote.placet == True or vote.placet == False %}
             <a href="{{ url_for('review.vote_delete', id=review.id) }}">(delete your vote)</a>
           {% endif %}

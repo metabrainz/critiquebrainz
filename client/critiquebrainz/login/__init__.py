@@ -9,6 +9,7 @@ import json
 
 login_manager = LoginManager()
 login_manager.login_view = 'login.index'
+login_manager.login_message = u"Please sign in to access this page."
 
 @login_manager.user_loader
 def load_user(refresh_token):

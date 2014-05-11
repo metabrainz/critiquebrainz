@@ -1,0 +1,71 @@
+{% extends 'profile/base.html' %}
+
+{% set release_group = release_group | release_group_details %}
+
+{% block title %}Write review of "{{ release_group.title }}" - CritiqueBrainz{% endblock %}
+
+{% block content %}
+{% for field in form.errors %}
+  {% for error in form.errors[field] %}
+  <div class="alert alert-danger">
+    {{ error }}
+  </div>
+  {% endfor %}
+{% endfor %}
+<h2>Write review</h2>
+<dl class="dl-horizontal">
+  <dt>Artist</dt><dd>{{ release_group.artist }}</dd>
+  <dt>Release group</dt>
+  <dd>
+    {{ release_group.title }}
+    {% if release_group.first_release_date %}
+      <span class="text-muted">({{ release_group.first_release_date }})</span>
+    {% endif %}
+  </dd>
+</dl>
+
+<div class="clearfix" style="margin-bottom:5px;">
+  <small class="text-muted pull-right" style="font-style:italic;">
+    You can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax to apply custom formatting.
+  </small>
+</div>
+<form id="review-editor" method="POST" class="form-horizontal" role="form">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    <div class="col-sm-12">
+      {{ form.text(class="form-control", rows="5") | safe }}
+    </div>
+  </div>
+  <hr />
+  {% for choice in form.license_choice %}
+  <div class="radio">
+    <label>
+      {{ choice }}
+      {{ choice.label }}
+    </label>
+  </div>
+  {% endfor %}
+  <br/>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <div class="checkbox">
+        <label id="agreement">
+          {{ form.licence() | safe }}
+          You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a
+          Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial
+          license as per your choice above. You agree to license your work under this license.
+          You represent and warrant that you own or control all rights in and to the work, that nothing in the work
+          infringes the rights of any third-party, and that you have the permission to use and to license the work
+          under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license
+          this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization.
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-primary">Publish</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

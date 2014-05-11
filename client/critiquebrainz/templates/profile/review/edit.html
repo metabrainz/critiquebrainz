@@ -1,30 +1,47 @@
 {% extends 'profile/base.html' %}
+
+{% set release_group = review.release_group|release_group_details %}
+
+{% block title %}Edit review of "{{ release_group.title }}" - CritiqueBrainz{% endblock %}
+
 {% block content %}
 {% for field in form.errors %}
   {% for error in form.errors[field] %}
-  <div class="alert alert-error">
+  <div class="alert alert-danger">
     {{ error }}
   </div>
   {% endfor %}
 {% endfor %}
-<h2>Editing review <span class="text-muted">({{ review.id[:5] }})</span></h2>
+<h2>Editing review</h2>
 <dl class="dl-horizontal">
-  {% set album = review.release_group|album_details %}
-  <dt>Artist</dt><dd>{{ album.artist }}</dd>
-  <dt>Album</dt><dd>{{ album.title }} <span class="text-muted">({{ album.release_date }})</span></dd>
+  <dt>Artist</dt><dd>{{ release_group.artist }}</dd>
+  <dt>Release group</dt>
+  <dd>
+    {{ release_group.title }}
+    {% if release_group.first_release_date %}
+      <span class="text-muted">({{ release_group.first_release_date }})</span>
+    {% endif %}
+  </dd>
   <dt>Created on</dt><dd>{{ review.created | datetime }}</dd>
   <dt>Votes (+/-)</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
   <dt>Rating</dt><dd>{{ review.review_class }}</dd>
 </dl>
 
-<hr />
-<form method="POST" role="form">
+<div class="clearfix" style="margin-bottom:5px;">
+  <small class="text-muted pull-right" style="font-style:italic;">
+    You can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax to apply custom formatting.
+  </small>
+</div>
+<form method="POST" class="form-horizontal" role="form">
   {{ form.hidden_tag() }}
   <div class="form-group">
-    {{ form.text(style="width: 100%", class="form-control", rows="5") | safe }}
+    <div class="col-sm-12">
+      {{ form.text(class="form-control", rows="5") | safe }}
+    </div>
   </div>
+  <hr />
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
+    <div class="col-sm-12">
       <button type="submit" class="btn btn-primary">Publish</button>
     </div>
   </div>

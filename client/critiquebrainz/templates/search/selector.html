@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Release group selection - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<h3>Release group search</h3>
+
+<form method="GET" class="form-horizontal" role="form">
+  <div class="form-group">
+    <label for="input-artist" class="col-sm-2 control-label">Artist</label>
+    <div class="col-sm-4">
+      <input id="input-artist" class="form-control" name="artist" type="text"
+             value="{{ request.args.get('artist', default='') }}">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="input-release-group" class="col-sm-2 control-label">Release group</label>
+    <div class="col-sm-4">
+      <input id="input-release-group" class="form-control" name="release_group" type="text"
+             value="{{ request.args.get('release_group', default='') }}">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Search</button>
+    </div>
+  </div>
+  <input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{% if request.args.get('artist', default=False) or request.args.get('release_group', default=False) %}
+  <hr />
+  {% if not results %}
+    <p class="lead" style="text-align: center;">No results found</p>
+  {% else %}
+    <form action="{{ next }}" method="GET">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Artist</th>
+            <th>Release group</th>
+            <th>Type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in results %}
+            <tr>
+              <td>{{ result['artist-credit-phrase'] }}</td>
+              <td>{{ result['title'] }}</td>
+              <td>{{ result['primary-type'] or '-' }}</td>
+              <td>
+                <input type="radio" name="release_group" value="{{ result['id'] }}">
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="form-actions">
+        <button type="submit" class="pull-right btn btn-primary">Continue</button>
+      </div>
+    </form>
+  {% endif %}
+{% endif %}
+{% endblock %}

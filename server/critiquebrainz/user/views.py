@@ -10,7 +10,7 @@ bp = Blueprint('user', __name__)
 @oauth.require_auth()
 def user_me_handler(user):
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
-    return jsonify(user=user.to_dict(inc, confidental=True))
+    return jsonify(user=user.to_dict(inc, confidential=True))
 
 @bp.route('/me/reviews', endpoint='reviews')
 @oauth.require_auth()
@@ -33,9 +33,10 @@ def user_modify_handler(user):
     def fetch_params():
         display_name = Parser.string('json', 'display_name', optional=True)
         email = Parser.email('json', 'email', optional=True)
-        return display_name, email
-    display_name, email = fetch_params()
-    user.update(display_name, email)
+        show_gravatar = Parser.bool('json', 'show_gravatar', optional=True)
+        return display_name, email, show_gravatar
+    display_name, email, show_gravatar = fetch_params()
+    user.update(display_name, email, show_gravatar)
     return jsonify(message='Request processed successfully')
 
 @bp.route('/me', endpoint='delete', methods=['DELETE'])
@@ -48,6 +49,5 @@ def user_delete_handler(user):
 def user_entity_handler(user_id):
     user = User.query.get_or_404(str(user_id))
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
-    user.karma
     return jsonify(user=user.to_dict(inc))
 

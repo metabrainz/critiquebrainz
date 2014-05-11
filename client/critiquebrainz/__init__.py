@@ -49,7 +49,9 @@ from user.views import bp as bp7
 app.register_blueprint(bp7, url_prefix='/user')
 from search.views import bp as bp8
 app.register_blueprint(bp8, url_prefix='/search')
-from album.views import bp as bp9
-app.register_blueprint(bp9, url_prefix='/album')
-from about.views import bp as bp10
-app.register_blueprint(bp10, url_prefix='/about')
+from release_group.views import bp as bp9
+app.register_blueprint(bp9, url_prefix='/release-group')
+from artist.views import bp as bp10
+app.register_blueprint(bp10, url_prefix='/artist')
+from about.views import bp as bp11
+app.register_blueprint(bp11, url_prefix='/about')

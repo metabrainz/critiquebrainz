@@ -1,8 +1,11 @@
 {% extends 'profile/base.html' %}
+
+{% block title %}Edit application - CritiqueBrainz{% endblock %}
+
 {% block content %}
 {% for field in form.errors %}
   {% for error in form.errors[field] %}
-  <div class="alert alert-error">
+  <div class="alert alert-danger">
     {{ error }}
   </div>
   {% endfor %}

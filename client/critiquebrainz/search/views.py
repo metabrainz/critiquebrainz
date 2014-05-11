@@ -1,22 +1,39 @@
 from flask import Blueprint, request, render_template, redirect, url_for
-from critiquebrainz import app
-from critiquebrainz.api import api
-from critiquebrainz.exceptions import APIError
 from critiquebrainz.musicbrainz import musicbrainz
 
 bp = Blueprint('search', __name__)
 
-@bp.route('/', endpoint='release_group')
-def release_group_handler():
+
+@bp.route('/', endpoint='index')
+def search_handler():
+    query = request.args.get('query')
+    type = request.args.get('type')
+    limit = int(request.args.get('limit', default=10))
+    offset = int(request.args.get('offset', default=0))
+    if query:
+        if type == "artist":
+            results = musicbrainz.search_artist(query, limit=limit, offset=offset)
+        elif type == "release-group":
+            results = musicbrainz.search_release_group(query, limit=limit, offset=offset)
+        else:
+            results = []
+    else:
+        results = []
+    return render_template('search/index.html', results=results, type=type)
+
+
+@bp.route('/selector', endpoint='selector')
+def review_creation_selector_handler():
     artist = request.args.get('artist')
-    album = request.args.get('album')
+    release_group = request.args.get('release_group')
     next = request.args.get('next')
     if not next:
         return redirect(url_for('index'))
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
-    if artist or album:
-        results = musicbrainz.search_release_group(artist, album, limit, offset)
+    if artist or release_group:
+        results = musicbrainz.search_release_group(artist=artist, release_group=release_group,
+                                                   limit=limit, offset=offset)
     else:
         results = []
-    return render_template('search.html', results=results, next=next)
+    return render_template('search/selector.html', results=results, next=next)
