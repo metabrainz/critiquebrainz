@@ -9,6 +9,7 @@ def create_tables(app):
     return engine
 
 from .review import Review
+from .revision import Revision
 from .user import User
 from .license import License
 from .vote import Vote
