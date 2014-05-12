@@ -53,3 +53,5 @@ from release_group.views import bp as bp9
 app.register_blueprint(bp9, url_prefix='/release-group')
 from artist.views import bp as bp10
 app.register_blueprint(bp10, url_prefix='/artist')
+from about.views import bp as bp11
+app.register_blueprint(bp11, url_prefix='/about')
