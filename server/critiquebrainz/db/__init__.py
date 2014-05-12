@@ -10,6 +10,7 @@ def create_tables(app):
 
 from .review import Review
 from .user import User
+from .license import License
 from .vote import Vote
 from .report import SpamReport
 from .oauth import OAuthClient, OAuthGrant, OAuthToken

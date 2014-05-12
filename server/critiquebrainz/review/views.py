@@ -69,7 +69,7 @@ def review_post_handler(user):
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
     release_group, text, license_choice = fetch_params()
-    review = Review.create(user=user, release_group=release_group, text=text, content_license=license_choice)
+    review = Review.create(user=user, release_group=release_group, text=text, license_id=license_choice)
     return jsonify(message='Request processed successfully',
                    id=review.id)
 
