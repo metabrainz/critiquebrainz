@@ -175,6 +175,17 @@ class CritiqueBrainzAPI(object):
         user = resp.get('user')
         return user
 
+    def get_users(self, limit=None, offset=None):
+        params = dict(limit=limit, offset=offset)
+        resp = requests.get(self.base_url+'user/', params=params).json()
+        error = resp.get('error')
+        if error:
+            desc = resp.get('description')
+            raise APIError(code=error, desc=desc)
+        count = resp.get('count')
+        users = resp.get('users')
+        return count, users
+
     def create_client(self, name, desc, website, redirect_uri, scopes, access_token):
         session = self._service.get_session(access_token)
         data = dict(name=name,
