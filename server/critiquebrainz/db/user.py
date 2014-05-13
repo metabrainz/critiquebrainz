@@ -4,6 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from . import db
 from review import Review
+from revision import Revision
 from vote import Vote
 from critiquebrainz.constants import user_types
 import hashlib
@@ -113,7 +114,9 @@ class User(db.Model):
         return self._reviews.all()
 
     def _reviews_since(self, date):
-        return self._reviews.filter(Review.created >= date)
+        rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time')) \
+            .group_by(Revision.review_id).subquery('time')
+        return self._reviews.outerjoin(rev_q, Review.id == rev_q.c.review_id).filter(rev_q.c.creation_time >= date)
 
     def reviews_since(self, date):
         return self._reviews_since(date).all()
