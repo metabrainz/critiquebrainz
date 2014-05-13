@@ -74,7 +74,7 @@
         You cannot rate your own review
       {% endif %}
     {% else %}
-      <a href="{{ url_for('login.index', next=url_for('review.entity', id=review.id)) }}">Sign up</a> to rate this review
+      <a href="{{ url_for('login.index', next=url_for('review.entity', id=review.id)) }}">Sign in</a> to rate this review
     {% endif %}
   </div>
 </div>
