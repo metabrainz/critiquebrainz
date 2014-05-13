@@ -51,3 +51,14 @@ def user_entity_handler(user_id):
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
     return jsonify(user=user.to_dict(inc))
 
+@bp.route('/', endpoint='list', methods=['GET'])
+def review_list_handler():
+    def fetch_params():
+        limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
+        offset = Parser.int('uri', 'offset', optional=True) or 0
+        return limit, offset
+    limit, offset = fetch_params()
+    users, count = User.list(limit, offset)
+    return jsonify(limit=limit, offset=offset, count=count,
+                   users=[p.to_dict() for p in users])
+
