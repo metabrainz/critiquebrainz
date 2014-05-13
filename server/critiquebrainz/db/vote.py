@@ -5,6 +5,7 @@ from . import db
 
 class Vote(db.Model):
     __tablename__ = 'vote'
+
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
     review_id = db.Column(UUID, db.ForeignKey('review.id', ondelete='CASCADE'), primary_key=True)
     revision_id = db.Column(db.Integer, db.ForeignKey('revision.id', ondelete='CASCADE'), primary_key=True)
@@ -16,7 +17,7 @@ class Vote(db.Model):
         # changing votes of an archived review is forbidden
         if review.is_archived is True:
             return
-            # delete the vote if it exists
+        # delete the vote if it exists
         cls.query.filter_by(user=user, review=review).delete()
         # create a new vote
         last_revision = review.revisions[-1]

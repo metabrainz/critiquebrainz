@@ -1,7 +1,4 @@
-from datetime import datetime
-
 from sqlalchemy.dialects.postgresql import UUID
-
 from . import db
 from vote import Vote
 from revision import Revision
@@ -127,7 +124,7 @@ class Review(db.Model):
             # order by (positive votes - negative votes) formula
             query = query.order_by(db.desc(db.func.coalesce(r_pos.c.c, 0) - db.func.coalesce(r_neg.c.c, 0)))
         elif sort == 'created':
-            rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time'))\
+            rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time')) \
                 .group_by(Revision.review_id).subquery('time')
             # left join creation times
             query = query.outerjoin(rev_q, Review.id == rev_q.c.review_id)
@@ -172,7 +169,6 @@ class Review(db.Model):
             new_revision = Revision(review_id=self.id, text=text)
             db.session.add(new_revision)
             db.session.commit()
-           # self.text = new_revision.id
         if license_id is not None:
             self.license_id = license_id
         if source is not None:
