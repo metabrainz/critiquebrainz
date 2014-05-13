@@ -45,6 +45,17 @@ class User(db.Model):
             db.session.commit()
         return user
 
+    @classmethod
+    def list(cls, limit, offset):
+        query = User.query
+        count = query.count()
+        if limit is not None:
+            query = query.limit(limit)
+        if offset is not None:
+            query = query.offset(offset)
+        reviews = query.all()
+        return reviews, count
+
     def has_voted(self, review):
         if self._votes.filter_by(review=review).count() > 0:
             return True
