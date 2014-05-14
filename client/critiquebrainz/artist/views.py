@@ -8,7 +8,7 @@ bp = Blueprint('artist', __name__)
 
 @bp.route('/<uuid:id>', endpoint='entity')
 def artist_entity_handler(id):
-    artist = musicbrainz.artist_details(id)
+    artist = musicbrainz.get_artist_by_id(id)
     allowed_release_types = ['album', 'single', 'ep', 'broadcast', 'other']
     release_type = request.args.get('release_type', default='album')
     if release_type not in allowed_release_types:
