@@ -11,8 +11,8 @@ def index_handler():
     user_count_key = generate_cache_key('user_count')
     user_count = cache.get(user_count_key)
     if not user_count:
-        count, users = api.get_users(limit=1)
-        cache.set(user_count_key, count, DEFAULT_CACHE_EXPIRATION)
+        user_count, users = api.get_users(limit=1)
+        cache.set(user_count_key, user_count, DEFAULT_CACHE_EXPIRATION)
 
     # Reviews (hot, latest) + review count
     review_count_key = generate_cache_key('review_count')
