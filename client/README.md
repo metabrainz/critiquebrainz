@@ -7,6 +7,7 @@ A GSoC project for MetaBrainz Foundation.
 
 * Python (tested on 2.7.4)
 * virtualenv
+* memcached
 
 ##How to start
 

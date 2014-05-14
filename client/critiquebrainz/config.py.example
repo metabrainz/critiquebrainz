@@ -1,6 +1,10 @@
-DEBUG = True # set False in production mode
-SECRET_KEY = "<your secret key>"
+DEBUG = True  # set to False in production mode
+
+CRITIQUEBRAINZ_BASE_URI = "http://127.0.0.1:5000/"
 CRITIQUEBRAINZ_CLIENT_ID = "b9481301-8adc-452a-83d2-180c8eec53fb"
 CRITIQUEBRAINZ_CLIENT_SECRET = "e03fbc0e-2308-46d4-a5a2-c3e54706db9f"
-CRITIQUEBRAINZ_BASE_URI = "http://127.0.0.1:5000/"
 
+SECRET_KEY = "<your secret key>"
+
+MEMCACHED_SERVERS = ["127.0.0.1:11211"]
+MEMCACHED_NAMESPACE = "CB:CLIENT:"
