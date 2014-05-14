@@ -3,24 +3,24 @@ from critiquebrainz.musicbrainz import musicbrainz
 
 bp = Blueprint('search', __name__)
 
+RESULTS_LIMIT = 10
 
 @bp.route('/', endpoint='index')
 def search_handler():
     query = request.args.get('query')
     type = request.args.get('type')
-    limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if query:
         if type == "artist":
-            count, results = musicbrainz.search_artist(query, limit=limit, offset=offset)
+            count, results = musicbrainz.search_artist(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "release-group":
-            count, results = musicbrainz.search_release_group(query, limit=limit, offset=offset)
+            count, results = musicbrainz.search_release_group(query, limit=RESULTS_LIMIT, offset=offset)
         else:
             count, results = 0, []
     else:
         count, results = 0, []
     return render_template('search/index.html', query=query, type=type, results=results,
-                           count=count, limit=limit, offset=offset)
+                           count=count, limit=RESULTS_LIMIT, offset=offset)
 
 
 @bp.route('/selector', endpoint='selector')
@@ -30,12 +30,11 @@ def review_creation_selector_handler():
     next = request.args.get('next')
     if not next:
         return redirect(url_for('index'))
-    limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if artist or release_group:
         count, results = musicbrainz.search_release_group(artist=artist, release_group=release_group,
-                                                          limit=limit, offset=offset)
+                                                          limit=RESULTS_LIMIT, offset=offset)
     else:
         count, results = 0, []
     return render_template('search/selector.html', next=next, artist=artist, release_group=release_group,
-                           results=results, count=count, limit=limit, offset=offset)
+                           results=results, count=count, limit=RESULTS_LIMIT, offset=offset)
