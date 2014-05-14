@@ -20,21 +20,15 @@ def index_handler():
 
     hot_reviews_key = generate_cache_key('hot_reviews')
     hot_reviews = cache.get(hot_reviews_key)
-    if not hot_reviews:
-        count, hot_reviews = api.get_reviews(sort='rating', limit=5, inc=['user'])
+    if not hot_reviews or not review_count:
+        review_count, hot_reviews = api.get_reviews(sort='rating', limit=5, inc=['user'])
         cache.set(hot_reviews_key, hot_reviews, DEFAULT_CACHE_EXPIRATION)
-        if not review_count:
-            review_count = count
-            cache.set(review_count_key, review_count, DEFAULT_CACHE_EXPIRATION)
 
     recent_reviews_key = generate_cache_key('recent_reviews')
     recent_reviews = cache.get(recent_reviews_key)
-    if not recent_reviews:
-        count, recent_reviews = api.get_reviews(sort='created', limit=5, inc=['user'])
+    if not recent_reviews or not review_count:
+        review_count, recent_reviews = api.get_reviews(sort='created', limit=5, inc=['user'])
         cache.set(recent_reviews_key, recent_reviews, DEFAULT_CACHE_EXPIRATION)
-        if not review_count:
-            review_count = count
-            cache.set(review_count_key, review_count, DEFAULT_CACHE_EXPIRATION)
 
     return render_template('index.html', hot_reviews=hot_reviews, recent_reviews=recent_reviews,
                            reviews_total=review_count, users_total=user_count)
