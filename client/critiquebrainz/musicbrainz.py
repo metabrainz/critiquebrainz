@@ -57,18 +57,25 @@ class MusicBrainzClient:
                                    desc="Sorry, we could not find an artist with that MusicBrainz ID.")
                 else:
                     raise APIError(code=e.cause.code, desc=e.cause.msg)
-            cache.set(key, details, DEFAULT_CACHE_EXPIRATION)  # 86400 seconds = 1 day
+            cache.set(key, details, DEFAULT_CACHE_EXPIRATION)
         return details
 
-    def browse_release_groups(self, artist=None, release_type=[], limit=25, offset=None):
-        """Get all release groups linked to an artist or a release.
-        You need to give one MusicBrainz ID.
+    def browse_release_groups(self, artist_id=None, release_type=[], limit=None, offset=None):
+        """Get all release groups linked to an artist.
+        You need to provide artist's MusicBrainz ID.
         """
-        try:
-            api_resp = browse_release_groups(artist=artist, release_type=release_type, limit=limit, offset=offset)
-        except ResponseError as e:
-            raise APIError(code=e.cause.code, desc=e.cause.msg)
-        return api_resp.get('release-group-count'), api_resp.get('release-group-list')
+        key = generate_cache_key(str(artist_id) + '_l' + str(limit) + '_of' + str(offset),
+                                 type='browse_release_groups', source='api')
+        release_groups = cache.get(key)
+        if not release_groups:
+            try:
+                api_resp = browse_release_groups(artist=artist_id, release_type=release_type,
+                                                 limit=limit, offset=offset)
+                release_groups = api_resp.get('release-group-count'), api_resp.get('release-group-list')
+            except ResponseError as e:
+                raise APIError(code=e.cause.code, desc=e.cause.msg)
+            cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
+        return release_groups
 
 
 musicbrainz = MusicBrainzClient()
