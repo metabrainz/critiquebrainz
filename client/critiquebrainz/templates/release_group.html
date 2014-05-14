@@ -8,7 +8,9 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
 <div class="clearfix">
   <h2 class="pull-left">
     {{ release_group.title }} -
-    <a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group['artist-credit'][0].artist.name }}</a>
+    <a href="{{ url_for('artist.entity', id=release_group['artist-credit'][0].artist.id) }}">
+      {{ release_group['artist-credit'][0].artist.name }}
+    </a>
   </h2>
   {% if not my_review %}
     <a id="write-review" href="{{ url_for('profile_review.create', release_group=id) }}"
