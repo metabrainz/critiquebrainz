@@ -78,7 +78,18 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
     <b>External links</b>
     <ul id="links" class="list-unstyled">
       {% for url in release_group['url-relation-list'] %}
-        <li><a href="{{ url.target }}">{{ url.name }}</a></li>
+        <li class="clearfix">
+          <div class="favicon-container pull-left">
+            <img
+            {% if url.icon %}
+              src="{{ url_for('static', filename='favicons/'+url.icon) }}"
+            {% else %}
+              src="{{ url_for('static', filename='img/external.png') }}"
+            {% endif %}
+            />
+          </div>
+          <a href="{{ url.target }}">{{ url.name }}</a>
+        </li>
       {% endfor %}
     </ul>
     <p><a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>Edit on MusicBrainz</em></a></p>
