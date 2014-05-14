@@ -12,9 +12,9 @@ def search_handler():
     offset = int(request.args.get('offset', default=0))
     if query:
         if type == "artist":
-            count, results = musicbrainz.search_artist(query, limit=limit, offset=offset)
+            count, results = musicbrainz.search_artists(query, limit=limit, offset=offset)
         elif type == "release-group":
-            count, results = musicbrainz.search_release_group(query, limit=limit, offset=offset)
+            count, results = musicbrainz.search_release_groups(query, limit=limit, offset=offset)
         else:
             count, results = 0, []
     else:
@@ -33,7 +33,7 @@ def review_creation_selector_handler():
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if artist or release_group:
-        count, results = musicbrainz.search_release_group(artist=artist, release_group=release_group,
+        count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
                                                           limit=limit, offset=offset)
     else:
         count, results = 0, []

@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}Release group "{{ release_group.title }}" by {{ release_group.artist }} - CritiqueBrainz{% endblock %}
+{% block title %}
+Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0].artist.name }} - CritiqueBrainz
+{% endblock %}
 
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">
     {{ release_group.title }} -
-    <a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group.artist }}</a>
+    <a href="{{ url_for('artist.entity', id=release_group.artist_id) }}">{{ release_group['artist-credit'][0].artist.name }}</a>
   </h2>
   {% if not my_review %}
     <a id="write-review" href="{{ url_for('profile_review.create', release_group=id) }}"
@@ -71,8 +73,14 @@
   <div class="col-md-3">
     <h4>Release group information</h4>
     <p>
-      {% if release_group.first_release_date %}First release in {{ release_group.first_release_date }}{% endif %}
+      {% if release_group['first-release-date'] %}First release in {{ release_group['first-release-date'][:4] }}{% endif %}
     </p>
+    <b>External links</b>
+    <ul id="links" class="list-unstyled">
+      {% for url in release_group['url-relation-list'] %}
+        <li><a href="{{ url.target }}">{{ url.type }}</a></li>
+      {% endfor %}
+    </ul>
     <p><a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>Edit on MusicBrainz</em></a></p>
   </div>
 </div>

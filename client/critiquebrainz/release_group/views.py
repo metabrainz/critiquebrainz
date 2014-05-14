@@ -10,7 +10,7 @@ bp = Blueprint('release_group', __name__)
 
 @bp.route('/<uuid:id>', endpoint='entity')
 def release_group_entity_handler(id):
-    release_group = musicbrainz.release_group_details(id)
+    release_group = musicbrainz.get_release_group_by_id(id, includes=['artists', 'url-rels'])
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if hasattr(current_user, 'me'):
