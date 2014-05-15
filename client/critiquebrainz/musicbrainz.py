@@ -3,6 +3,7 @@ from musicbrainzngs.musicbrainz import ResponseError
 
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.cache import cache, generate_cache_key
+from critiquebrainz.relationships import artist as artist_rel, release_group as release_group_rel
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
 
@@ -40,37 +41,41 @@ class MusicBrainzClient:
             cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
         return release_groups
 
-    def get_artist_by_id(self, id, includes=[]):
+    def get_artist_by_id(self, id, includes=[], rels=[]):
         """Get artist with the MusicBrainz ID.
         Available includes: recordings, releases, release-groups, works, various-artists, discids, media, isrcs,
-        aliases, annotation, area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
-        release-group-rels, url-rels, work-rels, tags, user-tags, ratings, user-ratings
+        aliases, annotation, tags, user-tags, ratings, user-ratings.
+        Available rels: area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
+        release-group-rels, url-rels, work-rels.
         """
         try:
-            api_resp = get_artist_by_id(id, includes)
+            artist = get_artist_by_id(id, includes+rels).get('artist')
         except ResponseError as e:
             if e.cause.code == 404:
                 raise APIError(code=e.cause.code,
                                desc="Sorry, we could not find an artist with that MusicBrainz ID.")
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
-        return api_resp.get('artist')
+        artist = artist_rel.process(artist)
+        return artist
 
-    def get_release_group_by_id(self, id, includes=[]):
+    def get_release_group_by_id(self, id, includes=[], rels=[]):
         """Get release group with the MusicBrainz ID.
         Available includes: artists, releases, discids, media, artist-credits, annotation, aliases, tags, user-tags,
-        ratings, user-ratings, area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
-        release-group-rels, url-rels, work-rels
+        ratings, user-ratings.
+        Available rels: area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
+        release-group-rels, url-rels, work-rels.
         """
         try:
-            api_resp = get_release_group_by_id(id, includes)
+            release_group = get_release_group_by_id(id, includes+rels).get('release-group')
         except ResponseError as e:
             if e.cause.code == 404:
                 raise APIError(code=e.cause.code,
                                desc="Sorry, we could not find a release group with that MusicBrainz ID.")
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
-        return api_resp.get('release-group')
+        release_group = release_group_rel.process(release_group)
+        return release_group
 
     def release_group_details(self, id):
         """Get short release group details.

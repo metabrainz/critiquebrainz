@@ -1,14 +1,15 @@
 from flask import Blueprint, render_template, request
+from werkzeug.exceptions import BadRequest
+
 from critiquebrainz import musicbrainz
 from critiquebrainz.api import api
-from werkzeug.exceptions import BadRequest
 
 bp = Blueprint('artist', __name__)
 
 
 @bp.route('/<uuid:id>', endpoint='entity')
 def artist_entity_handler(id):
-    artist = musicbrainz.get_artist_by_id(id)
+    artist = musicbrainz.get_artist_by_id(id, rels=['url-rels', 'artist-rels'])
     allowed_release_types = ['album', 'single', 'ep', 'broadcast', 'other']
     release_type = request.args.get('release_type', default='album')
     if release_type not in allowed_release_types:
