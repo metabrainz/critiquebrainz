@@ -41,15 +41,14 @@ class MusicBrainzClient:
             cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
         return release_groups
 
-    def get_artist_by_id(self, id, includes=[], rels=[]):
+    def get_artist_by_id(self, id, includes=[]):
         """Get artist with the MusicBrainz ID.
         Available includes: recordings, releases, release-groups, works, various-artists, discids, media, isrcs,
-        aliases, annotation, tags, user-tags, ratings, user-ratings.
-        Available rels: area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
-        release-group-rels, url-rels, work-rels.
+        aliases, annotation, tags, user-tags, ratings, user-ratings, area-rels, artist-rels, label-rels, place-rels,
+        recording-rels, release-rels, release-group-rels, url-rels, work-rels.
         """
         try:
-            artist = get_artist_by_id(id, includes+rels).get('artist')
+            artist = get_artist_by_id(id, includes).get('artist')
         except ResponseError as e:
             if e.cause.code == 404:
                 raise APIError(code=e.cause.code,
@@ -59,15 +58,14 @@ class MusicBrainzClient:
         artist = artist_rel.process(artist)
         return artist
 
-    def get_release_group_by_id(self, id, includes=[], rels=[]):
+    def get_release_group_by_id(self, id, includes=[]):
         """Get release group with the MusicBrainz ID.
         Available includes: artists, releases, discids, media, artist-credits, annotation, aliases, tags, user-tags,
-        ratings, user-ratings.
-        Available rels: area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
+        ratings, user-ratings, area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
         release-group-rels, url-rels, work-rels.
         """
         try:
-            release_group = get_release_group_by_id(id, includes+rels).get('release-group')
+            release_group = get_release_group_by_id(id, includes).get('release-group')
         except ResponseError as e:
             if e.cause.code == 404:
                 raise APIError(code=e.cause.code,
