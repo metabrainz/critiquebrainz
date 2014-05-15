@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, request
 from flask.ext.login import current_user
-
-from critiquebrainz.api import api
-from critiquebrainz import musicbrainz
+from critiquebrainz.apis import server, musicbrainz
 
 bp = Blueprint('release_group', __name__)
 
@@ -13,14 +11,14 @@ def release_group_entity_handler(id):
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if hasattr(current_user, 'me'):
-        my_count, my_reviews = api.get_reviews(release_group=id, user_id=current_user.me['id'])
+        my_count, my_reviews = server.get_reviews(release_group=id, user_id=current_user.me['id'])
         if my_count != 0:
             my_review = my_reviews[0]
         else:
             my_review = None
     else:
         my_review = None
-    count, reviews = api.get_reviews(release_group=id, sort='created',
+    count, reviews = server.get_reviews(release_group=id, sort='created',
                                      limit=limit, offset=offset, inc=['user'])
     return render_template('release_group.html', id=id, release_group=release_group, reviews=reviews,
                            my_review=my_review, limit=limit, offset=offset, count=count)

@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, request
 from werkzeug.exceptions import BadRequest
-
-from critiquebrainz import musicbrainz
-from critiquebrainz.api import api
+from critiquebrainz.apis import server, musicbrainz
 
 bp = Blueprint('artist', __name__)
 
@@ -19,7 +17,7 @@ def artist_entity_handler(id):
     count, release_groups = musicbrainz.browse_release_groups(artist_id=id, release_type=release_type,
                                                               limit=limit, offset=offset)
     for release_group in release_groups:
-        review_count, reviews = api.get_reviews(release_group=release_group['id'], sort='created', limit=1)
+        review_count, reviews = server.get_reviews(release_group=release_group['id'], sort='created', limit=1)
         release_group['review_count'] = review_count
     return render_template('artist.html', id=id, artist=artist, release_type=release_type,
                            release_groups=release_groups, limit=limit, offset=offset, count=count)

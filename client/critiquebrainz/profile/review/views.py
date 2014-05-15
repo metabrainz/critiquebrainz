@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user
-from critiquebrainz.api import api
+from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.review import CreateForm, EditForm
 
@@ -11,7 +11,7 @@ bp = Blueprint('profile_review', __name__)
 def index_handler():
     limit = int(request.args.get('limit', default=5))
     offset = int(request.args.get('offset', default=0))
-    count, reviews = api.get_me_reviews(sort='created',
+    count, reviews = server.get_me_reviews(sort='created',
         limit=limit, offset=offset, access_token=current_user.access_token)
     return render_template('profile/review/list.html',
         reviews=reviews, limit=limit, offset=offset, count=count)
@@ -26,7 +26,7 @@ def create_handler():
     form = CreateForm(license_choice='CC BY-SA 3.0')
     if form.validate_on_submit():
         try:
-            api.create_review(release_group, form.text.data, form.license_choice.data, current_user.access_token)
+            server.create_review(release_group, form.text.data, form.license_choice.data, current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:
@@ -37,14 +37,14 @@ def create_handler():
 @bp.route('/<uuid:id>/edit', methods=('GET', 'POST'), endpoint='edit')
 @login_required
 def edit_handler(id):
-    review = api.get_review(str(id))
+    review = server.get_review(str(id))
     if review.get('user_id') != current_user.me.get('id'):
         return redirect(url_for('index'))
 
     form = EditForm()
     if form.validate_on_submit():
         try:
-            message = api.update_review(id, current_user.access_token, text=form.text.data)
+            message = server.update_review(id, current_user.access_token, text=form.text.data)
         except APIError as e:
             flash(e.desc, 'error')
         else:
@@ -58,7 +58,7 @@ def edit_handler(id):
 @login_required
 def delete_handler(id):
     try:
-        message = api.delete_review(str(id), current_user.access_token)
+        message = server.delete_review(str(id), current_user.access_token)
     except APIError as e:
         flash(e.desc, 'error')
     else:

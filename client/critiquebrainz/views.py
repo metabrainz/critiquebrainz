@@ -1,6 +1,6 @@
 from flask import render_template
 from critiquebrainz import app
-from critiquebrainz.api import api
+from critiquebrainz.apis import server
 from critiquebrainz.cache import cache, generate_cache_key
 
 DEFAULT_CACHE_EXPIRATION = 10 * 60  # seconds
@@ -11,7 +11,7 @@ def index_handler():
     user_count_key = generate_cache_key('user_count')
     user_count = cache.get(user_count_key)
     if not user_count:
-        user_count, users = api.get_users(limit=1)
+        user_count, users = server.get_users(limit=1)
         cache.set(user_count_key, user_count, DEFAULT_CACHE_EXPIRATION)
 
     # Reviews (hot, latest) + review count
@@ -21,13 +21,13 @@ def index_handler():
     hot_reviews_key = generate_cache_key('hot_reviews')
     hot_reviews = cache.get(hot_reviews_key)
     if not hot_reviews or not review_count:
-        review_count, hot_reviews = api.get_reviews(sort='rating', limit=5, inc=['user'])
+        review_count, hot_reviews = server.get_reviews(sort='rating', limit=5, inc=['user'])
         cache.set(hot_reviews_key, hot_reviews, DEFAULT_CACHE_EXPIRATION)
 
     recent_reviews_key = generate_cache_key('recent_reviews')
     recent_reviews = cache.get(recent_reviews_key)
     if not recent_reviews or not review_count:
-        review_count, recent_reviews = api.get_reviews(sort='created', limit=5, inc=['user'])
+        review_count, recent_reviews = server.get_reviews(sort='created', limit=5, inc=['user'])
         cache.set(recent_reviews_key, recent_reviews, DEFAULT_CACHE_EXPIRATION)
 
     return render_template('index.html', hot_reviews=hot_reviews, recent_reviews=recent_reviews,

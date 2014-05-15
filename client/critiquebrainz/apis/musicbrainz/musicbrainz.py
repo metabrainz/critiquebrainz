@@ -3,12 +3,14 @@ from musicbrainzngs.musicbrainz import ResponseError
 
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.cache import cache, generate_cache_key
-from critiquebrainz.relationships import artist as artist_rel, release_group as release_group_rel
+from relationships import artist as artist_rel, release_group as release_group_rel
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
 
 
 class MusicBrainzClient:
+    """Provides an interface to MusicBrainz data."""
+
     def init_app(self, app, app_name, app_version):
         set_useragent(app_name, app_version)
         app.jinja_env.filters['release_group_details'] = self.release_group_details
@@ -90,6 +92,3 @@ class MusicBrainzClient:
                            first_release_date=api_resp.get('first-release-date')[:4])
             cache.set(key, details, DEFAULT_CACHE_EXPIRATION)
         return details
-
-
-musicbrainz = MusicBrainzClient()

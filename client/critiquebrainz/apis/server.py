@@ -1,12 +1,15 @@
-from flask import url_for, session
-from flask.ext.login import current_user
+import json
+import requests
 from rauth import OAuth2Service
+
+from flask import url_for
+
 from critiquebrainz.utils import build_url
 from critiquebrainz.exceptions import APIError
-import requests
-import json
+
 
 class CritiqueBrainzAPI(object):
+    """Provides interface to CritiqueBrainz server."""
 
     scope = 'user authorization review vote client'
 
@@ -22,7 +25,7 @@ class CritiqueBrainzAPI(object):
                       redirect_uri=url_for('login.post', _external=True),
                       scope=self.scope,
                       client_id=self.client_id)
-        return build_url(self.base_url+'login/musicbrainz', params)
+        return build_url(self.base_url + 'login/musicbrainz', params)
 
     def get_token_from_code(self, code):
         data = dict(grant_type='code',
@@ -69,7 +72,7 @@ class CritiqueBrainzAPI(object):
                     response_type=response_type,
                     redirect_uri=redirect_uri,
                     scope=scope)
-        resp = requests.post(self.base_url+'oauth/validate', data=data).json()
+        resp = requests.post(self.base_url + 'oauth/validate', data=data).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -93,7 +96,7 @@ class CritiqueBrainzAPI(object):
 
     def get_review(self, id, inc=[]):
         params = dict(inc=' '.join(inc))
-        resp = requests.get(self.base_url+'review/%s' % id, params=params).json()
+        resp = requests.get(self.base_url + 'review/%s' % id, params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -114,9 +117,9 @@ class CritiqueBrainzAPI(object):
         return count, reviews
 
     def get_reviews(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=[]):
-        params = dict(release_group=release_group, 
-            user_id=user_id, sort=sort, limit=limit, offset=offset, inc=' '.join(inc))
-        resp = requests.get(self.base_url+'review/', params=params).json()
+        params = dict(release_group=release_group,
+                      user_id=user_id, sort=sort, limit=limit, offset=offset, inc=' '.join(inc))
+        resp = requests.get(self.base_url + 'review/', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -167,7 +170,7 @@ class CritiqueBrainzAPI(object):
 
     def get_user(self, user_id, inc=[]):
         params = dict(inc=' '.join(inc))
-        resp = requests.get(self.base_url+'user/%s' % user_id, params=params).json()
+        resp = requests.get(self.base_url + 'user/%s' % user_id, params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -177,7 +180,7 @@ class CritiqueBrainzAPI(object):
 
     def get_users(self, limit=None, offset=None):
         params = dict(limit=limit, offset=offset)
-        resp = requests.get(self.base_url+'user/', params=params).json()
+        resp = requests.get(self.base_url + 'user/', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')

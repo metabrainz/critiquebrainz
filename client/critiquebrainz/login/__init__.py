@@ -1,6 +1,6 @@
 from flask.ext.login import LoginManager, UserMixin, current_user
 from flask import redirect, url_for, session
-from critiquebrainz.api import api
+from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from functools import wraps
 from datetime import datetime
@@ -24,14 +24,14 @@ class User(UserMixin):
         self.refresh_token = refresh_token
 
     def regenerate_token(self):
-        access_token, _, expires_in = api.get_token_from_refresh_token(self.refresh_token)
+        access_token, _, expires_in = server.get_token_from_refresh_token(self.refresh_token)
         self.access_token = access_token
         self.expires_in = expires_in
 
     @property
     def me(self):
         if hasattr(self, '_me') is False:
-            self._me = api.get_me(self.access_token, inc=['user_type', 'stats'])
+            self._me = server.get_me(self.access_token, inc=['user_type', 'stats'])
         return self._me
 
     @property

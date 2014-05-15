@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user, logout_user
-from critiquebrainz.api import api
+from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.details import EditForm
 
@@ -19,7 +19,7 @@ def edit_handler():
     form = EditForm()
     if form.validate_on_submit():
         try:
-            message = api.update_profile(current_user.access_token,
+            message = server.update_profile(current_user.access_token,
                                          display_name=form.display_name.data,
                                          email=form.email.data,
                                          show_gravatar=form.show_gravatar.data)
@@ -40,7 +40,7 @@ def edit_handler():
 def delete_handler():
     if request.method == 'POST':
         try:
-            message = api.delete_profile(current_user.access_token)
+            message = server.delete_profile(current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:

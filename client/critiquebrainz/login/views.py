@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, render_template, url_for, session, flash
 from flask.ext.login import login_user, logout_user, login_required
-from critiquebrainz.api import api
+from critiquebrainz.apis import server
 from critiquebrainz.login import User, login_forbidden
 from critiquebrainz.exceptions import OAuthError
 
@@ -16,7 +16,7 @@ def login_handler():
 def login_musicbrainz_handler():
     next = request.args.get('next')
     session['next'] = next
-    return redirect(api.generate_musicbrainz_authorization_uri())
+    return redirect(server.generate_musicbrainz_authorization_uri())
 
 @bp.route('/post', endpoint='post')
 @login_forbidden
@@ -25,7 +25,7 @@ def login_post_handler():
     error = request.args.get('error')
     next = session.get('next')
     if code:
-        access_token, refresh_token, expires_in = api.get_token_from_code(code)
+        access_token, refresh_token, expires_in = server.get_token_from_code(code)
         user = User(refresh_token)
         user.access_token, user.expires_in = (access_token, expires_in)
         login_user(user)

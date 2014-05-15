@@ -1,8 +1,8 @@
 def process(artist):
     """Handles processing supported relation lists."""
-    if artist['artist-relation-list']:
+    if 'artist-relation-list' in artist and artist['artist-relation-list']:
         artist['band-members'] = _artist(artist['artist-relation-list'])
-    elif artist['url-relation-list']:
+    elif 'url-relation-list' in artist and artist['url-relation-list']:
         artist['url-relation-list'] = _url(artist['url-relation-list'])
     return artist
 

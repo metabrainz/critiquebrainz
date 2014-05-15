@@ -1,6 +1,6 @@
 def process(release_group):
     """Handles processing supported relation lists."""
-    if release_group['url-relation-list']:
+    if 'url-relation-list' in release_group and release_group['url-relation-list']:
         release_group['url-relation-list'] = _url(release_group['url-relation-list'])
     return release_group
 
