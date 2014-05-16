@@ -89,14 +89,10 @@ class MusicBrainzClient:
         """Get short release group details.
         :returns Dictionary with an ID, title, artist and artist ID, first release year.
         """
-        key = generate_cache_key(id, type='release_group', source='api')
-        details = cache.get(key)
-        if not details:
-            api_resp = self.get_release_group_by_id(id, includes=['artists'])
-            details = dict(id=api_resp.get('id'),
-                           title=api_resp.get('title'),
-                           artist=api_resp.get('artist-credit-phrase'),
-                           artist_id=api_resp.get('artist-credit')[0].get('artist').get('id'),
-                           first_release_date=api_resp.get('first-release-date')[:4])
-            cache.set(key, details, DEFAULT_CACHE_EXPIRATION)
+        api_resp = self.get_release_group_by_id(id, includes=['artists'])
+        details = dict(id=api_resp.get('id'),
+                       title=api_resp.get('title'),
+                       artist=api_resp.get('artist-credit-phrase'),
+                       artist_id=api_resp.get('artist-credit')[0].get('artist').get('id'),
+                       first_release_date=api_resp.get('first-release-date')[:4])
         return details
