@@ -26,16 +26,16 @@ class MusicBrainzClient:
         api_resp = search_artists(query=query, sortname=query, alias=query, limit=limit, offset=offset)
         return api_resp.get('artist-count'), api_resp.get('artist-list')
 
-    def browse_release_groups(self, artist_id=None, release_type=[], limit=None, offset=None):
+    def browse_release_groups(self, artist_id=None, release_types=[], limit=None, offset=None):
         """Get all release groups linked to an artist.
         You need to provide artist's MusicBrainz ID.
         """
-        key = generate_cache_key(str(artist_id) + '_l' + str(limit) + '_of' + str(offset),
-                                 type='browse_release_groups', source='api')
+        key = generate_cache_key(str(artist_id), type='browse_release_groups', source='api',
+                                 params=[limit, offset]+release_types)
         release_groups = cache.get(key)
         if not release_groups:
             try:
-                api_resp = browse_release_groups(artist=artist_id, release_type=release_type,
+                api_resp = browse_release_groups(artist=artist_id, release_type=release_types,
                                                  limit=limit, offset=offset)
                 release_groups = api_resp.get('release-group-count'), api_resp.get('release-group-list')
             except ResponseError as e:
