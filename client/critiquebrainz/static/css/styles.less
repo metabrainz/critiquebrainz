@@ -154,55 +154,57 @@ img.avatar {
 
 
 // Artist page
-#release-groups { margin-top: 20px; }
-#release-groups .thumbnail {
-  @media (min-width: @screen-xs) { height: 260px; }
-  @media (min-width: @screen-sm) { height: 157px; }
-  @media (min-width: @screen-md) { height: 212px; }
-  @media (min-width: @screen-lg) { height: 189px; }
+#release-groups {
+  margin-top: 20px;
   .reviewed {
     border-color: fadeout(@mb-purple, 40%);
     box-shadow: 0px 0px 5px 0px @mb-purple;
   }
-  .review-count {
-    position: absolute;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    background: rgba(0, 0, 0, 0.57);
-    font-weight: bold;
-    font-size: small;
-    color: #fff;
-  }
-  img {
-    @media (min-width: @screen-xs) { max-height: 200px; }
-    @media (min-width: @screen-sm) { max-height: 147px; }
-    @media (min-width: @screen-md) { max-height: 202px; }
-    @media (min-width: @screen-lg) { max-height: 179px; }
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .caption {
-    height: 54px;
-    position: absolute;
-    background: rgba(0, 0, 0, 0.57);
-    font-weight: bold;
-    font-size: small;
-    color: #fff;
-    top: 201px;
-    @media (min-width: @screen-xs) { top: 200px; }
-    @media (min-width: @screen-sm) { top: 98px; width: 147px; }
-    @media (min-width: @screen-md) { top: 153px; width: 202px; }
-    @media (min-width: @screen-lg) { top: 130px; width: 179px; }
-
-    a { color: #fff; }
-    .release-group-title {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+  .thumbnail {
+    @media (min-width: @screen-xs) { height: 260px; }
+    @media (min-width: @screen-sm) { height: 157px; }
+    @media (min-width: @screen-md) { height: 212px; }
+    @media (min-width: @screen-lg) { height: 189px; }
+    .review-count {
+      position: absolute;
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      background: rgba(0, 0, 0, 0.57);
       font-weight: bold;
+      font-size: small;
+      color: #fff;
+    }
+    img {
+      @media (min-width: @screen-xs) { max-height: 200px; }
+      @media (min-width: @screen-sm) { max-height: 147px; }
+      @media (min-width: @screen-md) { max-height: 202px; }
+      @media (min-width: @screen-lg) { max-height: 179px; }
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .caption {
+      height: 54px;
+      position: absolute;
+      background: rgba(0, 0, 0, 0.57);
+      font-weight: bold;
+      font-size: small;
+      color: #fff;
+      top: 201px;
+      @media (min-width: @screen-xs) { top: 200px; }
+      @media (min-width: @screen-sm) { top: 98px; width: 147px; }
+      @media (min-width: @screen-md) { top: 153px; width: 202px; }
+      @media (min-width: @screen-lg) { top: 130px; width: 179px; }
+
+      a { color: #fff; }
+      .release-group-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: bold;
+      }
     }
   }
 }
