@@ -56,10 +56,7 @@
                 <div class="release-group-title">
                   <a href="{{ url_for('release_group.entity', id=release_group.id) }}">{{ release_group.title }}</a>
                 </div>
-                <div class="clearfix">
-                  <div class="pull-left">{{ release_group['primary-type'] }}</div>
-                  <div class="pull-right">{{ release_group['first-release-date'][:4] }}</div>
-                </div>
+                {{ release_group['first-release-date'][:4] }}
               </div>
             </div>
           </div>
