@@ -12,3 +12,6 @@ server = CritiqueBrainzAPI(
 from musicbrainz.musicbrainz import MusicBrainzClient
 musicbrainz = MusicBrainzClient()
 musicbrainz.init_app(app, app_name, app_version)
+
+from mbspotify import MBSpotifyClient
+mbspotify = MBSpotifyClient(app.config['MBSPOTIFY_BASE_URI'])
