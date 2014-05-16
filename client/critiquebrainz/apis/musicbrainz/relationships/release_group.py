@@ -32,4 +32,5 @@ def _url(list):
             else:
                 # TODO: Process other types here
                 pass
+    processed.sort()
     return processed
