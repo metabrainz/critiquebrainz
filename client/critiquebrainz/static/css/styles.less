@@ -57,10 +57,11 @@
 @mb-orange: #ffba58;
 @mb-purple: #736dab;
 
+@text-color: rgb(90, 90, 90);
+
 body {
   padding-top: 70px;
   padding-bottom: 25px;
-  color: rgb(90, 90, 90);
 }
 
 @brand-primary: @mb-purple;
@@ -161,10 +162,49 @@ img.avatar {
     box-shadow: 0px 0px 5px 0px @mb-purple;
   }
   .thumbnail {
-    @media (min-width: @screen-xs) { height: 260px; }
-    @media (min-width: @screen-sm) { height: 157px; }
-    @media (min-width: @screen-md) { height: 212px; }
-    @media (min-width: @screen-lg) { height: 189px; }
+    @media (min-width: @screen-sm) {
+      @media (min-width: @screen-sm) { height: 157px; }
+      @media (min-width: @screen-md) { height: 212px; }
+      @media (min-width: @screen-lg) { height: 189px; }
+      img {
+        @media (min-width: @screen-sm) { max-height: 147px; }
+        @media (min-width: @screen-md) { max-height: 202px; }
+        @media (min-width: @screen-lg) { max-height: 179px; }
+      }
+      .caption {
+        height: 54px;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.57);
+        font-weight: bold;
+        font-size: small;
+        color: #fff;
+        @media (min-width: @screen-sm) { top: 98px; width: 147px; }
+        @media (min-width: @screen-md) { top: 153px; width: 202px; }
+        @media (min-width: @screen-lg) { top: 130px; width: 179px; }
+
+        a { color: #fff; }
+      }
+    }
+
+    @media (max-width: @screen-xs-max) {
+      height: 90px;
+      .cover-art-container {
+        width: 80px;
+        float: left;
+        margin-right: 8px;
+      }
+      img {
+        max-height: 80px;
+      }
+      .caption { margin-top: 9px; }
+    }
+
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .review-count {
       position: absolute;
       padding-left: 5px;
@@ -176,29 +216,8 @@ img.avatar {
       font-size: small;
       color: #fff;
     }
-    img {
-      @media (min-width: @screen-xs) { max-height: 200px; }
-      @media (min-width: @screen-sm) { max-height: 147px; }
-      @media (min-width: @screen-md) { max-height: 202px; }
-      @media (min-width: @screen-lg) { max-height: 179px; }
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .caption {
-      height: 54px;
-      position: absolute;
-      background: rgba(0, 0, 0, 0.57);
-      font-weight: bold;
-      font-size: small;
-      color: #fff;
-      top: 201px;
-      @media (min-width: @screen-xs) { top: 200px; }
-      @media (min-width: @screen-sm) { top: 98px; width: 147px; }
-      @media (min-width: @screen-md) { top: 153px; width: 202px; }
-      @media (min-width: @screen-lg) { top: 130px; width: 179px; }
 
-      a { color: #fff; }
+    .caption {
       .release-group-title {
         white-space: nowrap;
         overflow: hidden;
