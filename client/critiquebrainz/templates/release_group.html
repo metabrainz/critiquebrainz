@@ -79,7 +79,7 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
     </p>
     {% if release_group['url-relation-list'] %}
       <b>External links</b>
-      <ul id="links" class="list-unstyled">
+      <ul class="list-unstyled external-links">
         {% for url in release_group['url-relation-list'] %}
           <li class="clearfix">
             <div class="favicon-container pull-left">

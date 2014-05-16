@@ -1,5 +1,6 @@
 from urlparse import urlparse
 
+
 def process(release_group):
     """Handles processing supported relation lists."""
     if 'url-relation-list' in release_group and release_group['url-relation-list']:
