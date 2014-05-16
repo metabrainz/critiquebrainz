@@ -1,3 +1,5 @@
+from urlparse import urlparse
+
 def process(release_group):
     """Handles processing supported relation lists."""
     if 'url-relation-list' in release_group and release_group['url-relation-list']:
@@ -12,7 +14,6 @@ def _url(list):
         'wikidata': {'name': 'Wikidata', 'icon': 'wikidata-16.png', },
         'discogs': {'name': 'Discogs', 'icon': 'discogs-16.png', },
         'allmusic': {'name': 'Allmusic', 'icon': 'allmusic-16.png', },
-        'lyrics': {'name': 'Lyrics', },
         'official homepage': {'name': 'Official homepage', },
         'recording studio': {'name': 'Recording studio', },
     }
@@ -21,6 +22,13 @@ def _url(list):
         if relation['type'] in basic_types:
             processed.append(dict(relation.items() + basic_types[relation['type']].items()))
         else:
-            # TODO: Process other types here
-            pass
+            if relation['type'] == 'lyrics':
+                processed.append(dict(
+                    relation.items() + {
+                        'name': 'Lyrics',
+                        'provider': urlparse(relation['target']).netloc
+                    }.items()))
+            else:
+                # TODO: Process other types here
+                pass
     return processed
