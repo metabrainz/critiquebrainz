@@ -13,7 +13,7 @@ def artist_entity_handler(id):
     if release_type not in allowed_release_types:
         raise BadRequest
     offset = int(request.args.get('offset', default=0))
-    limit = 30
+    limit = 20
     count, release_groups = musicbrainz.browse_release_groups(artist_id=id, release_type=release_type,
                                                               limit=limit, offset=offset)
     for release_group in release_groups:
