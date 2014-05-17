@@ -27,7 +27,7 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
 <div id="release-group-details" class="row">
   <div class="col-md-3">
     {% if id in spotify_mapping %}
-      <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[id] }}" width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
+      <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[id] }}&theme=white" width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
     {% else %}
       <img id="cover-art" class="img-responsive">
       <script>
