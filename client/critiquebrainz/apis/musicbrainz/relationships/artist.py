@@ -24,7 +24,6 @@ def _artist(list):
 def _url(list):
     """Processor for Artist-URL relationship."""
     basic_types = {
-        'wikipedia': {'name': 'Wikipedia', 'icon': 'wikipedia-16.png', },
         'wikidata': {'name': 'Wikidata', 'icon': 'wikidata-16.png', },
         'discogs': {'name': 'Discogs', 'icon': 'discogs-16.png', },
         'allmusic': {'name': 'Allmusic', 'icon': 'allmusic-16.png', },
@@ -43,6 +42,13 @@ def _url(list):
                     relation.items() + {
                         'name': 'Lyrics',
                         'disambiguation': target.netloc,
+                    }.items()))
+            elif relation['type'] == 'wikipedia':
+                external_urls.append(dict(
+                    relation.items() + {
+                        'name': 'Wikipedia',
+                        'disambiguation': target.netloc.split('.')[0] + ':' + target.path.split('/')[2],
+                        'icon': 'wikipedia-16.png',
                     }.items()))
             elif relation['type'] == 'youtube':
                 external_urls.append(dict(

@@ -11,7 +11,6 @@ def process(release_group):
 def _url(list):
     """Processor for Release Group-URL relationship."""
     basic_types = {
-        'wikipedia': {'name': 'Wikipedia', 'icon': 'wikipedia-16.png', },
         'wikidata': {'name': 'Wikidata', 'icon': 'wikidata-16.png', },
         'discogs': {'name': 'Discogs', 'icon': 'discogs-16.png', },
         'allmusic': {'name': 'Allmusic', 'icon': 'allmusic-16.png', },
@@ -23,11 +22,19 @@ def _url(list):
         if relation['type'] in basic_types:
             external_urls.append(dict(relation.items() + basic_types[relation['type']].items()))
         else:
+            target = urlparse(relation['target'])
             if relation['type'] == 'lyrics':
                 external_urls.append(dict(
                     relation.items() + {
                         'name': 'Lyrics',
-                        'disambiguation': urlparse(relation['target']).netloc
+                        'disambiguation': target.netloc
+                    }.items()))
+            elif relation['type'] == 'wikipedia':
+                external_urls.append(dict(
+                    relation.items() + {
+                        'name': 'Wikipedia',
+                        'disambiguation': target.netloc.split('.')[0] + ':' + target.path.split('/')[2],
+                        'icon': 'wikipedia-16.png',
                     }.items()))
             else:
                 # TODO: Process other types here
