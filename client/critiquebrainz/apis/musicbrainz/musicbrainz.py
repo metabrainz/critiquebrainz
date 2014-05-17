@@ -1,4 +1,5 @@
-from musicbrainzngs import set_useragent, get_release_group_by_id, get_artist_by_id, search_release_groups, search_artists, browse_release_groups
+from musicbrainzngs import set_useragent, get_release_group_by_id, get_artist_by_id, get_release_by_id, \
+    search_release_groups, search_artists, browse_release_groups
 from musicbrainzngs.musicbrainz import ResponseError
 
 from critiquebrainz.exceptions import APIError
@@ -31,7 +32,7 @@ class MusicBrainzClient:
         You need to provide artist's MusicBrainz ID.
         """
         key = generate_cache_key(str(artist_id), type='browse_release_groups', source='api',
-                                 params=[limit, offset]+release_types)
+                                 params=[limit, offset] + release_types)
         release_groups = cache.get(key)
         if not release_groups:
             try:
@@ -84,6 +85,26 @@ class MusicBrainzClient:
             release_group = release_group_rel.process(release_group)
             cache.set(key, release_group, DEFAULT_CACHE_EXPIRATION)
         return release_group
+
+    def get_release_by_id(self, id, includes=[]):
+        """Get release with the MusicBrainz ID.
+        Available includes: artists, labels, recordings, release-groups, media, artist-credits, discids, isrcs,
+        recording-level-rels, work-level-rels, annotation, aliases, area-rels, artist-rels, label-rels, place-rels,
+        recording-rels, release-rels, release-group-rels, url-rels, work-rels.
+        """
+        key = generate_cache_key(id, type='release', source='api', params=includes)
+        release = cache.get(key)
+        if not release:
+            try:
+                release = get_release_by_id(id, includes).get('release')
+            except ResponseError as e:
+                if e.cause.code == 404:
+                    raise APIError(code=e.cause.code,
+                                   desc="Sorry, we could not find a release with that MusicBrainz ID.")
+                else:
+                    raise APIError(code=e.cause.code, desc=e.cause.msg)
+            cache.set(key, release, DEFAULT_CACHE_EXPIRATION)
+        return release
 
     def release_group_details(self, id):
         """Get short release group details.

@@ -75,7 +75,22 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
         {% endif %}
       </ul>
     {% endif %}
+
+    {% if release and release['medium-list'] %}
+      <div id="tracklist" class="row">
+        <div class="col-md-12"><h4>Tracklist</h4></div>
+        {% for medium in release['medium-list'] %}
+          <div class="medium col-md-6">
+            {% if release['medium-count'] > 1 %}<h5><b>CD {{ medium.position }}</b></h5>{% endif %}
+            {% for track in medium['track-list'] %}
+              <div class="track">{{ track.number }}. {{ track.recording.title }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
+
   <div class="col-md-3">
     <h4>Release group information</h4>
     <p>
