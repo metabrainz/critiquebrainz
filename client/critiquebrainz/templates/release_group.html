@@ -32,10 +32,14 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
           .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
           .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
     </script>
-    {% if id in spotify_mapping %}
-      <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[id] }}&theme=white"
-              id="spotify-play-button" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-    {% endif %}
+    <div id="spotify-play-button">
+      {% if id in spotify_mapping %}
+        <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[id] }}&theme=white"
+                width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
+      {% else %}
+        <span class="text-muted"><em>We don’t have a Spotify mapping for this release, please help us find the right album on Spotify.</em></span>
+      {% endif %}
+    </div>
   </div>
   <div class="col-md-6">
     <h4>Reviews</h4>
