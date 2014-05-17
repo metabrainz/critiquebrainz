@@ -26,16 +26,15 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
 </div>
 <div id="release-group-details" class="row">
   <div class="col-md-3">
+    <img id="cover-art" class="img-responsive">
+    <script>
+      $("img").last()
+          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+          .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
+    </script>
     {% if id in spotify_mapping %}
       <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[id] }}&theme=white"
-              id="spotify-play-button" width="100%" height="330" frameborder="0" allowtransparency="true"></iframe>
-    {% else %}
-      <img id="cover-art" class="img-responsive">
-      <script>
-        $("img").last()
-            .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-            .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
-      </script>
+              id="spotify-play-button" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
     {% endif %}
   </div>
   <div class="col-md-6">
