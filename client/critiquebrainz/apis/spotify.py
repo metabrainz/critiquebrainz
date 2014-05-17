@@ -1,4 +1,5 @@
 import requests
+import urllib
 from critiquebrainz.cache import cache, generate_cache_key
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
@@ -15,7 +16,7 @@ class SpotifyClient(object):
         resp = cache.get(key)
         if not resp:
             resp = requests.get(self.BASE_URL +
-                                'search?q=' + query +
+                                'search?q=' + urllib.quote(query) +
                                 '&type=' + type +
                                 '&limit=' + str(limit) +
                                 '&offset=' + str(offset)).json()
