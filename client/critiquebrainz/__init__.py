@@ -50,3 +50,5 @@ from artist.views import bp as bp10
 app.register_blueprint(bp10, url_prefix='/artist')
 from about.views import bp as bp11
 app.register_blueprint(bp11, url_prefix='/about')
+from matching.views import bp as bp12
+app.register_blueprint(bp12, url_prefix='/matching')

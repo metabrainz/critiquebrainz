@@ -40,7 +40,7 @@
 
 // Components w/ JavaScript
 //@import "bootstrap/modals.less";
-//@import "bootstrap/tooltip.less";
+@import "bootstrap/tooltip.less";
 //@import "bootstrap/popovers.less";
 //@import "bootstrap/carousel.less";
 
@@ -276,4 +276,26 @@ a#edit-review { margin-top: 20px; }
 // User profile page
 #profile {
   .nav-list { margin-top: 15px; }
+}
+
+// Spotify matching page
+@tooltip-color: #fff;
+@tooltip-bg: @brand-success;
+@tooltip-opacity: 1;
+#spotify-search-results {
+  .cover-art-container {
+    height: 253px;
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+  }
+  .caption {
+    .title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: bold;
+    }
+  }
 }

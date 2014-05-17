@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Spotify album matching - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<h2>Spotify album matching</h2>
+<p class="lead">
+  Please, select album "{{ release_group.title }}"
+  <span class="text-muted">({{ release_group.first_release_date }})</span>
+  by {{ release_group.artist }}.
+</p>
+
+<div id="spotify-search-results" class="row">
+  {% for item in search_results %}
+  <div class="col-md-3">
+    <div class="thumbnail">
+      <div class="cover-art-container">
+        <a href="#" class="match-link" data-toggle="tooltip" data-placement="bottom" title="This is the same album!">
+          <img class="img-responsive" src="{{ item.images[1].url }}" />
+        </a>
+      </div>
+      <div class="caption">
+        <div class="title">{{ item.name }}</div>
+        <span class="text-muted">{{ item.album_type }}</span><br />
+        <em><a href="{{ item.external_urls.spotify }}">Listen on Spotify</a></em><br />
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <script>$('.match-link').tooltip()</script>
+</div>
+<div class="row">
+  <div class="col-sm-9">
+    <ul class="pagination">
+      {% set pages = count//limit %}
+      {% if count%limit %}
+        {% set pages = pages+1 %}
+      {% endif %}
+      {% if pages>1 %}
+        {% for p in range(pages) %}
+          {% set p_offset = p*limit %}
+          <li {% if offset == p_offset %}class="active"{% endif %}>
+            <a href="{{ url_for('matching.spotify', release_group_id=release_group.id, offset=p*limit) }}">{{ p+1 }}</a>
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
