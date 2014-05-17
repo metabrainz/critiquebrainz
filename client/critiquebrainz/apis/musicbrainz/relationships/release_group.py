@@ -4,7 +4,7 @@ from urlparse import urlparse
 def process(release_group):
     """Handles processing supported relation lists."""
     if 'url-relation-list' in release_group and release_group['url-relation-list']:
-        release_group['url-relation-list'] = _url(release_group['url-relation-list'])
+        release_group['external-urls'] = _url(release_group['url-relation-list'])
     return release_group
 
 
@@ -18,13 +18,13 @@ def _url(list):
         'official homepage': {'name': 'Official homepage', 'icon': 'home-16.png', },
         'recording studio': {'name': 'Recording studio', },
     }
-    processed = []
+    external_urls = []
     for relation in list:
         if relation['type'] in basic_types:
-            processed.append(dict(relation.items() + basic_types[relation['type']].items()))
+            external_urls.append(dict(relation.items() + basic_types[relation['type']].items()))
         else:
             if relation['type'] == 'lyrics':
-                processed.append(dict(
+                external_urls.append(dict(
                     relation.items() + {
                         'name': 'Lyrics',
                         'disambiguation': urlparse(relation['target']).netloc
@@ -32,5 +32,5 @@ def _url(list):
             else:
                 # TODO: Process other types here
                 pass
-    processed.sort()
-    return processed
+    external_urls.sort()
+    return external_urls

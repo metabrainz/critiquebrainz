@@ -80,10 +80,10 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
     <p>
       {% if release_group['first-release-date'] %}First release in {{ release_group['first-release-date'][:4] }}{% endif %}
     </p>
-    {% if release_group['url-relation-list'] %}
+    {% if release_group['external-urls'] %}
       <b>External links</b>
       <ul class="list-unstyled external-links">
-        {% for url in release_group['url-relation-list'] %}
+        {% for url in release_group['external-urls'] %}
           <li class="clearfix">
             <div class="favicon-container pull-left">
               {% if url.icon %}
