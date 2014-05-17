@@ -38,8 +38,8 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
                 width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
       {% else %}
         <span class="text-muted">
-          <em>We don’t have a Spotify mapping for this release, please
-            <a href="{{ url_for('matching.spotify', release_group_id=id) }}">help us find</a> the right album on Spotify.</em>
+          We don't have a match on Spotify for this release group.
+          Please <a href="{{ url_for('matching.spotify', release_group_id=id) }}">help us find</a> the right album on Spotify.
         </span>
       {% endif %}
     </div>
