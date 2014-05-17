@@ -11,7 +11,7 @@ def generate_cache_key(id, type=None, source=None, params=[]):
         key += str(source) + ':'
     if type is not None:
         key += str(type) + ':'
-    key += key + str(id) + '_'.join(map(str, params))
+    key += str(id) + '_'.join(map(str, params))
     if len(key) > 250:  # 250 bytes is the maximum key length in memcached
         key = hashlib.sha1(key).hexdigest()
     return key
