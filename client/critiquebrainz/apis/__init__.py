@@ -15,3 +15,6 @@ musicbrainz.init_app(app, app_name, app_version)
 
 from mbspotify import MBSpotifyClient
 mbspotify = MBSpotifyClient(app.config['MBSPOTIFY_BASE_URI'])
+
+from spotify import SpotifyClient
+spotify = SpotifyClient()
