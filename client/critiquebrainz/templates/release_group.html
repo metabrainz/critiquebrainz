@@ -93,7 +93,7 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
               {% endif %}
             </div>
             <a href="{{ url.target }}">{{ url.name }}</a>
-            {% if url.provider %}<span class="text-muted">({{ url.provider }})</span>{% endif %}
+            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
           </li>
         {% endfor %}
       </ul>

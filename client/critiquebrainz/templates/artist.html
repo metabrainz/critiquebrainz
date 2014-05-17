@@ -106,10 +106,10 @@
       </ul>
     {% endif %}
 
-    {% if artist['url-relation-list'] %}
+    {% if artist['external-urls'] %}
       <b>External links</b>
       <ul class="list-unstyled external-links">
-        {% for url in artist['url-relation-list'] %}
+        {% for url in artist['external-urls'] %}
           <li class="clearfix">
             <div class="favicon-container pull-left">
               {% if url.icon %}
@@ -119,7 +119,7 @@
               {% endif %}
             </div>
             <a href="{{ url.target }}">{{ url.name }}</a>
-            {% if url.provider %}<span class="text-muted">({{ url.provider }})</span>{% endif %}
+            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
           </li>
         {% endfor %}
       </ul>

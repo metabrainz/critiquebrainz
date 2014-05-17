@@ -15,7 +15,7 @@ def _url(list):
         'wikidata': {'name': 'Wikidata', 'icon': 'wikidata-16.png', },
         'discogs': {'name': 'Discogs', 'icon': 'discogs-16.png', },
         'allmusic': {'name': 'Allmusic', 'icon': 'allmusic-16.png', },
-        'official homepage': {'name': 'Official homepage', },
+        'official homepage': {'name': 'Official homepage', 'icon': 'home-16.png', },
         'recording studio': {'name': 'Recording studio', },
     }
     processed = []
@@ -27,7 +27,7 @@ def _url(list):
                 processed.append(dict(
                     relation.items() + {
                         'name': 'Lyrics',
-                        'provider': urlparse(relation['target']).netloc
+                        'disambiguation': urlparse(relation['target']).netloc
                     }.items()))
             else:
                 # TODO: Process other types here

@@ -6,7 +6,7 @@ def process(artist):
     if 'artist-relation-list' in artist and artist['artist-relation-list']:
         artist['band-members'] = _artist(artist['artist-relation-list'])
     if 'url-relation-list' in artist and artist['url-relation-list']:
-        artist['url-relation-list'] = _url(artist['url-relation-list'])
+        artist['external-urls'] = _url(artist['url-relation-list'])
     return artist
 
 
@@ -29,22 +29,38 @@ def _url(list):
         'discogs': {'name': 'Discogs', 'icon': 'discogs-16.png', },
         'allmusic': {'name': 'Allmusic', 'icon': 'allmusic-16.png', },
         'bandcamp': {'name': 'Bandcamp', 'icon': 'bandcamp-16.png', },
-        'official homepage': {'name': 'Official homepage', },
+        'official homepage': {'name': 'Official homepage', 'icon': 'home-16.png', },
         'BBC Music page': {'name': 'BBC Music', },
     }
-    processed = []
+    external_urls = []
     for relation in list:
         if relation['type'] in basic_types:
-            processed.append(dict(relation.items() + basic_types[relation['type']].items()))
+            external_urls.append(dict(relation.items() + basic_types[relation['type']].items()))
         else:
+            target = urlparse(relation['target'])
             if relation['type'] == 'lyrics':
-                processed.append(dict(
+                external_urls.append(dict(
                     relation.items() + {
                         'name': 'Lyrics',
-                        'provider': urlparse(relation['target']).netloc
+                        'disambiguation': target.netloc,
                     }.items()))
+            elif relation['type'] == 'youtube':
+                external_urls.append(dict(
+                    relation.items() + {
+                        'name': 'YouTube',
+                        'disambiguation': target.path.split('/')[2],
+                        'icon': 'youtube-16.png',
+                    }.items()))
+            elif relation['type'] == 'social network':
+                if target.netloc == 'twitter.com':
+                    external_urls.append(dict(
+                        relation.items() + {
+                            'name': 'Twitter',
+                            'disambiguation': target.path.split('/')[1],
+                            'icon': 'twitter-16.png',
+                        }.items()))
             else:
                 # TODO: Process other types here
                 pass
-    processed.sort()
-    return processed
+    external_urls.sort()
+    return external_urls
