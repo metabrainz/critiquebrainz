@@ -33,7 +33,8 @@ def _url(list):
                 external_urls.append(dict(
                     relation.items() + {
                         'name': 'Wikipedia',
-                        'disambiguation': target.netloc.split('.')[0] + ':' + target.path.split('/')[2],
+                        'disambiguation': target.netloc.split('.')[0] + ':' +
+                                          target.path.split('/')[2].replace("_", " "),
                         'icon': 'wikipedia-16.png',
                     }.items()))
             else:
