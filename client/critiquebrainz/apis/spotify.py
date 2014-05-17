@@ -16,7 +16,7 @@ class SpotifyClient(object):
         resp = cache.get(key)
         if not resp:
             resp = requests.get(self.BASE_URL +
-                                'search?q=' + urllib.quote(query) +
+                                'search?q=' + urllib.quote(query.encode('utf8')) +
                                 '&type=' + type +
                                 '&limit=' + str(limit) +
                                 '&offset=' + str(offset)).json()
