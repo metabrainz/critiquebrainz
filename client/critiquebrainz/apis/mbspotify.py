@@ -9,10 +9,13 @@ class MBSpotifyClient(object):
         self.base_url = base_url
 
     def mapping(self, mbids=[]):
-        headers = {'Content-type': 'application/json'}
-        resp = requests.post(self.base_url + "mapping", headers=headers,
-                             data=json.dumps({'mbids': mbids}))
-        return resp.json().get('mapping')
+        try:
+            headers = {'Content-type': 'application/json'}
+            resp = requests.post(self.base_url + "mapping", headers=headers,
+                                 data=json.dumps({'mbids': mbids}))
+            return resp.json().get('mapping')
+        except Exception as e:
+            return []
 
     def add_mapping(self, mbid, spotify_uri, user_id):
         headers = {'Content-type': 'application/json'}
