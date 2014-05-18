@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask.ext.login import login_required, current_user
-from critiquebrainz.apis import server
+from critiquebrainz.apis import server, mbspotify
 from critiquebrainz.exceptions import *
 import markdown
 
@@ -9,6 +9,7 @@ bp = Blueprint('review', __name__)
 @bp.route('/<uuid:id>', endpoint='entity')
 def review_entity_handler(id):
     review = server.get_review(id, inc=['user'])
+    spotify_mapping = mbspotify.mapping([str(review['release_group'])])
     # if user is logged in, get his vote for this review
     if current_user.is_authenticated():
         try:
@@ -23,7 +24,7 @@ def review_entity_handler(id):
     else:
         vote = None
     review["text"] = markdown.markdown(review["text"], safe_mode="escape")
-    return render_template('review/entity.html', review=review, vote=vote)
+    return render_template('review/entity.html', review=review, spotify_mapping=spotify_mapping, vote=vote)
 
 @bp.route('/<uuid:id>/vote', methods=['POST'], endpoint='vote_submit')
 @login_required

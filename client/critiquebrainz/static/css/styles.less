@@ -259,7 +259,21 @@ a#edit-review { margin-top: 20px; }
 
 // Review entity page
 #review-entity {
-  #cover-art { margin-top: 10px; }
+  #spotify-play-button, #cover-art {
+    margin-top: 10px;
+    @media (max-width: @screen-xs-max) {
+      display: flex;
+      flex-direction: row;
+      margin: 0 auto;
+      margin-top: 10px;
+    }
+  }
+  #spotify-play-button {
+    max-width: 250px;
+    .text-muted {
+      font-style: italic;
+    }
+  }
   #review-details {
     .dl-horizontal dt { width: 105px; }
     .dl-horizontal dd { margin-left: 125px; }

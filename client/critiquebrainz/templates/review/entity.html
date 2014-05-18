@@ -15,6 +15,12 @@
           .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
           .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
     </script>
+    <div id="spotify-play-button">
+      {% if review.release_group in spotify_mapping %}
+        <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[review.release_group] }}&theme=white"
+              width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
+      {% endif %}
+    </div>
   </div>
   <div class="col-md-9">
     <div id="review-details" class="row">
