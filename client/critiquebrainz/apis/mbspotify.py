@@ -10,5 +10,16 @@ class MBSpotifyClient(object):
 
     def mapping(self, mbids=[]):
         headers = {'Content-type': 'application/json'}
-        resp = requests.post(self.base_url + "mapping", data=json.dumps({'mbids': mbids}), headers=headers)
+        resp = requests.post(self.base_url + "mapping", headers=headers,
+                             data=json.dumps({'mbids': mbids}))
         return resp.json().get('mapping')
+
+    def add_mapping(self, mbid, spotify_uri, user_id):
+        headers = {'Content-type': 'application/json'}
+        resp = requests.post(self.base_url + "mapping/add", headers=headers,
+                             data=json.dumps({'mbid': str(mbid), 'spotify_uri': spotify_uri, 'user': str(user_id)}))
+
+    def report(self, mbid, user_id):
+        headers = {'Content-type': 'application/json'}
+        resp = requests.post(self.base_url + "mapping/vote", headers=headers,
+                             data=json.dumps({'mbid': str(mbid), 'user': user_id}))
