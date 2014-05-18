@@ -62,9 +62,16 @@
                   </ul>
                 </li>
               {% endif %}
-              <li><a href="/about/">About</a></li>
-              <li><a href="http://blog.musicbrainz.org/">Blog</a></li>
-              <li><a href="https://github.com/metabrainz/critiquebrainz/wiki/Developer-documentation">Developers</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  About <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="/about/">About the project</a></li>
+                  <li><a href="http://blog.musicbrainz.org/">Blog</a></li>
+                  <li><a href="https://github.com/metabrainz/critiquebrainz/wiki/Developer-documentation">Developers</a></li>
+                </ul>
+              </li>
             </ul>
             <form class="navbar-form navbar-right" role="search" method="GET" action="{{ url_for('search.index') }}">
               <div class="form-group">
