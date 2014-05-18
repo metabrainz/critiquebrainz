@@ -17,9 +17,10 @@ login_manager.init_app(app)
 from flask.ext.uuid import FlaskUUID
 FlaskUUID(app)
 
-# init datetime formatter
-from utils import format_datetime
+# init utils
+from utils import format_datetime, track_length
 app.jinja_env.filters['datetime'] = format_datetime
+app.jinja_env.filters['track_length'] = track_length
 
 # init error handlers
 import errors
