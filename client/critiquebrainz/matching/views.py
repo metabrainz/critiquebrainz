@@ -9,6 +9,12 @@ bp = Blueprint('matching', __name__)
 
 @bp.route('/spotify/<uuid:release_group_id>', endpoint='spotify')
 def spotify_matching_handler(release_group_id):
+    # Checking if release group is already matched
+    spotify_mapping = mbspotify.mapping([str(release_group_id)])
+    if len(spotify_mapping) > 0:
+        flash(u'Thanks, but this album is already matched to Spotify!', 'success')
+        return redirect(url_for('release_group.entity', id=release_group_id))
+
     release_group = musicbrainz.release_group_details(release_group_id)
     limit = 20
     offset = int(request.args.get('offset', default=0))
@@ -21,6 +27,12 @@ def spotify_matching_handler(release_group_id):
 @bp.route('/spotify/<uuid:release_group_id>/confirm', methods=['GET'], endpoint='spotify_confirm')
 @login_required
 def spotify_matching_submit_handler(release_group_id):
+    # Checking if release group is already matched
+    spotify_mapping = mbspotify.mapping([str(release_group_id)])
+    if len(spotify_mapping) > 0:
+        flash(u'Thanks, but this album is already matched to Spotify!', 'success')
+        return redirect(url_for('release_group.entity', id=release_group_id))
+
     spotify_uri = request.args.get('spotify_uri', default=None)
     release_group = musicbrainz.release_group_details(release_group_id)
     limit = 20
@@ -34,6 +46,12 @@ def spotify_matching_submit_handler(release_group_id):
 @bp.route('/spotify/<uuid:release_group_id>/confirm', methods=['POST'], endpoint='spotify_submit')
 @login_required
 def spotify_matching_submit_handler(release_group_id):
+    # Checking if release group is already matched
+    spotify_mapping = mbspotify.mapping([str(release_group_id)])
+    if len(spotify_mapping) > 0:
+        flash(u'Thanks, but this album is already matched to Spotify!', 'success')
+        return redirect(url_for('release_group.entity', id=release_group_id))
+
     spotify_uri = request.args.get('spotify_uri', default=None)
     if not spotify_uri:
         return redirect(url_for('.spotify', release_group_id=release_group_id))
