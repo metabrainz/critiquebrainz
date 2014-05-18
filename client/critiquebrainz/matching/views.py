@@ -12,7 +12,7 @@ def spotify_matching_handler(release_group_id):
     # Checking if release group is already matched
     spotify_mapping = mbspotify.mapping([str(release_group_id)])
     if len(spotify_mapping) > 0:
-        flash(u'Thanks, but this album is already matched to Spotify!', 'success')
+        flash(u'Thanks, but this album is already matched to Spotify!')
         return redirect(url_for('release_group.entity', id=release_group_id))
 
     release_group = musicbrainz.release_group_details(release_group_id)
@@ -30,7 +30,7 @@ def spotify_matching_submit_handler(release_group_id):
     # Checking if release group is already matched
     spotify_mapping = mbspotify.mapping([str(release_group_id)])
     if len(spotify_mapping) > 0:
-        flash(u'Thanks, but this album is already matched to Spotify!', 'success')
+        flash(u'Thanks, but this album is already matched to Spotify!')
         return redirect(url_for('release_group.entity', id=release_group_id))
 
     spotify_uri = request.args.get('spotify_uri', default=None)
@@ -49,7 +49,7 @@ def spotify_matching_submit_handler(release_group_id):
     # Checking if release group is already matched
     spotify_mapping = mbspotify.mapping([str(release_group_id)])
     if len(spotify_mapping) > 0:
-        flash(u'Thanks, but this album is already matched to Spotify!', 'success')
+        flash(u'Thanks, but this album is already matched to Spotify!')
         return redirect(url_for('release_group.entity', id=release_group_id))
 
     spotify_uri = request.args.get('spotify_uri', default=None)
