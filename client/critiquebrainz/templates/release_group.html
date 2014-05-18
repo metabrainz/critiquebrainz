@@ -39,8 +39,9 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
       {% else %}
         <span class="text-muted">
           We don't have a match on Spotify for this release group.
-          Please <a href="{{ url_for('matching.spotify', release_group_id=id) }}">help us find</a> the right album on Spotify.
+          Please help us find the right album on Spotify.
         </span>
+        <div style="text-align:center;font-weight:bold;"><a style="font-size:16px;" href="{{ url_for('matching.spotify', release_group_id=id) }}">Match this!</a></div>
       {% endif %}
     </div>
   </div>
