@@ -286,6 +286,10 @@ a#edit-review { margin-top: 20px; }
 @tooltip-bg: @brand-success;
 @tooltip-opacity: 1;
 #spotify-search-results {
+  .thumbnail:hover {
+    border-color: fadeout(@mb-purple, 40%);
+    box-shadow: 0px 0px 5px 0px @mb-purple;
+  }
   .cover-art-container {
     height: 253px;
     img {
