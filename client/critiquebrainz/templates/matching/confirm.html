@@ -5,13 +5,26 @@
 {% block content %}
 <h2>Spotify album matching</h2>
 <div class="text-center">
-  <strong style="font-size: 16px">
-    Are you sure want to connect <b>"{{ release_group.title }}" - {{ release_group.artist }}</b>
-    with Spotify URI: <b>{{ spotify_uri }}</b> ?
-  </strong>
+  <strong style="font-size: 16px">Are you sure want create a connection?</strong>
   <hr />
-  <iframe src="https://embed.spotify.com/?uri={{ spotify_uri }}&theme=white"
-          width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>CritiqueBrainz</h4>
+      <p>"{{ release_group.title }}" by {{ release_group.artist }}</p>
+      <img id="cover-art">
+      <script>
+        $("img").last()
+            .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+            .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
+      </script>
+    </div>
+    <div class="col-md-6">
+      <h4>Spotify</h4>
+      <p>URI: {{ spotify_uri }}</p>
+      <iframe src="https://embed.spotify.com/?uri={{ spotify_uri }}&theme=white"
+              width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
+    </div>
+  </div>
   <hr />
   <form role="form" method="POST" action="{{ url_for('matching.spotify_submit', spotify_uri=spotify_uri, release_group_id=release_group.id) }}">
     <button type="submit" class="btn btn-success">Connect</button>
