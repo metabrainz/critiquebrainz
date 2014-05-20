@@ -22,23 +22,27 @@ def _url(list):
         if relation['type'] in basic_types:
             external_urls.append(dict(relation.items() + basic_types[relation['type']].items()))
         else:
-            target = urlparse(relation['target'])
-            if relation['type'] == 'lyrics':
-                external_urls.append(dict(
-                    relation.items() + {
-                        'name': 'Lyrics',
-                        'disambiguation': target.netloc
-                    }.items()))
-            elif relation['type'] == 'wikipedia':
-                external_urls.append(dict(
-                    relation.items() + {
-                        'name': 'Wikipedia',
-                        'disambiguation': target.netloc.split('.')[0] + ':' +
-                                          target.path.split('/')[2].replace("_", " "),
-                        'icon': 'wikipedia-16.png',
-                    }.items()))
-            else:
-                # TODO: Process other types here
+            try:
+                target = urlparse(relation['target'])
+                if relation['type'] == 'lyrics':
+                    external_urls.append(dict(
+                        relation.items() + {
+                            'name': 'Lyrics',
+                            'disambiguation': target.netloc
+                        }.items()))
+                elif relation['type'] == 'wikipedia':
+                    external_urls.append(dict(
+                        relation.items() + {
+                            'name': 'Wikipedia',
+                            'disambiguation': target.netloc.split('.')[0] + ':' +
+                                              target.path.split('/')[2].replace("_", " "),
+                            'icon': 'wikipedia-16.png',
+                        }.items()))
+                else:
+                    # TODO: Process other types here
+                    pass
+            except Exception as e:
+                # TODO: Log error
                 pass
     external_urls.sort()
     return external_urls
