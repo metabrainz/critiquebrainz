@@ -104,7 +104,13 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
               <tr>
                 <td>{{ track.number }}</td>
                 <td>{{ track.recording.title }}</td>
-                <td>{{ track.recording.length|track_length }}</td>
+                <td>
+                  {% if track.recording.length %}
+                    {{ track.recording.length|track_length }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
               </tr>
             {% endfor %}
           {% endfor %}
