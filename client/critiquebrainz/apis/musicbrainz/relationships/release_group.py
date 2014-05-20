@@ -1,4 +1,5 @@
 from urlparse import urlparse
+import urllib
 
 
 def process(release_group):
@@ -35,7 +36,7 @@ def _url(list):
                         relation.items() + {
                             'name': 'Wikipedia',
                             'disambiguation': target.netloc.split('.')[0] + ':' +
-                                              target.path.split('/')[2].replace("_", " "),
+                                              urllib.unquote(target.path.split('/')[2]).decode('utf8').replace("_", " "),
                             'icon': 'wikipedia-16.png',
                         }.items()))
                 else:
