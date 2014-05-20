@@ -36,38 +36,47 @@ def _url(list):
         if relation['type'] in basic_types:
             external_urls.append(dict(relation.items() + basic_types[relation['type']].items()))
         else:
-            target = urlparse(relation['target'])
-            if relation['type'] == 'lyrics':
-                external_urls.append(dict(
-                    relation.items() + {
-                        'name': 'Lyrics',
-                        'disambiguation': target.netloc,
-                    }.items()))
-            elif relation['type'] == 'wikipedia':
-                external_urls.append(dict(
-                    relation.items() + {
-                        'name': 'Wikipedia',
-                        'disambiguation': target.netloc.split('.')[0] + ':' +
-                                          target.path.split('/')[2].replace("_", " "),
-                        'icon': 'wikipedia-16.png',
-                    }.items()))
-            elif relation['type'] == 'youtube':
-                external_urls.append(dict(
-                    relation.items() + {
-                        'name': 'YouTube',
-                        'disambiguation': target.path.split('/')[2],
-                        'icon': 'youtube-16.png',
-                    }.items()))
-            elif relation['type'] == 'social network':
-                if target.netloc == 'twitter.com':
+            try:
+                target = urlparse(relation['target'])
+                if relation['type'] == 'lyrics':
                     external_urls.append(dict(
                         relation.items() + {
-                            'name': 'Twitter',
-                            'disambiguation': target.path.split('/')[1],
-                            'icon': 'twitter-16.png',
+                            'name': 'Lyrics',
+                            'disambiguation': target.netloc,
                         }.items()))
-            else:
-                # TODO: Process other types here
+                elif relation['type'] == 'wikipedia':
+                    external_urls.append(dict(
+                        relation.items() + {
+                            'name': 'Wikipedia',
+                            'disambiguation': target.netloc.split('.')[0] + ':' +
+                                              target.path.split('/')[2].replace("_", " "),
+                            'icon': 'wikipedia-16.png',
+                        }.items()))
+                elif relation['type'] == 'youtube':
+                    path = target.path.split('/')
+                    if path[1] == 'user' or path[1] == 'channel':
+                        disambiguation = path[2]
+                    else:
+                        disambiguation = path[1]
+                    external_urls.append(dict(
+                        relation.items() + {
+                            'name': 'YouTube',
+                            'disambiguation': disambiguation,
+                            'icon': 'youtube-16.png',
+                        }.items()))
+                elif relation['type'] == 'social network':
+                    if target.netloc == 'twitter.com':
+                        external_urls.append(dict(
+                            relation.items() + {
+                                'name': 'Twitter',
+                                'disambiguation': target.path.split('/')[1],
+                                'icon': 'twitter-16.png',
+                            }.items()))
+                else:
+                    # TODO: Process other types here
+                    pass
+            except Exception as e:
+                # TODO: Log error
                 pass
     external_urls.sort()
     return external_urls
