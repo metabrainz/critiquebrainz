@@ -45,4 +45,4 @@ def format_datetime(value, format='%b %d, %Y'):
 def track_length(value):
     seconds = int(value) / 1000
     minutes, seconds = divmod(seconds, 60)
-    return '%i:%i' % (minutes, seconds)
+    return '%i:%02i' % (minutes, seconds)
