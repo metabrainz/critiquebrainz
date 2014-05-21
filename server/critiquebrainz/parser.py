@@ -97,7 +97,7 @@ class Parser(object):
     @classmethod
     def email(cls, src, key, optional=False):
         _e = cls.get_key(src, key)
-        if _e is None:
+        if not _e:
             if optional:
                 return None
             else:

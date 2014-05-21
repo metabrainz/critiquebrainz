@@ -197,9 +197,8 @@ class User(db.Model):
     def update(self, display_name=None, email=None, show_gravatar=None):
         if display_name is not None:
             self.display_name = display_name
-        if email is not None:
-            self.email = email
         if show_gravatar is not None:
             self.show_gravatar = show_gravatar
+        self.email = email
         db.session.commit()
 
