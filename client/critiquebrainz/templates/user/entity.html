@@ -52,12 +52,13 @@
         <th>Created on</th>
         <th>Votes (+/-)</th>
         <th>Class</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {% for review in reviews %}
         {% set release_group = review.release_group|release_group_details %}
-        <tr class="clickable-row" data-url="{{ url_for('review.entity', id=review.id) }}" data-review-id="{{ review.id }}">
+        <tr data-review-id="{{ review.id }}">
           <td>{{ release_group.artist }}</td>
           <td>
             {{ release_group.title }}
@@ -68,6 +69,7 @@
           <td>{{ review.created | datetime }}</td>
           <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
           <td>{{ review.review_class }}</td>
+          <td><a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">Read</a></td>
         </tr>
       {% endfor %}
     </tbody>
