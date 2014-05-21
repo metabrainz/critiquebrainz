@@ -46,22 +46,26 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
     </div>
   </div>
   <div class="col-md-6">
-    <h4>Reviews</h4>
+    <h4 style="margin-bottom:0;">Reviews</h4>
     {% if not reviews %}
       <p class="lead" style="text-align: center;">No reviews found</p>
     {% else %}
       <table class="table table-condensed table-hover">
         <thead>
           <tr>
-            <th>Author</th>
+            <th></th>
             <th>Published on</th>
             <th>Rating</th>
           </tr>
         </thead>
         <tbody>
           {% for review in reviews %}
-            <tr class="clickable-row" data-url="{{ url_for('review.entity', id=review.id) }}" data-review-id="{{ review.id }}">
-              <td><img class="avatar" src="{{ review.user.avatar }}&s=18" /> {{ review.user.display_name }}</td>
+            <tr data-review-id="{{ review.id }}">
+              <td>
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                  by <img class="avatar" src="{{ review.user.avatar }}&s=18" /> {{ review.user.display_name }}
+                </a>
+              </td>
               <td>{{ review.created | datetime }}</td>
               <td>{{ review.rating }}</td>
             </tr>
