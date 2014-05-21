@@ -129,29 +129,29 @@ img.avatar {
   .btn-primary { margin-top: 10px; }
   #lists {
     margin-top: 25px;
-    ul.reviews {
-      > li {
-        height: 50px;
-        margin-bottom: 10px;
-        img.cover-art {
-          max-width: 50px;
-          max-height: 50px;
-          margin-right: 10px;
-        }
-        img.avatar {
-          margin-right: 0;
-        }
-        .album { margin-top: 4px; }
-        .album, .reviewer {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
+    a.review {
+      display: block;
+      height: 50px;
+      margin-bottom: 10px;
+      color: @text-color;
+      text-decoration: none;
+      display: block;
+      img.cover-art {
+        max-width: 50px;
+        max-height: 50px;
+        margin-right: 10px;
       }
-      > li:hover {
-        background-color: @table-bg-hover;
+      img.avatar {
+        margin-right: 0;
+      }
+      .album { padding-top: 4px; }
+      .album, .reviewer {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
+    a:hover.review { background-color: @table-bg-hover; }
   }
 }
 
