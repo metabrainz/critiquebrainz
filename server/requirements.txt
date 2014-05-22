@@ -1,3 +1,4 @@
+--allow-unverified twill
 Flask==0.10.1
 Flask-SQLAlchemy==1.0
 Flask-Script==0.5.3
