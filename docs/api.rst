@@ -1,7 +1,11 @@
 API Documentation
 =================
 
-CritiqueBrainz client uses this API, so you can use it as an example.
+This page describes all resources available via CririqueBrainz Server API. It uses JSON format.
+
+**Root URL**: ``http://critiquebrainz.musicbrainz.org/ws/1``
+
+`CritiqueBrainz client is build on top of this API, so you can use it as an example.`
 
 Reveiws
 -------
