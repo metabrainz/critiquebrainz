@@ -3,7 +3,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import config
 
 _name = "CritiqueBrainz Server"
-_version = "0.1"
+__version__ = "0.1"
 
 # app init
 app = Flask(__name__)
