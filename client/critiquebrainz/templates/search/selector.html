@@ -47,7 +47,10 @@
           {% for result in results %}
             <tr>
               <td>{{ result['artist-credit-phrase'] }}</td>
-              <td>{{ result['title'] }}</td>
+              <td>
+                {{ result['title'] }}
+                {% if result['disambiguation'] %}<span class="text-muted">({{ result['disambiguation'] }})</span>{% endif %}
+              </td>
               <td>{{ result['primary-type'] or '-' }}</td>
               <td>
                 <input type="radio" name="release_group" value="{{ result['id'] }}">
