@@ -14,12 +14,12 @@
 {% endfor %}
 <h2>Write review</h2>
 <dl class="dl-horizontal">
-  <dt>Artist</dt><dd>{{ release_group.artist }}</dd>
+  <dt>Artist</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
   <dt>Release group</dt>
   <dd>
     {{ release_group.title }}
-    {% if release_group.first_release_date %}
-      <span class="text-muted">({{ release_group.first_release_date }})</span>
+    {% if release_group['first-release-date'] %}
+      <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
     {% endif %}
   </dd>
 </dl>

@@ -42,7 +42,7 @@
         <p class="lead" style="text-align: center;">No reviews found</p>
       {% else %}
         {% for review in hot_reviews %}
-          {% set release_group = review.release_group|release_group_details %}
+          {% set release_group = review.release_group | release_group_details %}
           <a class="review" href="{{ url_for('review.entity', id=review.id) }}">
             <img class="cover-art pull-left">
             <script>
@@ -50,7 +50,7 @@
                   .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
                   .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
             </script>
-            <div class="album"><b>{{ release_group.title }}</b> - {{ release_group.artist }}</div>
+            <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
               Review by <img class="avatar" src="{{ review.user.avatar }}&s=16" /> {{ review.user.display_name }}
             </div>
@@ -65,7 +65,7 @@
         <p class="lead" style="text-align: center;">No reviews found</p>
       {% else %}
         {% for review in recent_reviews %}
-          {% set release_group = review.release_group|release_group_details %}
+          {% set release_group = review.release_group | release_group_details %}
           <a class="review" href="{{ url_for('review.entity', id=review.id) }}">
             <img class="cover-art pull-left">
             <script>
@@ -73,7 +73,7 @@
                   .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
                   .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
             </script>
-            <div class="album"><b>{{ release_group.title }}</b> - {{ release_group.artist }}</div>
+            <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
               Review by <img class="avatar" src="{{ review.user.avatar }}&s=16" /> {{ review.user.display_name }}
             </div>

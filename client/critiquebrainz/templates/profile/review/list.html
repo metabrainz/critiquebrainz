@@ -28,13 +28,13 @@
     </thead>
     <tbody>
       {% for review in reviews %}
-        {% set release_group = review.release_group|release_group_details %}
+        {% set release_group = review.release_group | release_group_details %}
         <tr data-review-id="{{ review.id }}">
-          <td>{{ release_group.artist }}</td>
+          <td>{{ release_group['artist-credit-phrase'] }}</td>
           <td>
             {{ release_group.title }}
-            {% if release_group.first_release_date %}
-              <span class="text-muted">({{ release_group.first_release_date }})</span>
+            {% if release_group['first-release-date'] %}
+              <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
             {% endif %}
           </td>
           <td>{{ review.created | datetime }}</td>
