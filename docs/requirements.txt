@@ -1,19 +1,2 @@
 sphinxcontrib-httpdomain==1.2.1
-
-Flask==0.10.1
-Flask-SQLAlchemy==1.0
-Flask-Script==0.5.3
-Flask-Testing==0.4
-Flask-UUID==0.2
-Jinja2==2.7
-MarkupSafe==0.18
-SQLAlchemy==0.9.4
-Werkzeug==0.9.3
-argparse==1.2.1
-distribute==0.6.34
-itsdangerous==0.22
-psycopg2==2.5.1
-rauth==0.6.1
-requests==1.2.3
-twill==0.9
-wsgiref==0.1.2
+-r ../server/requirements.txt
