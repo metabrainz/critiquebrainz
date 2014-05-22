@@ -6,7 +6,8 @@ if not on_rtd:
     import config
 else:
     import shutil
-    shutil.copyfile('config.py.example', 'config.py')
+    path = os.path.dirname(__file__)
+    shutil.copyfile(path+'/config.py.example', path+'/config.py')
 
 _name = "CritiqueBrainz Server"
 __version__ = "0.1"
