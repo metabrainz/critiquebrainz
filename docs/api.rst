@@ -7,7 +7,7 @@ This page describes all resources available via CririqueBrainz Server API. It us
 
 `CritiqueBrainz client is build on top of this API, so you can use it as an example.`
 
-Reveiws
+Reviews
 -------
 .. autoflask:: server.critiquebrainz:app
    :blueprints: review
