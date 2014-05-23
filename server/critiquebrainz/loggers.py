@@ -1,6 +1,6 @@
 import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
-from config import ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, LOG_EMAIL_TOPIC
+from config import ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_ADDR, LOG_EMAIL_TOPIC
 
 
 def init_app(app):
@@ -16,7 +16,7 @@ def init_app(app):
     credentials = None
     if MAIL_USERNAME or MAIL_PASSWORD:
         credentials = (MAIL_USERNAME, MAIL_PASSWORD)
-    mail_handler = SMTPHandler((MAIL_SERVER, MAIL_PORT), 'no-reply@'+MAIL_SERVER, ADMINS, LOG_EMAIL_TOPIC, credentials)
+    mail_handler = SMTPHandler((MAIL_SERVER, MAIL_PORT), MAIL_FROM_ADDR, ADMINS, LOG_EMAIL_TOPIC, credentials)
     mail_handler.setLevel(logging.ERROR)
     mail_handler.setFormatter(logging.Formatter('''
     Message type:       %(levelname)s
