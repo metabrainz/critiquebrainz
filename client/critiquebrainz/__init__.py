@@ -25,6 +25,11 @@ app.jinja_env.filters['track_length'] = track_length
 # init error handlers
 import errors
 
+# init loggers
+import loggers
+if app.debug is False:
+    loggers.init_app(app)
+
 # init index
 import views
 

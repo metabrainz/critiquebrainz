@@ -11,3 +11,5 @@ MEMCACHED_NAMESPACE = "CB_CLIENT"
 
 # Server with Spotify mappings
 MBSPOTIFY_BASE_URI = "http://127.0.0.1:8080/"
+
+LOG_FILE = "client.log"

@@ -3,3 +3,5 @@ venv
 fcgi.sock
 client.fcgi
 uwsgi.ini
+
+*.log
