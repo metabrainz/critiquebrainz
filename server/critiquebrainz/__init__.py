@@ -32,8 +32,8 @@ FlaskUUID(app)
 import errors
 
 # register loggers
-import loggers
-if app.debug is False:
+if not app.debug:
+    import loggers
     loggers.init_app(app)
 
 # register blueprints
