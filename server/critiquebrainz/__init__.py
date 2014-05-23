@@ -1,9 +1,16 @@
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
-import config
+
+import os
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+if not on_rtd:
+    import config
+else:
+    import shutil
+    path = os.path.dirname(__file__)
+    shutil.copyfile(path+'/config.py.example', path+'/config.py')
 
 _name = "CritiqueBrainz Server"
-_version = "0.1"
+__version__ = "0.1"
 
 # app init
 app = Flask(__name__)

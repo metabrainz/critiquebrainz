@@ -1,5 +1,5 @@
-from flask import Blueprint, jsonify, current_app, abort
-from critiquebrainz.db import db, Review, Vote
+from flask import Blueprint, jsonify
+from critiquebrainz.db import Review, Vote
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
@@ -8,6 +8,11 @@ bp = Blueprint('review', __name__)
 
 @bp.route('/<uuid:review_id>', endpoint='entity', methods=['GET'])
 def review_entity_handler(review_id):
+    """Get review with a specified UUID.
+
+    :statuscode 200: no error
+    :statuscode 404: review not found
+    """
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound
@@ -17,6 +22,12 @@ def review_entity_handler(review_id):
 @bp.route('/<uuid:review_id>', endpoint='delete', methods=['DELETE'])
 @oauth.require_auth('review')
 def review_delete_handler(review_id, user):
+    """Delete review with a specified UUID.
+
+    :statuscode 200: success
+    :statuscode 403: access denied
+    :statuscode 404: review not found
+    """
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound
@@ -28,6 +39,12 @@ def review_delete_handler(review_id, user):
 @bp.route('/<uuid:review_id>', endpoint='modify', methods=['POST'])
 @oauth.require_auth('review')
 def review_modify_handler(review_id, user):
+    """Update review with a specified UUID.
+
+    :statuscode 200: success
+    :statuscode 403: access denied
+    :statuscode 404: review not found
+    """
     def fetch_params():
         text = Parser.string('json', 'text', min=25, max=2500)
         return text
@@ -43,6 +60,15 @@ def review_modify_handler(review_id, user):
 
 @bp.route('/', endpoint='list', methods=['GET'])
 def review_list_handler():
+    """Get list of reviews.
+
+    :query release_group: UUID of release group
+    :query user_id: user's UUID
+    :query sort: `rating` or `created`
+    :query limit: results limit. min is 0, max is 50, default is 50
+    :query offset: result offset. default is 0
+    :query inc: includes
+    """
     def fetch_params():
         release_group = Parser.uuid('uri', 'release_group', optional=True)
         user_id = Parser.uuid('uri', 'user_id', optional=True)
@@ -59,6 +85,7 @@ def review_list_handler():
 @bp.route('/', endpoint='create', methods=['POST'])
 @oauth.require_auth('review')
 def review_post_handler(user):
+    """Publish a review."""
     def fetch_params():
         release_group = Parser.uuid('json', 'release_group')
         text = Parser.string('json', 'text', min=25, max=2500)
@@ -76,6 +103,7 @@ def review_post_handler(user):
 @bp.route('/<uuid:review_id>/vote', methods=['GET'])
 @oauth.require_auth('vote')
 def review_vote_entity_handler(review_id, user):
+    """Get user's vote for a specified review."""
     review = Review.query.get_or_404(str(review_id))
     vote = Vote.query.filter_by(user=user, review=review).first()
     if not vote:
@@ -86,6 +114,13 @@ def review_vote_entity_handler(review_id, user):
 @bp.route('/<uuid:review_id>/vote', methods=['PUT'])
 @oauth.require_auth('vote')
 def review_vote_put_handler(review_id, user):
+    """Set user's vote for a specified review.
+
+    :statuscode 200: success
+    :statuscode 400: invalid request (see source)
+    :statuscode 403: daily vote limit exceeded
+    :statuscode 404: review not found
+    """
     def fetch_params():
         placet = Parser.bool('json', 'placet')
         return placet
@@ -108,6 +143,7 @@ def review_vote_put_handler(review_id, user):
 @bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
 @oauth.require_auth('vote')
 def review_vote_delete_handler(review_id, user):
+    """Delete user's vote for a specified review."""
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound
