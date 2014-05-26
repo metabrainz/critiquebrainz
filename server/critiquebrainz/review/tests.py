@@ -1,3 +1,4 @@
+import unittest
 import json
 
 from flask.ext.testing import TestCase
@@ -5,8 +6,7 @@ from flask.ext.testing import TestCase
 from critiquebrainz import create_app
 from critiquebrainz.db import db, User, License, Review
 
-
-class Reviews(TestCase):
+class ReviewTestCase(TestCase):
     def create_app(self):
         import test_config
         return create_app(test_config)
@@ -18,12 +18,12 @@ class Reviews(TestCase):
         db.session.remove()
         db.drop_all()
 
-    def test_empty_db(self):
+    def test_review_count(self):
         resp = self.client.get('/review/')
         data = json.loads(resp.data)
         assert data['count'] == 0
 
-    def test_review_addition(self):
+    def test_review_creation(self):
         # Review needs user
         user = User(display_name=u'Tester')
         db.session.add(user)
@@ -52,3 +52,6 @@ class Reviews(TestCase):
         assert stored_review['text'] == text
         assert stored_review['license']['id'] == license.id
         assert stored_review['license']['full_name'] == license.full_name
+
+
+review_test_suite = unittest.TestLoader().loadTestsFromTestCase(ReviewTestCase)

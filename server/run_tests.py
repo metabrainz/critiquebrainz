@@ -1,5 +1,7 @@
 import unittest
-from tests import test_config, reviews
+import test_config
+from critiquebrainz.review.tests import review_test_suite
+from critiquebrainz.user.tests import user_test_suite
 
 if __name__ == '__main__':
     # Creating database-related stuff
@@ -7,5 +9,5 @@ if __name__ == '__main__':
     manage.init_postgres(test_config.SQLALCHEMY_DATABASE_URI)
 
     # Running tests
-    suite = unittest.TestLoader().loadTestsFromTestCase(reviews.Reviews)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    all = unittest.TestSuite([review_test_suite, user_test_suite])
+    unittest.TextTestRunner(verbosity=2).run(all)
