@@ -9,10 +9,7 @@ from critiquebrainz.db import db, User, License, Review
 class Reviews(TestCase):
     def create_app(self):
         import test_config
-        app = create_app(test_config)
-        import manage
-        manage.init_postgres(test_config.SQLALCHEMY_DATABASE_URI)
-        return app
+        return create_app(test_config)
 
     def setUp(self):
         db.create_all()
