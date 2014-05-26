@@ -4,9 +4,9 @@ from critiquebrainz.exceptions import *
 from critiquebrainz.db import OAuthClient
 from critiquebrainz.decorators import nocache
 
-bp = Blueprint('oauth', __name__)
+oauth_bp = Blueprint('oauth', __name__)
 
-@bp.route('/authorize', methods=['POST'], endpoint='authorize')
+@oauth_bp.route('/authorize', methods=['POST'], endpoint='authorize')
 @oauth.require_auth('authorization')
 @nocache
 def oauth_authorize_handler(user):
@@ -23,7 +23,7 @@ def oauth_authorize_handler(user):
 
     return jsonify(dict(code=code))
 
-@bp.route('/token', methods=['POST'], endpoint='token')
+@oauth_bp.route('/token', methods=['POST'], endpoint='token')
 @nocache
 def oauth_token_handler():
     client_id = request.form.get('client_id')
@@ -55,7 +55,7 @@ def oauth_token_handler():
                         refresh_token=refresh_token,
                         scope=scope))
 
-@bp.route('/validate', methods=['POST'], endpoint='validate')
+@oauth_bp.route('/validate', methods=['POST'], endpoint='validate')
 @nocache
 def oauth_client_handler():
     client_id = request.form.get('client_id')

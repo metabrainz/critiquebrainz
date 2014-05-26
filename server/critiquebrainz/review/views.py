@@ -4,9 +4,9 @@ from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
 
-bp = Blueprint('review', __name__)
+review_bp = Blueprint('review', __name__)
 
-@bp.route('/<uuid:review_id>', endpoint='entity', methods=['GET'])
+@review_bp.route('/<uuid:review_id>', endpoint='entity', methods=['GET'])
 def review_entity_handler(review_id):
     """Get review with a specified UUID.
 
@@ -19,7 +19,7 @@ def review_entity_handler(review_id):
     include = Parser.list('uri', 'inc', Review.allowed_includes, optional=True) or []
     return jsonify(review=review.to_dict(include))
 
-@bp.route('/<uuid:review_id>', endpoint='delete', methods=['DELETE'])
+@review_bp.route('/<uuid:review_id>', endpoint='delete', methods=['DELETE'])
 @oauth.require_auth('review')
 def review_delete_handler(review_id, user):
     """Delete review with a specified UUID.
@@ -36,7 +36,7 @@ def review_delete_handler(review_id, user):
     review.delete()
     return jsonify(message='Request processed successfully')
 
-@bp.route('/<uuid:review_id>', endpoint='modify', methods=['POST'])
+@review_bp.route('/<uuid:review_id>', endpoint='modify', methods=['POST'])
 @oauth.require_auth('review')
 def review_modify_handler(review_id, user):
     """Update review with a specified UUID.
@@ -58,7 +58,7 @@ def review_modify_handler(review_id, user):
     return jsonify(message='Request processed successfully',
                    review=dict(id=review.id))
 
-@bp.route('/', endpoint='list', methods=['GET'])
+@review_bp.route('/', endpoint='list', methods=['GET'])
 def review_list_handler():
     """Get list of reviews.
 
@@ -82,7 +82,7 @@ def review_list_handler():
     return jsonify(limit=limit, offset=offset, count=count,
                    reviews=[p.to_dict(include) for p in reviews])
 
-@bp.route('/', endpoint='create', methods=['POST'])
+@review_bp.route('/', endpoint='create', methods=['POST'])
 @oauth.require_auth('review')
 def review_post_handler(user):
     """Publish a review."""
@@ -100,7 +100,7 @@ def review_post_handler(user):
     return jsonify(message='Request processed successfully',
                    id=review.id)
 
-@bp.route('/<uuid:review_id>/vote', methods=['GET'])
+@review_bp.route('/<uuid:review_id>/vote', methods=['GET'])
 @oauth.require_auth('vote')
 def review_vote_entity_handler(review_id, user):
     """Get user's vote for a specified review."""
@@ -111,7 +111,7 @@ def review_vote_entity_handler(review_id, user):
     else:
         return jsonify(vote=vote.to_dict())
 
-@bp.route('/<uuid:review_id>/vote', methods=['PUT'])
+@review_bp.route('/<uuid:review_id>/vote', methods=['PUT'])
 @oauth.require_auth('vote')
 def review_vote_put_handler(review_id, user):
     """Set user's vote for a specified review.
@@ -140,7 +140,7 @@ def review_vote_put_handler(review_id, user):
     vote = Vote.create(user, review, placet)
     return jsonify(message='Request processed successfully')
 
-@bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
+@review_bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
 @oauth.require_auth('vote')
 def review_vote_delete_handler(review_id, user):
     """Delete user's vote for a specified review."""

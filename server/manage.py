@@ -6,18 +6,21 @@ from critiquebrainz import app, db
 
 manager = Manager(app)
 
+
 @manager.command
 def tables():
     db.create_tables(app)
 
+
 @manager.command
 def fixtures():
-    "Update the newly created database with default schema and testing data"
+    """Update the newly created database with default schema and testing data"""
     _fixtures.install(app, *_fixtures.all_data)
+
 
 @manager.command
 def create_db():
-    "Create and configure the database"
+    """Create and configure the database"""
     from os import system
     def explode_url(url):
         from urlparse import urlsplit
@@ -26,7 +29,7 @@ def create_db():
         password = url.password
         db = url.path[1:]
         hostname = url.hostname
-        return (hostname, db, username, password)
+        return hostname, db, username, password
 
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
     if hostname not in ['localhost', '127.0.0.1']:
@@ -43,6 +46,7 @@ def create_db():
     exit_code = system('scripts/create_database_extension.sh %s %s' % (db, 'uuid-ossp'))
     if exit_code != 0: 
         raise Exception('Failed to create PostgreSQL extension')
+
 
 if __name__ == '__main__':
     manager.run()

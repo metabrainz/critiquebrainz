@@ -4,16 +4,16 @@ from critiquebrainz.exceptions import LoginError
 from critiquebrainz.utils import build_url, generate_string
 from critiquebrainz.login import musicbrainz
 
-bp = Blueprint('login', __name__)
+login_bp = Blueprint('login', __name__)
 
-@bp.route('/musicbrainz', endpoint='musicbrainz')
+@login_bp.route('/musicbrainz', endpoint='musicbrainz')
 def login_musicbrainz_handler():
     (client_id, _, redirect_uri, scope, state) = login_parse_parameters()
     musicbrainz.persist_data(query=(client_id, redirect_uri, scope, state))
     url = musicbrainz.get_authentication_uri()
     return redirect(url)
 
-@bp.route('/musicbrainz/post', endpoint='musicbrainz_post')
+@login_bp.route('/musicbrainz/post', endpoint='musicbrainz_post')
 def login_musicbrainz_post_handler():
     (client_id, redirect_uri, scope, state) = musicbrainz.fetch_data('query')
 
@@ -29,14 +29,14 @@ def login_musicbrainz_post_handler():
     
     return redirect(build_url(redirect_uri, dict(state=state, code=code)))
 
-@bp.errorhandler(LoginError)
+@login_bp.errorhandler(LoginError)
 def login_error_handler(error):
     if error.redirect_uri:
         return redirect(build_url(error.redirect_uri, dict(error=error.code)))
     else:
         return error.code
 
-@bp.errorhandler(Exception)
+@login_bp.errorhandler(Exception)
 def exception_handler(error):
     redirect_uri = request.args.get('redirect_uri')
     return login_error_handler(LoginError('server_error', redirect_uri))

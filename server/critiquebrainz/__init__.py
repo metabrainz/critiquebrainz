@@ -12,38 +12,48 @@ else:
 _name = "CritiqueBrainz Server"
 __version__ = "0.1"
 
-# app init
-app = Flask(__name__)
-app.config.from_object('critiquebrainz.config')
 
-# db init
-from db import db as _db
-_db.init_app(app)
+def create_app(config_object=None):
+    app = Flask(__name__)
+    app.config.from_object(config_object)
 
-# oauth init
-from oauth import oauth
-oauth.init_app(app)
+    from db import db as _db
+    _db.init_app(app)
 
-# register uuid converter
-from flask.ext.uuid import FlaskUUID
-FlaskUUID(app)
+    # oauth init
+    from oauth import oauth
+    oauth.init_app(app)
 
-# register error handlers
-import errors
+    # register uuid converter
+    from flask.ext.uuid import FlaskUUID
+    FlaskUUID(app)
 
-# register loggers
-import loggers
-if app.debug is False:
-    loggers.init_app(app)
+    # register error handlers
+    import errors
+    errors.init_error_handlers(app)
 
-# register blueprints
-from oauth.views import bp as bp1
-app.register_blueprint(bp1, url_prefix='/oauth')
-from login.views import bp as bp2
-app.register_blueprint(bp2, url_prefix='/login')
-from review.views import bp as bp3
-app.register_blueprint(bp3, url_prefix='/review')
-from user.views import bp as bp4
-app.register_blueprint(bp4, url_prefix='/user')
-from client.views import bp as bp5
-app.register_blueprint(bp5, url_prefix='/client')
+    # register loggers
+    import loggers
+    if app.debug is False:
+        loggers.init_app(app)
+
+    import login
+    login.init_oauth_providers(app)
+
+    # register blueprints
+    from oauth.views import oauth_bp
+    from login.views import login_bp
+    from review.views import review_bp
+    from user.views import user_bp
+    from client.views import client_bp
+
+    app.register_blueprint(oauth_bp, url_prefix='/oauth')
+    app.register_blueprint(login_bp, url_prefix='/login')
+    app.register_blueprint(review_bp, url_prefix='/review')
+    app.register_blueprint(user_bp, url_prefix='/user')
+    app.register_blueprint(client_bp, url_prefix='/client')
+
+    return app
+
+
+app = create_app('critiquebrainz.config')
