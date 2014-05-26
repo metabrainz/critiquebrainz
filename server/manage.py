@@ -6,8 +6,10 @@ from critiquebrainz import app, db
 
 manager = Manager(app)
 
+
 def init_postgres(uri):
     from os import system
+
     def explode_url(url):
         from urlparse import urlsplit
         url = urlsplit(url)
