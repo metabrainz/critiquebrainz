@@ -7,7 +7,7 @@ from critiquebrainz.db import db, User, License, Review
 import test_config
 
 
-class ReviewTestCase(TestCase):
+class ReviewViewsTestCase(TestCase):
     def create_app(self):
         return create_app(test_config)
 
