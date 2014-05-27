@@ -37,7 +37,7 @@ class User(db.Model):
 
     @classmethod
     def get_or_create(cls, display_name, **kwargs):
-        # TODO: New user is created if only display_name is passed (review this behavior).
+        # TODO: New user is created if only display_name is passed (review this behavior)
         # Display names don't have to be unique (see schema)!
         user = cls.query.filter_by(**kwargs).first()
         if user is None:
@@ -47,15 +47,15 @@ class User(db.Model):
         return user
 
     @classmethod
-    def list(cls, limit, offset):
+    def list(cls, limit=None, offset=None):
         query = User.query
         count = query.count()
         if limit is not None:
             query = query.limit(limit)
         if offset is not None:
             query = query.offset(offset)
-        reviews = query.all()
-        return reviews, count
+        users = query.all()
+        return users, count
 
     def has_voted(self, review):
         if self._votes.filter_by(review=review).count() > 0:
