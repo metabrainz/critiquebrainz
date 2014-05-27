@@ -77,7 +77,10 @@
           {% endif %}
         </form>
       {% else %}
-        You cannot rate your own review
+        <a href="{{ url_for('profile_review.edit', id=review.id) }}"
+           role="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-edit"></span> Edit this review
+        </a>
       {% endif %}
     {% else %}
       <a href="{{ url_for('login.index', next=url_for('review.entity', id=review.id)) }}">Sign in</a> to rate this review
