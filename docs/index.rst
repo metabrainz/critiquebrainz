@@ -14,4 +14,5 @@ Contents
    :maxdepth: 2
 
    installation
+   tests
    api
