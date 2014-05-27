@@ -1,10 +1,7 @@
-import unittest
-import json
-
 from flask.ext.testing import TestCase
 
 from critiquebrainz import create_app
-from critiquebrainz.db import db, User, Review, License , Vote
+from critiquebrainz.db import db, User, Review, License, Vote
 import test_config
 
 
@@ -18,62 +15,6 @@ class UserTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-
-    def test_user_count(self):
-        resp = self.client.get('/user/')
-        data = json.loads(resp.data)
-        assert data['count'] == 0
-
-    def test_user_creation_and_removal(self):
-        user_1 = User(display_name=u'Tester #1', email=u'tester@tesing.org')
-        user_2 = User(display_name=u'Tester #2')
-        db.session.add(user_1)
-        db.session.add(user_2)
-        db.session.commit()
-
-        resp = self.client.get('/user/')
-        data = json.loads(resp.data)
-        assert data['count'] == 2
-
-        db.session.delete(user_1)
-        db.session.commit()
-
-        resp = self.client.get('/user/')
-        data = json.loads(resp.data)
-        assert data['count'] == 1
-
-        stored_user = data['users'][0]
-        assert stored_user['id'] == user_2.id
-        assert stored_user['display_name'] == user_2.display_name
-        assert 'email' not in stored_user
-
-    def test_user_get_or_create(self):
-        user_1 = User.get_or_create(u'Tester #1', musicbrainz_id=u'1')
-        user_2 = User.get_or_create(u'Tester #2', musicbrainz_id=u'1')
-        user_3 = User.get_or_create(u'Tester #3', musicbrainz_id=u'2')
-
-        # TODO: Check if this behavior is correct
-        assert user_1 == user_2
-        assert user_1 != user_3
-
-        resp = self.client.get('/user/')
-        data = json.loads(resp.data)
-        assert data['count'] == 2
-
-    def test_user_delete(self):
-        user = User(display_name=u'Tester')
-        db.session.add(user)
-        db.session.commit()
-
-        resp = self.client.get('/user/')
-        data = json.loads(resp.data)
-        assert data['count'] == 1
-
-        user.delete()
-
-        resp = self.client.get('/user/')
-        data = json.loads(resp.data)
-        assert data['count'] == 0
 
     def test_user_list(self):
         users, count = User.list()
@@ -100,6 +41,51 @@ class UserTestCase(TestCase):
         users, count = User.list(1, 1)
         assert len(users) == 1 and count == 2
 
+    def test_user_creation_and_removal(self):
+        user_1 = User(display_name=u'Tester #1', email=u'tester@tesing.org')
+        user_2 = User(display_name=u'Tester #2')
+        db.session.add(user_1)
+        db.session.add(user_2)
+        db.session.commit()
+
+        users, count = User.list()
+        assert count == 2
+
+        db.session.delete(user_1)
+        db.session.commit()
+
+        users, count = User.list()
+        assert count == 1
+
+        stored_user = users[0]
+        assert stored_user.id == user_2.id
+        assert stored_user.display_name == user_2.display_name
+        assert stored_user.email is None
+
+    def test_user_get_or_create(self):
+        user_1 = User.get_or_create(u'Tester #1', musicbrainz_id=u'1')
+        user_2 = User.get_or_create(u'Tester #2', musicbrainz_id=u'1')
+        user_3 = User.get_or_create(u'Tester #3', musicbrainz_id=u'2')
+
+        # TODO: Check if this behavior is correct
+        assert user_1 == user_2
+        assert user_1 != user_3
+
+        users, count = User.list()
+        assert count == 2
+
+    def test_user_delete(self):
+        user = User(display_name=u'Tester')
+        db.session.add(user)
+        db.session.commit()
+
+        users, count = User.list()
+        assert count == 1
+
+        user.delete()
+        users, count = User.list()
+        assert count == 0
+
     def test_user_has_voted(self):
         # Review needs user
         user_1 = User(display_name=u'Tester #1')
@@ -123,6 +109,3 @@ class UserTestCase(TestCase):
         assert not user_2.has_voted(review)
         Vote.create(user_2, review, True)
         assert user_2.has_voted(review)
-
-
-user_test_suite = unittest.TestLoader().loadTestsFromTestCase(UserTestCase)

@@ -1,14 +1,12 @@
-import unittest
-import json
-
 from flask.ext.testing import TestCase
 
 from critiquebrainz import create_app
 from critiquebrainz.db import db, User, License, Review
+import test_config
+
 
 class ReviewTestCase(TestCase):
     def create_app(self):
-        import test_config
         return create_app(test_config)
 
     def setUp(self):
@@ -17,11 +15,6 @@ class ReviewTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-
-    def test_review_count(self):
-        resp = self.client.get('/review/')
-        data = json.loads(resp.data)
-        assert data['count'] == 0
 
     def test_review_creation(self):
         # Review needs user
@@ -42,16 +35,10 @@ class ReviewTestCase(TestCase):
                                license_id=license.id)
         db.session.add(review)
         db.session.commit()
-        resp = self.client.get('/review/')
-        data = json.loads(resp.data)
-        assert data['count'] == 1
-        assert len(data['reviews']) == 1
-        stored_review = data['reviews'][0]
-        assert stored_review['id'] == review.id
-        assert stored_review['release_group'] == review.release_group
-        assert stored_review['text'] == text
-        assert stored_review['license']['id'] == license.id
-        assert stored_review['license']['full_name'] == license.full_name
 
-
-review_test_suite = unittest.TestLoader().loadTestsFromTestCase(ReviewTestCase)
+        reviews, count = Review.list()
+        assert len(reviews) and count == 1
+        stored_review = reviews[0]
+        assert stored_review.id == review.id
+        assert stored_review.release_group == review.release_group
+        assert stored_review.license_id == license.id

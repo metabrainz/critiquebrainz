@@ -103,7 +103,7 @@ class Review(db.Model):
         return self._rating
 
     @classmethod
-    def list(cls, release_group, user_id, sort, limit, offset):
+    def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None):
         # query init
         query = Review.query
 
