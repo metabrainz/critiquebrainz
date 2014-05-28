@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0].artist.name }} - CritiqueBrainz
+Release group "{{ release_group.title }}" by {{ release_group['artist-credit-phrase'] }} - CritiqueBrainz
 {% endblock %}
 
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">
     {{ release_group.title }} -
-    <a href="{{ url_for('artist.entity', id=release_group['artist-credit'][0].artist.id) }}">
-      {{ release_group['artist-credit'][0].artist.name }}
-    </a>
+    {% for credit in release_group['artist-credit'] %}
+      {% if credit.artist %}
+        <a href="{{ url_for('artist.entity', id=credit.artist.id) }}">{{ credit.artist.name }}</a>
+      {% else %}
+        {{ credit }}
+      {% endif %}
+    {% endfor %}
   </h2>
   {% if not my_review %}
     <a id="write-review" href="{{ url_for('profile_review.create', release_group=id) }}"
@@ -110,7 +114,7 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit'][0
                 <td>{{ track.recording.title }}</td>
                 <td>
                   {% if track.recording.length %}
-                    {{ track.recording.length|track_length }}
+                    {{ track.recording.length | track_length }}
                   {% else %}
                     -
                   {% endif %}
