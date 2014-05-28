@@ -18,10 +18,7 @@
     {% endif %}
     {% endblock %}
 
-    {% block scripts %}
     <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    {% endblock %}
   </head>
 
   <body>
@@ -115,5 +112,9 @@
       {% endblock %}
 
     </div> <!-- /container -->
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    {% endblock %}
   </body>
 </html>
