@@ -6,8 +6,10 @@
 <h2>Spotify album matching</h2>
 <p class="lead">
   Please, select album "{{ release_group.title }}"
-  <span class="text-muted">({{ release_group.first_release_date }})</span>
-  by {{ release_group.artist }}.
+  {% if release_group['first-release-date'] %}
+    <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
+  {% endif %}
+  by {{ release_group['artist-credit-phrase'] }}.
 </p>
 {% if search_results %}
   <div id="spotify-search-results" class="row">
