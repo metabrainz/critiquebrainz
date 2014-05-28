@@ -3,3 +3,5 @@ venv
 fcgi.sock
 server.log
 server.fcgi
+
+*.log

@@ -4,6 +4,7 @@ SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 
 SECRET_KEY = "<your secret key>"
 
+# MusicBrainz OAuth
 MUSICBRAINZ_CLIENT_ID = "<your musicbrainz client id>"
 MUSICBRAINZ_CLIENT_SECRET = "<your musicbrainz client secret>"
 
@@ -11,4 +12,16 @@ OAUTH_TOKEN_LENGTH = 40
 OAUTH_GRANT_EXPIRE = 60
 OAUTH_TOKEN_EXPIRE = 3600
 
+# Mail server
+MAIL_SERVER = 'localhost'
+MAIL_PORT = 25
+MAIL_USERNAME = None
+MAIL_PASSWORD = None
+MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
+
+# Logging
 LOG_FILE = "server.log"
+LOG_EMAIL_TOPIC = "CritiqueBrainz Server Failure"
+
+# Administrator list (emails)
+ADMINS = []

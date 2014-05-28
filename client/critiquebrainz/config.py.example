@@ -1,5 +1,6 @@
 DEBUG = True  # set to False in production mode
 
+# CritiqueBrainz server
 CRITIQUEBRAINZ_BASE_URI = "http://127.0.0.1:5000/"
 CRITIQUEBRAINZ_CLIENT_ID = "b9481301-8adc-452a-83d2-180c8eec53fb"
 CRITIQUEBRAINZ_CLIENT_SECRET = "e03fbc0e-2308-46d4-a5a2-c3e54706db9f"
@@ -11,3 +12,17 @@ MEMCACHED_NAMESPACE = "CB_CLIENT"
 
 # Server with Spotify mappings
 MBSPOTIFY_BASE_URI = "http://127.0.0.1:8080/"
+
+# Mail server
+MAIL_SERVER = 'localhost'
+MAIL_PORT = 25
+MAIL_USERNAME = None
+MAIL_PASSWORD = None
+MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
+
+# Logging
+LOG_FILE = "client.log"
+LOG_EMAIL_TOPIC = "CritiqueBrainz Client Failure"
+
+# Administrator list (emails)
+ADMINS = []
