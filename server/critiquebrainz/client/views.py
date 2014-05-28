@@ -4,9 +4,9 @@ from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
 
-bp = Blueprint('client', __name__)
+client_bp = Blueprint('client', __name__)
 
-@bp.route('/<client_id>', endpoint='entity')
+@client_bp.route('/<client_id>', endpoint='entity')
 @oauth.require_auth('client')
 def client_entity_handler(client_id, user):
     client = OAuthClient.query.get_or_404(client_id)
@@ -15,7 +15,7 @@ def client_entity_handler(client_id, user):
     inc = Parser.list('uri', 'inc', OAuthClient.allowed_includes, optional=True) or []
     return jsonify(client=client.to_dict(inc))
 
-@bp.route('/<client_id>', methods=['POST'], endpoint='modify')
+@client_bp.route('/<client_id>', methods=['POST'], endpoint='modify')
 @oauth.require_auth('client')
 def client_modify_handler(client_id, user):
     def fetch_params():
@@ -32,7 +32,7 @@ def client_modify_handler(client_id, user):
     client.update(name, desc, website, redirect_uri, scopes)
     return jsonify(message='Request processed successfully')
 
-@bp.route('/<client_id>', methods=['DELETE'], endpoint='delete')
+@client_bp.route('/<client_id>', methods=['DELETE'], endpoint='delete')
 @oauth.require_auth('client')
 def client_delete_handler(client_id, user):
     client = OAuthClient.query.get_or_404(client_id)
@@ -41,7 +41,7 @@ def client_delete_handler(client_id, user):
     client.delete()
     return jsonify(message='Request processed successfully')
 
-@bp.route('/', methods=['POST'], endpoint='create')
+@client_bp.route('/', methods=['POST'], endpoint='create')
 @oauth.require_auth('client')
 def client_create_handler(user):
     def fetch_params():
@@ -56,7 +56,7 @@ def client_create_handler(user):
         website=website, redirect_uri=redirect_uri, scopes=scopes)
     return jsonify(message='Request processed successfully', client=client.to_dict())
 
-@bp.route('/<client_id>/tokens', methods=['DELETE'], endpoint='tokens_purge')
+@client_bp.route('/<client_id>/tokens', methods=['DELETE'], endpoint='tokens_purge')
 @oauth.require_auth('client')
 def tokens_purge_handler(client_id, user):
     OAuthToken.purge_tokens(client_id=client_id, user_id=user.id)
