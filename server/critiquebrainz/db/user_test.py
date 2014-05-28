@@ -67,7 +67,6 @@ class UserTestCase(TestCase):
         user_2 = User.get_or_create(u'Tester #2', musicbrainz_id=u'1')
         user_3 = User.get_or_create(u'Tester #3', musicbrainz_id=u'2')
 
-        # TODO: Check if this behavior is correct
         assert user_1 == user_2
         assert user_1 != user_3
 
