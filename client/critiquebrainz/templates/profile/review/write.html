@@ -24,16 +24,45 @@
   </dd>
 </dl>
 
-<div class="clearfix" style="margin-bottom:5px;">
-  <small class="text-muted pull-right" style="font-style:italic;">
-    You can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax to apply custom formatting.
-  </small>
+<div class="clearfix">
+  <ul class="nav nav-tabs" style="margin-bottom:-1px;">
+    <li class="active"><a href="#write" data-toggle="tab">Write</a></li>
+    <li><a href="#preview" data-toggle="tab">Preview</a></li>
+    <small class="text-muted pull-right" style="margin-top:20px;font-style:italic;">
+      You can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax to apply custom formatting.
+    </small>
+  </ul>
 </div>
 <form id="review-editor" method="POST" class="form-horizontal" role="form">
   {{ form.hidden_tag() }}
   <div class="form-group">
-    <div class="col-sm-12">
-      {{ form.text(class="form-control", rows="5") | safe }}
+    <div class="col-sm-12 tab-content">
+      <div class="tab-pane fade in active" id="write">
+        {{ form.text(id="review-content", class="form-control", rows="5") | safe }}
+      </div>
+      <div class="tab-pane fade" id="preview" style="margin-top:20px;">
+        <span class="text-muted">Loading preview...</span>
+      </div>
+      <script>
+        $(function () {
+          $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if (e.target.hash.substring(1) == "preview") {
+              $.ajax({
+                type: "POST",
+                url: "{{ url_for('profile_review.preview') }}",
+                data: {
+                  text: $("#review-content").val()
+                },
+                success: function (data) {
+                  $("#preview").html(data);
+                }
+              });
+            } else { // write
+              $("#preview").html('<span class="text-muted">Loading preview...</span>');
+            }
+          });
+        });
+      </script>
     </div>
   </div>
   <hr />

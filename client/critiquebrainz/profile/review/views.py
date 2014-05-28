@@ -3,6 +3,7 @@ from flask.ext.login import login_required, current_user
 from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.review import CreateForm, EditForm
+import markdown
 
 bp = Blueprint('profile_review', __name__)
 
@@ -33,6 +34,12 @@ def create_handler():
             flash(u'You have published the review!', 'success')
         return redirect(url_for('.index'))
     return render_template('profile/review/write.html', form=form, release_group=release_group)
+
+@bp.route('/write/preview', methods=['POST'], endpoint='preview')
+@login_required
+def preview_handler():
+    """Get markdown preview of a text."""
+    return markdown.markdown(request.form['text'], safe_mode="escape")
 
 @bp.route('/<uuid:id>/edit', methods=('GET', 'POST'), endpoint='edit')
 @login_required
