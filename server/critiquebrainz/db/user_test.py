@@ -42,7 +42,7 @@ class UserTestCase(TestCase):
         assert len(users) == 1 and count == 2
 
     def test_user_creation_and_removal(self):
-        user_1 = User(display_name=u'Tester #1', email=u'tester@tesing.org')
+        user_1 = User(display_name=u'Tester #1', email=u'tester@testing.org')
         user_2 = User(display_name=u'Tester #2')
         db.session.add(user_1)
         db.session.add(user_2)
