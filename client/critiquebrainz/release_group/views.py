@@ -9,7 +9,10 @@ bp = Blueprint('release_group', __name__)
 def release_group_entity_handler(id):
     release_group = musicbrainz.get_release_group_by_id(id, includes=['artists', 'releases',
                                                                       'release-group-rels', 'url-rels', 'work-rels'])
-    release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'], includes=['recordings'])
+    if len(release_group['release-list']) > 0:
+        release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'], includes=['recordings'])
+    else:
+        release = None
     spotify_mapping = mbspotify.mapping([str(id)])
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
