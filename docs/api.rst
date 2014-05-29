@@ -3,7 +3,7 @@ API Documentation
 
 This page describes all resources available via CririqueBrainz Server API. It uses JSON format.
 
-**Root URL**: ``http://critiquebrainz.musicbrainz.org/ws/1``
+**Root URL**: ``http://critiquebrainz.org/ws/1``
 
 `CritiqueBrainz client is build on top of this API, so you can use it as an example.`
 
