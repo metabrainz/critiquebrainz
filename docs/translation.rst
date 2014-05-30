@@ -7,7 +7,7 @@ Activate it to have access to ``pybabel`` command::
     $ source ./env
 
 Extracting text
-^^^^^^^^^^^^^^^
+---------------
 
 To extract text into a file use ``pybabel extract`` command::
 
@@ -25,7 +25,7 @@ To add support for new language use::
 After that you need to add new language into ``LANGUAGES`` variable in client's ``config.py``.
 
 Compiling translations
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 To compile all created translation use::
 
