@@ -9,7 +9,7 @@ Activate it to have access to ``pybabel`` command::
 Extracting text
 ---------------
 
-To extract text into a file use ``pybabel extract`` command::
+To extract text into a Portable Object Template use ``pybabel extract`` command::
 
     $ pybabel extract -F critiquebrainz/babel.cfg -o messages.pot .
 
@@ -34,7 +34,7 @@ To compile all created translation use::
 Updating translations
 ---------------------
 
-After modifying strings you'll probably want to update messages in different languages. To to this use::
+After modifying strings you'll probably want to update messages in different languages. To do this use::
 
     $ pybabel extract -F critiquebrainz/babel.cfg -o messages.pot .
     $ pybabel update -i messages.pot -d critiquebrainz/translations
