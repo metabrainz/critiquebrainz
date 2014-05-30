@@ -15,4 +15,5 @@ Contents
 
    installation
    tests
+   translation
    api

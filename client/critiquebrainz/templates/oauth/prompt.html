@@ -1,26 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}OAuth authorization - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('OAuth authorization') }} - CritiqueBrainz{% endblock %}
 
 {% from 'macros.html' import scope_desc %}
 
 {% block content %}
-<h3>Do you want to give access to your account to {{ client.name }}?</h3>
+<h3>{{ _('Do you want to give access to your account to %(name)s?', name=client.name) }}</h3>
 <div class="alert alert-info">
-  <strong>Don't panic!</strong> You can withdraw any time in your profile settings.
+  {{ _('<strong>Don't panic!</strong> You can withdraw any time in your profile settings.') }}
 </div>
 <div class="well">
   <div class="row">
     <div class="col-md-6">
       <dl class="dl-horizontal">
-        <dt>Website</dt><dd>{{ client.website }}</dd>
-        <dt>Name</dt><dd>{{ client.name }}</dd>
-        <dt>Description</dt><dd>{{ client.desc }}</dd>
+        <dt>{{ _('Website') }}</dt><dd>{{ client.website }}</dd>
+        <dt>{{ _('Name') }}</dt><dd>{{ client.name }}</dd>
+        <dt>{{ _('Description') }}</dt><dd>{{ client.desc }}</dd>
       </dl>
     </div>
     <div class="col-md-6">
       {% set scopes = scope.split() %}
-      {{ client.name }} is requesting permission to your
+      {{ client.name }} {{ _('is requesting permission to your') }}
       <ul>
         {% for scope in scopes %}
           <li>{{ scope_desc(scope) }}</li>
@@ -30,7 +30,7 @@
   </div>
 </div>
 <form action="{{ request.url }}" method="post">
-  <button type="submit" name="confirm" value="yes" class="btn btn-primary">Agree</button>
-  <a href="{{ cancel_url }}" class="btn">No, thanks</a>
+  <button type="submit" name="confirm" value="yes" class="btn btn-primary">{{ _('Agree') }}</button>
+  <a href="{{ cancel_url }}" class="btn">{{ _('No, thanks') }}</a>
 </form>
 {% endblock %}

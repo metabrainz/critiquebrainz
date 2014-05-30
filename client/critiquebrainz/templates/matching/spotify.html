@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Spotify album matching - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Spotify album matching') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<h2>Spotify album matching</h2>
+<h2>{{ _('Spotify album matching') }}</h2>
 <p class="lead">
-  Please, select album "{{ release_group.title }}"
+  {{ _('Please, select album') }} "{{ release_group.title }}"
   {% if release_group['first-release-date'] %}
     <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
   {% endif %}
-  by {{ release_group['artist-credit-phrase'] }}.
+  {{ _('by') }} {{ release_group['artist-credit-phrase'] }}.
 </p>
 {% if search_results %}
   <div id="spotify-search-results" class="row">
@@ -24,7 +24,7 @@
         <div class="caption">
           <div class="title">{{ item.name }}</div>
           <span class="text-muted">{{ item.album_type }}</span><br />
-          <em><a href="{{ item.external_urls.spotify }}">Listen on Spotify</a></em><br />
+          <em><a href="{{ item.external_urls.spotify }}">{{ _('Listen on Spotify') }}</a></em><br />
         </div>
       </div>
     </div>
@@ -50,11 +50,11 @@
     </div>
   </div>
 {% else %}
-  <p class="lead" style="text-align:center; margin-top:20px;">Similar albums not found</p>
+  <p class="lead" style="text-align:center; margin-top:20px;">{{ _('Similar albums not found') }}</p>
 {% endif %}
 
 <strong>
-  It's fine if you can't find the right album. It might be unavailable on Spotify yet.
-  You can <a href="{{ url_for('release_group.entity', id=release_group.id) }}">go back to release group page</a>.
+  {{ _('It\'s fine if you can\'t find the right album. It might be unavailable on Spotify yet.') }}
+  {{ _('You can <a href="%(link)s">go back to release group page</a>.', link=url_for('release_group.entity', id=release_group.id)) }}
 </strong>
 {% endblock %}

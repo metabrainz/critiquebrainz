@@ -2,7 +2,7 @@
 
 {% set release_group = release_group | release_group_details %}
 
-{% block title %}Write review of "{{ release_group.title }}" - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Write review of "%(rg)s"', rg=release_group.title) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
 {% for field in form.errors %}
@@ -12,10 +12,10 @@
   </div>
   {% endfor %}
 {% endfor %}
-<h2>Write review</h2>
+<h2>{{ _('Write review') }}</h2>
 <dl class="dl-horizontal">
-  <dt>Artist</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
-  <dt>Release group</dt>
+  <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
+  <dt>{{ _('Release group') }}</dt>
   <dd>
     {{ release_group.title }}
     {% if release_group['first-release-date'] %}
@@ -26,10 +26,10 @@
 
 <div class="clearfix">
   <ul class="nav nav-tabs" style="margin-bottom:-1px;">
-    <li class="active"><a href="#write" data-toggle="tab">Write</a></li>
-    <li><a href="#preview" data-toggle="tab">Preview</a></li>
+    <li class="active"><a href="#write" data-toggle="tab">{{ _('Write') }}</a></li>
+    <li><a href="#preview" data-toggle="tab">{{ _('Preview') }}</a></li>
     <small class="text-muted pull-right" style="margin-top:20px;font-style:italic;">
-      You can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax to apply custom formatting.
+      {{ _('You can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax to apply custom formatting.') }}
     </small>
   </ul>
 </div>
@@ -41,7 +41,7 @@
         {{ form.text(id="review-content", class="form-control", rows="5") | safe }}
       </div>
       <div class="tab-pane fade" id="preview" style="margin-top:20px;">
-        <span class="text-muted">Loading preview...</span>
+        <span class="text-muted">{{ _('Loading preview...') }}</span>
       </div>
       <script>
         $(function () {
@@ -58,7 +58,7 @@
                 }
               });
             } else { // write
-              $("#preview").html('<span class="text-muted">Loading preview...</span>');
+              $("#preview").html('<span class="text-muted">{{ _('Loading preview...') }}</span>');
             }
           });
         });
@@ -80,20 +80,20 @@
       <div class="checkbox">
         <label id="agreement">
           {{ form.licence() | safe }}
-          You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a
+          {{ _('You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a
           Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial
           license as per your choice above. You agree to license your work under this license.
           You represent and warrant that you own or control all rights in and to the work, that nothing in the work
           infringes the rights of any third-party, and that you have the permission to use and to license the work
           under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license
-          this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization.
+          this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization.') }}
         </label>
       </div>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-12">
-      <button type="submit" class="btn btn-primary">Publish</button>
+      <button type="submit" class="btn btn-primary">{{ _('Publish') }}</button>
     </div>
   </div>
 </form>

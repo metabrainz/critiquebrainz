@@ -1,12 +1,12 @@
 {% macro print_error(message, category) -%}
   {% if category == "error" %}
-    {% set head = "Error!" %}
+    {% set head = _("Error!") %}
     {% set alert_class="alert-danger" %}
   {% elif category == "success" %}
-    {% set head = "Success!" %}
+    {% set head = _("Success!") %}
     {% set alert_class="alert-success" %}
   {% else %}
-    {% set head = "Notice!" %}
+    {% set head = _("Notice!") %}
     {% set alert_class="alert-info" %}
   {% endif %}
 <div class="alert {{ alert_class }}">
@@ -17,14 +17,14 @@
 
 {% macro scope_desc(scope) %}
   {% if scope == "user" %}
-    Profile data
+    {{ _('Profile data') }}
   {% elif scope == "review" %}
-    Reviews
+    {{ _('Reviews') }}
   {% elif scope == "client" %}
-    API clients
+    {{ _('API clients') }}
   {% elif scope == "authorization" %}
-    Authorization
+    {{ _('Authorization') }}
   {% elif scope == "vote" %}
-    Review votes
+    {{ _('Review votes') }}
   {% endif %}
 {% endmacro %}

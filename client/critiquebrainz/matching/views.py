@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask.ext.login import login_required, current_user
+from flask.ext.babel import gettext
 
 from critiquebrainz.apis import musicbrainz, spotify, mbspotify
 from critiquebrainz.exceptions import *
@@ -12,7 +13,7 @@ def spotify_matching_handler(release_group_id):
     # Checking if release group is already matched
     spotify_mapping = mbspotify.mapping([str(release_group_id)])
     if len(spotify_mapping) > 0:
-        flash(u'Thanks, but this album is already matched to Spotify!')
+        flash(gettext('Thanks, but this album is already matched to Spotify!'))
         return redirect(url_for('release_group.entity', id=release_group_id))
 
     release_group = musicbrainz.release_group_details(release_group_id)
@@ -30,7 +31,7 @@ def spotify_matching_submit_handler(release_group_id):
     # Checking if release group is already matched
     spotify_mapping = mbspotify.mapping([str(release_group_id)])
     if len(spotify_mapping) > 0:
-        flash(u'Thanks, but this album is already matched to Spotify!')
+        flash(gettext('Thanks, but this album is already matched to Spotify!'))
         return redirect(url_for('release_group.entity', id=release_group_id))
 
     spotify_uri = request.args.get('spotify_uri', default=None)
@@ -49,7 +50,7 @@ def spotify_matching_submit_handler(release_group_id):
     # Checking if release group is already matched
     spotify_mapping = mbspotify.mapping([str(release_group_id)])
     if len(spotify_mapping) > 0:
-        flash(u'Thanks, but this album is already matched to Spotify!')
+        flash(gettext('Thanks, but this album is already matched to Spotify!'))
         return redirect(url_for('release_group.entity', id=release_group_id))
 
     spotify_uri = request.args.get('spotify_uri', default=None)
@@ -60,7 +61,7 @@ def spotify_matching_submit_handler(release_group_id):
     except APIError as e:
         flash(e.desc, 'error')
     else:
-        flash(u'Connection is added!', 'success')
+        flash(gettext('Connection is added!'), 'success')
     return redirect(url_for('release_group.entity', id=release_group_id))
 
 
@@ -75,5 +76,5 @@ def spotify_report_handler():
     except APIError as e:
         flash(e.desc, 'error')
     else:
-        flash(u'Feedback submitted. Thank you!', 'success')
+        flash(gettext('Feedback submitted. Thank you!'), 'success')
     return redirect(url_for('index'))

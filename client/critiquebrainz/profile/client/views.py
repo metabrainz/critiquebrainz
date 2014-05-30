@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user, logout_user
+from flask.ext.babel import gettext
+
 from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.client import ClientForm
@@ -25,9 +27,9 @@ def create_handler():
         except APIError as e:
             flash(e.desc, 'error')
         else:
-            flash(u'You have created an API client!', 'success')
+            flash(gettext('You have created an API client!'), 'success')
         return redirect(url_for('.index'))
-    return render_template('profile/client/write.html', form=form)
+    return render_template('profile/client/create.html', form=form)
 
 @bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
 @login_required
@@ -42,7 +44,7 @@ def edit_handler(client_id):
         except APIError as e:
             flash(e.desc, 'error')
         else:
-            flash(u'You have updated the API client!', 'success')
+            flash(gettext('You have updated the API client!'), 'success')
         return redirect(url_for('.index'))
     else:
         form.name.data = client.get('name')
@@ -59,7 +61,7 @@ def delete_handler(client_id):
     except APIError as e:
         flash(e.desc, 'error')
     else:
-        flash(u'You have deleted the API client.', 'success')
+        flash(gettext('You have deleted the API client.'), 'success')
     return redirect(url_for('.index'))
 
 @bp.route('/<client_id>/token/delete', endpoint='token_delete')

@@ -1,28 +1,28 @@
 {% extends 'profile/base.html' %}
 
-{% block title %}Your reviews - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Your reviews') }} - CritiqueBrainz{% endblock %}
 
 {% from 'macros.html' import rating_badge %}
 
 {% block content %}
 <div class="clearfix">
-  <h2 class="pull-left">Reviews</h2>
+  <h2 class="pull-left">{{ _('Reviews') }}</h2>
   <a href="{{ url_for('profile_review.create') }}" class="btn btn-success pull-right" style="margin-top: 20px;">
-    <span class="glyphicon glyphicon-asterisk"></span> Write review
+    <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write review') }}
   </a>
 </div>
 <hr />
 {% if not reviews %}
-  <p class="lead" style="text-align: center;">No reviews found</p>
+  <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
 {% else %}
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Artist</th>
-        <th>Release group</th>
-        <th>Created on</th>
-        <th>Votes (+/-)</th>
-        <th>Class</th>
+        <th>{{ _('Artist') }}</th>
+        <th>{{ _('Release group') }}</th>
+        <th>{{ _('Created on') }}</th>
+        <th>{{ _('Votes (+/-)') }}</th>
+        <th>{{ _('Class') }}</th>
         <th></th>
       </tr>
     </thead>
@@ -41,9 +41,9 @@
           <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
           <td>{{ review.review_class }}</td>
           <td>
-            <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">Read</a>
-            <a class="btn btn-default btn-xs" href="{{ url_for('profile_review.edit', id=review.id) }}">Edit</a>
-            <a class="btn btn-danger btn-xs" href="{{ url_for('profile_review.delete', id=review.id) }}">Delete</a>
+            <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Read') }}</a>
+            <a class="btn btn-default btn-xs" href="{{ url_for('profile_review.edit', id=review.id) }}">{{ _('Edit') }}</a>
+            <a class="btn btn-danger btn-xs" href="{{ url_for('profile_review.delete', id=review.id) }}">{{ _('Delete') }}</a>
           </td>
         </tr>
       {% endfor %}

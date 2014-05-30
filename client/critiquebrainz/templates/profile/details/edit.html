@@ -1,6 +1,6 @@
 {% extends 'profile/base.html' %}
 
-{% block title %}Edit profile - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Edit profile') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
 {% for field in form.errors %}
@@ -10,31 +10,31 @@
   </div>
   {% endfor %}
 {% endfor %}
-<h2>Editing profile</h2>
+<h2>{{ _('Editing profile') }}</h2>
 <hr />
 <form method="POST" class="form-horizontal" role="form">
   {{ form.hidden_tag() }}
   <fieldset>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Display name</label>
+      <label class="col-sm-2 control-label">{{ _('Display name') }}</label>
       <div class="col-sm-4">{{ form.display_name(class="form-control") | safe }}</div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">E-mail</label>
+      <label class="col-sm-2 control-label">{{ _('E-mail') }}</label>
       <div class="col-sm-4">{{ form.email(class="form-control") | safe }}</div>
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <div class="checkbox">
-          {{ form.show_gravatar() | safe }} Show my Gravatar
+          {{ form.show_gravatar() | safe }} {{ _('Show my Gravatar') }}
         </div>
       </div>
     </div>
   </fieldset>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-primary">Save</button>
-      <a href="{{ url_for('profile_details.delete') }}" class="btn btn-danger">Delete account</a>
+      <button type="submit" class="btn btn-primary">{{ _('Save') }}</button>
+      <a href="{{ url_for('profile_details.delete') }}" class="btn btn-danger">{{ _('Delete account') }}</a>
     </div>
   </div>
 </form>

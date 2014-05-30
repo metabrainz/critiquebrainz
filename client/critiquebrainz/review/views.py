@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask.ext.login import login_required, current_user
+from flask.ext.babel import gettext
+
 from critiquebrainz.apis import server, mbspotify
 from critiquebrainz.exceptions import *
 import markdown
@@ -36,7 +38,7 @@ def review_vote_submit_handler(id):
     except APIError as e:
         flash(e.desc, 'error')
     else:
-        flash(u'You have rated the review!', 'success')
+        flash(gettext('You have rated the review!'), 'success')
     return redirect(url_for('.entity', id=id))
 
 @bp.route('/<uuid:id>/vote/delete', methods=['GET'], endpoint='vote_delete')
@@ -47,5 +49,5 @@ def review_vote_delete_handler(id):
     except APIError as e:
         flash(e.desc, 'error')
     else:
-        flash(u'You have deleted your vote for this review!', 'success')
+        flash(gettext('You have deleted your vote for this review!'), 'success')
     return redirect(url_for('.entity', id=id))

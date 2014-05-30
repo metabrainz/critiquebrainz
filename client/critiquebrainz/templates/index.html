@@ -3,33 +3,32 @@
 <div id="homepage">
 
   <div class="clearfix">
-    <h3 class="pull-left">Welcome to CritiqueBrainz!</h3>
+    <h3 class="pull-left">{{ _('Welcome to CritiqueBrainz!') }}</h3>
     <a href="{{ url_for('profile_review.create') }}"
        role="button" class="btn btn-primary pull-right">
-      <span class="glyphicon glyphicon-asterisk"></span> Write a review
+      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
     </a>
   </div>
 
   <div id="project-description" class="row">
     <div class="col-md-8">
       <p>
-        CritiqueBrainz is a repository for Creative Commons licensed music reviews.
-        Here you can read what other people have written about an album or
-        <a href="{{ url_for('profile_review.create') }}">write</a> your own review!
+        {{ _('CritiqueBrainz is a repository for Creative Commons licensed music reviews.
+        Here you can read what other people have written about an album or write your own review!') }}
       </p>
       <p>
-        CritiqueBrainz is based on data from <a href="//musicbrainz.org">MusicBrainz</a> - open music encyclopedia.
-        <br/>Everyone - including you - can participate and contribute.
+        {{ _('CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.
+        <br/>Everyone - including you - can participate and contribute.') }}
       </p>
     </div>
     <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Stats</h3>
+          <h3 class="panel-title">{{ _('Stats') }}</h3>
         </div>
         <div class="panel-body">
-          <b>Reviews:</b> {{ reviews_total }}
-          <br/><b>Users:</b> {{ users_total }}
+          <b>{{ _('Reviews:') }}</b> {{ reviews_total }}
+          <br/><b>{{ _('Users:') }}</b> {{ users_total }}
         </div>
       </div>
     </div>
@@ -37,9 +36,9 @@
 
   <div id="lists" class="row">
     <div class="col-md-6">
-      <h4>Hot reviews</h4>
+      <h4>{{ _('Hot reviews') }}</h4>
       {% if not hot_reviews %}
-        <p class="lead" style="text-align: center;">No reviews found</p>
+        <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
       {% else %}
         {% for review in hot_reviews %}
           {% set release_group = review.release_group | release_group_details %}
@@ -52,7 +51,9 @@
             </script>
             <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
-              Review by <img class="avatar" src="{{ review.user.avatar }}&s=16" /> {{ review.user.display_name }}
+              {% autoescape false %}
+              <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> %s' % (review.user.avatar, review.user.display_name)) }}</p>
+              {% endautoescape %}
             </div>
           </a>
         {% endfor %}
@@ -60,9 +61,9 @@
     </div>
 
     <div class="col-md-6">
-      <h4>Recent reviews</h4>
+      <h4>{{ _('Recent reviews') }}</h4>
       {% if not recent_reviews %}
-        <p class="lead" style="text-align: center;">No reviews found</p>
+        <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
       {% else %}
         {% for review in recent_reviews %}
           {% set release_group = review.release_group | release_group_details %}
@@ -75,7 +76,7 @@
             </script>
             <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
-              Review by <img class="avatar" src="{{ review.user.avatar }}&s=16" /> {{ review.user.display_name }}
+              {{ _('Review by') }} <img class="avatar" src="{{ review.user.avatar }}&s=16" /> {{ review.user.display_name }}
             </div>
           </a>
         {% endfor %}

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 DEBUG = True  # set to False in production mode
 
 # CritiqueBrainz server
@@ -26,3 +27,8 @@ LOG_EMAIL_TOPIC = "CritiqueBrainz Client Failure"
 
 # Administrator list (emails)
 ADMINS = []
+
+# Internationalization and localization
+LANGUAGES = {
+    'en': 'English',
+}
