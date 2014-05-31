@@ -5,11 +5,15 @@
 {% block content %}
 <h2>{{ _('Spotify album matching') }}</h2>
 <p class="lead">
-  {{ _('Please, select album') }} "{{ release_group.title }}"
   {% if release_group['first-release-date'] %}
-    <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
+    {% set album = '"%s" <span class="text-muted">(%s)</span>' % (release_group.title, release_group['first-release-date'][:4]) %}
+  {% else %}
+    {% set album = '"%s"' % release_group.title %}
   {% endif %}
-  {{ _('by') }} {{ release_group['artist-credit-phrase'] }}.
+
+  {% autoescape false %}
+  {{ _('Please, select the album %(album)s by %(artist)s', album=album, artist=release_group['artist-credit-phrase']) }}
+  {% endautoescape %}
 </p>
 {% if search_results %}
   <div id="spotify-search-results" class="row">
@@ -54,7 +58,7 @@
 {% endif %}
 
 <strong>
-  {{ _('It\'s fine if you can\'t find the right album. It might be unavailable on Spotify yet.') }}
-  {{ _('You can <a href="%(link)s">go back to release group page</a>.', link=url_for('release_group.entity', id=release_group.id)) }}
+  {{ _('It\'s fine if you can\'t find the right album. It might not be available on Spotify yet.') }}
+  {{ _('You can <a href="%(link)s">go back to the release group page</a>.', link=url_for('release_group.entity', id=release_group.id)) }}
 </strong>
 {% endblock %}

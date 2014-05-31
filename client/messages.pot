@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2014-05-31 15:28+1100\n"
+"POT-Creation-Date: 2014-06-01 04:26+1100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -198,7 +198,7 @@ msgid ""
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:15
-msgid "You need to choose license"
+msgid "You need to choose a license"
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:16
@@ -268,8 +268,8 @@ msgstr ""
 
 #: critiquebrainz/templates/about.html:9
 msgid ""
-"<strong>CritiqeBrainz is a repository for Creative Commons licensed music"
-" reviews.</strong>\n"
+"<strong>CritiqueBrainz is a repository for Creative Commons licensed "
+"music reviews.</strong>\n"
 "  Here you can read what others have written about an album or write your"
 " own review!\n"
 "  It is based on data from MusicBrainz - open music encyclopedia."
@@ -294,8 +294,8 @@ msgid ""
 "participate\n"
 "  and contribute. If you are good at writing and want to share your "
 "thoughts about\n"
-"  an album - feel free to write new review. If that's not your thing and "
-"you just\n"
+"  an album - feel free to write a new review. If that's not your thing "
+"and you just\n"
 "  want to read opinions - that's fine too."
 msgstr ""
 
@@ -354,12 +354,12 @@ msgid "Members"
 msgstr ""
 
 #: critiquebrainz/templates/artist.html:109
-#: critiquebrainz/templates/release_group.html:137
+#: critiquebrainz/templates/release_group.html:139
 msgid "External links"
 msgstr ""
 
 #: critiquebrainz/templates/artist.html:127
-#: critiquebrainz/templates/release_group.html:154
+#: critiquebrainz/templates/release_group.html:156
 msgid "Edit on MusicBrainz"
 msgstr ""
 
@@ -563,36 +563,36 @@ msgstr ""
 msgid "Rating"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:71
-#: critiquebrainz/templates/matching/spotify.html:12
-msgid "by"
+#: critiquebrainz/templates/release_group.html:72
+#, python-format
+msgid "by %(reviewer)s"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:97
+#: critiquebrainz/templates/release_group.html:99
 msgid "Tracklist"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:101
+#: critiquebrainz/templates/release_group.html:103
 msgid "#"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:102
+#: critiquebrainz/templates/release_group.html:104
 msgid "Title"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:103
+#: critiquebrainz/templates/release_group.html:105
 msgid "Length"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:110
+#: critiquebrainz/templates/release_group.html:112
 msgid "CD"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:132
+#: critiquebrainz/templates/release_group.html:134
 msgid "Release group information"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:134
+#: critiquebrainz/templates/release_group.html:136
 #, python-format
 msgid "First release in %(year)s"
 msgstr ""
@@ -642,25 +642,26 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:8
-msgid "Please, select album"
+#: critiquebrainz/templates/matching/spotify.html:15
+#, python-format
+msgid "Please, select album %(album)s by %(artist)s"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:27
+#: critiquebrainz/templates/matching/spotify.html:31
 msgid "Listen on Spotify"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:53
+#: critiquebrainz/templates/matching/spotify.html:57
 msgid "Similar albums not found"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:57
+#: critiquebrainz/templates/matching/spotify.html:61
 msgid ""
 "It's fine if you can't find the right album. It might be unavailable on "
 "Spotify yet."
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:58
+#: critiquebrainz/templates/matching/spotify.html:62
 #, python-format
 msgid "You can <a href=\"%(link)s\">go back to release group page</a>."
 msgstr ""
