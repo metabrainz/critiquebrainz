@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2014-05-31 15:15+1100\n"
+"POT-Creation-Date: 2014-05-31 15:28+1100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -150,6 +150,8 @@ msgid "Display name needs to be at most 64 characters long."
 msgstr ""
 
 #: critiquebrainz/forms/profile/details.py:10
+#: critiquebrainz/templates/profile/details/edit.html:23
+#: critiquebrainz/templates/profile/details/index.html:22
 msgid "Email"
 msgstr ""
 
@@ -772,11 +774,6 @@ msgstr ""
 
 #: critiquebrainz/templates/profile/details/edit.html:13
 msgid "Editing profile"
-msgstr ""
-
-#: critiquebrainz/templates/profile/details/edit.html:23
-#: critiquebrainz/templates/profile/details/index.html:22
-msgid "E-mail"
 msgstr ""
 
 #: critiquebrainz/templates/profile/details/index.html:3
