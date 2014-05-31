@@ -1,22 +1,25 @@
-from flask.ext.login import LoginManager, UserMixin, current_user
-from flask import redirect, url_for, session
-from critiquebrainz.apis import server
-from critiquebrainz.exceptions import APIError
 from functools import wraps
 from datetime import datetime
 import time
-import json
+
+from flask.ext.login import LoginManager, UserMixin, current_user
+from flask.ext.babel import gettext
+from flask import redirect, url_for, session
+
+from critiquebrainz.apis import server
+
 
 login_manager = LoginManager()
 login_manager.login_view = 'login.index'
-login_manager.login_message = u"Please sign in to access this page."
+login_manager.login_message = gettext("Please sign in to access this page.")
+
 
 @login_manager.user_loader
 def load_user(refresh_token):
     return User(refresh_token)
 
-class User(UserMixin):
 
+class User(UserMixin):
     def get_id(self):
         return self.refresh_token
 
@@ -51,12 +54,14 @@ class User(UserMixin):
     @expires_in.setter
     def expires_in(self, value):
         session['expires_in'] = time.time() + int(value)
-    
+
+
 def login_forbidden(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if current_user.is_anonymous() is False:
             return redirect(url_for('index'))
         return f(*args, **kwargs)
+
     return decorated
 
