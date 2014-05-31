@@ -1,7 +1,8 @@
+# Translations template for CritiqueBrainz.
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2014-05-31 14:46+1100\n"
+"POT-Creation-Date: 2014-05-31 15:06+1100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,6 +18,56 @@ msgstr ""
 
 #: critiquebrainz/errors.py:27
 msgid "Oops! Server could not complete the request. Please try again later."
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:29
+#: critiquebrainz/apis/musicbrainz/relationships/release_group.py:16
+msgid "Wikidata"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:30
+#: critiquebrainz/apis/musicbrainz/relationships/release_group.py:17
+msgid "Discogs"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:31
+#: critiquebrainz/apis/musicbrainz/relationships/release_group.py:18
+msgid "Allmusic"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:32
+msgid "Bandcamp"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:33
+#: critiquebrainz/apis/musicbrainz/relationships/release_group.py:19
+msgid "Official homepage"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:34
+msgid "BBC Music"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:46
+#: critiquebrainz/apis/musicbrainz/relationships/release_group.py:32
+msgid "Lyrics"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:52
+#: critiquebrainz/apis/musicbrainz/relationships/release_group.py:38
+msgid "Wikipedia"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:65
+msgid "YouTube"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/artist.py:73
+msgid "Twitter"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/relationships/release_group.py:20
+msgid "Recording studio"
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:6

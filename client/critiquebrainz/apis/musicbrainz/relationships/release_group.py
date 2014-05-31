@@ -1,5 +1,6 @@
 from urlparse import urlparse
 import urllib
+from flask.ext.babel import gettext
 
 
 def process(release_group):
@@ -12,11 +13,11 @@ def process(release_group):
 def _url(list):
     """Processor for Release Group-URL relationship."""
     basic_types = {
-        'wikidata': {'name': 'Wikidata', 'icon': 'wikidata-16.png', },
-        'discogs': {'name': 'Discogs', 'icon': 'discogs-16.png', },
-        'allmusic': {'name': 'Allmusic', 'icon': 'allmusic-16.png', },
-        'official homepage': {'name': 'Official homepage', 'icon': 'home-16.png', },
-        'recording studio': {'name': 'Recording studio', },
+        'wikidata': {'name': gettext('Wikidata'), 'icon': 'wikidata-16.png', },
+        'discogs': {'name': gettext('Discogs'), 'icon': 'discogs-16.png', },
+        'allmusic': {'name': gettext('Allmusic'), 'icon': 'allmusic-16.png', },
+        'official homepage': {'name': gettext('Official homepage'), 'icon': 'home-16.png', },
+        'recording studio': {'name': gettext('Recording studio'), },
     }
     external_urls = []
     for relation in list:
@@ -28,13 +29,13 @@ def _url(list):
                 if relation['type'] == 'lyrics':
                     external_urls.append(dict(
                         relation.items() + {
-                            'name': 'Lyrics',
+                            'name': gettext('Lyrics'),
                             'disambiguation': target.netloc
                         }.items()))
                 elif relation['type'] == 'wikipedia':
                     external_urls.append(dict(
                         relation.items() + {
-                            'name': 'Wikipedia',
+                            'name': gettext('Wikipedia'),
                             'disambiguation': target.netloc.split('.')[0] + ':' +
                                               urllib.unquote(target.path.split('/')[2]).decode('utf8').replace("_", " "),
                             'icon': 'wikipedia-16.png',

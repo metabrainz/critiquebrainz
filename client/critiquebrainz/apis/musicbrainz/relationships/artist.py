@@ -1,5 +1,6 @@
 from urlparse import urlparse
 import urllib
+from flask.ext.babel import gettext
 
 
 def process(artist):
@@ -25,12 +26,12 @@ def _artist(list):
 def _url(list):
     """Processor for Artist-URL relationship."""
     basic_types = {
-        'wikidata': {'name': 'Wikidata', 'icon': 'wikidata-16.png', },
-        'discogs': {'name': 'Discogs', 'icon': 'discogs-16.png', },
-        'allmusic': {'name': 'Allmusic', 'icon': 'allmusic-16.png', },
-        'bandcamp': {'name': 'Bandcamp', 'icon': 'bandcamp-16.png', },
-        'official homepage': {'name': 'Official homepage', 'icon': 'home-16.png', },
-        'BBC Music page': {'name': 'BBC Music', },
+        'wikidata': {'name': gettext('Wikidata'), 'icon': 'wikidata-16.png', },
+        'discogs': {'name': gettext('Discogs'), 'icon': 'discogs-16.png', },
+        'allmusic': {'name': gettext('Allmusic'), 'icon': 'allmusic-16.png', },
+        'bandcamp': {'name': gettext('Bandcamp'), 'icon': 'bandcamp-16.png', },
+        'official homepage': {'name': gettext('Official homepage'), 'icon': 'home-16.png', },
+        'BBC Music page': {'name': gettext('BBC Music'), },
     }
     external_urls = []
     for relation in list:
@@ -42,13 +43,13 @@ def _url(list):
                 if relation['type'] == 'lyrics':
                     external_urls.append(dict(
                         relation.items() + {
-                            'name': 'Lyrics',
+                            'name': gettext('Lyrics'),
                             'disambiguation': target.netloc,
                         }.items()))
                 elif relation['type'] == 'wikipedia':
                     external_urls.append(dict(
                         relation.items() + {
-                            'name': 'Wikipedia',
+                            'name': gettext('Wikipedia'),
                             'disambiguation': target.netloc.split('.')[0] + ':' +
                                               urllib.unquote(target.path.split('/')[2]).decode('utf8').replace("_", " "),
                             'icon': 'wikipedia-16.png',
@@ -61,7 +62,7 @@ def _url(list):
                         disambiguation = path[1]
                     external_urls.append(dict(
                         relation.items() + {
-                            'name': 'YouTube',
+                            'name': gettext('YouTube'),
                             'disambiguation': disambiguation,
                             'icon': 'youtube-16.png',
                         }.items()))
@@ -69,7 +70,7 @@ def _url(list):
                     if target.netloc == 'twitter.com':
                         external_urls.append(dict(
                             relation.items() + {
-                                'name': 'Twitter',
+                                'name': gettext('Twitter'),
                                 'disambiguation': target.path.split('/')[1],
                                 'icon': 'twitter-16.png',
                             }.items()))
