@@ -76,7 +76,9 @@
             </script>
             <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
-              {{ _('Review by') }} <img class="avatar" src="{{ review.user.avatar }}&s=16" /> {{ review.user.display_name }}
+              {% autoescape false %}
+              <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> %s' % (review.user.avatar, review.user.display_name)) }}</p>
+              {% endautoescape %}
             </div>
           </a>
         {% endfor %}

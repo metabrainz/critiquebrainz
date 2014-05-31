@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{ _('Release group') }} "{{ release_group.title }}" {{ _('by') }} {{ release_group['artist-credit-phrase'] }} - CritiqueBrainz
+{{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
+- CritiqueBrainz
 {% endblock %}
 
 {% block content %}
@@ -130,7 +131,7 @@
   <div class="col-md-3">
     <h4>{{ _('Release group information') }}</h4>
     <p>
-      {% if release_group['first-release-date'] %}{{ _('First release in') }} {{ release_group['first-release-date'][:4] }}{% endif %}
+      {% if release_group['first-release-date'] %}{{ _('First release in %(year)s', year=release_group['first-release-date'][:4]) }}{% endif %}
     </p>
     {% if release_group['external-urls'] %}
       <b>{{ _('External links') }}</b>

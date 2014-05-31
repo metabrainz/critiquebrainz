@@ -20,7 +20,7 @@
     </div>
     <div class="col-md-6">
       {% set scopes = scope.split() %}
-      {{ client.name }} {{ _('is requesting permission to your') }}
+      {{ _('%(client)s is requesting permission to your', client=client.name) }}
       <ul>
         {% for scope in scopes %}
           <li>{{ scope_desc(scope) }}</li>
