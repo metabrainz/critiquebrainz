@@ -1,4 +1,5 @@
-#!/usr/bin/python
+﻿#!/usr/bin/python
+import subprocess
 from flask.ext.script import Manager
 
 from critiquebrainz import fixtures as _fixtures
@@ -8,8 +9,6 @@ manager = Manager(app)
 
 
 def init_postgres(uri):
-    from os import system
-
     def explode_url(url):
         from urlparse import urlsplit
         url = urlsplit(url)
@@ -23,17 +22,24 @@ def init_postgres(uri):
     if hostname not in ['localhost', '127.0.0.1']:
         raise Exception('Cannot configure a remote database')
 
-    exit_code = system('scripts/create_database_user.sh %s %s' % (username, password))
-    if exit_code != 0:
-        raise Exception('Failed to create PostgreSQL user')
+    # Checking if user already exists
+    retv = subprocess.check_output('psql -U postgres -t -A -c "SELECT COUNT(*) FROM pg_user WHERE usename = \'%s\';"' % username)
+    if retv[0] == '0':
+        exit_code = subprocess.call('psql -U postgres -c "CREATE ROLE %s PASSWORD \'%s\' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;"' % (username, password))
+        if exit_code != 0:
+            raise Exception('Failed to create PostgreSQL user!')
 
-    exit_code = system('scripts/create_database.sh %s %s' % (db, username))
+    # Checking if database exists
+    exit_code = subprocess.call('psql -U postgres -c "\q" %s' % db)
     if exit_code != 0:
-        raise Exception('Failed to create PostgreSQL database')
+        exit_code = subprocess.call('createdb -U postgres -O %s %s' % (username, db))
+        if exit_code != 0:
+            raise Exception('Failed to create PostgreSQL database!')
 
-    exit_code = system('scripts/create_database_extension.sh %s %s' % (db, 'uuid-ossp'))
+    # Creating database extension
+    exit_code = subprocess.call('psql -U postgres -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' % ('uuid-ossp', db))
     if exit_code != 0:
-        raise Exception('Failed to create PostgreSQL extension')
+        raise Exception('Failed to create PostgreSQL extension!')
 
 
 @manager.command
