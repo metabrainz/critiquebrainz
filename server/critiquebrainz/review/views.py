@@ -67,6 +67,7 @@ def review_list_handler():
     :query sort: `rating` or `created`
     :query limit: results limit. min is 0, max is 50, default is 50
     :query offset: result offset. default is 0
+    :query lang: language code
     :query inc: includes
     """
     def fetch_params():
@@ -76,9 +77,10 @@ def review_list_handler():
         limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
         offset = Parser.int('uri', 'offset', optional=True) or 0
         include = Parser.list('uri', 'inc', Review.allowed_includes, optional=True) or []
-        return release_group, user_id, sort, limit, offset, include
-    release_group, user_id, sort, limit, offset, include = fetch_params()
-    reviews, count = Review.list(release_group, user_id, sort, limit, offset)
+        language = Parser.string('uri', 'lang', optional=True) or 'en'
+        return release_group, user_id, sort, limit, offset, include, language
+    release_group, user_id, sort, limit, offset, include, language = fetch_params()
+    reviews, count = Review.list(release_group, user_id, sort, limit, offset, language)
     return jsonify(limit=limit, offset=offset, count=count,
                    reviews=[p.to_dict(include) for p in reviews])
 

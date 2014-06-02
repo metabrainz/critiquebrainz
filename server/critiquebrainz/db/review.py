@@ -14,6 +14,7 @@ class Review(db.Model):
     edits = db.Column(db.Integer, nullable=False, default=0)
     is_archived = db.Column(db.Boolean, nullable=False, default=False)
     license_id = db.Column(db.Unicode, db.ForeignKey('license.id', ondelete='CASCADE'), nullable=False)
+    language = db.Column(db.String(3), default='en', nullable=False)
     source = db.Column(db.Unicode)
     source_url = db.Column(db.Unicode)
 
@@ -40,6 +41,7 @@ class Review(db.Model):
                         votes_negative=self.votes_negative_count,
                         rating=self.rating,
                         license=self.license.to_dict(),
+                        language=self.language,
                         source=self.source,
                         source_url=self.source_url,
                         review_class=self.review_class.label)
@@ -103,7 +105,7 @@ class Review(db.Model):
         return self._rating
 
     @classmethod
-    def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None):
+    def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None, language=None):
         # query init
         query = Review.query
 
@@ -137,6 +139,9 @@ class Review(db.Model):
         if release_group is not None:
             query = query.filter(Review.release_group == release_group)
         # filter by user_id
+        if language is not None:
+            query = query.filter(Review.language == language)
+        # filter by language
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
         # count all rows
@@ -152,8 +157,8 @@ class Review(db.Model):
         return reviews, count
 
     @classmethod
-    def create(cls, release_group, user, text, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None):
-        review = Review(release_group=release_group, user=user,
+    def create(cls, release_group, user, text, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None, language=None):
+        review = Review(release_group=release_group, user=user, language=language,
                         license_id=license_id, source=source, source_url=source_url)
         db.session.add(review)
         db.session.commit()
@@ -162,7 +167,7 @@ class Review(db.Model):
         db.session.commit()
         return review
 
-    def update(self, release_group=None, text=None, license_id=None, source=None, source_url=None):
+    def update(self, release_group=None, text=None, license_id=None, source=None, source_url=None, language=None):
         if release_group is not None:
             self.release_group = release_group
         if text is not None:
@@ -175,4 +180,6 @@ class Review(db.Model):
             self.source = source
         if source_url is not None:
             self.source_url = source_url
+        if language is not None:
+            self.language = source_url
         db.session.commit()
