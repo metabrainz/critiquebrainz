@@ -33,4 +33,3 @@ echo "To enter newly created virtualenv type:"
 echo
 echo "  source ./env"
 echo
-
