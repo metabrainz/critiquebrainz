@@ -1,30 +1,30 @@
 {% extends 'profile/base.html' %}
 
-{% block title %}Your API clients - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Your API clients') }} - CritiqueBrainz{% endblock %}
 
 {% from 'macros.html' import scope_desc %}
 
 {% block content %}
 <div class="clearfix">
-  <h2 class="pull-left">API clients</h2>
+  <h2 class="pull-left">{{ _('API clients') }}</h2>
   <a href="{{ url_for('profile_client.create') }}" class="btn btn-success pull-right" style="margin-top: 20px;">
-    <span class="glyphicon glyphicon-asterisk"></span> Create
+    <span class="glyphicon glyphicon-asterisk"></span> {{ _('Create') }}
   </a>
 </div>
 <hr />
 
-<h4>Your applications</h4>
+<h4>{{ _('Your applications') }}</h4>
 {% if not clients %}
-  <p class="lead" style="text-align: center;">No API clients found</p>
+  <p class="lead" style="text-align: center;">{{ _('No API clients found') }}</p>
 {% else %}
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Website</th>
-        <th>Client ID</th>
-        <th>Client secret</th>
-        <th>Action</th>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Website') }}</th>
+        <th>{{ _('Client ID') }}</th>
+        <th>{{ _('Client secret') }}</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -50,17 +50,17 @@
 
 <hr />
 
-<h4>Authorized applications</h4>
+<h4>{{ _('Authorized applications') }}</h4>
 {% if not tokens %}
-  <p class="lead" style="text-align: center;">No authorized applications found</p>
+  <p class="lead" style="text-align: center;">{{ _('No authorized applications found') }}</p>
 {% else %}
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Website</th>
-        <th>Access</th>
-        <th>Action</th>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Website') }}</th>
+        <th>{{ _('Access') }}</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -77,7 +77,7 @@
             </ul>
           </td>
           <td>
-            <a href="{{ url_for('profile_client.token_delete', client_id=token.client.client_id) }}">Revoke access</a>
+            <a href="{{ url_for('profile_client.token_delete', client_id=token.client.client_id) }}">{{ _('Revoke access') }}</a>
           </td>
         </tr>
       {% endfor %}

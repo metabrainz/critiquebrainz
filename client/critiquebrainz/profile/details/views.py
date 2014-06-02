@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user, logout_user
+from flask.ext.babel import gettext
+
 from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.details import EditForm
@@ -26,7 +28,7 @@ def edit_handler():
         except APIError as e:
             flash(e.desc, 'error')
         else:
-            flash(u'Profile updated', 'success')
+            flash(gettext('Profile updated'), 'success')
         return redirect(url_for('.index'))
     else:
         form.display_name.data = current_user.me.get('display_name')

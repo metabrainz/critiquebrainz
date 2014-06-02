@@ -9,6 +9,9 @@ app.config.from_object('critiquebrainz.config')
 # init apis
 import apis
 
+# init babel
+import babel
+
 # init login
 from login import login_manager
 login_manager.init_app(app)

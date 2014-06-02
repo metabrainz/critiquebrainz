@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Reviewer "{{ user.display_name }}" - CritiqueBrainz{% endblock %}
+{% block title %}{{ user.display_name }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
 <h2><img class="avatar" src="{{ user.avatar }}&s=38" /> {{ user.display_name }}</h2>
@@ -8,30 +8,30 @@
 
 <div class="row">
   <div class="col-md-6">
-    <h4>General information</h4>
+    <h4>{{ _('General information') }}</h4>
     <dl class="dl-horizontal">
-      <dt>Member since</dt><dd>{{ user.created | datetime }}</dd>
-      <dt>User type</dt><dd>{{ user.user_type.label }}</dd>
-      <dt>Karma</dt><dd>{{ user.karma }}</dd>
+      <dt>{{ _('Member since') }}</dt><dd>{{ user.created | datetime }}</dd>
+      <dt>{{ _('User type') }}</dt><dd>{{ user.user_type.label }}</dd>
+      <dt>{{ _('Karma') }}</dt><dd>{{ user.karma }}</dd>
     </dl>
   </div>
   <div class="col-md-6">
-    <h4>Statistics</h4>
+    <h4>{{ _('Statistics') }}</h4>
     <div class="row">
       <div class="col-md-6">
-        <h5>Reviews</h5>
+        <h5>{{ _('Reviews') }}</h5>
         <dl class="dl-horizontal">
-          <dt>Today</dt><dd>{{ user.stats.reviews_today }}</dd>
-          <dt>Last 7 days</dt><dd>{{ user.stats.reviews_last_7_days }}</dd>
-          <dt>This month</dt><dd>{{ user.stats.reviews_this_month }}</dd>
+          <dt>{{ _('Today') }}</dt><dd>{{ user.stats.reviews_today }}</dd>
+          <dt>{{ _('Last 7 days') }}</dt><dd>{{ user.stats.reviews_last_7_days }}</dd>
+          <dt>{{ _('This month') }}</dt><dd>{{ user.stats.reviews_this_month }}</dd>
         </dl>
       </div>
       <div class="col-md-6">
-        <h5>Votes</h5>
+        <h5>{{ _('Votes') }}</h5>
         <dl class="dl-horizontal">
-          <dt>Today</dt><dd>{{ user.stats.votes_today }}</dd>
-          <dt>Last 7 days</dt><dd>{{ user.stats.votes_last_7_days }}</dd>
-          <dt>This month</dt><dd>{{ user.stats.votes_this_month }}</dd>
+          <dt>{{ _('Today') }}</dt><dd>{{ user.stats.votes_today }}</dd>
+          <dt>{{ _('Last 7 days') }}</dt><dd>{{ user.stats.votes_last_7_days }}</dd>
+          <dt>{{ _('This month') }}</dt><dd>{{ user.stats.votes_this_month }}</dd>
         </dl>
       </div>
     </div>
@@ -40,18 +40,18 @@
 
 <hr />
 
-<h4>Reviews</h4>
+<h4>{{ _('Reviews') }}</h4>
 {% if not reviews %}
-  <p class="lead" style="text-align: center;">No reviews found</p>
+  <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
 {% else %}
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Artist</th>
-        <th>Release group</th>
-        <th>Created on</th>
-        <th>Votes (+/-)</th>
-        <th>Class</th>
+        <th>{{ _('Artist') }}</th>
+        <th>{{ _('Release groupv</th>
+        <th>{{ _('Created on') }}</th>
+        <th>{{ _('Votes (+/-)') }}</th>
+        <th>{{ _('Class') }}</th>
         <th></th>
       </tr>
     </thead>
@@ -69,7 +69,7 @@
           <td>{{ review.created | datetime }}</td>
           <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
           <td>{{ review.review_class }}</td>
-          <td><a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">Read</a></td>
+          <td><a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Read') }}</a></td>
         </tr>
       {% endfor %}
     </tbody>

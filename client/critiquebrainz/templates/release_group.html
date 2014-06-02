@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Release group "{{ release_group.title }}" by {{ release_group['artist-credit-phrase'] }} - CritiqueBrainz
+{{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
+- CritiqueBrainz
 {% endblock %}
 
 {% block content %}
@@ -19,12 +20,12 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit-phr
   {% if not my_review %}
     <a id="write-review" href="{{ url_for('profile_review.create', release_group=id) }}"
        role="button" class="btn btn-success pull-right">
-      <span class="glyphicon glyphicon-asterisk"></span> Write a review
+      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
     </a>
   {% else %}
     <a id="edit-review" href="{{ url_for('profile_review.edit', id=my_review.id) }}"
        role="button" class="btn btn-primary pull-right">
-      <span class="glyphicon glyphicon-edit"></span> Edit my review
+      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
     </a>
   {% endif %}
 </div>
@@ -42,24 +43,24 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit-phr
                 width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
       {% else %}
         <span class="text-muted">
-          We don't have a match on Spotify for this release group.
-          Please help us find the right album on Spotify.
+          {{ _('We don\'t have a match on Spotify for this release group.
+          Please help us find the right album on Spotify.') }}
         </span>
-        <div style="text-align:center;font-weight:bold;"><a style="font-size:16px;" href="{{ url_for('matching.spotify', release_group_id=id) }}">Match this!</a></div>
+        <div style="text-align:center;font-weight:bold;"><a style="font-size:16px;" href="{{ url_for('matching.spotify', release_group_id=id) }}">{{ _('Match this!') }}</a></div>
       {% endif %}
     </div>
   </div>
   <div class="col-md-6">
-    <h4 style="margin-bottom:0;">Reviews</h4>
+    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
     {% if not reviews %}
-      <p class="lead" style="text-align: center;">No reviews found</p>
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
     {% else %}
       <table class="table table-condensed table-hover">
         <thead>
           <tr>
             <th></th>
-            <th>Published on</th>
-            <th>Rating</th>
+            <th>{{ _('Published on') }}</th>
+            <th>{{ _('Rating') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -67,7 +68,9 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit-phr
             <tr data-review-id="{{ review.id }}">
               <td>
                 <a href="{{ url_for('review.entity', id=review.id) }}">
-                  by <img class="avatar" src="{{ review.user.avatar }}&s=18" /> {{ review.user.display_name }}
+                  {% autoescape false %}
+                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=18" /> %s' % (review.user.avatar, review.user.display_name)) }}
+                  {% endautoescape %}
                 </a>
               </td>
               <td>{{ review.created | datetime }}</td>
@@ -93,20 +96,20 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit-phr
     {% endif %}
 
     {% if release and release['medium-list'] %}
-      <h4>Tracklist</h4>
+      <h4>{{ _('Tracklist') }}</h4>
       <table class="table table-condensed table-hover">
         <thead>
         <tr>
-          <th>#</th>
-          <th>Title</th>
-          <th>Length</th>
+          <th>{{ _('#') }}</th>
+          <th>{{ _('Title') }}</th>
+          <th>{{ _('Length') }}</th>
         </tr>
         </thead>
         <tbody>
           {% for medium in release['medium-list'] %}
             <tr>
               <td></td>
-              <td style="font-size:12px;" colspan="2"><b>CD {{ medium.position }}</b></td>
+              <td style="font-size:12px;" colspan="2"><b>{{ _('CD') }} {{ medium.position }}</b></td>
             </tr>
             {% for track in medium['track-list'] %}
               <tr>
@@ -128,20 +131,20 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit-phr
   </div>
 
   <div class="col-md-3">
-    <h4>Release group information</h4>
+    <h4>{{ _('Release group information') }}</h4>
     <p>
-      {% if release_group['first-release-date'] %}First release in {{ release_group['first-release-date'][:4] }}{% endif %}
+      {% if release_group['first-release-date'] %}{{ _('First release in %(year)s', year=release_group['first-release-date'][:4]) }}{% endif %}
     </p>
     {% if release_group['external-urls'] %}
-      <b>External links</b>
+      <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
         {% for url in release_group['external-urls'] %}
           <li class="clearfix">
             <div class="favicon-container pull-left">
               {% if url.icon %}
-              <img src="{{ url_for('static', filename='favicons/'+url.icon) }}" />
+                <img src="{{ url_for('static', filename='favicons/'+url.icon) }}" />
               {% else %}
-              <img src="{{ url_for('static', filename='favicons/external-16.png') }}" />
+                <img src="{{ url_for('static', filename='favicons/external-16.png') }}" />
               {% endif %}
             </div>
             <a href="{{ url.target }}">{{ url.name }}</a>
@@ -150,7 +153,7 @@ Release group "{{ release_group.title }}" by {{ release_group['artist-credit-phr
         {% endfor %}
       </ul>
     {% endif %}
-    <p><a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>Edit on MusicBrainz</em></a></p>
+    <p><a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a></p>
   </div>
 </div>
 {% endblock %}

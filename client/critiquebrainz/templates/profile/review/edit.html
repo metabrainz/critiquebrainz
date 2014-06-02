@@ -2,7 +2,7 @@
 
 {% set release_group = review.release_group | release_group_details %}
 
-{% block title %}Edit review of "{{ release_group.title }}" - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Edit review of "%(rg)s"', rg=release_group.title) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
 {% for field in form.errors %}
@@ -12,27 +12,27 @@
   </div>
   {% endfor %}
 {% endfor %}
-<h2>Editing review</h2>
+<h2>{{ _('Editing review') }}</h2>
 <dl class="dl-horizontal">
-  <dt>Artist</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
-  <dt>Release group</dt>
+  <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
+  <dt>{{ _('Release group') }}</dt>
   <dd>
     {{ release_group.title }}
     {% if release_group['first-release-date'] %}
       <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
     {% endif %}
   </dd>
-  <dt>Created on</dt><dd>{{ review.created | datetime }}</dd>
-  <dt>Votes (+/-)</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
-  <dt>Rating</dt><dd>{{ review.review_class }}</dd>
+  <dt>{{ _('Created on') }}</dt><dd>{{ review.created | datetime }}</dd>
+  <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
+  <dt>{{ _('Rating') }}</dt><dd>{{ review.review_class }}</dd>
 </dl>
 
 <div class="clearfix">
   <ul class="nav nav-tabs" style="margin-bottom:-1px;">
-    <li class="active"><a href="#write" data-toggle="tab">Write</a></li>
-    <li><a href="#preview" data-toggle="tab">Preview</a></li>
+    <li class="active"><a href="#write" data-toggle="tab">{{ _('Write') }}</a></li>
+    <li><a href="#preview" data-toggle="tab">{{ _('Preview') }}</a></li>
     <small class="text-muted pull-right" style="margin-top:20px;font-style:italic;">
-      You can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax to apply custom formatting.
+      {{ _('You can use <a href="%(url)s">Markdown</a> syntax to apply custom formatting.', url='http://daringfireball.net/projects/markdown/syntax') }}
     </small>
   </ul>
 </div>
@@ -44,7 +44,7 @@
         {{ form.text(id="review-content", class="form-control", rows="5") | safe }}
       </div>
       <div class="tab-pane fade" id="preview" style="margin-top:20px;">
-        <span class="text-muted">Loading preview...</span>
+        <span class="text-muted">{{ _('Loading preview...') }}</span>
       </div>
       <script>
         $(function () {
@@ -61,7 +61,7 @@
                 }
               });
             } else { // write
-              $("#preview").html('<span class="text-muted">Loading preview...</span>');
+              $("#preview").html('<span class="text-muted">{{ _('Loading preview...') }}</span>');
             }
           });
         });
@@ -71,7 +71,7 @@
   <hr />
   <div class="form-group">
     <div class="col-sm-12">
-      <button type="submit" class="btn btn-primary">Publish</button>
+      <button type="submit" class="btn btn-primary">{{ _('Publish') }}</button>
     </div>
   </div>
 </form>

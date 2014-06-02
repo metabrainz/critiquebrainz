@@ -2,35 +2,35 @@
 
 {% block title %}
 {% if request.args.get('query', default=False) %}
-  Search results
+  {{ _('Search results') }}
 {% else %}
-  Search
+  {{ _('Search') }}
 {% endif %}
 - CritiqueBrainz
 {% endblock %}
 
 {% block content %}
-<h3>Search</h3>
+<h3>{{ _('Search') }}</h3>
 
 <form method="GET" class="form-horizontal" role="form">
   <div class="form-group">
-    <label for="input-query" class="col-sm-2 control-label">Query</label>
+    <label for="input-query" class="col-sm-2 control-label">{{ _('Query') }}</label>
     <div class="col-sm-3">
       <input id="input-query" name="query" class="form-control" value="{{ request.args.get('query', default='') }}">
     </div>
   </div>
   <div class="form-group">
-    <label for="type-selector" class="col-sm-2 control-label">Type</label>
+    <label for="type-selector" class="col-sm-2 control-label">{{ _('Type') }}</label>
     <div class="col-sm-2">
       <select id="type-selector" name="type" class="form-control">
-        <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>Artist</option>
-        <option value="release-group" {% if type=="release-group" %}selected="selected"{% endif %}>Release group</option>
+        <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>{{ _('Artist') }}</option>
+        <option value="release-group" {% if type=="release-group" %}selected="selected"{% endif %}>{{ _('Release group') }}</option>
       </select>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">Search</button>
+      <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
     </div>
   </div>
 </form>
@@ -38,16 +38,16 @@
 {% if request.args.get('query', default=False) %}
   <hr />
   {% if not results %}
-    <p class="lead" style="text-align: center;">No results found</p>
+    <p class="lead" style="text-align: center;">{{ _('No results found') }}</p>
   {% else %}
     {% if type=="artist" %}
       <table class="table table-hover">
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Sort name</th>
-          <th>Type</th>
-          <th>Country</th>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Sort name') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Country') }}</th>
         </tr>
         </thead>
         <tbody>
@@ -68,9 +68,9 @@
       <table class="table table-hover">
         <thead>
         <tr>
-          <th>Release group</th>
-          <th>Artist</th>
-          <th>Type</th>
+          <th>{{ _('Release group') }}</th>
+          <th>{{ _('Artist') }}</th>
+          <th>{{ _('Type') }}</th>
         </tr>
         </thead>
         <tbody>

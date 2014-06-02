@@ -2,10 +2,10 @@
 
 {% set release_group = review.release_group | release_group_details %}
 
-{% block title %}Review of "{{ release_group.title }}" by {{ review.user.display_name }} - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Review of "%(rg)s" by %(user)s', rg=release_group.title, user=review.user.display_name) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<h2>Review of "{{ release_group.title }}" by {{ review.user.display_name }}</h2>
+<h2>{{ _('Review of "%(rg)s" by %(user)s', rg=release_group.title, user=review.user.display_name) }}</h2>
 
 <div id="review-entity" class="row">
   <div class="col-md-3">
@@ -25,7 +25,7 @@
   <div class="col-md-9">
     <div id="review-details" class="row">
       <div class="col-md-3">
-        <h4>Author</h4>
+        <h4>{{ _('Author') }}</h4>
         <a href="{{ url_for('user.entity', id=review.user_id) }}">
           <img class="avatar" src="{{ review.user.avatar }}&s=24" />
           {{ review.user.display_name }}
@@ -33,8 +33,8 @@
       </div>
       <div class="col-md-5">
         <dl class="dl-horizontal">
-          <dt>Reviewed on</dt><dd>{{ review.created | datetime }}</dd>
-          <dt>Artist</dt>
+          <dt>{{ _('Reviewed on') }}</dt><dd>{{ review.created | datetime }}</dd>
+          <dt>{{ _('Artist') }}</dt>
           <dd>
             {% for credit in release_group['artist-credit'] %}
               {% if credit.artist %}
@@ -44,7 +44,7 @@
               {% endif %}
             {% endfor %}
           </dd>
-          <dt>Release group</dt>
+          <dt>{{ _('Release group') }}</dt>
           <dd>
             <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
             {% if release_group['first-release-date'] %}
@@ -55,8 +55,8 @@
       </div>
       <div class="col-md-4">
         <dl class="dl-horizontal">
-          <dt>Votes (+/-)</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
-          <dt>Class</dt><dd>{{ review.review_class }}</dd>
+          <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
+          <dt>{{ _('Class') }}</dt><dd>{{ review.review_class }}</dd>
         </dl>
       </div>
     </div>
@@ -64,35 +64,37 @@
     <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
     <hr />
     <small class="text-muted">
-      This review is licensed under a
+      {% autoescape false %}
       {% if review.license.info_url %}
-        <a href="{{ review.license.info_url }}">{{ review.license.id }} license</a>.
+        {% set license = '<a href="%s">%s</a>' % (review.license.info_url, review.license.id ) %}
       {% else %}
-        {{ review.license.key }} license.
+        {% set license = review.license.key %}
       {% endif %}
+      {{ _('This review is licensed under a %(name)s license.', name=license) }}
       {% if review.source %}
-        It was imported from <a href="{{ review.source_url }}">{{ review.source }}</a>.
+        {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>' % (review.source_url, review.source)) }}
       {% endif %}
+      {% endautoescape %}
     </small>
     <hr />
     {% if current_user.is_authenticated() %}
       {% if current_user.me.id != review.user_id %}
         <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
-          Did you find this review useful?
-          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">Yes</button>
-          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">No</button>
+          {{ _('Did you find this review useful?') }}
+          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
+          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
           {% if vote.placet == True or vote.placet == False %}
-            <a href="{{ url_for('review.vote_delete', id=review.id) }}">(delete your vote)</a>
+            <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
           {% endif %}
         </form>
       {% else %}
         <a href="{{ url_for('profile_review.edit', id=review.id) }}"
            role="button" class="btn btn-default btn-sm">
-          <span class="glyphicon glyphicon-edit"></span> Edit this review
+          <span class="glyphicon glyphicon-edit"></span> {{ _('Edit this review') }}
         </a>
       {% endif %}
     {% else %}
-      <a href="{{ url_for('login.index', next=url_for('review.entity', id=review.id)) }}">Sign in</a> to rate this review
+      {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
     {% endif %}
   </div>
 </div>

@@ -5,3 +5,6 @@ client.fcgi
 uwsgi.ini
 
 *.log
+
+# Translation
+*.mo

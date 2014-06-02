@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Sign in - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Sign in') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<h3>Sign in</h3>
-<p>To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to access your profile data.</p>
+<h3>{{ _('Sign in') }}</h3>
+<p>{{ _('To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to access your profile data.') }}</p>
 <hr />
 <div class="well" style="max-width: 600px; margin: 0 auto;">
   <a href="{{ url_for('login.musicbrainz', next=request.args.get('next')) }}"
-     class="btn btn-primary btn-lg btn-block">Sign in with MusicBrainz</a>
+     class="btn btn-primary btn-lg btn-block">{{ _('Sign in with MusicBrainz') }}</a>
 </div>
 {% endblock %}

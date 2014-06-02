@@ -12,26 +12,26 @@
 
 <div class="row">
   <div class="col-sm-9">
-    <h4>Discography</h4>
+    <h4>{{ _('Discography') }}</h4>
     <ul class="nav nav-tabs">
       <li {% if release_type=='album' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=album">Albums</a>
+        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=album">{{ _('Albums') }}</a>
       </li>
       <li {% if release_type=='single' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=single">Singles</a>
+        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=single">{{ _('Singles') }}</a>
       </li>
       <li {% if release_type=='ep' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=ep">EPs</a>
+        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=ep">{{ _('EPs') }}</a>
       </li>
       <li {% if release_type=='broadcast' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=broadcast">Broadcasts</a>
+        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=broadcast">{{ _('Broadcasts') }}</a>
       </li>
       <li {% if release_type=='other' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=other">Other releases</a>
+        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=other">{{ _('Other releases') }}</a>
       </li>
     </ul>
     {% if count==0 %}
-      <p class="lead" style="text-align:center; margin-top:20px;">No releases found</p>
+      <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No releases found') }}</p>
     {% else %}
       <div id="release-groups" class="row">
         {% for release_group in release_groups %}
@@ -40,8 +40,7 @@
             <div class="thumbnail clearfix {% if has_reviews %}reviewed{% endif %}">
               {% if has_reviews %}
                 <div class="review-count">
-                  {{ release_group.review_count }}
-                  {% if release_group.review_count==1 %}review{% else %}reviews{% endif %}
+                  {{ ngettext('%(num)d review', '%(num)d reviews', release_group.review_count) }}
                 </div>
               {% endif %}
               <div class="cover-art-container">
@@ -83,15 +82,15 @@
   </div>
 
   <div class="col-sm-3">
-    <h4>Artist information</h4>
+    <h4>{{ _('Artist information') }}</h4>
     {% if artist.type %}<p class="text-muted">{{ artist.type }}</p>{% endif %}
 
     {% if artist['band-members'] %}
       <b>
         {% if artist.type and artist.type == 'Person' %}
-          Member of
+          {{ _('Member of') }}
         {% else %}
-          Members
+          {{ _('Members') }}
         {% endif %}
       </b>
       <ul class="list-unstyled">
@@ -107,7 +106,7 @@
     {% endif %}
 
     {% if artist['external-urls'] %}
-      <b>External links</b>
+      <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
         {% for url in artist['external-urls'] %}
           <li class="clearfix">
@@ -125,7 +124,7 @@
       </ul>
     {% endif %}
 
-    <p><a href="//musicbrainz.org/artist/{{ artist.id }}"><em>Edit on MusicBrainz</em></a></p>
+    <p><a href="//musicbrainz.org/artist/{{ artist.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a></p>
   </div>
 </div>
 {% endblock %}
