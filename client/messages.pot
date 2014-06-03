@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2014-06-03 07:41+1000\n"
+"POT-Creation-Date: 2014-06-03 17:31+1000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -623,7 +623,7 @@ msgid "Spotify album matching"
 msgstr ""
 
 #: critiquebrainz/templates/matching/confirm.html:8
-msgid "Are you sure want create a connection?"
+msgid "Are you sure you want to create a connection?"
 msgstr ""
 
 #: critiquebrainz/templates/matching/confirm.html:13
@@ -657,7 +657,7 @@ msgid "Listen on Spotify"
 msgstr ""
 
 #: critiquebrainz/templates/matching/spotify.html:57
-msgid "Similar albums not found"
+msgid "No similar albums found"
 msgstr ""
 
 #: critiquebrainz/templates/matching/spotify.html:61
