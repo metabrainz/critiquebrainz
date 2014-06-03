@@ -102,12 +102,22 @@
 
       {% block footer %}
       <hr />
-      <div class="footer">
-        <ul class="list-inline">
+      <div class="footer clearfix">
+        <ul class="list-inline pull-left">
           <li><a href="/about/">{{ _('About') }}</a></li>
           <li><a href="http://blog.musicbrainz.org/tag/critiquebrainz/">{{ _('Blog') }}</a></li>
           <li><a href="https://critiquebrainz.readthedocs.org/">{{ _('Developers') }}</a></li>
         </ul>
+        <div class="btn-group dropup pull-right">
+          <button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            {% for language in config.LANGUAGES.keys() %}
+              <li><a href="?l={{ language }}">{{ config.LANGUAGES[language] }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
       {% endblock %}
 
