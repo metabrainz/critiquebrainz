@@ -6,10 +6,10 @@ Activate it to have access to ``pybabel`` command::
 
     $ source ./env
 
-Extracting text
----------------
+Extracting strings
+------------------
 
-To extract text into a Portable Object Template use ``pybabel extract`` command::
+To extract strings into a Portable Object Template use ``pybabel extract`` command::
 
     $ pybabel extract -F critiquebrainz/babel.cfg -o messages.pot critiquebrainz
 

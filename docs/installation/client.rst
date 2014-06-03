@@ -55,6 +55,16 @@ You may keep the defaults, if you want to use the default client from
 instance is listening on ``127.0.0.1:5000``. If you want to change it, you
 should edit this OAuth client in your database manually (as of now).
 
+
+Preparing to run
+^^^^^^^^^^^^^^^^
+
+Before you start client you need to compile styles and pull translations. This can be done using deployment script::
+
+    $ python deploy.py
+
+`Note:` You need to set up Transifex before updating translation. For more info see http://docs.transifex.com/developer/client/.
+
 Running
 -------
 

@@ -8,3 +8,4 @@ uwsgi.ini
 
 # Translation
 *.mo
+tx.exe
