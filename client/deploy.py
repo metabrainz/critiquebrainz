@@ -21,7 +21,7 @@ def update_translations():
 
     print "Updating translations..."
     languages = ','.join(conf.LANGUAGES.keys())
-    print "tx pull -a -l %s" % languages
+    print "tx pull -a -f -l %s" % languages
     exit_code = subprocess.call("tx pull -r critiquebrainz.critiquebrainz -l %s" % languages, shell=True)
     if exit_code != 0:
         raise Exception("Failed to update translations!")
