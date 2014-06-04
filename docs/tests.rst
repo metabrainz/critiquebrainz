@@ -14,5 +14,5 @@ Server
 
 To run all tests enter server's virtual enviroment and activate ``run_tests.py`` script::
 
-    $ source ./env
-    $ python run_tests.py
+   $ source ./env
+   $ python run_tests.py
