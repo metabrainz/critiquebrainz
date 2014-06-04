@@ -31,7 +31,7 @@ ADMINS = []
 # Internationalization and localization
 LANGUAGES = {
     # Example:
-    # '<valid langauage code>: '<Language name>',
+    # '<valid langauage code>: u'<Language name>',
 
-    'en': 'English',
+    'en': u'English',
 }
