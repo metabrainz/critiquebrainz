@@ -7,17 +7,16 @@ from critiquebrainz import app, db
 
 manager = Manager(app)
 
+def explode_url(url):
+    from urlparse import urlsplit
+    url = urlsplit(url)
+    username = url.username
+    password = url.password
+    db = url.path[1:]
+    hostname = url.hostname
+    return hostname, db, username, password
 
 def init_postgres(uri):
-    def explode_url(url):
-        from urlparse import urlsplit
-        url = urlsplit(url)
-        username = url.username
-        password = url.password
-        db = url.path[1:]
-        hostname = url.hostname
-        return hostname, db, username, password
-
     hostname, db, username, password = explode_url(uri)
     if hostname not in ['localhost', '127.0.0.1']:
         raise Exception('Cannot configure a remote database')
@@ -49,13 +48,25 @@ def tables():
 
 @manager.command
 def fixtures():
-    """Update the newly created database with default schema and testing data"""
+    """Update the newly created database with default schema and testing data."""
     _fixtures.install(app, *_fixtures.all_data)
 
 
 @manager.command
+def dump_db():
+    """Create dump of the database."""
+    import subprocess
+    print "Creating database dump..."
+    hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
+    exit_code = subprocess.call('pg_dump -Ft "%s" > cb_dump.tar' % db, shell=True)
+    if exit_code != 0:
+        raise Exception("Failed to create database dump!")
+    print 'Done! Created "cb_dump.tar".'
+
+
+@manager.command
 def create_db():
-    """Create and configure the database"""
+    """Create and configure the database."""
     init_postgres(app.config['SQLALCHEMY_DATABASE_URI'])
 
 
