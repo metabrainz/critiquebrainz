@@ -59,9 +59,11 @@ def dump_db():
     print "Creating database dump..."
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
     exit_code = subprocess.call('pg_dump -Ft "%s" > cb_dump.tar' % db, shell=True)
+    if exit_code == 0:
+        exit_code = subprocess.call('bzip2 cb_dump.tar', shell=True)
     if exit_code != 0:
         raise Exception("Failed to create database dump!")
-    print 'Done! Created "cb_dump.tar".'
+    print 'Done! Created "cb_dump.tar.bz2".'
 
 
 @manager.command
