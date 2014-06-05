@@ -1,3 +1,4 @@
+Fabric==1.8.3
 Flask==0.10.1
 Flask-Login==0.2.10
 Flask-Script==0.5.3

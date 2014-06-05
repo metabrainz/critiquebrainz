@@ -80,7 +80,7 @@ If you want to deploy CritiqueBrainz client on a production server there are add
 
 Last two steps can be done using deployment script::
 
-   $ python deploy.py
+   $ fab deploy
 
 **Note:** You need to set up local Transifex config before updating translation. Transifex account is required.
 For more info see http://docs.transifex.com/developer/client/init.
