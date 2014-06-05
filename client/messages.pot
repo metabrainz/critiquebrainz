@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2014-06-03 17:31+1000\n"
+"POT-Creation-Date: 2014-06-03 19:57+1000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -448,6 +448,10 @@ msgstr ""
 #: critiquebrainz/templates/search/selector.html:41
 #: critiquebrainz/templates/user/entity.html:51
 msgid "Release group"
+msgstr ""
+
+#: critiquebrainz/templates/base.html:113
+msgid "Language"
 msgstr ""
 
 #: critiquebrainz/templates/error.html:3 critiquebrainz/templates/error.html:6
