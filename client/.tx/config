@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[critiquebrainz.critiquebrainz]
+file_filter = critiquebrainz/translations/<lang>/LC_MESSAGES/messages.po
+source_file = messages.pot
+source_lang = en
+type = PO
+

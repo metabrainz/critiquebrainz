@@ -14,6 +14,7 @@ Contents
    :maxdepth: 2
 
    installation
+   dev
    tests
    translation
    api
