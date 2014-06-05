@@ -56,11 +56,14 @@ def fixtures():
 def dump_db():
     """Create dump of the database."""
     import subprocess
+    from time import gmtime, strftime
     print "Creating database dump..."
+    file_name = "dump_%s" % strftime("%Y%m%d-%H%M%S", gmtime())
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
-    exit_code = subprocess.call('pg_dump -Ft "%s" > cb_dump.tar' % db, shell=True)
+    print 'pg_dump -Ft "%s" > "%s.tar"' % (db, file_name)
+    exit_code = subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name), shell=True)
     if exit_code == 0:
-        exit_code = subprocess.call('bzip2 cb_dump.tar', shell=True)
+        exit_code = subprocess.call('bzip2 "%s.tar"' % file_name, shell=True)
     if exit_code != 0:
         raise Exception("Failed to create database dump!")
     print 'Done! Created "cb_dump.tar.bz2".'
