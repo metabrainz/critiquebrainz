@@ -16,7 +16,7 @@ def compile_translations():
 def update_translations():
     """Pulls translations for languages defined in config from Transifex and compiles them."""
     languages = ','.join(conf.LANGUAGES.keys())
-    local("tx pull -r critiquebrainz.critiquebrainz -l %s" % languages)
+    local("tx pull -f -r critiquebrainz.critiquebrainz -l %s" % languages)
     compile_translations()
 
 
