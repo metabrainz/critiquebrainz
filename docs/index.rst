@@ -15,6 +15,7 @@ Contents
 
    installation
    dev
+   db
    tests
    translation
    api
