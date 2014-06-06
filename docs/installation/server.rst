@@ -106,4 +106,4 @@ Don't forget to enter your virtual environment first::
 
 Now you can safely run the webservice app::
 
-   $ ./run.sh
+   $ python manage.py runserver -t 0.0.0.0 -p 5000
