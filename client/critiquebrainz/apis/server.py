@@ -189,6 +189,14 @@ class CritiqueBrainzAPI(object):
         users = resp.get('users')
         return count, users
 
+    def get_review_languages(self):
+        resp = requests.get(self.base_url + 'review/languages').json()
+        error = resp.get('error')
+        if error:
+            desc = resp.get('description')
+            raise APIError(code=error, desc=desc)
+        return resp.get('languages')
+
     def create_client(self, name, desc, website, redirect_uri, scopes, access_token):
         session = self._service.get_session(access_token)
         data = dict(name=name,
@@ -208,20 +216,16 @@ class CritiqueBrainzAPI(object):
         client_secret = client.get('secret')
         return message, client_id, client_secret
 
-    def create_review(self, release_group, text, license_choice, access_token):
+    def create_review(self, release_group, text, license_choice, language, access_token):
         session = self._service.get_session(access_token)
-        data = dict(release_group=release_group,
-                    text=text,
-                    license_choice=license_choice)
+        data = dict(release_group=release_group, text=text, license_choice=license_choice, language=language)
         headers = {'Content-type': 'application/json'}
         resp = session.post('review/', data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
             raise APIError(code=error, desc=desc)
-        message = resp.get('message')
-        id = resp.get('id')
-        return message, id
+        return resp.get('message'), resp.get('id')
 
     def update_review(self, id, access_token, **kwargs):
         session = self._service.get_session(access_token)

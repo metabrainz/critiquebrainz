@@ -4,7 +4,7 @@ from flask.ext.babel import gettext
 
 from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
-from critiquebrainz.forms.profile.review import CreateForm, EditForm
+from critiquebrainz.forms.profile.review import ReviewCreateForm, ReviewEditForm
 import markdown
 
 bp = Blueprint('profile_review', __name__)
@@ -26,10 +26,10 @@ def create_handler():
     if not release_group:
         flash('Please choose release group that you want to review.')
         return redirect(url_for('search.selector', next=url_for('.create')))
-    form = CreateForm(license_choice='CC BY-SA 3.0')
+    form = ReviewCreateForm(license_choice='CC BY-SA 3.0')
     if form.validate_on_submit():
         try:
-            server.create_review(release_group, form.text.data, form.license_choice.data, current_user.access_token)
+            server.create_review(release_group, form.text.data, form.license_choice.data, form.language.data, current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:
@@ -50,7 +50,7 @@ def edit_handler(id):
     if review.get('user_id') != current_user.me.get('id'):
         return redirect(url_for('index'))
 
-    form = EditForm()
+    form = ReviewEditForm()
     if form.validate_on_submit():
         try:
             message = server.update_review(id, current_user.access_token, text=form.text.data)

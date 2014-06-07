@@ -1,11 +1,19 @@
-from flask.ext.wtf import Form, TextAreaField, RadioField, BooleanField, validators
+from flask.ext.wtf import Form, TextAreaField, RadioField, SelectField, BooleanField, validators
 from flask.ext.babel import gettext
+import pycountry
+from critiquebrainz.apis import server
+
+languages = []
+for language_code in server.get_review_languages():
+    # TODO: Get native language names instead of English versions
+    languages.append((language_code, pycountry.languages.get(alpha2=language_code).name))
 
 
-class CreateForm(Form):
+class ReviewCreateForm(Form):
     text = TextAreaField(gettext('Text'), validators=[
         validators.DataRequired(message=gettext("Review is empty")),
         validators.Length(min=25, message=gettext("Review needs to be at least 25 characters long"))])
+    language = SelectField(gettext('Language'), default='en', choices=languages)
     license_choice = RadioField(
         gettext('Licence choice'),
         choices=[
@@ -17,7 +25,7 @@ class CreateForm(Form):
         validators.DataRequired(message=gettext("You need to accept the licence agreement"))])
 
 
-class EditForm(Form):
+class ReviewEditForm(Form):
     text = TextAreaField(gettext('Text'), [
         validators.DataRequired(message=gettext("Review is empty")),
         validators.Length(min=25, message=gettext("Review needs to be at least 25 characters long"))])
