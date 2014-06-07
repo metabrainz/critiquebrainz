@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 from critiquebrainz.db import Review, Vote
+from critiquebrainz.db.review import supported_languages
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
@@ -78,7 +79,7 @@ def review_list_handler():
         offset = Parser.int('uri', 'offset', optional=True) or 0
         include = Parser.list('uri', 'inc', Review.allowed_includes, optional=True) or []
         language = Parser.string('uri', 'language', min=2, max=3, optional=True)
-        if language and language not in Review.supported_languages:
+        if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
         return release_group, user_id, sort, limit, offset, include, language
     release_group, user_id, sort, limit, offset, include, language = fetch_params()
@@ -105,7 +106,7 @@ def review_post_handler(user):
         text = Parser.string('json', 'text', min=25, max=2500)
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
-        if language and language not in Review.supported_languages:
+        if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
         if Review.query.filter_by(user=user, release_group=release_group).count():
             raise InvalidRequest(desc='You have already published a review for this album')
@@ -120,7 +121,7 @@ def review_post_handler(user):
 @review_bp.route('/languages', endpoint='languages', methods=['GET'])
 def review_list_handler():
     """Get list of supported review languages (language codes from ISO 639-1)."""
-    return jsonify(languages=Review.supported_languages)
+    return jsonify(languages=supported_languages)
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['GET'])
 @oauth.require_auth('vote')
