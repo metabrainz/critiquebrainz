@@ -15,3 +15,4 @@ rauth==0.6.1
 requests==1.2.3
 twill==1.8.0
 wsgiref==0.1.2
+pycountry==1.6

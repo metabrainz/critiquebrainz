@@ -67,7 +67,7 @@ def review_list_handler():
     :query sort: `rating` or `created`
     :query limit: results limit. min is 0, max is 50, default is 50
     :query offset: result offset. default is 0
-    :query lang: language code
+    :query language: language code (ISO 639-1). optional, default is ``en``
     :query inc: includes
     """
     def fetch_params():
@@ -77,7 +77,9 @@ def review_list_handler():
         limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
         offset = Parser.int('uri', 'offset', optional=True) or 0
         include = Parser.list('uri', 'inc', Review.allowed_includes, optional=True) or []
-        language = Parser.string('uri', 'lang', optional=True) or 'en'
+        language = Parser.string('uri', 'language', min=2, max=3, optional=True)
+        if language and language not in Review.supported_languages:
+            raise InvalidRequest(desc='Unsupported language')
         return release_group, user_id, sort, limit, offset, include, language
     release_group, user_id, sort, limit, offset, include, language = fetch_params()
     reviews, count = Review.list(release_group, user_id, sort, limit, offset, language)
@@ -87,20 +89,38 @@ def review_list_handler():
 @review_bp.route('/', endpoint='create', methods=['POST'])
 @oauth.require_auth('review')
 def review_post_handler(user):
-    """Publish a review."""
+    """Publish a review.
+
+    :reqheader Content-Type: ``application/json``
+
+    :json uuid release_group: UUID of the release group that is being reviewed
+    :json string text: review contents, min length is 25, max is 2500
+    :json string license_choice: license ID
+    :json string lang: language code (ISO 639-1). optional, default is ``en``
+
+    :resheader Content-Type: ``application/json``
+    """
     def fetch_params():
         release_group = Parser.uuid('json', 'release_group')
         text = Parser.string('json', 'text', min=25, max=2500)
         license_choice = Parser.string('json', 'license_choice')
+        language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
+        if language and language not in Review.supported_languages:
+            raise InvalidRequest(desc='Unsupported language')
         if Review.query.filter_by(user=user, release_group=release_group).count():
             raise InvalidRequest(desc='You have already published a review for this album')
-        return release_group, text, license_choice
+        return release_group, text, license_choice, language
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
-    release_group, text, license_choice = fetch_params()
-    review = Review.create(user=user, release_group=release_group, text=text, license_id=license_choice)
-    return jsonify(message='Request processed successfully',
-                   id=review.id)
+    release_group, text, license_choice, language = fetch_params()
+    review = Review.create(user=user, release_group=release_group, text=text, license_id=license_choice,
+                           language=language)
+    return jsonify(message='Request processed successfully', id=review.id)
+
+@review_bp.route('/languages', endpoint='languages', methods=['GET'])
+def review_list_handler():
+    """Get list of supported review languages (language codes from ISO 639-1)."""
+    return jsonify(languages=Review.supported_languages)
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['GET'])
 @oauth.require_auth('vote')
@@ -117,6 +137,8 @@ def review_vote_entity_handler(review_id, user):
 @oauth.require_auth('vote')
 def review_vote_put_handler(review_id, user):
     """Set user's vote for a specified review.
+
+    :json boolean placet: true if upvote, false if downvote
 
     :statuscode 200: success
     :statuscode 400: invalid request (see source)
@@ -138,8 +160,7 @@ def review_vote_put_handler(review_id, user):
         raise InvalidRequest(desc='You are not allowed to upvote this review.')
     if placet is False and user.user_type not in review.review_class.downvote:
         raise InvalidRequest(desc='You are not allowed to downvote this review.')
-    # overwrites an existing vote, if needed
-    vote = Vote.create(user, review, placet)
+    Vote.create(user, review, placet)  # overwrites an existing vote, if needed
     return jsonify(message='Request processed successfully')
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
