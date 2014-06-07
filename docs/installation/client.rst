@@ -67,6 +67,8 @@ If you want to support languages other than English, modify ``LANGUAGES`` dictio
        'ru': u'Русский',
    }
 
+Valid language code can be obtained from `Transifex <https://www.transifex.com/projects/p/critiquebrainz/>`_.
+
 Deployment
 ^^^^^^^^^^
 
