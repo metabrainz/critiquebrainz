@@ -36,7 +36,7 @@ class ReviewTestCase(TestCase):
         db.session.commit()
 
         reviews, count = Review.list()
-        assert len(reviews) and count == 1
+        assert len(reviews) == 1 and count == 1
         stored_review = reviews[0]
         assert stored_review.id == review.id
         assert stored_review.release_group == review.release_group
@@ -47,7 +47,8 @@ class ReviewTestCase(TestCase):
         review_en = Review.create(user=self.user,
                                   release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                   text=text,
-                                  license_id=self.license.id)
+                                  license_id=self.license.id,
+                                  language='en')
         review_de = Review.create(user=self.user,
                                   release_group='e7aad618-fa86-3983-9e77-405e21796ece',
                                   text=text,
@@ -58,4 +59,4 @@ class ReviewTestCase(TestCase):
         db.session.commit()
 
         reviews, count = Review.list(language='de')
-        assert len(reviews) and count == 1
+        assert len(reviews) == 1 and count == 1

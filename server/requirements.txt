@@ -1,7 +1,7 @@
 Flask==0.10.1
 Flask-SQLAlchemy==1.0
 Flask-Script==0.5.3
-Flask-Testing==0.4
+Flask-Testing==0.4.1
 Flask-UUID==0.2
 Jinja2==2.7
 MarkupSafe==0.18
@@ -13,6 +13,5 @@ itsdangerous==0.22
 psycopg2==2.5.1
 rauth==0.6.1
 requests==1.2.3
-twill==1.8.0
 wsgiref==0.1.2
 pycountry==1.6
