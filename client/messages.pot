@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2014-06-03 19:57+1000\n"
+"POT-Creation-Date: 2014-06-08 14:26+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -164,48 +164,53 @@ msgstr ""
 msgid "Show my Gravatar"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:6
-#: critiquebrainz/forms/profile/review.py:21
+#: critiquebrainz/forms/profile/review.py:13
+#: critiquebrainz/forms/profile/review.py:29
 msgid "Text"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:7
-#: critiquebrainz/forms/profile/review.py:22
+#: critiquebrainz/forms/profile/review.py:14
+#: critiquebrainz/forms/profile/review.py:30
 msgid "Review is empty"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:8
-#: critiquebrainz/forms/profile/review.py:23
+#: critiquebrainz/forms/profile/review.py:15
+#: critiquebrainz/forms/profile/review.py:31
 msgid "Review needs to be at least 25 characters long"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:10
+#: critiquebrainz/forms/profile/review.py:16
+#: critiquebrainz/templates/base.html:116
+msgid "Language"
+msgstr ""
+
+#: critiquebrainz/forms/profile/review.py:18
 msgid "Licence choice"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:12
+#: critiquebrainz/forms/profile/review.py:20
 msgid ""
 "Allow commercial use of this review (<a "
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 "
 "license</a>)"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:13
+#: critiquebrainz/forms/profile/review.py:21
 msgid ""
 "Do not allow commercial use of this review, unless approved by MetaBrainz"
 " Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
 "sa/3.0/\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:15
+#: critiquebrainz/forms/profile/review.py:23
 msgid "You need to choose a license"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:16
+#: critiquebrainz/forms/profile/review.py:24
 msgid "Licence"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:17
+#: critiquebrainz/forms/profile/review.py:25
 msgid "You need to accept the licence agreement"
 msgstr ""
 
@@ -363,22 +368,22 @@ msgstr ""
 msgid "Edit on MusicBrainz"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:33
+#: critiquebrainz/templates/base.html:36
 msgid "Toggle navigation"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:45
+#: critiquebrainz/templates/base.html:48
 #: critiquebrainz/templates/login/login.html:3
 #: critiquebrainz/templates/login/login.html:6
 msgid "Sign in"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:52
+#: critiquebrainz/templates/base.html:55
 #: critiquebrainz/templates/profile/base.html:7
 msgid "Profile"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:54
+#: critiquebrainz/templates/base.html:57
 #: critiquebrainz/templates/macros.html:22
 #: critiquebrainz/templates/release_group.html:54
 #: critiquebrainz/templates/profile/base.html:8
@@ -389,34 +394,34 @@ msgstr ""
 msgid "Reviews"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:55
+#: critiquebrainz/templates/base.html:58
 #: critiquebrainz/templates/macros.html:24
 #: critiquebrainz/templates/profile/base.html:9
 #: critiquebrainz/templates/profile/client/index.html:9
 msgid "API clients"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:57
+#: critiquebrainz/templates/base.html:60
 msgid "Sign out"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:63 critiquebrainz/templates/base.html:107
+#: critiquebrainz/templates/base.html:66 critiquebrainz/templates/base.html:110
 msgid "About"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:66
+#: critiquebrainz/templates/base.html:69
 msgid "About the project"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:67 critiquebrainz/templates/base.html:108
+#: critiquebrainz/templates/base.html:70 critiquebrainz/templates/base.html:111
 msgid "Blog"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:68 critiquebrainz/templates/base.html:109
+#: critiquebrainz/templates/base.html:71 critiquebrainz/templates/base.html:112
 msgid "Developers"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:74
+#: critiquebrainz/templates/base.html:77
 #: critiquebrainz/templates/search/index.html:7
 #: critiquebrainz/templates/search/index.html:13
 #: critiquebrainz/templates/search/index.html:33
@@ -424,7 +429,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:78
+#: critiquebrainz/templates/base.html:81
 #: critiquebrainz/templates/profile/review/edit.html:17
 #: critiquebrainz/templates/profile/review/list.html:21
 #: critiquebrainz/templates/profile/review/write.html:17
@@ -437,7 +442,7 @@ msgstr ""
 msgid "Artist"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:79
+#: critiquebrainz/templates/base.html:82
 #: critiquebrainz/templates/profile/review/edit.html:18
 #: critiquebrainz/templates/profile/review/list.html:22
 #: critiquebrainz/templates/profile/review/write.html:18
@@ -448,10 +453,6 @@ msgstr ""
 #: critiquebrainz/templates/search/selector.html:41
 #: critiquebrainz/templates/user/entity.html:51
 msgid "Release group"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:113
-msgid "Language"
 msgstr ""
 
 #: critiquebrainz/templates/error.html:3 critiquebrainz/templates/error.html:6
@@ -656,21 +657,21 @@ msgstr ""
 msgid "Please, select the album %(album)s by %(artist)s"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:31
+#: critiquebrainz/templates/matching/spotify.html:35
 msgid "Listen on Spotify"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:57
+#: critiquebrainz/templates/matching/spotify.html:61
 msgid "No similar albums found"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:61
+#: critiquebrainz/templates/matching/spotify.html:65
 msgid ""
 "It's fine if you can't find the right album. It might not be available on"
 " Spotify yet."
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:62
+#: critiquebrainz/templates/matching/spotify.html:66
 #, python-format
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
 msgstr ""
@@ -906,7 +907,7 @@ msgid "Loading preview..."
 msgstr ""
 
 #: critiquebrainz/templates/profile/review/edit.html:74
-#: critiquebrainz/templates/profile/review/write.html:96
+#: critiquebrainz/templates/profile/review/write.html:100
 msgid "Publish"
 msgstr ""
 
@@ -939,7 +940,11 @@ msgstr ""
 msgid "Write review of \"%(rg)s\""
 msgstr ""
 
-#: critiquebrainz/templates/profile/review/write.html:83
+#: critiquebrainz/templates/profile/review/write.html:69
+msgid "Please, specify language of this review:"
+msgstr ""
+
+#: critiquebrainz/templates/profile/review/write.html:87
 msgid ""
 "You acknowledge and agree that your contributed reviews to CritiqueBrainz"
 " are licensed under a\n"
