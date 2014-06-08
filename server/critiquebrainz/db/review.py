@@ -1,8 +1,15 @@
+import pycountry
 from sqlalchemy.dialects.postgresql import UUID
 from . import db
 from vote import Vote
 from revision import Revision
 from critiquebrainz.constants import review_classes
+
+DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
+supported_languages = []
+for lang in list(pycountry.languages):
+    if 'alpha2' in dir(lang):
+        supported_languages.append(lang.alpha2)
 
 
 class Review(db.Model):
@@ -23,8 +30,6 @@ class Review(db.Model):
     _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='review')
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
-
-    DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
 
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user', )
@@ -133,26 +138,19 @@ class Review(db.Model):
             # order by creation time
             query = query.order_by(db.desc('creation_time'))
 
-        # filter out archived reviews
         query = query.filter(Review.is_archived == False)
-        # filter by release_group
         if release_group is not None:
             query = query.filter(Review.release_group == release_group)
-        # filter by user_id
         if language is not None:
             query = query.filter(Review.language == language)
-        # filter by language
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
-        # count all rows
+
         count = query.count()
-        # set limit
         if limit is not None:
             query = query.limit(limit)
-        # set offset
         if offset is not None:
             query = query.offset(offset)
-        # execute query
         reviews = query.all()
         return reviews, count
 

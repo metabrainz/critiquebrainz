@@ -5,7 +5,8 @@ This page describes all resources available via CririqueBrainz Server API. It us
 
 **Root URL**: ``http://critiquebrainz.org/ws/1``
 
-`CritiqueBrainz client is build on top of this API, so you can use it as an example.`
+`CritiqueBrainz client <https://github.com/metabrainz/critiquebrainz/tree/master/client>`_ is build on top of this API,
+so you can use it as an example.
 
 Reviews
 -------
