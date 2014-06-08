@@ -43,12 +43,14 @@
         <div class="col-md-6 review">
           {% set release_group = review.release_group | release_group_details %}
           <a href="{{ url_for('review.entity', id=review.id) }}">
-            <img class="cover-art pull-left">
-            <script>
-              $("img").last()
-                  .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                  .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
-            </script>
+            <div class="cover-art-container pull-left">
+              <img />
+              <script>
+                $("img").last()
+                    .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+                    .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+              </script>
+            </div>
             <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
               {% autoescape false %}
@@ -73,12 +75,14 @@
         <div class="col-md-4">
           {% set release_group = review.release_group | release_group_details %}
           <a class="review" href="{{ url_for('review.entity', id=review.id) }}">
-            <img class="cover-art pull-left">
-            <script>
-              $("img").last()
-                  .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                  .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
-            </script>
+            <div class="cover-art-container pull-left">
+              <img />
+              <script>
+                $("img").last()
+                    .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+                    .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+              </script>
+            </div>
             <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
               {% autoescape false %}

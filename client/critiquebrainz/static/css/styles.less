@@ -136,10 +136,14 @@ img.avatar {
     div.review {
       height: @popular-review-height;
       margin-top: 20px;
-      img.cover-art {
-        max-width: @popular-review-height;
-        max-height: @popular-review-height;
+      .cover-art-container {
+        width: @popular-review-height;
+        height: @popular-review-height;
         margin-right: 15px;
+        img {
+          max-width: @popular-review-height;
+          max-height: @popular-review-height;
+        }
       }
       .album, .reviewer {
         white-space: nowrap;
@@ -165,10 +169,14 @@ img.avatar {
       margin-bottom: 10px;
       color: @text-color;
       text-decoration: none;
-      img.cover-art {
-        max-width: @recent-review-height;
-        max-height: @recent-review-height;
+      .cover-art-container {
+        width: @recent-review-height;
+        height: @recent-review-height;
         margin-right: 10px;
+        img {
+          max-width: @recent-review-height;
+          max-height: @recent-review-height;
+        }
       }
       .album { padding-top: 4px; }
       .album, .reviewer {
