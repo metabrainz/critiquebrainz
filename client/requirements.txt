@@ -12,6 +12,7 @@ Werkzeug==0.9.3
 argparse==1.2.1
 distribute==0.6.34
 itsdangerous==0.22
+beautifulsoup4==4.3.2
 musicbrainzngs==0.5
 python-dateutil==2.1
 rauth==0.6.1

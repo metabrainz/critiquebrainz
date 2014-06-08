@@ -34,15 +34,15 @@
     </div>
   </div>
 
-  <div id="lists" class="row">
-    <div class="col-md-6">
-      <h4>{{ _('Hot reviews') }}</h4>
-      {% if not hot_reviews %}
-        <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
-      {% else %}
-        {% for review in hot_reviews %}
+  <h3>{{ _('Popular reviews') }}</h3>
+  {% if not popular_reviews %}
+    <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+  {% else %}
+    <div id="popular-list" class="row">
+      {% for review in popular_reviews %}
+        <div class="col-md-6 review">
           {% set release_group = review.release_group | release_group_details %}
-          <a class="review" href="{{ url_for('review.entity', id=review.id) }}">
+          <a href="{{ url_for('review.entity', id=review.id) }}">
             <img class="cover-art pull-left">
             <script>
               $("img").last()
@@ -56,16 +56,21 @@
               {% endautoescape %}
             </div>
           </a>
-        {% endfor %}
-      {% endif %}
+          <div class="preview">{{ review.text[:250] }}{% if review.text|length > 250 %}...{% endif %}</div>
+        </div>
+      {% endfor %}
     </div>
+  {% endif %}
 
-    <div class="col-md-6">
-      <h4>{{ _('Recent reviews') }}</h4>
-      {% if not recent_reviews %}
-        <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
-      {% else %}
-        {% for review in recent_reviews %}
+  <hr />
+
+  <h4>{{ _('Recent reviews') }}</h4>
+  {% if not recent_reviews %}
+    <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+  {% else %}
+    <div id="recent-list" class="row">
+      {% for review in recent_reviews %}
+        <div class="col-md-4">
           {% set release_group = review.release_group | release_group_details %}
           <a class="review" href="{{ url_for('review.entity', id=review.id) }}">
             <img class="cover-art pull-left">
@@ -81,10 +86,10 @@
               {% endautoescape %}
             </div>
           </a>
-        {% endfor %}
-      {% endif %}
+        </div>
+      {% endfor %}
     </div>
-  </div>
+  {% endif %}
 
 </div>
 {% endblock %}

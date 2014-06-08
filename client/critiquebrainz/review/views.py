@@ -4,7 +4,7 @@ from flask.ext.babel import gettext
 
 from critiquebrainz.apis import server, mbspotify
 from critiquebrainz.exceptions import *
-import markdown
+from markdown import markdown
 
 bp = Blueprint('review', __name__)
 
@@ -25,7 +25,7 @@ def review_entity_handler(id):
     # otherwise set vote to None, its value will not be used
     else:
         vote = None
-    review["text"] = markdown.markdown(review["text"], safe_mode="escape")
+    review["text"] = markdown(review["text"], safe_mode="escape")
     return render_template('review/entity.html', review=review, spotify_mapping=spotify_mapping, vote=vote)
 
 @bp.route('/<uuid:id>/vote', methods=['POST'], endpoint='vote_submit')

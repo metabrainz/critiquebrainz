@@ -131,18 +131,43 @@ img.avatar {
 // Home page
 #homepage{
   .btn-primary { margin-top: 10px; }
-  #lists {
+  #popular-list {
+    @popular-review-height: 120px;
+    div.review {
+      height: @popular-review-height;
+      margin-top: 20px;
+      img.cover-art {
+        max-width: @popular-review-height;
+        max-height: @popular-review-height;
+        margin-right: 15px;
+      }
+      .album, .reviewer {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .preview {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        max-height: 60px;  // fallback
+        -webkit-line-clamp: 3; // number of lines to show
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+  #recent-list {
     margin-top: 25px;
+    @recent-review-height: 50px;
     a.review {
       display: block;
-      height: 50px;
+      height: @recent-review-height;
       margin-bottom: 10px;
       color: @text-color;
       text-decoration: none;
-      display: block;
       img.cover-art {
-        max-width: 50px;
-        max-height: 50px;
+        max-width: @recent-review-height;
+        max-height: @recent-review-height;
         margin-right: 10px;
       }
       .album { padding-top: 4px; }
