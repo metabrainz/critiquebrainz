@@ -6,6 +6,7 @@ from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.review import ReviewCreateForm, ReviewEditForm
 import markdown
+import pycountry
 
 bp = Blueprint('profile_review', __name__)
 
@@ -26,7 +27,14 @@ def create_handler():
     if not release_group:
         flash('Please choose release group that you want to review.')
         return redirect(url_for('search.selector', next=url_for('.create')))
-    form = ReviewCreateForm(license_choice='CC BY-SA 3.0')
+
+    supported_languages = []
+    for language_code in server.get_review_languages():
+        # TODO: Get native language names instead of English versions
+        supported_languages.append((language_code, pycountry.languages.get(alpha2=language_code).name))
+
+    form = ReviewCreateForm()
+    form.language.choices = [(l, pycountry.languages.get(alpha2=l).name) for l in server.get_review_languages()]
     if form.validate_on_submit():
         try:
             server.create_review(release_group, form.text.data, form.license_choice.data, form.language.data, current_user.access_token)
