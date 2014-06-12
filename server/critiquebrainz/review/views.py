@@ -63,12 +63,12 @@ def review_modify_handler(review_id, user):
 def review_list_handler():
     """Get list of reviews.
 
-    :query release_group: UUID of release group
-    :query user_id: user's UUID
-    :query sort: `rating` or `created`
-    :query limit: results limit. min is 0, max is 50, default is 50
-    :query offset: result offset. default is 0
-    :query language: language code (ISO 639-1). optional, default is ``en``
+    :query release_group: UUID of release group (optional)
+    :query user_id: user's UUID (optional)
+    :query sort: *rating* or *created* (optional)
+    :query limit: results limit, min is 0, max is 50, default is 50 (optional)
+    :query offset: result offset, default is 0 (optional)
+    :query language: language code (ISO 639-1), default is *en* (optional)
     :query inc: includes
     """
     def fetch_params():
@@ -92,14 +92,14 @@ def review_list_handler():
 def review_post_handler(user):
     """Publish a review.
 
-    :reqheader Content-Type: ``application/json``
+    :reqheader Content-Type: *application/json*
 
     :json uuid release_group: UUID of the release group that is being reviewed
     :json string text: review contents, min length is 25, max is 2500
     :json string license_choice: license ID
-    :json string lang: language code (ISO 639-1). optional, default is ``en``
+    :json string lang: language code (ISO 639-1), default is *en* (optional)
 
-    :resheader Content-Type: ``application/json``
+    :resheader Content-Type: *application/json*
     """
     def fetch_params():
         release_group = Parser.uuid('json', 'release_group')
