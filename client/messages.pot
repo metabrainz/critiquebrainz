@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-13 23:14+0000\n"
+"POT-Creation-Date: 2014-06-13 23:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -523,7 +523,7 @@ msgstr ""
 
 #: critiquebrainz/templates/index.html:49
 #: critiquebrainz/templates/index.html:81
-#: critiquebrainz/templates/review/entity.html:45
+#: critiquebrainz/templates/review/entity.html:43
 #, python-format
 msgid "Review by %(user)s"
 msgstr ""
@@ -786,7 +786,7 @@ msgid "Yes, I want to delete my account"
 msgstr ""
 
 #: critiquebrainz/templates/profile/details/delete.html:15
-#: critiquebrainz/templates/review/entity.html:75
+#: critiquebrainz/templates/review/entity.html:73
 msgid "No"
 msgstr ""
 
@@ -971,42 +971,42 @@ msgstr ""
 msgid "Review of \"%(rg)s\" by %(user)s"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:48
+#: critiquebrainz/templates/review/entity.html:46
 #, python-format
 msgid "Published on %(date)s"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:49
+#: critiquebrainz/templates/review/entity.html:47
 msgid "Rating:"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:61
+#: critiquebrainz/templates/review/entity.html:59
 #, python-format
 msgid "This review is licensed under a %(name)s license."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:63
+#: critiquebrainz/templates/review/entity.html:61
 #, python-format
 msgid "It was imported from %(source)s."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:73
+#: critiquebrainz/templates/review/entity.html:71
 msgid "Did you find this review useful?"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:74
+#: critiquebrainz/templates/review/entity.html:72
 msgid "Yes"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:77
+#: critiquebrainz/templates/review/entity.html:75
 msgid "(delete your vote)"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:83
+#: critiquebrainz/templates/review/entity.html:81
 msgid "Edit this review"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:87
+#: critiquebrainz/templates/review/entity.html:85
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
 msgstr ""
