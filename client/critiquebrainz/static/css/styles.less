@@ -74,19 +74,15 @@ body {
 }
 
 // Navbar
-@navbar-default-bg: @mb-purple;
 @navbar-default-border: @mb-orange;
-@navbar-default-link-color: darken(#fff, 10%);
-@navbar-default-link-hover-color: #fff;
-@navbar-default-link-active-color: #fff;
-@navbar-default-link-active-bg: darken(@mb-orange, 10%);
-@navbar-default-brand-color: #fff;
-@navbar-default-brand-hover-color: @navbar-default-link-hover-color;
-@navbar-default-toggle-icon-bar-bg: #fff;
+@navbar-default-brand-color: @mb-purple;
 .navbar {
-  border-width: 0 0 4px;
+  border-width: 0 0 2px;
   margin-bottom: 30px;
-  .navbar-brand { font-size: 20px; font-weight: bold; }
+  .navbar-brand {
+    font-family: 'Bitter', serif;
+    font-weight: bold;
+  }
 
   form {
     margin-top: 12px;
