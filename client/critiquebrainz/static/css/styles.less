@@ -291,26 +291,25 @@ a#edit-review { margin-top: 20px; }
 
 // Review entity page
 #review-entity {
-  #spotify-play-button, #cover-art {
-    margin-top: 10px;
-    @media (max-width: @screen-xs-max) {
-      display: flex;
-      flex-direction: row;
-      margin: 0 auto;
-      margin-top: 10px;
+  #title { margin-bottom: 0px; }
+  #review-content {
+    #sidebar {
+      #cover-art { margin-top: 20px; }
+      #spotify-play-button {
+        margin-top: 10px;
+        max-width: 250px;
+      }
+      #spotify-play-button, #cover-art {
+        @media (max-width: @screen-xs-max) {
+          display: flex;
+          flex-direction: row;
+          margin: 0 auto;
+          margin-top: 10px;
+        }
+      }
     }
+    .btn.disabled { cursor: pointer; pointer-events: all; }
   }
-  #spotify-play-button {
-    max-width: 250px;
-    .text-muted {
-      font-style: italic;
-    }
-  }
-  #review-details {
-    .dl-horizontal dt { width: 105px; }
-    .dl-horizontal dd { margin-left: 125px; }
-  }
-  .btn.disabled { cursor: pointer; pointer-events: all; }
 }
 
 
