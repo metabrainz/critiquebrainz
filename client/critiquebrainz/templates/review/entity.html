@@ -46,7 +46,7 @@
       {% endautoescape %}
 
       <em class="text-muted">{{ _('Published on %(date)s', date = review.created|datetime) }}</em>
-      <br /><em class="text-muted">{{ _('Rating:') }} {{ review.rating }}</em>
+      <br /><em class="text-muted">{{ _('Rating:') }} <abbr title="{{ review.votes_positive }}/{{ review.votes_negative }}">{{ review.rating }}</abbr></em>
       <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
 
       <hr />
