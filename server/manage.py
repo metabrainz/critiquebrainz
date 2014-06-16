@@ -66,7 +66,7 @@ def dump_db():
         exit_code = subprocess.call('bzip2 "%s.tar"' % file_name, shell=True)
     if exit_code != 0:
         raise Exception("Failed to create database dump!")
-    print 'Done! Created "cb_dump.tar.bz2".'
+    print 'Done! Created "%s".' % file_name
 
 
 @manager.command
