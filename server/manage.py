@@ -62,7 +62,7 @@ def dump_db():
     if exit_code != 0:
         raise Exception("Failed to backup directory!")
     print "Creating database dump..."
-    file_name = "cb-%s/%s" % (backup_dir, strftime("%Y%m%d-%H%M%S", gmtime()))
+    file_name = "%s/cb-%s" % (backup_dir, strftime("%Y%m%d-%H%M%S", gmtime()))
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
     print 'pg_dump -Ft "%s" > "%s.tar"' % (db, file_name)
     exit_code = subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name), shell=True)
