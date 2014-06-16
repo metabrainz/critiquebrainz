@@ -58,7 +58,7 @@ def dump_db():
     import subprocess
     from time import gmtime, strftime
     print "Creating database dump..."
-    file_name = "dump_%s" % strftime("%Y%m%d-%H%M%S", gmtime())
+    file_name = "backup/%s" % strftime("%Y%m%d-%H%M%S", gmtime())
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
     print 'pg_dump -Ft "%s" > "%s.tar"' % (db, file_name)
     exit_code = subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name), shell=True)
