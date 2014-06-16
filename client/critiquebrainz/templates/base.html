@@ -116,8 +116,8 @@
             <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            {% for language in config.LANGUAGES.keys() %}
-              <li><a href="?l={{ language }}">{{ config.LANGUAGES[language] }}</a></li>
+            {% for language in config.LANGUAGES|dictsort %}
+              <li><a href="?l={{ language[0] }}">{{ language[1] }}</a></li>
             {% endfor %}
           </ul>
         </div>
