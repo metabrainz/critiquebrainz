@@ -57,8 +57,12 @@ def dump_db():
     """Create dump of the database."""
     import subprocess
     from time import gmtime, strftime
+    backup_dir = 'backup'
+    exit_code = subprocess.call('mkdir %s' % backup_dir, shell=True)
+    if exit_code != 0:
+        raise Exception("Failed to backup directory!")
     print "Creating database dump..."
-    file_name = "backup/%s" % strftime("%Y%m%d-%H%M%S", gmtime())
+    file_name = "cb-%s/%s" % (backup_dir, strftime("%Y%m%d-%H%M%S", gmtime()))
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
     print 'pg_dump -Ft "%s" > "%s.tar"' % (db, file_name)
     exit_code = subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name), shell=True)
@@ -66,7 +70,7 @@ def dump_db():
         exit_code = subprocess.call('bzip2 "%s.tar"' % file_name, shell=True)
     if exit_code != 0:
         raise Exception("Failed to create database dump!")
-    print 'Done! Created "%s".' % file_name
+    print 'Done! Created "%s.tar.bz2".' % file_name
 
 
 @manager.command
