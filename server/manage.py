@@ -58,7 +58,7 @@ def dump_db():
     import subprocess
     from time import gmtime, strftime
     backup_dir = 'backup'
-    exit_code = subprocess.call('mkdir %s' % backup_dir, shell=True)
+    exit_code = subprocess.call('mkdir -p %s' % backup_dir, shell=True)
     if exit_code != 0:
         raise Exception("Failed to backup directory!")
     print "Creating database dump..."
