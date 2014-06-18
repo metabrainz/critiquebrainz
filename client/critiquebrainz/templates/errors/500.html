@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>{{ _('Server error') }} - CritiqueBrainz</title>
+</head>
+
+<body>
+  <h1>{{ _('Server error') }}</h1>
+  <p>{{ _('Server failed to process your request. Developers have been notified. You can try again later.') }}</p>
+  <code>
+    {% if error.code %}{{error.code}} {% if error.desc %} - {{error.desc}}{% endif %}<br />{% endif %}
+    {% if error.message %}{{error.message}}{% endif %}
+  </code>
+  <p><a href="/">Back to home page</a></p>
+</body>
+
+</html>

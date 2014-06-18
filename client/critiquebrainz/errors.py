@@ -14,15 +14,22 @@ def api_error_handler(error):
         flash(gettext('Your login session has expired. Please sign in again.'), 'error')
         return redirect(url_for('index'))
     else:
-        return render_template('error.html', code=error.code, description=error.desc), error.status
+        return exception_handler(error)
 
 
 @app.errorhandler(404)
 def not_found_handler(error):
-    return render_template('error.html', code='404', description=gettext('Requested page was not found')), 404
+    return render_template('errors/404.html'), 404
 
 
 @app.errorhandler(500)
 def exception_handler(error):
-    return render_template('error.html', code='500', description=gettext('Oops! Server could not complete the request. Please try again later.')), 500
+    return render_template('errors/500.html', error=error), 500
+
+
+@app.errorhandler(503)
+def exception_handler(error):
+    return render_template('errors/503.html', error=error), 503
+
+
 
