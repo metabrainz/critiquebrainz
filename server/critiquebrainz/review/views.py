@@ -1,11 +1,12 @@
 from flask import Blueprint, jsonify
-from critiquebrainz.db import Review, Vote
+from critiquebrainz.db import Review, Vote, SpamReport
 from critiquebrainz.db.review import supported_languages
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
 
 review_bp = Blueprint('review', __name__)
+
 
 @review_bp.route('/<uuid:review_id>', endpoint='entity', methods=['GET'])
 def review_entity_handler(review_id):
@@ -19,6 +20,7 @@ def review_entity_handler(review_id):
         raise NotFound
     include = Parser.list('uri', 'inc', Review.allowed_includes, optional=True) or []
     return jsonify(review=review.to_dict(include))
+
 
 @review_bp.route('/<uuid:review_id>', endpoint='delete', methods=['DELETE'])
 @oauth.require_auth('review')
@@ -36,6 +38,7 @@ def review_delete_handler(review_id, user):
         raise AccessDenied
     review.delete()
     return jsonify(message='Request processed successfully')
+
 
 @review_bp.route('/<uuid:review_id>', endpoint='modify', methods=['POST'])
 @oauth.require_auth('review')
@@ -58,6 +61,7 @@ def review_modify_handler(review_id, user):
     review.update(text=text)
     return jsonify(message='Request processed successfully',
                    review=dict(id=review.id))
+
 
 @review_bp.route('/', endpoint='list', methods=['GET'])
 def review_list_handler():
@@ -86,6 +90,7 @@ def review_list_handler():
     reviews, count = Review.list(release_group, user_id, sort, limit, offset, language)
     return jsonify(limit=limit, offset=offset, count=count,
                    reviews=[p.to_dict(include) for p in reviews])
+
 
 @review_bp.route('/', endpoint='create', methods=['POST'])
 @oauth.require_auth('review')
@@ -118,10 +123,12 @@ def review_post_handler(user):
                            language=language)
     return jsonify(message='Request processed successfully', id=review.id)
 
+
 @review_bp.route('/languages', endpoint='languages', methods=['GET'])
 def review_list_handler():
     """Get list of supported review languages (language codes from ISO 639-1)."""
     return jsonify(languages=supported_languages)
+
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['GET'])
 @oauth.require_auth('vote')
@@ -133,6 +140,7 @@ def review_vote_entity_handler(review_id, user):
         raise NotFound
     else:
         return jsonify(vote=vote.to_dict())
+
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['PUT'])
 @oauth.require_auth('vote')
@@ -164,6 +172,7 @@ def review_vote_put_handler(review_id, user):
     Vote.create(user, review, placet)  # overwrites an existing vote, if needed
     return jsonify(message='Request processed successfully')
 
+
 @review_bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
 @oauth.require_auth('vote')
 def review_vote_delete_handler(review_id, user):
@@ -176,3 +185,14 @@ def review_vote_delete_handler(review_id, user):
         raise InvalidRequest(desc='Review is not rated yet.')
     vote.delete()
     return jsonify(message='Request processed successfully')
+
+
+@review_bp.route('/<uuid:review_id>/report', endpoint='report', methods=['POST'])
+@oauth.require_auth('vote')
+def review_spam_report_handler(review_id, user):
+    """Create spam report for a specified review."""
+    review = Review.query.get_or_404(str(review_id))
+    if review.user_id == user.id:
+        raise InvalidRequest(desc='You report your own review.')
+    SpamReport.create(review, user)
+    return jsonify(message="Spam report created successfully")

@@ -12,6 +12,7 @@ class Revision(db.Model):
     text = db.Column(db.Unicode, nullable=False)
 
     _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='revision')
+    _spam_reports = db.relationship('SpamReport', cascade='delete', lazy='dynamic', backref='review')
 
     def to_dict(self):
         response = dict(id=self.id,

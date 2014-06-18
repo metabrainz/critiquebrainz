@@ -26,7 +26,6 @@ class Review(db.Model):
     source_url = db.Column(db.Unicode)
 
     revisions = db.relationship('Revision', order_by="Revision.timestamp", cascade='delete', backref='review')
-    spam_reports = db.relationship('SpamReport', cascade='delete', backref='review')
     _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='review')
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
