@@ -1,11 +1,12 @@
 import json
 import requests
+from requests.exceptions import ConnectionError
 from rauth import OAuth2Service
 
 from flask import url_for
 
 from critiquebrainz.utils import build_url
-from critiquebrainz.exceptions import APIError
+from critiquebrainz.exceptions import ServerError, ServerUnavailableError
 
 
 class CritiqueBrainzAPI(object):
@@ -32,11 +33,14 @@ class CritiqueBrainzAPI(object):
                     code=code,
                     scope=self.scope,
                     redirect_uri=url_for('login.post', _external=True))
-        resp = self._service.get_raw_access_token(data=data).json()
+        try:
+            resp = self._service.get_raw_access_token(data=data).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         access_token = resp.get('access_token')
         refresh_token = resp.get('refresh_token')
         expires_in = resp.get('expires_in')
@@ -46,11 +50,14 @@ class CritiqueBrainzAPI(object):
         data = dict(grant_type='refresh_token',
                     refresh_token=refresh_token,
                     scope=self.scope)
-        resp = self._service.get_raw_access_token(data=data).json()
+        try:
+            resp = self._service.get_raw_access_token(data=data).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         access_token = resp.get('access_token')
         refresh_token = resp.get('refresh_token')
         expires_in = resp.get('expires_in')
@@ -58,12 +65,15 @@ class CritiqueBrainzAPI(object):
 
     def get_me(self, access_token, inc=[]):
         params = dict(inc=' '.join(inc))
-        session = self._service.get_session(access_token)
-        resp = session.get('user/me', params=params).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.get('user/me', params=params).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         me = resp.get('user')
         return me
 
@@ -72,11 +82,14 @@ class CritiqueBrainzAPI(object):
                     response_type=response_type,
                     redirect_uri=redirect_uri,
                     scope=scope)
-        resp = requests.post(self.base_url + 'oauth/validate', data=data).json()
+        try:
+            resp = requests.post(self.base_url + 'oauth/validate', data=data).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         client = resp.get('client')
         return client
 
@@ -85,33 +98,42 @@ class CritiqueBrainzAPI(object):
                     response_type=response_type,
                     redirect_uri=redirect_uri,
                     scope=scope)
-        session = self._service.get_session(access_token)
-        resp = session.post('oauth/authorize', data=data).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.post('oauth/authorize', data=data).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         code = resp.get('code')
         return code
 
     def get_review(self, id, inc=[]):
         params = dict(inc=' '.join(inc))
-        resp = requests.get(self.base_url + 'review/%s' % id, params=params).json()
+        try:
+            resp = requests.get(self.base_url + 'review/%s' % id, params=params).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         review = resp.get('review')
         return review
 
     def get_me_reviews(self, sort, limit, offset, access_token):
         params = dict(sort=sort, limit=limit, offset=offset)
-        session = self._service.get_session(access_token)
-        resp = session.get('user/me/reviews', params=params).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.get('user/me/reviews', params=params).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         count = resp.get('count')
         reviews = resp.get('reviews')
         return count, reviews
@@ -119,97 +141,124 @@ class CritiqueBrainzAPI(object):
     def get_reviews(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=[]):
         params = dict(release_group=release_group,
                       user_id=user_id, sort=sort, limit=limit, offset=offset, inc=' '.join(inc))
-        resp = requests.get(self.base_url + 'review/', params=params).json()
+        try:
+            resp = requests.get(self.base_url + 'review/', params=params).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         count = resp.get('count')
         reviews = resp.get('reviews')
         return count, reviews
 
     def get_me_clients(self, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.get('user/me/clients').json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.get('user/me/clients').json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         clients = resp.get('clients')
         return clients
 
     def get_me_tokens(self, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.get('user/me/tokens').json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.get('user/me/tokens').json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         tokens = resp.get('tokens')
         return tokens
 
     def get_client(self, id, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.get('client/%s' % id).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.get('client/%s' % id).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         client = resp.get('client')
         return client
 
     def get_vote(self, review_id, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.get('review/%s/vote' % review_id).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.get('review/%s/vote' % review_id).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         vote = resp.get('vote')
         return vote
 
     def get_user(self, user_id, inc=[]):
         params = dict(inc=' '.join(inc))
-        resp = requests.get(self.base_url + 'user/%s' % user_id, params=params).json()
+        try:
+            resp = requests.get(self.base_url + 'user/%s' % user_id, params=params).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         user = resp.get('user')
         return user
 
     def get_users(self, limit=None, offset=None):
         params = dict(limit=limit, offset=offset)
-        resp = requests.get(self.base_url + 'user/', params=params).json()
+        try:
+            resp = requests.get(self.base_url + 'user/', params=params).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         count = resp.get('count')
         users = resp.get('users')
         return count, users
 
     def get_review_languages(self):
-        resp = requests.get(self.base_url + 'review/languages').json()
+        try:
+            resp = requests.get(self.base_url + 'review/languages').json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         return resp.get('languages')
 
     def create_client(self, name, desc, website, redirect_uri, scopes, access_token):
-        session = self._service.get_session(access_token)
         data = dict(name=name,
                     desc=desc,
                     website=website,
                     redirect_uri=redirect_uri,
                     scopes=scopes)
         headers = {'Content-type': 'application/json'}
-        resp = session.post('client/', data=json.dumps(data), headers=headers).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.post('client/', data=json.dumps(data), headers=headers).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         client = resp.get('client')
         client_id = client.get('id')
@@ -217,111 +266,141 @@ class CritiqueBrainzAPI(object):
         return message, client_id, client_secret
 
     def create_review(self, release_group, text, license_choice, language, access_token):
-        session = self._service.get_session(access_token)
         data = dict(release_group=release_group, text=text, license_choice=license_choice, language=language)
         headers = {'Content-type': 'application/json'}
-        resp = session.post('review/', data=json.dumps(data), headers=headers).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.post('review/', data=json.dumps(data), headers=headers).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         return resp.get('message'), resp.get('id')
 
     def update_review(self, id, access_token, **kwargs):
-        session = self._service.get_session(access_token)
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        resp = session.post('review/%s' % id, data=json.dumps(data), headers=headers).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.post('review/%s' % id, data=json.dumps(data), headers=headers).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
     def update_profile(self, access_token, **kwargs):
-        session = self._service.get_session(access_token)
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        resp = session.post('user/me', data=json.dumps(data), headers=headers).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.post('user/me', data=json.dumps(data), headers=headers).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
     def update_client(self, id, access_token, **kwargs):
-        session = self._service.get_session(access_token)
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        resp = session.post('client/%s' % id, data=json.dumps(data), headers=headers).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.post('client/%s' % id, data=json.dumps(data), headers=headers).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
     def update_review_vote(self, review_id, access_token, **kwargs):
-        session = self._service.get_session(access_token)
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        resp = session.put('review/%s/vote' % review_id, data=json.dumps(data), headers=headers).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.put('review/%s/vote' % review_id, data=json.dumps(data), headers=headers).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
     def delete_review(self, id, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.delete('review/%s' % id).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.delete('review/%s' % id).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
     def delete_review_vote(self, review_id, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.delete('review/%s/vote' % review_id).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.delete('review/%s/vote' % review_id).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
     def delete_profile(self, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.delete('user/me').json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.delete('user/me').json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
     def delete_client(self, id, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.delete('client/%s' % id).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.delete('client/%s' % id).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
     def delete_token(self, client_id, access_token):
-        session = self._service.get_session(access_token)
-        resp = session.delete('client/%s/tokens' % client_id).json()
+        try:
+            session = self._service.get_session(access_token)
+            resp = session.delete('client/%s/tokens' % client_id).json()
+        except ConnectionError:
+            raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
