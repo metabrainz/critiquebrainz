@@ -5,97 +5,87 @@
 {% block title %}{{ _('Review of "%(rg)s" by %(user)s', rg=release_group.title, user=review.user.display_name) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<h2>{{ _('Review of "%(rg)s" by %(user)s', rg=release_group.title, user=review.user.display_name) }}</h2>
-
-<div id="review-entity" class="row">
-  <div class="col-md-3">
-    <img id="cover-art" class="img-responsive">
-    <script>
-      $("img").last()
-          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-          .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
-    </script>
-    <div id="spotify-play-button">
-      {% if review.release_group in spotify_mapping %}
-        <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[review.release_group] }}&theme=white"
-              width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-      {% endif %}
-    </div>
-  </div>
-  <div class="col-md-9">
-    <div id="review-details" class="row">
-      <div class="col-md-3">
-        <h4>{{ _('Author') }}</h4>
-        <a href="{{ url_for('user.entity', id=review.user_id) }}">
-          <img class="avatar" src="{{ review.user.avatar }}&s=24" />
-          {{ review.user.display_name }}
-        </a>
-      </div>
-      <div class="col-md-5">
-        <dl class="dl-horizontal">
-          <dt>{{ _('Reviewed on') }}</dt><dd>{{ review.created | datetime }}</dd>
-          <dt>{{ _('Artist') }}</dt>
-          <dd>
-            {% for credit in release_group['artist-credit'] %}
-              {% if credit.artist %}
-                <a href="{{ url_for('artist.entity', id=credit.artist.id) }}">{{ credit.artist.name }}</a>
-              {% else %}
-                {{ credit }}
-              {% endif %}
-            {% endfor %}
-          </dd>
-          <dt>{{ _('Release group') }}</dt>
-          <dd>
-            <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
-            {% if release_group['first-release-date'] %}
-              <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
-            {% endif %}
-          </dd>
-        </dl>
-      </div>
-      <div class="col-md-4">
-        <dl class="dl-horizontal">
-          <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
-          <dt>{{ _('Class') }}</dt><dd>{{ review.review_class }}</dd>
-        </dl>
-      </div>
-    </div>
-    <hr />
-    <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
-    <hr />
-    <small class="text-muted">
-      {% autoescape false %}
-      {% if review.license.info_url %}
-        {% set license = '<a href="%s">%s</a>' % (review.license.info_url, review.license.id ) %}
+<div id="review-entity">
+  <h2 id="title">
+    <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
+    -
+    {% for credit in release_group['artist-credit'] %}
+      {% if credit.artist %}
+        <a href="{{ url_for('artist.entity', id=credit.artist.id) }}">{{ credit.artist.name }}</a>
       {% else %}
-        {% set license = review.license.key %}
+        {{ credit }}
       {% endif %}
-      {{ _('This review is licensed under a %(name)s license.', name=license) }}
-      {% if review.source %}
-        {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>' % (review.source_url, review.source)) }}
-      {% endif %}
-      {% endautoescape %}
-    </small>
-    <hr />
-    {% if current_user.is_authenticated() %}
-      {% if current_user.me.id != review.user_id %}
-        <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
-          {{ _('Did you find this review useful?') }}
-          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
-          <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
-          {% if vote.placet == True or vote.placet == False %}
-            <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
-          {% endif %}
-        </form>
-      {% else %}
-        <a href="{{ url_for('profile_review.edit', id=review.id) }}"
-           role="button" class="btn btn-default btn-sm">
-          <span class="glyphicon glyphicon-edit"></span> {{ _('Edit this review') }}
-        </a>
-      {% endif %}
-    {% else %}
-      {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
+    {% endfor %}
+    {% if release_group['first-release-date'] %}
+      <small>{{ release_group['first-release-date'][:4] }}</small>
     {% endif %}
+  </h2>
+
+  <div id="review-content" class="row">
+    <div id="sidebar" class="col-md-3">
+      <img id="cover-art" class="img-responsive">
+      <script>
+        $("img").last()
+            .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+            .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+      </script>
+
+      <div id="spotify-play-button">
+        {% if review.release_group in spotify_mapping %}
+          <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[review.release_group] }}&theme=white"
+                width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      {% autoescape false %}
+      <h3>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=24" /> <a href="%s">%s</a>' % (review.user.avatar, url_for('user.entity', id=review.user_id), review.user.display_name)) }}</h3>
+      {% endautoescape %}
+
+      <em class="text-muted">{{ _('Published on %(date)s', date = review.created|datetime) }}</em>
+      <br /><em class="text-muted">{{ _('Rating:') }} <abbr title="{{ review.votes_positive }}/{{ review.votes_negative }}">{{ review.rating }}</abbr></em>
+      <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
+
+      <hr />
+      <!-- Legal stuff -->
+      <small class="text-muted">
+        {% autoescape false %}
+        {% if review.license.info_url %}
+          {% set license = '<a href="%s">%s</a>' % (review.license.info_url, review.license.id ) %}
+        {% else %}
+          {% set license = review.license.key %}
+        {% endif %}
+        {{ _('This review is licensed under a %(name)s license.', name=license) }}
+        {% if review.source %}
+          {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>' % (review.source_url, review.source)) }}
+        {% endif %}
+        {% endautoescape %}
+      </small>
+
+      <hr />
+      <!-- Voting stuff -->
+      {% if current_user.is_authenticated() %}
+        {% if current_user.me.id != review.user_id %}
+          <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
+            {{ _('Did you find this review useful?') }}
+            <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
+            <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
+            {% if vote.placet == True or vote.placet == False %}
+              <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
+            {% endif %}
+          </form>
+        {% else %}
+          <a href="{{ url_for('profile_review.edit', id=review.id) }}"
+             role="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-edit"></span> {{ _('Edit this review') }}
+          </a>
+        {% endif %}
+      {% else %}
+        {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
+      {% endif %}
+
+    </div>
   </div>
 </div>
 {% endblock %}

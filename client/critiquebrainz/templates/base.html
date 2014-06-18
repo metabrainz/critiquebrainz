@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
 
+    <link href='http://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
     {% if config.DEBUG %}
       <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='css/styles.less') }}" />
       <script src="{{ url_for('static', filename='js/less.min.js') }}"></script>
@@ -61,16 +62,8 @@
                   </ul>
                 </li>
               {% endif %}
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                  {{ _('About') }} <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="/about/">{{ _('About the project') }}</a></li>
-                  <li><a href="http://blog.musicbrainz.org/tag/critiquebrainz/">{{ _('Blog') }}</a></li>
-                  <li><a href="https://critiquebrainz.readthedocs.org/">{{ _('Developers') }}</a></li>
-                </ul>
-              </li>
+              <li><a href="{{ url_for('profile_review.create') }}">{{ _('Write a review') }}</a></li>
+              <li><a href="/about/">{{ _('About') }}</a></li>
             </ul>
             <form class="navbar-form navbar-right" role="search" method="GET" action="{{ url_for('search.index') }}">
               <div class="form-group">
@@ -116,8 +109,8 @@
             <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            {% for language in config.LANGUAGES.keys() %}
-              <li><a href="?l={{ language }}">{{ config.LANGUAGES[language] }}</a></li>
+            {% for language in config.LANGUAGES|dictsort %}
+              <li><a href="?l={{ language[0] }}">{{ language[1] }}</a></li>
             {% endfor %}
           </ul>
         </div>

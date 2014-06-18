@@ -16,6 +16,9 @@
         {{ credit }}
       {% endif %}
     {% endfor %}
+    {% if release_group['first-release-date'] %}
+      <small>{{ release_group['first-release-date'][:4] }}</small>
+    {% endif %}
   </h2>
   {% if not my_review %}
     <a id="write-review" href="{{ url_for('profile_review.create', release_group=id) }}"
@@ -29,6 +32,7 @@
     </a>
   {% endif %}
 </div>
+
 <div id="release-group-details" class="row">
   <div class="col-md-3">
     <img id="cover-art" class="img-responsive">
