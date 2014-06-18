@@ -14,7 +14,7 @@ After that you can start a VM and connect to it::
    $ vagrant ssh
 
 After starting a VM you should be able to access client (``http://127.0.0.1:5001/``) and server (``http://127.0.0.1:5000/``).
-PostgreSQL will be available on port 5433 with `trust`_ authentication method.
+PostgreSQL will be available on port *15432* with `trust`_ authentication method.
 
 .. _trust: http://www.postgresql.org/docs/9.1/static/auth-methods.html#AUTH-TRUST
 
