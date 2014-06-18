@@ -295,6 +295,16 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
+    def spam_report_review(self, review_id, access_token):
+        session = self._service.get_session(access_token)
+        resp = session.post('review/%s/report' % review_id).json()
+        error = resp.get('error')
+        if error:
+            desc = resp.get('description')
+            raise APIError(code=error, desc=desc)
+        message = resp.get('message')
+        return message
+
     def delete_profile(self, access_token):
         session = self._service.get_session(access_token)
         resp = session.delete('user/me').json()

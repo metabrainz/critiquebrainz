@@ -67,13 +67,16 @@
       <!-- Voting stuff -->
       {% if current_user.is_authenticated() %}
         {% if current_user.me.id != review.user_id %}
-          <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
+          <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}" class="pull-left">
             {{ _('Did you find this review useful?') }}
             <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
             <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
             {% if vote.placet == True or vote.placet == False %}
               <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
             {% endif %}
+          </form>
+          <form method="POST" action="{{ url_for('review.report', id=review.id) }}" class="pull-right">
+            <button type="submit" class="btn btn-danger btn-xs">{{ _('Report spam') }}</button>
           </form>
         {% else %}
           <a href="{{ url_for('profile_review.edit', id=review.id) }}"
