@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-13 23:18+0000\n"
+"POT-Creation-Date: 2014-06-18 06:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -173,53 +173,50 @@ msgstr ""
 msgid "Show my Gravatar"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:13
-#: critiquebrainz/forms/profile/review.py:29
+#: critiquebrainz/forms/profile/review.py:6
 msgid "Text"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:14
-#: critiquebrainz/forms/profile/review.py:30
+#: critiquebrainz/forms/profile/review.py:7
 msgid "Review is empty"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:15
-#: critiquebrainz/forms/profile/review.py:31
+#: critiquebrainz/forms/profile/review.py:8
 msgid "Review needs to be at least 25 characters long"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:16
+#: critiquebrainz/forms/profile/review.py:12
 #: critiquebrainz/templates/base.html:109
 msgid "Language"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:18
+#: critiquebrainz/forms/profile/review.py:14
 msgid "Licence choice"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:20
+#: critiquebrainz/forms/profile/review.py:16
 msgid ""
 "Allow commercial use of this review (<a "
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 "
 "license</a>)"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:21
+#: critiquebrainz/forms/profile/review.py:17
 msgid ""
 "Do not allow commercial use of this review, unless approved by MetaBrainz"
 " Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
 "sa/3.0/\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:23
+#: critiquebrainz/forms/profile/review.py:20
 msgid "You need to choose a license"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:24
+#: critiquebrainz/forms/profile/review.py:21
 msgid "Licence"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:25
+#: critiquebrainz/forms/profile/review.py:22
 msgid "You need to accept the licence agreement"
 msgstr ""
 
@@ -256,15 +253,15 @@ msgstr ""
 msgid "Profile updated"
 msgstr ""
 
-#: critiquebrainz/profile/review/views.py:36
+#: critiquebrainz/profile/review/views.py:44
 msgid "You have published the review!"
 msgstr ""
 
-#: critiquebrainz/profile/review/views.py:60
+#: critiquebrainz/profile/review/views.py:68
 msgid "You have modified the review!"
 msgstr ""
 
-#: critiquebrainz/profile/review/views.py:74
+#: critiquebrainz/profile/review/views.py:82
 msgid "You have deleted the review."
 msgstr ""
 
