@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2014-06-11 14:08+0000\n"
-=======
-"POT-Creation-Date: 2014-06-13 23:18+0000\n"
->>>>>>> master
+"POT-Creation-Date: 2014-06-18 06:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,13 +185,8 @@ msgstr ""
 msgid "Review needs to be at least 25 characters long"
 msgstr ""
 
-<<<<<<< HEAD
 #: critiquebrainz/forms/profile/review.py:12
-#: critiquebrainz/templates/base.html:116
-=======
-#: critiquebrainz/forms/profile/review.py:16
 #: critiquebrainz/templates/base.html:109
->>>>>>> master
 msgid "Language"
 msgstr ""
 
@@ -519,37 +510,22 @@ msgstr ""
 msgid "Popular reviews"
 msgstr ""
 
-<<<<<<< HEAD
-#: critiquebrainz/templates/index.html:39
-#: critiquebrainz/templates/index.html:71
-#: critiquebrainz/templates/release_group.html:56
-=======
 #: critiquebrainz/templates/index.html:31
 #: critiquebrainz/templates/index.html:63
 #: critiquebrainz/templates/release_group.html:60
->>>>>>> master
 #: critiquebrainz/templates/profile/review/list.html:16
 #: critiquebrainz/templates/user/entity.html:45
 msgid "No reviews found"
 msgstr ""
 
-<<<<<<< HEAD
-#: critiquebrainz/templates/index.html:57
-#: critiquebrainz/templates/index.html:89
-=======
 #: critiquebrainz/templates/index.html:49
 #: critiquebrainz/templates/index.html:81
 #: critiquebrainz/templates/review/entity.html:43
->>>>>>> master
 #, python-format
 msgid "Review by %(user)s"
 msgstr ""
 
-<<<<<<< HEAD
-#: critiquebrainz/templates/index.html:69
-=======
 #: critiquebrainz/templates/index.html:61
->>>>>>> master
 msgid "Recent reviews"
 msgstr ""
 
