@@ -13,24 +13,19 @@ After that you can start a VM and connect to it::
    $ vagrant up
    $ vagrant ssh
 
-To run a server use::
+After starting a VM you should be able to access client (``http://127.0.0.1:5001/``) and server (``http://127.0.0.1:5000/``).
+PostgreSQL will be available on port *15432* with `trust`_ authentication method.
 
-   $ python manage.py runserver -t 0.0.0.0 -p 5000
+.. _trust: http://www.postgresql.org/docs/9.1/static/auth-methods.html#AUTH-TRUST
 
-and to run a client::
-
-   $ python manage.py runserver -t 0.0.0.0 -p 5001
-
-`It might be a good idea to use something like GNU Screen to be able to run both at the same time.`
-
-After activating server and client you should be able to access both on ``http://127.0.0.1:5001/`` (client)
-and ``http://127.0.0.1:5000/`` (server). PostgreSQL will be available on port 5433.
+Server and client will be running in two separate `screens <https://www.gnu.org/software/screen/>`_.
+You can connect to them to see standard output, do maintenance or other tasks.
 
 Modifying strings in client
 ---------------------------
 
 CritiqueBrainz Client supports interface translation. If you add or modify strings that will be displayed to user,
-you need to wrap them in one of two functions: ``gettext()`` or ``ngettext()``.
+then you need to wrap them in one of two functions: ``gettext()`` or ``ngettext()``.
 
 Before committing changes don't forget to extract all strings into ``messages.pot``.
 
