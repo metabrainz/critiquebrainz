@@ -5,3 +5,6 @@ server.log
 server.fcgi
 
 *.log
+
+dump/
+backup/

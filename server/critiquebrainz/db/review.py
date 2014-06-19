@@ -110,7 +110,7 @@ class Review(db.Model):
         return self._rating
 
     @classmethod
-    def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None, language=None):
+    def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None, language=None, license_id=None):
         # query init
         query = Review.query
 
@@ -143,6 +143,8 @@ class Review(db.Model):
             query = query.filter(Review.release_group == release_group)
         if language is not None:
             query = query.filter(Review.language == language)
+        if license_id is not None:
+            query = query.filter(Review.license_id == license_id)
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
 

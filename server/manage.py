@@ -1,4 +1,5 @@
 ﻿#!/usr/bin/python
+from __future__ import print_function
 import subprocess
 from flask.ext.script import Manager
 
@@ -61,16 +62,82 @@ def dump_db():
     exit_code = subprocess.call('mkdir -p %s' % backup_dir, shell=True)
     if exit_code != 0:
         raise Exception("Failed to backup directory!")
-    print "Creating database dump..."
+    print("Creating database dump...")
     file_name = "%s/cb-%s" % (backup_dir, strftime("%Y%m%d-%H%M%S", gmtime()))
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
-    print 'pg_dump -Ft "%s" > "%s.tar"' % (db, file_name)
+    print('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name))
     exit_code = subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name), shell=True)
     if exit_code == 0:
         exit_code = subprocess.call('bzip2 "%s.tar"' % file_name, shell=True)
     if exit_code != 0:
         raise Exception("Failed to create database dump!")
-    print 'Done! Created "%s.tar.bz2".' % file_name
+    print('Done! Created "%s.tar.bz2".' % file_name)
+
+
+@manager.command
+def dump_data():
+    """Create dump of all reviews."""
+    import shutil
+    from flask import jsonify
+    from critiquebrainz.fixtures import LicenseData
+    from critiquebrainz.db.review import Review
+    from critiquebrainz.db import db
+
+    dump_dir = 'dump'
+    by_sa_dir = 'by-sa'
+    exit_code = subprocess.call('mkdir -p %s/%s' % (dump_dir, by_sa_dir), shell=True)
+    if exit_code != 0:
+        raise Exception("Failed to create directory!")
+    by_nc_sa_dir = 'by-nc-sa'
+    exit_code = subprocess.call('mkdir -p %s/%s' % (dump_dir, by_nc_sa_dir), shell=True)
+    if exit_code != 0:
+        raise Exception("Failed to create directory!")
+
+    # Creating JSON dumps
+    query = db.session.query(Review.release_group).group_by(Review.release_group)
+    for release_group in query.all():
+        release_group = release_group[0]
+        rg_dir_part = '%s/%s' % (release_group[0:1], release_group[0:2])
+
+        # CC BY-SA reviews
+        reviews = Review.list(release_group, license_id=LicenseData.cc_by_sa_3.id)[0]
+        if len(reviews) > 0:
+            json = jsonify(reviews=[r.to_dict() for r in reviews]).data
+            rg_dir = '%s/%s/%s' % (dump_dir, by_sa_dir, rg_dir_part)
+            exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
+            if exit_code != 0:
+                raise Exception("Failed to create directory!")
+            f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
+            f.write(json)
+            f.close()
+
+        # CC BY-NC-SA reviews
+        reviews = Review.list(release_group, license_id=LicenseData.cc_by_nc_sa_3.id)[0]
+        if len(reviews) > 0:
+            json = jsonify(reviews=[r.to_dict() for r in reviews]).data
+            rg_dir = '%s/%s/%s' % (dump_dir, by_nc_sa_dir, rg_dir_part)
+            exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
+            if exit_code != 0:
+                raise Exception("Failed to create directory!")
+            f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
+            f.write(json)
+            f.close()
+
+    # Copying legal stuff
+    shutil.copyfile("licenses/cc-by-sa.txt", '%s/%s/COPYING' % (dump_dir, by_sa_dir))
+    shutil.copyfile("licenses/cc-by-nc-sa.txt", '%s/%s/COPYING' % (dump_dir, by_nc_sa_dir))
+
+    # Creating archives
+    exit_code = subprocess.call('tar -cjf dump/cc-by-sa.tar.bz2 -C "%s" %s' % (dump_dir, by_sa_dir), shell=True)
+    if exit_code != 0:
+        raise Exception("Failed to create an archive for CC BY-SA reviews!")
+    exit_code = subprocess.call('tar -cjf dump/cc-by-nc-sa.tar.bz2 -C "%s" %s' % (dump_dir, by_nc_sa_dir), shell=True)
+    if exit_code != 0:
+        raise Exception("Failed to create an archive for CC BY-NC-SA reviews!")
+
+    # Cleanup
+    subprocess.call('rm -rf %s/%s' % (dump_dir, by_sa_dir), shell=True)
+    subprocess.call('rm -rf %s/%s' % (dump_dir, by_nc_sa_dir), shell=True)
 
 
 @manager.command
