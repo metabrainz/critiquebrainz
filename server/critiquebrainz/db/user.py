@@ -149,17 +149,18 @@ class User(db.Model):
     def votes_today_count(self):
         return self.votes_since_count(date.today())
 
-    def to_dict(self, includes=[], confidential=False):
-        if self.show_gravatar and self.email:
-            gravatar = "//gravatar.com/avatar/" + hashlib.md5(self.email).hexdigest() + "?d=mm&r=pg"
-        else:
-            gravatar = "//gravatar.com/avatar/placeholder?d=mm"
+    def to_dict(self, includes=[], confidential=False, include_gravatar=True):
         response = dict(id = self.id,
             display_name = self.display_name,
             created = self.created,
             karma = self.karma,
-            avatar = gravatar,
             user_type = self.user_type.label)
+        if include_gravatar is True:
+            if self.show_gravatar and self.email:
+                gravatar = "https://gravatar.com/avatar/" + hashlib.md5(self.email).hexdigest() + "?d=mm&r=pg"
+            else:
+                gravatar = "https://gravatar.com/avatar/placeholder?d=mm"
+            response.update(dict(avatar=gravatar))
         if confidential is True:
             response.update(dict(email=self.email,
                                  show_gravatar=self.show_gravatar,
