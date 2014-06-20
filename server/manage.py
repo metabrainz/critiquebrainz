@@ -75,8 +75,8 @@ def dump_db():
 
 
 @manager.command
-def dump_data():
-    """Create dump of all reviews."""
+def dump_json():
+    """Create JSON dump of all reviews."""
     import shutil
     from flask import jsonify
     from critiquebrainz.fixtures import LicenseData
