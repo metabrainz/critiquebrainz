@@ -81,8 +81,8 @@
             <div class="col-md-4" id="reporting">
               <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="report-toggle text-danger">{{ _('Report spam') }}</a>
               <span class="report-toggle" style="display:none">
-                {{ _('Are you sure?') }}
-                <a href="javascript:void(0)" onclick="report()" class="btn btn-danger btn-xs" role="button">{{ _('Yes') }}</a>
+                {{ _('Report this review as spam?') }}
+                <a href="javascript:void(0)" onclick="report()" class="btn btn-default btn-xs" role="button">{{ _('Yes') }}</a>
                 <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="btn btn-default btn-xs" role="button">{{ _('No') }}</a>
               </span>
               <span id="report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>

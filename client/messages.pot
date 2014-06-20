@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-20 01:00+0000\n"
+"POT-Creation-Date: 2014-06-20 09:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1023,7 +1023,7 @@ msgid "Report spam"
 msgstr ""
 
 #: critiquebrainz/templates/review/entity.html:84
-msgid "Are you sure?"
+msgid "Report this review as spam?"
 msgstr ""
 
 #: critiquebrainz/templates/review/entity.html:88
