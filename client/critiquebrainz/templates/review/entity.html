@@ -116,9 +116,13 @@
           resultBlock.text("{{ _('Review reported!') }}");
           resultBlock.addClass('text-success');
         } else {
-          resultBlock.text("{{ _('Error occurred!') }}");
+          if (result.error == "reported") {
+            resultBlock.text("{{ _('You have already reported this review!') }}");
+          } else {
+            resultBlock.text("{{ _('Unknown error occurred!') }}");
+            console.log(result.error)
+          }
           resultBlock.addClass('text-danger');
-          console.log(result.error)
         }
       }
     });

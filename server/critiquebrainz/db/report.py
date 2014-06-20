@@ -1,6 +1,7 @@
-from . import db
-from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
+from sqlalchemy.dialects.postgresql import UUID
+from critiquebrainz.exceptions import InvalidRequest
+from . import db
 
 
 class SpamReport(db.Model):
@@ -19,11 +20,11 @@ class SpamReport(db.Model):
     @classmethod
     def create(cls, review, user):
         if review.is_archived is True:
-            # TODO: Return error
-            return
+            raise InvalidRequest('archived')
         last_revision = review.revisions[-1]
-        # TODO: Return error if report already exits instead of recreating
-        cls.query.filter_by(user_id=user.id, revision_id=last_revision.id).delete()
+        count = cls.query.filter_by(user_id=user.id, revision_id=last_revision.id).count()
+        if count > 0:
+            raise InvalidRequest('reported')
         report = cls(user_id=user.id, revision_id=last_revision.id)
         db.session.add(report)
         db.session.commit()
