@@ -1,12 +1,29 @@
 ﻿#!/usr/bin/python
 from __future__ import print_function
 import subprocess
+from datetime import datetime
+from flask.json import JSONEncoder
 from flask.ext.script import Manager
 
 from critiquebrainz import fixtures as _fixtures
 from critiquebrainz import app, db
 
 manager = Manager(app)
+
+
+class DumpJSONEncoder(JSONEncoder):
+    def default(self, obj):
+        try:
+            if isinstance(obj, datetime):
+                return obj.isoformat()
+            iterable = iter(obj)
+        except TypeError:
+            pass
+        else:
+            return list(iterable)
+        return JSONEncoder.default(self, obj)
+app.json_encoder = DumpJSONEncoder
+
 
 def explode_url(url):
     from urlparse import urlsplit
@@ -16,6 +33,7 @@ def explode_url(url):
     db = url.path[1:]
     hostname = url.hostname
     return hostname, db, username, password
+
 
 def init_postgres(uri):
     hostname, db, username, password = explode_url(uri)
@@ -102,7 +120,7 @@ def dump_json():
         # CC BY-SA reviews
         reviews = Review.list(release_group, license_id=LicenseData.cc_by_sa_3.id)[0]
         if len(reviews) > 0:
-            json = jsonify(reviews=[r.to_dict() for r in reviews]).data
+            json = jsonify(reviews=[r.to_dict(['user'], is_dump=True) for r in reviews]).data
             rg_dir = '%s/%s/%s' % (dump_dir, by_sa_dir, rg_dir_part)
             exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
             if exit_code != 0:
@@ -114,7 +132,7 @@ def dump_json():
         # CC BY-NC-SA reviews
         reviews = Review.list(release_group, license_id=LicenseData.cc_by_nc_sa_3.id)[0]
         if len(reviews) > 0:
-            json = jsonify(reviews=[r.to_dict() for r in reviews]).data
+            json = jsonify(reviews=[r.to_dict(['user'], is_dump=True) for r in reviews]).data
             rg_dir = '%s/%s/%s' % (dump_dir, by_nc_sa_dir, rg_dir_part)
             exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
             if exit_code != 0:

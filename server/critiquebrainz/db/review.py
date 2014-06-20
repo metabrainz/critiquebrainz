@@ -34,10 +34,10 @@ class Review(db.Model):
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user', )
 
-    def to_dict(self, includes=[]):
+    def to_dict(self, includes=[], is_dump=False):
         response = dict(id=self.id,
                         release_group=self.release_group,
-                        user_id=self.user_id,
+                        user=self.user_id,
                         text=self.revisions[-1].text,  # latest revision
                         created=self.revisions[0].timestamp,
                         last_updated=self.revisions[-1].timestamp,
@@ -51,7 +51,7 @@ class Review(db.Model):
                         source_url=self.source_url,
                         review_class=self.review_class.label)
         if 'user' in includes:
-            response['user'] = self.user.to_dict()
+            response['user'] = self.user.to_dict(include_gravatar=(not is_dump))
         return response
 
     def delete(self):
