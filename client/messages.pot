@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-20 09:26+0000\n"
+"POT-Creation-Date: 2014-06-20 10:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1043,8 +1043,12 @@ msgstr ""
 msgid "Review reported!"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:119
-msgid "Error occurred!"
+#: critiquebrainz/templates/review/entity.html:120
+msgid "You have already reported this review!"
+msgstr ""
+
+#: critiquebrainz/templates/review/entity.html:122
+msgid "Unknown error occurred!"
 msgstr ""
 
 #: critiquebrainz/templates/search/index.html:5
