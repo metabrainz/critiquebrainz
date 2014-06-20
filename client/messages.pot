@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-20 00:36+0000\n"
+"POT-Creation-Date: 2014-06-20 01:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: critiquebrainz/errors.py:14
+#: critiquebrainz/errors.py:18
 msgid "Your login session has expired. Please sign in again."
-msgstr ""
-
-#: critiquebrainz/errors.py:22
-msgid "Requested page was not found"
-msgstr ""
-
-#: critiquebrainz/errors.py:27
-msgid "Oops! Server could not complete the request. Please try again later."
 msgstr ""
 
 #: critiquebrainz/apis/musicbrainz/relationships/artist.py:29
@@ -465,14 +457,6 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: critiquebrainz/templates/error.html:3 critiquebrainz/templates/error.html:6
-msgid "Error"
-msgstr ""
-
-#: critiquebrainz/templates/error.html:10
-msgid "Could not complete the request."
-msgstr ""
-
 #: critiquebrainz/templates/index.html:5
 msgid "Welcome to CritiqueBrainz!"
 msgstr ""
@@ -613,6 +597,39 @@ msgstr ""
 #: critiquebrainz/templates/release_group.html:140
 #, python-format
 msgid "First release in %(year)s"
+msgstr ""
+
+#: critiquebrainz/templates/errors/404.html:6
+#: critiquebrainz/templates/errors/404.html:10
+msgid "Page not found"
+msgstr ""
+
+#: critiquebrainz/templates/errors/404.html:11
+#: critiquebrainz/templates/errors/500.html:16
+#: critiquebrainz/templates/errors/503.html:15
+msgid "Back to home page"
+msgstr ""
+
+#: critiquebrainz/templates/errors/500.html:6
+#: critiquebrainz/templates/errors/500.html:10
+msgid "Server error"
+msgstr ""
+
+#: critiquebrainz/templates/errors/500.html:11
+msgid ""
+"Server failed to process your request. Developers have been notified. You"
+" can try again later."
+msgstr ""
+
+#: critiquebrainz/templates/errors/503.html:6
+#: critiquebrainz/templates/errors/503.html:10
+msgid "Server unavailable"
+msgstr ""
+
+#: critiquebrainz/templates/errors/503.html:11
+msgid ""
+"CritiqueBrainz server is temporarily unavailable. Developers have been "
+"notified. You can try again later."
 msgstr ""
 
 #: critiquebrainz/templates/login/login.html:7

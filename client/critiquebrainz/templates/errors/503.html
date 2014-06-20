@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>{{ _('Server unavailable') }} - CritiqueBrainz</title>
+</head>
+
+<body>
+  <h1>{{ _('Server unavailable') }}</h1>
+  <p>{{ _('CritiqueBrainz server is temporarily unavailable. Developers have been notified. You can try again later.') }}</p>
+  {% if error.message %}
+    <code>{{error.message}}</code>
+  {% endif %}
+  <p><a href="/">{{ _('Back to home page') }}</a></p>
+</body>
+
+</html>
