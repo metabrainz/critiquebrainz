@@ -160,7 +160,7 @@ class User(db.Model):
                 gravatar = "https://gravatar.com/avatar/" + hashlib.md5(self.email).hexdigest() + "?d=mm&r=pg"
             else:
                 gravatar = "https://gravatar.com/avatar/placeholder?d=mm"
-            response.update(dict(gravatar=gravatar))
+            response.update(dict(avatar=gravatar))
         if confidential is True:
             response.update(dict(email=self.email,
                                  show_gravatar=self.show_gravatar,
