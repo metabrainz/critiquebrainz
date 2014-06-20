@@ -371,7 +371,7 @@ class CritiqueBrainzAPI(object):
         error = resp.get('error')
         if error:
             desc = resp.get('description')
-            raise APIError(code=error, desc=desc)
+            raise ServerError(code=error, desc=desc)
         message = resp.get('message')
         return message
 
