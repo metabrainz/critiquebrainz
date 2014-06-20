@@ -85,7 +85,7 @@
                 <a href="javascript:void(0)" onclick="report()" class="btn btn-danger btn-xs" role="button">{{ _('Yes') }}</a>
                 <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="btn btn-default btn-xs" role="button">{{ _('No') }}</a>
               </span>
-              <span id="report-result" class="text-muted" style="display:none">Reporting...</span>
+              <span id="report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>
             </div>
           </div>
         {% else %}
@@ -104,13 +104,13 @@
 
 <script>
   function report() {
+    var resultBlock = $("#report-result");
+    resultBlock.show();
+    $(".report-toggle").hide();
     $.ajax({
       type: "POST",
       url: "{{ url_for('review.report', id=review.id) }}",
       success: function(result) {
-        $(".report-toggle").hide();
-        var resultBlock = $("#report-result");
-        resultBlock.show();
         resultBlock.removeClass('text-muted');
         if (result.success) {
           resultBlock.text("{{ _('Review reported!') }}");
