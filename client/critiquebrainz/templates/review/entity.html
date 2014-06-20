@@ -67,17 +67,27 @@
       <!-- Voting stuff -->
       {% if current_user.is_authenticated() %}
         {% if current_user.me.id != review.user_id %}
-          <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}" class="pull-left">
-            {{ _('Did you find this review useful?') }}
-            <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
-            <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
-            {% if vote.placet == True or vote.placet == False %}
-              <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
-            {% endif %}
-          </form>
-          <form method="POST" action="{{ url_for('review.report', id=review.id) }}" class="pull-right">
-            <button type="submit" class="btn btn-danger btn-xs">{{ _('Report spam') }}</button>
-          </form>
+          <div class="row">
+            <div class="col-md-8">
+              <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
+                {{ _('Did you find this review useful?') }}
+                <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
+                <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
+                {% if vote.placet == True or vote.placet == False %}
+                  <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
+                {% endif %}
+              </form>
+            </div>
+            <div class="col-md-4" id="reporting">
+              <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="report-toggle text-danger">{{ _('Report spam') }}</a>
+              <span class="report-toggle" style="display:none">
+                {{ _('Are you sure?') }}
+                <a href="javascript:void(0)" onclick="report()" class="btn btn-danger btn-xs" role="button">{{ _('Yes') }}</a>
+                <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="btn btn-default btn-xs" role="button">{{ _('No') }}</a>
+              </span>
+              <span id="report-result" class="text-muted" style="display:none">Reporting...</span>
+            </div>
+          </div>
         {% else %}
           <a href="{{ url_for('profile_review.edit', id=review.id) }}"
              role="button" class="btn btn-default btn-sm">
@@ -91,5 +101,27 @@
     </div>
   </div>
 </div>
-{% endblock %}
 
+<script>
+  function report() {
+    $.ajax({
+      type: "POST",
+      url: "{{ url_for('review.report', id=review.id) }}",
+      success: function(result) {
+        $(".report-toggle").hide();
+        var resultBlock = $("#report-result");
+        resultBlock.show();
+        resultBlock.removeClass('text-muted');
+        if (result.success) {
+          resultBlock.text("{{ _('Review reported!') }}");
+          resultBlock.addClass('text-success');
+        } else {
+          resultBlock.text("{{ _('Error occurred!') }}");
+          resultBlock.addClass('text-danger');
+          console.log(result.error)
+        }
+      }
+    });
+  }
+</script>
+{% endblock %}

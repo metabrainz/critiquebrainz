@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-18 06:27+0000\n"
+"POT-Creation-Date: 2014-06-20 00:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -265,11 +265,11 @@ msgstr ""
 msgid "You have deleted the review."
 msgstr ""
 
-#: critiquebrainz/review/views.py:41
+#: critiquebrainz/review/views.py:45
 msgid "You have rated the review!"
 msgstr ""
 
-#: critiquebrainz/review/views.py:52
+#: critiquebrainz/review/views.py:57
 msgid "You have deleted your vote for this review!"
 msgstr ""
 
@@ -783,7 +783,8 @@ msgid "Yes, I want to delete my account"
 msgstr ""
 
 #: critiquebrainz/templates/profile/details/delete.html:15
-#: critiquebrainz/templates/review/entity.html:73
+#: critiquebrainz/templates/review/entity.html:75
+#: critiquebrainz/templates/review/entity.html:86
 msgid "No"
 msgstr ""
 
@@ -987,25 +988,42 @@ msgstr ""
 msgid "It was imported from %(source)s."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:71
+#: critiquebrainz/templates/review/entity.html:73
 msgid "Did you find this review useful?"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:72
+#: critiquebrainz/templates/review/entity.html:74
+#: critiquebrainz/templates/review/entity.html:85
 msgid "Yes"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:75
+#: critiquebrainz/templates/review/entity.html:77
 msgid "(delete your vote)"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:81
+#: critiquebrainz/templates/review/entity.html:82
+msgid "Report spam"
+msgstr ""
+
+#: critiquebrainz/templates/review/entity.html:84
+msgid "Are you sure?"
+msgstr ""
+
+#: critiquebrainz/templates/review/entity.html:94
 msgid "Edit this review"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:85
+#: critiquebrainz/templates/review/entity.html:98
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
+msgstr ""
+
+#: critiquebrainz/templates/review/entity.html:116
+msgid "Review reported!"
+msgstr ""
+
+#: critiquebrainz/templates/review/entity.html:119
+msgid "Error occurred!"
 msgstr ""
 
 #: critiquebrainz/templates/search/index.html:5

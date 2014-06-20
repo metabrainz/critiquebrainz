@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, redirect, flash
+from flask import Blueprint, render_template, request, url_for, redirect, flash, jsonify
 from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
 
@@ -64,7 +64,5 @@ def review_spam_report_handler(id):
     try:
         message = server.spam_report_review(id, current_user.access_token)
     except APIError as e:
-        flash(e.desc, 'error')
-    else:
-        flash(gettext('Review has been successfully reported. Thank you!'), 'success')
-    return redirect(url_for('.entity', id=id))
+        return jsonify(success=False, error=e.desc)
+    return jsonify(success=True)
