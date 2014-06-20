@@ -84,11 +84,11 @@ def dump_json():
     from critiquebrainz.db import db
 
     dump_dir = 'dump'
-    by_sa_dir = 'by-sa'
+    by_sa_dir = 'critiquebrainz-json-by-sa'
     exit_code = subprocess.call('mkdir -p %s/%s' % (dump_dir, by_sa_dir), shell=True)
     if exit_code != 0:
         raise Exception("Failed to create directory!")
-    by_nc_sa_dir = 'by-nc-sa'
+    by_nc_sa_dir = 'critiquebrainz-json-by-nc-sa'
     exit_code = subprocess.call('mkdir -p %s/%s' % (dump_dir, by_nc_sa_dir), shell=True)
     if exit_code != 0:
         raise Exception("Failed to create directory!")
@@ -128,10 +128,10 @@ def dump_json():
     shutil.copyfile("licenses/cc-by-nc-sa.txt", '%s/%s/COPYING' % (dump_dir, by_nc_sa_dir))
 
     # Creating archives
-    exit_code = subprocess.call('tar -cjf dump/cc-by-sa.tar.bz2 -C "%s" %s' % (dump_dir, by_sa_dir), shell=True)
+    exit_code = subprocess.call('tar -cjf dump/critiquebrainz-json-cc-by-sa.tar.bz2 -C "%s" %s' % (dump_dir, by_sa_dir), shell=True)
     if exit_code != 0:
         raise Exception("Failed to create an archive for CC BY-SA reviews!")
-    exit_code = subprocess.call('tar -cjf dump/cc-by-nc-sa.tar.bz2 -C "%s" %s' % (dump_dir, by_nc_sa_dir), shell=True)
+    exit_code = subprocess.call('tar -cjf dump/critiquebrainz-json-cc-by-nc-sa.tar.bz2 -C "%s" %s' % (dump_dir, by_nc_sa_dir), shell=True)
     if exit_code != 0:
         raise Exception("Failed to create an archive for CC BY-NC-SA reviews!")
 
