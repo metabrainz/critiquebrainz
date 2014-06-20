@@ -193,6 +193,6 @@ def review_spam_report_handler(review_id, user):
     """Create spam report for a specified review."""
     review = Review.query.get_or_404(str(review_id))
     if review.user_id == user.id:
-        raise InvalidRequest(desc='You report your own review.')
+        raise InvalidRequest(desc="You cannot report your own review.")
     SpamReport.create(review, user)
     return jsonify(message="Spam report created successfully")
