@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify
 from critiquebrainz.oauth import oauth
-from critiquebrainz.exceptions import *
 from critiquebrainz.db import OAuthClient
 from critiquebrainz.decorators import nocache
 
 oauth_bp = Blueprint('oauth', __name__)
+
 
 @oauth_bp.route('/authorize', methods=['POST'], endpoint='authorize')
 @oauth.require_auth('authorization')
@@ -23,11 +23,11 @@ def oauth_authorize_handler(user):
 
     return jsonify(dict(code=code))
 
+
 @oauth_bp.route('/token', methods=['POST'], endpoint='token')
 @nocache
 def oauth_token_handler():
     client_id = request.form.get('client_id')
-    client_secret = request.form.get('client_secret')
     grant_type = request.form.get('grant_type')
     code = request.form.get('code')
     refresh_token = request.form.get('refresh_token')
@@ -35,7 +35,7 @@ def oauth_token_handler():
     scope = request.form.get('scope')
 
     # validate request
-    oauth.validate_token_request(client_id, client_secret, grant_type, scope, code, refresh_token, redirect_uri)
+    oauth.validate_token_request(client_id, grant_type, scope, code, refresh_token, redirect_uri)
 
     if grant_type == 'authorization_code':
         user_id = oauth.fetch_grant(client_id, code).user.id

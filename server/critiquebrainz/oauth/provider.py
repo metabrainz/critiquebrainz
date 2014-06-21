@@ -1,9 +1,11 @@
 from flask import request
-from critiquebrainz.db import db, OAuthClient, OAuthGrant, OAuthToken
-from critiquebrainz.utils import generate_string
 from exceptions import *
 from datetime import datetime, timedelta
 from functools import wraps
+
+from critiquebrainz.db import db, OAuthClient, OAuthGrant, OAuthToken
+from critiquebrainz.utils import generate_string
+
 
 class CritiqueBrainzAuthorizationProvider(object):
 
@@ -139,16 +141,12 @@ class CritiqueBrainzAuthorizationProvider(object):
         if self.validate_client_scope(client_id, scope) is False:
             raise InvalidScope
 
-    def validate_token_request(self, client_id, client_secret, grant_type, scope, code, refresh_token, redirect_uri):
+    def validate_token_request(self, client_id, grant_type, scope, code, refresh_token, redirect_uri):
         if self.validate_client_id(client_id) is False:
-            raise InvalidClient
-        if self.validate_client_secret(client_id, client_secret) is False:
             raise InvalidClient
         if grant_type == 'authorization_code':
             if self.validate_grant(client_id, code) is False:
                 raise InvalidGrant
-            if self.validate_grant_scope(client_id, code, scope) is False:
-                raise InvalidScope
             if self.validate_grant_redirect_uri(client_id, code, redirect_uri) is False:
                 raise InvalidRedirectURI
         elif grant_type == 'refresh_token':
@@ -165,7 +163,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
         grant = self.persist_grant(client_id, code, scope, expires, redirect_uri, user_id)
 
-        return (code ,)
+        return code,
 
     def generate_token(self, client_id, scope, refresh_token, user_id):
         if not refresh_token:
@@ -175,7 +173,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
         token = self.persist_token(client_id, scope, refresh_token, access_token, expires, user_id)
 
-        return (access_token, 'Bearer', self.token_expire, refresh_token, scope)
+        return access_token, 'Bearer', self.token_expire, refresh_token, scope
 
     def get_authorized_user(self, scopes):
         authorization = request.headers.get('Authorization')
