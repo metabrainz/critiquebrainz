@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-20 10:35+0000\n"
+"POT-Creation-Date: 2014-06-21 07:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -701,19 +701,59 @@ msgstr ""
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
 msgstr ""
 
+#: critiquebrainz/templates/oauth/prompt.html:3
+msgid "OAuth authorization"
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:8
+#, python-format
+msgid "Do you want to give access to your account to %(name)s?"
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:10
+msgid ""
+"<strong>Don't panic!</strong> You can withdraw any time in your profile "
+"settings."
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:16
+#: critiquebrainz/templates/profile/client/create.html:27
+#: critiquebrainz/templates/profile/client/edit.html:27
+#: critiquebrainz/templates/profile/client/index.html:24
+#: critiquebrainz/templates/profile/client/index.html:61
+msgid "Website"
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:17
+#: critiquebrainz/templates/profile/client/index.html:23
+#: critiquebrainz/templates/profile/client/index.html:60
+#: critiquebrainz/templates/search/index.html:47
+msgid "Name"
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:18
+msgid "Description"
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:23
+#, python-format
+msgid "%(client)s is requesting permission to your"
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:33
+msgid "Agree"
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:34
+msgid "No, thanks"
+msgstr ""
+
 #: critiquebrainz/templates/profile/client/create.html:3
 msgid "Create application"
 msgstr ""
 
 #: critiquebrainz/templates/profile/client/create.html:13
 msgid "Create API client"
-msgstr ""
-
-#: critiquebrainz/templates/profile/client/create.html:27
-#: critiquebrainz/templates/profile/client/edit.html:27
-#: critiquebrainz/templates/profile/client/index.html:24
-#: critiquebrainz/templates/profile/client/index.html:61
-msgid "Website"
 msgstr ""
 
 #: critiquebrainz/templates/profile/client/create.html:37
@@ -744,12 +784,6 @@ msgstr ""
 
 #: critiquebrainz/templates/profile/client/index.html:18
 msgid "No API clients found"
-msgstr ""
-
-#: critiquebrainz/templates/profile/client/index.html:23
-#: critiquebrainz/templates/profile/client/index.html:60
-#: critiquebrainz/templates/search/index.html:47
-msgid "Name"
 msgstr ""
 
 #: critiquebrainz/templates/profile/client/index.html:25
