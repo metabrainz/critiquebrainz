@@ -37,7 +37,7 @@ def oauth_token_handler():
     # validate request
     oauth.validate_token_request(client_id, client_secret, grant_type, scope, code, refresh_token, redirect_uri)
 
-    if grant_type == 'code':
+    if grant_type == 'authorization_code':
         user_id = oauth.fetch_grant(client_id, code).user.id
     elif grant_type == 'refresh_token':
         user_id = oauth.fetch_token(client_id, refresh_token).user.id

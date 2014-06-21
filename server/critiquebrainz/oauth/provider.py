@@ -144,7 +144,7 @@ class CritiqueBrainzAuthorizationProvider(object):
             raise InvalidClient
         if self.validate_client_secret(client_id, client_secret) is False:
             raise InvalidClient
-        if grant_type == 'code':
+        if grant_type == 'authorization_code':
             if self.validate_grant(client_id, code) is False:
                 raise InvalidGrant
             if self.validate_grant_scope(client_id, code, scope) is False:

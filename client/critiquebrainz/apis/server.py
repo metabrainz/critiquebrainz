@@ -29,7 +29,7 @@ class CritiqueBrainzAPI(object):
         return build_url(self.base_url + 'login/musicbrainz', params)
 
     def get_token_from_code(self, code):
-        data = dict(grant_type='code',
+        data = dict(grant_type='authorization_code',
                     code=code,
                     scope=self.scope,
                     redirect_uri=url_for('login.post', _external=True))
