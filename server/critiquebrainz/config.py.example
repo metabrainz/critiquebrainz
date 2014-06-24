@@ -1,16 +1,12 @@
-DEBUG = True # set False in production mode
+DEBUG = True  # set to False in production mode
 
 SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 
 SECRET_KEY = "<your secret key>"
 
-# MusicBrainz OAuth
+# MusicBrainz OAuth2 configuration
 MUSICBRAINZ_CLIENT_ID = "<your musicbrainz client id>"
 MUSICBRAINZ_CLIENT_SECRET = "<your musicbrainz client secret>"
-
-OAUTH_TOKEN_LENGTH = 40
-OAUTH_GRANT_EXPIRE = 60
-OAUTH_TOKEN_EXPIRE = 3600
 
 # Mail server
 MAIL_SERVER = 'localhost'
@@ -25,3 +21,8 @@ LOG_EMAIL_TOPIC = "CritiqueBrainz Server Failure"
 
 # Administrator list (emails)
 ADMINS = []
+
+# CritiqueBrainz OAuth configuration
+OAUTH_TOKEN_LENGTH = 40
+OAUTH_GRANT_EXPIRE = 60
+OAUTH_TOKEN_EXPIRE = 3600

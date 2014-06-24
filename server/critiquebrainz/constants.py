@@ -1,4 +1,4 @@
-# define user types
+# USER TYPES
 class UserType(object):
 
     def __init__(self, label, karma, reviews_per_day, votes_per_day):
@@ -40,10 +40,10 @@ sorcerer = UserType(
     reviews_per_day=50,
     votes_per_day=200)
 
-# register user types
 user_types = (blocked, spammer, noob, apprentice, sorcerer)
 
-# define review classes
+
+# REVIEW CLASSES
 class ReviewClass(object):
 
     def __init__(self, label, rating, upvote, downvote, mark_spam):
@@ -84,5 +84,4 @@ trusted = ReviewClass(
     downvote=(apprentice, sorcerer),
     mark_spam=(apprentice, sorcerer))
 
-# register review classes
 review_classes = (spam, neutral, promising, trusted)

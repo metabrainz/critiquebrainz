@@ -15,10 +15,12 @@ def oauth_authorize_prompt_handler():
     redirect_uri = request.args.get('redirect_uri')
     scope = request.args.get('scope')
     state = request.args.get('state')
-    if request.method == 'POST':
-        code = server.authorize(client_id, response_type, redirect_uri, scope, current_user.access_token)
-        return redirect(build_url(redirect_uri, dict(code=code, state=state)))
-    if request.method == 'GET':
+
+    if request.method == 'GET':  # Client requests access
         client = server.validate_oauth_request(client_id, response_type, redirect_uri, scope)
         return render_template('oauth/prompt.html', client=client, scope=scope,
                                cancel_url=build_url(redirect_uri, dict(error='access_denied')))
+
+    if request.method == 'POST':  # User grants access to the client
+        code = server.authorize(client_id, response_type, redirect_uri, scope, current_user.access_token)
+        return redirect(build_url(redirect_uri, dict(code=code, state=state)))

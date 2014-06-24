@@ -11,7 +11,7 @@ def install(app, *args):
                     db.session.add(entity)
                     db.session.flush()
                 except:
-                    print 'failed %s' % key
+                    print 'failed to add %s' % key
                     db.session.rollback()
                 else:
                     print 'added %s' % key
@@ -19,6 +19,7 @@ def install(app, *args):
 
 
 class OAuthClientData(object):
+    # TODO: Fix redirect_uri
     oauth_client01 = OAuthClient(
         client_id=u'b9481301-8adc-452a-83d2-180c8eec53fb',
         client_secret=u'e03fbc0e-2308-46d4-a5a2-c3e54706db9f',

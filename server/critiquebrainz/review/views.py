@@ -59,9 +59,11 @@ def review_modify_handler(review_id, user):
 
     :resheader Content-Type: *application/json*
     """
+
     def fetch_params():
         text = Parser.string('json', 'text', min=25, max=2500)
         return text
+
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound
@@ -87,6 +89,7 @@ def review_list_handler():
 
     :resheader Content-Type: *application/json*
     """
+
     def fetch_params():
         release_group = Parser.uuid('uri', 'release_group', optional=True)
         user_id = Parser.uuid('uri', 'user_id', optional=True)
@@ -98,6 +101,7 @@ def review_list_handler():
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
         return release_group, user_id, sort, limit, offset, include, language
+
     release_group, user_id, sort, limit, offset, include, language = fetch_params()
     reviews, count = Review.list(release_group, user_id, sort, limit, offset, language)
     return jsonify(limit=limit, offset=offset, count=count,
@@ -120,6 +124,7 @@ def review_post_handler(user):
 
     :resheader Content-Type: *application/json*
     """
+
     def fetch_params():
         release_group = Parser.uuid('json', 'release_group')
         text = Parser.string('json', 'text', min=25, max=2500)
@@ -130,6 +135,7 @@ def review_post_handler(user):
         if Review.query.filter_by(user=user, release_group=release_group).count():
             raise InvalidRequest(desc='You have already published a review for this album')
         return release_group, text, license_choice, language
+
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
     release_group, text, license_choice, language = fetch_params()
@@ -180,9 +186,11 @@ def review_vote_put_handler(review_id, user):
 
     :resheader Content-Type: *application/json*
     """
+
     def fetch_params():
         placet = Parser.bool('json', 'placet')
         return placet
+
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound

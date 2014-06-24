@@ -3,7 +3,7 @@ import urlparse
 import string
 import random
 from flask.ext.uuid import UUID_RE
-import re
+
 
 def generate_string(length):
     return ''.join([random.choice(string.ascii_letters.decode('ascii') + string.digits.decode('ascii')) for x in xrange(length)])
@@ -18,13 +18,10 @@ def build_url(base, additional_params=None):
             if v is None:
                 query_params.pop(k)
 
-    return urlparse.urlunparse((url.scheme,
-                                url.netloc,
-                                url.path,
-                                url.params,
-                                urllib.urlencode(query_params),
-                                url.fragment))
-    
+    return urlparse.urlunparse(
+        (url.scheme, url.netloc, url.path, url.params, urllib.urlencode(query_params), url.fragment))
+
+
 def validate_uuid(string):
     if not UUID_RE.match(string):
         return False

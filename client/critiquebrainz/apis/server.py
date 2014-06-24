@@ -1,7 +1,7 @@
 import json
 import requests
-from requests.exceptions import ConnectionError
 from rauth import OAuth2Service
+from requests.exceptions import ConnectionError
 
 from flask import url_for
 
@@ -17,9 +17,7 @@ class CritiqueBrainzAPI(object):
     def __init__(self, base_url, client_id, **kwargs):
         self.base_url = base_url
         self.client_id = client_id
-        self._service = OAuth2Service(base_url=base_url,
-                                      client_id=client_id,
-                                      **kwargs)
+        self._service = OAuth2Service(base_url=base_url, client_id=client_id, **kwargs)
 
     def generate_musicbrainz_authorization_uri(self):
         params = dict(response_type='code',
@@ -28,7 +26,7 @@ class CritiqueBrainzAPI(object):
                       client_id=self.client_id)
         return build_url(self.base_url + 'login/musicbrainz', params)
 
-    def get_token_from_code(self, code):
+    def get_token_from_auth_code(self, code):
         data = dict(grant_type='authorization_code',
                     code=code,
                     scope=self.scope,

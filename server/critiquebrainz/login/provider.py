@@ -1,10 +1,11 @@
-from flask import request, session, redirect, flash, url_for, g
-from rauth import OAuth1Service, OAuth2Service
-from critiquebrainz.db import db, User
+import json
+from rauth import OAuth2Service
+from flask import request, session, url_for
+
+from critiquebrainz.db import User
 from critiquebrainz.exceptions import LoginError
 from critiquebrainz.utils import generate_string
-from functools import wraps
-import json
+
 
 class BaseAuthentication(object):
 
@@ -63,35 +64,26 @@ class MusicBrainzAuthentication(BaseAuthentication):
         data = dict(code=self.fetch_data('code'),
                     grant_type='authorization_code',
                     redirect_uri=url_for('login.musicbrainz_post', _external=True))
-
         s = self._service.get_auth_session(data=data, decoder=json.loads)
         data = s.get('oauth2/userinfo').json()
-
         musicbrainz_id = data.get('sub')
         display_name = data.get('sub')
-
         user = User.get_or_create(display_name, musicbrainz_id=musicbrainz_id)
-            
         return user
 
     def validate_post_login(self):
         csrf = self.fetch_data('csrf')
         error = request.args.get('error')
         code = request.args.get('code')
-
         if csrf != request.args.get('state'):
             raise LoginError('server_error')
-
         if error:
             raise LoginError('access_denied')
-        
         if not code:
             raise LoginError('server_error')
-
         self.persist_data(code=code)
 
     def __init__(self, service=None, session_key='musicbrainz', **kwargs):
         if service is None:
             service = OAuth2Service(**kwargs)
-        super(MusicBrainzAuthentication, self).__init__(kwargs.get('name'), 
-            service, session_key)
+        super(MusicBrainzAuthentication, self).__init__(kwargs.get('name'), service, session_key)

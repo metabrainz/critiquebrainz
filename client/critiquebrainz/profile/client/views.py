@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask.ext.login import login_required, current_user, logout_user
+from flask import Blueprint, render_template, flash, redirect, url_for
+from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
 
 from critiquebrainz.apis import server
@@ -8,6 +8,7 @@ from critiquebrainz.forms.profile.client import ClientForm
 
 bp = Blueprint('profile_client', __name__)
 
+
 @bp.route('/', endpoint='index')
 @login_required
 def index_handler():
@@ -15,9 +16,11 @@ def index_handler():
     tokens = server.get_me_tokens(current_user.access_token)
     return render_template('profile/client/index.html', clients=clients, tokens=tokens)
 
+
 @bp.route('/create', endpoint='create', methods=['GET', 'POST'])
 @login_required
 def create_handler():
+    """Create OAuth client."""
     form = ClientForm()
     if form.validate_on_submit():
         try:
@@ -30,6 +33,7 @@ def create_handler():
             flash(gettext('You have created an API client!'), 'success')
         return redirect(url_for('.index'))
     return render_template('profile/client/create.html', form=form)
+
 
 @bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
 @login_required
@@ -53,6 +57,7 @@ def edit_handler(client_id):
         form.redirect_uri.data = client.get('redirect_uri')
     return render_template('profile/client/edit.html', form=form)
 
+
 @bp.route('/<client_id>/delete', endpoint='delete')
 @login_required
 def delete_handler(client_id):
@@ -63,6 +68,7 @@ def delete_handler(client_id):
     else:
         flash(gettext('You have deleted the API client.'), 'success')
     return redirect(url_for('.index'))
+
 
 @bp.route('/<client_id>/token/delete', endpoint='token_delete')
 @login_required

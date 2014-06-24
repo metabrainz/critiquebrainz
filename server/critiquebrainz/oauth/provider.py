@@ -14,7 +14,8 @@ class CritiqueBrainzAuthorizationProvider(object):
         self.grant_expire = app.config['OAUTH_GRANT_EXPIRE']
         self.token_expire = app.config['OAUTH_TOKEN_EXPIRE']
 
-    def validate_authorization_header(self, value):
+    @staticmethod
+    def validate_authorization_header(value):
         if not value or isinstance(value, unicode) is False:
             return False
 
@@ -27,19 +28,22 @@ class CritiqueBrainzAuthorizationProvider(object):
 
         return True
 
-    def validate_client_id(self, client_id):
+    @staticmethod
+    def validate_client_id(client_id):
         if not client_id:
             return False
         return OAuthClient.query.get(client_id) is not None
 
-    def validate_client_secret(self, client_id, client_secret):
+    @staticmethod
+    def validate_client_secret(client_id, client_secret):
         client = OAuthClient.query.get(client_id)
         if client is None:
             return False
         else:
             return client.client_secret == client_secret
 
-    def validate_client_redirect_uri(self, client_id, redirect_uri):
+    @staticmethod
+    def validate_client_redirect_uri(client_id, redirect_uri):
         client = OAuthClient.query.get(client_id)
 
         if client is None or isinstance(redirect_uri, unicode) is False:
@@ -63,7 +67,7 @@ class CritiqueBrainzAuthorizationProvider(object):
         grant = self.fetch_grant(client_id, code)
         if grant is None:
             return False
-        return ( datetime.now() > grant.expires ) is False
+        return (datetime.now() > grant.expires) is False
 
     def validate_token_scope(self, client_id, refresh_token, scope):
         token = self.fetch_token(client_id, refresh_token)
@@ -72,7 +76,8 @@ class CritiqueBrainzAuthorizationProvider(object):
     def validate_token(self, client_id, refresh_token):
         return self.fetch_token(client_id, refresh_token) is not None
 
-    def validate_scope(self, scope, valid_scopes):
+    @staticmethod
+    def validate_scope(scope, valid_scopes):
         if not scope or isinstance(scope, unicode) is False:
             return False
 
@@ -107,25 +112,31 @@ class CritiqueBrainzAuthorizationProvider(object):
         db.session.commit()
         return token
 
-    def fetch_grant(self, client_id, code):
+    @staticmethod
+    def fetch_grant(client_id, code):
         grant = OAuthGrant.query.filter_by(client_id=client_id, code=code).first()
         return grant
 
-    def fetch_token(self, client_id, refresh_token):
+    @staticmethod
+    def fetch_token(client_id, refresh_token):
         token = OAuthToken.query.filter_by(client_id=client_id, refresh_token=refresh_token).first()
         return token
 
-    def fetch_access_token(self, access_token):
+    @staticmethod
+    def fetch_access_token(access_token):
         token = OAuthToken.query.filter_by(access_token=access_token).first()
         return token
 
-    def discard_grant(self, client_id, code):
+    @staticmethod
+    def discard_grant(client_id, code):
         OAuthGrant.query.filter_by(client_id=client_id, code=code).delete()
 
-    def discard_token(self, client_id, refresh_token):
+    @staticmethod
+    def discard_token(client_id, refresh_token):
         OAuthToken.query.filter_by(client_id=client_id, refresh_token=refresh_token).delete()
 
-    def discard_client_user_tokens(self, client_id, user_id):
+    @staticmethod
+    def discard_client_user_tokens(client_id, user_id):
         OAuthToken.query.filter_by(client_id=client_id, user_id=user_id).delete()
 
     def validate_authorization_request(self, client_id, response_type, redirect_uri, scope=None):
