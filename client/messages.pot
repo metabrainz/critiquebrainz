@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-24 15:27+0000\n"
+"POT-Creation-Date: 2014-06-24 19:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,31 +72,28 @@ msgid "Recording studio"
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:6
-#: critiquebrainz/templates/profile/client/create.html:19
-#: critiquebrainz/templates/profile/client/edit.html:19
-msgid "Client name"
+msgid "Application name"
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:7
-msgid "Client name field is empty"
+msgid "Application name field is empty."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:8
-msgid "Client name needs to be at least 3 characters long."
+msgid "Application name needs to be at least 3 characters long."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:9
-msgid "Client name needs to be at most 64 characters long."
+msgid "Application name needs to be at most 64 characters long."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:10
-#: critiquebrainz/templates/profile/client/create.html:23
-#: critiquebrainz/templates/profile/client/edit.html:23
-msgid "Client description"
+#: critiquebrainz/templates/oauth/prompt.html:17
+msgid "Description"
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:11
-msgid "Client description field is empty"
+msgid "Client description field is empty."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:12
@@ -108,29 +105,27 @@ msgid "Client description needs to be at most 512 characters long."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:14
-msgid "Client website"
+msgid "Homepage"
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:15
-msgid "Client website field is empty"
+msgid "Homepage field is empty."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:16
-msgid "Client website is not a valid URI"
+msgid "Homepage is not a valid URI."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:17
-#: critiquebrainz/templates/profile/client/create.html:31
-#: critiquebrainz/templates/profile/client/edit.html:31
-msgid "Redirect URI"
+msgid "Authorization callback URL"
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:18
-msgid "Redirect URI field is empty"
+msgid "Authorization callback URL field is empty."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:19
-msgid "Redirect URI is not a valid URI"
+msgid "Authorization callback URL is invalid."
 msgstr ""
 
 #: critiquebrainz/forms/profile/details.py:6
@@ -139,7 +134,7 @@ msgid "Display name"
 msgstr ""
 
 #: critiquebrainz/forms/profile/details.py:7
-msgid "Display name field is empty"
+msgid "Display name field is empty."
 msgstr ""
 
 #: critiquebrainz/forms/profile/details.py:8
@@ -157,7 +152,7 @@ msgid "Email"
 msgstr ""
 
 #: critiquebrainz/forms/profile/details.py:12
-msgid "Email field is not a valid email address"
+msgid "Email field is not a valid email address."
 msgstr ""
 
 #: critiquebrainz/forms/profile/details.py:13
@@ -170,12 +165,12 @@ msgid "Text"
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:10
-msgid "Review is empty"
+msgid "Review is empty!"
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:11
 #, python-format
-msgid "Review length needs to be between %(min)d and %(max)d characters"
+msgid "Review length needs to be between %(min)d and %(max)d characters."
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:15
@@ -202,7 +197,7 @@ msgid ""
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:23
-msgid "You need to choose a license"
+msgid "You need to choose a license!"
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:24
@@ -210,7 +205,7 @@ msgid "Licence"
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:25
-msgid "You need to accept the licence agreement"
+msgid "You need to accept the licence agreement!"
 msgstr ""
 
 #: critiquebrainz/login/__init__.py:13
@@ -230,20 +225,20 @@ msgstr ""
 msgid "Feedback submitted. Thank you!"
 msgstr ""
 
-#: critiquebrainz/profile/client/views.py:33
-msgid "You have created an API client!"
+#: critiquebrainz/profile/applications/views.py:31
+msgid "You have created an application!"
 msgstr ""
 
-#: critiquebrainz/profile/client/views.py:51
-msgid "You have updated the API client!"
+#: critiquebrainz/profile/applications/views.py:49
+msgid "You have updated an application!"
 msgstr ""
 
-#: critiquebrainz/profile/client/views.py:69
-msgid "You have deleted the API client."
+#: critiquebrainz/profile/applications/views.py:67
+msgid "You have deleted an application."
 msgstr ""
 
 #: critiquebrainz/profile/details/views.py:31
-msgid "Profile updated"
+msgid "Profile updated."
 msgstr ""
 
 #: critiquebrainz/profile/review/views.py:44
@@ -367,12 +362,12 @@ msgid "Members"
 msgstr ""
 
 #: critiquebrainz/templates/artist.html:109
-#: critiquebrainz/templates/release_group.html:143
+#: critiquebrainz/templates/release_group.html:141
 msgid "External links"
 msgstr ""
 
 #: critiquebrainz/templates/artist.html:127
-#: critiquebrainz/templates/release_group.html:160
+#: critiquebrainz/templates/release_group.html:158
 msgid "Edit on MusicBrainz"
 msgstr ""
 
@@ -392,7 +387,7 @@ msgid "Profile"
 msgstr ""
 
 #: critiquebrainz/templates/base.html:58
-#: critiquebrainz/templates/macros.html:22
+#: critiquebrainz/templates/macros.html:24
 #: critiquebrainz/templates/release_group.html:58
 #: critiquebrainz/templates/profile/base.html:8
 #: critiquebrainz/templates/profile/details/index.html:37
@@ -403,10 +398,11 @@ msgid "Reviews"
 msgstr ""
 
 #: critiquebrainz/templates/base.html:59
-#: critiquebrainz/templates/macros.html:24
+#: critiquebrainz/templates/macros.html:26
 #: critiquebrainz/templates/profile/base.html:9
-#: critiquebrainz/templates/profile/client/index.html:9
-msgid "API clients"
+#: critiquebrainz/templates/profile/applications/index.html:3
+#: critiquebrainz/templates/profile/applications/index.html:9
+msgid "Applications"
 msgstr ""
 
 #: critiquebrainz/templates/base.html:61
@@ -496,21 +492,21 @@ msgid "Popular reviews"
 msgstr ""
 
 #: critiquebrainz/templates/index.html:31
-#: critiquebrainz/templates/index.html:63
+#: critiquebrainz/templates/index.html:61
 #: critiquebrainz/templates/release_group.html:60
 #: critiquebrainz/templates/profile/review/list.html:16
 #: critiquebrainz/templates/user/entity.html:45
 msgid "No reviews found"
 msgstr ""
 
-#: critiquebrainz/templates/index.html:49
-#: critiquebrainz/templates/index.html:81
-#: critiquebrainz/templates/review/entity.html:43
+#: critiquebrainz/templates/index.html:48
+#: critiquebrainz/templates/index.html:78
+#: critiquebrainz/templates/review/entity.html:42
 #, python-format
 msgid "Review by %(user)s"
 msgstr ""
 
-#: critiquebrainz/templates/index.html:61
+#: critiquebrainz/templates/index.html:59
 msgid "Recent reviews"
 msgstr ""
 
@@ -526,15 +522,37 @@ msgstr ""
 msgid "Notice!"
 msgstr ""
 
-#: critiquebrainz/templates/macros.html:20
+#: critiquebrainz/templates/macros.html:21
+msgid "Modify profile info and delete your profile."
+msgstr ""
+
+#: critiquebrainz/templates/macros.html:21
 msgid "Profile data"
 msgstr ""
 
+#: critiquebrainz/templates/macros.html:24
+msgid "Create and modify your reviews."
+msgstr ""
+
 #: critiquebrainz/templates/macros.html:26
+msgid "Modify your applications (create, edit, delete)."
+msgstr ""
+
+#: critiquebrainz/templates/macros.html:29
+msgid ""
+"Manage access to your profile for other apps (can allow complete access "
+"to your profile and remove existing access authorizations)."
+msgstr ""
+
+#: critiquebrainz/templates/macros.html:29
 msgid "Authorization"
 msgstr ""
 
-#: critiquebrainz/templates/macros.html:28
+#: critiquebrainz/templates/macros.html:32
+msgid "Submit and delete your votes."
+msgstr ""
+
+#: critiquebrainz/templates/macros.html:32
 msgid "Review votes"
 msgstr ""
 
@@ -566,36 +584,36 @@ msgstr ""
 msgid "Rating"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:76
+#: critiquebrainz/templates/release_group.html:75
 #, python-format
 msgid "by %(reviewer)s"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:103
+#: critiquebrainz/templates/release_group.html:101
 msgid "Tracklist"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:107
+#: critiquebrainz/templates/release_group.html:105
 msgid "#"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:108
+#: critiquebrainz/templates/release_group.html:106
 msgid "Title"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:109
+#: critiquebrainz/templates/release_group.html:107
 msgid "Length"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:116
+#: critiquebrainz/templates/release_group.html:114
 msgid "CD"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:138
+#: critiquebrainz/templates/release_group.html:136
 msgid "Release group information"
 msgstr ""
 
-#: critiquebrainz/templates/release_group.html:140
+#: critiquebrainz/templates/release_group.html:138
 #, python-format
 msgid "First release in %(year)s"
 msgstr ""
@@ -678,26 +696,26 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:15
+#: critiquebrainz/templates/matching/spotify.html:14
 #, python-format
 msgid "Please, select the album %(album)s by %(artist)s"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:35
+#: critiquebrainz/templates/matching/spotify.html:33
 msgid "Listen on Spotify"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:61
+#: critiquebrainz/templates/matching/spotify.html:59
 msgid "No similar albums found"
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:65
+#: critiquebrainz/templates/matching/spotify.html:63
 msgid ""
 "It's fine if you can't find the right album. It might not be available on"
 " Spotify yet."
 msgstr ""
 
-#: critiquebrainz/templates/matching/spotify.html:66
+#: critiquebrainz/templates/matching/spotify.html:64
 #, python-format
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
 msgstr ""
@@ -712,102 +730,109 @@ msgid "Do you want to give access to your account to %(name)s?"
 msgstr ""
 
 #: critiquebrainz/templates/oauth/prompt.html:9
-msgid ""
-"<strong>Don't panic!</strong> You can withdraw any time in your profile "
-"settings."
+msgid "You can withdraw any time in your profile settings."
 msgstr ""
 
 #: critiquebrainz/templates/oauth/prompt.html:15
-#: critiquebrainz/templates/profile/client/create.html:27
-#: critiquebrainz/templates/profile/client/edit.html:27
-#: critiquebrainz/templates/profile/client/index.html:24
-#: critiquebrainz/templates/profile/client/index.html:61
-msgid "Website"
-msgstr ""
-
-#: critiquebrainz/templates/oauth/prompt.html:16
-#: critiquebrainz/templates/profile/client/index.html:23
-#: critiquebrainz/templates/profile/client/index.html:60
+#: critiquebrainz/templates/profile/applications/index.html:23
+#: critiquebrainz/templates/profile/applications/index.html:57
 #: critiquebrainz/templates/search/index.html:47
 msgid "Name"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:17
-msgid "Description"
+#: critiquebrainz/templates/oauth/prompt.html:16
+#: critiquebrainz/templates/profile/applications/index.html:24
+#: critiquebrainz/templates/profile/applications/index.html:58
+msgid "Website"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:22
+#: critiquebrainz/templates/oauth/prompt.html:23
 #, python-format
-msgid "%(client)s is requesting permission to access your"
+msgid ""
+"%(client)s is requesting permission to access the following parts of your"
+" profile:"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:32
+#: critiquebrainz/templates/oauth/prompt.html:30
+#, python-format
+msgid "%(client)s does not require any special permissions."
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:36
 msgid "Allow access"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:33
+#: critiquebrainz/templates/oauth/prompt.html:37
 msgid "No thanks"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/create.html:3
+#: critiquebrainz/templates/profile/applications/create.html:3
+#: critiquebrainz/templates/profile/applications/create.html:14
+#: critiquebrainz/templates/profile/applications/index.html:11
+msgid "Create new application"
+msgstr ""
+
+#: critiquebrainz/templates/profile/applications/create.html:38
 msgid "Create application"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/create.html:13
-msgid "Create API client"
+#: critiquebrainz/templates/profile/applications/edit.html:3
+#: critiquebrainz/templates/profile/applications/edit.html:14
+#, python-format
+msgid "Edit application %(name)s"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/create.html:37
-#: critiquebrainz/templates/profile/client/index.html:11
-msgid "Create"
+#: critiquebrainz/templates/profile/applications/edit.html:38
+msgid "Save changes"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/edit.html:3
-msgid "Edit application"
-msgstr ""
-
-#: critiquebrainz/templates/profile/client/edit.html:13
-msgid "Edit API client"
-msgstr ""
-
-#: critiquebrainz/templates/profile/client/edit.html:37
-#: critiquebrainz/templates/profile/details/edit.html:36
-msgid "Save"
-msgstr ""
-
-#: critiquebrainz/templates/profile/client/index.html:3
-msgid "Your API clients"
-msgstr ""
-
-#: critiquebrainz/templates/profile/client/index.html:16
+#: critiquebrainz/templates/profile/applications/index.html:16
 msgid "Your applications"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/index.html:18
-msgid "No API clients found"
+#: critiquebrainz/templates/profile/applications/index.html:18
+msgid "No applications found"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/index.html:25
+#: critiquebrainz/templates/profile/applications/index.html:25
 msgid "Client ID"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/index.html:26
+#: critiquebrainz/templates/profile/applications/index.html:26
 msgid "Client secret"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/index.html:53
+#: critiquebrainz/templates/profile/applications/index.html:38
+msgid "Modify"
+msgstr ""
+
+#: critiquebrainz/templates/profile/applications/index.html:39
+#: critiquebrainz/templates/profile/review/list.html:46
+msgid "Delete"
+msgstr ""
+
+#: critiquebrainz/templates/profile/applications/index.html:46
+#, python-format
+msgid "Developer documentation is available at %(link)s."
+msgstr ""
+
+#: critiquebrainz/templates/profile/applications/index.html:50
 msgid "Authorized applications"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/index.html:55
+#: critiquebrainz/templates/profile/applications/index.html:52
 msgid "No authorized applications found"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/index.html:62
+#: critiquebrainz/templates/profile/applications/index.html:59
 msgid "Access"
 msgstr ""
 
-#: critiquebrainz/templates/profile/client/index.html:80
+#: critiquebrainz/templates/profile/applications/index.html:77
+msgid "No special requirements"
+msgstr ""
+
+#: critiquebrainz/templates/profile/applications/index.html:81
 msgid "Revoke access"
 msgstr ""
 
@@ -835,8 +860,8 @@ msgid "Yes, I want to delete my account"
 msgstr ""
 
 #: critiquebrainz/templates/profile/details/delete.html:15
-#: critiquebrainz/templates/review/entity.html:74
-#: critiquebrainz/templates/review/entity.html:85
+#: critiquebrainz/templates/review/entity.html:70
+#: critiquebrainz/templates/review/entity.html:81
 msgid "No"
 msgstr ""
 
@@ -846,6 +871,10 @@ msgstr ""
 
 #: critiquebrainz/templates/profile/details/edit.html:13
 msgid "Editing profile"
+msgstr ""
+
+#: critiquebrainz/templates/profile/details/edit.html:36
+msgid "Save"
 msgstr ""
 
 #: critiquebrainz/templates/profile/details/index.html:3
@@ -985,10 +1014,6 @@ msgstr ""
 msgid "Read"
 msgstr ""
 
-#: critiquebrainz/templates/profile/review/list.html:46
-msgid "Delete"
-msgstr ""
-
 #: critiquebrainz/templates/profile/review/write.html:5
 #, python-format
 msgid "Write review of \"%(rg)s\""
@@ -1021,68 +1046,68 @@ msgstr ""
 msgid "Review of \"%(rg)s\" by %(user)s"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:46
+#: critiquebrainz/templates/review/entity.html:44
 #, python-format
 msgid "Published on %(date)s"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:47
+#: critiquebrainz/templates/review/entity.html:45
 msgid "Rating:"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:59
+#: critiquebrainz/templates/review/entity.html:56
 #, python-format
 msgid "This review is licensed under a %(name)s license."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:61
+#: critiquebrainz/templates/review/entity.html:58
 #, python-format
 msgid "It was imported from %(source)s."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:72
+#: critiquebrainz/templates/review/entity.html:68
 msgid "Did you find this review useful?"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:73
-#: critiquebrainz/templates/review/entity.html:84
+#: critiquebrainz/templates/review/entity.html:69
+#: critiquebrainz/templates/review/entity.html:80
 msgid "Yes"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:76
+#: critiquebrainz/templates/review/entity.html:72
 msgid "(delete your vote)"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:81
+#: critiquebrainz/templates/review/entity.html:77
 msgid "Report spam"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:83
+#: critiquebrainz/templates/review/entity.html:79
 msgid "Report this review as spam?"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:87
+#: critiquebrainz/templates/review/entity.html:83
 msgid "Reporting..."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:93
+#: critiquebrainz/templates/review/entity.html:89
 msgid "Edit this review"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:97
+#: critiquebrainz/templates/review/entity.html:93
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:115
+#: critiquebrainz/templates/review/entity.html:111
 msgid "Review reported!"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:119
+#: critiquebrainz/templates/review/entity.html:115
 msgid "You have already reported this review!"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:121
+#: critiquebrainz/templates/review/entity.html:117
 msgid "Unknown error occurred!"
 msgstr ""
 

@@ -36,7 +36,7 @@ def login_post_handler():
         else:
             return redirect(url_for('index'))
     elif error:
-        flash('Login failed', 'error')
+        flash('Login failed.', 'error')
 
     return redirect(url_for('.index'))
 

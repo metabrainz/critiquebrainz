@@ -22,13 +22,13 @@ def edit_handler():
     if form.validate_on_submit():
         try:
             message = server.update_profile(current_user.access_token,
-                                         display_name=form.display_name.data,
-                                         email=form.email.data,
-                                         show_gravatar=form.show_gravatar.data)
+                                            display_name=form.display_name.data,
+                                            email=form.email.data,
+                                            show_gravatar=form.show_gravatar.data)
         except APIError as e:
             flash(e.desc, 'error')
         else:
-            flash(gettext('Profile updated'), 'success')
+            flash(gettext('Profile updated.'), 'success')
         return redirect(url_for('.index'))
     else:
         form.display_name.data = current_user.me.get('display_name')
