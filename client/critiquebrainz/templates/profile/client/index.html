@@ -69,12 +69,16 @@
           <td>{{ token.client.name }}</td>
           <td>{{ token.client.website }}</td>
           <td>
+            {% if token.client.scopes %}
             <ul>
-            {% set scopes = token.client.scopes.split() %}
-            {% for scope in scopes %}
-              <li>{{ scope_desc(scope) }}</li>
-            {% endfor %}
+              {% set scopes = token.client.scopes.split() %}
+              {% for scope in scopes %}
+                <li>{{ scope_desc(scope) }}</li>
+              {% endfor %}
             </ul>
+            {% else %}
+              {{ _('No special requirements') }}
+            {% endif %}
           </td>
           <td>
             <a href="{{ url_for('profile_client.token_delete', client_id=token.client.client_id) }}">{{ _('Revoke access') }}</a>
