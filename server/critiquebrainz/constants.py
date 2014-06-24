@@ -1,3 +1,7 @@
+# SCOPES
+available_scopes = ('user', 'review', 'client', 'authorization', 'vote')
+
+
 # USER TYPES
 class UserType(object):
 

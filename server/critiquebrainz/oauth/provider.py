@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 from critiquebrainz.db import db, OAuthClient, OAuthGrant, OAuthToken
+from critiquebrainz.constants import available_scopes
 from critiquebrainz.utils import generate_string
 
 
@@ -77,7 +78,7 @@ class CritiqueBrainzAuthorizationProvider(object):
         return self.fetch_token(client_id, refresh_token) is not None
 
     @staticmethod
-    def validate_scope(scope, valid_scopes):
+    def validate_scope(scope, valid_scopes=available_scopes):
         if not scope or isinstance(scope, unicode) is False:
             return False
 
@@ -146,9 +147,8 @@ class CritiqueBrainzAuthorizationProvider(object):
             raise UnsupportedResponseType
         if self.validate_client_redirect_uri(client_id, redirect_uri) is False:
             raise InvalidRedirectURI
-        if scope:
-            # TODO: Check if scope is supported
-            pass
+        if scope and self.validate_scope(scope):
+            raise InvalidScope
 
     def validate_token_request(self, grant_type, client_id, client_secret, redirect_uri, code, refresh_token):
         if self.validate_client_id(client_id) is False:
