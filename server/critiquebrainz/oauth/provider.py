@@ -147,7 +147,7 @@ class CritiqueBrainzAuthorizationProvider(object):
             raise UnsupportedResponseType
         if self.validate_client_redirect_uri(client_id, redirect_uri) is False:
             raise InvalidRedirectURI
-        if scope and self.validate_scope(scope):
+        if scope and not self.validate_scope(scope):
             raise InvalidScope
 
     def validate_token_request(self, grant_type, client_id, client_secret, redirect_uri, code, refresh_token):
