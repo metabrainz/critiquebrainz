@@ -14,7 +14,7 @@ The endpoint is located at ``http://critiquebrainz.org/oauth/authorize``.
 **Parameters:**
 
 +---------------+------------------------+---------------------------------------------------------------+
-| Parameter     | Values                 | Description                                                   |
+| Parameter     | Description                                                                            |
 +===============+========================+===============================================================+
 | response_type | **Required.** Desired grant type.                                                      |
 +---------------+------------------------+---------------------------------------------------------------+
@@ -158,10 +158,10 @@ Scopes
 ------
 
 Authorization requests have a limited scope. You should request only the scopes that your application
-necessarily needs. CritiqueBrainz provides following scopes:
+necessarily needs. CritiqueBrainz provides the following scopes:
 
 * ``user`` - Modify profile info and **delete profile**.
 * ``review`` - Create and modify reviews.
 * ``client`` - Modify API clients (create, edit, delete).
-* ``authorization`` - Generate new OAuth grants.
+* ``authorization`` - **Generate new OAuth grants.**
 * ``vote`` - Submit and delete votes on reviews.
