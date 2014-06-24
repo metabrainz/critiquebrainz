@@ -21,9 +21,9 @@ def create_handler():
     form = ClientForm()
     if form.validate_on_submit():
         try:
-            message, _, _ = server.create_client(form.name.data, form.desc.data,
-                form.website.data, form.redirect_uri.data,
-                'review vote', current_user.access_token)
+            message, client_id, client_secret = server.create_client(
+                form.name.data, form.desc.data, form.website.data, form.redirect_uri.data,
+                current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:

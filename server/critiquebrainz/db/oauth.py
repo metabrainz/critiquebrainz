@@ -14,7 +14,6 @@ class OAuthClient(db.Model):
     desc = db.Column(db.Unicode, nullable=False)
     website = db.Column(db.Unicode, nullable=False)
     redirect_uri = db.Column(db.UnicodeText, nullable=False)
-    scopes = db.Column(db.UnicodeText, default=u'user review')
 
     grants = db.relationship('OAuthGrant', cascade='all', backref='client')
     tokens = db.relationship('OAuthToken', cascade='all', backref='client')
@@ -22,37 +21,31 @@ class OAuthClient(db.Model):
     allowed_includes = []
 
     @classmethod
-    def generate(cls, user, name, desc, website, redirect_uri, scopes):
+    def generate(cls, user, name, desc, website, redirect_uri):
         client_id = generate_string(20)
         client_secret = generate_string(40)
         client = cls(client_id=client_id, client_secret=client_secret, user=user,
-            name=name, desc=desc, website=website, redirect_uri=redirect_uri, scopes=' '.join(scopes))
+                     name=name, desc=desc, website=website, redirect_uri=redirect_uri)
         db.session.add(client)
         db.session.commit()
         return client
-
-    def get_scopes(self):
-        if hasattr(self, '_scopes') is False:
-            self._scopes = self.scopes.split()
-        return self._scopes
 
     def delete(self):
         db.session.delete(self)
         db.session.commit()
         return self
 
-    def to_dict(self, includes=[]):
+    def to_dict(self):
         response = dict(client_id=self.client_id,
-            client_secret=self.client_secret,
-            user_id=self.user_id,
-            name=self.name,
-            desc=self.desc,
-            website=self.website,
-            redirect_uri=self.redirect_uri,
-            scopes=self.scopes)
+                        client_secret=self.client_secret,
+                        user_id=self.user_id,
+                        name=self.name,
+                        desc=self.desc,
+                        website=self.website,
+                        redirect_uri=self.redirect_uri)
         return response
 
-    def update(self, name=None, desc=None, website=None, redirect_uri=None, scopes=None):
+    def update(self, name=None, desc=None, website=None, redirect_uri=None):
         if name is not None:
             self.name = name
         if desc is not None:
@@ -61,8 +54,6 @@ class OAuthClient(db.Model):
             self.website = website
         if redirect_uri is not None:
             self.redirect_uri = redirect_uri
-        if scopes is not None:
-            self.scopes = ' '.join(scopes)
         db.session.commit()
 
 

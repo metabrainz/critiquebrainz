@@ -243,12 +243,11 @@ class CritiqueBrainzAPI(object):
             raise ServerError(code=error, desc=desc)
         return resp.get('languages')
 
-    def create_client(self, name, desc, website, redirect_uri, scopes, access_token):
+    def create_client(self, name, desc, website, redirect_uri, access_token):
         data = dict(name=name,
                     desc=desc,
                     website=website,
-                    redirect_uri=redirect_uri,
-                    scopes=scopes)
+                    redirect_uri=redirect_uri)
         headers = {'Content-type': 'application/json'}
         try:
             session = self._service.get_session(access_token)

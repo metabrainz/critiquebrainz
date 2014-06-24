@@ -47,10 +47,6 @@ class CritiqueBrainzAuthorizationProvider(object):
         else:
             return client.redirect_uri == redirect_uri.split('?')[0]
 
-    def validate_client_scope(self, client_id, scope):
-        client = OAuthClient.query.get(client_id)
-        return self.validate_scope(scope, client.get_scopes())
-
     def validate_grant_redirect_uri(self, client_id, code, redirect_uri):
         grant = self.fetch_grant(client_id, code)
 
@@ -131,15 +127,16 @@ class CritiqueBrainzAuthorizationProvider(object):
     def discard_client_user_tokens(self, client_id, user_id):
         OAuthToken.query.filter_by(client_id=client_id, user_id=user_id).delete()
 
-    def validate_authorization_request(self, client_id, response_type, redirect_uri, scope):
+    def validate_authorization_request(self, client_id, response_type, redirect_uri, scope=None):
         if self.validate_client_id(client_id) is False:
             raise InvalidClient
         if response_type != 'code':
             raise UnsupportedResponseType
         if self.validate_client_redirect_uri(client_id, redirect_uri) is False:
             raise InvalidRedirectURI
-        if self.validate_client_scope(client_id, scope) is False:
-            raise InvalidScope
+        if scope:
+            # TODO: Check if scope is supported
+            pass
 
     def validate_token_request(self, client_id, grant_type, scope, code, refresh_token, redirect_uri):
         if self.validate_client_id(client_id) is False:

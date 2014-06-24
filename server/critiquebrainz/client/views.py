@@ -23,13 +23,13 @@ def client_modify_handler(client_id, user):
         desc = Parser.string('json', 'desc', min=3, max=512, optional=True)
         website = Parser.uri('json', 'website', optional=True)
         redirect_uri = Parser.uri('json', 'redirect_uri', optional=True)
-        scopes = Parser.list('json', 'scopes', optional=True)
-        return name, desc, website, redirect_uri, scopes
+        return name, desc, website, redirect_uri
+
     client = OAuthClient.query.get_or_404(client_id)
     if client.user_id != user.id:
         raise AccessDenied
-    name, desc, website, redirect_uri, scopes = fetch_params()
-    client.update(name, desc, website, redirect_uri, scopes)
+    name, desc, website, redirect_uri = fetch_params()
+    client.update(name, desc, website, redirect_uri)
     return jsonify(message='Request processed successfully')
 
 @client_bp.route('/<client_id>', methods=['DELETE'], endpoint='delete')
@@ -49,11 +49,11 @@ def client_create_handler(user):
         desc = Parser.string('json', 'desc', min=3, max=512)
         website = Parser.uri('json', 'website')
         redirect_uri = Parser.uri('json', 'redirect_uri')
-        scopes = Parser.list('json', 'scopes')
-        return name, desc, website, redirect_uri, scopes
-    name, desc, website, redirect_uri, scopes = fetch_params()
-    client = OAuthClient.generate(user=user, name=name, desc=desc,
-        website=website, redirect_uri=redirect_uri, scopes=scopes)
+        return name, desc, website, redirect_uri
+
+    name, desc, website, redirect_uri = fetch_params()
+    client = OAuthClient.generate(user=user, name=name, desc=desc, website=website,
+                                  redirect_uri=redirect_uri)
     return jsonify(message='Request processed successfully', client=client.to_dict())
 
 @client_bp.route('/<client_id>/tokens', methods=['DELETE'], endpoint='tokens_purge')
