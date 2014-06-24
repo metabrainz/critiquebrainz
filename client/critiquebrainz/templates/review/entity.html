@@ -40,7 +40,7 @@
 
     <div class="col-md-9">
       {% autoescape false %}
-      <h3>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=24" /> <a href="%s">%s</a>' % (review.user.avatar, url_for('user.entity', id=review.user_id), review.user.display_name)) }}</h3>
+      <h3>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=24" /> <a href="%s">%s</a>' % (review.user.avatar, url_for('user.entity', id=review.user.id), review.user.display_name)) }}</h3>
       {% endautoescape %}
 
       <em class="text-muted">{{ _('Published on %(date)s', date = review.created|datetime) }}</em>
@@ -64,9 +64,8 @@
       </small>
 
       <hr />
-      <!-- Voting stuff -->
       {% if current_user.is_authenticated() %}
-        {% if current_user.me.id != review.user_id %}
+        {% if current_user.me.id != review.user.id %}
           <div class="row">
             <div class="col-md-8">
               <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
