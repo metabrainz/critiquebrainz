@@ -14,6 +14,8 @@ def review_entity_handler(review_id):
 
     :statuscode 200: no error
     :statuscode 404: review not found
+
+    :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
@@ -27,9 +29,13 @@ def review_entity_handler(review_id):
 def review_delete_handler(review_id, user):
     """Delete review with a specified UUID.
 
+    **OAuth scope:** review
+
     :statuscode 200: success
     :statuscode 403: access denied
     :statuscode 404: review not found
+
+    :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
@@ -45,9 +51,13 @@ def review_delete_handler(review_id, user):
 def review_modify_handler(review_id, user):
     """Update review with a specified UUID.
 
+    **OAuth scope:** review
+
     :statuscode 200: success
     :statuscode 403: access denied
     :statuscode 404: review not found
+
+    :resheader Content-Type: *application/json*
     """
     def fetch_params():
         text = Parser.string('json', 'text', min=25, max=2500)
@@ -67,13 +77,15 @@ def review_modify_handler(review_id, user):
 def review_list_handler():
     """Get list of reviews.
 
-    :query release_group: UUID of release group (optional)
-    :query user_id: user's UUID (optional)
-    :query sort: *rating* or *created* (optional)
-    :query limit: results limit, min is 0, max is 50, default is 50 (optional)
-    :query offset: result offset, default is 0 (optional)
-    :query language: language code (ISO 639-1), default is *en* (optional)
+    :query release_group: UUID of release group **(optional)**
+    :query user_id: user's UUID **(optional)**
+    :query sort: ``rating`` or ``created`` **(optional)**
+    :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
+    :query offset: result offset, default is 0 **(optional)**
+    :query language: language code (ISO 639-1), default is ``en`` **(optional)**
     :query inc: includes
+
+    :resheader Content-Type: *application/json*
     """
     def fetch_params():
         release_group = Parser.uuid('uri', 'release_group', optional=True)
@@ -97,12 +109,14 @@ def review_list_handler():
 def review_post_handler(user):
     """Publish a review.
 
+    **OAuth scope:** review
+
     :reqheader Content-Type: *application/json*
 
     :json uuid release_group: UUID of the release group that is being reviewed
     :json string text: review contents, min length is 25, max is 2500
     :json string license_choice: license ID
-    :json string lang: language code (ISO 639-1), default is *en* (optional)
+    :json string lang: language code (ISO 639-1), default is ``en`` **(optional)**
 
     :resheader Content-Type: *application/json*
     """
@@ -126,14 +140,22 @@ def review_post_handler(user):
 
 @review_bp.route('/languages', endpoint='languages', methods=['GET'])
 def review_list_handler():
-    """Get list of supported review languages (language codes from ISO 639-1)."""
+    """Get list of supported review languages (language codes from ISO 639-1).
+
+    :resheader Content-Type: *application/json*
+    """
     return jsonify(languages=supported_languages)
 
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['GET'])
 @oauth.require_auth('vote')
 def review_vote_entity_handler(review_id, user):
-    """Get user's vote for a specified review."""
+    """Get user's vote for a specified review.
+
+    **OAuth scope:** vote
+
+    :resheader Content-Type: *application/json*
+    """
     review = Review.query.get_or_404(str(review_id))
     vote = Vote.query.filter_by(user=user, review=review).first()
     if not vote:
@@ -147,12 +169,16 @@ def review_vote_entity_handler(review_id, user):
 def review_vote_put_handler(review_id, user):
     """Set user's vote for a specified review.
 
-    :json boolean placet: true if upvote, false if downvote
+    **OAuth scope:** vote
+
+    :json boolean placet: ``true`` if upvote, ``false`` if downvote
 
     :statuscode 200: success
     :statuscode 400: invalid request (see source)
     :statuscode 403: daily vote limit exceeded
     :statuscode 404: review not found
+
+    :resheader Content-Type: *application/json*
     """
     def fetch_params():
         placet = Parser.bool('json', 'placet')
@@ -176,7 +202,12 @@ def review_vote_put_handler(review_id, user):
 @review_bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
 @oauth.require_auth('vote')
 def review_vote_delete_handler(review_id, user):
-    """Delete user's vote for a specified review."""
+    """Delete user's vote for a specified review.
+
+    **OAuth scope:** vote
+
+    :resheader Content-Type: *application/json*
+    """
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound
@@ -190,7 +221,12 @@ def review_vote_delete_handler(review_id, user):
 @review_bp.route('/<uuid:review_id>/report', endpoint='report', methods=['POST'])
 @oauth.require_auth('vote')
 def review_spam_report_handler(review_id, user):
-    """Create spam report for a specified review."""
+    """Create spam report for a specified review.
+
+    **OAuth scope:** vote
+
+    :resheader Content-Type: *application/json*
+    """
     review = Review.query.get_or_404(str(review_id))
     if review.user_id == user.id:
         raise InvalidRequest('own')

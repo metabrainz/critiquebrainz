@@ -19,4 +19,4 @@ Entities
 Schema diagram
 --------------
 
-.. image:: images/schema.png
+.. image:: /images/schema.png

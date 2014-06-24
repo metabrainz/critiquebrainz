@@ -11,6 +11,12 @@ oauth_bp = Blueprint('oauth', __name__)
 @oauth.require_auth('authorization')
 @nocache
 def oauth_authorize_handler(user):
+    """Generate new OAuth grant.
+
+    **OAuth scope:** authorization
+
+    :resheader Content-Type: *application/json*
+    """
     client_id = request.form.get('client_id')
     response_type = request.form.get('response_type')
     redirect_uri = request.form.get('redirect_uri')
@@ -28,6 +34,17 @@ def oauth_authorize_handler(user):
 @oauth_bp.route('/token', methods=['POST'], endpoint='token')
 @nocache
 def oauth_token_handler():
+    """OAuth 2.0 token endpoint.
+
+    :form string client_id:
+    :form string client_secret:
+    :form string redirect_uri:
+    :form string grant_type: ``authorization_code`` or ``refresh_token``
+    :form string code: (not required if grant_type is ``refresh_token``)
+    :form string refresh_token: (not required if grant_type is ``authorization_code``)
+
+    :resheader Content-Type: *application/json*
+    """
     client_id = request.form.get('client_id')
     client_secret = request.form.get('client_secret')
     redirect_uri = request.form.get('redirect_uri')
@@ -65,6 +82,15 @@ def oauth_token_handler():
 @oauth_bp.route('/validate', methods=['POST'], endpoint='validate')
 @nocache
 def oauth_client_handler():
+    """Validate OAuth authorization request.
+
+    :form string client_id:
+    :form string response_type:
+    :form string redirect_uri:
+    :form string scope:
+
+    :resheader Content-Type: *application/json*
+    """
     client_id = request.form.get('client_id')
     response_type = request.form.get('response_type')
     redirect_uri = request.form.get('redirect_uri')

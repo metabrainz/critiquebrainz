@@ -7,6 +7,8 @@ You can read what other people have written about an album or write your own rev
 CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.
 Everyone - including you - can participate and contribute.
 
+This is an open source project. Source code is available `on GitHub <https://github.com/metabrainz/critiquebrainz>`_.
+
 Contents
 --------
 
@@ -15,7 +17,4 @@ Contents
 
    installation
    dev
-   db
-   tests
    translation
-   api

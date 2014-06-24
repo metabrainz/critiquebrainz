@@ -9,8 +9,9 @@ bp = Blueprint('oauth', __name__)
 @bp.route('/authorize', methods=['GET', 'POST'], endpoint='authorize_prompt')
 @login_required
 def oauth_authorize_prompt_handler():
-    client_id = request.args.get('client_id')
+    """OAuth 2.0 authorization endpoint."""
     response_type = request.args.get('response_type')
+    client_id = request.args.get('client_id')
     redirect_uri = request.args.get('redirect_uri')
     scope = request.args.get('scope')
     state = request.args.get('state')
