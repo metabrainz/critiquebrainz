@@ -55,7 +55,7 @@ def preview_handler():
 @login_required
 def edit_handler(id):
     review = server.get_review(str(id))
-    if review.get('user_id') != current_user.me.get('id'):
+    if review.get('user') != current_user.me.get('id'):
         return redirect(url_for('index'))
 
     form = ReviewEditForm()
