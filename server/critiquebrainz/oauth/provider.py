@@ -82,21 +82,22 @@ class CritiqueBrainzAuthorizationProvider(object):
                 return False
         return True
 
-    def persist_grant(self, client_id, code, scopes, expires, redirect_uri, user_id):
+    @staticmethod
+    def persist_grant(client_id, code, scopes, expires, redirect_uri, user_id):
         grant = OAuthGrant(client_id=client_id,
                            code=code,
                            scopes=scopes,
                            expires=expires,
                            redirect_uri=redirect_uri,
                            user_id=user_id)
-
         db.session.add(grant)
         db.session.commit()
         return grant
 
-    def persist_token(self, client_id, scopes, refresh_token, access_token, expires, user_id):
+    @staticmethod
+    def persist_token(client_id, scope, refresh_token, access_token, expires, user_id):
         token = OAuthToken(client_id=client_id,
-                           scopes=scopes,
+                           scopes=scope,
                            access_token=access_token,
                            refresh_token=refresh_token,
                            expires=expires,
@@ -138,8 +139,10 @@ class CritiqueBrainzAuthorizationProvider(object):
             # TODO: Check if scope is supported
             pass
 
-    def validate_token_request(self, client_id, grant_type, scope, code, refresh_token, redirect_uri):
+    def validate_token_request(self, grant_type, client_id, client_secret, redirect_uri, code, refresh_token):
         if self.validate_client_id(client_id) is False:
+            raise InvalidClient
+        if self.validate_client_secret(client_id, client_secret) is False:
             raise InvalidClient
         if grant_type == 'authorization_code':
             if self.validate_grant(client_id, code) is False:
@@ -149,20 +152,16 @@ class CritiqueBrainzAuthorizationProvider(object):
         elif grant_type == 'refresh_token':
             if self.validate_token(client_id, refresh_token) is False:
                 raise InvalidGrant
-            if self.validate_token_scope(client_id, refresh_token, scope) is False:
-                raise InvalidScope
         else:
             raise UnsupportedGrantType
 
-    def generate_grant(self, client_id, scope, redirect_uri, user_id):
+    def generate_grant(self, client_id, user_id, redirect_uri, scope=None):
         code = generate_string(self.token_length)
         expires = datetime.now() + timedelta(seconds=self.grant_expire)
-
         grant = self.persist_grant(client_id, code, scope, expires, redirect_uri, user_id)
+        return code
 
-        return code,
-
-    def generate_token(self, client_id, scope, refresh_token, user_id):
+    def generate_token(self, client_id, refresh_token, user_id, scope=None):
         if not refresh_token:
             refresh_token = generate_string(self.token_length)
         access_token = generate_string(self.token_length)
@@ -170,7 +169,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
         token = self.persist_token(client_id, scope, refresh_token, access_token, expires, user_id)
 
-        return access_token, 'Bearer', self.token_expire, refresh_token, scope
+        return access_token, 'Bearer', self.token_expire, refresh_token
 
     def get_authorized_user(self, scopes):
         authorization = request.headers.get('Authorization')

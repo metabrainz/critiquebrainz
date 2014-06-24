@@ -25,8 +25,7 @@ class OAuthClientData(object):
         name=u'CritiqueBrainz',
         desc=u'A CritiqueBrainz frontend.',
         website=u'http://critiquebrainz.org',
-        redirect_uri=u'http://127.0.0.1:5001/login/post',
-        scopes=u'user review authorization vote client')
+        redirect_uri=u'http://127.0.0.1:5001/login/post')
 
 
 class LicenseData(object):

@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from critiquebrainz.oauth import oauth
 from critiquebrainz.db import OAuthClient
 from critiquebrainz.decorators import nocache
+from critiquebrainz.oauth.exceptions import UnsupportedGrantType
 
 oauth_bp = Blueprint('oauth', __name__)
 
@@ -19,7 +20,7 @@ def oauth_authorize_handler(user):
     oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
 
     # generate new grant
-    (code, ) = oauth.generate_grant(client_id, scope, redirect_uri, user.id)
+    code = oauth.generate_grant(client_id, user.id, redirect_uri, scope)
 
     return jsonify(dict(code=code))
 
@@ -28,32 +29,38 @@ def oauth_authorize_handler(user):
 @nocache
 def oauth_token_handler():
     client_id = request.form.get('client_id')
+    client_secret = request.form.get('client_secret')
+    redirect_uri = request.form.get('redirect_uri')
     grant_type = request.form.get('grant_type')
     code = request.form.get('code')
     refresh_token = request.form.get('refresh_token')
-    redirect_uri = request.form.get('redirect_uri')
-    scope = request.form.get('scope')
 
     # validate request
-    oauth.validate_token_request(client_id, grant_type, scope, code, refresh_token, redirect_uri)
+    oauth.validate_token_request(grant_type, client_id, client_secret, redirect_uri, code, refresh_token)
 
     if grant_type == 'authorization_code':
-        user_id = oauth.fetch_grant(client_id, code).user.id
+        grant = oauth.fetch_grant(client_id, code)
+        user_id = grant.user.id
+        scope = grant.scopes
     elif grant_type == 'refresh_token':
-        user_id = oauth.fetch_token(client_id, refresh_token).user.id
+        token = oauth.fetch_token(client_id, refresh_token)
+        user_id = token.user.id
+        scope = token.scopes
+    else:
+        raise UnsupportedGrantType
 
-    # delete grant and/or existing token(s)
+    # Deleting grant and/or existing token(s)
+    # TODO: Check if that's necessary
     oauth.discard_grant(client_id, code)
     oauth.discard_client_user_tokens(client_id, user_id)
 
     # generate new token
-    (access_token, token_type, expires_in, refresh_token, scope) = oauth.generate_token(client_id, scope, refresh_token, user_id)
+    access_token, token_type, expires_in, refresh_token = oauth.generate_token(client_id, refresh_token, user_id, scope)
 
     return jsonify(dict(access_token=access_token,
                         token_type=token_type,
                         expires_in=expires_in,
-                        refresh_token=refresh_token,
-                        scope=scope))
+                        refresh_token=refresh_token))
 
 @oauth_bp.route('/validate', methods=['POST'], endpoint='validate')
 @nocache

@@ -25,7 +25,7 @@ def login_musicbrainz_post_handler():
         raise LoginError('server_error', build_url(redirect_uri, dict(state=state)))
 
     user_id = musicbrainz.get_user().id
-    (code, ) = oauth.generate_grant(client_id, scope, redirect_uri, user_id)
+    code = oauth.generate_grant(client_id, user_id, redirect_uri, scope)
     
     return redirect(build_url(redirect_uri, dict(state=state, code=code)))
 
