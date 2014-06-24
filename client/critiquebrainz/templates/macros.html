@@ -17,14 +17,18 @@
 
 {% macro scope_desc(scope) %}
   {% if scope == "user" %}
-    {{ _('Profile data') }}
+    <strong class="text-danger">
+      <abbr title="{{ _('Modify profile info and delete your profile.') }}">{{ _('Profile data') }}</abbr>
+    </strong>
   {% elif scope == "review" %}
-    {{ _('Reviews') }}
+    <abbr title="{{ _('Create and modify your reviews.') }}">{{ _('Reviews') }}</abbr>
   {% elif scope == "client" %}
-    {{ _('API clients') }}
+    <abbr title="{{ _('Modify your API clients (create, edit, delete).') }}">{{ _('API clients') }}</abbr>
   {% elif scope == "authorization" %}
-    {{ _('Authorization') }}
+    <strong class="text-danger">
+      <abbr title="{{ _('Manage access to your profile for other apps (can allow complete access to your profile and remove existing access authorizations).') }}">{{ _('Authorization') }}</abbr>
+    </strong>
   {% elif scope == "vote" %}
-    {{ _('Review votes') }}
+    <abbr title="{{ _('Submit and delete your votes.') }}">{{ _('Review votes') }}</abbr>
   {% endif %}
 {% endmacro %}
