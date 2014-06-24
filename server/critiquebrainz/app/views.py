@@ -4,14 +4,14 @@ from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
 
-client_bp = Blueprint('client', __name__)
+app_bp = Blueprint('application', __name__)
 
 
-@client_bp.route('/<client_id>', endpoint='entity')
+@app_bp.route('/<client_id>', endpoint='entity')
 @oauth.require_auth('client')
 def client_entity_handler(client_id, user):
-    """Get OAuth client with a specified ID.
-    You must own specified client to get information about it.
+    """Get application with a specified client ID.
+    You must own specified application to get information about it.
 
     **OAuth scope:** client
 
@@ -20,15 +20,14 @@ def client_entity_handler(client_id, user):
     client = OAuthClient.query.get_or_404(client_id)
     if client.user_id != user.id:
         raise AccessDenied
-    inc = Parser.list('uri', 'inc', OAuthClient.allowed_includes, optional=True) or []
-    return jsonify(client=client.to_dict(inc))
+    return jsonify(application=client.to_dict())
 
 
-@client_bp.route('/<client_id>', methods=['POST'], endpoint='modify')
+@app_bp.route('/<client_id>', methods=['POST'], endpoint='modify')
 @oauth.require_auth('client')
 def client_modify_handler(client_id, user):
-    """Modify OAuth client.
-    You must own specified client to modify it.
+    """Modify application.
+    You must own specified application to modify it.
 
     **OAuth scope:** client
 
@@ -56,11 +55,11 @@ def client_modify_handler(client_id, user):
     return jsonify(message='Request processed successfully')
 
 
-@client_bp.route('/<client_id>', methods=['DELETE'], endpoint='delete')
+@app_bp.route('/<client_id>', methods=['DELETE'], endpoint='delete')
 @oauth.require_auth('client')
 def client_delete_handler(client_id, user):
-    """Delete OAuth client.
-    You must own specified client to delete it.
+    """Delete application.
+    You must own specified application to delete it.
 
     **OAuth scope:** client
 
@@ -73,10 +72,10 @@ def client_delete_handler(client_id, user):
     return jsonify(message='Request processed successfully')
 
 
-@client_bp.route('/', methods=['POST'], endpoint='create')
+@app_bp.route('/', methods=['POST'], endpoint='create')
 @oauth.require_auth('client')
 def client_create_handler(user):
-    """Create new OAuth client.
+    """Create new application.
 
     **OAuth scope:** client
 
@@ -99,10 +98,10 @@ def client_create_handler(user):
     name, desc, website, redirect_uri = fetch_params()
     client = OAuthClient.generate(user=user, name=name, desc=desc, website=website,
                                   redirect_uri=redirect_uri)
-    return jsonify(message='Request processed successfully', client=client.to_dict())
+    return jsonify(message='Request processed successfully', application=client.to_dict())
 
 
-@client_bp.route('/<client_id>/tokens', methods=['DELETE'], endpoint='tokens_purge')
+@app_bp.route('/<client_id>/tokens', methods=['DELETE'], endpoint='tokens_purge')
 @oauth.require_auth('client')
 def tokens_purge_handler(client_id, user):
     """

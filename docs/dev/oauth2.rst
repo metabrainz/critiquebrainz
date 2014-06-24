@@ -160,8 +160,8 @@ Scopes
 Authorization requests have a limited scope. You should request only the scopes that your application
 necessarily needs. CritiqueBrainz provides the following scopes:
 
-* ``user`` - Modify profile info and **delete profile**.
 * ``review`` - Create and modify reviews.
-* ``client`` - Modify API clients (create, edit, delete).
-* ``authorization`` - **Generate new OAuth grants.**
 * ``vote`` - Submit and delete votes on reviews.
+* ``client`` - Modify API clients (create, edit, delete).
+* ``user`` - Modify profile info and delete profile.
+* ``authorization`` - Generate new OAuth grants.

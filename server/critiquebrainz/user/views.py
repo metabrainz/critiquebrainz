@@ -29,14 +29,14 @@ def user_reviews_handler(user):
     return redirect(url_for('review.list', user_id=user.id, **request.args))
 
 
-@user_bp.route('/me/clients', endpoint='clients')
+@user_bp.route('/me/applications', endpoint='applications')
 @oauth.require_auth()
-def user_clients_handler(user):
-    """Get your OAuth clients.
+def user_applications_handler(user):
+    """Get your applications.
 
     :resheader Content-Type: *application/json*
     """
-    return jsonify(clients=[c.to_dict() for c in user.clients])
+    return jsonify(applications=[c.to_dict() for c in user.clients])
 
 
 @user_bp.route('/me/tokens', endpoint='tokens')

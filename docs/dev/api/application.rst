@@ -1,7 +1,7 @@
-OAuth Clients
-=============
+Applications
+============
 
 .. autoflask:: critiquebrainz:app
-   :blueprints: client
+   :blueprints: application
    :include-empty-docstring:
    :undoc-static:

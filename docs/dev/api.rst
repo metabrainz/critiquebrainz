@@ -16,6 +16,6 @@ Reference
 
    api/review
    api/user
-   api/client
+   api/application
    api/oauth
    api/login
