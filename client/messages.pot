@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-21 07:14+0000\n"
+"POT-Creation-Date: 2014-06-24 15:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -165,54 +165,55 @@ msgstr ""
 msgid "Show my Gravatar"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:6
+#: critiquebrainz/forms/profile/review.py:9
 msgid "Text"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:7
+#: critiquebrainz/forms/profile/review.py:10
 msgid "Review is empty"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:8
-msgid "Review needs to be at least 25 characters long"
+#: critiquebrainz/forms/profile/review.py:11
+#, python-format
+msgid "Review length needs to be between %(min)d and %(max)d characters"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:12
+#: critiquebrainz/forms/profile/review.py:15
 #: critiquebrainz/templates/base.html:109
 msgid "Language"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:14
+#: critiquebrainz/forms/profile/review.py:17
 msgid "Licence choice"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:16
+#: critiquebrainz/forms/profile/review.py:19
 msgid ""
 "Allow commercial use of this review (<a "
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 "
 "license</a>)"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:17
+#: critiquebrainz/forms/profile/review.py:20
 msgid ""
 "Do not allow commercial use of this review, unless approved by MetaBrainz"
 " Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
 "sa/3.0/\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:20
+#: critiquebrainz/forms/profile/review.py:23
 msgid "You need to choose a license"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:21
+#: critiquebrainz/forms/profile/review.py:24
 msgid "Licence"
 msgstr ""
 
-#: critiquebrainz/forms/profile/review.py:22
+#: critiquebrainz/forms/profile/review.py:25
 msgid "You need to accept the licence agreement"
 msgstr ""
 
-#: critiquebrainz/login/__init__.py:14
+#: critiquebrainz/login/__init__.py:13
 msgid "Please sign in to access this page."
 msgstr ""
 
@@ -229,15 +230,15 @@ msgstr ""
 msgid "Feedback submitted. Thank you!"
 msgstr ""
 
-#: critiquebrainz/profile/client/views.py:30
+#: critiquebrainz/profile/client/views.py:33
 msgid "You have created an API client!"
 msgstr ""
 
-#: critiquebrainz/profile/client/views.py:47
+#: critiquebrainz/profile/client/views.py:51
 msgid "You have updated the API client!"
 msgstr ""
 
-#: critiquebrainz/profile/client/views.py:64
+#: critiquebrainz/profile/client/views.py:69
 msgid "You have deleted the API client."
 msgstr ""
 
@@ -701,22 +702,22 @@ msgstr ""
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:3
+#: critiquebrainz/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:8
+#: critiquebrainz/templates/oauth/prompt.html:7
 #, python-format
 msgid "Do you want to give access to your account to %(name)s?"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:10
+#: critiquebrainz/templates/oauth/prompt.html:9
 msgid ""
 "<strong>Don't panic!</strong> You can withdraw any time in your profile "
 "settings."
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:16
+#: critiquebrainz/templates/oauth/prompt.html:15
 #: critiquebrainz/templates/profile/client/create.html:27
 #: critiquebrainz/templates/profile/client/edit.html:27
 #: critiquebrainz/templates/profile/client/index.html:24
@@ -724,28 +725,28 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:17
+#: critiquebrainz/templates/oauth/prompt.html:16
 #: critiquebrainz/templates/profile/client/index.html:23
 #: critiquebrainz/templates/profile/client/index.html:60
 #: critiquebrainz/templates/search/index.html:47
 msgid "Name"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:18
+#: critiquebrainz/templates/oauth/prompt.html:17
 msgid "Description"
 msgstr ""
 
-#: critiquebrainz/templates/oauth/prompt.html:23
+#: critiquebrainz/templates/oauth/prompt.html:22
 #, python-format
-msgid "%(client)s is requesting permission to your"
+msgid "%(client)s is requesting permission to access your"
+msgstr ""
+
+#: critiquebrainz/templates/oauth/prompt.html:32
+msgid "Allow access"
 msgstr ""
 
 #: critiquebrainz/templates/oauth/prompt.html:33
-msgid "Agree"
-msgstr ""
-
-#: critiquebrainz/templates/oauth/prompt.html:34
-msgid "No, thanks"
+msgid "No thanks"
 msgstr ""
 
 #: critiquebrainz/templates/profile/client/create.html:3
@@ -834,8 +835,8 @@ msgid "Yes, I want to delete my account"
 msgstr ""
 
 #: critiquebrainz/templates/profile/details/delete.html:15
-#: critiquebrainz/templates/review/entity.html:75
-#: critiquebrainz/templates/review/entity.html:86
+#: critiquebrainz/templates/review/entity.html:74
+#: critiquebrainz/templates/review/entity.html:85
 msgid "No"
 msgstr ""
 
@@ -1039,49 +1040,49 @@ msgstr ""
 msgid "It was imported from %(source)s."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:73
+#: critiquebrainz/templates/review/entity.html:72
 msgid "Did you find this review useful?"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:74
-#: critiquebrainz/templates/review/entity.html:85
+#: critiquebrainz/templates/review/entity.html:73
+#: critiquebrainz/templates/review/entity.html:84
 msgid "Yes"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:77
+#: critiquebrainz/templates/review/entity.html:76
 msgid "(delete your vote)"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:82
+#: critiquebrainz/templates/review/entity.html:81
 msgid "Report spam"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:84
+#: critiquebrainz/templates/review/entity.html:83
 msgid "Report this review as spam?"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:88
+#: critiquebrainz/templates/review/entity.html:87
 msgid "Reporting..."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:94
+#: critiquebrainz/templates/review/entity.html:93
 msgid "Edit this review"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:98
+#: critiquebrainz/templates/review/entity.html:97
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:116
+#: critiquebrainz/templates/review/entity.html:115
 msgid "Review reported!"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:120
+#: critiquebrainz/templates/review/entity.html:119
 msgid "You have already reported this review!"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:122
+#: critiquebrainz/templates/review/entity.html:121
 msgid "Unknown error occurred!"
 msgstr ""
 

@@ -118,7 +118,7 @@ def review_post_handler(user):
     :reqheader Content-Type: *application/json*
 
     :json uuid release_group: UUID of the release group that is being reviewed
-    :json string text: review contents, min length is 25, max is 2500
+    :json string text: review contents, min length is 25, max is 5000
     :json string license_choice: license ID
     :json string lang: language code (ISO 639-1), default is ``en`` **(optional)**
 
@@ -127,7 +127,7 @@ def review_post_handler(user):
 
     def fetch_params():
         release_group = Parser.uuid('json', 'release_group')
-        text = Parser.string('json', 'text', min=25, max=2500)
+        text = Parser.string('json', 'text', min=25, max=5000)
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
         if language and language not in supported_languages:

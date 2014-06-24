@@ -1,11 +1,14 @@
 from flask.ext.wtf import Form, TextAreaField, RadioField, SelectField, BooleanField, validators
 from flask.ext.babel import gettext
 
+MIN_REVIEW_LENGTH = 25
+MAX_REVIEW_LENGTH = 5000
+
 
 class ReviewEditForm(Form):
     text = TextAreaField(gettext('Text'), [
         validators.DataRequired(message=gettext("Review is empty")),
-        validators.Length(min=25, message=gettext("Review needs to be at least 25 characters long"))])
+        validators.Length(min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH, message=gettext("Review length needs to be between %(min)d and %(max)d characters", min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH))])
 
 
 class ReviewCreateForm(ReviewEditForm):
