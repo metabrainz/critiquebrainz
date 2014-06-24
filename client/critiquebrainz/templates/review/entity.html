@@ -39,9 +39,7 @@
     </div>
 
     <div class="col-md-9">
-      {% autoescape false %}
-      <h3>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=24" /> <a href="%s">%s</a>' % (review.user.avatar, url_for('user.entity', id=review.user_id), review.user.display_name)) }}</h3>
-      {% endautoescape %}
+      <h3>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}</h3>
 
       <em class="text-muted">{{ _('Published on %(date)s', date = review.created|datetime) }}</em>
       <br /><em class="text-muted">{{ _('Rating:') }} <abbr title="{{ review.votes_positive }}/{{ review.votes_negative }}">{{ review.rating }}</abbr></em>
@@ -50,17 +48,15 @@
       <hr />
       <!-- Legal stuff -->
       <small class="text-muted">
-        {% autoescape false %}
         {% if review.license.info_url %}
-          {% set license = '<a href="%s">%s</a>' % (review.license.info_url, review.license.id ) %}
+        {% set license = '<a href="%s">%s</a>'|safe % (review.license.info_url, review.license.id ) %}
         {% else %}
-          {% set license = review.license.key %}
+        {% set license = review.license.key %}
         {% endif %}
         {{ _('This review is licensed under a %(name)s license.', name=license) }}
         {% if review.source %}
-          {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>' % (review.source_url, review.source)) }}
+        {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>'|safe % (review.source_url, review.source)) }}
         {% endif %}
-        {% endautoescape %}
       </small>
 
       <hr />

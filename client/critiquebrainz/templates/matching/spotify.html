@@ -6,14 +6,12 @@
 <h2>{{ _('Spotify album matching') }}</h2>
 <p class="lead">
   {% if release_group['first-release-date'] %}
-    {% set album = '"%s" <span class="text-muted">(%s)</span>' % (release_group.title, release_group['first-release-date'][:4]) %}
+    {% set album = '"%s" <span class="text-muted">(%s)</span>'|safe % (release_group.title, release_group['first-release-date'][:4]) %}
   {% else %}
     {% set album = '"%s"' % release_group.title %}
   {% endif %}
 
-  {% autoescape false %}
   {{ _('Please, select the album %(album)s by %(artist)s', album=album, artist=release_group['artist-credit-phrase']) }}
-  {% endautoescape %}
 </p>
 {% if search_results %}
   <div id="spotify-search-results" class="row">

@@ -45,9 +45,7 @@
             </div>
             <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
-              {% autoescape false %}
-              <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> %s' % (review.user.avatar, review.user.display_name)) }}</p>
-              {% endautoescape %}
+              <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}</p>
             </div>
           </a>
           <div class="preview">{{ review.text[:250] }}{% if review.text|length > 250 %}...{% endif %}</div>
@@ -77,9 +75,7 @@
             </div>
             <div class="album"><b>{{ release_group.title }}</b> - {{ release_group['artist-credit-phrase'] }}</div>
             <div class="reviewer">
-              {% autoescape false %}
-              <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> %s' % (review.user.avatar, review.user.display_name)) }}</p>
-              {% endautoescape %}
+              <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}</p>
             </div>
           </a>
         </div>
