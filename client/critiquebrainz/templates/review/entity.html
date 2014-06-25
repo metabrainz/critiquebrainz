@@ -60,9 +60,8 @@
       </small>
 
       <hr />
-      <!-- Voting stuff -->
       {% if current_user.is_authenticated() %}
-        {% if current_user.me.id != review.user_id %}
+        {% if current_user.me.id != review.user.id %}
           <div class="row">
             <div class="col-md-8">
               <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
