@@ -1,6 +1,16 @@
 OAuth 2.0
 =========
 
+Introduction
+------------
+
+OAuth 2.0 is a protocol that lets you create applications that can request access different parts of user profiles.
+This page describes how to use OAuth 2.0 when accessing a server API from a web server application.
+
+All developers need to `register their application <http://critiquebrainz.org/profile/applications/>`_ before
+getting started. A registered OAuth application is assigned a unique Client ID and Client Secret.
+The Client Secret should not be shared.
+
 Authorization
 -------------
 
@@ -13,22 +23,24 @@ The endpoint is located at ``http://critiquebrainz.org/oauth/authorize``.
 
 **Parameters:**
 
-+---------------+------------------------+---------------------------------------------------------------+
++---------------+----------------------------------------------------------------------------------------+
 | Parameter     | Description                                                                            |
-+===============+========================+===============================================================+
-| response_type | **Required.** Desired grant type.                                                      |
-+---------------+------------------------+---------------------------------------------------------------+
-| client_id     | **Required.** Client ID assigned to your application.                                  |
-+---------------+------------------------+---------------------------------------------------------------+
-| redirect_uri  | **Required.** URL where clients should be redirected after authorization. It must      |
-|               | match exactly the URL you entered when registering your application.                   |
-+---------------+------------------------+---------------------------------------------------------------+
-| scope         | Comma separated set of scopes. Identifies resources that your application will have    |
-|               | access to. You should request only the scopes that your application needs.             |
-+---------------+------------------------+---------------------------------------------------------------+
-| state         | Random string that is used to protect against cross-site request forgery attacks.      |
-|               | Server roundtrips this parameter, so your application receives the same value it sent. |
-+---------------+------------------------+---------------------------------------------------------------+
++===============+========================================================================================+
+| response_type | Desired grant type. Must be set to ``code``.                                           |
++---------------+----------------------------------------------------------------------------------------+
+| client_id     | Client ID assigned to your application.                                                |
++---------------+----------------------------------------------------------------------------------------+
+| redirect_uri  | URL where clients should be redirected after authorization. It must match exactly      |
+|               | the URL you entered when registering your application.                                 |
++---------------+----------------------------------------------------------------------------------------+
+| scope         | *Optional.* Comma separated set of scopes. Identifies resources that your application  |
+|               | will have access to. You should request only the scopes that your application needs.   |
+|               | See :ref:`oauth-scopes` for more info.                                                 |
++---------------+----------------------------------------------------------------------------------------+
+| state         | *Optional.* Random string that is used to protect against cross-site request forgery   |
+|               | attacks. Server roundtrips this parameter, so your application receives the same value |
+|               | it sent.                                                                               |
++---------------+----------------------------------------------------------------------------------------+
 
 **Example**::
 
@@ -65,16 +77,15 @@ an access token. The request includes following parameters:
 +---------------+----------------------------------------------------------------------------------------+
 | Parameter     | Description                                                                            |
 +===============+========================================================================================+
-| code          | **Required.** The authorization code returned from authorization request.              |
+| code          | The authorization code returned from authorization request.                            |
 +---------------+----------------------------------------------------------------------------------------+
-| client_id     | **Required.** Client ID assigned to your application.                                  |
+| client_id     | Client ID assigned to your application.                                                |
 +---------------+----------------------------------------------------------------------------------------+
-| client_secret | **Required.** Client secret assigned to your application.                              |
+| client_secret | Client secret assigned to your application.                                            |
 +---------------+----------------------------------------------------------------------------------------+
-| redirect_uri  | **Required.** URL where response will be sent. Must match your application             |
-|               | configuration.                                                                         |
+| redirect_uri  | URL where response will be sent. Must match your application configuration.            |
 +---------------+----------------------------------------------------------------------------------------+
-| grant_type    | **Required.** Must be set to ``authorization_code``                                    |
+| grant_type    | Must be set to ``authorization_code``.                                                 |
 +---------------+----------------------------------------------------------------------------------------+
 
 Token request might look like this::
@@ -120,16 +131,15 @@ To obtain a new access token, your application needs to send POST request to
 +---------------+----------------------------------------------------------------------------------------+
 | Parameter     | Description                                                                            |
 +===============+========================================================================================+
-| refresh_token | **Required.** The refresh token returned during the authorization code exchange.       |
+| refresh_token | The refresh token returned during the authorization code exchange.                     |
 +---------------+----------------------------------------------------------------------------------------+
-| client_id     | **Required.** Client ID assigned to your application.                                  |
+| client_id     | Client ID assigned to your application.                                                |
 +---------------+----------------------------------------------------------------------------------------+
-| client_secret | **Required.** Client secret assigned to your application.                              |
+| client_secret | Client secret assigned to your application.                                            |
 +---------------+----------------------------------------------------------------------------------------+
-| redirect_uri  | **Required.** URL where response will be sent. Must match your application             |
-|               | configuration.                                                                         |
+| redirect_uri  | URL where response will be sent. Must match your application configuration.            |
 +---------------+----------------------------------------------------------------------------------------+
-| grant_type    | **Required.** Must be set to ``refresh_token``                                         |
+| grant_type    | Must be set to ``refresh_token``                                                       |
 +---------------+----------------------------------------------------------------------------------------+
 
 Request might look like this::
@@ -153,6 +163,9 @@ that will look like this::
      "token_type": "Bearer",
      "refresh_token": "PUnoD8im10XG5QxGzv3JO1"
    }
+
+
+.. _oauth-scopes:
 
 Scopes
 ------
