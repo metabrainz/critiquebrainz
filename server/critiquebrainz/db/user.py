@@ -18,7 +18,7 @@ class User(db.Model):
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
-    show_gravatar = db.Column(db.Boolean, nullable=False, default=True)
+    show_gravatar = db.Column(db.Boolean, nullable=False, default=False)
 
     _reviews = db.relationship('Review', cascade='delete', lazy='dynamic', backref='user')
     _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='user')
