@@ -12,6 +12,10 @@ distribute==0.6.34
 itsdangerous==0.22
 psycopg2==2.5.1
 rauth==0.6.1
-requests==1.2.3
 wsgiref==0.1.2
 pycountry==1.6
+urllib3==1.8.3
+pyOpenSSL==0.14
+ndg-httpsclient==0.3.2
+pyasn1==0.1.7
+requests==2.3.0
