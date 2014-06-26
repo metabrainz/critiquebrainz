@@ -6,7 +6,7 @@ from requests.exceptions import ConnectionError
 from flask import url_for
 
 from critiquebrainz.utils import build_url
-from critiquebrainz.exceptions import ServerError, ServerUnavailableError
+from critiquebrainz.exceptions import ServerError
 
 
 class CritiqueBrainzAPI(object):
@@ -31,10 +31,7 @@ class CritiqueBrainzAPI(object):
                     code=code,
                     scope=self.scope,
                     redirect_uri=url_for('login.post', _external=True))
-        try:
-            resp = self._service.get_raw_access_token(data=data).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        resp = self._service.get_raw_access_token(data=data).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -48,10 +45,7 @@ class CritiqueBrainzAPI(object):
         data = dict(grant_type='refresh_token',
                     refresh_token=refresh_token,
                     scope=self.scope)
-        try:
-            resp = self._service.get_raw_access_token(data=data).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        resp = self._service.get_raw_access_token(data=data).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -63,11 +57,8 @@ class CritiqueBrainzAPI(object):
 
     def get_me(self, access_token, inc=[]):
         params = dict(inc=' '.join(inc))
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.get('user/me', params=params).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.get('user/me', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -80,10 +71,7 @@ class CritiqueBrainzAPI(object):
                     response_type=response_type,
                     redirect_uri=redirect_uri,
                     scope=scope)
-        try:
-            resp = requests.post(self.base_url + 'oauth/validate', data=data).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        resp = requests.post(self.base_url + 'oauth/validate', data=data).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -96,11 +84,8 @@ class CritiqueBrainzAPI(object):
                     response_type=response_type,
                     redirect_uri=redirect_uri,
                     scope=scope)
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.post('oauth/authorize', data=data).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.post('oauth/authorize', data=data).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -110,10 +95,7 @@ class CritiqueBrainzAPI(object):
 
     def get_review(self, id, inc=[]):
         params = dict(inc=' '.join(inc))
-        try:
-            resp = requests.get(self.base_url + 'review/%s' % id, params=params).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        resp = requests.get(self.base_url + 'review/%s' % id, params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -123,11 +105,8 @@ class CritiqueBrainzAPI(object):
 
     def get_me_reviews(self, sort, limit, offset, access_token):
         params = dict(sort=sort, limit=limit, offset=offset)
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.get('user/me/reviews', params=params).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.get('user/me/reviews', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -139,10 +118,7 @@ class CritiqueBrainzAPI(object):
     def get_reviews(self, release_group=None, user_id=None, sort=None, limit=None, offset=None, inc=[]):
         params = dict(release_group=release_group,
                       user_id=user_id, sort=sort, limit=limit, offset=offset, inc=' '.join(inc))
-        try:
-            resp = requests.get(self.base_url + 'review/', params=params).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        resp = requests.get(self.base_url + 'review/', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -152,11 +128,8 @@ class CritiqueBrainzAPI(object):
         return count, reviews
 
     def get_me_applications(self, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.get('user/me/applications').json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.get('user/me/applications').json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -164,11 +137,8 @@ class CritiqueBrainzAPI(object):
         return resp.get('applications')
 
     def get_me_tokens(self, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.get('user/me/tokens').json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.get('user/me/tokens').json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -177,11 +147,8 @@ class CritiqueBrainzAPI(object):
         return tokens
 
     def get_application(self, id, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.get('application/%s' % id).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.get('application/%s' % id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -190,11 +157,8 @@ class CritiqueBrainzAPI(object):
         return application
 
     def get_vote(self, review_id, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.get('review/%s/vote' % review_id).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.get('review/%s/vote' % review_id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -204,10 +168,7 @@ class CritiqueBrainzAPI(object):
 
     def get_user(self, user_id, inc=[]):
         params = dict(inc=' '.join(inc))
-        try:
-            resp = requests.get(self.base_url + 'user/%s' % user_id, params=params).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        resp = requests.get(self.base_url + 'user/%s' % user_id, params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -217,10 +178,7 @@ class CritiqueBrainzAPI(object):
 
     def get_users(self, limit=None, offset=None):
         params = dict(limit=limit, offset=offset)
-        try:
-            resp = requests.get(self.base_url + 'user/', params=params).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        resp = requests.get(self.base_url + 'user/', params=params).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -230,10 +188,7 @@ class CritiqueBrainzAPI(object):
         return count, users
 
     def get_review_languages(self):
-        try:
-            resp = requests.get(self.base_url + 'review/languages').json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        resp = requests.get(self.base_url + 'review/languages').json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -246,11 +201,8 @@ class CritiqueBrainzAPI(object):
                     website=website,
                     redirect_uri=redirect_uri)
         headers = {'Content-type': 'application/json'}
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.post('application/', data=json.dumps(data), headers=headers).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.post('application/', data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -264,11 +216,8 @@ class CritiqueBrainzAPI(object):
     def create_review(self, release_group, text, license_choice, language, access_token):
         data = dict(release_group=release_group, text=text, license_choice=license_choice, language=language)
         headers = {'Content-type': 'application/json'}
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.post('review/', data=json.dumps(data), headers=headers).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.post('review/', data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -278,11 +227,8 @@ class CritiqueBrainzAPI(object):
     def update_review(self, id, access_token, **kwargs):
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.post('review/%s' % id, data=json.dumps(data), headers=headers).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.post('review/%s' % id, data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -293,11 +239,8 @@ class CritiqueBrainzAPI(object):
     def update_profile(self, access_token, **kwargs):
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.post('user/me', data=json.dumps(data), headers=headers).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.post('user/me', data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -308,11 +251,8 @@ class CritiqueBrainzAPI(object):
     def update_application(self, id, access_token, **kwargs):
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.post('application/%s' % id, data=json.dumps(data), headers=headers).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.post('application/%s' % id, data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -323,11 +263,8 @@ class CritiqueBrainzAPI(object):
     def update_review_vote(self, review_id, access_token, **kwargs):
         data = kwargs
         headers = {'Content-type': 'application/json'}
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.put('review/%s/vote' % review_id, data=json.dumps(data), headers=headers).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.put('review/%s/vote' % review_id, data=json.dumps(data), headers=headers).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -336,11 +273,8 @@ class CritiqueBrainzAPI(object):
         return message
 
     def delete_review(self, id, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.delete('review/%s' % id).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.delete('review/%s' % id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -349,11 +283,8 @@ class CritiqueBrainzAPI(object):
         return message
 
     def delete_review_vote(self, review_id, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.delete('review/%s/vote' % review_id).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.delete('review/%s/vote' % review_id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -372,11 +303,8 @@ class CritiqueBrainzAPI(object):
         return message
 
     def delete_profile(self, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.delete('user/me').json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.delete('user/me').json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -385,11 +313,8 @@ class CritiqueBrainzAPI(object):
         return message
 
     def delete_application(self, id, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.delete('application/%s' % id).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.delete('application/%s' % id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
@@ -398,11 +323,8 @@ class CritiqueBrainzAPI(object):
         return message
 
     def delete_token(self, client_id, access_token):
-        try:
-            session = self._service.get_session(access_token)
-            resp = session.delete('application/%s/tokens' % client_id).json()
-        except ConnectionError:
-            raise ServerUnavailableError()
+        session = self._service.get_session(access_token)
+        resp = session.delete('application/%s/tokens' % client_id).json()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
