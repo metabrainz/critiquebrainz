@@ -7,7 +7,7 @@ Introduction
 OAuth 2.0 is a protocol that lets you create applications that can request access different parts of user profiles.
 This page describes how to use OAuth 2.0 when accessing a server API from a web server application.
 
-All developers need to `register their application <http://critiquebrainz.org/profile/applications/>`_ before
+All developers need to `register their application <https://critiquebrainz.org/profile/applications/>`_ before
 getting started. A registered OAuth application is assigned a unique Client ID and Client Secret.
 The Client Secret should not be shared.
 
@@ -19,7 +19,8 @@ Requesting authorization
 
 The authorization process starts by redirecting the user to the authorization endpoint with a set of
 query string parameters describing the authorization request.
-The endpoint is located at ``http://critiquebrainz.org/oauth/authorize``.
+The endpoint is located at ``https://critiquebrainz.org/oauth/authorize`` and is only available over HTTPS.
+HTTP connections are refused.
 
 **Parameters:**
 
@@ -44,7 +45,7 @@ The endpoint is located at ``http://critiquebrainz.org/oauth/authorize``.
 
 **Example**::
 
-   http://critiquebrainz.org/oauth/authorize?
+   https://critiquebrainz.org/oauth/authorize?
       response_type=code&
       scope=review,vote&
       redirect_uri=http%3A%2F%2Fwww.example.com.com%2Fcallback&
@@ -58,11 +59,11 @@ The response will be sent to the ``redirect_url`` specified in configuration of 
 If user approves access request, then the response will contain authorization code and ``state``
 parameter (if it was included in the request)::
 
-   http://www.example.com/callback?state=a35Bsw1koA3pM34&code=3lUq7v15Qqm9g8YcoUT31D
+   https://www.example.com/callback?state=a35Bsw1koA3pM34&code=3lUq7v15Qqm9g8YcoUT31D
 
 If the user does not approve the request, the response will contain an error message::
 
-   http://www.example.com/callback?state=a35Bsw1koA3pM34&error=access_denied
+   https://www.example.com/callback?state=a35Bsw1koA3pM34&error=access_denied
 
 Access token
 ------------
@@ -71,8 +72,9 @@ Exchanging authorization code for an access token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After your application receives an authorization code, it can send a *POST* request the token endpoint
-located at ``http://critiquebrainz.org/ws/1/oauth/token``, to exchange the authorization code for
-an access token. The request includes following parameters:
+located at ``https://critiquebrainz.org/ws/1/oauth/token``, to exchange the authorization code for
+an access token. As before, this endpoint is only available over HTTPS and HTTP requests will be refused.
+The request includes following parameters:
 
 +---------------+----------------------------------------------------------------------------------------+
 | Parameter     | Description                                                                            |
@@ -126,7 +128,7 @@ Response example::
 Refreshing an access token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 To obtain a new access token, your application needs to send POST request to
-``http://critiquebrainz.org/ws/1/oauth/token``. The request must include the following parameters:
+``https://critiquebrainz.org/ws/1/oauth/token``. The request must include the following parameters:
 
 +---------------+----------------------------------------------------------------------------------------+
 | Parameter     | Description                                                                            |

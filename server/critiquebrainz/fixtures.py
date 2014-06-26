@@ -25,7 +25,7 @@ class OAuthClientData(object):
         client_secret=u'e03fbc0e-2308-46d4-a5a2-c3e54706db9f',
         name=u'CritiqueBrainz',
         desc=u'A CritiqueBrainz frontend.',
-        website=u'http://critiquebrainz.org',
+        website=u'https://critiquebrainz.org',
         redirect_uri=u'http://127.0.0.1:5001/login/post')
 
 

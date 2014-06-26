@@ -88,7 +88,7 @@ MusicBrainz
 """""""""""
 
 You need MusicBrainz account to register your application. Then head to
-http://musicbrainz.org/account/applications/register and follow the instructions.
+https://musicbrainz.org/account/applications/register and follow the instructions.
 In ``Callback URL`` field type::
 
    http://<your domain>/login/musicbrainz/post
