@@ -45,13 +45,13 @@ def create_app(config_object=None):
     from login.views import login_bp
     from review.views import review_bp
     from user.views import user_bp
-    from client.views import client_bp
+    from app.views import app_bp
 
     app.register_blueprint(oauth_bp, url_prefix='/oauth')
     app.register_blueprint(login_bp, url_prefix='/login')
     app.register_blueprint(review_bp, url_prefix='/review')
     app.register_blueprint(user_bp, url_prefix='/user')
-    app.register_blueprint(client_bp, url_prefix='/client')
+    app.register_blueprint(app_bp, url_prefix='/application')
 
     return app
 

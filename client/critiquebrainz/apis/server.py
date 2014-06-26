@@ -1,7 +1,7 @@
 import json
 import requests
-from requests.exceptions import ConnectionError
 from rauth import OAuth2Service
+from requests.exceptions import ConnectionError
 
 from flask import url_for
 
@@ -17,9 +17,7 @@ class CritiqueBrainzAPI(object):
     def __init__(self, base_url, client_id, **kwargs):
         self.base_url = base_url
         self.client_id = client_id
-        self._service = OAuth2Service(base_url=base_url,
-                                      client_id=client_id,
-                                      **kwargs)
+        self._service = OAuth2Service(base_url=base_url, client_id=client_id, **kwargs)
 
     def generate_musicbrainz_authorization_uri(self):
         params = dict(response_type='code',
@@ -28,8 +26,8 @@ class CritiqueBrainzAPI(object):
                       client_id=self.client_id)
         return build_url(self.base_url + 'login/musicbrainz', params)
 
-    def get_token_from_code(self, code):
-        data = dict(grant_type='code',
+    def get_token_from_auth_code(self, code):
+        data = dict(grant_type='authorization_code',
                     code=code,
                     scope=self.scope,
                     redirect_uri=url_for('login.post', _external=True))
@@ -153,18 +151,17 @@ class CritiqueBrainzAPI(object):
         reviews = resp.get('reviews')
         return count, reviews
 
-    def get_me_clients(self, access_token):
+    def get_me_applications(self, access_token):
         try:
             session = self._service.get_session(access_token)
-            resp = session.get('user/me/clients').json()
+            resp = session.get('user/me/applications').json()
         except ConnectionError:
             raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
             raise ServerError(code=error, desc=desc)
-        clients = resp.get('clients')
-        return clients
+        return resp.get('applications')
 
     def get_me_tokens(self, access_token):
         try:
@@ -179,18 +176,18 @@ class CritiqueBrainzAPI(object):
         tokens = resp.get('tokens')
         return tokens
 
-    def get_client(self, id, access_token):
+    def get_application(self, id, access_token):
         try:
             session = self._service.get_session(access_token)
-            resp = session.get('client/%s' % id).json()
+            resp = session.get('application/%s' % id).json()
         except ConnectionError:
             raise ServerUnavailableError()
         error = resp.get('error')
         if error:
             desc = resp.get('description')
             raise ServerError(code=error, desc=desc)
-        client = resp.get('client')
-        return client
+        application = resp.get('application')
+        return application
 
     def get_vote(self, review_id, access_token):
         try:
@@ -243,16 +240,15 @@ class CritiqueBrainzAPI(object):
             raise ServerError(code=error, desc=desc)
         return resp.get('languages')
 
-    def create_client(self, name, desc, website, redirect_uri, scopes, access_token):
+    def create_application(self, name, desc, website, redirect_uri, access_token):
         data = dict(name=name,
                     desc=desc,
                     website=website,
-                    redirect_uri=redirect_uri,
-                    scopes=scopes)
+                    redirect_uri=redirect_uri)
         headers = {'Content-type': 'application/json'}
         try:
             session = self._service.get_session(access_token)
-            resp = session.post('client/', data=json.dumps(data), headers=headers).json()
+            resp = session.post('application/', data=json.dumps(data), headers=headers).json()
         except ConnectionError:
             raise ServerUnavailableError()
         error = resp.get('error')
@@ -260,9 +256,9 @@ class CritiqueBrainzAPI(object):
             desc = resp.get('description')
             raise ServerError(code=error, desc=desc)
         message = resp.get('message')
-        client = resp.get('client')
-        client_id = client.get('id')
-        client_secret = client.get('secret')
+        application = resp.get('application')
+        client_id = application.get('id')
+        client_secret = application.get('secret')
         return message, client_id, client_secret
 
     def create_review(self, release_group, text, license_choice, language, access_token):
@@ -309,12 +305,12 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
-    def update_client(self, id, access_token, **kwargs):
+    def update_application(self, id, access_token, **kwargs):
         data = kwargs
         headers = {'Content-type': 'application/json'}
         try:
             session = self._service.get_session(access_token)
-            resp = session.post('client/%s' % id, data=json.dumps(data), headers=headers).json()
+            resp = session.post('application/%s' % id, data=json.dumps(data), headers=headers).json()
         except ConnectionError:
             raise ServerUnavailableError()
         error = resp.get('error')
@@ -388,10 +384,10 @@ class CritiqueBrainzAPI(object):
         message = resp.get('message')
         return message
 
-    def delete_client(self, id, access_token):
+    def delete_application(self, id, access_token):
         try:
             session = self._service.get_session(access_token)
-            resp = session.delete('client/%s' % id).json()
+            resp = session.delete('application/%s' % id).json()
         except ConnectionError:
             raise ServerUnavailableError()
         error = resp.get('error')
@@ -404,7 +400,7 @@ class CritiqueBrainzAPI(object):
     def delete_token(self, client_id, access_token):
         try:
             session = self._service.get_session(access_token)
-            resp = session.delete('client/%s/tokens' % client_id).json()
+            resp = session.delete('application/%s/tokens' % client_id).json()
         except ConnectionError:
             raise ServerUnavailableError()
         error = resp.get('error')

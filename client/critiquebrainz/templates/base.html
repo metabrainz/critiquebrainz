@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
 
-    <link href='http://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
     {% if config.DEBUG %}
       <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='css/styles.less') }}" />
       <script src="{{ url_for('static', filename='js/less.min.js') }}"></script>
@@ -56,7 +56,7 @@
                     <li><a href="{{ url_for('profile_details.index') }}">{{ _('Profile') }}</a></li>
                     <li class="divider"></li>
                     <li><a href="{{ url_for('profile_review.index') }}">{{ _('Reviews') }}</a></li>
-                    <li><a href="{{ url_for('profile_client.index') }}">{{ _('API clients') }}</a></li>
+                    <li><a href="{{ url_for('profile_applications.index') }}">{{ _('Applications') }}</a></li>
                     <li class="divider"></li>
                     <li><a href="{{ url_for('login.logout') }}">{{ _('Sign out') }}</a></li>
                   </ul>

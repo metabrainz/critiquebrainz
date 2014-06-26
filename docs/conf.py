@@ -9,8 +9,8 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../server'))
-import server.critiquebrainz
-from server.critiquebrainz import __version__
+import critiquebrainz
+from critiquebrainz import __version__
 
 # -- General configuration ------------------------------------------------
 

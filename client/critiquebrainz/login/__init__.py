@@ -1,13 +1,12 @@
+import time
 from functools import wraps
 from datetime import datetime
-import time
 
+from flask import redirect, url_for, session
 from flask.ext.login import LoginManager, UserMixin, current_user
 from flask.ext.babel import gettext
-from flask import redirect, url_for, session
 
 from critiquebrainz.apis import server
-
 
 login_manager = LoginManager()
 login_manager.login_view = 'login.index'
@@ -27,7 +26,7 @@ class User(UserMixin):
         self.refresh_token = refresh_token
 
     def regenerate_token(self):
-        access_token, _, expires_in = server.get_token_from_refresh_token(self.refresh_token)
+        access_token, refresh_token, expires_in = server.get_token_from_refresh_token(self.refresh_token)
         self.access_token = access_token
         self.expires_in = expires_in
 

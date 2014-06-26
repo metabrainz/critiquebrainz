@@ -1,10 +1,11 @@
-from flask import Blueprint, request, redirect, session, url_for
+from flask import Blueprint, request, redirect
 from critiquebrainz.oauth import oauth
 from critiquebrainz.exceptions import LoginError
-from critiquebrainz.utils import build_url, generate_string
+from critiquebrainz.utils import build_url
 from critiquebrainz.login import musicbrainz
 
 login_bp = Blueprint('login', __name__)
+
 
 @login_bp.route('/musicbrainz', endpoint='musicbrainz')
 def login_musicbrainz_handler():
@@ -12,6 +13,7 @@ def login_musicbrainz_handler():
     musicbrainz.persist_data(query=(client_id, redirect_uri, scope, state))
     url = musicbrainz.get_authentication_uri()
     return redirect(url)
+
 
 @login_bp.route('/musicbrainz/post', endpoint='musicbrainz_post')
 def login_musicbrainz_post_handler():
@@ -25,9 +27,10 @@ def login_musicbrainz_post_handler():
         raise LoginError('server_error', build_url(redirect_uri, dict(state=state)))
 
     user_id = musicbrainz.get_user().id
-    (code, ) = oauth.generate_grant(client_id, scope, redirect_uri, user_id)
+    code = oauth.generate_grant(client_id, user_id, redirect_uri, scope)
     
     return redirect(build_url(redirect_uri, dict(state=state, code=code)))
+
 
 @login_bp.errorhandler(LoginError)
 def login_error_handler(error):
@@ -36,10 +39,12 @@ def login_error_handler(error):
     else:
         return error.code
 
+
 @login_bp.errorhandler(Exception)
 def exception_handler(error):
     redirect_uri = request.args.get('redirect_uri')
     return login_error_handler(LoginError('server_error', redirect_uri))
+
 
 def login_parse_parameters():
     client_id = request.args.get('client_id')
@@ -56,5 +61,5 @@ def login_parse_parameters():
     if 'authorization' not in scopes:
         raise LoginError('access_denied', redirect_uri)
 
-    return (client_id, response_type, redirect_uri, scope, state)
+    return client_id, response_type, redirect_uri, scope, state
 

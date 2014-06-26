@@ -1,9 +1,9 @@
 from flask import request
 from critiquebrainz.utils import validate_uuid
 from critiquebrainz.exceptions import MissingDataError, ParserError
-from critiquebrainz.db import Review
 from urlparse import urlparse
 import re
+
 
 class Parser(object):
 

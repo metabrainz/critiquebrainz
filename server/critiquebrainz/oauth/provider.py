@@ -1,9 +1,12 @@
 from flask import request
-from critiquebrainz.db import db, OAuthClient, OAuthGrant, OAuthToken
-from critiquebrainz.utils import generate_string
 from exceptions import *
 from datetime import datetime, timedelta
 from functools import wraps
+
+from critiquebrainz.db import db, OAuthClient, OAuthGrant, OAuthToken
+from critiquebrainz.constants import available_scopes
+from critiquebrainz.utils import generate_string
+
 
 class CritiqueBrainzAuthorizationProvider(object):
 
@@ -12,7 +15,8 @@ class CritiqueBrainzAuthorizationProvider(object):
         self.grant_expire = app.config['OAUTH_GRANT_EXPIRE']
         self.token_expire = app.config['OAUTH_TOKEN_EXPIRE']
 
-    def validate_authorization_header(self, value):
+    @staticmethod
+    def validate_authorization_header(value):
         if not value or isinstance(value, unicode) is False:
             return False
 
@@ -25,29 +29,28 @@ class CritiqueBrainzAuthorizationProvider(object):
 
         return True
 
-    def validate_client_id(self, client_id):
+    @staticmethod
+    def validate_client_id(client_id):
         if not client_id:
             return False
         return OAuthClient.query.get(client_id) is not None
 
-    def validate_client_secret(self, client_id, client_secret):
+    @staticmethod
+    def validate_client_secret(client_id, client_secret):
         client = OAuthClient.query.get(client_id)
         if client is None:
             return False
         else:
             return client.client_secret == client_secret
 
-    def validate_client_redirect_uri(self, client_id, redirect_uri):
+    @staticmethod
+    def validate_client_redirect_uri(client_id, redirect_uri):
         client = OAuthClient.query.get(client_id)
 
         if client is None or isinstance(redirect_uri, unicode) is False:
             return False
         else:
             return client.redirect_uri == redirect_uri.split('?')[0]
-
-    def validate_client_scope(self, client_id, scope):
-        client = OAuthClient.query.get(client_id)
-        return self.validate_scope(scope, client.get_scopes())
 
     def validate_grant_redirect_uri(self, client_id, code, redirect_uri):
         grant = self.fetch_grant(client_id, code)
@@ -65,7 +68,7 @@ class CritiqueBrainzAuthorizationProvider(object):
         grant = self.fetch_grant(client_id, code)
         if grant is None:
             return False
-        return ( datetime.now() > grant.expires ) is False
+        return (datetime.now() > grant.expires) is False
 
     def validate_token_scope(self, client_id, refresh_token, scope):
         token = self.fetch_token(client_id, refresh_token)
@@ -74,7 +77,8 @@ class CritiqueBrainzAuthorizationProvider(object):
     def validate_token(self, client_id, refresh_token):
         return self.fetch_token(client_id, refresh_token) is not None
 
-    def validate_scope(self, scope, valid_scopes):
+    @staticmethod
+    def validate_scope(scope, valid_scopes=available_scopes):
         if not scope or isinstance(scope, unicode) is False:
             return False
 
@@ -84,21 +88,22 @@ class CritiqueBrainzAuthorizationProvider(object):
                 return False
         return True
 
-    def persist_grant(self, client_id, code, scopes, expires, redirect_uri, user_id):
+    @staticmethod
+    def persist_grant(client_id, code, scopes, expires, redirect_uri, user_id):
         grant = OAuthGrant(client_id=client_id,
                            code=code,
                            scopes=scopes,
                            expires=expires,
                            redirect_uri=redirect_uri,
                            user_id=user_id)
-
         db.session.add(grant)
         db.session.commit()
         return grant
 
-    def persist_token(self, client_id, scopes, refresh_token, access_token, expires, user_id):
+    @staticmethod
+    def persist_token(client_id, scope, refresh_token, access_token, expires, user_id):
         token = OAuthToken(client_id=client_id,
-                           scopes=scopes,
+                           scopes=scope,
                            access_token=access_token,
                            refresh_token=refresh_token,
                            expires=expires,
@@ -108,66 +113,66 @@ class CritiqueBrainzAuthorizationProvider(object):
         db.session.commit()
         return token
 
-    def fetch_grant(self, client_id, code):
+    @staticmethod
+    def fetch_grant(client_id, code):
         grant = OAuthGrant.query.filter_by(client_id=client_id, code=code).first()
         return grant
 
-    def fetch_token(self, client_id, refresh_token):
+    @staticmethod
+    def fetch_token(client_id, refresh_token):
         token = OAuthToken.query.filter_by(client_id=client_id, refresh_token=refresh_token).first()
         return token
 
-    def fetch_access_token(self, access_token):
+    @staticmethod
+    def fetch_access_token(access_token):
         token = OAuthToken.query.filter_by(access_token=access_token).first()
         return token
 
-    def discard_grant(self, client_id, code):
+    @staticmethod
+    def discard_grant(client_id, code):
         OAuthGrant.query.filter_by(client_id=client_id, code=code).delete()
 
-    def discard_token(self, client_id, refresh_token):
+    @staticmethod
+    def discard_token(client_id, refresh_token):
         OAuthToken.query.filter_by(client_id=client_id, refresh_token=refresh_token).delete()
 
-    def discard_client_user_tokens(self, client_id, user_id):
+    @staticmethod
+    def discard_client_user_tokens(client_id, user_id):
         OAuthToken.query.filter_by(client_id=client_id, user_id=user_id).delete()
 
-    def validate_authorization_request(self, client_id, response_type, redirect_uri, scope):
+    def validate_authorization_request(self, client_id, response_type, redirect_uri, scope=None):
         if self.validate_client_id(client_id) is False:
             raise InvalidClient
         if response_type != 'code':
             raise UnsupportedResponseType
         if self.validate_client_redirect_uri(client_id, redirect_uri) is False:
             raise InvalidRedirectURI
-        if self.validate_client_scope(client_id, scope) is False:
+        if scope and not self.validate_scope(scope):
             raise InvalidScope
 
-    def validate_token_request(self, client_id, client_secret, grant_type, scope, code, refresh_token, redirect_uri):
+    def validate_token_request(self, grant_type, client_id, client_secret, redirect_uri, code, refresh_token):
         if self.validate_client_id(client_id) is False:
             raise InvalidClient
         if self.validate_client_secret(client_id, client_secret) is False:
             raise InvalidClient
-        if grant_type == 'code':
+        if grant_type == 'authorization_code':
             if self.validate_grant(client_id, code) is False:
                 raise InvalidGrant
-            if self.validate_grant_scope(client_id, code, scope) is False:
-                raise InvalidScope
             if self.validate_grant_redirect_uri(client_id, code, redirect_uri) is False:
                 raise InvalidRedirectURI
         elif grant_type == 'refresh_token':
             if self.validate_token(client_id, refresh_token) is False:
                 raise InvalidGrant
-            if self.validate_token_scope(client_id, refresh_token, scope) is False:
-                raise InvalidScope
         else:
             raise UnsupportedGrantType
 
-    def generate_grant(self, client_id, scope, redirect_uri, user_id):
+    def generate_grant(self, client_id, user_id, redirect_uri, scope=None):
         code = generate_string(self.token_length)
         expires = datetime.now() + timedelta(seconds=self.grant_expire)
-
         grant = self.persist_grant(client_id, code, scope, expires, redirect_uri, user_id)
+        return code
 
-        return (code ,)
-
-    def generate_token(self, client_id, scope, refresh_token, user_id):
+    def generate_token(self, client_id, refresh_token, user_id, scope=None):
         if not refresh_token:
             refresh_token = generate_string(self.token_length)
         access_token = generate_string(self.token_length)
@@ -175,7 +180,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
         token = self.persist_token(client_id, scope, refresh_token, access_token, expires, user_id)
 
-        return (access_token, 'Bearer', self.token_expire, refresh_token, scope)
+        return access_token, 'Bearer', self.token_expire, refresh_token
 
     def get_authorized_user(self, scopes):
         authorization = request.headers.get('Authorization')

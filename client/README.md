@@ -1,4 +1,4 @@
 # CritiqueBrainz Client
 
 ## Installation
-See http://critiquebrainz.readthedocs.org/installation/client.html.
+See https://critiquebrainz.readthedocs.org/installation/client.html.
