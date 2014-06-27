@@ -19,7 +19,6 @@ class CritiqueBrainzAPI(object):
 
     def generate_musicbrainz_authorization_uri(self):
         params = dict(response_type='code',
-                      # TODO: Check if server supports HTTPS and add _scheme='https' if it does
                       redirect_uri=url_for('login.post', _external=True),
                       scope=self.scope,
                       client_id=self.client_id)
@@ -29,7 +28,6 @@ class CritiqueBrainzAPI(object):
         data = dict(grant_type='authorization_code',
                     code=code,
                     scope=self.scope,
-                    # TODO: Check if server supports HTTPS and add _scheme='https' if it does
                     redirect_uri=url_for('login.post', _external=True))
         resp = self._service.get_raw_access_token(data=data).json()
         error = resp.get('error')
