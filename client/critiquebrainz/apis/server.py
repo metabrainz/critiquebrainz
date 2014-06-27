@@ -1,10 +1,8 @@
 import json
 import requests
-from urlparse import urlparse
 from rauth import OAuth2Service
 from flask import url_for
 
-from critiquebrainz import app
 from critiquebrainz.utils import build_url
 from critiquebrainz.exceptions import ServerError
 
@@ -20,19 +18,19 @@ class CritiqueBrainzAPI(object):
         self._service = OAuth2Service(base_url=base_url, client_id=client_id, **kwargs)
 
     def generate_musicbrainz_authorization_uri(self):
-        server_scheme = urlparse(app.config['CRITIQUEBRAINZ_BASE_URI']).scheme
         params = dict(response_type='code',
-                      redirect_uri=url_for('login.post', _external=True, _scheme=server_scheme),
+                      # TODO: Check if server supports HTTPS and add _scheme='https' if it does
+                      redirect_uri=url_for('login.post', _external=True),
                       scope=self.scope,
                       client_id=self.client_id)
         return build_url(self.base_url + 'login/musicbrainz', params)
 
     def get_token_from_auth_code(self, code):
-        server_scheme = urlparse(app.config['CRITIQUEBRAINZ_BASE_URI']).scheme
         data = dict(grant_type='authorization_code',
                     code=code,
                     scope=self.scope,
-                    redirect_uri=url_for('login.post', _external=True, _scheme=server_scheme))
+                    # TODO: Check if server supports HTTPS and add _scheme='https' if it does
+                    redirect_uri=url_for('login.post', _external=True))
         resp = self._service.get_raw_access_token(data=data).json()
         error = resp.get('error')
         if error:
