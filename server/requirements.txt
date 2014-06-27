@@ -14,8 +14,7 @@ psycopg2==2.5.1
 rauth==0.6.1
 wsgiref==0.1.2
 pycountry==1.6
-urllib3==1.8.3
-pyOpenSSL==0.14
+pyOpenSSL==0.13
 ndg-httpsclient==0.3.2
-pyasn1==0.1.7
+pyasn1==0.1.6
 requests==2.3.0
