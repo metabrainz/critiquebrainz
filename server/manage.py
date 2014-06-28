@@ -86,7 +86,7 @@ def backup_db(location=os.path.join(os.path.dirname(__file__), 'backup'), clean=
     file_prefix = "cb-backup-"
 
     # Creating database dump
-    print("Creating database dump...")
+    print('Creating database dump in "%s"...' % location)
     file_name = "%s/%s%s" % (location, file_prefix, strftime("%Y%m%d-%H%M%S", gmtime()))
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
     print('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name))
