@@ -106,7 +106,7 @@ def backup_db(location=os.path.join(os.path.dirname(__file__), 'backup'), clean=
             return pattern.search(file_name)
 
         archives = filter(is_backup_archive, files)
-        files.sort(key=lambda x: os.path.getmtime(x))
+        archives.sort(key=lambda x: os.path.getmtime(x))
 
         for archive in archives[:-2]:
             print("Deleting old backup file:", archive)
