@@ -1,7 +1,10 @@
 ﻿#!/usr/bin/python
 from __future__ import print_function
 import subprocess
+import os
+import re
 from datetime import datetime
+from time import gmtime, strftime
 from flask.json import JSONEncoder
 from flask.ext.script import Manager
 
@@ -72,16 +75,19 @@ def fixtures():
 
 
 @manager.command
-def dump_db():
-    """Create dump of the database."""
-    import subprocess
-    from time import gmtime, strftime
-    backup_dir = 'backup'
-    exit_code = subprocess.call('mkdir -p %s' % backup_dir, shell=True)
+def backup_db(location=os.path.join(os.path.dirname(__file__), 'backup'), clean=False):
+    """Create database backup."""
+
+    # Creating backup directory if needed
+    exit_code = subprocess.call('mkdir -p %s' % location, shell=True)
     if exit_code != 0:
         raise Exception("Failed to backup directory!")
+
+    file_prefix = "cb-backup-"
+
+    # Creating database dump
     print("Creating database dump...")
-    file_name = "%s/cb-%s" % (backup_dir, strftime("%Y%m%d-%H%M%S", gmtime()))
+    file_name = "%s/%s%s" % (location, file_prefix, strftime("%Y%m%d-%H%M%S", gmtime()))
     hostname, db, username, password = explode_url(app.config['SQLALCHEMY_DATABASE_URI'])
     print('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name))
     exit_code = subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db, file_name), shell=True)
@@ -90,6 +96,21 @@ def dump_db():
     if exit_code != 0:
         raise Exception("Failed to create database dump!")
     print('Done! Created "%s.tar.bz2".' % file_name)
+
+    if clean:
+        # Removing old backups (except two latest)
+        files = [os.path.join(location, f) for f in os.listdir(location)]
+
+        pattern = re.compile("%s[0-9]+-[0-9]+.tar" % file_prefix)
+        def is_backup_archive(file_name):
+            return pattern.search(file_name)
+
+        archives = filter(is_backup_archive, files)
+        files.sort(key=lambda x: os.path.getmtime(x))
+
+        for archive in archives[:-2]:
+            print("Deleting old backup file:", archive)
+            os.remove(archive)
 
 
 @manager.command
