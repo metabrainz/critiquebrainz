@@ -53,10 +53,6 @@ def spotify_matching_submit_handler(release_group_id):
     spotify_uri = request.args.get('spotify_uri', default=None)
     if not spotify_uri:
         return redirect(url_for('.spotify', release_group_id=release_group_id))
-    try:
-        message = mbspotify.add_mapping(release_group_id, spotify_uri, current_user.me['id'])
-    except APIError as e:
-        flash(e.desc, 'error')
-    else:
-        flash(gettext('Connection is added!'), 'success')
+    message = mbspotify.add_mapping(release_group_id, spotify_uri, current_user.me['id'])
+    flash(gettext('Connection is added!'), 'success')
     return redirect(url_for('release_group.entity', id=release_group_id))
