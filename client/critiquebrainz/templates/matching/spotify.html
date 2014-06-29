@@ -19,7 +19,7 @@
     <div class="col-md-3">
       <div class="thumbnail">
         <div class="cover-art-container">
-          <a href="{{ url_for('matching.spotify_submit', release_group_id=release_group.id, spotify_uri=item.uri) }}" class="match-link" data-toggle="tooltip" data-placement="bottom" title="This is the same album!">
+          <a href="{{ url_for('matching.spotify_submit', release_group_id=release_group.id, spotify_uri=item.uri) }}" class="match-link" data-toggle="tooltip" data-placement="bottom" title="This is the same album!" rel="nofollow">
             {% if item.images[0] %}
               <img class="img-responsive" src="{{ item.images[0].url }}" />
             {% else %}
