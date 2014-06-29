@@ -38,12 +38,7 @@ def spotify_matching_submit_handler(release_group_id):
 
     spotify_uri = request.args.get('spotify_uri', default=None)
     release_group = musicbrainz.release_group_details(release_group_id)
-    limit = 20
-    offset = int(request.args.get('offset', default=0))
-    response = spotify.search(release_group['title'], 'album', limit, offset).get('albums')
-    count, search_results = response.get('total'), response.get('items')
-    return render_template('matching/confirm.html', release_group=release_group, spotify_uri=spotify_uri,
-                           limit=limit, offset=offset, count=count)
+    return render_template('matching/confirm.html', release_group=release_group, spotify_uri=spotify_uri)
 
 
 @bp.route('/spotify/<uuid:release_group_id>/confirm', methods=['POST'], endpoint='spotify_submit')
