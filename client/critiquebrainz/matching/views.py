@@ -60,18 +60,3 @@ def spotify_matching_submit_handler(release_group_id):
     else:
         flash(gettext('Connection is added!'), 'success')
     return redirect(url_for('release_group.entity', id=release_group_id))
-
-
-@bp.route('/spotify/report', methods=['POST'], endpoint='spotify_report')
-@login_required
-def spotify_report_handler():
-    mbid = request.args.get('mbid', default=None)
-    if not mbid:
-        return
-    try:
-        message = mbspotify.report(mbid, current_user.me['id'])
-    except APIError as e:
-        flash(e.desc, 'error')
-    else:
-        flash(gettext('Feedback submitted. Thank you!'), 'success')
-    return redirect(url_for('index'))
