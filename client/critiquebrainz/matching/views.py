@@ -20,7 +20,11 @@ def spotify_matching_handler(release_group_id):
     release_group = musicbrainz.release_group_details(release_group_id)
     limit = 20
     offset = int(request.args.get('offset', default=0))
-    query = release_group['title'].translate(string.maketrans("", ""), string.punctuation)
+
+    # Removing punctuation from the string
+    punctuation_map = dict((ord(char), None) for char in string.punctuation)
+    query = unicode(release_group['title']).translate(punctuation_map)
+    # Searching...
     response = spotify.search(query, 'album', limit, offset).get('albums')
     count, search_results = response.get('total'), response.get('items')
     return render_template('matching/spotify.html', release_group=release_group, search_results=search_results,
