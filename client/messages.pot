@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-05 05:29+0000\n"
+"POT-Creation-Date: 2014-07-05 07:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -222,7 +222,7 @@ msgid "Thanks, but this album is already matched to Spotify!"
 msgstr ""
 
 #: critiquebrainz/matching/views.py:21 critiquebrainz/matching/views.py:48
-msgid "Only existing release group can be matched to Spotify!"
+msgid "Only existing release groups can be matched to Spotify!"
 msgstr ""
 
 #: critiquebrainz/matching/views.py:68
@@ -265,11 +265,15 @@ msgstr ""
 msgid "Sorry we couldn't find release group with that MusicBrainz ID."
 msgstr ""
 
-#: critiquebrainz/review/views.py:45
+#: critiquebrainz/review/views.py:18
+msgid "Sorry we couldn't find review with that ID."
+msgstr ""
+
+#: critiquebrainz/review/views.py:51
 msgid "You have rated the review!"
 msgstr ""
 
-#: critiquebrainz/review/views.py:57
+#: critiquebrainz/review/views.py:63
 msgid "You have deleted your vote for this review!"
 msgstr ""
 
@@ -655,7 +659,7 @@ msgstr ""
 msgid "Page not found"
 msgstr ""
 
-#: critiquebrainz/templates/errors/404.html:11
+#: critiquebrainz/templates/errors/404.html:12
 #: critiquebrainz/templates/errors/500.html:16
 #: critiquebrainz/templates/errors/503.html:15
 msgid "Back to home page"
@@ -1178,5 +1182,9 @@ msgstr ""
 
 #: critiquebrainz/templates/search/selector.html:77
 msgid "Continue"
+msgstr ""
+
+#: critiquebrainz/user/views.py:15
+msgid "Sorry we couldn't find user with that ID."
 msgstr ""
 
