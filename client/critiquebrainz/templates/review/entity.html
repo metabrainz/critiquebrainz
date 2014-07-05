@@ -2,15 +2,18 @@
 
 {% set release_group = review.release_group | release_group_details %}
 
-{% block title %}{{ _('Review of "%(rg)s" by %(user)s', rg=release_group.title, user=review.user.display_name) }} - CritiqueBrainz{% endblock %}
+{% block title %}
+{% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
+{{ _('Review of "%(rg)s" by %(user)s', rg=release_group_title, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
 
 {% block content %}
 <div id="review-entity">
   <h2 id="title">
-    {% if release_group.id %}
+    {% if release_group %}
       <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
     {% else %}
-      {{ release_group.title }}
+      {{ _('[Unknown release group]') }}
     {% endif %}
     -
     {% if release_group['artist-credit'] %}

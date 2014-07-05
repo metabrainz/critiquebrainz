@@ -17,6 +17,10 @@ def spotify_matching_handler(release_group_id):
         return redirect(url_for('release_group.entity', id=release_group_id))
 
     release_group = musicbrainz.release_group_details(release_group_id)
+    if not release_group:
+        flash(gettext('Only existing release group can be matched to Spotify!'), 'error')
+        return redirect(url_for('index'))
+
     limit = 20
     offset = int(request.args.get('offset', default=0))
 
@@ -39,8 +43,12 @@ def spotify_matching_submit_handler(release_group_id):
         flash(gettext('Thanks, but this album is already matched to Spotify!'))
         return redirect(url_for('release_group.entity', id=release_group_id))
 
-    spotify_uri = request.args.get('spotify_uri', default=None)
     release_group = musicbrainz.release_group_details(release_group_id)
+    if not release_group:
+        flash(gettext('Only existing release group can be matched to Spotify!'), 'error')
+        return redirect(url_for('index'))
+
+    spotify_uri = request.args.get('spotify_uri', default=None)
     return render_template('matching/confirm.html', release_group=release_group, spotify_uri=spotify_uri)
 
 

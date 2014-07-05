@@ -2,7 +2,10 @@
 
 {% set release_group = review.release_group | release_group_details %}
 
-{% block title %}{{ _('Edit review of "%(rg)s"', rg=release_group.title) }} - CritiqueBrainz{% endblock %}
+{% block title %}
+{% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
+{{ _('Edit review of "%(rg)s"', rg=release_group_title) }} - CritiqueBrainz
+{% endblock %}
 
 {% block content %}
 {% for field in form.errors %}
@@ -14,10 +17,10 @@
 {% endfor %}
 <h2>{{ _('Editing review') }}</h2>
 <dl class="dl-horizontal">
-  <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
+  <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</dd>
   <dt>{{ _('Release group') }}</dt>
   <dd>
-    {{ release_group.title }}
+    {{ release_group.title | default(_('[Unknown release group]')) }}
     {% if release_group['first-release-date'] %}
       <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
     {% endif %}

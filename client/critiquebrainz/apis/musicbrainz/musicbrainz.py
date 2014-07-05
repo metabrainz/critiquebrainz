@@ -111,11 +111,4 @@ class MusicBrainzClient:
         """Get short release group details.
         :returns Dictionary with an ID, title, artist and artist ID, first release year.
         """
-        details = self.get_release_group_by_id(id, includes=['artists'])
-        if details:
-            return details
-        else:
-            return {
-                'title': gettext('[Unknown release group]'),
-                'artist-credit-phrase': gettext('[Unknown artist]'),
-            }
+        return self.get_release_group_by_id(id, includes=['artists'])

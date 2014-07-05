@@ -30,9 +30,9 @@
       {% for review in reviews %}
         {% set release_group = review.release_group | release_group_details %}
         <tr data-review-id="{{ review.id }}">
-          <td>{{ release_group['artist-credit-phrase'] }}</td>
+          <td>{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</td>
           <td>
-            {{ release_group.title }}
+            {{ release_group.title | default(_('[Unknown release group]')) }}
             {% if release_group['first-release-date'] %}
               <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
             {% endif %}
