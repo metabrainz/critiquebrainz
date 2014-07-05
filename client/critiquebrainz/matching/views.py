@@ -18,7 +18,7 @@ def spotify_matching_handler(release_group_id):
 
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
-        flash(gettext('Only existing release group can be matched to Spotify!'), 'error')
+        flash(gettext('Only existing release groups can be matched to Spotify!'), 'error')
         return redirect(url_for('index'))
 
     limit = 20
@@ -45,7 +45,7 @@ def spotify_matching_submit_handler(release_group_id):
 
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
-        flash(gettext('Only existing release group can be matched to Spotify!'), 'error')
+        flash(gettext('Only existing release groups can be matched to Spotify!'), 'error')
         return redirect(url_for('index'))
 
     spotify_uri = request.args.get('spotify_uri', default=None)
