@@ -7,15 +7,23 @@
 {% block content %}
 <div id="review-entity">
   <h2 id="title">
-    <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
+    {% if release_group.id %}
+      <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
+    {% else %}
+      {{ release_group.title }}
+    {% endif %}
     -
-    {% for credit in release_group['artist-credit'] %}
-      {% if credit.artist %}
-        <a href="{{ url_for('artist.entity', id=credit.artist.id) }}">{{ credit.artist.name }}</a>
-      {% else %}
-        {{ credit }}
-      {% endif %}
-    {% endfor %}
+    {% if release_group['artist-credit'] %}
+      {% for credit in release_group['artist-credit'] %}
+        {% if credit.artist %}
+          <a href="{{ url_for('artist.entity', id=credit.artist.id) }}">{{ credit.artist.name }}</a>
+        {% else %}
+          {{ credit }}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {{ _('[Unknown artist]') }}
+    {% endif %}
     {% if release_group['first-release-date'] %}
       <small>{{ release_group['first-release-date'][:4] }}</small>
     {% endif %}

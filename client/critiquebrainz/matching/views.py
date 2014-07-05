@@ -4,7 +4,6 @@ from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
 
 from critiquebrainz.apis import musicbrainz, spotify, mbspotify
-from critiquebrainz.exceptions import *
 
 bp = Blueprint('matching', __name__)
 

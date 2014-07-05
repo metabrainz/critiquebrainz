@@ -2,6 +2,7 @@ from musicbrainzngs import set_useragent, get_release_group_by_id, get_artist_by
     search_release_groups, search_artists, browse_release_groups
 from musicbrainzngs.musicbrainz import ResponseError
 
+from flask.ext.babel import gettext
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.cache import cache, generate_cache_key
 from relationships import artist as artist_rel, release_group as release_group_rel
@@ -40,7 +41,10 @@ class MusicBrainzClient:
                                                  limit=limit, offset=offset)
                 release_groups = api_resp.get('release-group-count'), api_resp.get('release-group-list')
             except ResponseError as e:
-                raise APIError(code=e.cause.code, desc=e.cause.msg)
+                if e.cause.code == 404:
+                    return None
+                else:
+                    raise APIError(code=e.cause.code, desc=e.cause.msg)
             cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
         return release_groups
 
@@ -57,8 +61,7 @@ class MusicBrainzClient:
                 artist = get_artist_by_id(id, includes).get('artist')
             except ResponseError as e:
                 if e.cause.code == 404:
-                    raise APIError(code=e.cause.code,
-                                   desc="Sorry, we could not find an artist with that MusicBrainz ID.")
+                    return None
                 else:
                     raise APIError(code=e.cause.code, desc=e.cause.msg)
             artist = artist_rel.process(artist)
@@ -78,8 +81,7 @@ class MusicBrainzClient:
                 release_group = get_release_group_by_id(id, includes).get('release-group')
             except ResponseError as e:
                 if e.cause.code == 404:
-                    raise APIError(code=e.cause.code,
-                                   desc="Sorry, we could not find a release group with that MusicBrainz ID.")
+                    return None
                 else:
                     raise APIError(code=e.cause.code, desc=e.cause.msg)
             release_group = release_group_rel.process(release_group)
@@ -99,8 +101,7 @@ class MusicBrainzClient:
                 release = get_release_by_id(id, includes).get('release')
             except ResponseError as e:
                 if e.cause.code == 404:
-                    raise APIError(code=e.cause.code,
-                                   desc="Sorry, we could not find a release with that MusicBrainz ID.")
+                    return None
                 else:
                     raise APIError(code=e.cause.code, desc=e.cause.msg)
             cache.set(key, release, DEFAULT_CACHE_EXPIRATION)
@@ -110,4 +111,11 @@ class MusicBrainzClient:
         """Get short release group details.
         :returns Dictionary with an ID, title, artist and artist ID, first release year.
         """
-        return self.get_release_group_by_id(id, includes=['artists'])
+        details = self.get_release_group_by_id(id, includes=['artists'])
+        if details:
+            return details
+        else:
+            return {
+                'title': gettext('[Unknown release group]'),
+                'artist-credit-phrase': gettext('[Unknown artist]'),
+            }

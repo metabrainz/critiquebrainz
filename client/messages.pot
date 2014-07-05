@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-27 11:19+0000\n"
+"POT-Creation-Date: 2014-07-05 04:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,15 @@ msgstr ""
 
 #: critiquebrainz/errors.py:13
 msgid "Your login session has expired. Please sign in again."
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/musicbrainz.py:119
+msgid "[Unknown release group]"
+msgstr ""
+
+#: critiquebrainz/apis/musicbrainz/musicbrainz.py:120
+#: critiquebrainz/templates/review/entity.html:25
+msgid "[Unknown artist]"
 msgstr ""
 
 #: critiquebrainz/apis/musicbrainz/relationships/artist.py:29
@@ -69,6 +78,10 @@ msgstr ""
 
 #: critiquebrainz/apis/musicbrainz/relationships/release_group.py:20
 msgid "Recording studio"
+msgstr ""
+
+#: critiquebrainz/artist/views.py:15
+msgid "Sorry we couldn't find artist with that MusicBrainz ID."
 msgstr ""
 
 #: critiquebrainz/forms/profile/client.py:6
@@ -212,17 +225,13 @@ msgstr ""
 msgid "Please sign in to access this page."
 msgstr ""
 
-#: critiquebrainz/matching/views.py:16 critiquebrainz/matching/views.py:34
+#: critiquebrainz/matching/views.py:16 critiquebrainz/matching/views.py:39
 #: critiquebrainz/matching/views.py:53
 msgid "Thanks, but this album is already matched to Spotify!"
 msgstr ""
 
-#: critiquebrainz/matching/views.py:64
+#: critiquebrainz/matching/views.py:60
 msgid "Connection is added!"
-msgstr ""
-
-#: critiquebrainz/matching/views.py:79
-msgid "Feedback submitted. Thank you!"
 msgstr ""
 
 #: critiquebrainz/profile/applications/views.py:31
@@ -251,6 +260,10 @@ msgstr ""
 
 #: critiquebrainz/profile/review/views.py:82
 msgid "You have deleted the review."
+msgstr ""
+
+#: critiquebrainz/release_group/views.py:16
+msgid "Sorry we couldn't find release group with that MusicBrainz ID."
 msgstr ""
 
 #: critiquebrainz/review/views.py:45
@@ -501,7 +514,7 @@ msgstr ""
 
 #: critiquebrainz/templates/index.html:48
 #: critiquebrainz/templates/index.html:78
-#: critiquebrainz/templates/review/entity.html:42
+#: critiquebrainz/templates/review/entity.html:50
 #, python-format
 msgid "Review by %(user)s"
 msgstr ""
@@ -860,8 +873,8 @@ msgid "Yes, I want to delete my account"
 msgstr ""
 
 #: critiquebrainz/templates/profile/details/delete.html:15
-#: critiquebrainz/templates/review/entity.html:70
-#: critiquebrainz/templates/review/entity.html:81
+#: critiquebrainz/templates/review/entity.html:78
+#: critiquebrainz/templates/review/entity.html:89
 msgid "No"
 msgstr ""
 
@@ -1046,68 +1059,68 @@ msgstr ""
 msgid "Review of \"%(rg)s\" by %(user)s"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:44
+#: critiquebrainz/templates/review/entity.html:52
 #, python-format
 msgid "Published on %(date)s"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:45
+#: critiquebrainz/templates/review/entity.html:53
 msgid "Rating:"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:56
+#: critiquebrainz/templates/review/entity.html:64
 #, python-format
 msgid "This review is licensed under a %(name)s license."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:58
+#: critiquebrainz/templates/review/entity.html:66
 #, python-format
 msgid "It was imported from %(source)s."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:68
+#: critiquebrainz/templates/review/entity.html:76
 msgid "Did you find this review useful?"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:69
-#: critiquebrainz/templates/review/entity.html:80
+#: critiquebrainz/templates/review/entity.html:77
+#: critiquebrainz/templates/review/entity.html:88
 msgid "Yes"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:72
+#: critiquebrainz/templates/review/entity.html:80
 msgid "(delete your vote)"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:77
+#: critiquebrainz/templates/review/entity.html:85
 msgid "Report spam"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:79
+#: critiquebrainz/templates/review/entity.html:87
 msgid "Report this review as spam?"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:83
+#: critiquebrainz/templates/review/entity.html:91
 msgid "Reporting..."
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:89
+#: critiquebrainz/templates/review/entity.html:97
 msgid "Edit this review"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:93
+#: critiquebrainz/templates/review/entity.html:101
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:111
+#: critiquebrainz/templates/review/entity.html:119
 msgid "Review reported!"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:115
+#: critiquebrainz/templates/review/entity.html:123
 msgid "You have already reported this review!"
 msgstr ""
 
-#: critiquebrainz/templates/review/entity.html:117
+#: critiquebrainz/templates/review/entity.html:125
 msgid "Unknown error occurred!"
 msgstr ""
 
