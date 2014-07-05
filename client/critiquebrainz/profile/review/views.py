@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
 
-from critiquebrainz.apis import server
+from critiquebrainz.apis import server, musicbrainz
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.review import ReviewCreateForm, ReviewEditForm
 import markdown
@@ -37,13 +37,19 @@ def create_handler():
     form.language.choices = [(l, pycountry.languages.get(alpha2=l).name) for l in server.get_review_languages()]
     if form.validate_on_submit():
         try:
+            # TODO: Validate that release group exists (maybe do that on server)
             server.create_review(release_group, form.text.data, form.license_choice.data, form.language.data, current_user.access_token)
         except APIError as e:
             flash(e.desc, 'error')
         else:
             flash(gettext('You have published the review!'), 'success')
         return redirect(url_for('.index'))
-    return render_template('profile/review/write.html', form=form, release_group=release_group)
+
+    release_group_details = musicbrainz.release_group_details(release_group)
+    if 'id' not in release_group_details:
+        flash(gettext("You can only write review for release group that exists on MusicBrainz!"), 'error')
+        return redirect(url_for('search.selector', next=url_for('.create')))
+    return render_template('profile/review/write.html', form=form, release_group=release_group_details)
 
 @bp.route('/write/preview', methods=['POST'], endpoint='preview')
 @login_required

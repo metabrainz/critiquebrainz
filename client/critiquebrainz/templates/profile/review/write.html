@@ -1,7 +1,5 @@
 {% extends 'profile/base.html' %}
 
-{% set release_group = release_group | release_group_details %}
-
 {% block title %}{{ _('Write review of "%(rg)s"', rg=release_group.title) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
