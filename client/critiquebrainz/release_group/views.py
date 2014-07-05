@@ -3,7 +3,7 @@ from flask.ext.login import current_user
 from flask.ext.babel import gettext
 
 from critiquebrainz.apis import server, musicbrainz, mbspotify
-from critiquebrainz.exceptions import APIError
+from critiquebrainz.exceptions import NotFound
 
 bp = Blueprint('release_group', __name__)
 
@@ -13,7 +13,7 @@ def release_group_entity_handler(id):
     release_group = musicbrainz.get_release_group_by_id(id, includes=['artists', 'releases',
                                                                       'release-group-rels', 'url-rels', 'work-rels'])
     if not release_group:
-        raise APIError(status=404, desc=gettext("Sorry we couldn't find release group with that MusicBrainz ID."))
+        raise NotFound(gettext("Sorry we couldn't find release group with that MusicBrainz ID."))
     if len(release_group['release-list']) > 0:
         release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'], includes=['recordings'])
     else:

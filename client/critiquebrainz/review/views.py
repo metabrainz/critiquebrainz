@@ -3,7 +3,7 @@ from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
 
 from critiquebrainz.apis import server, mbspotify
-from critiquebrainz.exceptions import *
+from critiquebrainz.exceptions import ServerError, APIError, NotFound
 from markdown import markdown
 
 bp = Blueprint('review', __name__)
@@ -11,7 +11,13 @@ bp = Blueprint('review', __name__)
 
 @bp.route('/<uuid:id>', endpoint='entity')
 def review_entity_handler(id):
-    review = server.get_review(id, inc=['user'])
+    try:
+        review = server.get_review(id, inc=['user'])
+    except ServerError as e:
+        if e.code == 'not_found':
+            raise NotFound(gettext("Sorry we couldn't find review with that ID."))
+        else:
+            raise e
     spotify_mapping = mbspotify.mapping([str(review['release_group'])])
     # if user is logged in, get his vote for this review
     if current_user.is_authenticated():
