@@ -2,7 +2,7 @@ from flask.ext.wtf import Form, TextAreaField, RadioField, SelectField, BooleanF
 from flask.ext.babel import gettext
 
 MIN_REVIEW_LENGTH = 25
-MAX_REVIEW_LENGTH = 5000
+MAX_REVIEW_LENGTH = 100000
 
 
 class ReviewEditForm(Form):

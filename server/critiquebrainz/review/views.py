@@ -7,6 +7,9 @@ from critiquebrainz.parser import Parser
 
 review_bp = Blueprint('review', __name__)
 
+REVIEW_MAX_LENGTH = 100000
+REVIEW_MIN_LENGTH = 25
+
 
 @review_bp.route('/<uuid:review_id>', endpoint='entity', methods=['GET'])
 def review_entity_handler(review_id):
@@ -61,7 +64,7 @@ def review_modify_handler(review_id, user):
     """
 
     def fetch_params():
-        text = Parser.string('json', 'text', min=25, max=2500)
+        text = Parser.string('json', 'text', min=REVIEW_MIN_LENGTH, max=REVIEW_MAX_LENGTH)
         return text
 
     review = Review.query.get_or_404(str(review_id))
@@ -127,7 +130,7 @@ def review_post_handler(user):
 
     def fetch_params():
         release_group = Parser.uuid('json', 'release_group')
-        text = Parser.string('json', 'text', min=25, max=5000)
+        text = Parser.string('json', 'text', min=REVIEW_MIN_LENGTH, max=REVIEW_MAX_LENGTH)
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
         if language and language not in supported_languages:
