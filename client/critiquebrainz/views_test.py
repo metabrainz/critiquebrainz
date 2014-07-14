@@ -8,7 +8,7 @@ class ViewsTestCase(ClientTestCase):
         self.assert200(response)
 
     def test_about_page(self):
-        response = self.client.get("/about/")
+        response = self.client.get("/about")
         self.assert200(response)
 
     def test_404(self):
