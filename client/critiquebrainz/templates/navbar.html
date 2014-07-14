@@ -33,7 +33,7 @@
             </li>
           {% endif %}
           <li><a href="{{ url_for('profile_review.create') }}">{{ _('Write a review') }}</a></li>
-          <li><a href="/about/">{{ _('About') }}</a></li>
+          <li><a href="{{ url_for('about') }}">{{ _('About') }}</a></li>
         </ul>
       {%- endif -%}
       <form class="navbar-form navbar-right" role="search" method="GET" action="{{ url_for('search.index') }}">

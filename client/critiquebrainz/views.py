@@ -39,3 +39,8 @@ def index_handler():
 
     return render_template('index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
                            reviews_total=review_count, users_total=user_count)
+
+
+@app.route('/about', endpoint='about')
+def about_page():
+    return render_template('about.html')
