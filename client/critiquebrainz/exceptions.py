@@ -3,6 +3,13 @@ class CritiqueBrainzError(Exception):
     pass
 
 
+class NotFound(CritiqueBrainzError):
+    def __init__(self, desc=None):
+        super(NotFound, self).__init__()
+        self.status = 404
+        self.desc = desc
+
+
 class APIError(CritiqueBrainzError):
     def __init__(self, status=500, desc=None, code=None):
         super(APIError, self).__init__()

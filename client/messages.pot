@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-05 05:29+0000\n"
+"POT-Creation-Date: 2014-07-14 10:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -178,7 +178,7 @@ msgid "Review length needs to be between %(min)d and %(max)d characters."
 msgstr ""
 
 #: critiquebrainz/forms/profile/review.py:15
-#: critiquebrainz/templates/base.html:109
+#: critiquebrainz/templates/base.html:57
 msgid "Language"
 msgstr ""
 
@@ -222,7 +222,7 @@ msgid "Thanks, but this album is already matched to Spotify!"
 msgstr ""
 
 #: critiquebrainz/matching/views.py:21 critiquebrainz/matching/views.py:48
-msgid "Only existing release group can be matched to Spotify!"
+msgid "Only existing release groups can be matched to Spotify!"
 msgstr ""
 
 #: critiquebrainz/matching/views.py:68
@@ -265,11 +265,15 @@ msgstr ""
 msgid "Sorry we couldn't find release group with that MusicBrainz ID."
 msgstr ""
 
-#: critiquebrainz/review/views.py:45
+#: critiquebrainz/review/views.py:18
+msgid "Sorry we couldn't find review with that ID."
+msgstr ""
+
+#: critiquebrainz/review/views.py:51
 msgid "You have rated the review!"
 msgstr ""
 
-#: critiquebrainz/review/views.py:57
+#: critiquebrainz/review/views.py:63
 msgid "You have deleted your vote for this review!"
 msgstr ""
 
@@ -277,8 +281,8 @@ msgstr ""
 msgid "About CritiqueBrainz"
 msgstr ""
 
-#: critiquebrainz/templates/about.html:6 critiquebrainz/templates/base.html:66
-#: critiquebrainz/templates/base.html:103
+#: critiquebrainz/templates/about.html:6 critiquebrainz/templates/base.html:51
+#: critiquebrainz/templates/navbar.html:36
 msgid "About"
 msgstr ""
 
@@ -383,86 +387,11 @@ msgstr ""
 msgid "Edit on MusicBrainz"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:37
-msgid "Toggle navigation"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:49
-#: critiquebrainz/templates/login/login.html:3
-#: critiquebrainz/templates/login/login.html:6
-msgid "Sign in"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:56
-#: critiquebrainz/templates/profile/base.html:7
-msgid "Profile"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:58
-#: critiquebrainz/templates/macros.html:24
-#: critiquebrainz/templates/release_group.html:58
-#: critiquebrainz/templates/profile/base.html:8
-#: critiquebrainz/templates/profile/details/index.html:37
-#: critiquebrainz/templates/profile/review/list.html:9
-#: critiquebrainz/templates/user/entity.html:22
-#: critiquebrainz/templates/user/entity.html:43
-msgid "Reviews"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:59
-#: critiquebrainz/templates/macros.html:26
-#: critiquebrainz/templates/profile/base.html:9
-#: critiquebrainz/templates/profile/applications/index.html:3
-#: critiquebrainz/templates/profile/applications/index.html:9
-msgid "Applications"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:61
-msgid "Sign out"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:65
-#: critiquebrainz/templates/release_group.html:26
-msgid "Write a review"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:70
-#: critiquebrainz/templates/search/index.html:7
-#: critiquebrainz/templates/search/index.html:13
-#: critiquebrainz/templates/search/index.html:33
-#: critiquebrainz/templates/search/selector.html:25
-msgid "Search"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:74
-#: critiquebrainz/templates/profile/review/edit.html:20
-#: critiquebrainz/templates/profile/review/list.html:21
-#: critiquebrainz/templates/profile/review/write.html:15
-#: critiquebrainz/templates/search/index.html:26
-#: critiquebrainz/templates/search/index.html:72
-#: critiquebrainz/templates/search/selector.html:10
-#: critiquebrainz/templates/search/selector.html:40
-#: critiquebrainz/templates/user/entity.html:50
-msgid "Artist"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:75
-#: critiquebrainz/templates/profile/review/edit.html:21
-#: critiquebrainz/templates/profile/review/list.html:22
-#: critiquebrainz/templates/profile/review/write.html:16
-#: critiquebrainz/templates/search/index.html:27
-#: critiquebrainz/templates/search/index.html:71
-#: critiquebrainz/templates/search/selector.html:17
-#: critiquebrainz/templates/search/selector.html:41
-#: critiquebrainz/templates/user/entity.html:51
-msgid "Release group"
-msgstr ""
-
-#: critiquebrainz/templates/base.html:104
+#: critiquebrainz/templates/base.html:52
 msgid "Blog"
 msgstr ""
 
-#: critiquebrainz/templates/base.html:105
+#: critiquebrainz/templates/base.html:53
 msgid "Developers"
 msgstr ""
 
@@ -566,8 +495,27 @@ msgstr ""
 msgid "Create and modify your reviews."
 msgstr ""
 
+#: critiquebrainz/templates/macros.html:24
+#: critiquebrainz/templates/navbar.html:28
+#: critiquebrainz/templates/release_group.html:58
+#: critiquebrainz/templates/profile/base.html:8
+#: critiquebrainz/templates/profile/details/index.html:37
+#: critiquebrainz/templates/profile/review/list.html:9
+#: critiquebrainz/templates/user/entity.html:22
+#: critiquebrainz/templates/user/entity.html:43
+msgid "Reviews"
+msgstr ""
+
 #: critiquebrainz/templates/macros.html:26
 msgid "Modify your applications (create, edit, delete)."
+msgstr ""
+
+#: critiquebrainz/templates/macros.html:26
+#: critiquebrainz/templates/navbar.html:29
+#: critiquebrainz/templates/profile/base.html:9
+#: critiquebrainz/templates/profile/applications/index.html:3
+#: critiquebrainz/templates/profile/applications/index.html:9
+msgid "Applications"
 msgstr ""
 
 #: critiquebrainz/templates/macros.html:29
@@ -586,6 +534,62 @@ msgstr ""
 
 #: critiquebrainz/templates/macros.html:32
 msgid "Review votes"
+msgstr ""
+
+#: critiquebrainz/templates/navbar.html:6
+msgid "Toggle navigation"
+msgstr ""
+
+#: critiquebrainz/templates/navbar.html:19
+#: critiquebrainz/templates/login/login.html:3
+#: critiquebrainz/templates/login/login.html:6
+msgid "Sign in"
+msgstr ""
+
+#: critiquebrainz/templates/navbar.html:26
+#: critiquebrainz/templates/profile/base.html:7
+msgid "Profile"
+msgstr ""
+
+#: critiquebrainz/templates/navbar.html:31
+msgid "Sign out"
+msgstr ""
+
+#: critiquebrainz/templates/navbar.html:35
+#: critiquebrainz/templates/release_group.html:26
+msgid "Write a review"
+msgstr ""
+
+#: critiquebrainz/templates/navbar.html:41
+#: critiquebrainz/templates/search/index.html:7
+#: critiquebrainz/templates/search/index.html:13
+#: critiquebrainz/templates/search/index.html:33
+#: critiquebrainz/templates/search/selector.html:25
+msgid "Search"
+msgstr ""
+
+#: critiquebrainz/templates/navbar.html:45
+#: critiquebrainz/templates/profile/review/edit.html:20
+#: critiquebrainz/templates/profile/review/list.html:21
+#: critiquebrainz/templates/profile/review/write.html:15
+#: critiquebrainz/templates/search/index.html:26
+#: critiquebrainz/templates/search/index.html:72
+#: critiquebrainz/templates/search/selector.html:10
+#: critiquebrainz/templates/search/selector.html:40
+#: critiquebrainz/templates/user/entity.html:50
+msgid "Artist"
+msgstr ""
+
+#: critiquebrainz/templates/navbar.html:46
+#: critiquebrainz/templates/profile/review/edit.html:21
+#: critiquebrainz/templates/profile/review/list.html:22
+#: critiquebrainz/templates/profile/review/write.html:16
+#: critiquebrainz/templates/search/index.html:27
+#: critiquebrainz/templates/search/index.html:71
+#: critiquebrainz/templates/search/selector.html:17
+#: critiquebrainz/templates/search/selector.html:41
+#: critiquebrainz/templates/user/entity.html:51
+msgid "Release group"
 msgstr ""
 
 #: critiquebrainz/templates/release_group.html:4
@@ -650,37 +654,38 @@ msgstr ""
 msgid "First release in %(year)s"
 msgstr ""
 
-#: critiquebrainz/templates/errors/404.html:6
-#: critiquebrainz/templates/errors/404.html:10
+#: critiquebrainz/templates/errors/404.html:3
 msgid "Page not found"
 msgstr ""
 
-#: critiquebrainz/templates/errors/404.html:11
-#: critiquebrainz/templates/errors/500.html:16
-#: critiquebrainz/templates/errors/503.html:15
-msgid "Back to home page"
+#: critiquebrainz/templates/errors/404.html:9
+msgid ""
+"The requested URL was not found on the server. If you entered the URL "
+"manually please check your spelling and try again."
 msgstr ""
 
-#: critiquebrainz/templates/errors/500.html:6
-#: critiquebrainz/templates/errors/500.html:10
+#: critiquebrainz/templates/errors/500.html:3
 msgid "Server error"
 msgstr ""
 
-#: critiquebrainz/templates/errors/500.html:11
+#: critiquebrainz/templates/errors/500.html:6
 msgid ""
 "Server failed to process your request. Developers have been notified. You"
 " can try again later."
 msgstr ""
 
-#: critiquebrainz/templates/errors/503.html:6
-#: critiquebrainz/templates/errors/503.html:10
-msgid "Server unavailable"
+#: critiquebrainz/templates/errors/503.html:3
+msgid "Service unavailable"
 msgstr ""
 
-#: critiquebrainz/templates/errors/503.html:11
+#: critiquebrainz/templates/errors/503.html:6
 msgid ""
 "CritiqueBrainz server is temporarily unavailable. Developers have been "
 "notified. You can try again later."
+msgstr ""
+
+#: critiquebrainz/templates/errors/base.html:9
+msgid "Back to home page"
 msgstr ""
 
 #: critiquebrainz/templates/login/login.html:7
@@ -1178,5 +1183,9 @@ msgstr ""
 
 #: critiquebrainz/templates/search/selector.html:77
 msgid "Continue"
+msgstr ""
+
+#: critiquebrainz/user/views.py:15
+msgid "Sorry we couldn't find user with that ID."
 msgstr ""
 
