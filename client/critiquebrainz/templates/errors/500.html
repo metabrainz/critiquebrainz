@@ -7,6 +7,6 @@
 {% endblock %}
 
 {% block error_info %}
-  {% if error.code %}{{ error.code }}{% if error.desc %} - {{ error.desc }}{% endif %}{% endif %}
-  {% if error.message %}<br />{{ error.message }}{% endif %}
+  {% if error.code %}{{ error.code }}{% if error.desc %} - {{ error.desc }}{% endif %}<br />{% endif %}
+  {% if error.message %}{{ error.message }}{% endif %}
 {% endblock %}
