@@ -1,4 +1,5 @@
 from flask import Flask
+import critiquebrainz.default_config
 
 import os
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
@@ -23,6 +24,7 @@ except ImportError:
 
 def create_app(config_object=None):
     app = Flask(__name__)
+    app.config.from_object(critiquebrainz.default_config)
     app.config.from_object(config_object)
 
     from db import db as _db
