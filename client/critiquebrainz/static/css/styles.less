@@ -35,6 +35,7 @@
 //@import "bootstrap/media.less";
 //@import "bootstrap/list-group.less";
 @import "bootstrap/panels.less";
+//@import "bootstrap/responsive-embed.less";
 @import "bootstrap/wells.less";
 //@import "bootstrap/close.less";
 
@@ -59,19 +60,20 @@
 
 @text-color: rgb(90, 90, 90);
 
-body {
-  padding-top: 70px;
-  padding-bottom: 25px;
-}
-
 @brand-primary: @mb-purple;
 
 @link-color: #3755b9;
 @link-hover-color: #fc6714;
 
+body {
+  padding-top: 70px;
+  padding-bottom: 25px;
+}
+
 .table {
   > thead > tr > th { border-bottom-width: 1px; }
 }
+
 
 // Navbar
 @grid-float-breakpoint: @screen-md-min; // Point at which the navbar becomes uncollapsed
