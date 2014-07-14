@@ -1,19 +1,12 @@
-<!DOCTYPE html>
-<html>
+{% extends 'errors/base.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <title>{{ _('Server error') }} - CritiqueBrainz</title>
-</head>
+{% block error_title %}{{ _('Server error') }}{% endblock %}
 
-<body>
-  <h1>{{ _('Server error') }}</h1>
+{% block error_description %}
   <p>{{ _('Server failed to process your request. Developers have been notified. You can try again later.') }}</p>
-  <code>
-    {% if error.code %}{{error.code}} {% if error.desc %} - {{error.desc}}{% endif %}<br />{% endif %}
-    {% if error.message %}{{error.message}}{% endif %}
-  </code>
-  <p><a href="/">{{ _('Back to home page') }}</a></p>
-</body>
+{% endblock %}
 
-</html>
+{% block error_info %}
+  {% if error.code %}{{ error.code }}{% if error.desc %} - {{ error.desc }}{% endif %}{% endif %}
+  {% if error.message %}<br />{{ error.message }}{% endif %}
+{% endblock %}
