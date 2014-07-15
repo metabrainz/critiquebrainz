@@ -9,12 +9,6 @@ from critiquebrainz.forms.profile.details import EditForm
 bp = Blueprint('profile_details', __name__)
 
 
-@bp.route('/', endpoint='index')
-@login_required
-def index_handler():
-    return render_template('profile/details/index.html')
-
-
 @bp.route('/edit', methods=['GET', 'POST'], endpoint='edit')
 @login_required
 def edit_handler():
@@ -34,7 +28,7 @@ def edit_handler():
         form.display_name.data = current_user.me.get('display_name')
         form.email.data = current_user.me.get('email')
         form.show_gravatar.data = current_user.me.get('show_gravatar')
-    return render_template('profile/details/edit.html', form=form)
+    return render_template('profile/edit.html', form=form)
 
 
 @bp.route('/delete', methods=['GET', 'POST'], endpoint='delete')
@@ -48,5 +42,5 @@ def delete_handler():
         else:
             logout_user()
         return redirect(url_for('index'))
-    return render_template('profile/details/delete.html')
+    return render_template('profile/delete.html')
 

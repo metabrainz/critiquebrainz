@@ -1,24 +1,19 @@
-{% extends 'profile/base.html' %}
+{% extends 'user/base.html' %}
 
 {% block title %}{{ _('Applications') }} - CritiqueBrainz{% endblock %}
 
-{% from 'macros.html' import scope_desc %}
-
-{% block content %}
-<div class="clearfix">
-  <h2 class="pull-left">{{ _('Applications') }}</h2>
-  <a href="{{ url_for('profile_applications.create') }}" class="btn btn-success pull-right" style="margin-top: 20px;">
-    <span class="glyphicon glyphicon-asterisk"></span> {{ _('Create new application') }}
-  </a>
-</div>
-<hr />
-
-<h4>{{ _('Your applications') }}</h4>
-{% if not applications %}
-  <p class="lead" style="text-align: center;">{{ _('No applications found') }}</p>
-{% else %}
-  <table class="table table-hover">
-    <thead>
+{% block profile_content %}
+  <div class="clearfix">
+    <h3 class="pull-left">{{ _('Your applications') }}</h3>
+    <a href="{{ url_for('profile_applications.create') }}" class="btn btn-success pull-right" style="margin-top:12px;">
+      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Create new application') }}
+    </a>
+  </div>
+  {% if not applications %}
+    <p class="lead" style="text-align: center;">{{ _('No applications found') }}</p>
+  {% else %}
+    <table class="table table-hover">
+      <thead>
       <tr>
         <th>{{ _('Name') }}</th>
         <th>{{ _('Website') }}</th>
@@ -26,8 +21,8 @@
         <th>{{ _('Client secret') }}</th>
         <th></th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       {% for app in applications %}
         <tr>
           <td>{{ app.name }}</td>
@@ -40,50 +35,50 @@
           </td>
         </tr>
       {% endfor %}
-    </tbody>
-  </table>
-{% endif %}
-<div class="alert alert-info">{{ _('Developer documentation is available at %(link)s.', link='<a href="https://critiquebrainz.readthedocs.org/">critiquebrainz.readthedocs.org</a>'|safe) }}</div>
+      </tbody>
+    </table>
+  {% endif %}
+  <div class="alert alert-info">{{ _('Developer documentation is available at %(link)s.', link='<a href="https://critiquebrainz.readthedocs.org/">critiquebrainz.readthedocs.org</a>'|safe) }}</div>
 
-<hr />
+  <hr />
 
-<h4>{{ _('Authorized applications') }}</h4>
-{% if not tokens %}
-  <p class="lead" style="text-align: center;">{{ _('No authorized applications found') }}</p>
-{% else %}
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>{{ _('Name') }}</th>
-        <th>{{ _('Website') }}</th>
-        <th>{{ _('Access') }}</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for token in tokens %}
+  <h3>{{ _('Authorized applications') }}</h3>
+  {% if not tokens %}
+    <p class="lead" style="text-align: center;">{{ _('No authorized applications found') }}</p>
+  {% else %}
+    <table class="table table-hover">
+      <thead>
         <tr>
-          <td><b>{{ token.client.name }}</b></td>
-          <td>{{ token.client.website }}</td>
-          <td>
-            {% if token.scopes %}
-              <ul>
-                {% set scopes = token.scopes.split() %}
-                {% for scope in scopes %}
-                  <li>{{ scope_desc(scope) }}</li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              {{ _('No special requirements') }}
-            {% endif %}
-          </td>
-          <td>
-            <a class="btn btn-danger btn-xs" href="{{ url_for('profile_applications.token_delete', client_id=token.client.client_id) }}">{{ _('Revoke access') }}</a>
-          </td>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Website') }}</th>
+          <th>{{ _('Access') }}</th>
+          <th></th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% endif %}
-
+      </thead>
+      <tbody>
+        {% for token in tokens %}
+          <tr>
+            <td><b>{{ token.client.name }}</b></td>
+            <td>{{ token.client.website }}</td>
+            <td>
+              {% if token.scopes %}
+                <ul>
+                  {% set scopes = token.scopes.split() %}
+                  {% from 'macros.html' import scope_desc %}
+                  {% for scope in scopes %}
+                    <li>{{ scope_desc(scope) }}</li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                {{ _('No special requirements') }}
+              {% endif %}
+            </td>
+            <td>
+              <a class="btn btn-danger btn-xs" href="{{ url_for('profile_applications.token_delete', client_id=token.client.client_id) }}">{{ _('Revoke access') }}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
 {% endblock %}

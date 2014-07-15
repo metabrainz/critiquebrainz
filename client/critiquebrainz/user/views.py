@@ -1,12 +1,7 @@
 from flask import Blueprint, render_template, request
-from flask.ext.babel import gettext
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask.ext.login import login_required, current_user, logout_user
+from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
 
-from critiquebrainz.apis import server
-from critiquebrainz.exceptions import APIError
-from critiquebrainz.forms.profile.details import EditForm
 from critiquebrainz.apis import server
 from critiquebrainz.exceptions import ServerError, NotFound
 
@@ -39,12 +34,3 @@ def reviews_handler(user_id):
     count, reviews = server.get_reviews(user_id=user_id, sort='created', limit=limit, offset=offset)
     return render_template('user/reviews.html', section='reviews', user=user,
                            reviews=reviews, limit=limit, offset=offset, count=count)
-
-
-@bp.route('/applications', endpoint='applications')
-@login_required
-def applications_handler():
-    applications = server.get_me_applications(current_user.access_token)
-    tokens = server.get_me_tokens(current_user.access_token)
-    return render_template('user/applications.html', section='applications', user=current_user.me,
-                           applications=applications, tokens=tokens)

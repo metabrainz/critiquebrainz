@@ -53,8 +53,8 @@ from oauth.views import bp as bp2
 app.register_blueprint(bp2, url_prefix='/oauth')
 from profile.review.views import bp as bp3
 app.register_blueprint(bp3, url_prefix='/profile/review')
-from profile.details.views import bp as bp4
-app.register_blueprint(bp4, url_prefix='/profile/details')
+from critiquebrainz.profile.views import bp as bp4
+app.register_blueprint(bp4, url_prefix='/profile')
 from profile.applications.views import bp as bp5
 app.register_blueprint(bp5, url_prefix='/profile/applications')
 from review.views import bp as bp6

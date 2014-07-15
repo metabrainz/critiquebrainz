@@ -16,7 +16,7 @@
     <li {{ 'class=active' if section=='profile' }}><a href="{{ url_for('user.profile', user_id=user.id) }}">Profile</a></li>
     <li {{ 'class=active' if section=='reviews' }}><a href="{{ url_for('user.reviews', user_id=user.id) }}">Reviews</a></li>
     {% if current_user.is_authenticated() and current_user.me.id == user.id %}
-      <li {{ 'class=active' if section=='applications' }}><a href="{{ url_for('user.applications') }}">Applications</a></li>
+      <li {{ 'class=active' if section=='applications' }}><a href="{{ url_for('profile_applications.index') }}">Applications</a></li>
     {% endif %}
   </ul>
 
