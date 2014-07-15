@@ -30,15 +30,15 @@ def create_handler():
         flash('Please choose release group that you want to review.')
         return redirect(url_for('search.selector', next=url_for('.create')))
 
-    form = ReviewCreateForm()
-
     # Loading supported languages
-    form.language.choices = []
+    supported_languages = []
     for language_code in server.get_review_languages():
         try:
-            form.language.choices.append((language_code, Locale(language_code).language_name))
+            supported_languages.append((language_code, Locale(language_code).language_name))
         except UnknownLocaleError:
-            form.language.choices.append((language_code, pycountry.languages.get(alpha2=language_code).name))
+            supported_languages.append((language_code, pycountry.languages.get(alpha2=language_code).name))
+
+    form = ReviewCreateForm(languages=supported_languages, default_language=get_locale())
 
     if form.validate_on_submit():
         try:
