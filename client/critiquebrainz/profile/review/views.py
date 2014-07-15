@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user
-from flask.ext.babel import gettext
+from flask.ext.babel import gettext, Locale
+from babel.core import UnknownLocaleError
 
 from critiquebrainz.apis import server, musicbrainz
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.review import ReviewCreateForm, ReviewEditForm
+from critiquebrainz.babel import get_locale
 import markdown
 import pycountry
 
@@ -28,13 +30,16 @@ def create_handler():
         flash('Please choose release group that you want to review.')
         return redirect(url_for('search.selector', next=url_for('.create')))
 
-    supported_languages = []
-    for language_code in server.get_review_languages():
-        # TODO: Get native language names instead of English versions
-        supported_languages.append((language_code, pycountry.languages.get(alpha2=language_code).name))
-
     form = ReviewCreateForm()
-    form.language.choices = [(l, pycountry.languages.get(alpha2=l).name) for l in server.get_review_languages()]
+
+    # Loading supported languages
+    form.language.choices = []
+    for language_code in server.get_review_languages():
+        try:
+            form.language.choices.append((language_code, Locale(language_code).language_name))
+        except UnknownLocaleError:
+            form.language.choices.append((language_code, pycountry.languages.get(alpha2=language_code).name))
+
     if form.validate_on_submit():
         try:
             # TODO: Validate that release group exists (maybe do that on server)
