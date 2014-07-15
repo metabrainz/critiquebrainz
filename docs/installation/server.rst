@@ -49,13 +49,13 @@ to install all required dependencies.
 Preparing database
 ^^^^^^^^^^^^^^^^^^
 
-First, you need to configure your critiquebrainz instance. Copy the skeleton
+First, you need to create custom configuration file. Copy the skeleton
 configuration::
 
    $ cp critiquebrainz/config.py.example critiquebrainz/config.py
 
-Then, open ``critiquebrainz/config.py`` in your favourite text editor and fill in
-the fields in angle brackets in ``SQLALCHEMY_DATABASE_URI`` body.
+Then, open ``critiquebrainz/config.py`` in your favourite text editor, uncomment
+``SQLALCHEMY_DATABASE_URI`` variable, and fill in the fields in angle brackets.
 
 Now, you may want to create and configure the database with::
 

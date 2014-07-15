@@ -55,20 +55,6 @@ You may keep the defaults, if you want to use the default client from
 instance is listening on ``127.0.0.1:5000``. If you want to change it, you
 should edit this OAuth client in your database manually (as of now).
 
-If you want to support languages other than English, modify ``LANGUAGES`` dictionary::
-
-   LANGUAGES = {
-       # Example:
-       # '<valid langauage code>: u'<Language name>',
-
-       'en': u'English',
-       'de': u'Deutsch',
-       'ja': u'日本語',
-       'ru': u'Русский',
-   }
-
-Valid language code can be obtained from `Transifex <https://www.transifex.com/projects/p/critiquebrainz/>`_.
-
 Deployment
 ^^^^^^^^^^
 

@@ -1,7 +1,6 @@
 from flask import g, request, after_this_request
 from flask.ext.babel import Babel
 from critiquebrainz import app
-from config import LANGUAGES
 
 babel = Babel(app)
 
@@ -22,7 +21,7 @@ def after_this_request(f):
 
 @babel.localeselector
 def get_locale():
-    supported_languages = LANGUAGES.keys()
+    supported_languages = app.config['LANGUAGES'].keys()
     language_arg = request.args.get('l')
     if language_arg is not None:
         if language_arg in supported_languages:

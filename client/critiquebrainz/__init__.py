@@ -1,9 +1,11 @@
 from flask import Flask
+import critiquebrainz.default_config
 
 app_name = "CritiqueBrainz Client"
 app_version = "0.1"
 
 app = Flask(__name__)
+app.config.from_object(critiquebrainz.default_config)
 app.config.from_object('critiquebrainz.config')
 
 # SNI support for Python 2
