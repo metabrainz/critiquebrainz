@@ -21,12 +21,12 @@
     {% endif %}
   </h2>
   {% if not my_review %}
-    <a id="write-review" href="{{ url_for('profile_review.create', release_group=id) }}"
+    <a id="write-review" href="{{ url_for('review.create', release_group=id) }}"
        role="button" class="btn btn-success pull-right">
       <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
     </a>
   {% else %}
-    <a id="edit-review" href="{{ url_for('profile_review.edit', id=my_review.id) }}"
+    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
        role="button" class="btn btn-primary pull-right">
       <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
     </a>
