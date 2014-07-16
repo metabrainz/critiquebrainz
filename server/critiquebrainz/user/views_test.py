@@ -1,22 +1,9 @@
+from critiquebrainz.test_case import ServerTestCase
+from critiquebrainz.db import db, User
 import json
 
-from flask.ext.testing import TestCase
 
-from critiquebrainz import create_app
-from critiquebrainz.db import db, User
-import test_config
-
-
-class UserViewsTestCase(TestCase):
-    def create_app(self):
-        return create_app(test_config)
-
-    def setUp(self):
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+class UserViewsTestCase(ServerTestCase):
 
     def test_user_count(self):
         resp = self.client.get('/user/')

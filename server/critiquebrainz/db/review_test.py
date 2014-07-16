@@ -1,13 +1,8 @@
-from flask.ext.testing import TestCase
-
-from critiquebrainz import create_app
+from critiquebrainz.test_case import ServerTestCase
 from critiquebrainz.db import db, User, License, Review
-import test_config
 
 
-class ReviewTestCase(TestCase):
-    def create_app(self):
-        return create_app(test_config)
+class ReviewTestCase(ServerTestCase):
 
     def setUp(self):
         db.create_all()
@@ -21,10 +16,6 @@ class ReviewTestCase(TestCase):
         self.license = License(id=u"Test", full_name=u'Test License')
         db.session.add(self.license)
         db.session.commit()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
 
     def test_review_creation(self):
         text = u"Testing!"

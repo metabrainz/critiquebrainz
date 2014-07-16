@@ -22,10 +22,10 @@ except ImportError:
     pass
 
 
-def create_app(config_object=None):
+def create_app():
     app = Flask(__name__)
     app.config.from_object(critiquebrainz.default_config)
-    app.config.from_object(config_object)
+    app.config.from_object('critiquebrainz.config')
 
     from db import db as _db
     _db.init_app(app)
@@ -66,4 +66,4 @@ def create_app(config_object=None):
     return app
 
 
-app = create_app('critiquebrainz.config')
+app = create_app()
