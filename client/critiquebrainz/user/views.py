@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from flask.ext.login import login_required, current_user
+from flask.ext.login import current_user
 from flask.ext.babel import gettext
 
 from critiquebrainz.apis import server
@@ -13,7 +13,7 @@ def get_user(user_id, inc=[]):
         return server.get_user(user_id, inc=inc)
     except ServerError as e:
         if e.code == 'not_found':
-            raise NotFound(gettext("Sorry we couldn't find user with that ID."))
+            raise NotFound(gettext("Sorry, we couldn't find a user with that ID."))
         else:
             raise e
 
