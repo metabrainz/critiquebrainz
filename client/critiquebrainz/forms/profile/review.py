@@ -1,4 +1,5 @@
-from flask.ext.wtf import Form, TextAreaField, RadioField, SelectField, BooleanField, validators
+from flask_wtf import Form
+from wtforms import TextAreaField, RadioField, SelectField, BooleanField, validators
 from flask.ext.babel import gettext
 
 MIN_REVIEW_LENGTH = 25
