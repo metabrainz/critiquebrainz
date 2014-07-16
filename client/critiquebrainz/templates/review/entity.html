@@ -50,7 +50,7 @@
     </div>
 
     <div class="col-md-9">
-      <h3>{{ _('Review by %(user)s', user = ('<img class="avatar" src="%s&s=24" /> '|safe % review.user.avatar) + ('<a href="%s">'|safe % url_for('user.entity', id=review.user.id)) + review.user.display_name + '</a>'|safe) }}</h3>
+      <h3>{{ _('Review by %(user)s', user = ('<img class="avatar" src="%s&s=24" /> '|safe % review.user.avatar) + ('<a href="%s">'|safe % url_for('user.profile', user_id=review.user.id)) + review.user.display_name + '</a>'|safe) }}</h3>
 
       <em class="text-muted">{{ _('Published on %(date)s', date = review.created|datetime) }}</em>
       <br /><em class="text-muted">{{ _('Rating:') }} <abbr title="{{ review.votes_positive }}/{{ review.votes_negative }}">{{ review.rating }}</abbr></em>
@@ -95,7 +95,7 @@
             </div>
           </div>
         {% else %}
-          <a href="{{ url_for('profile_review.edit', id=review.id) }}"
+          <a href="{{ url_for('review.edit', id=review.id) }}"
              role="button" class="btn btn-default btn-sm">
             <span class="glyphicon glyphicon-edit"></span> {{ _('Edit this review') }}
           </a>

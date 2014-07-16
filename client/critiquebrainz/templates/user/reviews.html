@@ -34,8 +34,8 @@
           <td>
             <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Read') }}</a>
             {% if current_user.is_authenticated() and current_user.me.id == user.id %}
-              <a class="btn btn-primary btn-xs" href="{{ url_for('profile_review.edit', id=review.id) }}">{{ _('Edit') }}</a>
-              <a class="btn btn-danger btn-xs" href="{{ url_for('profile_review.delete', id=review.id) }}">{{ _('Delete') }}</a>
+              <a class="btn btn-primary btn-xs" href="{{ url_for('review.edit', id=review.id) }}">{{ _('Edit') }}</a>
+              <a class="btn btn-danger btn-xs" href="{{ url_for('review.delete', id=review.id) }}">{{ _('Delete') }}</a>
             {% endif %}
           </td>
         </tr>
