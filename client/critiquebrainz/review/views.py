@@ -72,7 +72,7 @@ def create_handler():
 
     release_group_details = musicbrainz.release_group_details(release_group)
     if not release_group_details:
-        flash(gettext("You can only write review for release group that exists on MusicBrainz!"), 'error')
+        flash(gettext("You can only write a review for a release group that exists on MusicBrainz!"), 'error')
         return redirect(url_for('search.selector', next=url_for('.create')))
     return render_template('review/write.html', form=form, release_group=release_group_details)
 
