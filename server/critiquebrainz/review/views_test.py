@@ -1,22 +1,9 @@
+from critiquebrainz.test_case import ServerTestCase
+from critiquebrainz.db import db, User, License, Review
 import json
 
-from flask.ext.testing import TestCase
 
-from critiquebrainz import create_app
-from critiquebrainz.db import db, User, License, Review
-import test_config
-
-
-class ReviewViewsTestCase(TestCase):
-    def create_app(self):
-        return create_app(test_config)
-
-    def setUp(self):
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+class ReviewViewsTestCase(ServerTestCase):
 
     def test_review_count(self):
         resp = self.client.get('/review/')

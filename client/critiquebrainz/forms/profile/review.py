@@ -12,7 +12,7 @@ class ReviewEditForm(Form):
 
 
 class ReviewCreateForm(ReviewEditForm):
-    language = SelectField(gettext("Language"), default='en')
+    language = SelectField(gettext("Language"))
     license_choice = RadioField(
         gettext("Licence choice"),
         choices=[
@@ -23,6 +23,12 @@ class ReviewCreateForm(ReviewEditForm):
         validators=[validators.DataRequired(message=gettext("You need to choose a license!"))])
     licence = BooleanField(gettext('Licence'), validators=[
         validators.DataRequired(message=gettext("You need to accept the licence agreement!"))])
+
+    def __init__(self, languages, default_language='en', **kwargs):
+       kwargs.setdefault('language', default_language)
+
+       ReviewEditForm.__init__(self, **kwargs)
+       self.language.choices = languages
 
 
 

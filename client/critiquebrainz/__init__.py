@@ -19,8 +19,9 @@ except ImportError:
 # init apis
 import apis
 
-# init babel
-import babel
+with app.app_context():
+    # init babel
+    import babel
 
 # init login
 from login import login_manager
