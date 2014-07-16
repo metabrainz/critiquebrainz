@@ -74,6 +74,12 @@ body {
   > thead > tr > th { border-bottom-width: 1px; }
 }
 
+.nav {
+  > li {
+    > a { color: @mb-purple; }
+  }
+}
+
 
 // Navbar
 @grid-float-breakpoint: @screen-md-min; // Point at which the navbar becomes uncollapsed
@@ -87,7 +93,7 @@ body {
     font-weight: bold;
   }
 
-  form {
+  form { // Search form
     margin-top: 12px;
     .input-sm {
       height: 25px;
@@ -104,12 +110,13 @@ body {
   }
 }
 
-
-ul.external-links {
-  > li {
-    > .favicon-container { width: 22px; }
+// Footer
+.footer {
+  #language-selector {
+    > button { background: none; border-color: #adadad; }
   }
 }
+
 
 img.avatar {
   display: inline;
@@ -119,10 +126,9 @@ img.avatar {
   background: #fff;
 }
 
-#language-selector {
-  > button {
-    background: none;
-    border-color: #adadad;
+ul.external-links {
+  > li {
+    > .favicon-container { width: 22px; }
   }
 }
 
@@ -329,11 +335,6 @@ a#edit-review { margin-top: 20px; }
 }
 
 
-// User profile page
-#profile {
-  .nav-list { margin-top: 15px; }
-}
-
 // Spotify matching page
 @tooltip-color: #fff;
 @tooltip-bg: @brand-success;
@@ -360,3 +361,7 @@ a#edit-review { margin-top: 20px; }
     }
   }
 }
+
+
+// User profile
+#profile-navigation { margin-top: 16px; margin-bottom: 22px; }

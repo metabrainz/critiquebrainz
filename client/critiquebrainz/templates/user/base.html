@@ -3,7 +3,7 @@
 {% block title %}{{ user.display_name }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-  <div id="profile-navigation" class="clearfix">
+  <div class="clearfix">
     <h2 class="pull-left"><img class="avatar" src="{{ user.avatar }}&s=32" /> {{ user.display_name }}</h2>
     {% if current_user.is_authenticated() and current_user.me.id == user.id %}
       <a href="{{ url_for('profile_details.edit') }}" class="btn btn-primary pull-right" style="margin-top: 20px;">
@@ -12,7 +12,7 @@
     {% endif %}
   </div>
 
-  <ul class="nav nav-tabs" role="tablist">
+  <ul id="profile-navigation" class="nav nav-tabs" role="tablist">
     <li {{ 'class=active' if section=='profile' }}><a href="{{ url_for('user.profile', user_id=user.id) }}">Profile</a></li>
     <li {{ 'class=active' if section=='reviews' }}><a href="{{ url_for('user.reviews', user_id=user.id) }}">Reviews</a></li>
     {% if current_user.is_authenticated() and current_user.me.id == user.id %}

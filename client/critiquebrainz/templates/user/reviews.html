@@ -12,7 +12,7 @@
         <th>{{ _('Artist') }}</th>
         <th>{{ _('Release group') }}</th>
         <th>{{ _('Created on') }}</th>
-        <th>{{ _('Votes (+/-)') }}</th>
+        <th>{{ _('Rating') }}</th>
         <th>{{ _('Class') }}</th>
         <th></th>
       </tr>
@@ -29,7 +29,7 @@
             {% endif %}
           </td>
           <td>{{ review.created | datetime }}</td>
-          <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
+          <td><abbr title="{{ review.votes_positive }}/{{ review.votes_negative }}">{{ review.rating }}</abbr></td>
           <td>{{ review.review_class }}</td>
           <td>
             <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Read') }}</a>
