@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-14 10:31+0000\n"
+"POT-Creation-Date: 2014-07-16 15:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -245,24 +245,24 @@ msgstr ""
 msgid "Profile updated."
 msgstr ""
 
-#: critiquebrainz/profile/review/views.py:45
+#: critiquebrainz/profile/review/views.py:50
 msgid "You have published the review!"
 msgstr ""
 
-#: critiquebrainz/profile/review/views.py:50
+#: critiquebrainz/profile/review/views.py:55
 msgid "You can only write review for release group that exists on MusicBrainz!"
 msgstr ""
 
-#: critiquebrainz/profile/review/views.py:74
+#: critiquebrainz/profile/review/views.py:79
 msgid "You have modified the review!"
 msgstr ""
 
-#: critiquebrainz/profile/review/views.py:88
+#: critiquebrainz/profile/review/views.py:93
 msgid "You have deleted the review."
 msgstr ""
 
 #: critiquebrainz/release_group/views.py:16
-msgid "Sorry we couldn't find release group with that MusicBrainz ID."
+msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
 msgstr ""
 
 #: critiquebrainz/review/views.py:18
@@ -767,7 +767,7 @@ msgid "Do you want to give access to your account to %(name)s?"
 msgstr ""
 
 #: critiquebrainz/templates/oauth/prompt.html:9
-msgid "You can withdraw any time in your profile settings."
+msgid "You can revoke access at any time in your profile settings."
 msgstr ""
 
 #: critiquebrainz/templates/oauth/prompt.html:15
