@@ -34,23 +34,23 @@
       {% for review in popular_reviews %}
         <div class="col-md-6 review">
           {% set release_group = review.release_group | release_group_details %}
-          <a href="{{ url_for('review.entity', id=review.id) }}">
-            <div class="cover-art-container pull-left">
-              <img />
-              <script>
-                $("img").last()
-                    .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                    .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
-              </script>
-            </div>
-            <div class="album">
+          <div class="cover-art-container pull-left">
+            <img />
+            <script>
+              $("img").last()
+                  .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+                  .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+            </script>
+          </div>
+          <div class="album">
+            <a href="{{ url_for('review.entity', id=review.id) }}">
               <b>{{ release_group.title | default(_('[Unknown release group]')) }}</b>
               - {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
-            </div>
-            <div class="reviewer">
-              <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}</p>
-            </div>
-          </a>
+            </a>
+          </div>
+          <div class="reviewer">
+            <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.profile', user_id=review.user.id), review.user.display_name)) }}</p>
+          </div>
           <div class="preview">{{ review.text[:250] }}{% if review.text|length > 250 %}...{% endif %}</div>
         </div>
       {% endfor %}
@@ -65,25 +65,25 @@
   {% else %}
     <div id="recent-list" class="row">
       {% for review in recent_reviews %}
-        <div class="col-md-4">
+        <div class="col-md-4 review">
           {% set release_group = review.release_group | release_group_details %}
-          <a class="review" href="{{ url_for('review.entity', id=review.id) }}">
-            <div class="cover-art-container pull-left">
-              <img />
-              <script>
-                $("img").last()
-                    .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                    .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
-              </script>
-            </div>
-            <div class="album">
-            <b>{{ release_group.title | default(_('[Unknown release group]')) }}</b>
-            - {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
-            </div>
-            <div class="reviewer">
-              <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}</p>
-            </div>
-          </a>
+          <div class="cover-art-container pull-left">
+            <img />
+            <script>
+              $("img").last()
+                  .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+                  .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+            </script>
+          </div>
+          <div class="album">
+            <a href="{{ url_for('review.entity', id=review.id) }}">
+              <b>{{ release_group.title | default(_('[Unknown release group]')) }}</b>
+              - {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
+            </a>
+          </div>
+          <div class="reviewer">
+            <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.profile', user_id=review.user.id), review.user.display_name)) }}</p>
+          </div>
         </div>
       {% endfor %}
     </div>
