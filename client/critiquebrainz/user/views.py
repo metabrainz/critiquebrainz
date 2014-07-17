@@ -18,12 +18,7 @@ def get_user(user_id, inc=[]):
             raise e
 
 
-@bp.route('/<uuid:user_id>', endpoint='profile')
-def profile_handler(user_id):
-    return render_template('user/profile.html', section='profile', user=get_user(user_id, ['user_type', 'stats']))
-
-
-@bp.route('/<uuid:user_id>/reviews', endpoint='reviews')
+@bp.route('/<uuid:user_id>', endpoint='reviews')
 def reviews_handler(user_id):
     if current_user.is_authenticated() and current_user.me['id'] == user_id:
         user = current_user.me
@@ -36,4 +31,9 @@ def reviews_handler(user_id):
     offset = (page - 1) * limit
     count, reviews = server.get_reviews(user_id=user_id, sort='created', limit=limit, offset=offset)
     return render_template('user/reviews.html', section='reviews', user=user,
-                           reviews=reviews, page=page, limit=limit, count=count)
+                           reviews=reviews, limit=limit, offset=offset, count=count)
+
+
+@bp.route('/<uuid:user_id>/info', endpoint='info')
+def info_handler(user_id):
+    return render_template('user/info.html', section='info', user=get_user(user_id, ['user_type', 'stats']))

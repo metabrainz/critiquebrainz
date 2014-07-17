@@ -13,11 +13,8 @@
   </div>
 
   <ul id="profile-navigation" class="nav nav-tabs" role="tablist">
-    <li {{ 'class=active' if section=='profile' }}><a href="{{ url_for('user.profile', user_id=user.id) }}">Profile</a></li>
-    <li {{ 'class=active' if section=='reviews' }}><a href="{{ url_for('user.reviews', user_id=user.id) }}">Reviews</a></li>
-    {% if current_user.is_authenticated() and current_user.me.id == user.id %}
-      <li {{ 'class=active' if section=='applications' }}><a href="{{ url_for('profile_applications.index') }}">Applications</a></li>
-    {% endif %}
+    <li {{ 'class=active' if section=='reviews' }}><a href="{{ url_for('user.reviews', user_id=user.id) }}">{{ _('Reviews') }}</a></li>
+    <li {{ 'class=active' if section=='info' }}><a href="{{ url_for('user.info', user_id=user.id) }}">{{ _('Info') }}</a></li>
   </ul>
 
   {% block profile_content %}{% endblock %}

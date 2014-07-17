@@ -23,9 +23,7 @@
                 {{ current_user.me.display_name }} <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="{{ url_for('user.profile', user_id=current_user.me.id) }}">{{ _('Profile') }}</a></li>
-                <li class="divider"></li>
-                <li><a href="{{ url_for('user.reviews', user_id=current_user.me.id) }}">{{ _('Reviews') }}</a></li>
+                <li><a href="{{ url_for('user.reviews', user_id=current_user.me.id) }}">{{ _('Profile') }}</a></li>
                 <li><a href="{{ url_for('profile_applications.index') }}">{{ _('Applications') }}</a></li>
                 <li class="divider"></li>
                 <li><a href="{{ url_for('login.logout') }}">{{ _('Sign out') }}</a></li>
