@@ -1,8 +1,10 @@
-{% extends 'user/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}{{ _('Applications') }} - CritiqueBrainz{% endblock %}
 
-{% block profile_content %}
+{% block content %}
+  <h2>{{ _('Applications') }}</h2>
+
   <div class="clearfix">
     <h3 class="pull-left">{{ _('Your applications') }}</h3>
     <a href="{{ url_for('profile_applications.create') }}" class="btn btn-success pull-right" style="margin-top:12px;">
