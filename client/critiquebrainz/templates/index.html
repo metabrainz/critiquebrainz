@@ -44,8 +44,9 @@
           </div>
           <div class="album">
             <a href="{{ url_for('review.entity', id=review.id) }}">
-              <b>{{ release_group.title | default(_('[Unknown release group]')) }}</b>
-              - {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
+              {{ _('%(album)s by %(artist)s',
+                   album = '<b>'|safe + release_group.title | default(_('[Unknown release group]')) + '</b>'|safe,
+                   artist = release_group['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
             </a>
           </div>
           <div class="reviewer">
@@ -77,8 +78,9 @@
           </div>
           <div class="album">
             <a href="{{ url_for('review.entity', id=review.id) }}">
-              <b>{{ release_group.title | default(_('[Unknown release group]')) }}</b>
-              - {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
+              {{ _('%(album)s by %(artist)s',
+                   album = '<b>'|safe + release_group.title | default(_('[Unknown release group]')) + '</b>'|safe,
+                   artist = release_group['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
             </a>
           </div>
           <div class="reviewer">
