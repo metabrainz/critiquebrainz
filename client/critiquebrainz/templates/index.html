@@ -35,7 +35,7 @@
         <div class="col-md-6 review">
           {% set release_group = review.release_group | release_group_details %}
           <div class="cover-art-container pull-left">
-            <img />
+            <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
             <script>
               $("img").last()
                   .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
@@ -69,7 +69,7 @@
         <div class="col-md-4 review">
           {% set release_group = review.release_group | release_group_details %}
           <div class="cover-art-container pull-left">
-            <img />
+            <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
             <script>
               $("img").last()
                   .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
