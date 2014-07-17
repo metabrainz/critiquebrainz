@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # DEFAULT CONFIGURATION
 
 # CritiqueBrainz server
@@ -21,18 +20,15 @@ MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
 LOG_FILE = "client.log"
 LOG_EMAIL_TOPIC = "CritiqueBrainz Client Failure"
 
-# Internationalization and localization
-LANGUAGES = {
-    # Valid language codes can be obtained from Transifex.
-    # Example:
-    # '<valid langauage code>: u'<Language name>',
-
-    'en': u'English',
-    'de': u'Deutsch',
-    'es': u'Español',
-    'nl': u'Dutch',
-    'ru': u'Русский',
-    'el': u'Greek',
-    'hr': u'Hrvatski',
-    'eo': u'Esperanto',
-}
+# List of supported UI languages.
+# Valid language codes can be obtained from Transifex.
+SUPPORTED_LANGUAGES = [
+    'en',  # English
+    'de',  # German
+    'es',  # Spanish
+    'nl',  # Dutch
+    'ru',  # Russian
+    'el',  # Greek
+    'hr',  # Croatian
+    'eo',  # Esperanto
+]

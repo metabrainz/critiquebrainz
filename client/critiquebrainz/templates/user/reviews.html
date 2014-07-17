@@ -1,0 +1,60 @@
+{% extends 'user/base.html' %}
+
+{% block title %}{{ user.display_name }} - {{ _('Reviews') }} - CritiqueBrainz{% endblock %}
+
+{% block profile_content %}
+  {% if not reviews %}
+    <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+  {% else %}
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>{{ _('Artist') }}</th>
+        <th>{{ _('Release group') }}</th>
+        <th>{{ _('Created on') }}</th>
+        <th>{{ _('Rating') }}</th>
+        <th>{{ _('Class') }}</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for review in reviews %}
+        {% set release_group = review.release_group | release_group_details %}
+        <tr data-review-id="{{ review.id }}">
+          <td>{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</td>
+          <td>
+            {{ release_group.title | default(_('[Unknown release group]')) }}
+            {% if release_group['first-release-date'] %}
+              <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
+            {% endif %}
+          </td>
+          <td>{{ review.created | datetime }}</td>
+          <td><abbr title="{{ review.votes_positive }}/{{ review.votes_negative }}">{{ review.rating }}</abbr></td>
+          <td>{{ review.review_class }}</td>
+          <td>
+            <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Read') }}</a>
+            {% if current_user.is_authenticated() and current_user.me.id == user.id %}
+              <a class="btn btn-primary btn-xs" href="{{ url_for('review.edit', id=review.id) }}">{{ _('Edit') }}</a>
+              <a class="btn btn-danger btn-xs" href="{{ url_for('review.delete', id=review.id) }}">{{ _('Delete') }}</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <ul class="pagination">
+      {% set pages = count//limit %}
+      {% if count%limit %}
+        {% set pages = pages+1 %}
+      {% endif %}
+      {% if pages>1 %}
+        {% for p in range(pages) %}
+          {% set p_offset = p*limit %}
+          <li {% if offset == p_offset %}class="active"{% endif %}>
+            <a href="{{ url_for('user.reviews', user_id=user.id, offset=p*limit) }}">{{ p+1 }}</a>
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  {% endif %}
+{% endblock %}

@@ -1,5 +1,5 @@
 from __future__ import with_statement
-from critiquebrainz import config as conf
+from critiquebrainz import app
 from fabric.api import *
 
 
@@ -15,7 +15,7 @@ def compile_translations():
 
 def update_translations():
     """Pulls translations for languages defined in config from Transifex and compiles them."""
-    languages = ','.join(conf.LANGUAGES.keys())
+    languages = ','.join(app.config['SUPPORTED_LANGUAGES'])
     local("tx pull -f -r critiquebrainz.critiquebrainz -l %s" % languages)
     compile_translations()
 

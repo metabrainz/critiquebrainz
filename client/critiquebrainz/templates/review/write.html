@@ -1,11 +1,6 @@
-{% extends 'profile/base.html' %}
+{% extends 'base.html' %}
 
-{% set release_group = review.release_group | release_group_details %}
-
-{% block title %}
-{% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
-{{ _('Edit review of "%(rg)s"', rg=release_group_title) }} - CritiqueBrainz
-{% endblock %}
+{% block title %}{{ _('Write review of "%(rg)s"', rg=release_group.title) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
 {% for field in form.errors %}
@@ -15,19 +10,16 @@
   </div>
   {% endfor %}
 {% endfor %}
-<h2>{{ _('Editing review') }}</h2>
+<h2>{{ _('Write review') }}</h2>
 <dl class="dl-horizontal">
-  <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</dd>
+  <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
   <dt>{{ _('Release group') }}</dt>
   <dd>
-    {{ release_group.title | default(_('[Unknown release group]')) }}
+    {{ release_group.title }}
     {% if release_group['first-release-date'] %}
       <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
     {% endif %}
   </dd>
-  <dt>{{ _('Created on') }}</dt><dd>{{ review.created | datetime }}</dd>
-  <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive }}/{{ review.votes_negative }}</dd>
-  <dt>{{ _('Rating') }}</dt><dd>{{ review.review_class }}</dd>
 </dl>
 
 <div class="clearfix">
@@ -39,7 +31,7 @@
     </small>
   </ul>
 </div>
-<form method="POST" class="form-horizontal" role="form">
+<form id="review-editor" method="POST" class="form-horizontal" role="form">
   {{ form.hidden_tag() }}
   <div class="form-group">
     <div class="col-sm-12 tab-content">
@@ -55,7 +47,7 @@
             if (e.target.hash.substring(1) == "preview") {
               $.ajax({
                 type: "POST",
-                url: "{{ url_for('profile_review.preview') }}",
+                url: "{{ url_for('review.preview') }}",
                 data: {
                   text: $("#review-content").val()
                 },
@@ -71,11 +63,40 @@
       </script>
     </div>
   </div>
-  <hr />
   <div class="form-group">
-    <div class="col-sm-12">
-      <button type="submit" class="btn btn-primary">{{ _('Publish') }}</button>
-    </div>
+    <label class="control-label col-sm-4" for="review-language">{{ _('Please, specify language of this review:') }}</label>
+    <div class="col-sm-8">{{ form.language(id="review-language", class="form-control") | safe }}</div>
+  </div>
+  <hr />  
+  <div class="form-group">
+	<div class="col-sm-12">	
+	  {% for choice in form.license_choice %}
+      <div class="radio">
+        <label>{{ choice }}{{ choice.label.text | safe }}</label>
+      </div>
+	  {% endfor %}
+	</div>
+  </div>
+  <div class="form-group">
+	<div class="col-sm-12">
+	  <div class="checkbox">
+		<label id="agreement">
+		  {{ form.licence() | safe }}
+		  {{ _('You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a
+		  Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial
+		  license as per your choice above. You agree to license your work under this license.
+		  You represent and warrant that you own or control all rights in and to the work, that nothing in the work
+		  infringes the rights of any third-party, and that you have the permission to use and to license the work
+		  under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license
+		  this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization.') }}
+		</label>
+	  </div>
+	</div>
+  </div>
+  <div class="form-group">
+	<div class="col-sm-12">
+	  <button type="submit" class="btn btn-primary">{{ _('Publish') }}</button>
+	</div>
   </div>
 </form>
 {% endblock %}

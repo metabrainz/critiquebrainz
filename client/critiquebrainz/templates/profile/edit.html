@@ -1,4 +1,4 @@
-{% extends 'profile/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}{{ _('Edit profile') }} - CritiqueBrainz{% endblock %}
 
@@ -25,9 +25,7 @@
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <div class="checkbox">
-          {{ form.show_gravatar() | safe }} {{ _('Show my Gravatar') }}
-        </div>
+        <div class="checkbox">{{ form.show_gravatar() | safe }} {{ _('Show my Gravatar') }}</div>
       </div>
     </div>
   </fieldset>

@@ -14,7 +14,8 @@ bp = Blueprint('profile_applications', __name__)
 def index_handler():
     applications = server.get_me_applications(current_user.access_token)
     tokens = server.get_me_tokens(current_user.access_token)
-    return render_template('profile/applications/index.html', applications=applications, tokens=tokens)
+    return render_template('profile/applications/index.html', section='applications', user=current_user.me,
+                           applications=applications, tokens=tokens)
 
 
 @bp.route('/create', endpoint='create', methods=['GET', 'POST'])
