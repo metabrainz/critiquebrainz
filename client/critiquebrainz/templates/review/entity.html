@@ -11,22 +11,26 @@
 <div id="review-entity">
   <h2 id="title">
     {% if release_group %}
-      <a href="{{ url_for('release_group.entity', id=review.release_group) }}">{{ release_group.title }}</a>
+      {% set rg_name = '<a href="%s">'|safe % url_for('release_group.entity', id=review.release_group) ~ release_group.title ~ '</a>'|safe %}
     {% else %}
-      {{ _('[Unknown release group]') }}
+      {% set rg_name =  _('[Unknown release group]') %}
     {% endif %}
-    -
+
     {% if release_group['artist-credit'] %}
+      {% set artist = [] %}
       {% for credit in release_group['artist-credit'] %}
         {% if credit.artist %}
-          <a href="{{ url_for('artist.entity', id=credit.artist.id) }}">{{ credit.artist.name }}</a>
+          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) + credit.artist.name + '</a>'|safe) %}
         {% else %}
-          {{ credit }}
+          {% do artist.append(credit) %}
         {% endif %}
       {% endfor %}
     {% else %}
-      {{ _('[Unknown artist]') }}
+      {% set artist = _('[Unknown artist]') %}
     {% endif %}
+
+    {{ _('%(album)s by %(artist)s', album = rg_name, artist = artist|join()) }}
+
     {% if release_group['first-release-date'] %}
       <small>{{ release_group['first-release-date'][:4] }}</small>
     {% endif %}
