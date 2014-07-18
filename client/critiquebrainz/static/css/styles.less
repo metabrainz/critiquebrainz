@@ -138,7 +138,7 @@ ul.external-links {
   .btn-primary { margin-top: 10px; }
   #popular-list {
     @popular-review-height: 120px;
-    div.review {
+    .review {
       height: @popular-review-height;
       margin-top: 20px;
       .cover-art-container {
@@ -168,8 +168,7 @@ ul.external-links {
   #recent-list {
     margin-top: 25px;
     @recent-review-height: 50px;
-    a.review {
-      display: block;
+    .review {
       height: @recent-review-height;
       margin-bottom: 10px;
       color: @text-color;
@@ -190,7 +189,6 @@ ul.external-links {
         text-overflow: ellipsis;
       }
     }
-    a:hover.review { background-color: @table-bg-hover; }
   }
 }
 

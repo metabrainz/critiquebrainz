@@ -8,18 +8,22 @@
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">
-    {{ release_group.title }} -
+    {% set artist = [] %}
     {% for credit in release_group['artist-credit'] %}
       {% if credit.artist %}
-        <a href="{{ url_for('artist.entity', id=credit.artist.id) }}">{{ credit.artist.name }}</a>
+        {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
       {% else %}
-        {{ credit }}
+        {% do artist.append(credit) %}
       {% endif %}
     {% endfor %}
+
+    {{ _('%(album)s by %(artist)s', album = release_group.title, artist = artist|join()) }}
+
     {% if release_group['first-release-date'] %}
       <small>{{ release_group['first-release-date'][:4] }}</small>
     {% endif %}
   </h2>
+
   {% if not my_review %}
     <a id="write-review" href="{{ url_for('review.create', release_group=id) }}"
        role="button" class="btn btn-success pull-right">

@@ -19,6 +19,8 @@ except ImportError:
 # init apis
 import apis
 
+app.jinja_env.add_extension('jinja2.ext.do')
+
 with app.app_context():
     # init babel
     import babel
