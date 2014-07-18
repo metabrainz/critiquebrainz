@@ -61,22 +61,19 @@
           </div>
         {% endfor %}
         <div class="clearfix"></div>
-        <div class="col-md-12">
-          <ul class="pagination">
-            {% set pages = count//limit %}
-            {% if count%limit %}
-              {% set pages = pages+1 %}
-            {% endif %}
-            {% if pages>1 %}
-              {% for p in range(pages) %}
-                {% set p_offset = p*limit %}
-                <li {% if offset == p_offset %}class="active"{% endif %}>
-                  <a href="{{ url_for('artist.entity', id=id, release_type=release_type, offset=p*limit) }}">{{ p+1 }}</a>
-                </li>
-              {% endfor %}
-            {% endif %}
-          </ul>
-        </div>
+
+        {% if count > limit %}
+          <div class="col-md-12">
+            <ul class="pager">
+              {% if page > 1 %}
+                <li class="previous"><a href="{{ url_for('artist.entity', id=id, release_type=release_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
+              {% endif %}
+              {% if page < count//limit %}
+                <li class="next"><a href="{{ url_for('artist.entity', id=id, release_type=release_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        {% endif %}
       </div>
     {% endif %}
   </div>
