@@ -46,10 +46,10 @@
     {% if count > limit %}
       <ul class="pager">
         {% if page > 1 %}
-          <li class="previous"><a href="{{ url_for('user.reviews', user_id=user.id, page=page-1) }}">&larr; Newer</a></li>
+          <li class="previous"><a href="{{ url_for('user.reviews', user_id=user.id, page=page-1) }}">&larr; {{ _('Newer') }}</a></li>
         {% endif %}
         {% if page < count//limit %}
-          <li class="next"><a href="{{ url_for('user.reviews', user_id=user.id, page=page+1) }}">Older &rarr;</a></li>
+          <li class="next"><a href="{{ url_for('user.reviews', user_id=user.id, page=page+1) }}">{{ _('Older') }} &rarr;</a></li>
         {% endif %}
       </ul>
     {% endif %}
