@@ -77,9 +77,6 @@
 
       <hr />
 
-      <!-- Sharing -->
-      {% include 'sharing.html' %}
-
       <div>
         {% if current_user.is_authenticated() %}
           {% if current_user.me.id != review.user.id %}
@@ -114,6 +111,9 @@
           {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
         {% endif %}
       </div>
+
+      <!-- Sharing -->
+      {% include 'sharing.html' %}
     </div>
   </div>
 </div>
