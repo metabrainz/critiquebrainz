@@ -1,5 +1,5 @@
 from flask import render_template
-from flask.ext.babel import get_locale, format_number
+from flask.ext.babel import format_number
 from bs4 import BeautifulSoup
 from markdown import markdown
 from critiquebrainz import app
