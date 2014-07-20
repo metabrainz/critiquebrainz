@@ -1,4 +1,5 @@
 from flask import render_template
+from flask.ext.babel import get_locale, format_number
 from bs4 import BeautifulSoup
 from markdown import markdown
 from critiquebrainz import app
@@ -36,6 +37,10 @@ def index_handler():
     if not recent_reviews or not review_count:
         review_count, recent_reviews = server.get_reviews(sort='created', limit=6, inc=['user'])
         cache.set(recent_reviews_key, recent_reviews, DEFAULT_CACHE_EXPIRATION)
+
+    # Formatting numbers
+    review_count = format_number(review_count)
+    user_count = format_number(user_count)
 
     return render_template('index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
                            reviews_total=review_count, users_total=user_count)

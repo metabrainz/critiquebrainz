@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from flask import g, request, after_this_request
+from flask import current_app, g, request, after_this_request
 from flask.ext.babel import Babel, Locale
 from critiquebrainz import app
-from flask import current_app
 
 babel = Babel(app)
 
