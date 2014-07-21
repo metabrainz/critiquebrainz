@@ -43,40 +43,48 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          {% for result in results %}
-            <tr>
-              <td>{{ result['artist-credit-phrase'] }}</td>
-              <td>
-                {{ result['title'] }}
-                {% if result['disambiguation'] %}<span class="text-muted">({{ result['disambiguation'] }})</span>{% endif %}
-              </td>
-              <td>{{ result['primary-type'] or '-' }}</td>
-              <td>
-                <input type="radio" name="release_group" value="{{ result['id'] }}">
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
+        <tbody id="results">{% include 'search/selector_results.html' %}</tbody>
       </table>
-      <ul class="pagination">
-        {% set pages = count//limit %}
-        {% if count%limit %}
-          {% set pages = pages+1 %}
+
+      <div class="row">
+        {% if count > limit %}
+          <div class="col-md-6">
+            <button id="more-button" type="button" class="btn btn-default" onclick="load_more();" >{{ _('Load more results') }}</button>
+            <span id="loading-message" class="text-muted" style="display:none;">{{ _('Loading more results...') }}</span>
+          </div>
         {% endif %}
-        {% if pages>1 %}
-          {% for p in range(pages) %}
-            {% set p_offset = p*limit %}
-            <li {% if offset == p_offset %}class="active"{% endif %}>
-             <a href="{{ url_for('search.selector', next=next, artist=artist, release_group=release_group, offset=p*limit) }}">{{ p+1 }}</a>
-            </li>
-          {% endfor %}
-        {% endif %}
-      </ul>
-      <div class="form-actions">
-        <button type="submit" class="pull-right btn btn-primary">{{ _('Continue') }}</button>
+        <div class="col-md-6 form-actions">
+          <button type="submit" class="pull-right btn btn-primary">{{ _('Continue') }}</button>
+        </div>
       </div>
     </form>
   {% endif %}
 {% endif %}
 {% endblock %}
+
+{% if count > limit %}
+  {% block scripts %}
+    {{ super() }}
+    <script>
+      var current_page = 0;
+      function load_more() {
+        var more_button = $("#more-button");
+        var loading_message = $("#loading-message");
+        more_button.hide();
+        loading_message.show();
+        $.ajax({
+          url: "{{ url_for('search.selector_more') }}",
+          data: { artist: "{{ artist }}", release_group: "{{ release_group }}", page: ++current_page }
+        })
+            .done(function(data) {
+              loading_message.hide();
+              $("#results").append(data.results);
+              if (data.more === true) more_button.show();
+            })
+            .fail(function() {
+              alert("{{ _('Failed to load more search results!') }}");
+            });
+      }
+    </script>
+  {% endblock %}
+{% endif %}

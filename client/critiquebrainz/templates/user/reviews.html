@@ -42,19 +42,16 @@
       {% endfor %}
       </tbody>
     </table>
-    <ul class="pagination">
-      {% set pages = count//limit %}
-      {% if count%limit %}
-        {% set pages = pages+1 %}
-      {% endif %}
-      {% if pages>1 %}
-        {% for p in range(pages) %}
-          {% set p_offset = p*limit %}
-          <li {% if offset == p_offset %}class="active"{% endif %}>
-            <a href="{{ url_for('user.reviews', user_id=user.id, offset=p*limit) }}">{{ p+1 }}</a>
-          </li>
-        {% endfor %}
-      {% endif %}
-    </ul>
+
+    {% if count > limit %}
+      <ul class="pager">
+        {% if page > 1 %}
+          <li class="previous"><a href="{{ url_for('user.reviews', user_id=user.id, page=page-1) }}">&larr; {{ _('Newer') }}</a></li>
+        {% endif %}
+        {% if page < count//limit %}
+          <li class="next"><a href="{{ url_for('user.reviews', user_id=user.id, page=page+1) }}">{{ _('Older') }} &rarr;</a></li>
+        {% endif %}
+      </ul>
+    {% endif %}
   {% endif %}
 {% endblock %}
