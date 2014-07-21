@@ -61,6 +61,7 @@
       <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text|safe }}</p>
 
       <hr />
+
       <!-- Legal stuff -->
       <small class="text-muted">
         {% if review.license.info_url %}
@@ -75,39 +76,44 @@
       </small>
 
       <hr />
-      {% if current_user.is_authenticated() %}
-        {% if current_user.me.id != review.user.id %}
-          <div class="row">
-            <div class="col-md-8">
-              <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
-                {{ _('Did you find this review useful?') }}
-                <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
-                <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
-                {% if vote.placet == True or vote.placet == False %}
-                  <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
-                {% endif %}
-              </form>
-            </div>
-            <div class="col-md-4" id="reporting">
-              <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="report-toggle text-danger">{{ _('Report spam') }}</a>
-              <span class="report-toggle" style="display:none">
-                {{ _('Report this review as spam?') }}
-                <a href="javascript:void(0)" onclick="report()" class="btn btn-default btn-xs" role="button">{{ _('Yes') }}</a>
-                <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="btn btn-default btn-xs" role="button">{{ _('No') }}</a>
-              </span>
-              <span id="report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>
-            </div>
-          </div>
-        {% else %}
-          <a href="{{ url_for('review.edit', id=review.id) }}"
-             role="button" class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-edit"></span> {{ _('Edit this review') }}
-          </a>
-        {% endif %}
-      {% else %}
-        {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
-      {% endif %}
 
+      <div>
+        {% if current_user.is_authenticated() %}
+          {% if current_user.me.id != review.user.id %}
+            <div class="row">
+              <div class="col-md-8">
+                <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
+                  {{ _('Did you find this review useful?') }}
+                  <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
+                  <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
+                  {% if vote.placet == True or vote.placet == False %}
+                    <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
+                  {% endif %}
+                </form>
+              </div>
+              <div class="col-md-4" id="reporting">
+                <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="report-toggle text-danger">{{ _('Report spam') }}</a>
+                <span class="report-toggle" style="display:none">
+                  {{ _('Report this review as spam?') }}
+                  <a href="javascript:void(0)" onclick="report()" class="btn btn-default btn-xs" role="button">{{ _('Yes') }}</a>
+                  <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="btn btn-default btn-xs" role="button">{{ _('No') }}</a>
+                </span>
+                <span id="report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>
+              </div>
+            </div>
+          {% else %}
+            <a href="{{ url_for('review.edit', id=review.id) }}"
+               role="button" class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-edit"></span> {{ _('Edit this review') }}
+            </a>
+          {% endif %}
+        {% else %}
+          {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
+        {% endif %}
+      </div>
+
+      <!-- Sharing -->
+      {% include 'sharing.html' %}
     </div>
   </div>
 </div>
