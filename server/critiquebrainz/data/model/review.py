@@ -1,7 +1,7 @@
 from .. import db
 from sqlalchemy.dialects.postgresql import UUID
-from critiquebrainz.data.model.vote import Vote
-from critiquebrainz.data.model.revision import Revision
+from vote import Vote
+from revision import Revision
 from critiquebrainz.constants import review_classes
 import pycountry
 
