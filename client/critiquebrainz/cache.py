@@ -1,12 +1,12 @@
+from flask import current_app
 import hashlib
 import memcache
-from critiquebrainz import app
 
-cache = memcache.Client(app.config['MEMCACHED_SERVERS'], debug=0)
+cache = memcache.Client(current_app.config['MEMCACHED_SERVERS'], debug=0)
 
 
 def generate_cache_key(id, type=None, source=None, params=[]):
-    key = app.config['MEMCACHED_NAMESPACE'] + ':'
+    key = current_app.config['MEMCACHED_NAMESPACE'] + ':'
     if source is not None:
         key += str(source) + ':'
     if type is not None:

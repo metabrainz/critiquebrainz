@@ -5,10 +5,10 @@ from werkzeug.exceptions import BadRequest
 from critiquebrainz.apis import server, musicbrainz
 from critiquebrainz.exceptions import NotFound
 
-bp = Blueprint('artist', __name__)
+artist_bp = Blueprint('artist', __name__)
 
 
-@bp.route('/<uuid:id>', endpoint='entity')
+@artist_bp.route('/<uuid:id>', endpoint='entity')
 def artist_entity_handler(id):
     artist = musicbrainz.get_artist_by_id(id, includes=['url-rels', 'artist-rels'])
     if not artist:

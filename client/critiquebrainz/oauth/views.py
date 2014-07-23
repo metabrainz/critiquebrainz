@@ -3,10 +3,10 @@ from flask.ext.login import login_required, current_user
 from critiquebrainz.apis import server
 from critiquebrainz.utils import build_url
 
-bp = Blueprint('oauth', __name__)
+oauth_bp = Blueprint('oauth', __name__)
 
 
-@bp.route('/authorize', methods=['GET', 'POST'], endpoint='authorize_prompt')
+@oauth_bp.route('/authorize', methods=['GET', 'POST'], endpoint='authorize_prompt')
 @login_required
 def oauth_authorize_prompt_handler():
     """OAuth 2.0 authorization endpoint."""

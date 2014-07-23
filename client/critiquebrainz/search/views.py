@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, jsonify, url_for
 from critiquebrainz.apis import musicbrainz
 
-bp = Blueprint('search', __name__)
+search_bp = Blueprint('search', __name__)
 
 RESULTS_LIMIT = 10
 
@@ -18,7 +18,7 @@ def search_wrapper(query, type, offset=None):
         count, results = 0, []
     return count, results
 
-@bp.route('/', endpoint='index')
+@search_bp.route('/', endpoint='index')
 def search_handler():
     query = request.args.get('query')
     type = request.args.get('type')
@@ -26,7 +26,7 @@ def search_handler():
     return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=RESULTS_LIMIT)
 
 
-@bp.route('/more', endpoint='more')
+@search_bp.route('/more', endpoint='more')
 def more_handler():
     query = request.args.get('query')
     type = request.args.get('type')
@@ -37,7 +37,7 @@ def more_handler():
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
 
 
-@bp.route('/selector', endpoint='selector')
+@search_bp.route('/selector', endpoint='selector')
 def review_creation_selector_handler():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')
@@ -53,7 +53,7 @@ def review_creation_selector_handler():
                            results=results, count=count, limit=RESULTS_LIMIT)
 
 
-@bp.route('/selector/more', endpoint='selector_more')
+@search_bp.route('/selector/more', endpoint='selector_more')
 def selector_more_handler():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')

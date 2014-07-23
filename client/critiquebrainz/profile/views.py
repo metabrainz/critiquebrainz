@@ -6,10 +6,10 @@ from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.details import EditForm
 
-bp = Blueprint('profile_details', __name__)
+profile_bp = Blueprint('profile_details', __name__)
 
 
-@bp.route('/edit', methods=['GET', 'POST'], endpoint='edit')
+@profile_bp.route('/edit', methods=['GET', 'POST'], endpoint='edit')
 @login_required
 def edit_handler():
     form = EditForm()
@@ -31,7 +31,7 @@ def edit_handler():
     return render_template('profile/edit.html', form=form)
 
 
-@bp.route('/delete', methods=['GET', 'POST'], endpoint='delete')
+@profile_bp.route('/delete', methods=['GET', 'POST'], endpoint='delete')
 @login_required
 def delete_handler():
     if request.method == 'POST':
