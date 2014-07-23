@@ -9,9 +9,9 @@ from musicbrainzngs import set_useragent, get_release_by_id
 
 import html2text
 from ftfy import fix_text
-from critiquebrainz.db import db as _db, Review
+from critiquebrainz.data import db as _db, Review
 from critiquebrainz import app
-from critiquebrainz.db import User
+from critiquebrainz.data import User
 
 
 if __name__ == '__main__':

@@ -1,4 +1,6 @@
-from db import *
+from data import db, create_tables
+from data.model.oauth import OAuthClient
+from data.model.license import License
 
 
 def install(app, *args):

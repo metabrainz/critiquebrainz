@@ -1,5 +1,6 @@
 from critiquebrainz.test_case import ServerTestCase
-from critiquebrainz.db import db, User
+from critiquebrainz.data import db
+from critiquebrainz.data.model.user import User
 import json
 
 

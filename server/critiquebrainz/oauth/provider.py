@@ -3,7 +3,8 @@ from exceptions import *
 from datetime import datetime, timedelta
 from functools import wraps
 
-from critiquebrainz.db import db, OAuthClient, OAuthGrant, OAuthToken
+from critiquebrainz.data import db
+from critiquebrainz.data.model.oauth import OAuthClient, OAuthGrant, OAuthToken
 from critiquebrainz.constants import available_scopes
 from critiquebrainz.utils import generate_string
 

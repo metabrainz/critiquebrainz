@@ -1,5 +1,6 @@
 from critiquebrainz.test_case import ServerTestCase
-from critiquebrainz.db import db, License
+from .. import db
+from license import License
 
 
 class LicenceTestCase(ServerTestCase):

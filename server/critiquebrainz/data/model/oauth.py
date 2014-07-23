@@ -1,4 +1,4 @@
-from . import db
+from .. import db
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.utils import generate_string
 

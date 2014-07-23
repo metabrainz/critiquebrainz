@@ -1,6 +1,6 @@
 from flask.ext.testing import TestCase
 from critiquebrainz import create_app
-from critiquebrainz.db import db
+from critiquebrainz.data import db
 
 
 class ServerTestCase(TestCase):

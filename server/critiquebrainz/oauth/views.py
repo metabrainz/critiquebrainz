@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from critiquebrainz.oauth import oauth
-from critiquebrainz.db import OAuthClient
+from critiquebrainz.data.model.oauth import OAuthClient
 from critiquebrainz.decorators import nocache
 from critiquebrainz.oauth.exceptions import UnsupportedGrantType
 

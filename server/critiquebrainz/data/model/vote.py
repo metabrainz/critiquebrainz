@@ -1,6 +1,6 @@
-from datetime import datetime
+from .. import db
 from sqlalchemy.dialects.postgresql import UUID
-from . import db
+from datetime import datetime
 
 
 class Vote(db.Model):

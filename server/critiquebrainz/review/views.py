@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
-from critiquebrainz.db import Review, Vote, SpamReport
-from critiquebrainz.db.review import supported_languages
+from critiquebrainz.data.model.review import Review, supported_languages
+from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.data.model.report import SpamReport
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser

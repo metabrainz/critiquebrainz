@@ -1,12 +1,10 @@
-from datetime import datetime, date, timedelta
-
+from .. import db
 from sqlalchemy.dialects.postgresql import UUID
-
-from . import db
 from review import Review
 from revision import Revision
 from vote import Vote
 from critiquebrainz.constants import user_types
+from datetime import datetime, date, timedelta
 import hashlib
 
 

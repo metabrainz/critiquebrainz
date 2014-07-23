@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from critiquebrainz.db import OAuthClient, OAuthToken
+from critiquebrainz.data.model.oauth import OAuthClient, OAuthToken
 from critiquebrainz.exceptions import *
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser

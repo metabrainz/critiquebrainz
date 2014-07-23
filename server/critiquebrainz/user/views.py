@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, redirect, url_for
-from critiquebrainz.db import User
+from critiquebrainz.data.model.user import User
 from critiquebrainz.oauth import oauth
 from critiquebrainz.parser import Parser
 

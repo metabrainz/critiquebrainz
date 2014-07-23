@@ -1,7 +1,7 @@
-from datetime import datetime
+from .. import db
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.exceptions import InvalidRequest
-from . import db
+from datetime import datetime
 
 
 class SpamReport(db.Model):

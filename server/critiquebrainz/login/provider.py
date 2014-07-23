@@ -2,7 +2,7 @@ import json
 from rauth import OAuth2Service
 from flask import request, session, url_for
 
-from critiquebrainz.db import User
+from critiquebrainz.data.model.user import User
 from critiquebrainz.exceptions import LoginError
 from critiquebrainz.utils import generate_string
 

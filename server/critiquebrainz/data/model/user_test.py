@@ -1,5 +1,9 @@
 from critiquebrainz.test_case import ServerTestCase
-from critiquebrainz.db import db, User, Review, License, Vote
+from .. import db
+from user import User
+from license import License
+from review import Review
+from vote import Vote
 
 
 class UserTestCase(ServerTestCase):

@@ -1,9 +1,9 @@
-import pycountry
+from .. import db
 from sqlalchemy.dialects.postgresql import UUID
-from . import db
-from vote import Vote
-from revision import Revision
+from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.constants import review_classes
+import pycountry
 
 DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
 supported_languages = []
