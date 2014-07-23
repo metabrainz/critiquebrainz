@@ -59,7 +59,7 @@ Then, open ``critiquebrainz/config.py`` in your favourite text editor, uncomment
 
 Now, you may want to create and configure the database with::
 
-   $ python manage.py create_db
+   $ python manage.py data create_db
 
 This command will
 
@@ -70,7 +70,7 @@ This command will
 You may also want to update the newly created database with default schema
 and testing data. To do this type::
 
-   $ python manage.py fixtures
+   $ python manage.py data fixtures
 
 Preparing login
 ^^^^^^^^^^^^^^^
@@ -106,4 +106,4 @@ Don't forget to enter your virtual environment first::
 
 Now you can safely run the webservice app::
 
-   $ python manage.py runserver -t 0.0.0.0 -p 5000
+   $ python manage.py runserver -h 0.0.0.0 -p 5000
