@@ -1,8 +1,8 @@
-from critiquebrainz import app, db
 ﻿from flask.ext.script import Manager
+from critiquebrainz import create_app
 from critiquebrainz.data.manage import data_manager
 
-manager = Manager(app)
+manager = Manager(create_app)
 
 manager.add_command('data', data_manager)
 

@@ -1,10 +1,10 @@
 import unittest
-import manage
-from critiquebrainz import app
+from critiquebrainz import create_app
+from critiquebrainz.data.manage import init_postgres
 
 if __name__ == '__main__':
     # Creating database-related stuff
-    manage.init_postgres(app.config['TEST_SQLALCHEMY_DATABASE_URI'])
+    init_postgres(create_app().config['TEST_SQLALCHEMY_DATABASE_URI'])
 
-    all = unittest.TestLoader().discover(start_dir='.', pattern='*_test.py')
-    unittest.TextTestRunner(verbosity=1).run(all)
+    all_tests = unittest.TestLoader().discover(start_dir='.', pattern='*_test.py')
+    unittest.TextTestRunner(verbosity=1).run(all_tests)
