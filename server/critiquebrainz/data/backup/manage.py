@@ -5,14 +5,15 @@ from flask.json import JSONEncoder
 from datetime import datetime
 from time import gmtime, strftime
 from urlparse import urlsplit
+import unicodedata
 import shutil
 import subprocess
 import os
 import re
 
-from critiquebrainz.fixtures import LicenseData
-from critiquebrainz.data.model.review import Review
 from critiquebrainz.data import db
+from critiquebrainz.data.model.review import Review
+from critiquebrainz.data.model.license import License
 
 backup_manager = Manager()
 
@@ -69,65 +70,57 @@ class DumpJSONEncoder(JSONEncoder):
 
 
 @backup_manager.command
-def dump_json():
-    """Create JSON dump of all reviews."""
+def dump_json(location=os.path.join(os.getcwd(), 'dump')):
+    """Create JSON dump with all reviews."""
     current_app.json_encoder = DumpJSONEncoder
 
-    dump_dir = 'dump'
-    by_sa_dir = 'critiquebrainz-json-by-sa'
-    exit_code = subprocess.call('mkdir -p %s/%s' % (dump_dir, by_sa_dir), shell=True)
-    if exit_code != 0:
-        raise Exception("Failed to create directory!")
-    by_nc_sa_dir = 'critiquebrainz-json-by-nc-sa'
-    exit_code = subprocess.call('mkdir -p %s/%s' % (dump_dir, by_nc_sa_dir), shell=True)
-    if exit_code != 0:
-        raise Exception("Failed to create directory!")
+    for license in License.query.all():
+        safe_name = slugify(license.id)
+        license_dir = '%s/%s' % (location, safe_name)
 
-    # Creating JSON dumps
-    query = db.session.query(Review.release_group).group_by(Review.release_group)
-    for release_group in query.all():
-        release_group = release_group[0]
-        rg_dir_part = '%s/%s' % (release_group[0:1], release_group[0:2])
+        exit_code = subprocess.call('mkdir -p %s' % license_dir, shell=True)
+        if exit_code != 0:
+            raise Exception("Failed to create directory for %s reviews!" % license.id)
 
-        # CC BY-SA reviews
-        reviews = Review.list(release_group, license_id=LicenseData.cc_by_sa_3.id)[0]
-        if len(reviews) > 0:
-            json = jsonify(reviews=[r.to_dict(['user'], is_dump=True) for r in reviews]).data
-            rg_dir = '%s/%s/%s' % (dump_dir, by_sa_dir, rg_dir_part)
-            exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
-            if exit_code != 0:
-                raise Exception("Failed to create directory!")
-            f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
-            f.write(json)
-            f.close()
+        # Finding release groups that have reviews with current license
+        query = db.session.query(Review.release_group).group_by(Review.release_group)
+        for release_group in query.all():
+            release_group = release_group[0]
+            # Creating directory structure for release group and dumping reviews
+            rg_dir_part = '%s/%s' % (release_group[0:1], release_group[0:2])
+            reviews = Review.list(release_group, license_id=license.id)[0]
+            if len(reviews) > 0:
+                json = jsonify(reviews=[r.to_dict(['user'], is_dump=True) for r in reviews]).data
+                rg_dir = '%s/%s' % (license_dir, rg_dir_part)
+                exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
+                if exit_code != 0:
+                    raise Exception("Failed to create directory for release group!")
+                f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
+                f.write(json)
+                f.close()
 
-        # CC BY-NC-SA reviews
-        reviews = Review.list(release_group, license_id=LicenseData.cc_by_nc_sa_3.id)[0]
-        if len(reviews) > 0:
-            json = jsonify(reviews=[r.to_dict(['user'], is_dump=True) for r in reviews]).data
-            rg_dir = '%s/%s/%s' % (dump_dir, by_nc_sa_dir, rg_dir_part)
-            exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
-            if exit_code != 0:
-                raise Exception("Failed to create directory!")
-            f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
-            f.write(json)
-            f.close()
+        # Copying legal text
+        try:
+            shutil.copyfile("licenses/%s.txt" % safe_name, '%s/COPYING' % license_dir)
+        except IOError:
+            print("Failed to copy license text for %s!" % license.id)
 
-    # Copying legal stuff
-    shutil.copyfile("licenses/cc-by-sa.txt", '%s/%s/COPYING' % (dump_dir, by_sa_dir))
-    shutil.copyfile("licenses/cc-by-nc-sa.txt", '%s/%s/COPYING' % (dump_dir, by_nc_sa_dir))
+        # Creating archive
+        exit_code = subprocess.call('tar -cjf %s/critiquebrainz-json-%s.tar.bz2 -C "%s" %s' % (location, safe_name, location, safe_name), shell=True)
+        if exit_code != 0:
+            raise Exception("Failed to create an archive for %s reviews!" % license.id)
 
-    # Creating archives
-    exit_code = subprocess.call('tar -cjf dump/critiquebrainz-json-cc-by-sa.tar.bz2 -C "%s" %s' % (dump_dir, by_sa_dir), shell=True)
-    if exit_code != 0:
-        raise Exception("Failed to create an archive for CC BY-SA reviews!")
-    exit_code = subprocess.call('tar -cjf dump/critiquebrainz-json-cc-by-nc-sa.tar.bz2 -C "%s" %s' % (dump_dir, by_nc_sa_dir), shell=True)
-    if exit_code != 0:
-        raise Exception("Failed to create an archive for CC BY-NC-SA reviews!")
+        # Cleanup
+        subprocess.call('rm -rf %s' % license_dir, shell=True)
 
-    # Cleanup
-    subprocess.call('rm -rf %s/%s' % (dump_dir, by_sa_dir), shell=True)
-    subprocess.call('rm -rf %s/%s' % (dump_dir, by_nc_sa_dir), shell=True)
+
+def slugify(value):
+    """Converts to lowercase, removes alphanumerics and underscores, and converts spaces to hyphens.
+    Also strips leading and trailing whitespace.
+    """
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
+    value = re.sub('[^\w\s-]', '', value).strip().lower()
+    return re.sub('[-\s]+', '-', value)
 
 
 def explode_db_url(url):
