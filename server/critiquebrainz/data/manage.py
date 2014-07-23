@@ -2,6 +2,7 @@ from flask.ext.script import Manager
 from flask import current_app
 from critiquebrainz import fixtures as _fixtures
 from critiquebrainz import data
+from urlparse import urlsplit
 import subprocess
 
 data_manager = Manager()
@@ -53,10 +54,5 @@ def init_postgres(uri):
 
 
 def explode_db_url(url):
-    from urlparse import urlsplit
     url = urlsplit(url)
-    username = url.username
-    password = url.password
-    db = url.path[1:]
-    hostname = url.hostname
-    return hostname, db, username, password
+    return url.hostname, url.path[1:], url.username, url.password
