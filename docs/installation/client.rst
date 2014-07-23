@@ -82,4 +82,4 @@ Don't forget to enter your virtual environment first::
 
 Now you can safely run the webservice app::
 
-    $ python manage.py runserver -t 0.0.0.0 -p 5001
+    $ python manage.py runserver -h 0.0.0.0 -p 5001
