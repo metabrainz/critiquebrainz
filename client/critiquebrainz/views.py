@@ -2,14 +2,14 @@ from flask import render_template
 from flask.ext.babel import format_number
 from bs4 import BeautifulSoup
 from markdown import markdown
-from critiquebrainz import app
+from flask import current_app
 from critiquebrainz.apis import server
 from critiquebrainz.cache import cache, generate_cache_key
 
 DEFAULT_CACHE_EXPIRATION = 10 * 60  # seconds
 
 
-@app.route('/', endpoint='index')
+@current_app.route('/', endpoint='index')
 def index_handler():
     # User count
     user_count_key = generate_cache_key('user_count')
@@ -46,6 +46,6 @@ def index_handler():
                            reviews_total=review_count, users_total=user_count)
 
 
-@app.route('/about', endpoint='about')
+@current_app.route('/about', endpoint='about')
 def about_page():
     return render_template('about.html')

@@ -5,10 +5,10 @@ from flask.ext.babel import gettext
 
 from critiquebrainz.apis import musicbrainz, spotify, mbspotify
 
-bp = Blueprint('matching', __name__)
+matching_bp = Blueprint('matching', __name__)
 
 
-@bp.route('/spotify/<uuid:release_group_id>', endpoint='spotify')
+@matching_bp.route('/spotify/<uuid:release_group_id>', endpoint='spotify')
 def spotify_matching_handler(release_group_id):
     # Checking if release group is already matched
     spotify_mapping = mbspotify.mapping([str(release_group_id)])
@@ -34,7 +34,7 @@ def spotify_matching_handler(release_group_id):
                            limit=limit, offset=offset, count=count)
 
 
-@bp.route('/spotify/<uuid:release_group_id>/confirm', methods=['GET'], endpoint='spotify_confirm')
+@matching_bp.route('/spotify/<uuid:release_group_id>/confirm', methods=['GET'], endpoint='spotify_confirm')
 @login_required
 def spotify_matching_submit_handler(release_group_id):
     # Checking if release group is already matched
@@ -52,7 +52,7 @@ def spotify_matching_submit_handler(release_group_id):
     return render_template('matching/confirm.html', release_group=release_group, spotify_uri=spotify_uri)
 
 
-@bp.route('/spotify/<uuid:release_group_id>/confirm', methods=['POST'], endpoint='spotify_submit')
+@matching_bp.route('/spotify/<uuid:release_group_id>/confirm', methods=['POST'], endpoint='spotify_submit')
 @login_required
 def spotify_matching_submit_handler(release_group_id):
     # Checking if release group is already matched

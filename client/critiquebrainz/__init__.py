@@ -1,12 +1,7 @@
 from flask import Flask
-import critiquebrainz.default_config
 
-app_name = "CritiqueBrainz Client"
-app_version = "0.1"
+__version__ = "0.1"
 
-app = Flask(__name__)
-app.config.from_object(critiquebrainz.default_config)
-app.config.from_object('critiquebrainz.config')
 
 # SNI support for Python 2
 # See http://urllib3.readthedocs.org/en/latest/contrib.html#module-urllib3.contrib.pyopenssl
@@ -16,57 +11,65 @@ try:
 except ImportError:
     pass
 
-# init apis
-import apis
 
-app.jinja_env.add_extension('jinja2.ext.do')
+def create_app():
+    app = Flask(__name__)
 
-with app.app_context():
-    # init babel
-    import babel
+    # Configuration files
+    import critiquebrainz.default_config
+    app.config.from_object(critiquebrainz.default_config)
+    app.config.from_object('critiquebrainz.config')
 
-# init login
-from login import login_manager
-login_manager.init_app(app)
+    # Error handling
+    import errors
+    errors.init_error_handlers(app)
 
-# init uuid converter
-from flask.ext.uuid import FlaskUUID
-FlaskUUID(app)
+    # Logging
+    if app.debug is False:
+        import loggers
+        loggers.init_app(app)
 
-# init utils
-from utils import format_datetime, track_length
-app.jinja_env.filters['datetime'] = format_datetime
-app.jinja_env.filters['track_length'] = track_length
+    from flask.ext.uuid import FlaskUUID
+    FlaskUUID(app)
 
-# init error handlers
-import errors
+    with app.app_context():
+        import apis
+        import babel
 
-# init loggers
-if app.debug is False:
-    import loggers
-    loggers.init_app(app)
+    from login import login_manager
+    login_manager.init_app(app)
 
-# init index
-import views
+    # Template utilities
+    app.jinja_env.add_extension('jinja2.ext.do')
+    from utils import reformat_date, reformat_datetime, track_length
+    app.jinja_env.filters['date'] = reformat_date
+    app.jinja_env.filters['datetime'] = reformat_datetime
+    app.jinja_env.filters['track_length'] = track_length
 
-# register blueprints
-from login.views import bp as bp1
-app.register_blueprint(bp1, url_prefix='/login')
-from oauth.views import bp as bp2
-app.register_blueprint(bp2, url_prefix='/oauth')
-from critiquebrainz.profile.views import bp as bp4
-app.register_blueprint(bp4, url_prefix='/profile')
-from profile.applications.views import bp as bp5
-app.register_blueprint(bp5, url_prefix='/profile/applications')
-from review.views import bp as bp6
-app.register_blueprint(bp6, url_prefix='/review')
-from user.views import bp as bp7
-app.register_blueprint(bp7, url_prefix='/user')
-from search.views import bp as bp8
-app.register_blueprint(bp8, url_prefix='/search')
-from release_group.views import bp as bp9
-app.register_blueprint(bp9, url_prefix='/release-group')
-from artist.views import bp as bp10
-app.register_blueprint(bp10, url_prefix='/artist')
-from matching.views import bp as bp11
-app.register_blueprint(bp11, url_prefix='/matching')
+    with app.app_context():
+        import views
+
+    # Blueprints
+    from review.views import review_bp
+    from search.views import search_bp
+    from artist.views import artist_bp
+    from release_group.views import release_group_bp
+    from matching.views import matching_bp
+    from user.views import user_bp
+    from profile.views import profile_bp
+    from profile.applications.views import profile_apps_bp
+    from login.views import login_bp
+    from oauth.views import oauth_bp
+
+    app.register_blueprint(review_bp, url_prefix='/review')
+    app.register_blueprint(search_bp, url_prefix='/search')
+    app.register_blueprint(artist_bp, url_prefix='/artist')
+    app.register_blueprint(release_group_bp, url_prefix='/release-group')
+    app.register_blueprint(matching_bp, url_prefix='/matching')
+    app.register_blueprint(user_bp, url_prefix='/user')
+    app.register_blueprint(profile_bp, url_prefix='/profile')
+    app.register_blueprint(profile_apps_bp, url_prefix='/profile/applications')
+    app.register_blueprint(login_bp, url_prefix='/login')
+    app.register_blueprint(oauth_bp, url_prefix='/oauth')
+
+    return app

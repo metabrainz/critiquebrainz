@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
 from flask import current_app, g, request, after_this_request
 from flask.ext.babel import Babel, Locale
-from critiquebrainz import app
 
-babel = Babel(app)
+babel = Babel(current_app)
 
 current_app.config['LANGUAGES'] = {}
-for language in app.config['SUPPORTED_LANGUAGES']:
+for language in current_app.config['SUPPORTED_LANGUAGES']:
     current_app.config['LANGUAGES'][language] = Locale.parse(language).language_name
 
 
-@app.after_request
+@current_app.after_request
 def call_after_request_callbacks(response):
     for callback in getattr(g, 'after_request_callbacks', ()):
         callback(response)
@@ -26,7 +24,7 @@ def after_this_request(f):
 
 @babel.localeselector
 def get_locale():
-    supported_languages = app.config['SUPPORTED_LANGUAGES']
+    supported_languages = current_app.config['SUPPORTED_LANGUAGES']
     language_arg = request.args.get('l')
     if language_arg is not None:
         if language_arg in supported_languages:

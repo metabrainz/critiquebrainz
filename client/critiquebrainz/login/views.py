@@ -3,16 +3,16 @@ from flask.ext.login import login_user, logout_user, login_required
 from critiquebrainz.apis import server
 from critiquebrainz.login import User, login_forbidden
 
-bp = Blueprint('login', __name__)
+login_bp = Blueprint('login', __name__)
 
 
-@bp.route('/', endpoint='index')
+@login_bp.route('/', endpoint='index')
 @login_forbidden
 def login_handler():
     return render_template('login/login.html')
 
 
-@bp.route('/musicbrainz', endpoint='musicbrainz')
+@login_bp.route('/musicbrainz', endpoint='musicbrainz')
 @login_forbidden
 def login_musicbrainz_handler():
     next = request.args.get('next')
@@ -20,7 +20,7 @@ def login_musicbrainz_handler():
     return redirect(server.generate_musicbrainz_authorization_uri())
 
 
-@bp.route('/post', endpoint='post')
+@login_bp.route('/post', endpoint='post')
 @login_forbidden
 def login_post_handler():
     code = request.args.get('code')
@@ -41,7 +41,7 @@ def login_post_handler():
     return redirect(url_for('.index'))
 
 
-@bp.route('/logout', endpoint='logout')
+@login_bp.route('/logout', endpoint='logout')
 @login_required
 def login_logout_handler():
     logout_user()

@@ -12,10 +12,10 @@ from critiquebrainz.apis import server, mbspotify
 from critiquebrainz.exceptions import ServerError, APIError, NotFound
 from markdown import markdown
 
-bp = Blueprint('review', __name__)
+review_bp = Blueprint('review', __name__)
 
 
-@bp.route('/<uuid:id>', endpoint='entity')
+@review_bp.route('/<uuid:id>', endpoint='entity')
 def review_entity_handler(id):
     try:
         review = server.get_review(id, inc=['user'])
@@ -42,7 +42,7 @@ def review_entity_handler(id):
     return render_template('review/entity.html', review=review, spotify_mapping=spotify_mapping, vote=vote)
 
 
-@bp.route('/write', methods=('GET', 'POST'), endpoint='create')
+@review_bp.route('/write', methods=('GET', 'POST'), endpoint='create')
 @login_required
 def create_handler():
     release_group = request.args.get('release_group')
@@ -77,14 +77,14 @@ def create_handler():
     return render_template('review/write.html', form=form, release_group=release_group_details)
 
 
-@bp.route('/write/preview', methods=['POST'], endpoint='preview')
+@review_bp.route('/write/preview', methods=['POST'], endpoint='preview')
 @login_required
 def preview_handler():
     """Get markdown preview of a text."""
     return markdown(request.form['text'], safe_mode="escape")
 
 
-@bp.route('/<uuid:id>/edit', methods=('GET', 'POST'), endpoint='edit')
+@review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'), endpoint='edit')
 @login_required
 def edit_handler(id):
     review = server.get_review(str(id))
@@ -105,7 +105,7 @@ def edit_handler(id):
     return render_template('review/edit.html', form=form, review=review)
 
 
-@bp.route('/<uuid:id>/delete', endpoint='delete')
+@review_bp.route('/<uuid:id>/delete', endpoint='delete')
 @login_required
 def delete_handler(id):
     try:
@@ -117,7 +117,7 @@ def delete_handler(id):
     return redirect(url_for('user.reviews', user_id=current_user.me['id']))
 
 
-@bp.route('/<uuid:id>/vote', methods=['POST'], endpoint='vote_submit')
+@review_bp.route('/<uuid:id>/vote', methods=['POST'], endpoint='vote_submit')
 @login_required
 def review_vote_submit_handler(id):
     if 'yes' in request.form:
@@ -133,7 +133,7 @@ def review_vote_submit_handler(id):
     return redirect(url_for('.entity', id=id))
 
 
-@bp.route('/<uuid:id>/vote/delete', methods=['GET'], endpoint='vote_delete')
+@review_bp.route('/<uuid:id>/vote/delete', methods=['GET'], endpoint='vote_delete')
 @login_required
 def review_vote_delete_handler(id):
     try:
@@ -145,7 +145,7 @@ def review_vote_delete_handler(id):
     return redirect(url_for('.entity', id=id))
 
 
-@bp.route('/<uuid:id>/report', methods=['POST'], endpoint='report')
+@review_bp.route('/<uuid:id>/report', methods=['POST'], endpoint='report')
 @login_required
 def review_spam_report_handler(id):
     try:

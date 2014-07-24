@@ -5,7 +5,7 @@ from flask.ext.babel import gettext
 from critiquebrainz.apis import server
 from critiquebrainz.exceptions import ServerError, NotFound
 
-bp = Blueprint('user', __name__)
+user_bp = Blueprint('user', __name__)
 
 
 def get_user(user_id, inc=[]):
@@ -18,7 +18,7 @@ def get_user(user_id, inc=[]):
             raise e
 
 
-@bp.route('/<uuid:user_id>', endpoint='reviews')
+@user_bp.route('/<uuid:user_id>', endpoint='reviews')
 def reviews_handler(user_id):
     if current_user.is_authenticated() and current_user.me['id'] == user_id:
         user = current_user.me
@@ -34,6 +34,6 @@ def reviews_handler(user_id):
                            reviews=reviews, page=page, limit=limit, count=count)
 
 
-@bp.route('/<uuid:user_id>/info', endpoint='info')
+@user_bp.route('/<uuid:user_id>/info', endpoint='info')
 def info_handler(user_id):
     return render_template('user/info.html', section='info', user=get_user(user_id, ['user_type', 'stats']))

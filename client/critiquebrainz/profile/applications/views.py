@@ -6,10 +6,10 @@ from critiquebrainz.apis import server
 from critiquebrainz.exceptions import APIError
 from critiquebrainz.forms.profile.client import ClientForm
 
-bp = Blueprint('profile_applications', __name__)
+profile_apps_bp = Blueprint('profile_applications', __name__)
 
 
-@bp.route('/', endpoint='index')
+@profile_apps_bp.route('/', endpoint='index')
 @login_required
 def index_handler():
     applications = server.get_me_applications(current_user.access_token)
@@ -17,7 +17,7 @@ def index_handler():
     return render_template('profile/applications/index.html', applications=applications, tokens=tokens)
 
 
-@bp.route('/create', endpoint='create', methods=['GET', 'POST'])
+@profile_apps_bp.route('/create', endpoint='create', methods=['GET', 'POST'])
 @login_required
 def create_handler():
     """Create application."""
@@ -33,7 +33,7 @@ def create_handler():
     return render_template('profile/applications/create.html', form=form)
 
 
-@bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
+@profile_apps_bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
 @login_required
 def edit_handler(client_id):
     form = ClientForm()
@@ -56,7 +56,7 @@ def edit_handler(client_id):
     return render_template('profile/applications/edit.html', form=form)
 
 
-@bp.route('/<client_id>/delete', endpoint='delete')
+@profile_apps_bp.route('/<client_id>/delete', endpoint='delete')
 @login_required
 def delete_handler(client_id):
     try:
@@ -68,7 +68,7 @@ def delete_handler(client_id):
     return redirect(url_for('.index'))
 
 
-@bp.route('/<client_id>/token/delete', endpoint='token_delete')
+@profile_apps_bp.route('/<client_id>/token/delete', endpoint='token_delete')
 @login_required
 def token_delete_handler(client_id):
     try:

@@ -1,8 +1,10 @@
+from flask.ext.uuid import UUID_RE
+from flask.ext.babel import format_datetime, format_date
+from dateutil import parser
 import urllib
 import urlparse
 import string
 import random
-from flask.ext.uuid import UUID_RE
 
 
 def generate_string(length):
@@ -34,12 +36,12 @@ def validate_uuid(string):
         return True
 
 
-def format_datetime(value, format='%b %d, %Y'):
-    from dateutil import parser
+def reformat_date(value, format=None):
+    return format_date(parser.parse(value), format)
 
-    date = parser.parse(value)
-    native = date.replace(tzinfo=None)
-    return native.strftime(format)
+
+def reformat_datetime(value, format=None):
+    return format_datetime(parser.parse(value).replace(tzinfo=None), format)
 
 
 def track_length(value):
