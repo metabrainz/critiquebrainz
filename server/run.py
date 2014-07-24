@@ -1,6 +1,6 @@
 ﻿from critiquebrainz import create_app
 
-app = create_app()
+application = create_app()
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', 5000)
+    application.run('0.0.0.0', 5000)
