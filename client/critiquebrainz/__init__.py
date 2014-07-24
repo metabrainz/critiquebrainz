@@ -40,10 +40,11 @@ def create_app():
     login_manager.init_app(app)
 
     # Template utilities
-    from utils import format_datetime, track_length
-    app.jinja_env.filters['datetime'] = format_datetime
-    app.jinja_env.filters['track_length'] = track_length
     app.jinja_env.add_extension('jinja2.ext.do')
+    from utils import reformat_date, reformat_datetime, track_length
+    app.jinja_env.filters['date'] = reformat_date
+    app.jinja_env.filters['datetime'] = reformat_datetime
+    app.jinja_env.filters['track_length'] = track_length
 
     with app.app_context():
         import views
