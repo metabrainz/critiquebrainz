@@ -28,7 +28,7 @@
               <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
             {% endif %}
           </td>
-          <td>{{ review.created | datetime }}</td>
+          <td>{{ review.created | date }}</td>
           <td><abbr title="{{ review.votes_positive }}/{{ review.votes_negative }}">{{ review.rating }}</abbr></td>
           <td>{{ review.review_class }}</td>
           <td>
