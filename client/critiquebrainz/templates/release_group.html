@@ -68,7 +68,7 @@
           <tr>
             <th></th>
             <th>{{ _('Published on') }}</th>
-            <th>{{ _('Rating') }}</th>
+            <th>{{ _('Votes (+/-)') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -80,7 +80,7 @@
                 </a>
               </td>
               <td>{{ review.created | date }}</td>
-              <td>{{ review.rating }}</td>
+              <td>{{ review.votes_positive }}/{{ review.votes_negative }}</td>
             </tr>
           {% endfor %}
         </tbody>
