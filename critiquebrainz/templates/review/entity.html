@@ -83,7 +83,7 @@
 
       <div>
         {% if current_user.is_authenticated() %}
-          {% if current_user.id != review.user.id %}
+          {% if current_user != review.user %}
             <div class="row">
               <div class="col-md-8">
                 <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">

@@ -34,7 +34,7 @@ def create_handler():
 @login_required
 def edit_handler(client_id):
     application = OAuthClient.query.get_or_404(client_id)
-    if application.user_id != current_user.id:
+    if application.user != current_user:
         abort(403)
     form = ClientForm()
     if form.validate_on_submit():
@@ -54,7 +54,7 @@ def edit_handler(client_id):
 @login_required
 def delete_handler(client_id):
     client = OAuthClient.query.get_or_404(client_id)
-    if client.user_id != current_user.id:
+    if client.user != current_user:
         abort(403)
     client.delete()
 

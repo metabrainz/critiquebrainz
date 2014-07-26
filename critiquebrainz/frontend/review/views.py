@@ -22,7 +22,7 @@ def review_entity_handler(id):
     spotify_mapping = mbspotify.mapping([review.release_group])
 
     if current_user.is_authenticated():  # if user is logged in, get his vote for this review
-        vote = Vote.query.filter_by(user_id=current_user.id, review=review).first()
+        vote = Vote.query.filter_by(user=current_user, review=review).first()
     else:  # otherwise set vote to None, its value will not be used
         vote = None
     review.text_html = markdown(review.text, safe_mode="escape")
@@ -41,7 +41,7 @@ def create_handler():
 
     if form.validate_on_submit():
         # Checking if review has been published
-        if Review.query.filter_by(user_id=current_user.id, release_group=release_group).count():
+        if Review.query.filter_by(user=current_user, release_group=release_group).count():
             flash(gettext("You have already published a review for this album!"), 'error')
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
@@ -52,7 +52,7 @@ def create_handler():
         review = Review.create(user=current_user, release_group=release_group, text=form.text.data,
                                license_id=form.license_choice.data, language=form.language.data)
         flash(gettext("Review has been published!"), 'success')
-        return redirect(url_for('.entity', review_id=review.id))
+        return redirect(url_for('.entity', id=review.id))
 
     release_group_details = musicbrainz.release_group_details(release_group)
     if not release_group_details:
@@ -74,7 +74,7 @@ def edit_handler(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
         raise NotFound
-    if review.user_id != current_user.id:
+    if review.user != current_user:
         abort(403)
 
     form = ReviewEditForm()
@@ -93,7 +93,7 @@ def delete_handler(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
         raise NotFound
-    if review.user_id != current_user.id:
+    if review.user != current_user:
         abort(403)
     review.delete()
     flash(gettext("Review has been deleted."), 'success')
@@ -112,7 +112,7 @@ def review_vote_submit_handler(id):
     review = Review.query.get_or_404(id)
     if review.is_archived is True:
         raise NotFound
-    if review.user_id == current_user.id:
+    if review.user == current_user:
         flash(gettext("You cannot rate your own review."), 'error')
         return redirect(url_for('.entity', id=id))
     if current_user.is_vote_limit_exceeded is True and current_user.has_voted(review) is False:
@@ -124,7 +124,7 @@ def review_vote_submit_handler(id):
     if placet is False and current_user.user_type not in review.review_class.downvote:
         flash(gettext("You are not allowed to downvote this review."), 'error')
         return redirect(url_for('.entity', id=id))
-    Vote.create(current_user.id, review, placet)  # overwrites an existing vote, if needed
+    Vote.create(current_user, review, placet)  # overwrites an existing vote, if needed
 
     flash(gettext("You have rated the review!"), 'success')
     return redirect(url_for('.entity', id=id))
@@ -136,7 +136,7 @@ def review_vote_delete_handler(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
         raise NotFound
-    vote = Vote.query.filter_by(user=current_user.id, review=review).first()
+    vote = Vote.query.filter_by(user=current_user, review=review).first()
     if not vote:
         flash(gettext("Review is not rated yet."), 'error')
     else:
