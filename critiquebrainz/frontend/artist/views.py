@@ -13,7 +13,7 @@ artist_bp = Blueprint('artist', __name__)
 def artist_entity_handler(id):
     artist = musicbrainz.get_artist_by_id(id, includes=['url-rels', 'artist-rels'])
     if not artist:
-        raise NotFound(gettext("Sorry we couldn't find artist with that MusicBrainz ID."))
+        raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
     release_type = request.args.get('release_type', default='album')
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
         raise BadRequest

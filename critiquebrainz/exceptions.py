@@ -1,10 +1,10 @@
 class CritiqueBrainzError(Exception):
-    """ Parent class for app exceptions. """
+    """ Base class for app exceptions. """
     pass
 
 
 class BaseError(CritiqueBrainzError):
-    def __init__(self, code, desc='', status=400):
+    def __init__(self, code, desc=None, status=400):
         self.code = code
         self.desc = desc
         self.status = status
@@ -16,12 +16,11 @@ class LoginError(CritiqueBrainzError):
         self.redirect_uri = redirect_uri
 
 
-class NotFound(BaseError):
-    def __init__(self):
-        super(NotFound, self).__init__(
-            code='not_found',
-            desc='The requested resource could not be found',
-            status=404)
+class NotFound(CritiqueBrainzError):
+    def __init__(self, desc=None):
+        self.code = 'not_found'
+        self.desc = desc
+        self.status = 404
 
 
 class AccessDenied(BaseError):
@@ -76,4 +75,3 @@ class MissingDataError(ParserError):
         super(MissingDataError, self).__init__(
             key=key,
             desc='missing')
-
