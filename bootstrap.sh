@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 apt-get update
-apt-get install -y memcached python-virtualenv python-dev
+apt-get install -y memcached python-virtualenv python-dev screen make
 
 # PostgreSQL
 PG_VERSION=9.1
