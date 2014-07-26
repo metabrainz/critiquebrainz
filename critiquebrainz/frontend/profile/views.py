@@ -29,6 +29,6 @@ def edit_handler():
 def delete_handler():
     if request.method == 'POST':
         current_user.delete()
-        return redirect(url_for('index'))
+        return redirect(url_for('frontend.index'))
     return render_template('profile/delete.html')
 

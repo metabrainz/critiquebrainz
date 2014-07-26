@@ -38,4 +38,4 @@ def mb_oauth_callback():
 def logout():
     logout_user()
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('frontend.index'))
