@@ -1,31 +1,9 @@
 from flask import Blueprint, request, jsonify
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.oauth.exceptions import UnsupportedGrantType
-from critiquebrainz.data.model.oauth import OAuthClient
 from critiquebrainz.decorators import nocache
 
 oauth_bp = Blueprint('ws_oauth', __name__)
-
-
-@oauth_bp.route('/authorize', methods=['POST'], endpoint='authorize')
-@oauth.require_auth('authorization')
-@nocache
-def oauth_authorize_handler(user):
-    """Generate new OAuth grant.
-
-    **OAuth scope:** authorization
-
-    :resheader Content-Type: *application/json*
-    """
-    client_id = request.form.get('client_id')
-    response_type = request.form.get('response_type')
-    redirect_uri = request.form.get('redirect_uri')
-    scope = request.form.get('scope')
-
-    oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
-    code = oauth.generate_grant(client_id, user.id, redirect_uri, scope)
-
-    return jsonify(dict(code=code))
 
 
 @oauth_bp.route('/token', methods=['POST'], endpoint='token')
@@ -73,28 +51,3 @@ def oauth_token_handler():
                         token_type=token_type,
                         expires_in=expires_in,
                         refresh_token=refresh_token))
-
-
-@oauth_bp.route('/validate', methods=['POST'], endpoint='validate')
-@nocache
-def oauth_client_handler():
-    """Validate OAuth authorization request.
-
-    :form string client_id:
-    :form string response_type:
-    :form string redirect_uri:
-    :form string scope:
-
-    :resheader Content-Type: *application/json*
-    """
-    client_id = request.form.get('client_id')
-    response_type = request.form.get('response_type')
-    redirect_uri = request.form.get('redirect_uri')
-    scope = request.form.get('scope')
-
-    oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
-    client = OAuthClient.query.get(client_id)
-    return jsonify(dict(client=dict(client_id=client.client_id,
-                                    name=client.name,
-                                    desc=client.desc,
-                                    website=client.website)))

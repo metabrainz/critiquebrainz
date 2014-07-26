@@ -1,1 +1,5 @@
-available_scopes = ('user', 'review', 'client', 'authorization', 'vote')
+available_scopes = (
+    'user',
+    'review',
+    'vote',
+)

@@ -7,7 +7,7 @@ import json
 class UserViewsTestCase(ServerTestCase):
 
     def test_user_count(self):
-        resp = self.client.get('/user/')
+        resp = self.client.get('/ws/1/user/')
         data = json.loads(resp.data)
         assert data['count'] == 0
 
@@ -16,6 +16,6 @@ class UserViewsTestCase(ServerTestCase):
         db.session.add(user)
         db.session.commit()
 
-        resp = self.client.get('/user/')
+        resp = self.client.get('/ws/1/user/')
         data = json.loads(resp.data)
         assert data['count'] == 1

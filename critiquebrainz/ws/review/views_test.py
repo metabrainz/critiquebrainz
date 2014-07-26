@@ -9,7 +9,7 @@ import json
 class ReviewViewsTestCase(ServerTestCase):
 
     def test_review_count(self):
-        resp = self.client.get('/review/')
+        resp = self.client.get('/ws/1/review/')
         data = json.loads(resp.data)
         assert data['count'] == 0
 
@@ -32,7 +32,7 @@ class ReviewViewsTestCase(ServerTestCase):
                                license_id=license.id)
         db.session.add(review)
         db.session.commit()
-        resp = self.client.get('/review/')
+        resp = self.client.get('/ws/1/review/')
         data = json.loads(resp.data)
         assert data['count'] == 1
         assert len(data['reviews']) == 1
