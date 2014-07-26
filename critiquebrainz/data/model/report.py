@@ -1,6 +1,5 @@
 from .. import db
 from sqlalchemy.dialects.postgresql import UUID
-from critiquebrainz.exceptions import InvalidRequest
 from datetime import datetime
 
 
@@ -18,22 +17,11 @@ class SpamReport(db.Model):
         return response
 
     @classmethod
-    def create(cls, review, user):
-        if review.is_archived is True:
-            raise InvalidRequest('archived')
-        last_revision = review.revisions[-1]
-        count = cls.query.filter_by(user_id=user.id, revision_id=last_revision.id).count()
-        if count > 0:
-            raise InvalidRequest('reported')
-        report = cls(user_id=user.id, revision_id=last_revision.id)
+    def create(cls, revision_id, user):
+        report = cls(user=user, revision_id=revision_id)
         db.session.add(report)
         db.session.commit()
         return report
-
-    @classmethod
-    def get(cls, user, review):
-        vote = cls.query.filter_by(user=user, review=review).first()
-        return vote
 
     def delete(self):
         db.session.delete(self)

@@ -149,7 +149,13 @@ def review_vote_delete_handler(id):
 @login_required
 def review_spam_report_handler(id):
     review = Review.query.get_or_404(str(id))
-    if review.user_id == current_user.id:
+    if review.user == current_user:
         return jsonify(success=False, error='own')
-    SpamReport.create(review, current_user)
+    if review.is_archived is True:
+        return jsonify(success=False, error='archived')
+    last_revision_id = review.revisions[-1].id
+    count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
+    if count > 0:
+        return jsonify(success=False, error='reported')
+    SpamReport.create(last_revision_id, current_user)
     return jsonify(success=True)
