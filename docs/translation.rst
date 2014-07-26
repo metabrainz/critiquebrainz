@@ -7,7 +7,7 @@ translations, that's where you want to do it.
 Working locally
 ---------------
 
-Before doing anything make sure that you have client's virtual environment set up.
+Before doing anything make sure that you have virtual environment set up.
 Activate it to have access to ``pybabel`` command::
 
    $ source ./env
@@ -28,7 +28,8 @@ To add support for new language use::
 
 *Don't forget to replace 'de' with the language you need.*
 
-After that you need to add new language into ``LANGUAGES`` dictionary in client's ``config.py``.
+After that you need to add new language into ``SUPPORTED_LANGUAGES`` list in default configuration file:
+``default_config.py``.
 
 Compiling translations
 ^^^^^^^^^^^^^^^^^^^^^^

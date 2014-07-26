@@ -1,21 +1,33 @@
 Server Web API
 ==============
 
-CritiqueBrainz server provides API that can be used to interact with data. It uses JSON format.
+CritiqueBrainz server provides web service that can be used to interact with data. It uses JSON format.
 
 **Root URL**: ``https://critiquebrainz.org/ws/1``
-
-`CritiqueBrainz client <https://github.com/metabrainz/critiquebrainz/tree/master/client>`_ is build on top of this API,
-so you can use it as an example.
 
 Reference
 ---------
 
-.. toctree::
-   :maxdepth: 2
+Reviews
+^^^^^^^
 
-   api/review
-   api/user
-   api/application
-   api/oauth
-   api/login
+.. autoflask:: critiquebrainz:create_app()
+   :blueprints: ws_review
+   :include-empty-docstring:
+   :undoc-static:
+
+Users
+^^^^^
+
+.. autoflask:: critiquebrainz:create_app()
+   :blueprints: ws_user
+   :include-empty-docstring:
+   :undoc-static:
+
+OAuth
+^^^^^
+
+.. autoflask:: critiquebrainz:create_app()
+   :blueprints: ws_oauth
+   :include-empty-docstring:
+   :undoc-static:

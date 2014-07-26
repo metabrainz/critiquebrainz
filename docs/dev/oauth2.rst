@@ -177,6 +177,4 @@ necessarily needs. CritiqueBrainz provides the following scopes:
 
 * ``review`` - Create and modify reviews.
 * ``vote`` - Submit and delete votes on reviews.
-* ``client`` - Modify API clients (create, edit, delete).
 * ``user`` - Modify profile info and delete profile.
-* ``authorization`` - Generate new OAuth grants.

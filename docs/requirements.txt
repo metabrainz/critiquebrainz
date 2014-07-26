@@ -1,5 +1,4 @@
---allow-all-external
 Sphinx == 1.2.2
 Pygments == 1.6
 sphinxcontrib-httpdomain == 1.2.1
--r ../server/requirements.txt
+-r ../requirements.txt
