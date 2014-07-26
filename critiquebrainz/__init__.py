@@ -73,6 +73,7 @@ def create_app():
     from frontend.profile.views import profile_bp
     from frontend.profile.applications.views import profile_apps_bp
     from frontend.login.views import login_bp
+    from frontend.oauth.views import oauth_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
@@ -84,6 +85,7 @@ def create_app():
     app.register_blueprint(profile_bp, url_prefix='/profile')
     app.register_blueprint(profile_apps_bp, url_prefix='/profile/applications')
     app.register_blueprint(login_bp, url_prefix='/login')
+    app.register_blueprint(oauth_bp, url_prefix='/oauth')
 
     # Web service blueprints
     from ws.oauth.views import oauth_bp
