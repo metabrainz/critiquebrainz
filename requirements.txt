@@ -1,0 +1,31 @@
+Flask == 0.10.1
+Flask-Login == 0.2.10
+Flask-Script == 2.0.5
+Flask-Testing == 0.4.1
+Flask-UUID == 0.2
+Flask-WTF == 0.9.5
+Flask-Babel == 0.9
+Flask-SQLAlchemy == 1.0
+SQLAlchemy == 0.9.4
+Werkzeug == 0.9.3
+Jinja2 == 2.7
+MarkupSafe == 0.18
+WTForms==2.0
+argparse == 1.2.1
+distribute == 0.6.34
+itsdangerous == 0.22
+psycopg2 == 2.5.1
+rauth==0.7.0
+wsgiref == 0.1.2
+pycountry == 1.6
+pyOpenSSL == 0.13
+ndg-httpsclient == 0.3.2
+pyasn1 == 0.1.6
+requests == 2.3.0
+Fabric == 1.8.3
+transifex-client == 0.10
+beautifulsoup4 == 4.3.2
+musicbrainzngs == 0.5
+python-dateutil == 2.1
+Markdown == 2.4
+python-memcached == 1.53

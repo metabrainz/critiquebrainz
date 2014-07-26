@@ -2,3 +2,14 @@
 *.swp
 
 .vagrant
+
+env
+venv
+*.log
+
+/dump/
+/backup/
+
+# Translation
+*.mo
+tx.exe

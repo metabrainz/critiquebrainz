@@ -16,13 +16,8 @@ echo "host all all all trust" >> "$PG_HBA"
 service postgresql restart
 
 # Setting up CritiqueBrainz server
-cd /vagrant/server
+cd /vagrant
 # TODO: Activate virtualenv
 pip install -r requirements.txt
 python manage.py create_db
 python manage.py fixtures
-
-# Setting up CritiqueBrainz client
-cd /vagrant/client
-# TODO: Activate virtualenv
-pip install -r requirements.txt

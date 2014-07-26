@@ -1,0 +1,1 @@
+available_scopes = ('user', 'review', 'client', 'authorization', 'vote')

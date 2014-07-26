@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% set release_group = review.release_group | release_group_details %}
+
+{% block title %}
+{% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
+{{ _('Edit review of "%(rg)s"', rg=release_group_title) }} - CritiqueBrainz
+{% endblock %}
+
+{% block content %}
+{% for field in form.errors %}
+  {% for error in form.errors[field] %}
+  <div class="alert alert-danger">
+    {{ error }}
+  </div>
+  {% endfor %}
+{% endfor %}
+<h2>{{ _('Editing review') }}</h2>
+<dl class="dl-horizontal">
+  <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</dd>
+  <dt>{{ _('Release group') }}</dt>
+  <dd>
+    {{ release_group.title | default(_('[Unknown release group]')) }}
+    {% if release_group['first-release-date'] %}
+      <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
+    {% endif %}
+  </dd>
+  <dt>{{ _('Created on') }}</dt><dd>{{ review.created | date }}</dd>
+  <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</dd>
+  <dt>{{ _('Rating') }}</dt><dd>{{ review.review_class.label }}</dd>
+</dl>
+
+<div class="clearfix">
+  <ul class="nav nav-tabs" style="margin-bottom:-1px;">
+    <li class="active"><a href="#write" data-toggle="tab">{{ _('Write') }}</a></li>
+    <li><a href="#preview" data-toggle="tab">{{ _('Preview') }}</a></li>
+    <small class="text-muted pull-right" style="margin-top:20px;font-style:italic;">
+      {{ _('You can use <a href="%(url)s">Markdown</a> syntax to apply custom formatting.', url='http://daringfireball.net/projects/markdown/syntax') }}
+    </small>
+  </ul>
+</div>
+<form method="POST" class="form-horizontal" role="form">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    <div class="col-sm-12 tab-content">
+      <div class="tab-pane fade in active" id="write">
+        {{ form.text(id="review-content", class="form-control", rows="5") | safe }}
+      </div>
+      <div class="tab-pane fade" id="preview" style="margin-top:20px;">
+        <span class="text-muted">{{ _('Loading preview...') }}</span>
+      </div>
+      <script>
+        $(function () {
+          $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if (e.target.hash.substring(1) == "preview") {
+              $.ajax({
+                type: "POST",
+                url: "{{ url_for('review.preview') }}",
+                data: {
+                  text: $("#review-content").val()
+                },
+                success: function (data) {
+                  $("#preview").html(data);
+                }
+              });
+            } else { // write
+              $("#preview").html('<span class="text-muted">{{ _('Loading preview...') }}</span>');
+            }
+          });
+        });
+      </script>
+    </div>
+  </div>
+  <hr />
+  <div class="form-group">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-primary">{{ _('Publish') }}</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

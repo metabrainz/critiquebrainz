@@ -1,0 +1,70 @@
+{% from 'macros.html' import print_error %}
+<!DOCTYPE html>
+<html>
+
+  <head>
+    {% block head %}
+    <meta charset="utf-8">
+    <title>{% block title %}CritiqueBrainz{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
+    {% if config.DEBUG %}
+      <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='css/styles.less') }}" />
+      <script src="{{ url_for('static', filename='js/less.min.js') }}"></script>
+    {% else %}
+      <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" media="screen">
+    {% endif %}
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    {% endblock %}
+  </head>
+
+  <body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+
+      {% block wrapper %}
+        {% with messages = get_flashed_messages(with_categories=true)  %}
+          {% if messages %}
+            {% for category, message in messages %}
+              {{ print_error(message, category) }}
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% block content %}
+        <!-- Page content -->
+        {% endblock %}
+      {% endblock %}
+      <div class="clearfix"></div>
+
+      {% block footer %}
+      <hr />
+      <div class="footer clearfix">
+        <ul class="list-inline pull-left">
+          <li><a href="{{ url_for('frontend.about') }}">{{ _('About') }}</a></li>
+          <li><a href="http://blog.musicbrainz.org/tag/critiquebrainz/">{{ _('Blog') }}</a></li>
+          <li><a href="https://critiquebrainz.readthedocs.org/">{{ _('Developers') }}</a></li>
+        </ul>
+        <div id="language-selector" class="btn-group dropup pull-right">
+          <button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            {% for language in config.LANGUAGES|dictsort(false, 'value') %}
+              <li><a href="?l={{ language[0] }}">{{ language[1]|capitalize }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endblock %}
+
+    </div>
+  </body>
+</html>
