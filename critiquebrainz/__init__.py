@@ -36,7 +36,7 @@ def create_app():
     # Logging
     if app.debug is False:
         import loggers
-        loggers.init_app(app)
+        loggers.init_loggers(app)
 
     from flask.ext.uuid import FlaskUUID
     FlaskUUID(app)

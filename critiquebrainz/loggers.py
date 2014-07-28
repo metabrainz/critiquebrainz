@@ -2,7 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
 
-def init_app(app):
+def init_loggers(app):
     # File logging
     file_handler = RotatingFileHandler(app.config['LOG_FILE'], maxBytes=512 * 1024, backupCount=100)
     file_handler.setFormatter(logging.Formatter(
@@ -11,7 +11,7 @@ def init_app(app):
     ))
     app.logger.addHandler(file_handler)
 
-    # Email
+    # Email notifications
     credentials = None
     if 'MAIL_USERNAME' in app.config or 'MAIL_PASSWORD' in app.config:
         credentials = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
@@ -22,11 +22,11 @@ def init_app(app):
                                credentials)
     mail_handler.setLevel(logging.ERROR)
     mail_handler.setFormatter(logging.Formatter('''
-    Message type:       %(levelname)s
-    Location:           %(pathname)s:%(lineno)d
-    Module:             %(module)s
-    Function:           %(funcName)s
-    Time:               %(asctime)s
+    Message type: %(levelname)s
+    Location: %(pathname)s:%(lineno)d
+    Module: %(module)s
+    Function: %(funcName)s
+    Time: %(asctime)s
 
     Message:
 
