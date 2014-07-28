@@ -1,14 +1,16 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
 from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
-from critiquebrainz.frontend.forms.profile.review import ReviewCreateForm, ReviewEditForm
+from markdown import markdown
+
+from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm
 from critiquebrainz.babel import get_locale
 from critiquebrainz.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.report import SpamReport
 from critiquebrainz.exceptions import NotFound
-from markdown import markdown
+
 
 review_bp = Blueprint('review', __name__)
 

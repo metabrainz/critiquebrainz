@@ -3,7 +3,7 @@ from wtforms import StringField, BooleanField, validators
 from flask.ext.babel import gettext
 
 
-class EditForm(Form):
+class UserForm(Form):
     display_name = StringField(gettext("Display name"), [
         validators.DataRequired(message=gettext("Display name field is empty.")),
         validators.Length(min=3, message=gettext("Display name needs to be at least 3 characters long.")),

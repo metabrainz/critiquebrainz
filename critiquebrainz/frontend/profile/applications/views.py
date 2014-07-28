@@ -3,7 +3,8 @@ from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
 
 from critiquebrainz.data.model.oauth import OAuthClient, OAuthToken
-from critiquebrainz.frontend.forms.profile.client import ClientForm
+from critiquebrainz.frontend.forms.app import ApplicationForm
+
 
 profile_apps_bp = Blueprint('profile_applications', __name__)
 
@@ -20,7 +21,7 @@ def index_handler():
 @login_required
 def create_handler():
     """Create application."""
-    form = ClientForm()
+    form = ApplicationForm()
     if form.validate_on_submit():
         OAuthClient.generate(user=current_user, name=form.name.data,
                              desc=form.desc.data, website=form.website.data,
@@ -36,7 +37,7 @@ def edit_handler(client_id):
     application = OAuthClient.query.get_or_404(client_id)
     if application.user != current_user:
         abort(403)
-    form = ClientForm()
+    form = ApplicationForm()
     if form.validate_on_submit():
         application.update(name=form.name.data, desc=form.desc.data,
                            website=form.website.data, redirect_uri=form.redirect_uri.data)

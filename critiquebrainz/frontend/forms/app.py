@@ -3,7 +3,7 @@ from wtforms import StringField, validators
 from flask.ext.babel import gettext
 
 
-class ClientForm(Form):
+class ApplicationForm(Form):
     name = StringField(gettext('Application name'), [
         validators.DataRequired(message=gettext("Application name field is empty.")),
         validators.Length(min=3, message=gettext("Application name needs to be at least 3 characters long.")),
