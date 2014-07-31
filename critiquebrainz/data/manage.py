@@ -2,6 +2,7 @@ from flask.ext.script import Manager
 from flask import current_app
 from critiquebrainz import fixtures as _fixtures
 from critiquebrainz import data
+from critiquebrainz.data.model.review import Review
 from urlparse import urlsplit
 import subprocess
 
@@ -26,6 +27,13 @@ def tables():
 def fixtures():
     """Update the newly created database with default schema and testing data."""
     _fixtures.install(current_app, *_fixtures.all_data)
+
+
+@data_manager.command
+def recalculate_votes():
+    reviews = Review.query.all()
+    for review in reviews:
+        review.update_vote_counts()
 
 
 def init_postgres(uri):
