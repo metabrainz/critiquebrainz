@@ -105,34 +105,34 @@ def delete_handler(id):
     return redirect(url_for('user.reviews', user_id=current_user.id))
 
 
-@review_bp.route('/<uuid:id>/vote', methods=['POST'], endpoint='vote_submit')
+@review_bp.route('/<uuid:review_id>/vote', methods=['POST'], endpoint='vote_submit')
 @login_required
-def review_vote_submit_handler(id):
-    id = str(id)
+def review_vote_submit_handler(review_id):
+    review_id = str(review_id)
     if 'yes' in request.form:
         vote = True
     elif 'no' in request.form:
         vote = False
 
-    review = Review.query.get_or_404(id)
+    review = Review.query.get_or_404(review_id)
     if review.is_archived is True:
         raise NotFound
     if review.user == current_user:
         flash(gettext("You cannot rate your own review."), 'error')
-        return redirect(url_for('.entity', id=id))
+        return redirect(url_for('.entity', id=review_id))
     if current_user.is_vote_limit_exceeded is True and current_user.has_voted(review) is False:
         flash(gettext("You have exceeded your limit of votes per day."), 'error')
-        return redirect(url_for('.entity', id=id))
+        return redirect(url_for('.entity', id=review_id))
     if vote is True and current_user.user_type not in review.review_class.upvote:
-        flash(gettext("You are not allowed to upvote this review."), 'error')
-        return redirect(url_for('.entity', id=id))
+        flash(gettext("You are not allowed to rate this review."), 'error')
+        return redirect(url_for('.entity', id=review_id))
     if vote is False and current_user.user_type not in review.review_class.downvote:
-        flash(gettext("You are not allowed to downvote this review."), 'error')
-        return redirect(url_for('.entity', id=id))
+        flash(gettext("You are not allowed to rate this review."), 'error')
+        return redirect(url_for('.entity', id=review_id))
     Vote.create(current_user, review, vote)  # overwrites an existing vote, if needed
 
-    flash(gettext("You have rated the review!"), 'success')
-    return redirect(url_for('.entity', id=id))
+    flash(gettext("You have rated this review!"), 'success')
+    return redirect(url_for('.entity', id=review_id))
 
 
 @review_bp.route('/<uuid:id>/vote/delete', methods=['GET'], endpoint='vote_delete')
@@ -143,7 +143,7 @@ def review_vote_delete_handler(id):
         raise NotFound
     vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
-        flash(gettext("Review is not rated yet."), 'error')
+        flash(gettext("This review is not rated yet."), 'error')
     else:
         vote.delete()
         flash(gettext("You have deleted your vote for this review!"), 'success')

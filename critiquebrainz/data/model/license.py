@@ -1,4 +1,4 @@
-from .. import db
+from critiquebrainz.data import db
 
 
 class License(db.Model):

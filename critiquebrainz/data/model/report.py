@@ -1,4 +1,4 @@
-from .. import db
+from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
 

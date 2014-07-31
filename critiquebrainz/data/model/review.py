@@ -1,4 +1,4 @@
-from .. import db
+from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from vote import Vote
 from revision import Revision
@@ -142,8 +142,7 @@ class Review(db.Model):
         review = Review(release_group=release_group, user=user, language=language,
                         license_id=license_id, source=source, source_url=source_url)
         db.session.add(review)
-        db.session.commit()
-        # Creating new revision
+        db.session.flush()
         db.session.add(Revision(review_id=review.id, text=text))
         db.session.commit()
         return review
@@ -159,7 +158,6 @@ class Review(db.Model):
         return new_revision
 
     def update_vote_counts(self):
-        # TODO: Maybe increment/decrement instead of recalculating?
         query = Vote.query.join(Vote.revision).filter(Revision.review_id == self.id)
         self.votes_positive_count = int(query.filter(Vote.vote == True).count())
         self.votes_negative_count = int(query.filter(Vote.vote == False).count())

@@ -1,4 +1,4 @@
-from .. import db
+from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from review import Review
 from revision import Revision
@@ -39,12 +39,10 @@ class User(db.Model, UserMixin):
         return cls.query.filter_by(**kwargs).first()
 
     @classmethod
-    def get_or_create(cls, display_name, **kwargs):
-        # TODO: New user is created if only display_name is passed (review this behavior)
-        # Display names don't have to be unique (see schema)!
-        user = cls.query.filter_by(**kwargs).first()
+    def get_or_create(cls, display_name, musicbrainz_id, **kwargs):
+        user = cls.query.filter_by(musicbrainz_id=musicbrainz_id, **kwargs).first()
         if user is None:
-            user = cls(display_name=display_name, **kwargs)
+            user = cls(display_name=display_name, musicbrainz_id=musicbrainz_id, **kwargs)
             db.session.add(user)
             db.session.commit()
         return user
@@ -87,7 +85,11 @@ class User(db.Model, UserMixin):
             query = db.session.query(
                 (db.func.sum(Review.votes_positive_count) - db.func.sum(Review.votes_negative_count)).label('karma'))\
                 .filter(Review.user_id == self.id)
-            self._karma = int(query.scalar())
+            result = query.scalar()
+            if result is not None:
+                self._karma = int(result)
+            else:
+                self._karma = 0
         return self._karma
 
     @property

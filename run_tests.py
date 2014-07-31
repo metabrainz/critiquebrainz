@@ -7,4 +7,4 @@ if __name__ == '__main__':
     init_postgres(create_app().config['TEST_SQLALCHEMY_DATABASE_URI'])
 
     all_tests = unittest.TestLoader().discover(start_dir='.', pattern='*_test.py')
-    unittest.TextTestRunner(verbosity=1).run(all_tests)
+    unittest.TextTestRunner(verbosity=2).run(all_tests)
