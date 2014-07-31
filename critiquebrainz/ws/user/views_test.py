@@ -12,7 +12,7 @@ class UserViewsTestCase(ServerTestCase):
         assert data['count'] == 0
 
     def test_user_addition(self):
-        user = User(display_name=u'Tester', email=u'tester@tesing.org')
+        user = User(display_name=u'Tester 1', email=u'tester1@tesing.org')
         db.session.add(user)
         db.session.commit()
 

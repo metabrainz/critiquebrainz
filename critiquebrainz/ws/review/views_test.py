@@ -14,26 +14,21 @@ class ReviewViewsTestCase(ServerTestCase):
         assert data['count'] == 0
 
     def test_review_creation(self):
-        # Review needs user
-        user = User(display_name=u'Tester')
-        db.session.add(user)
-        db.session.commit()
-
-        # and license
-        license = License(id=u"Test", full_name=u'Test License')
+        # Preparing test data
+        user = User.get_or_create(u'Tester', musicbrainz_id=u'1')
+        license = License(id=u'Test', full_name=u'Test License')
         db.session.add(license)
         db.session.commit()
 
-        # Creating new review
         text = u"Testing!"
         review = Review.create(user=user,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=text,
                                license_id=license.id)
-        db.session.add(review)
-        db.session.commit()
+
         resp = self.client.get('/ws/1/review/')
         data = json.loads(resp.data)
+
         assert data['count'] == 1
         assert len(data['reviews']) == 1
         stored_review = data['reviews'][0]

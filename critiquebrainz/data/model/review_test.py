@@ -1,5 +1,5 @@
 from critiquebrainz.testing import ServerTestCase
-from .. import db
+from critiquebrainz.data import db
 from user import User
 from license import License
 from review import Review
@@ -29,7 +29,7 @@ class ReviewTestCase(ServerTestCase):
         db.session.add(review)
         db.session.commit()
 
-        reviews, count = Review.list()
+        reviews, count = Review.list()  # TODO: Fix (use methods from SQLAlchemy)
         assert len(reviews) == 1 and count == 1
         stored_review = reviews[0]
         assert stored_review.id == review.id

@@ -1,7 +1,7 @@
 Flask == 0.10.1
 Flask-Login == 0.2.10
 Flask-Script == 2.0.5
-Flask-Testing == 0.4.1
+Flask-Testing == 0.4.2
 Flask-UUID == 0.2
 Flask-WTF == 0.9.5
 Flask-Babel == 0.9

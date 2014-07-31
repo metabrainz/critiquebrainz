@@ -1,5 +1,5 @@
 from critiquebrainz.testing import ServerTestCase
-from .. import db
+from critiquebrainz.data import db
 from license import License
 
 
