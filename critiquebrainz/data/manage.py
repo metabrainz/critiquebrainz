@@ -29,13 +29,6 @@ def fixtures():
     _fixtures.install(current_app, *_fixtures.all_data)
 
 
-@data_manager.command
-def recalculate_votes():
-    reviews = Review.query.all()
-    for review in reviews:
-        review.update_vote_counts()
-
-
 def init_postgres(uri):
     hostname, db, username, password = explode_db_url(uri)
     if hostname not in ['localhost', '127.0.0.1']:

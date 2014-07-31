@@ -24,7 +24,7 @@ def review_entity_handler(id):
     spotify_mapping = mbspotify.mapping([review.release_group])
 
     if current_user.is_authenticated():  # if user is logged in, get his vote for this review
-        # TODO: Review this functionality. It might be confusing for user.
+        # TODO: Review this functionality. It might be confusing.
         # If users vote on review and then author updates that review (last revision changes),
         # users will be unable to see their votes.
         vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
