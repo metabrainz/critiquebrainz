@@ -25,7 +25,6 @@ class Review(db.Model):
     source = db.Column(db.Unicode)
     source_url = db.Column(db.Unicode)
 
-    # TODO: Add triggers for these two
     votes_positive_count = db.Column(db.Integer, nullable=False, default=0)
     votes_negative_count = db.Column(db.Integer, nullable=False, default=0)
 
@@ -158,3 +157,10 @@ class Review(db.Model):
         db.session.add(new_revision)
         db.session.commit()
         return new_revision
+
+    def update_vote_counts(self):
+        # TODO: Maybe increment/decrement instead of recalculating?
+        query = Vote.query.join(Vote.revision).filter(Revision.review_id == self.id)
+        self.votes_positive_count = int(query.filter(Vote.vote == True).count())
+        self.votes_negative_count = int(query.filter(Vote.vote == False).count())
+        db.session.commit()

@@ -20,15 +20,16 @@ class Vote(db.Model):
         cls.query.filter_by(user=user, revision=review.last_revision).delete()
         # Creating a new vote for the last revision
         vote = cls(user=user, revision=review.last_revision, vote=vote)
-        # TODO: Add (or recalculate votes) count for this review.
         db.session.add(vote)
         db.session.commit()
+        review.update_vote_counts()
         return vote
 
     def delete(self):
+        review = self.revision.review
         db.session.delete(self)
         db.session.commit()
-        # TODO: Remove (or recalculate votes) count for this review.
+        review.update_vote_counts()
         return self
 
     def to_dict(self):

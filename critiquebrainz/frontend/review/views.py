@@ -141,7 +141,7 @@ def review_vote_delete_handler(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
         raise NotFound
-    vote = Vote.query.filter_by(user=current_user, review=review).first()
+    vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
         flash(gettext("Review is not rated yet."), 'error')
     else:
