@@ -80,16 +80,13 @@ class User(db.Model, UserMixin):
 
     @property
     def karma(self):
-        """User's karma. Based on review ratings."""
+        """User's karma. Based on ratings of revisions."""
         if hasattr(self, '_karma') is False:
-            query = db.session.query(
-                (db.func.sum(Review.votes_positive_count) - db.func.sum(Review.votes_negative_count)).label('karma'))\
-                .filter(Review.user_id == self.id)
-            result = query.scalar()
-            if result is not None:
-                self._karma = int(result)
-            else:
-                self._karma = 0
+            # TODO: Improve this
+            q = db.session.query(Vote).outerjoin(Revision).outerjoin(Review).outerjoin(User).filter(User.id == self.id)
+            query_pos = q.filter(Vote.vote == True)
+            query_neg = q.filter(Vote.vote == False)
+            self._karma = query_pos.count() - query_neg.count()
         return self._karma
 
     @property

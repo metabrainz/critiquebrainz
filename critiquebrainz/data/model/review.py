@@ -25,9 +25,6 @@ class Review(db.Model):
     source = db.Column(db.Unicode)
     source_url = db.Column(db.Unicode)
 
-    votes_positive_count = db.Column(db.Integer, nullable=False, default=0)
-    votes_negative_count = db.Column(db.Integer, nullable=False, default=0)
-
     revisions = db.relationship('Revision', order_by='Revision.timestamp', cascade='delete', backref='review')
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
@@ -81,14 +78,12 @@ class Review(db.Model):
         return self.first_revision.timestamp  # first revision
 
     @property
-    def votes_positive(self):
-        """Returns positive votes from the latest revision of this review."""
-        return self.last_revision.votes_positive
+    def votes_positive_count(self):
+        return self.last_revision.votes_positive_count
 
     @property
-    def votes_negative(self):
-        """Returns negative votes from the latest revision of this review."""
-        return self.last_revision.votes_negative
+    def votes_negative_count(self):
+        return self.last_revision.votes_negative_count
 
     @property
     def review_class(self):
@@ -114,8 +109,22 @@ class Review(db.Model):
         query = Review.query.filter(Review.is_archived == False)
 
         if sort == 'rating':
-            # Descending order of review ratings (votes_positive_count - votes_negative_count).
-            query = query.order_by(db.desc(Review.votes_positive_count - Review.votes_negative_count))
+            # TODO: Improve this
+            # prepare subqueries
+            r_q = db.session.query(
+                Vote.revision_id, Vote.vote, db.func.count('*').label('c')).group_by(Vote.revision_id, Vote.vote)
+            # left join positive votes
+            r_pos = r_q.subquery('r_pos')
+            query = query.outerjoin(Revision).outerjoin(r_pos,
+                                    db.and_(r_pos.c.revision_id == Revision.id,
+                                            r_pos.c.vote == True))
+            r_neg = r_q.subquery('r_neg')
+            # left join negative votes
+            query = query.outerjoin(Revision).outerjoin(r_neg,
+                                    db.and_(r_neg.c.revision_id == Revision.id,
+                                            r_neg.c.vote == False))
+            # order by (positive votes - negative votes) formula
+            query = query.order_by(db.desc(db.func.coalesce(r_pos.c.c, 0) - db.func.coalesce(r_neg.c.c, 0)))
 
         elif sort == 'created':
             rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time'))\
@@ -156,9 +165,3 @@ class Review(db.Model):
         db.session.add(new_revision)
         db.session.commit()
         return new_revision
-
-    def update_vote_counts(self):
-        query = Vote.query.join(Vote.revision).filter(Revision.review_id == self.id)
-        self.votes_positive_count = int(query.filter(Vote.vote == True).count())
-        self.votes_negative_count = int(query.filter(Vote.vote == False).count())
-        db.session.commit()

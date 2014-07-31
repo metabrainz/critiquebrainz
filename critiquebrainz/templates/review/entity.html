@@ -86,7 +86,7 @@
           {% if current_user != review.user %}
             <div class="row">
               <div class="col-md-8">
-                <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
+                <form method="POST" action="{{ url_for('review.vote_submit', review_id=review.id) }}">
                   {{ _('Did you find this review useful?') }}
                   <button type="submit" class="btn btn-default btn-xs {% if vote.vote == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
                   <button type="submit" class="btn btn-default btn-xs {% if vote.vote == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>

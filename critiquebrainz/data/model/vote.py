@@ -23,14 +23,12 @@ class Vote(db.Model):
         vote_obj = cls(user=user, revision=review.last_revision, vote=vote)
         db.session.add(vote_obj)
         db.session.commit()
-        review.update_vote_counts()
         return vote_obj
 
     def delete(self):
         review = self.revision.review
         db.session.delete(self)
         db.session.commit()
-        review.update_vote_counts()
         return self
 
     def to_dict(self):

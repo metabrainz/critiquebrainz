@@ -1,5 +1,6 @@
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
+from critiquebrainz.data.model.vote import Vote
 from datetime import datetime
 
 
@@ -13,6 +14,18 @@ class Revision(db.Model):
 
     _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='revision')
     _spam_reports = db.relationship('SpamReport', cascade='delete', lazy='dynamic', backref='review')
+
+    @property
+    def votes_positive_count(self):
+        if hasattr(self, '_votes_positive_count') is False:
+            self._votes_positive_count = self._votes.filter_by(vote=True).count()
+        return self._votes_positive_count
+
+    @property
+    def votes_negative_count(self):
+        if hasattr(self, '_votes_negative_count') is False:
+            self._votes_negative_count = self._votes.filter_by(vote=False).count()
+        return self._votes_negative_count
 
     def to_dict(self):
         response = dict(id=self.id,
