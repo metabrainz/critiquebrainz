@@ -88,7 +88,7 @@ def review_list_handler():
     :query sort: ``rating`` or ``created`` **(optional)**
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
-    :query language: language code (ISO 639-1), default is ``en`` **(optional)**
+    :query language: language code (ISO 639-1) **(optional)**
     :query inc: includes
 
     :resheader Content-Type: *application/json*
@@ -160,7 +160,7 @@ def review_list_handler():
 @review_bp.route('/<uuid:review_id>/vote', methods=['GET'])
 @oauth.require_auth('vote')
 def review_vote_entity_handler(review_id, user):
-    """Get user's vote for a specified review.
+    """Get your vote for a specified review.
 
     **OAuth scope:** vote
 
@@ -177,11 +177,11 @@ def review_vote_entity_handler(review_id, user):
 @review_bp.route('/<uuid:review_id>/vote', methods=['PUT'])
 @oauth.require_auth('vote')
 def review_vote_put_handler(review_id, user):
-    """Set user's vote for a specified review.
+    """Set your vote for a specified review.
 
     **OAuth scope:** vote
 
-    :json boolean placet: ``true`` if upvote, ``false`` if downvote
+    :json boolean vote: ``true`` if upvote, ``false`` if downvote
 
     :statuscode 200: success
     :statuscode 400: invalid request (see source)
@@ -192,29 +192,29 @@ def review_vote_put_handler(review_id, user):
     """
 
     def fetch_params():
-        placet = Parser.bool('json', 'placet')
-        return placet
+        vote = Parser.bool('json', 'vote')
+        return vote
 
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound
-    placet = fetch_params()
+    vote = fetch_params()
     if review.user_id == user.id:
         raise InvalidRequest(desc='You cannot rate your own review.')
     if user.is_vote_limit_exceeded is True and user.has_voted(review) is False:
         raise LimitExceeded('You have exceeded your limit of votes per day.')
-    if placet is True and user.user_type not in review.review_class.upvote:
+    if vote is True and user.user_type not in review.review_class.upvote:
         raise InvalidRequest(desc='You are not allowed to upvote this review.')
-    if placet is False and user.user_type not in review.review_class.downvote:
+    if vote is False and user.user_type not in review.review_class.downvote:
         raise InvalidRequest(desc='You are not allowed to downvote this review.')
-    Vote.create(user, review, placet)  # overwrites an existing vote, if needed
+    Vote.create(user, review, vote)  # overwrites an existing vote, if needed
     return jsonify(message='Request processed successfully')
 
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
 @oauth.require_auth('vote')
 def review_vote_delete_handler(review_id, user):
-    """Delete user's vote for a specified review.
+    """Delete your vote for a specified review.
 
     **OAuth scope:** vote
 
