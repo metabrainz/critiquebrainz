@@ -12,7 +12,7 @@ import hashlib
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
 
-    id = db.Column(UUID, primary_key=True, server_default=db.text("uuid_generate_v4()"))
+    id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
     display_name = db.Column(db.Unicode, nullable=False)
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -61,7 +61,7 @@ class User(db.Model, UserMixin):
         return users, count
 
     def has_voted(self, review):
-        if self._votes.filter_by(review=review).count() > 0:
+        if self._votes.filter_by(revision=review.last_revision).count() > 0:
             return True
         else:
             return False
@@ -82,33 +82,11 @@ class User(db.Model, UserMixin):
 
     @property
     def karma(self):
+        """User's karma. Based on review ratings."""
         if hasattr(self, '_karma') is False:
-            # karma = sum of user's reviews ratings
-            r_q = db.session.query(Vote.review_id, Vote.placet, db.func.count('*').\
-                label('c')).group_by(Vote.review_id, Vote.placet)
-            r_pos = r_q.subquery('r_pos')
-            r_neg = r_q.subquery('r_neg')
-            subquery = db.session.query(
-                Review.id,
-                (db.func.coalesce(r_pos.c.c, 0) -
-                 db.func.coalesce(r_neg.c.c, 0)).label('rating'))
-            # left join negative votes
-            subquery = subquery.outerjoin(
-                r_neg,
-                db.and_(
-                    r_neg.c.review_id==Review.id,
-                    r_neg.c.placet==False))
-            # left join positive votes
-            subquery = subquery.outerjoin(
-                r_pos,
-                db.and_(
-                    r_pos.c.review_id==Review.id,
-                    r_pos.c.placet==True))
-            subquery = subquery.filter(Review.user_id==self.id)
-            # group and create a subquery
-            subquery = subquery.group_by(Review.id, r_neg.c.c, r_pos.c.c)
-            subquery = subquery.subquery('subquery')
-            query = db.session.query(db.func.coalesce(db.func.sum(subquery.c.rating), 0))
+            query = db.session.query(
+                (db.func.sum(Review.votes_positive_count) - db.func.sum(Review.votes_negative_count)).label('karma'))\
+                .filter(Review.user_id == self.id)
             self._karma = int(query.scalar())
         return self._karma
 
@@ -118,6 +96,7 @@ class User(db.Model, UserMixin):
 
     @property
     def avatar(self):
+        """Link to user's avatar image."""
         if self.show_gravatar and self.email:
             return "https://gravatar.com/avatar/" + hashlib.md5(self.email).hexdigest() + "?d=mm&r=pg"
         else:
@@ -135,7 +114,7 @@ class User(db.Model, UserMixin):
             votes_this_month=self.votes_since_count(date(today.year, today.month, 1)))
 
     def _reviews_since(self, date):
-        rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time')) \
+        rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time'))\
             .group_by(Revision.review_id).subquery('time')
         return self._reviews.outerjoin(rev_q, Review.id == rev_q.c.review_id).filter(rev_q.c.creation_time >= date)
 

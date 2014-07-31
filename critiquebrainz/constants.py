@@ -1,5 +1,6 @@
 from flask.ext.babel import gettext
 
+
 # USER TYPES
 class UserType(object):
 

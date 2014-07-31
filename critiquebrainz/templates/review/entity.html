@@ -88,9 +88,9 @@
               <div class="col-md-8">
                 <form method="POST" action="{{ url_for('review.vote_submit', id=review.id) }}">
                   {{ _('Did you find this review useful?') }}
-                  <button type="submit" class="btn btn-default btn-xs {% if vote.placet == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
-                  <button type="submit" class="btn btn-default btn-xs {% if vote.placet == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
-                  {% if vote.placet == True or vote.placet == False %}
+                  <button type="submit" class="btn btn-default btn-xs {% if vote.vote == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
+                  <button type="submit" class="btn btn-default btn-xs {% if vote.vote == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
+                  {% if vote.vote == True or vote.vote == False %}
                     <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
                   {% endif %}
                 </form>

@@ -24,7 +24,10 @@ def review_entity_handler(id):
     spotify_mapping = mbspotify.mapping([review.release_group])
 
     if current_user.is_authenticated():  # if user is logged in, get his vote for this review
-        vote = Vote.query.filter_by(user=current_user, review=review).first()
+        # TODO: Review this functionality. It might be confusing for user.
+        # If users vote on review and then author updates that review (last revision changes),
+        # users will be unable to see their votes.
+        vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     else:  # otherwise set vote to None, its value will not be used
         vote = None
     review.text_html = markdown(review.text, safe_mode="escape")
@@ -107,9 +110,9 @@ def delete_handler(id):
 def review_vote_submit_handler(id):
     id = str(id)
     if 'yes' in request.form:
-        placet = True
+        vote = True
     elif 'no' in request.form:
-        placet = False
+        vote = False
 
     review = Review.query.get_or_404(id)
     if review.is_archived is True:
@@ -120,13 +123,13 @@ def review_vote_submit_handler(id):
     if current_user.is_vote_limit_exceeded is True and current_user.has_voted(review) is False:
         flash(gettext("You have exceeded your limit of votes per day."), 'error')
         return redirect(url_for('.entity', id=id))
-    if placet is True and current_user.user_type not in review.review_class.upvote:
+    if vote is True and current_user.user_type not in review.review_class.upvote:
         flash(gettext("You are not allowed to upvote this review."), 'error')
         return redirect(url_for('.entity', id=id))
-    if placet is False and current_user.user_type not in review.review_class.downvote:
+    if vote is False and current_user.user_type not in review.review_class.downvote:
         flash(gettext("You are not allowed to downvote this review."), 'error')
         return redirect(url_for('.entity', id=id))
-    Vote.create(current_user, review, placet)  # overwrites an existing vote, if needed
+    Vote.create(current_user, review, vote)  # overwrites an existing vote, if needed
 
     flash(gettext("You have rated the review!"), 'success')
     return redirect(url_for('.entity', id=id))

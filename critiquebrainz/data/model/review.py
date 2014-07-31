@@ -15,7 +15,7 @@ for lang in list(pycountry.languages):
 class Review(db.Model):
     __tablename__ = 'review'
 
-    id = db.Column(UUID, server_default=db.text('uuid_generate_v4()'), primary_key=True)
+    id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
     release_group = db.Column(UUID, index=True, nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     edits = db.Column(db.Integer, nullable=False, default=0)
@@ -25,8 +25,11 @@ class Review(db.Model):
     source = db.Column(db.Unicode)
     source_url = db.Column(db.Unicode)
 
-    revisions = db.relationship('Revision', order_by="Revision.timestamp", cascade='delete', backref='review')
-    _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='review')
+    # TODO: Add triggers for these two
+    votes_positive_count = db.Column(db.Integer, nullable=False, default=0)
+    votes_negative_count = db.Column(db.Integer, nullable=False, default=0)
+
+    revisions = db.relationship('Revision', order_by='Revision.timestamp', cascade='delete', backref='review')
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
@@ -59,93 +62,68 @@ class Review(db.Model):
         return self
 
     @property
+    def first_revision(self):
+        """Returns first revision of this review."""
+        return self.revisions[0]
+
+    @property
+    def last_revision(self):
+        """Returns latest revision of this review."""
+        return self.revisions[-1]
+
+    @property
     def text(self):
-        return self.revisions[-1].text  # latest revision
+        """Returns text of the latest revision."""
+        return self.last_revision.text  # latest revision
 
     @property
     def created(self):
-        return self.revisions[0].timestamp  # first revision
+        """Returns creation time of this review (first revision)."""
+        return self.first_revision.timestamp  # first revision
+
+    @property
+    def votes_positive(self):
+        """Returns positive votes from the latest revision of this review."""
+        return self.last_revision.votes_positive
+
+    @property
+    def votes_negative(self):
+        """Returns negative votes from the latest revision of this review."""
+        return self.last_revision.votes_negative
 
     @property
     def review_class(self):
+        """Returns class of this review."""
+
         def get_review_class(review):
-            for p_class in review_classes:
-                if p_class.is_instance(review) is True:
-                    return p_class
+            for c in review_classes:
+                if c.is_instance(review) is True:
+                    return c
 
         if hasattr(self, '_review_class') is False:
             self._review_class = get_review_class(self)
         return self._review_class
 
     @property
-    def votes(self):
-        return self._votes.all()
-
-    @property
-    def _votes_positive(self):
-        return self._votes.filter_by(placet=True)
-
-    @property
-    def _votes_negative(self):
-        return self._votes.filter_by(placet=False)
-
-    @property
-    def votes_positive(self):
-        return self._votes_positive.all()
-
-    @property
-    def votes_positive_count(self):
-        if hasattr(self, '_votes_positive_count') is False:
-            self._votes_positive_count = self._votes_positive.count()
-        return self._votes_positive_count
-
-    @property
-    def votes_negative(self):
-        return self._votes_negative.all()
-
-    @property
-    def votes_negative_count(self):
-        if hasattr(self, '_votes_negative_count') is False:
-            self._votes_negative_count = self._votes_negative.count()
-        return self._votes_negative_count
-
-    @property
     def rating(self):
         if hasattr(self, '_rating') is False:
-            # rating formula (positive votes - negative votes)
             self._rating = self.votes_positive_count - self.votes_negative_count
         return self._rating
 
     @classmethod
     def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None, language=None, license_id=None):
-        # query init
-        query = Review.query
+        query = Review.query.filter(Review.is_archived == False)
 
         if sort == 'rating':
-            # prepare subqueries
-            r_q = db.session.query(
-                Vote.review_id, Vote.placet, db.func.count('*').label('c')).group_by(Vote.review_id, Vote.placet)
-            r_pos = r_q.subquery('r_pos')
-            r_neg = r_q.subquery('r_neg')
-            # left join negative votes
-            query = query.outerjoin(r_neg,
-                                    db.and_(r_neg.c.review_id == Review.id,
-                                            r_neg.c.placet == False))
-            # left join positive votes
-            query = query.outerjoin(r_pos,
-                                    db.and_(r_pos.c.review_id == Review.id,
-                                            r_pos.c.placet == True))
-            # order by (positive votes - negative votes) formula
-            query = query.order_by(db.desc(db.func.coalesce(r_pos.c.c, 0) - db.func.coalesce(r_neg.c.c, 0)))
-        elif sort == 'created':
-            rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time')) \
-                .group_by(Revision.review_id).subquery('time')
-            # left join creation times
-            query = query.outerjoin(rev_q, Review.id == rev_q.c.review_id)
-            # order by creation time
-            query = query.order_by(db.desc('creation_time'))
+            # Descending order of review ratings (votes_positive_count - votes_negative_count).
+            query = query.order_by(db.desc(Review.votes_positive_count - Review.votes_negative_count))
 
-        query = query.filter(Review.is_archived == False)
+        elif sort == 'created':
+            rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time'))\
+                .group_by(Revision.review_id).subquery('time')
+            query = query.outerjoin(rev_q, Review.id == rev_q.c.review_id)  # left join creation times
+            query = query.order_by(db.desc('creation_time'))  # order by creation time
+
         if release_group is not None:
             query = query.filter(Review.release_group == release_group)
         if language is not None:
@@ -154,14 +132,11 @@ class Review(db.Model):
             query = query.filter(Review.license_id == license_id)
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
-
-        count = query.count()
         if limit is not None:
             query = query.limit(limit)
         if offset is not None:
             query = query.offset(offset)
-        reviews = query.all()
-        return reviews, count
+        return query.all(), query.count()
 
     @classmethod
     def create(cls, release_group, user, text, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None, language=None):
@@ -174,19 +149,12 @@ class Review(db.Model):
         db.session.commit()
         return review
 
-    def update(self, release_group=None, text=None, license_id=None, source=None, source_url=None, language=None):
-        if release_group is not None:
-            self.release_group = release_group
-        if text is not None:
-            new_revision = Revision(review_id=self.id, text=text)
-            db.session.add(new_revision)
-            db.session.commit()
-        if license_id is not None:
-            self.license_id = license_id
-        if source is not None:
-            self.source = source
-        if source_url is not None:
-            self.source_url = source_url
-        if language is not None:
-            self.language = source_url
+    def update(self, text):
+        """Update contents of this review.
+
+        :returns New revision of this review.
+        """
+        new_revision = Revision(review_id=self.id, text=text)
+        db.session.add(new_revision)
         db.session.commit()
+        return new_revision
