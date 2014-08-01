@@ -48,7 +48,7 @@
         {% if page > 1 %}
           <li class="previous"><a href="{{ url_for('user.reviews', user_id=user.id, page=page-1) }}">&larr; {{ _('Newer') }}</a></li>
         {% endif %}
-        {% if page < count//limit %}
+        {% if page-1 < count//limit %}
           <li class="next"><a href="{{ url_for('user.reviews', user_id=user.id, page=page+1) }}">{{ _('Older') }} &rarr;</a></li>
         {% endif %}
       </ul>
