@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, redirect, url_for
 from critiquebrainz.data.model.user import User
+from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.parser import Parser
 
@@ -7,6 +8,7 @@ user_bp = Blueprint('ws_user', __name__)
 
 
 @user_bp.route('/me', endpoint='me')
+@crossdomain()
 @oauth.require_auth()
 def user_me_handler(user):
     """Get your profile information.
@@ -21,6 +23,7 @@ def user_me_handler(user):
 
 @user_bp.route('/me/reviews', endpoint='reviews')
 @oauth.require_auth()
+@crossdomain()
 def user_reviews_handler(user):
     """Get your reviews.
 
@@ -31,6 +34,7 @@ def user_reviews_handler(user):
 
 @user_bp.route('/me/applications', endpoint='applications')
 @oauth.require_auth()
+@crossdomain()
 def user_applications_handler(user):
     """Get your applications.
 
@@ -41,6 +45,7 @@ def user_applications_handler(user):
 
 @user_bp.route('/me/tokens', endpoint='tokens')
 @oauth.require_auth()
+@crossdomain()
 def user_tokens_handler(user):
     """Get your OAuth tokens.
 
@@ -51,6 +56,7 @@ def user_tokens_handler(user):
 
 @user_bp.route('/me', endpoint='modify', methods=['POST'])
 @oauth.require_auth('user')
+@crossdomain()
 def user_modify_handler(user):
     """Modify your profile.
 
@@ -77,6 +83,7 @@ def user_modify_handler(user):
 
 @user_bp.route('/me', endpoint='delete', methods=['DELETE'])
 @oauth.require_auth('user')
+@crossdomain()
 def user_delete_handler(user):
     """Delete your profile.
 
@@ -89,6 +96,7 @@ def user_delete_handler(user):
 
 
 @user_bp.route('/<uuid:user_id>', endpoint='entity', methods=['GET'])
+@crossdomain()
 def user_entity_handler(user_id):
     """Get profile of a user with a specified UUID.
 
@@ -100,6 +108,7 @@ def user_entity_handler(user_id):
 
 
 @user_bp.route('/', endpoint='list', methods=['GET'])
+@crossdomain()
 def review_list_handler():
     """Get list of users.
 

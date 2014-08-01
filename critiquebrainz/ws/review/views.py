@@ -3,6 +3,7 @@ from critiquebrainz.data.model.review import Review, supported_languages
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.report import SpamReport
 from critiquebrainz.exceptions import *
+from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.parser import Parser
 
@@ -13,6 +14,7 @@ REVIEW_MIN_LENGTH = 25
 
 
 @review_bp.route('/<uuid:review_id>', endpoint='entity', methods=['GET'])
+@crossdomain()
 def review_entity_handler(review_id):
     """Get review with a specified UUID.
 
@@ -30,6 +32,7 @@ def review_entity_handler(review_id):
 
 @review_bp.route('/<uuid:review_id>', endpoint='delete', methods=['DELETE'])
 @oauth.require_auth('review')
+@crossdomain()
 def review_delete_handler(review_id, user):
     """Delete review with a specified UUID.
 
@@ -52,6 +55,7 @@ def review_delete_handler(review_id, user):
 
 @review_bp.route('/<uuid:review_id>', endpoint='modify', methods=['POST'])
 @oauth.require_auth('review')
+@crossdomain()
 def review_modify_handler(review_id, user):
     """Update review with a specified UUID.
 
@@ -80,6 +84,7 @@ def review_modify_handler(review_id, user):
 
 
 @review_bp.route('/', endpoint='list', methods=['GET'])
+@crossdomain()
 def review_list_handler():
     """Get list of reviews.
 
@@ -114,6 +119,7 @@ def review_list_handler():
 
 @review_bp.route('/', endpoint='create', methods=['POST'])
 @oauth.require_auth('review')
+@crossdomain()
 def review_post_handler(user):
     """Publish a review.
 
@@ -149,6 +155,7 @@ def review_post_handler(user):
 
 
 @review_bp.route('/languages', endpoint='languages', methods=['GET'])
+@crossdomain()
 def review_list_handler():
     """Get list of supported review languages (language codes from ISO 639-1).
 
@@ -159,6 +166,7 @@ def review_list_handler():
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['GET'])
 @oauth.require_auth('vote')
+@crossdomain()
 def review_vote_entity_handler(review_id, user):
     """Get your vote for a specified review.
 
@@ -176,6 +184,7 @@ def review_vote_entity_handler(review_id, user):
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['PUT'])
 @oauth.require_auth('vote')
+@crossdomain()
 def review_vote_put_handler(review_id, user):
     """Set your vote for a specified review.
 
@@ -213,6 +222,7 @@ def review_vote_put_handler(review_id, user):
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
 @oauth.require_auth('vote')
+@crossdomain()
 def review_vote_delete_handler(review_id, user):
     """Delete your vote for a specified review.
 
@@ -232,6 +242,7 @@ def review_vote_delete_handler(review_id, user):
 
 @review_bp.route('/<uuid:review_id>/report', endpoint='report', methods=['POST'])
 @oauth.require_auth('vote')
+@crossdomain()
 def review_spam_report_handler(review_id, user):
     """Create spam report for a specified review.
 
