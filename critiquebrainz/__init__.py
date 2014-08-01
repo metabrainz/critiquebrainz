@@ -63,37 +63,11 @@ def create_app():
     app.jinja_env.filters['track_length'] = track_length
 
     # Frontend blueprints
-    from frontend.views import frontend_bp
-    from frontend.review.views import review_bp
-    from frontend.search.views import search_bp
-    from frontend.artist.views import artist_bp
-    from frontend.release_group.views import release_group_bp
-    from frontend.matching.views import matching_bp
-    from frontend.user.views import user_bp
-    from frontend.profile.views import profile_bp
-    from frontend.profile.applications.views import profile_apps_bp
-    from frontend.login.views import login_bp
-    from frontend.oauth.views import oauth_bp
-
-    app.register_blueprint(frontend_bp)
-    app.register_blueprint(review_bp, url_prefix='/review')
-    app.register_blueprint(search_bp, url_prefix='/search')
-    app.register_blueprint(artist_bp, url_prefix='/artist')
-    app.register_blueprint(release_group_bp, url_prefix='/release-group')
-    app.register_blueprint(matching_bp, url_prefix='/matching')
-    app.register_blueprint(user_bp, url_prefix='/user')
-    app.register_blueprint(profile_bp, url_prefix='/profile')
-    app.register_blueprint(profile_apps_bp, url_prefix='/profile/applications')
-    app.register_blueprint(login_bp, url_prefix='/login')
-    app.register_blueprint(oauth_bp, url_prefix='/oauth')
+    import frontend
+    frontend.register_blueprints(app)
 
     # Web service blueprints
-    from ws.oauth.views import oauth_bp
-    from ws.review.views import review_bp
-    from ws.user.views import user_bp
-
-    app.register_blueprint(oauth_bp, url_prefix='/ws/1/oauth')
-    app.register_blueprint(review_bp, url_prefix='/ws/1/review')
-    app.register_blueprint(user_bp, url_prefix='/ws/1/user')
+    import ws
+    ws.register_blueprints(app)
 
     return app
