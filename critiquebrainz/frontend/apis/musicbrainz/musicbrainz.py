@@ -4,7 +4,8 @@ from musicbrainzngs.musicbrainz import ResponseError
 
 from critiquebrainz.apis.exceptions import APIError
 from critiquebrainz.cache import cache, generate_cache_key
-from relationships import artist as artist_rel, release_group as release_group_rel
+from critiquebrainz.frontend.apis.musicbrainz.relationships import artist as artist_rel, release_group as release_group_rel
+
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
 

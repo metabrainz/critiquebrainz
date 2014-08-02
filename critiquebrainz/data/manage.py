@@ -1,9 +1,8 @@
 from flask.ext.script import Manager
 from flask import current_app
-from critiquebrainz import fixtures as _fixtures
 from critiquebrainz import data
-from critiquebrainz.data.model.review import Review
 from urlparse import urlsplit
+import fixtures as _fixtures
 import subprocess
 
 data_manager = Manager()

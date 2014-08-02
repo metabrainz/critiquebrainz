@@ -5,7 +5,7 @@ from critiquebrainz.data.model.report import SpamReport
 from critiquebrainz.exceptions import *
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.oauth import oauth
-from critiquebrainz.parser import Parser
+from critiquebrainz.ws.parser import Parser
 
 review_bp = Blueprint('ws_review', __name__)
 

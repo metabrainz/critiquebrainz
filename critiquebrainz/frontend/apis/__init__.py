@@ -1,8 +1,10 @@
 from flask import current_app
+
 from critiquebrainz import __version__
-from musicbrainz.musicbrainz import MusicBrainzClient
+from critiquebrainz.frontend.apis.musicbrainz.musicbrainz import MusicBrainzClient
 from mbspotify import MBSpotifyClient
 from spotify import SpotifyClient
+
 
 musicbrainz = MusicBrainzClient()
 musicbrainz.init_app(current_app, "CritiqueBrainz Client", __version__)

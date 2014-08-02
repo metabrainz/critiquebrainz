@@ -45,8 +45,8 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
-        import apis
-        import babel
+        import frontend.apis
+        import frontend.babel
         import frontend.login
 
     from ws.oauth import oauth

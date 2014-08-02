@@ -1,7 +1,8 @@
 import json
+
 import requests
 
-from critiquebrainz.apis.exceptions import APIError
+from critiquebrainz.frontend.apis.exceptions import APIError
 
 
 class MBSpotifyClient(object):

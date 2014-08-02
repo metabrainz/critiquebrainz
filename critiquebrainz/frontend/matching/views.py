@@ -1,9 +1,8 @@
-import string
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
-
-from critiquebrainz.apis import musicbrainz, spotify, mbspotify
+from critiquebrainz.frontend.apis import musicbrainz, spotify, mbspotify
+import string
 
 matching_bp = Blueprint('matching', __name__)
 

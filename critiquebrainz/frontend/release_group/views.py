@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request
 from flask.ext.login import current_user
 from flask.ext.babel import gettext
-
-from critiquebrainz.apis import musicbrainz, mbspotify
+from critiquebrainz.frontend.apis import musicbrainz, mbspotify
 from critiquebrainz.exceptions import NotFound
 from critiquebrainz.data.model.review import Review
+
 
 release_group_bp = Blueprint('release_group', __name__)
 

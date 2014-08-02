@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from review import Review
 from revision import Revision
 from vote import Vote
-from critiquebrainz.constants import user_types
+from critiquebrainz.data.constants import user_types
 from flask.ext.login import UserMixin
 from datetime import datetime, date, timedelta
 import hashlib

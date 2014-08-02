@@ -2,7 +2,7 @@ from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from vote import Vote
 from revision import Revision
-from critiquebrainz.constants import review_classes
+from critiquebrainz.data.constants import review_classes
 import pycountry
 
 DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"

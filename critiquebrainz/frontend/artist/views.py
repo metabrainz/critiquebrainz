@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask.ext.babel import gettext
 from werkzeug.exceptions import BadRequest
-
-from critiquebrainz.apis import musicbrainz
+from critiquebrainz.frontend.apis import musicbrainz
 from critiquebrainz.exceptions import NotFound
 from critiquebrainz.data.model.review import Review
 

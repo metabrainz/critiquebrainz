@@ -1,6 +1,5 @@
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
-from critiquebrainz.data.model.vote import Vote
 from datetime import datetime
 
 

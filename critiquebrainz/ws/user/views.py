@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, redirect, url_for
 from critiquebrainz.data.model.user import User
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.oauth import oauth
-from critiquebrainz.parser import Parser
+from critiquebrainz.ws.parser import Parser
 
 user_bp = Blueprint('ws_user', __name__)
 
