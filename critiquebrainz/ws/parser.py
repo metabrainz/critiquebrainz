@@ -1,6 +1,6 @@
 from flask import request
 from critiquebrainz.utils import validate_uuid
-from critiquebrainz.exceptions import MissingDataError, ParserError
+from critiquebrainz.ws.exceptions import MissingDataError, ParserError
 from urlparse import urlparse
 import re
 

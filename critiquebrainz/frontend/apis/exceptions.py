@@ -1,4 +1,4 @@
-from critiquebrainz.exceptions import CritiqueBrainzError
+from critiquebrainz.frontend.exceptions import CritiqueBrainzError
 
 
 class APIError(CritiqueBrainzError):

@@ -1,4 +1,4 @@
-from critiquebrainz.testing import ServerTestCase
+from critiquebrainz.ws.testing import WebServiceTestCase
 from critiquebrainz.data import db
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.user import User
@@ -6,7 +6,7 @@ from critiquebrainz.data.model.license import License
 import json
 
 
-class ReviewViewsTestCase(ServerTestCase):
+class ReviewViewsTestCase(WebServiceTestCase):
 
     def test_review_count(self):
         resp = self.client.get('/ws/1/review/')

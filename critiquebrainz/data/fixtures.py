@@ -1,5 +1,5 @@
-from data import db, create_tables
-from data.model.license import License
+from critiquebrainz.data import db, create_tables
+from critiquebrainz.data.model.license import License
 
 
 def install(app, *args):

@@ -1,9 +1,9 @@
 from flask.ext.testing import TestCase
-from critiquebrainz import create_app
+from critiquebrainz.frontend import create_app
 from critiquebrainz.data import db
 
 
-class ServerTestCase(TestCase):
+class DataTestCase(TestCase):
 
     def create_app(self):
         app = create_app()

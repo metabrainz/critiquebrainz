@@ -1,15 +1,11 @@
-﻿from critiquebrainz import create_app
+﻿from critiquebrainz.frontend import create_app as frontend_create_app
+from critiquebrainz.ws import create_app as ws_create_app
 from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
-import werkzeug
 
-
-application = DispatcherMiddleware(create_app(), {
-    '/backend': create_app()
+application = DispatcherMiddleware(frontend_create_app(), {
+    '/ws/1': ws_create_app()
 })
-
-#application = create_app()
-
 
 if __name__ == '__main__':
     run_simple('0.0.0.0', 5000, application,

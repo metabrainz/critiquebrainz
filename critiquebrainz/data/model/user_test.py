@@ -1,4 +1,4 @@
-from critiquebrainz.testing import ServerTestCase
+from critiquebrainz.data.testing import DataTestCase
 from .. import db
 from user import User
 from license import License
@@ -6,7 +6,7 @@ from review import Review
 from vote import Vote
 
 
-class UserTestCase(ServerTestCase):
+class UserTestCase(DataTestCase):
 
     def test_user_list(self):
         users, count = User.list()

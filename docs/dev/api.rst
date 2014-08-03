@@ -11,7 +11,7 @@ Reference
 Reviews
 ^^^^^^^
 
-.. autoflask:: critiquebrainz:create_app()
+.. autoflask:: critiquebrainz.ws:create_app()
    :blueprints: ws_review
    :include-empty-docstring:
    :undoc-static:
@@ -19,7 +19,7 @@ Reviews
 Users
 ^^^^^
 
-.. autoflask:: critiquebrainz:create_app()
+.. autoflask:: critiquebrainz.ws:create_app()
    :blueprints: ws_user
    :include-empty-docstring:
    :undoc-static:
@@ -27,7 +27,7 @@ Users
 OAuth
 ^^^^^
 
-.. autoflask:: critiquebrainz:create_app()
+.. autoflask:: critiquebrainz.ws:create_app()
    :blueprints: ws_oauth
    :include-empty-docstring:
    :undoc-static:

@@ -2,8 +2,8 @@ from musicbrainzngs import set_useragent, get_release_group_by_id, get_artist_by
     search_release_groups, search_artists, browse_release_groups
 from musicbrainzngs.musicbrainz import ResponseError
 
-from critiquebrainz.apis.exceptions import APIError
 from critiquebrainz.cache import cache, generate_cache_key
+from critiquebrainz.frontend.apis.exceptions import APIError
 from critiquebrainz.frontend.apis.musicbrainz.relationships import artist as artist_rel, release_group as release_group_rel
 
 

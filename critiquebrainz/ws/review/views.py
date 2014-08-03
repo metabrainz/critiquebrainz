@@ -2,10 +2,10 @@ from flask import Blueprint, jsonify
 from critiquebrainz.data.model.review import Review, supported_languages
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.report import SpamReport
-from critiquebrainz.exceptions import *
-from critiquebrainz.decorators import crossdomain
+from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
+from critiquebrainz.decorators import crossdomain
 
 review_bp = Blueprint('ws_review', __name__)
 

@@ -1,5 +1,5 @@
 import unittest
-from critiquebrainz import create_app
+from critiquebrainz.frontend import create_app
 from critiquebrainz.data.manage import init_postgres
 
 if __name__ == '__main__':

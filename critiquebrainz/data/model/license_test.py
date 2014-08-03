@@ -1,9 +1,9 @@
-from critiquebrainz.testing import ServerTestCase
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
 from license import License
 
 
-class LicenceTestCase(ServerTestCase):
+class LicenceTestCase(DataTestCase):
 
     def test_licence_creation(self):
         license = License(id=u"Test", full_name=u'Test License')

@@ -1,4 +1,4 @@
-from critiquebrainz.testing import ServerTestCase
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
 from vote import Vote
 from user import User
@@ -6,7 +6,7 @@ from review import Review
 from license import License
 
 
-class VoteTestCase(ServerTestCase):
+class VoteTestCase(DataTestCase):
 
     def test_vote_create(self):
         # Preparing test data

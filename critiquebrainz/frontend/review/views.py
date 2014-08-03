@@ -7,7 +7,7 @@ from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.report import SpamReport
-from critiquebrainz.exceptions import NotFound
+from critiquebrainz.frontend.exceptions import NotFound
 from markdown import markdown
 
 review_bp = Blueprint('review', __name__)

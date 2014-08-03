@@ -1,10 +1,10 @@
-from critiquebrainz.testing import ServerTestCase
+from critiquebrainz.ws.testing import WebServiceTestCase
 from critiquebrainz.data import db
 from critiquebrainz.data.model.user import User
 import json
 
 
-class UserViewsTestCase(ServerTestCase):
+class UserViewsTestCase(WebServiceTestCase):
 
     def test_user_count(self):
         resp = self.client.get('/ws/1/user/')

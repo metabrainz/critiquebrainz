@@ -1,6 +1,5 @@
 from flask import render_template
-
-from critiquebrainz.exceptions import *
+from exceptions import *
 
 
 def init_error_handlers(app):

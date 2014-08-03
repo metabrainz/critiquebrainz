@@ -1,7 +1,7 @@
-from critiquebrainz.testing import ServerTestCase
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
-class ViewsTestCase(ServerTestCase):
+class ViewsTestCase(FrontendTestCase):
 
     def test_home_page(self):
         self.client.get("/")

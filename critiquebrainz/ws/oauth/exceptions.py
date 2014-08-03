@@ -1,4 +1,4 @@
-from critiquebrainz.exceptions import *
+from critiquebrainz.ws.exceptions import *
 
 
 class OAuthError(BaseError):

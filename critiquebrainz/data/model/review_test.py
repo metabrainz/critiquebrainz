@@ -1,11 +1,11 @@
-from critiquebrainz.testing import ServerTestCase
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
 from user import User
 from license import License
 from review import Review
 
 
-class ReviewTestCase(ServerTestCase):
+class ReviewTestCase(DataTestCase):
 
     def setUp(self):
         db.create_all()
