@@ -17,7 +17,7 @@ def edit_handler():
                             email=form.email.data,
                             show_gravatar=form.show_gravatar.data)
         flash(gettext("Profile updated."), 'success')
-        return redirect(url_for('.index'))
+        return redirect(url_for('user.reviews', user_id=current_user.id))
     else:
         form.display_name.data = current_user.display_name
         form.email.data = current_user.email
