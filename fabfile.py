@@ -1,6 +1,6 @@
 from __future__ import with_statement
 from fabric.api import *
-from critiquebrainz import create_app
+from critiquebrainz.frontend import create_app
 
 
 def extract_strings():
