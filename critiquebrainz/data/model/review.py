@@ -29,13 +29,10 @@ class Review(db.Model):
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
-    # a list of allowed values of `inc` parameter in API calls
-    allowed_includes = ('user', )
-
-    def to_dict(self, includes=[], is_dump=False):
+    def to_dict(self):
         response = dict(id=self.id,
                         release_group=self.release_group,
-                        user=self.user_id,
+                        user=self.user.to_dict(),
                         text=self.text,
                         created=self.revisions[0].timestamp,
                         last_updated=self.revisions[-1].timestamp,
@@ -48,8 +45,6 @@ class Review(db.Model):
                         source=self.source,
                         source_url=self.source_url,
                         review_class=self.review_class.label)
-        if 'user' in includes:
-            response['user'] = self.user.to_dict(include_gravatar=(not is_dump))
         return response
 
     def delete(self):

@@ -26,8 +26,7 @@ def review_entity_handler(review_id):
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
         raise NotFound
-    include = Parser.list('uri', 'inc', Review.allowed_includes, optional=True) or []
-    return jsonify(review=review.to_dict(include))
+    return jsonify(review=review.to_dict())
 
 
 @review_bp.route('/<uuid:review_id>', endpoint='delete', methods=['DELETE'])
@@ -94,7 +93,6 @@ def review_list_handler():
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
-    :query inc: includes
 
     :resheader Content-Type: *application/json*
     """
@@ -105,16 +103,15 @@ def review_list_handler():
         sort = Parser.string('uri', 'sort', valid_values=['rating', 'created'], optional=True) or 'rating'
         limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
         offset = Parser.int('uri', 'offset', optional=True) or 0
-        include = Parser.list('uri', 'inc', Review.allowed_includes, optional=True) or []
         language = Parser.string('uri', 'language', min=2, max=3, optional=True)
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
-        return release_group, user_id, sort, limit, offset, include, language
+        return release_group, user_id, sort, limit, offset, language
 
-    release_group, user_id, sort, limit, offset, include, language = fetch_params()
+    release_group, user_id, sort, limit, offset, language = fetch_params()
     reviews, count = Review.list(release_group, user_id, sort, limit, offset, language)
     return jsonify(limit=limit, offset=offset, count=count,
-                   reviews=[p.to_dict(include) for p in reviews])
+                   reviews=[p.to_dict() for p in reviews])
 
 
 @review_bp.route('/', endpoint='create', methods=['POST'])

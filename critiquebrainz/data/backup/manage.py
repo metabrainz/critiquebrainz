@@ -90,7 +90,7 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump')):
             rg_dir_part = '%s/%s' % (release_group[0:1], release_group[0:2])
             reviews = Review.list(release_group, license_id=license.id)[0]
             if len(reviews) > 0:
-                json = jsonify(reviews=[r.to_dict(['user'], is_dump=True) for r in reviews]).data
+                json = jsonify(reviews=[r.to_dict(['user']) for r in reviews]).data
                 rg_dir = '%s/%s' % (license_dir, rg_dir_part)
                 exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
                 if exit_code != 0:
