@@ -8,16 +8,16 @@ Working locally
 ---------------
 
 Before doing anything make sure that you have virtual environment set up.
-Activate it to have access to ``pybabel`` command::
+Activate it to have access to ``pybabel`` and ``fab`` commands::
 
    $ source ./env
 
 Extracting strings
 ^^^^^^^^^^^^^^^^^^
 
-To extract strings into a Portable Object Template use ``pybabel extract`` command::
+To extract strings into a Portable Object Template use command::
 
-   $ pybabel extract -F critiquebrainz/babel.cfg -o messages.pot critiquebrainz
+   $ fab extract_strings
 
 Adding new language
 ^^^^^^^^^^^^^^^^^^^
@@ -36,14 +36,14 @@ Compiling translations
 
 To compile all created translation use::
 
-   $ pybabel compile -d critiquebrainz/translations
+   $ fab compile_translations
 
 Updating translations
 ^^^^^^^^^^^^^^^^^^^^^
 
 After modifying strings you'll probably want to update messages in different languages. To do this use::
 
-   $ pybabel extract -F critiquebrainz/babel.cfg -o messages.pot critiquebrainz
+   $ fab extract_strings
    $ pybabel update -i messages.pot -d critiquebrainz/translations
 
 Afterwards some strings might be marked as fuzzy (where it tried to figure out if a translation matched a changed key).

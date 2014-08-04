@@ -5,7 +5,7 @@ from critiquebrainz.frontend import create_app
 
 def extract_strings():
     """Extracts all strings into messages.pot."""
-    local("pybabel extract -F critiquebrainz/babel.cfg -o messages.pot critiquebrainz")
+    local("pybabel extract -F critiquebrainz/frontend/babel.cfg -o messages.pot critiquebrainz")
 
 
 def compile_translations():
