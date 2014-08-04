@@ -22,7 +22,7 @@ def update_translations():
 
 def compile_styling():
     """Compiles styles.less into styles.css."""
-    style_path = "critiquebrainz/static/css/"
+    style_path = "critiquebrainz/frontend/static/css/"
     local("lessc --clean-css %sstyles.less > %sstyles.css" % (style_path, style_path))
 
 
