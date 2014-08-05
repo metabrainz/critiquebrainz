@@ -12,8 +12,6 @@ frontend_bp = Blueprint('frontend', __name__)
 
 @frontend_bp.route('/', endpoint='index')
 def index_handler():
-    user_count = User.query.count()
-
     # Popular reviews
     popular_reviews, review_count = Review.list(sort='rating', limit=6)
     for review in popular_reviews:
@@ -26,7 +24,7 @@ def index_handler():
 
     # Formatting numbers
     review_count = format_number(review_count)
-    user_count = format_number(user_count)
+    user_count = format_number(User.query.count())
 
     return render_template('index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
                            reviews_total=review_count, users_total=user_count)

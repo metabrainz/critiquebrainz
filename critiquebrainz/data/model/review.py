@@ -102,6 +102,7 @@ class Review(db.Model):
     @classmethod
     def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None, language=None, license_id=None):
         query = Review.query.filter(Review.is_archived == False)
+        review_count = query.count()  # This should be done before filtering
 
         if sort == 'rating':
             # TODO: Improve this
@@ -139,7 +140,7 @@ class Review(db.Model):
             query = query.limit(limit)
         if offset is not None:
             query = query.offset(offset)
-        return query.all(), query.count()
+        return query.all(), review_count
 
     @classmethod
     def create(cls, release_group, user, text, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None, language=None):
