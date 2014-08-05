@@ -116,7 +116,7 @@
             <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
               {% if member.begin or member.end %}title="{{ member.begin }} - {{ member.end }}"{% endif %}>
               {{ member.artist.name }}</a>
-            {% if member.begin or member.end %}<span class="text-muted">({{ member.begin[:4] }} - {{ member.end[:4] }})</span>{% endif %}
+            {% if member.begin or member.end %}<span class="text-muted">({{ member.begin }} - {{ member.end }})</span>{% endif %}
           </li>
         {% endfor %}
       </ul>
