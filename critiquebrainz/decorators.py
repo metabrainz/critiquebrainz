@@ -29,6 +29,7 @@ def crossdomain(origin='*', methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
                 automatic_options=True):
     # Decorator straight from http://flask.pocoo.org/snippets/56/
+    # "This snippet by Armin Ronacher can be used freely for anything you like. Consider it public domain."
     if methods is not None:
         methods = ', '.join(sorted(x.upper() for x in methods))
     if headers is not None and not isinstance(headers, basestring):
