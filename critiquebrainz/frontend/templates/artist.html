@@ -107,7 +107,7 @@
       <ul class="list-unstyled external-links">
         {% for url in artist['external-urls'] %}
           <li class="clearfix">
-            <div class="favicon-container pull-left">
+            <div class="favicon-container">
               {% if url.icon %}
                 <img src="{{ url_for('static', filename='favicons/'+url.icon) }}" />
               {% else %}
@@ -121,7 +121,10 @@
       </ul>
     {% endif %}
 
-    <p><a href="//musicbrainz.org/artist/{{ artist.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a></p>
+    <div class="external-links">
+      <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.ico') }}" /></div>
+      <a href="//musicbrainz.org/artist/{{ artist.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+    </div>
   </div>
 </div>
 {% endblock %}
