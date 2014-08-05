@@ -13,6 +13,18 @@ def artist_entity_handler(id):
     artist = musicbrainz.get_artist_by_id(id, includes=['url-rels', 'artist-rels'])
     if not artist:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
+
+    # Preparing artist-rels
+    if 'band-members' in artist:
+        artist['current_members'] = []
+        artist['former_members'] = []
+        for member in artist['band-members']:
+            if 'ended' in member and member['ended'] == 'true':
+                artist['former_members'].append(member)
+            else:
+                artist['current_members'].append(member)
+
+
     release_type = request.args.get('release_type', default='album')
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
         raise BadRequest

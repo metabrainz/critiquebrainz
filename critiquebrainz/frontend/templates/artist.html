@@ -82,7 +82,7 @@
     <h4>{{ _('Artist information') }}</h4>
     {% if artist.type %}<p class="text-muted">{{ artist.type }}</p>{% endif %}
 
-    {% if artist['band-members'] %}
+    {% if artist.current_members %}
       <b>
         {% if artist.type and artist.type == 'Person' %}
           {{ _('Member of') }}
@@ -91,12 +91,32 @@
         {% endif %}
       </b>
       <ul class="list-unstyled">
-        {% for member in artist['band-members'] %}
+        {% for member in artist.current_members %}
+          <li>
+            <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
+              {% if member.begin %}title="{{ _('Member since %(date)s', date=member.begin) }}"{% endif %}>
+              {{ member.artist.name }}</a>
+            {% if member.artist.disambiguation %}<span class="text-muted">({{ member.artist.disambiguation }})</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if artist.former_members %}
+      <b>
+        {% if artist.type and artist.type == 'Person' %}
+          {{ _('Former member of') }}
+        {% else %}
+          {{ _('Former members') }}
+        {% endif %}
+      </b>
+      <ul class="list-unstyled">
+        {% for member in artist.former_members %}
           <li>
             <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
               {% if member.begin or member.end %}title="{{ member.begin }} - {{ member.end }}"{% endif %}>
               {{ member.artist.name }}</a>
-            {% if member.artist.disambiguation %}<span class="text-muted">({{ member.artist.disambiguation }})</span>{% endif %}
+            {% if member.begin or member.end %}<span class="text-muted">({{ member.begin[:4] }} - {{ member.end[:4] }})</span>{% endif %}
           </li>
         {% endfor %}
       </ul>
