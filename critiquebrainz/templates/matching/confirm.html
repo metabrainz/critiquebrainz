@@ -20,13 +20,13 @@
     </div>
     <div class="col-md-6">
       <h4>{{ _('Spotify') }}</h4>
-      <p>{{ _('URI:') }} {{ spotify_uri }}</p>
-      <iframe src="https://embed.spotify.com/?uri={{ spotify_uri }}&theme=white"
+      <p>{{ _('URI:') }} {{ spotify_album.uri }}</p>
+      <iframe src="https://embed.spotify.com/?uri={{ spotify_album.uri }}&theme=white"
               width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
     </div>
   </div>
   <hr />
-  <form role="form" method="POST" action="{{ url_for('matching.spotify_submit', spotify_uri=spotify_uri, release_group_id=release_group.id) }}">
+  <form role="form" method="POST" action="{{ url_for('matching.spotify_submit', spotify_uri=spotify_album.uri, release_group_id=release_group.id) }}">
     <button type="submit" class="btn btn-success">{{ _('Connect') }}</button>
     <a href="{{ url_for('release_group.entity', id=release_group.id) }}" class="btn btn-danger">{{ _('Cancel') }}</a>
   </form>
