@@ -13,17 +13,17 @@ frontend_bp = Blueprint('frontend', __name__)
 @frontend_bp.route('/', endpoint='index')
 def index_handler():
     # Popular reviews
-    popular_reviews, review_count = Review.list(sort='rating', limit=6)
+    popular_reviews, _ = Review.list(sort='rating', limit=6)
     for review in popular_reviews:
         # Preparing text for preview
         preview = markdown(review.text, safe_mode="escape")
         review.preview = ''.join(BeautifulSoup(preview).findAll(text=True))
 
     # Recent reviews
-    recent_reviews, review_count = Review.list(sort='created', limit=6)
+    recent_reviews, _ = Review.list(sort='created', limit=6)
 
-    # Formatting numbers
-    review_count = format_number(review_count)
+    # Getting counts and formatting them
+    review_count = format_number(Review.query.filter(Review.is_archived == False).count())
     user_count = format_number(User.query.count())
 
     return render_template('index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
