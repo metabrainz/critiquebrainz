@@ -115,7 +115,9 @@
           {% for medium in release['medium-list'] %}
             <tr>
               <td></td>
-              <td style="font-size:12px;" colspan="2"><b>{{ _('CD') }} {{ medium.position }}</b></td>
+              <td style="font-size:12px;" colspan="2">
+                <b>{{ medium.format | default(_('Medium')) }} {{ medium.position }}</b>
+              </td>
             </tr>
             {% for track in medium['track-list'] %}
               <tr>

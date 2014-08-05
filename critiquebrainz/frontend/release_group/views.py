@@ -17,7 +17,7 @@ def release_group_entity_handler(id):
     if not release_group:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
     if len(release_group['release-list']) > 0:
-        release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'], includes=['recordings'])
+        release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'], includes=['recordings', 'media'])
     else:
         release = None
     spotify_mapping = mbspotify.mapping([id])
