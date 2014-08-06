@@ -1,6 +1,11 @@
 Introduction
 ============
 
+CritiqueBrainz project is separated into three main packages: data, frontend, and web service (ws).
+The data package is used to interact with the database. The frontend provides user-friendly interface
+that is available at https://critiquebrainz.org. The web service provides web API for CritiqueBrainz
+(see :doc:`api`).
+
 Using Vagrant
 ^^^^^^^^^^^^^
 
