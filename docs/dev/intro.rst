@@ -6,6 +6,11 @@ The data package is used to interact with the database. The frontend provides us
 that is available at https://critiquebrainz.org. The web service provides web API for CritiqueBrainz
 (see :doc:`api`).
 
+Contributing
+^^^^^^^^^^^^
+
+See `CONTRIBUTING.md file <https://github.com/metabrainz/critiquebrainz/blob/master/CONTRIBUTING.md>`_.
+
 Using Vagrant
 ^^^^^^^^^^^^^
 
