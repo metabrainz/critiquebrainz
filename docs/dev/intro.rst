@@ -31,6 +31,14 @@ PostgreSQL will be available on port *15432* with `trust`_ authentication method
 Server will be running in a separate `screen <https://www.gnu.org/software/screen/>`_.
 You can connect to it to see standard output, do maintenance or other tasks.
 
+Testing
+^^^^^^^
+
+To run all tests activate virtual environment and run ``run_tests.py`` script::
+
+   $ source ./env
+   $ python run_tests.py
+
 Modifying strings
 ^^^^^^^^^^^^^^^^^
 
