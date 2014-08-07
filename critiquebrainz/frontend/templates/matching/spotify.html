@@ -35,7 +35,6 @@
       </div>
     </div>
     {% endfor %}
-    <script>$('.match-link').tooltip()</script>
   </div>
   {% if count > limit %}
     <div class="row">
@@ -73,4 +72,9 @@
     {{ _('You can <a href="%(link)s">go back to the release group page</a>.', link=url_for('release_group.entity', id=release_group.id)) }}
   </strong>
 </p>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>$('.match-link').tooltip()</script>
 {% endblock %}
