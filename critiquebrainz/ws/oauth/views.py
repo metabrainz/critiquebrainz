@@ -1,13 +1,14 @@
 from flask import Blueprint, request, jsonify
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.oauth.exceptions import UnsupportedGrantType
-from critiquebrainz.decorators import nocache, crossdomain
+from critiquebrainz.decorators import nocache, crossdomain, ssl_required
 
 oauth_bp = Blueprint('ws_oauth', __name__)
 
 
 @oauth_bp.route('/token', methods=['POST'], endpoint='token')
 @nocache
+@ssl_required
 @crossdomain()
 def oauth_token_handler():
     """OAuth 2.0 token endpoint.
