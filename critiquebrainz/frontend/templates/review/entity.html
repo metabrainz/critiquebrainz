@@ -125,31 +125,34 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
-<script>
-  function report() {
-    var resultBlock = $("#report-result");
-    resultBlock.show();
-    $(".report-toggle").hide();
-    $.ajax({
-      type: "POST",
-      url: "{{ url_for('review.report', id=review.id) }}",
-      success: function(result) {
-        resultBlock.removeClass('text-muted');
-        if (result.success) {
-          resultBlock.text("{{ _('Review reported!') }}");
-          resultBlock.addClass('text-success');
-        } else {
-          if (result.error == "reported") {
-            resultBlock.text("{{ _('You have already reported this review!') }}");
+{% block scripts %}
+  {{ super() }}
+  <script>
+    function report() {
+      var resultBlock = $("#report-result");
+      resultBlock.show();
+      $(".report-toggle").hide();
+      $.ajax({
+        type: "POST",
+        url: "{{ url_for('review.report', id=review.id) }}",
+        success: function(result) {
+          resultBlock.removeClass('text-muted');
+          if (result.success) {
+            resultBlock.text("{{ _('Review reported!') }}");
+            resultBlock.addClass('text-success');
           } else {
-            resultBlock.text("{{ _('Unknown error occurred!') }}");
-            console.log(result.error)
+            if (result.error == "reported") {
+              resultBlock.text("{{ _('You have already reported this review!') }}");
+            } else {
+              resultBlock.text("{{ _('Unknown error occurred!') }}");
+              console.log(result.error)
+            }
+            resultBlock.addClass('text-danger');
           }
-          resultBlock.addClass('text-danger');
         }
-      }
-    });
-  }
-</script>
+      });
+    }
+  </script>
 {% endblock %}
