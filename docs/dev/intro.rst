@@ -1,6 +1,16 @@
 Introduction
 ============
 
+CritiqueBrainz project is separated into three main packages: data, frontend, and web service (ws).
+The data package is used to interact with the database. The frontend provides user-friendly interface
+that is available at https://critiquebrainz.org. The web service provides web API for CritiqueBrainz
+(see :doc:`api`).
+
+Contributing
+^^^^^^^^^^^^
+
+See `CONTRIBUTING.md file <https://github.com/metabrainz/critiquebrainz/blob/master/CONTRIBUTING.md>`_.
+
 Using Vagrant
 ^^^^^^^^^^^^^
 
@@ -20,6 +30,14 @@ PostgreSQL will be available on port *15432* with `trust`_ authentication method
 
 Server will be running in a separate `screen <https://www.gnu.org/software/screen/>`_.
 You can connect to it to see standard output, do maintenance or other tasks.
+
+Testing
+^^^^^^^
+
+To run all tests activate virtual environment and run ``run_tests.py`` script::
+
+   $ source ./env
+   $ python run_tests.py
 
 Modifying strings
 ^^^^^^^^^^^^^^^^^
