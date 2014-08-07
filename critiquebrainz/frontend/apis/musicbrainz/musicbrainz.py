@@ -28,10 +28,12 @@ class MusicBrainzClient:
         api_resp = search_artists(query=query, sortname=query, alias=query, limit=limit, offset=offset)
         return api_resp.get('artist-count'), api_resp.get('artist-list')
 
-    def browse_release_groups(self, artist_id=None, release_types=[], limit=None, offset=None):
+    def browse_release_groups(self, artist_id=None, release_types=None, limit=None, offset=None):
         """Get all release groups linked to an artist.
         You need to provide artist's MusicBrainz ID.
         """
+        if release_types is None:
+            release_types = []
         key = generate_cache_key(str(artist_id), type='browse_release_groups', source='api',
                                  params=[limit, offset] + release_types)
         release_groups = cache.get(key)
@@ -48,12 +50,14 @@ class MusicBrainzClient:
             cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
         return release_groups
 
-    def get_artist_by_id(self, id, includes=[]):
+    def get_artist_by_id(self, id, includes=None):
         """Get artist with the MusicBrainz ID.
         Available includes: recordings, releases, release-groups, works, various-artists, discids, media, isrcs,
         aliases, annotation, tags, user-tags, ratings, user-ratings, area-rels, artist-rels, label-rels, place-rels,
         recording-rels, release-rels, release-group-rels, url-rels, work-rels.
         """
+        if includes is None:
+            includes = []
         key = generate_cache_key(id, type='artist', source='api', params=includes)
         artist = cache.get(key)
         if not artist:
@@ -68,12 +72,14 @@ class MusicBrainzClient:
             cache.set(key, artist, DEFAULT_CACHE_EXPIRATION)
         return artist
 
-    def get_release_group_by_id(self, id, includes=[]):
+    def get_release_group_by_id(self, id, includes=None):
         """Get release group with the MusicBrainz ID.
         Available includes: artists, releases, discids, media, artist-credits, annotation, aliases, tags, user-tags,
         ratings, user-ratings, area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
         release-group-rels, url-rels, work-rels.
         """
+        if includes is None:
+            includes = []
         key = generate_cache_key(id, type='release_group', source='api', params=includes)
         release_group = cache.get(key)
         if not release_group:
@@ -88,12 +94,14 @@ class MusicBrainzClient:
             cache.set(key, release_group, DEFAULT_CACHE_EXPIRATION)
         return release_group
 
-    def get_release_by_id(self, id, includes=[]):
+    def get_release_by_id(self, id, includes=None):
         """Get release with the MusicBrainz ID.
         Available includes: artists, labels, recordings, release-groups, media, artist-credits, discids, isrcs,
         recording-level-rels, work-level-rels, annotation, aliases, area-rels, artist-rels, label-rels, place-rels,
         recording-rels, release-rels, release-group-rels, url-rels, work-rels.
         """
+        if includes is None:
+            includes = []
         key = generate_cache_key(id, type='release', source='api', params=includes)
         release = cache.get(key)
         if not release:

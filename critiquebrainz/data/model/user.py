@@ -148,7 +148,9 @@ class User(db.Model, UserMixin):
     def votes_today_count(self):
         return self.votes_since_count(date.today())
 
-    def to_dict(self, includes=[], confidential=False):
+    def to_dict(self, includes=None, confidential=False):
+        if includes is None:
+            includes = []
         response = dict(id = self.id,
             display_name = self.display_name,
             created = self.created,

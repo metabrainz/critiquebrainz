@@ -3,8 +3,11 @@ from datetime import timedelta
 from flask import make_response, request, current_app
 
 
-def add_response_headers(headers={}):
+def add_response_headers(headers=None):
     """This decorator adds the headers passed in to the response."""
+    if headers is None:
+        headers = {}
+
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -14,6 +17,7 @@ def add_response_headers(headers={}):
                 h[header] = value
             return resp
         return decorated_function
+
     return decorator
 
 

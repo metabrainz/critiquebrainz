@@ -5,7 +5,9 @@ import memcache
 cache = memcache.Client(current_app.config['MEMCACHED_SERVERS'], debug=0)
 
 
-def generate_cache_key(id, type=None, source=None, params=[]):
+def generate_cache_key(id, type=None, source=None, params=None):
+    if params is None:
+        params = []
     key = current_app.config['MEMCACHED_NAMESPACE'] + ':'
     if source is not None:
         key += str(source) + ':'

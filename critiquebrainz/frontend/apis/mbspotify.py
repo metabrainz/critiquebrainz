@@ -11,7 +11,9 @@ class MBSpotifyClient(object):
     def __init__(self, base_url):
         self.base_url = base_url
 
-    def mapping(self, mbids=[]):
+    def mapping(self, mbids=None):
+        if mbids is None:
+            mbids = []
         try:
             headers = {'Content-type': 'application/json'}
             resp = requests.post(self.base_url + "mapping", headers=headers,
