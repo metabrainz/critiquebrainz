@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, abort
 from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
-
 from critiquebrainz.data.model.oauth import OAuthClient, OAuthToken
 from critiquebrainz.frontend.forms.app import ApplicationForm
+from critiquebrainz.decorators import ssl_required
 
 
 profile_apps_bp = Blueprint('profile_applications', __name__)
@@ -11,6 +11,7 @@ profile_apps_bp = Blueprint('profile_applications', __name__)
 
 @profile_apps_bp.route('/', endpoint='index')
 @login_required
+@ssl_required
 def index_handler():
     return render_template('profile/applications/index.html',
                            applications=[c.to_dict() for c in current_user.clients],
@@ -19,6 +20,7 @@ def index_handler():
 
 @profile_apps_bp.route('/create', endpoint='create', methods=['GET', 'POST'])
 @login_required
+@ssl_required
 def create_handler():
     """Create application."""
     form = ApplicationForm()
@@ -33,6 +35,7 @@ def create_handler():
 
 @profile_apps_bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
 @login_required
+@ssl_required
 def edit_handler(client_id):
     application = OAuthClient.query.get_or_404(client_id)
     if application.user != current_user:
@@ -53,6 +56,7 @@ def edit_handler(client_id):
 
 @profile_apps_bp.route('/<client_id>/delete', endpoint='delete')
 @login_required
+@ssl_required
 def delete_handler(client_id):
     client = OAuthClient.query.get_or_404(client_id)
     if client.user != current_user:
@@ -65,6 +69,7 @@ def delete_handler(client_id):
 
 @profile_apps_bp.route('/<client_id>/token/delete', endpoint='token_delete')
 @login_required
+@ssl_required
 def token_delete_handler(client_id):
     OAuthToken.purge_tokens(client_id=client_id, user_id=current_user.id)
     return redirect(url_for('.index'))

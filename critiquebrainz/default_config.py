@@ -6,6 +6,8 @@ SQLALCHEMY_DATABASE_URI = "postgresql://cb:cb@localhost:5432/cb"
 # Database for testing
 TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@localhost:5432/cb_test"
 
+SSL_AVAILABLE = True
+
 # CritiqueBrainz OAuth configuration
 OAUTH_TOKEN_LENGTH = 40
 OAUTH_GRANT_EXPIRE = 60

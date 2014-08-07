@@ -1,6 +1,6 @@
 from functools import wraps, update_wrapper
 from datetime import timedelta
-from flask import make_response, request, current_app
+from flask import request, redirect, current_app, make_response
 
 
 def add_response_headers(headers={}):
@@ -28,8 +28,7 @@ def nocache(f):
 def crossdomain(origin='*', methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
                 automatic_options=True):
-    # Decorator straight from http://flask.pocoo.org/snippets/56/
-    # "This snippet by Armin Ronacher can be used freely for anything you like. Consider it public domain."
+    # Based on snippet by Armin Ronacher located at http://flask.pocoo.org/snippets/56/.
     if methods is not None:
         methods = ', '.join(sorted(x.upper() for x in methods))
     if headers is not None and not isinstance(headers, basestring):
@@ -67,3 +66,18 @@ def crossdomain(origin='*', methods=None, headers=None,
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
     return decorator
+
+
+def ssl_required(f):
+    # Based on snippet by Dmitry Chaplinsky located at http://flask.pocoo.org/snippets/93/.
+    @wraps(f)
+    def decorated_view(*args, **kwargs):
+        if not current_app.debug and current_app.config['SSL_AVAILABLE']:  # Not required when debug mode is enabled
+            if request.is_secure:
+                return f(*args, **kwargs)
+            else:
+                return redirect(request.url.replace("http://", "https://"))
+
+        return f(*args, **kwargs)
+
+    return decorated_view
