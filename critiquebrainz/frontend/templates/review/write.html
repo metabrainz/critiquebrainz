@@ -10,17 +10,31 @@
   </div>
   {% endfor %}
 {% endfor %}
+
 <h2>{{ _('Write review') }}</h2>
-<dl class="dl-horizontal">
-  <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
-  <dt>{{ _('Release group') }}</dt>
-  <dd>
-    {{ release_group.title }}
-    {% if release_group['first-release-date'] %}
-      <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
-    {% endif %}
-  </dd>
-</dl>
+
+<div class="row">
+  <div class="col-md-10">
+    <dl class="dl-horizontal">
+      <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
+      <dt>{{ _('Release group') }}</dt>
+      <dd>
+        {{ release_group.title }}
+        {% if release_group['first-release-date'] %}
+          <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
+        {% endif %}
+      </dd>
+    </dl>
+  </div>
+  <div class="col-md-2">
+    <img id="cover-art" class="img-responsive" style="max-height:120px;max-width:120px;">
+    <script>
+      $("img").last()
+          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+          .attr("src", "//coverartarchive.org/release-group/{{ release_group.id }}/front-250");
+    </script>
+  </div>
+</div>
 
 <div class="clearfix">
   <ul class="nav nav-tabs" style="margin-bottom:-1px;">
