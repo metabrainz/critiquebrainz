@@ -49,12 +49,14 @@
       {% if id in spotify_mapping %}
         <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[id] }}&theme=white"
                 width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-        <em>
-          <small id="spotify-report">
-            <a id="spotify-report-link" class="text-danger" href="javascript:reportSpotifyMatching()">{{ _('Report incorrect Spotify mapping') }}</a>
-            <span id="spotify-report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>
-          </small>
-        </em>
+        {% if current_user.is_authenticated() %}
+          <em>
+            <small id="spotify-report">
+              <a id="spotify-report-link" class="text-danger" href="javascript:reportSpotifyMatching()">{{ _('Report incorrect Spotify mapping') }}</a>
+              <span id="spotify-report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>
+            </small>
+          </em>
+        {% endif %}
       {% else %}
         <span class="text-muted">
           {{ _('We don\'t have a match on Spotify for this release group.
@@ -176,7 +178,7 @@
 </div>
 {% endblock %}
 
-{% if id in spotify_mapping %}
+{% if current_user.is_authenticated() and id in spotify_mapping %}
   {% block scripts %}
     {{ super() }}
     <script>
