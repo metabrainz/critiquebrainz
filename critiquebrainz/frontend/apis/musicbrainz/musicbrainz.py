@@ -13,9 +13,8 @@ DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
 class MusicBrainzClient:
     """Provides an interface to MusicBrainz data."""
 
-    def init_app(self, app, app_name, app_version):
+    def init_app(self, app_name, app_version):
         set_useragent(app_name, app_version)
-        app.jinja_env.filters['release_group_details'] = self.release_group_details
 
     def search_release_groups(self, query='', artist='', release_group='', limit=None, offset=None):
         """Search for release groups."""

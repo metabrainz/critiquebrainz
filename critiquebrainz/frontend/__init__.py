@@ -26,8 +26,10 @@ def create_app():
 
     with app.app_context():
         import apis
-        import babel
         import login
+
+    import babel
+    babel.init_app(app)
 
     from login import login_manager
     login_manager.init_app(app)
@@ -38,6 +40,7 @@ def create_app():
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
+    app.jinja_env.filters['release_group_details'] = apis.musicbrainz.release_group_details
 
     # Blueprints
     from views import frontend_bp

@@ -10,7 +10,7 @@ def extract_strings():
 
 def compile_translations():
     """Compiles existing translations for use."""
-    local("pybabel compile -d critiquebrainz/translations")
+    local("pybabel compile -d critiquebrainz/frontend/translations")
 
 
 def update_translations():

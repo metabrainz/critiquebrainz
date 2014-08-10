@@ -9,7 +9,3 @@ venv
 
 /dump/
 /backup/
-
-# Translation
-*.mo
-tx.exe
