@@ -35,11 +35,13 @@ LOG_EMAIL_TOPIC = "CritiqueBrainz Failure"
 # Valid language codes can be obtained from Transifex.
 SUPPORTED_LANGUAGES = [
     'en',  # English
-    'de',  # German
     'es',  # Spanish
-    'nl',  # Dutch
     'ru',  # Russian
     'el',  # Greek
-    'hr',  # Croatian
+    'de',  # German
+    'fr',  # French
+    'fi',  # Finnish
     'eo',  # Esperanto
+    'nl',  # Dutch
+    'hr',  # Croatian
 ]

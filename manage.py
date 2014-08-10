@@ -1,5 +1,5 @@
 ﻿from flask.ext.script import Manager
-from critiquebrainz import create_app
+from critiquebrainz.frontend import create_app
 from critiquebrainz.data.manage import data_manager
 
 manager = Manager(create_app)
