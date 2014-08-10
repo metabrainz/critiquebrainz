@@ -16,12 +16,12 @@ review_bp = Blueprint('review', __name__)
 @review_bp.route('/<uuid:id>', endpoint='entity')
 def review_entity_handler(id):
     review = Review.query.get_or_404(str(id))
-    if review.is_archived is True:
+    if review.is_archived or not (current_user.is_authenticated() and current_user != review.user):
         raise NotFound
 
     spotify_mapping = mbspotify.mapping([review.release_group])
 
-    if current_user.is_authenticated():  # if user is logged in, get his vote for this review
+    if not review.is_draft and current_user.is_authenticated():  # if user is logged in, get his vote for this review
         # TODO: Review this functionality. It might be confusing.
         # If users vote on review and then author updates that review (last revision changes),
         # users will be unable to see their votes.
