@@ -53,7 +53,8 @@ def create_handler():
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
         review = Review.create(user=current_user, release_group=release_group, text=form.text.data,
-                               license_id=form.license_choice.data, language=form.language.data)
+                               license_id=form.license_choice.data, language=form.language.data,
+                               is_draft=(form.state.data == 'draft'))
         flash(gettext("Review has been published!"), 'success')
         return redirect(url_for('.entity', id=review.id))
 

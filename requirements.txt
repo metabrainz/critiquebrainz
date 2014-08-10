@@ -3,14 +3,14 @@ Flask-Login == 0.2.10
 Flask-Script == 2.0.5
 Flask-Testing == 0.4.2
 Flask-UUID == 0.2
-Flask-WTF == 0.9.5
+Flask-WTF == 0.10.0
 Flask-Babel == 0.9
 Flask-SQLAlchemy == 1.0
 SQLAlchemy == 0.9.7
 Werkzeug == 0.9.3
 Jinja2 == 2.7
 MarkupSafe == 0.18
-WTForms==2.0
+WTForms == 2.0.1
 argparse == 1.2.1
 distribute == 0.6.34
 itsdangerous == 0.22

@@ -143,8 +143,8 @@ class Review(db.Model):
         return query.all(), query.count()
 
     @classmethod
-    def create(cls, release_group, user, text, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None, language=None):
-        review = Review(release_group=release_group, user=user, language=language,
+    def create(cls, release_group, user, text, is_draft, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None, language=None):
+        review = Review(release_group=release_group, user=user, language=language, is_draft=is_draft,
                         license_id=license_id, source=source, source_url=source_url)
         db.session.add(review)
         db.session.flush()
