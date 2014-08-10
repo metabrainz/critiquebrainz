@@ -76,8 +76,8 @@
   </div>
 </form>
 {% if review.is_draft %}
-  <button id="btn-draft" class="btn btn-default">{{ _('Save draft') }}</button>
   <button id="btn-publish" class="btn btn-primary">{{ _('Publish') }}</button>
+  <button id="btn-draft" class="btn btn-default">{{ _('Save draft') }}</button>
 {% else %}
   <button id="btn-publish" class="btn btn-primary">{{ _('Update') }}</button>
 {% endif %}
