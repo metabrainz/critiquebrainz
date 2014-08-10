@@ -16,7 +16,8 @@ review_bp = Blueprint('review', __name__)
 @review_bp.route('/<uuid:id>', endpoint='entity')
 def review_entity_handler(id):
     review = Review.query.get_or_404(str(id))
-    if review.is_archived or not (current_user.is_authenticated() and current_user != review.user):
+    # Not showing review if it's archived or (isn't published yet and not viewed by author).
+    if review.is_archived or (review.is_draft and not (current_user.is_authenticated() and current_user == review.user)):
         raise NotFound
 
     spotify_mapping = mbspotify.mapping([review.release_group])
