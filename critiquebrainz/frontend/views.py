@@ -23,7 +23,7 @@ def index_handler():
     recent_reviews, _ = Review.list(sort='created', limit=6)
 
     # Getting counts and formatting them
-    review_count = format_number(Review.query.filter(Review.is_archived == False).count())
+    review_count = format_number(Review.query.filter(Review.is_archived == False).filter(Review.is_draft == False).count())
     user_count = format_number(User.query.count())
 
     return render_template('index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
