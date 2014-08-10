@@ -9,11 +9,11 @@
     <table class="table table-hover">
       <thead>
       <tr>
+        {% if current_user.is_authenticated() and current_user == user %}<th><!-- State --></th>{% endif %}
         <th>{{ _('Artist') }}</th>
         <th>{{ _('Release group') }}</th>
         <th>{{ _('Created on') }}</th>
         <th>{{ _('Votes (+/-)') }}</th>
-        <th>{{ _('Class') }}</th>
         <th></th>
       </tr>
       </thead>
@@ -21,6 +21,15 @@
       {% for review in reviews %}
         {% set release_group = review.release_group | release_group_details %}
         <tr data-review-id="{{ review.id }}">
+          {% if current_user.is_authenticated() and current_user == user %}
+            <td align="right">
+              {% if review.is_draft %}
+                <span class="label label-default">{{ _('Draft') }}</span>
+              {% else %}
+                <span class="label label-primary">{{ _('Published') }}</span>
+              {% endif %}
+            </td>
+          {% endif %}
           <td>{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</td>
           <td>
             {{ release_group.title | default(_('[Unknown release group]')) }}
@@ -30,7 +39,6 @@
           </td>
           <td>{{ review.created | date }}</td>
           <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
-          <td>{{ review.review_class.label }}</td>
           <td>
             <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Read') }}</a>
             {% if current_user.is_authenticated() and current_user == user %}

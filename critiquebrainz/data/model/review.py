@@ -101,8 +101,10 @@ class Review(db.Model):
         return self._rating
 
     @classmethod
-    def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None, language=None, license_id=None):
+    def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None, language=None, license_id=None, include_drafts=False):
         query = Review.query.filter(Review.is_archived == False)
+        if not include_drafts:
+            query = query.filter(Review.is_draft == False)
 
         if sort == 'rating':
             # TODO: Improve this
