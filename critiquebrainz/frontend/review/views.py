@@ -53,10 +53,14 @@ def create_handler():
             flash(gettext("You have exceeded your limit of reviews per day."), 'error')
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
+        is_draft = form.state.data == 'draft'
         review = Review.create(user=current_user, release_group=release_group, text=form.text.data,
                                license_id=form.license_choice.data, language=form.language.data,
-                               is_draft=(form.state.data == 'draft'))
-        flash(gettext("Review has been published!"), 'success')
+                               is_draft=is_draft)
+        if is_draft:
+            flash(gettext("Review has been saved!"), 'success')
+        else:
+            flash(gettext("Review has been published!"), 'success')
         return redirect(url_for('.entity', id=review.id))
 
     release_group_details = musicbrainz.release_group_details(release_group)
