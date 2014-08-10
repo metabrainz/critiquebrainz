@@ -77,14 +77,14 @@ def preview_handler():
 @login_required
 def edit_handler(id):
     review = Review.query.get_or_404(str(id))
-    if review.is_archived is True:
+    if review.is_archived or (review.is_draft and current_user != review.user):
         raise NotFound
     if review.user != current_user:
         abort(403)
 
     form = ReviewEditForm()
     if form.validate_on_submit():
-        review.update(text=form.text.data)
+        review.update(text=form.text.data, is_draft=(form.state.data == 'draft'))
         flash(gettext("Review has been modified."), 'success')
         return redirect(url_for('.entity', id=review.id))
     else:

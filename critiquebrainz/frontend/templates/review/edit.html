@@ -30,8 +30,17 @@
         {% endif %}
       </dd>
       <dt>{{ _('Created on') }}</dt><dd>{{ review.created | date }}</dd>
-      <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</dd>
-      <dt>{{ _('Rating') }}</dt><dd>{{ review.review_class.label }}</dd>
+      {% if not review.is_draft %}
+        <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</dd>
+      {% endif %}
+      <dt>{{ _('Status') }}</dt>
+      <dd>
+        {% if review.is_draft %}
+          <span class="label label-default">{{ _('Draft') }}</span>
+        {% else %}
+          <span class="label label-primary">{{ _('Published') }}</span>
+        {% endif %}
+      </dd>
     </dl>
   </div>
   <div class="col-md-2">
@@ -53,7 +62,7 @@
     </small>
   </ul>
 </div>
-<form method="POST" class="form-horizontal" role="form">
+<form id="review-editor" method="POST" class="form-horizontal" role="form">
   {{ form.hidden_tag() }}
   <div class="form-group">
     <div class="col-sm-12 tab-content">
@@ -65,34 +74,44 @@
       </div>
     </div>
   </div>
-  <hr />
-  <div class="form-group">
-    <div class="col-sm-12">
-      <button type="submit" class="btn btn-primary">{{ _('Publish') }}</button>
-    </div>
-  </div>
 </form>
+{% if review.is_draft %}
+  <button id="btn-draft" class="btn btn-default">{{ _('Save draft') }}</button>
+  <button id="btn-publish" class="btn btn-primary">{{ _('Publish') }}</button>
+{% else %}
+  <button id="btn-publish" class="btn btn-primary">{{ _('Update') }}</button>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
   {{ super() }}
   <script>
-    $(function () {
-      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        if (e.target.hash.substring(1) == "preview") {
-          $.ajax({
-            type: "POST",
-            url: "{{ url_for('review.preview') }}",
-            data: {
-              text: $("#review-content").val()
-            },
-            success: function (data) {
-              $("#preview").html(data);
-            }
-          });
-        } else { // write
-          $("#preview").html('<span class="text-muted">{{ _('Loading preview...') }}</span>');
-        }
+    $(document).ready(function() {
+      $("#btn-publish").click(function(){
+        $("#state").attr('value', 'publish');
+        $("#review-editor").submit();
+      });
+      {% if review.is_draft %}
+        $("#btn-draft").click(function(){
+          $("#state").attr('value', 'draft');
+          $("#review-editor").submit();
+        });
+      {% endif %}
+
+      // Preview tab functionality
+      $(function() {
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+          if (e.target.hash.substring(1) == "preview") {
+            $.ajax({
+              type: "POST",
+              url: "{{ url_for('review.preview') }}",
+              data: { text: $("#review-content").val() },
+              success: function(data) { $("#preview").html(data); }
+            });
+          } else {
+            $("#preview").html('<span class="text-muted">{{ _('Loading preview...') }}</span>');
+          }
+        });
       });
     });
   </script>

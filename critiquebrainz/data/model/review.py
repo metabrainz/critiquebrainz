@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from vote import Vote
 from revision import Revision
 from critiquebrainz.data.constants import review_classes
+from critiquebrainz.frontend.exceptions import InvalidRequest
 import pycountry
 
 DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
@@ -154,11 +155,15 @@ class Review(db.Model):
         db.session.commit()
         return review
 
-    def update(self, text):
+    def update(self, text, is_draft=None):
         """Update contents of this review.
 
         :returns New revision of this review.
         """
+        if is_draft is not None:
+            if not self.is_draft and is_draft:  # If trying to convert published review into draft.
+                raise InvalidRequest("Converting published reviews back to drafts is not allowed.")
+            self.is_draft = is_draft
         new_revision = Revision(review_id=self.id, text=text)
         db.session.add(new_revision)
         db.session.commit()
