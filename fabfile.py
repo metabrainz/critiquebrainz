@@ -1,11 +1,11 @@
 from __future__ import with_statement
-from fabric.api import *
+from fabric.api import local
 from critiquebrainz.frontend import create_app
 
 
 def extract_strings():
     """Extracts all strings into messages.pot."""
-    local("pybabel extract -F critiquebrainz/frontend/babel.cfg -o messages.pot critiquebrainz")
+    local("pybabel extract -F critiquebrainz/frontend/babel.cfg -o messages.pot critiquebrainz/frontend")
 
 
 def compile_translations():
