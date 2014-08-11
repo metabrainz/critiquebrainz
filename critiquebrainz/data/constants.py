@@ -1,6 +1,3 @@
-from flask.ext.babel import gettext
-
-
 # USER TYPES
 class UserType(object):
 
@@ -14,31 +11,31 @@ class UserType(object):
         return self.karma(user.karma)
 
 blocked = UserType(
-    label=gettext('Blocked'),
+    label='Blocked',
     karma=lambda x: (x < -20),
     reviews_per_day=0,
     votes_per_day=0)
 
 spammer = UserType(
-    label=gettext('Spammer'),
+    label='Spammer',
     karma=lambda x: (x >= -20 and x < -10),
     reviews_per_day=1,
     votes_per_day=0)
 
 noob = UserType(
-    label=gettext('Noob'),
+    label='Noob',
     karma=lambda x: (x >= -10 and x < 50),
     reviews_per_day=5,
     votes_per_day=10)
 
 apprentice = UserType(
-    label=gettext('Apprentice'),
+    label='Apprentice',
     karma=lambda x: (x >= 50 and x < 1000),
     reviews_per_day=20,
     votes_per_day=50)
 
 sorcerer = UserType(
-    label=gettext('Sorcerer'),
+    label='Sorcerer',
     karma=lambda x: (x >= 1000),
     reviews_per_day=50,
     votes_per_day=200)
@@ -60,28 +57,28 @@ class ReviewClass(object):
         return self.rating(review.rating)
 
 spam = ReviewClass(
-    label=gettext('Spam'),
+    label='Spam',
     rating=lambda x: (x < -10),
     upvote=(apprentice, sorcerer),
     downvote=(noob, apprentice, sorcerer),
     mark_spam=(apprentice, sorcerer))
 
 neutral = ReviewClass(
-    label=gettext('Neutral'),
+    label='Neutral',
     rating=lambda x: (x >= -10 and x < 10),
     upvote=(noob, apprentice, sorcerer),
     downvote=(noob, apprentice, sorcerer),
     mark_spam=(apprentice, sorcerer))
 
 promising = ReviewClass(
-    label=gettext('Promising'),
+    label='Promising',
     rating=lambda x: (x >= 10 and x < 30),
     upvote=(spammer, noob, apprentice, sorcerer),
     downvote=(noob, apprentice, sorcerer),
     mark_spam=(apprentice, sorcerer))
 
 trusted = ReviewClass(
-    label=gettext('Trusted'),
+    label='Trusted',
     rating=lambda x: (x >= 30),
     upvote=(spammer, noob, apprentice, sorcerer),
     downvote=(apprentice, sorcerer),
