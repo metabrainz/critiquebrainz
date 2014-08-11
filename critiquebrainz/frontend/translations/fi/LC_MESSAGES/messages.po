@@ -1,619 +1,640 @@
 # Translations template for PROJECT.
 # Copyright (C) 2014 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
-#
-#, fuzzy
+# 
+# Translators:
+# Jaakko Perttilä <jormangeud@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
+"Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-11 02:27+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2014-08-05 17:40+0000\n"
+"PO-Revision-Date: 2014-08-06 10:21+0000\n"
+"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
+"Language-Team: Finnish (http://www.transifex.com/projects/p/critiquebrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: critiquebrainz/data/constants.py:17
+msgid "Blocked"
+msgstr "Estetty"
+
+#: critiquebrainz/data/constants.py:23
+msgid "Spammer"
+msgstr "Roskapostittaja"
+
+#: critiquebrainz/data/constants.py:29
+msgid "Noob"
+msgstr "Kokematon"
+
+#: critiquebrainz/data/constants.py:35
+msgid "Apprentice"
+msgstr "Kisälli"
+
+#: critiquebrainz/data/constants.py:41
+msgid "Sorcerer"
+msgstr "Velho"
+
+#: critiquebrainz/data/constants.py:63
+msgid "Spam"
+msgstr "Roskaposti"
+
+#: critiquebrainz/data/constants.py:70
+msgid "Neutral"
+msgstr "Neutraali"
+
+#: critiquebrainz/data/constants.py:77
+msgid "Promising"
+msgstr "Lupaava"
+
+#: critiquebrainz/data/constants.py:84
+msgid "Trusted"
+msgstr "Luotettu"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:29
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:16
 msgid "Wikidata"
-msgstr ""
+msgstr "Wikidata"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:30
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:17
 msgid "Discogs"
-msgstr ""
+msgstr "Discogs"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:31
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:18
 msgid "Allmusic"
-msgstr ""
+msgstr "Allmusic"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:32
 msgid "Bandcamp"
-msgstr ""
+msgstr "Bandcamp"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:33
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:19
 msgid "Official homepage"
-msgstr ""
+msgstr "Virallinen kotisivu"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:34
 msgid "BBC Music"
-msgstr ""
+msgstr "BBC Music"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:46
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:32
 msgid "Lyrics"
-msgstr ""
+msgstr "Sanoitus"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:52
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:38
 msgid "Wikipedia"
-msgstr ""
+msgstr "Wikipedia"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:65
 msgid "YouTube"
-msgstr ""
+msgstr "YouTube"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:73
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:20
 msgid "Recording studio"
-msgstr ""
+msgstr "Äänitysstudio"
 
 #: critiquebrainz/frontend/artist/views.py:15
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
-msgstr ""
+msgstr "Annetulla MusicBrainz tunnisteella ei löydy artistia."
 
 #: critiquebrainz/frontend/forms/app.py:7
 msgid "Application name"
-msgstr ""
+msgstr "Sovelluksen nimi"
 
 #: critiquebrainz/frontend/forms/app.py:8
 msgid "Application name field is empty."
-msgstr ""
+msgstr "Sovelluksen nimen tietue on tyhjä."
 
 #: critiquebrainz/frontend/forms/app.py:9
 msgid "Application name needs to be at least 3 characters long."
-msgstr ""
+msgstr "Sovelluksen nimen tulee olla vähintään kolme merkkiä pitkä."
 
 #: critiquebrainz/frontend/forms/app.py:10
 msgid "Application name needs to be at most 64 characters long."
-msgstr ""
+msgstr "Sovelluksen nimi saa olla korkeintaan 64 merkkiä pitkä."
 
 #: critiquebrainz/frontend/forms/app.py:11
 #: critiquebrainz/frontend/templates/oauth/prompt.html:17
 msgid "Description"
-msgstr ""
+msgstr "Kuvaus"
 
 #: critiquebrainz/frontend/forms/app.py:12
 msgid "Client description field is empty."
-msgstr ""
+msgstr "Asiakasohjelman kuvauksen tietue on tyhjä."
 
 #: critiquebrainz/frontend/forms/app.py:13
 msgid "Client description needs to be at least 3 characters long."
-msgstr ""
+msgstr "Asiakasohjelman kuvauksen tulee olla vähintään kolme merkkiä pitkä."
 
 #: critiquebrainz/frontend/forms/app.py:14
 msgid "Client description needs to be at most 512 characters long."
-msgstr ""
+msgstr "Asiakasohjelman kuvaus saa olla korkeintaan 512 merkkiä pitkä."
 
 #: critiquebrainz/frontend/forms/app.py:15
 msgid "Homepage"
-msgstr ""
+msgstr "Kotisivu"
 
 #: critiquebrainz/frontend/forms/app.py:16
 msgid "Homepage field is empty."
-msgstr ""
+msgstr "Kotisivun tietue on tyhjä."
 
 #: critiquebrainz/frontend/forms/app.py:17
 msgid "Homepage is not a valid URI."
-msgstr ""
+msgstr "Kotisivu ei ole kelvollinen URI."
 
 #: critiquebrainz/frontend/forms/app.py:18
 msgid "Authorization callback URL"
-msgstr ""
+msgstr "Tunnistautumisen palautteen URL"
 
 #: critiquebrainz/frontend/forms/app.py:19
 msgid "Authorization callback URL field is empty."
-msgstr ""
+msgstr "Tunnistautumisen palautteen URL on tyhjä."
 
 #: critiquebrainz/frontend/forms/app.py:20
 msgid "Authorization callback URL is invalid."
-msgstr ""
+msgstr "Tunnistautumisen palautteen URL ei ole kelvollinen."
+
+#: critiquebrainz/frontend/forms/review.py:21
+msgid "Text"
+msgstr "Teksti"
+
+#: critiquebrainz/frontend/forms/review.py:22
+msgid "Review is empty!"
+msgstr "Arvostelu on tyhjä!"
 
 #: critiquebrainz/frontend/forms/review.py:23
-msgid "Text"
-msgstr ""
-
-#: critiquebrainz/frontend/forms/review.py:24
-msgid "Review is empty!"
-msgstr ""
-
-#: critiquebrainz/frontend/forms/review.py:26
 #, python-format
 msgid "Review length needs to be between %(min)d and %(max)d characters."
-msgstr ""
+msgstr "Arvostelun pituus tulee olla %(min)d ja %(max)d merkin välissä."
 
-#: critiquebrainz/frontend/forms/review.py:30
-msgid ""
-"Allow commercial use of this review (<a "
-"href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
-"target=\"_blank\">CC BY-SA 3.0 license</a>)"
-msgstr ""
+#: critiquebrainz/frontend/forms/review.py:27
+#: critiquebrainz/frontend/templates/base.html:57
+msgid "Language"
+msgstr "Kieli"
+
+#: critiquebrainz/frontend/forms/review.py:29
+msgid "License choice"
+msgstr "Lisensoinnin valinta"
 
 #: critiquebrainz/frontend/forms/review.py:31
 msgid ""
-"Do not allow commercial use of this review, unless approved by MetaBrainz"
-" Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
-"sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
-msgstr ""
+"Allow commercial use of this review (<a "
+"href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 "
+"license</a>)"
+msgstr "Salli kaupallinen käyttö (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 -lisenssi</a>)"
 
-#: critiquebrainz/frontend/forms/review.py:33
+#: critiquebrainz/frontend/forms/review.py:32
+msgid ""
+"Do not allow commercial use of this review, unless approved by MetaBrainz "
+"Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
+"sa/3.0/\">CC BY-NC-SA 3.0 license</a>)"
+msgstr "Älä salli kaupallista käyttöä, ellei MetaBrainz-säätiö hyväksy (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\">CC BY-NC-SA 3.0 -lisenssi</a>)"
+
+#: critiquebrainz/frontend/forms/review.py:35
 msgid "You need to choose a license!"
-msgstr ""
+msgstr "Lisenssi tulee valita!"
 
-#: critiquebrainz/frontend/forms/review.py:41
-#: critiquebrainz/frontend/templates/base.html:55
-msgid "Language"
-msgstr ""
+#: critiquebrainz/frontend/forms/review.py:36
+msgid "License"
+msgstr "Lisenssi"
 
-#: critiquebrainz/frontend/forms/review.py:42
+#: critiquebrainz/frontend/forms/review.py:37
 msgid "You need to accept the license agreement!"
-msgstr ""
+msgstr "Lisensointisopimus tulee hyväksyä!"
 
 #: critiquebrainz/frontend/forms/user.py:7
 #: critiquebrainz/frontend/templates/profile/edit.html:19
 msgid "Display name"
-msgstr ""
+msgstr "Näytetty nimi"
 
 #: critiquebrainz/frontend/forms/user.py:8
 msgid "Display name field is empty."
-msgstr ""
+msgstr "Näytetyn nimen tietue on tyhjä."
 
 #: critiquebrainz/frontend/forms/user.py:9
 msgid "Display name needs to be at least 3 characters long."
-msgstr ""
+msgstr "Näytetyn nimen tulee olla vähintään kolme merkkiä pitkä."
 
 #: critiquebrainz/frontend/forms/user.py:10
 msgid "Display name needs to be at most 64 characters long."
-msgstr ""
+msgstr "Näytetty nimi saa olla korkeintaan 64 merkkiä pitkä."
 
 #: critiquebrainz/frontend/forms/user.py:11
 #: critiquebrainz/frontend/templates/profile/edit.html:23
 #: critiquebrainz/frontend/templates/user/info.html:15
 msgid "Email"
-msgstr ""
+msgstr "Sähköpostiosoite"
 
 #: critiquebrainz/frontend/forms/user.py:13
 msgid "Email field is not a valid email address."
-msgstr ""
+msgstr "Sähköpostiosoite ei ole kelvollinen."
 
 #: critiquebrainz/frontend/forms/user.py:14
 #: critiquebrainz/frontend/templates/profile/edit.html:28
 msgid "Show my Gravatar"
-msgstr ""
+msgstr "Näytä Gravatarini"
 
 #: critiquebrainz/frontend/login/__init__.py:19
 msgid "Please sign in to access this page."
-msgstr ""
+msgstr "Kirjaudu sisään päästäksesi tälle sivulle."
 
 #: critiquebrainz/frontend/login/views.py:32
 msgid "Login failed."
-msgstr ""
+msgstr "Kirjautuminen epäonnistui."
 
 #: critiquebrainz/frontend/matching/views.py:15
 #: critiquebrainz/frontend/matching/views.py:44
-#: critiquebrainz/frontend/matching/views.py:81
+#: critiquebrainz/frontend/matching/views.py:75
 msgid "Thanks, but this album is already matched to Spotify!"
-msgstr ""
+msgstr "Tämä julkaisu on jo yhdistetty Spotifyhiin!"
 
 #: critiquebrainz/frontend/matching/views.py:20
 #: critiquebrainz/frontend/matching/views.py:49
-#: critiquebrainz/frontend/matching/views.py:75
 msgid "Only existing release groups can be matched to Spotify!"
-msgstr ""
+msgstr "Vain olemassa olevia julkaisuryhmiä voidaan yhdistää Spotifyhiin!"
 
 #: critiquebrainz/frontend/matching/views.py:54
 msgid "You need to select an album from Spotify!"
-msgstr ""
+msgstr "Valitse albumi Spotifystä!"
 
 #: critiquebrainz/frontend/matching/views.py:58
 msgid "You need to specify correct Spotify URI for this album!"
-msgstr ""
+msgstr "Määritä oikea Spotifyn URI tälle albumille!"
 
 #: critiquebrainz/frontend/matching/views.py:63
 msgid "You need to specify existing album from Spotify!"
-msgstr ""
+msgstr "Määritä olemassa oleva albumi Spotifystä!"
 
-#: critiquebrainz/frontend/matching/views.py:88
+#: critiquebrainz/frontend/matching/views.py:82
 msgid "Connection is added!"
-msgstr ""
-
-#: critiquebrainz/frontend/matching/views.py:98
-msgid "Can't find release group with that ID!"
-msgstr ""
-
-#: critiquebrainz/frontend/matching/views.py:103
-msgid "This album is not matched to Spotify yet!"
-msgstr ""
+msgstr "Yhteys lisätty!"
 
 #: critiquebrainz/frontend/profile/views.py:19
 msgid "Profile updated."
-msgstr ""
+msgstr "Profiili päivitetty."
 
-#: critiquebrainz/frontend/profile/applications/views.py:31
+#: critiquebrainz/frontend/profile/applications/views.py:29
 msgid "You have created an application!"
-msgstr ""
+msgstr "Loit sovelluksen."
 
-#: critiquebrainz/frontend/profile/applications/views.py:47
+#: critiquebrainz/frontend/profile/applications/views.py:44
 msgid "You have updated an application!"
-msgstr ""
+msgstr "Päivitit sovelluksen."
 
-#: critiquebrainz/frontend/profile/applications/views.py:66
+#: critiquebrainz/frontend/profile/applications/views.py:62
 msgid "You have deleted an application."
-msgstr ""
+msgstr "Poistit sovelluksen."
 
 #: critiquebrainz/frontend/release_group/views.py:18
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
-msgstr ""
+msgstr "Annetulla MusicBrainz tunnisteella ei löydy julkaisuryhmää."
 
 #: critiquebrainz/frontend/review/views.py:48
 msgid "You have already published a review for this album!"
-msgstr ""
+msgstr "Olet jo julkaissut arvostelun tälle julkaisulle!"
 
 #: critiquebrainz/frontend/review/views.py:52
 msgid "You have exceeded your limit of reviews per day."
-msgstr ""
+msgstr "Olet kirjoittanut sallitun määrän arvosteluja tälle päivälle."
 
-#: critiquebrainz/frontend/review/views.py:60
-msgid "Review has been saved!"
-msgstr ""
+#: critiquebrainz/frontend/review/views.py:57
+msgid "Review has been published!"
+msgstr "Arvostelu julkaistu!"
 
 #: critiquebrainz/frontend/review/views.py:62
-msgid "Review has been published!"
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:67
 msgid ""
-"You can only write a review for a release group that exists on "
-"MusicBrainz!"
-msgstr ""
+"You can only write a review for a release group that exists on MusicBrainz!"
+msgstr "Arvostelu voidaan kirjoittaa vain julkaisuryhmälle, joka löytyy MusicBrainzista!"
 
-#: critiquebrainz/frontend/review/views.py:95
-msgid "Review has been updated."
-msgstr ""
+#: critiquebrainz/frontend/review/views.py:86
+msgid "Review has been modified."
+msgstr "Arvostelu muokattu."
 
-#: critiquebrainz/frontend/review/views.py:111
+#: critiquebrainz/frontend/review/views.py:102
 msgid "Review has been deleted."
-msgstr ""
+msgstr "Arvostelu poistettu."
 
-#: critiquebrainz/frontend/review/views.py:128
+#: critiquebrainz/frontend/review/views.py:119
 msgid "You cannot rate your own review."
-msgstr ""
+msgstr "Et voi arvioida omaa arvosteluasi."
 
-#: critiquebrainz/frontend/review/views.py:131
+#: critiquebrainz/frontend/review/views.py:122
 msgid "You have exceeded your limit of votes per day."
-msgstr ""
+msgstr "Olet äänestänyt sallitun määrän tälle päivälle."
 
-#: critiquebrainz/frontend/review/views.py:134
-#: critiquebrainz/frontend/review/views.py:137
+#: critiquebrainz/frontend/review/views.py:125
+#: critiquebrainz/frontend/review/views.py:128
 msgid "You are not allowed to rate this review."
-msgstr ""
+msgstr "Et voi arvioida tätä arvostelua."
 
-#: critiquebrainz/frontend/review/views.py:141
+#: critiquebrainz/frontend/review/views.py:132
 msgid "You have rated this review!"
-msgstr ""
+msgstr "Olet arvioinut tämän arvostelun!"
 
-#: critiquebrainz/frontend/review/views.py:153
+#: critiquebrainz/frontend/review/views.py:144
 msgid "This review is not rated yet."
-msgstr ""
+msgstr "Tätä arvostelua ei ole arvioitu vielä."
 
-#: critiquebrainz/frontend/review/views.py:156
+#: critiquebrainz/frontend/review/views.py:147
 msgid "You have deleted your vote for this review!"
-msgstr ""
+msgstr "Poistit äänesi tältä arvostelulta!"
 
 #: critiquebrainz/frontend/templates/about.html:3
 msgid "About CritiqueBrainz"
-msgstr ""
+msgstr "Tietoja CritiqueBrainzista"
 
 #: critiquebrainz/frontend/templates/about.html:6
-#: critiquebrainz/frontend/templates/base.html:49
+#: critiquebrainz/frontend/templates/base.html:51
 #: critiquebrainz/frontend/templates/navbar.html:34
 msgid "About"
-msgstr ""
+msgstr "Tietoja"
 
 #: critiquebrainz/frontend/templates/about.html:8
 msgid "What is CritiqueBrainz?"
-msgstr ""
+msgstr "Mikä CritiqueBrainz on?"
 
 #: critiquebrainz/frontend/templates/about.html:10
 msgid ""
-"<strong>CritiqueBrainz is a repository for Creative Commons licensed "
-"music reviews.</strong>\n"
-"  Here you can read what others have written about an album or write your"
-" own review!\n"
+"<strong>CritiqueBrainz is a repository for Creative Commons licensed music reviews.</strong>\n"
+"  Here you can read what others have written about an album or write your own review!\n"
 "  It is based on data from MusicBrainz - open music encyclopedia."
-msgstr ""
+msgstr "<strong>CritiqueBrainz on tietovarasto Creative Commons -lisensoiduille musiikkiarvosteluille.</strong>\n  Täällä voit lukea mitä muut ovat kirjoittaneet julkaisuista, tai kirjoittaa omia arvostelujasi!\n  CritiqueBrainz pohjautuu MusicBrainziin, avoimeen musiikkitietokantaan."
 
 #: critiquebrainz/frontend/templates/about.html:15
 msgid "What is it for?"
-msgstr ""
+msgstr "Mitä hyötyä siitä on?"
 
 #: critiquebrainz/frontend/templates/about.html:17
 msgid ""
-"Projects like Wikipedia and MusicBrainz are good at aggregating "
-"information about\n"
-"  music, but not suited for expressing opinions about it. That's not "
-"their purpose.\n"
+"Projects like Wikipedia and MusicBrainz are good at aggregating information about\n"
+"  music, but not suited for expressing opinions about it. That's not their purpose.\n"
 "  CritiqueBrainz fills the gap between music critics and raw data."
-msgstr ""
+msgstr "Projektit, kuten Wikipedia ja MusicBrainz ovat hyviä keräämään tietoa musiikista,\n  mutta eivät ole sopivia ilmaisemaan mielipiteitä siitä. Se ei ole niiden tarkoitus.\n  CritiqueBrainz täyttää musiikkiarvostelijoiden ja tietoaineiston välisen aukon."
 
 #: critiquebrainz/frontend/templates/about.html:22
 msgid ""
-"This is an open platform. That means everyone - including you - can "
-"participate\n"
-"  and contribute. If you are good at writing and want to share your "
-"thoughts about\n"
-"  an album - feel free to write a new review. If that's not your thing "
-"and you just\n"
+"This is an open platform. That means everyone - including you - can participate\n"
+"  and contribute. If you are good at writing and want to share your thoughts about\n"
+"  an album - feel free to write a new review. If that's not your thing and you just\n"
 "  want to read opinions - that's fine too."
-msgstr ""
+msgstr "Tämä on avoin alusta. Se tarkoittaa, että kuka tahansa voi osallistua ja luoda sisältöä.\n  Jos olet hyvä kirjoittamaan ja haluat jakaa ajatuksiasi julkaisuista, voit vapaasti kirjoittaa\n  uusia arvosteluja. Voit myös ihan vapaasti vain lukea muiden mielipiteitä."
 
 #: critiquebrainz/frontend/templates/about.html:28
 msgid ""
-"After reading a review you can mark it as useful or not. That will help "
-"other\n"
+"After reading a review you can mark it as useful or not. That will help other\n"
 "  music enthusiasts like you find good reviews."
-msgstr ""
+msgstr "Luettuasi arvostelun, voit arvioida sen hyödylliseksi tai epähyödylliseksi.\n  Se auttaa muita musiikinystäviä löytämään hyviä arvosteluja."
 
 #: critiquebrainz/frontend/templates/artist.html:15
 msgid "Discography"
-msgstr ""
+msgstr "Diskografia"
 
 #: critiquebrainz/frontend/templates/artist.html:18
 msgid "Albums"
-msgstr ""
+msgstr "Albumi"
 
 #: critiquebrainz/frontend/templates/artist.html:21
 msgid "Singles"
-msgstr ""
+msgstr "Singlet"
 
 #: critiquebrainz/frontend/templates/artist.html:24
 msgid "EPs"
-msgstr ""
+msgstr "EP:t"
 
 #: critiquebrainz/frontend/templates/artist.html:27
 msgid "Broadcasts"
-msgstr ""
+msgstr "Lähetykset"
 
 #: critiquebrainz/frontend/templates/artist.html:30
 msgid "Other releases"
-msgstr ""
+msgstr "Muut julkaisut"
 
 #: critiquebrainz/frontend/templates/artist.html:34
 msgid "No releases found"
-msgstr ""
+msgstr "Ei julkaisuja"
 
 #: critiquebrainz/frontend/templates/artist.html:43
 #, python-format
 msgid "%(num)d review"
 msgid_plural "%(num)d reviews"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)d arvostelu"
+msgstr[1] "%(num)d arvostelua"
 
 #: critiquebrainz/frontend/templates/artist.html:69
-#: critiquebrainz/frontend/templates/matching/spotify.html:44
+#: critiquebrainz/frontend/templates/matching/spotify.html:45
 msgid "Previous"
-msgstr ""
+msgstr "Edellinen"
 
 #: critiquebrainz/frontend/templates/artist.html:72
-#: critiquebrainz/frontend/templates/matching/spotify.html:47
+#: critiquebrainz/frontend/templates/matching/spotify.html:48
 msgid "Next"
-msgstr ""
+msgstr "Seuraava"
 
 #: critiquebrainz/frontend/templates/artist.html:82
 msgid "Artist information"
-msgstr ""
+msgstr "Tietoja artistista"
 
 #: critiquebrainz/frontend/templates/artist.html:88
 msgid "Member of"
-msgstr ""
+msgstr "Jäsenenä"
 
 #: critiquebrainz/frontend/templates/artist.html:90
 msgid "Members"
-msgstr ""
+msgstr "Jäsenet"
 
 #: critiquebrainz/frontend/templates/artist.html:97
 #, python-format
 msgid "Member since %(date)s"
-msgstr ""
+msgstr "Jäsenenä %(date)s lähtien"
 
 #: critiquebrainz/frontend/templates/artist.html:108
 msgid "Former member of"
-msgstr ""
+msgstr "Ennen jäsenenä"
 
 #: critiquebrainz/frontend/templates/artist.html:110
 msgid "Former members"
-msgstr ""
+msgstr "Entiset jäsenet"
 
 #: critiquebrainz/frontend/templates/artist.html:124
 msgid "External links"
-msgstr ""
+msgstr "Ulkoiset linkit"
 
 #: critiquebrainz/frontend/templates/artist.html:144
 msgid "Edit on MusicBrainz"
-msgstr ""
+msgstr "Muokkaa MusicBrainzissa"
 
-#: critiquebrainz/frontend/templates/base.html:50
+#: critiquebrainz/frontend/templates/base.html:52
 msgid "Blog"
-msgstr ""
+msgstr "Blogi"
 
-#: critiquebrainz/frontend/templates/base.html:51
+#: critiquebrainz/frontend/templates/base.html:53
 msgid "Developers"
-msgstr ""
+msgstr "Kehittäjät"
 
 #: critiquebrainz/frontend/templates/index.html:5
 msgid "Welcome to CritiqueBrainz!"
-msgstr ""
+msgstr "Tervetuloa CritiqueBrainziin!"
 
 #: critiquebrainz/frontend/templates/index.html:10
 msgid ""
-"CritiqueBrainz is a repository for Creative Commons licensed music "
-"reviews.\n"
-"        Here you can read what other people have written about an album "
-"or write your own review!"
-msgstr ""
+"CritiqueBrainz is a repository for Creative Commons licensed music reviews.\n"
+"        Here you can read what other people have written about an album or write your own review!"
+msgstr "CritiqueBrainz on tietovarasto Creative Commons -lisensoiduille musiikkiarvosteluille.\n        Täällä voit lukea mitä muut ovat kirjoittaneet julkaisuista, tai kirjoittaa omia arvostelujasi!"
 
 #: critiquebrainz/frontend/templates/index.html:14
 msgid ""
-"CritiqueBrainz is based on data from MusicBrainz - open music "
-"encyclopedia.\n"
+"CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
-msgstr ""
+msgstr "CritiqueBrainz pohjautuu MusicBrainziin, avoimeen musiikkitietokantaan.\n        <br/>Kuka tahansa voi osallistua ja luoda sisältöä."
 
 #: critiquebrainz/frontend/templates/index.html:20
 #: critiquebrainz/frontend/templates/user/info.html:28
 msgid "Statistics"
-msgstr ""
+msgstr "Tilastot"
 
 #: critiquebrainz/frontend/templates/index.html:22
 msgid "Reviews:"
-msgstr ""
+msgstr "Arvostelut:"
 
 #: critiquebrainz/frontend/templates/index.html:23
 msgid "Users:"
-msgstr ""
+msgstr "Käyttäjät:"
 
 #: critiquebrainz/frontend/templates/index.html:29
 msgid "Popular reviews"
-msgstr ""
+msgstr "Suositut arvostelut"
 
 #: critiquebrainz/frontend/templates/index.html:31
 #: critiquebrainz/frontend/templates/index.html:65
 #: critiquebrainz/frontend/templates/user/reviews.html:7
 msgid "No reviews found"
-msgstr ""
+msgstr "Ei arvosteluja"
 
 #: critiquebrainz/frontend/templates/index.html:47
 #: critiquebrainz/frontend/templates/index.html:81
 #: critiquebrainz/frontend/templates/matching/confirm.html:13
 #, python-format
 msgid "%(album)s by %(artist)s"
-msgstr ""
+msgstr "Julkaisu %(album)s artistilta %(artist)s"
 
 #: critiquebrainz/frontend/templates/index.html:48
 #: critiquebrainz/frontend/templates/index.html:82
 #: critiquebrainz/frontend/templates/review/edit.html:6
-#: critiquebrainz/frontend/templates/review/edit.html:27
-#: critiquebrainz/frontend/templates/user/reviews.html:35
+#: critiquebrainz/frontend/templates/review/edit.html:23
+#: critiquebrainz/frontend/templates/user/reviews.html:26
 msgid "[Unknown release group]"
-msgstr ""
+msgstr "[Tuntematon julkaisuryhmä]"
 
 #: critiquebrainz/frontend/templates/index.html:49
 #: critiquebrainz/frontend/templates/index.html:83
-#: critiquebrainz/frontend/templates/review/edit.html:24
-#: critiquebrainz/frontend/templates/user/reviews.html:33
+#: critiquebrainz/frontend/templates/review/edit.html:20
+#: critiquebrainz/frontend/templates/user/reviews.html:24
 msgid "[Unknown artist]"
-msgstr ""
+msgstr "[Tuntematon artisti]"
 
 #: critiquebrainz/frontend/templates/index.html:53
 #: critiquebrainz/frontend/templates/index.html:87
 #, python-format
 msgid "Review by %(user)s"
-msgstr ""
+msgstr "Arvostelu käyttäjältä %(user)s"
 
 #: critiquebrainz/frontend/templates/index.html:63
 msgid "Recent reviews"
-msgstr ""
+msgstr "Viimeaikaisia arvosteluja"
 
 #: critiquebrainz/frontend/templates/macros.html:3
 msgid "Error!"
-msgstr ""
+msgstr "Virhe!"
 
 #: critiquebrainz/frontend/templates/macros.html:6
 msgid "Success!"
-msgstr ""
+msgstr "Onnistui!"
 
 #: critiquebrainz/frontend/templates/macros.html:9
 msgid "Notice!"
-msgstr ""
+msgstr "Huomioi!"
 
 #: critiquebrainz/frontend/templates/macros.html:21
 msgid "Modify profile info and delete your profile."
-msgstr ""
+msgstr "Muokkaa profiilin tietoja tai poista profiilisi."
 
 #: critiquebrainz/frontend/templates/macros.html:21
 msgid "Profile data"
-msgstr ""
+msgstr "Profiilin tiedot"
 
 #: critiquebrainz/frontend/templates/macros.html:24
 msgid "Create and modify your reviews."
-msgstr ""
+msgstr "Luo ja muokkaa arvostelujasi."
 
 #: critiquebrainz/frontend/templates/macros.html:24
 #: critiquebrainz/frontend/templates/user/base.html:16
 #: critiquebrainz/frontend/templates/user/info.html:29
 #: critiquebrainz/frontend/templates/user/reviews.html:3
 msgid "Reviews"
-msgstr ""
+msgstr "Arvostelut"
 
 #: critiquebrainz/frontend/templates/macros.html:26
 msgid "Modify your applications (create, edit, delete)."
-msgstr ""
+msgstr "Muokkaa sovelluksiasi (luo, muokkaa, poista)."
 
 #: critiquebrainz/frontend/templates/macros.html:26
 #: critiquebrainz/frontend/templates/navbar.html:27
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
 msgid "Applications"
-msgstr ""
+msgstr "Sovellukset"
 
 #: critiquebrainz/frontend/templates/macros.html:29
 msgid ""
-"Manage access to your profile for other apps (can allow complete access "
-"to your profile and remove existing access authorizations)."
-msgstr ""
+"Manage access to your profile for other apps (can allow complete access to "
+"your profile and remove existing access authorizations)."
+msgstr "Hallinnoi pääsyä profiiliisi muista ohjelmista (voi sallia täyden pääsyn profiiliisi ja poistaa olemassa olevia tunnistautumisia)."
 
 #: critiquebrainz/frontend/templates/macros.html:29
 msgid "Authorization"
-msgstr ""
+msgstr "Tunnistautuminen"
 
 #: critiquebrainz/frontend/templates/macros.html:32
 msgid "Submit and delete your votes."
-msgstr ""
+msgstr "Lähetä ja poista äänestyksiäsi."
 
 #: critiquebrainz/frontend/templates/macros.html:32
 msgid "Review votes"
-msgstr ""
+msgstr "Arvostelun äänet"
 
 #: critiquebrainz/frontend/templates/navbar.html:6
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Vaihda navigointi"
 
 #: critiquebrainz/frontend/templates/navbar.html:19
 #: critiquebrainz/frontend/templates/login/login.html:3
 #: critiquebrainz/frontend/templates/login/login.html:6
 msgid "Sign in"
-msgstr ""
+msgstr "Kirjaudu"
 
 #: critiquebrainz/frontend/templates/navbar.html:26
 msgid "Profile"
-msgstr ""
+msgstr "Profiili"
 
 #: critiquebrainz/frontend/templates/navbar.html:29
 msgid "Sign out"
-msgstr ""
+msgstr "Kirjaudu ulos"
 
 #: critiquebrainz/frontend/templates/navbar.html:33
 msgid "Write a review"
-msgstr ""
+msgstr "Kirjoita arvostelu"
 
 #: critiquebrainz/frontend/templates/navbar.html:39
 #: critiquebrainz/frontend/templates/search/index.html:7
@@ -621,519 +642,487 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:33
 #: critiquebrainz/frontend/templates/search/selector.html:25
 msgid "Search"
-msgstr ""
+msgstr "Etsi"
 
 #: critiquebrainz/frontend/templates/navbar.html:43
-#: critiquebrainz/frontend/templates/review/edit.html:24
-#: critiquebrainz/frontend/templates/review/write.html:19
+#: critiquebrainz/frontend/templates/review/edit.html:20
+#: critiquebrainz/frontend/templates/review/write.html:15
 #: critiquebrainz/frontend/templates/search/index.html:26
 #: critiquebrainz/frontend/templates/search/index.html:56
 #: critiquebrainz/frontend/templates/search/selector.html:10
 #: critiquebrainz/frontend/templates/search/selector.html:40
-#: critiquebrainz/frontend/templates/user/reviews.html:13
+#: critiquebrainz/frontend/templates/user/reviews.html:12
 msgid "Artist"
-msgstr ""
+msgstr "Artisti"
 
 #: critiquebrainz/frontend/templates/navbar.html:44
-#: critiquebrainz/frontend/templates/review/edit.html:25
-#: critiquebrainz/frontend/templates/review/write.html:20
+#: critiquebrainz/frontend/templates/review/edit.html:21
+#: critiquebrainz/frontend/templates/review/write.html:16
 #: critiquebrainz/frontend/templates/search/index.html:27
 #: critiquebrainz/frontend/templates/search/index.html:55
 #: critiquebrainz/frontend/templates/search/selector.html:17
 #: critiquebrainz/frontend/templates/search/selector.html:41
-#: critiquebrainz/frontend/templates/user/reviews.html:14
+#: critiquebrainz/frontend/templates/user/reviews.html:13
 msgid "Release group"
-msgstr ""
+msgstr "Julkaisuryhmä"
 
 #: critiquebrainz/frontend/templates/errors/404.html:3
 msgid "Page not found"
-msgstr ""
+msgstr "Sivua ei löydy"
 
 #: critiquebrainz/frontend/templates/errors/404.html:9
 msgid ""
 "The requested URL was not found on the server. If you entered the URL "
 "manually please check your spelling and try again."
-msgstr ""
+msgstr "Pyydettyä URL-osoitetta ei löydy palvelimelta. Mikäli kirjoitit osoitteen käsin, tarkista sen kirjoitusasu ja yritä uudelleen."
 
 #: critiquebrainz/frontend/templates/errors/500.html:3
 msgid "Server error"
-msgstr ""
+msgstr "Palvelimen virhe"
 
 #: critiquebrainz/frontend/templates/errors/500.html:6
 msgid ""
-"Server failed to process your request. Developers have been notified. You"
-" can try again later."
-msgstr ""
+"Server failed to process your request. Developers have been notified. You "
+"can try again later."
+msgstr "Palvelin ei pystynyt suorittamaan pyyntöä. Kehittäjille on ilmoitettu. Voit yrittää myöhemmin uudelleen."
 
 #: critiquebrainz/frontend/templates/errors/503.html:3
 msgid "Service unavailable"
-msgstr ""
+msgstr "Palvelu estynyt"
 
 #: critiquebrainz/frontend/templates/errors/503.html:6
 msgid ""
 "CritiqueBrainz server is temporarily unavailable. Developers have been "
 "notified. You can try again later."
-msgstr ""
+msgstr "CritiqueBrainzin palvelin on tilapaisesti estynyt. Kehittäjille on ilmoitettu. Voit yrittää myöhemmin uudelleen."
 
 #: critiquebrainz/frontend/templates/errors/base.html:9
 msgid "Back to home page"
-msgstr ""
+msgstr "Takaisin kotisivulle"
 
 #: critiquebrainz/frontend/templates/login/login.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to"
-" access your profile data."
-msgstr ""
+"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"access your profile data."
+msgstr "Kirjaudu MusicBrainzin käyttäjätililläsi, ja salli CritiqueBrainzin pääsy profiiliisi."
 
 #: critiquebrainz/frontend/templates/login/login.html:11
 msgid "Sign in with MusicBrainz"
-msgstr ""
+msgstr "Kirjaudu MusicBrainzilla"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:3
 msgid "Matching confirmation"
-msgstr ""
+msgstr "Yhdistämisen varmistus"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:6
 #: critiquebrainz/frontend/templates/matching/spotify.html:3
 #: critiquebrainz/frontend/templates/matching/spotify.html:6
 msgid "Spotify album matching"
-msgstr ""
+msgstr "Spotifyn ja julkaisun yhdistäminen"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:8
 msgid "Are you sure you want to create a connection?"
-msgstr ""
+msgstr "Oletko varma, että haluat luoda yhteyden?"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:22
 msgid "Spotify"
-msgstr ""
+msgstr "Spotify"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:23
 msgid "URI:"
-msgstr ""
+msgstr "URI:"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:30
 msgid "Connect"
-msgstr ""
+msgstr "Yhdistä"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:31
 msgid "Cancel"
-msgstr ""
+msgstr "Peruuta"
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:14
 #, python-format
 msgid "Please, select the album %(album)s by %(artist)s"
-msgstr ""
+msgstr "Valitse julkaisu %(album)s esittäjältä %(artist)s"
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:33
 msgid "Listen on Spotify"
-msgstr ""
+msgstr "Kuuntele Spotifyssa"
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:54
+#: critiquebrainz/frontend/templates/matching/spotify.html:55
 msgid "No similar albums found"
-msgstr ""
+msgstr "Samankaltaisia julkaisuja ei löytynyt"
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:60
+#: critiquebrainz/frontend/templates/matching/spotify.html:61
 msgid ""
-"If you can't find the right album in search results, you can paste "
-"Spotify URI there:"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/matching/spotify.html:71
-msgid ""
-"It's fine if you can't find the right album. It might not be available on"
-" Spotify yet."
-msgstr ""
+"If you can't find the right album in search results, you can paste Spotify "
+"URI there:"
+msgstr "Jos et näe oikeaa julkaisua hakutuloksissa, voit liittää Spotifyn URI:n tähän:"
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:72
+msgid ""
+"It's fine if you can't find the right album. It might not be available on "
+"Spotify yet."
+msgstr "On mahdollista. ettei oikeaa julkaisua löydy. Se ei ehkä ole vielä Spotifyssa."
+
+#: critiquebrainz/frontend/templates/matching/spotify.html:73
 #, python-format
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
-msgstr ""
+msgstr "Pääset <a href=\"%(link)s\">tästä takaisin julkaisuryhmän sivulle</a>."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
-msgstr ""
+msgstr "OAuth tunnistautuminen"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:7
 #, python-format
 msgid "Do you want to give access to your account to %(name)s?"
-msgstr ""
+msgstr "Haluatko antaa %(name)s pääsyn tiliisi?"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:9
 msgid "You can revoke access at any time in your profile settings."
-msgstr ""
+msgstr "Voit poistaa pääsyoikeuden koska tahansa profiiliasetuksistasi."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:15
 #: critiquebrainz/frontend/templates/profile/applications/index.html:20
 #: critiquebrainz/frontend/templates/profile/applications/index.html:54
 #: critiquebrainz/frontend/templates/search/index.html:48
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:16
 #: critiquebrainz/frontend/templates/profile/applications/index.html:21
 #: critiquebrainz/frontend/templates/profile/applications/index.html:55
 msgid "Website"
-msgstr ""
+msgstr "Verkkosivu"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:23
 #, python-format
 msgid ""
-"%(client)s is requesting permission to access the following parts of your"
-" profile:"
-msgstr ""
+"%(client)s is requesting permission to access the following parts of your "
+"profile:"
+msgstr "%(client)s pyytää pääsyä seuraaviin profiilisi tietoihin:"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:30
 #, python-format
 msgid "%(client)s does not require any special permissions."
-msgstr ""
+msgstr "%(client)s ei vaadi mitään erityisiä oikeuksia."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:36
 msgid "Allow access"
-msgstr ""
+msgstr "Salli pääsy"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:37
 msgid "No thanks"
-msgstr ""
+msgstr "Ei kiitos"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:3
 #: critiquebrainz/frontend/templates/profile/edit.html:35
 msgid "Delete account"
-msgstr ""
+msgstr "Poista tili"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:6
 msgid "Deleting account"
-msgstr ""
+msgstr "Poistetaan tili"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:10
 msgid "Are you sure you want to delete your account?"
-msgstr ""
+msgstr "Haluatko varmasti poistaa tilisi?"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:11
 msgid ""
 "All your data (i.e. reviews, votes, reports) will be purged. You "
 "<strong>cannot</strong> undo this action."
-msgstr ""
+msgstr "Kaikki tietosi poistetaan (arvostelu, äänet, raportit).Tätä toimintoa <strong>ei voi kumota</strong>."
 
 #: critiquebrainz/frontend/templates/profile/delete.html:14
 msgid "Yes, I want to delete my account"
-msgstr ""
+msgstr "Kyllä, haluan poistaa tilini"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:15
 msgid "No"
-msgstr ""
+msgstr "Ei"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:3
 #: critiquebrainz/frontend/templates/user/base.html:10
 msgid "Edit profile"
-msgstr ""
+msgstr "Muokkaa profiilia"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:13
 msgid "Editing profile"
-msgstr ""
+msgstr "Profiilin muokkaus"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:34
 msgid "Save"
-msgstr ""
+msgstr "Tallenna"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:3
 #: critiquebrainz/frontend/templates/profile/applications/create.html:14
 #: critiquebrainz/frontend/templates/profile/applications/index.html:11
 msgid "Create new application"
-msgstr ""
+msgstr "Luo uusi sovellus"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:38
 msgid "Create application"
-msgstr ""
+msgstr "Luo sovellus"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:3
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:14
 #, python-format
 msgid "Edit application %(name)s"
-msgstr ""
+msgstr "Muokkaa sovellusta %(name)s"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:38
 msgid "Save changes"
-msgstr ""
+msgstr "Tallenna muutokset"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:9
 msgid "Your applications"
-msgstr ""
+msgstr "Sovelluksesi"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:15
 msgid "No applications found"
-msgstr ""
+msgstr "Ei sovelluksia"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:22
 msgid "Client ID"
-msgstr ""
+msgstr "Asiakasohjelman tunnus"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:23
 msgid "Client secret"
-msgstr ""
+msgstr "Asiakasohjelman salaisuus"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:35
 msgid "Modify"
-msgstr ""
+msgstr "Muokkaa"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:36
-#: critiquebrainz/frontend/templates/user/reviews.html:46
+#: critiquebrainz/frontend/templates/user/reviews.html:38
 msgid "Delete"
-msgstr ""
+msgstr "Poista"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:43
 #, python-format
 msgid "Developer documentation is available at %(link)s."
-msgstr ""
+msgstr "Kehittäjäin ohjeistus löytyy osoitteesta %(link)s."
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:47
 msgid "Authorized applications"
-msgstr ""
+msgstr "Valtuutetut sovellukset"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:49
 msgid "No authorized applications found"
-msgstr ""
+msgstr "Ei valtuutettuja sovelluksia"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:56
 msgid "Access"
-msgstr ""
+msgstr "Pääsyoikeudet"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:75
 msgid "No special requirements"
-msgstr ""
+msgstr "Ei mitään eritystä"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:79
 msgid "Revoke access"
-msgstr ""
+msgstr "Poista oikeudet"
 
 #: critiquebrainz/frontend/templates/review/edit.html:7
 #, python-format
 msgid "Edit review of \"%(rg)s\""
-msgstr ""
+msgstr "Muokkaa arvostelua julkaisulle \"%(rg)s\""
 
-#: critiquebrainz/frontend/templates/review/edit.html:19
+#: critiquebrainz/frontend/templates/review/edit.html:18
 msgid "Editing review"
-msgstr ""
+msgstr "Arvostelun muokkaaminen"
 
-#: critiquebrainz/frontend/templates/review/edit.html:32
-#: critiquebrainz/frontend/templates/user/reviews.html:15
+#: critiquebrainz/frontend/templates/review/edit.html:28
+#: critiquebrainz/frontend/templates/user/reviews.html:14
 msgid "Created on"
-msgstr ""
+msgstr "Luotu"
 
-#: critiquebrainz/frontend/templates/review/edit.html:34
-#: critiquebrainz/frontend/templates/user/reviews.html:16
+#: critiquebrainz/frontend/templates/review/edit.html:29
+#: critiquebrainz/frontend/templates/user/reviews.html:15
 msgid "Votes (+/-)"
-msgstr ""
+msgstr "Äänet (+/-)"
+
+#: critiquebrainz/frontend/templates/review/edit.html:30
+msgid "Rating"
+msgstr "Arvostelu"
+
+#: critiquebrainz/frontend/templates/review/edit.html:35
+#: critiquebrainz/frontend/templates/review/write.html:27
+msgid "Write"
+msgstr "Kirjoita"
 
 #: critiquebrainz/frontend/templates/review/edit.html:36
-msgid "Status"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/edit.html:39
-#: critiquebrainz/frontend/templates/user/reviews.html:27
-msgid "Draft"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/edit.html:41
-#: critiquebrainz/frontend/templates/user/reviews.html:29
-msgid "Published"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/edit.html:58
-#: critiquebrainz/frontend/templates/review/write.html:41
-msgid "Write"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/edit.html:59
-#: critiquebrainz/frontend/templates/review/write.html:42
+#: critiquebrainz/frontend/templates/review/write.html:28
 msgid "Preview"
-msgstr ""
+msgstr "Esikatsele"
 
-#: critiquebrainz/frontend/templates/review/edit.html:61
-#: critiquebrainz/frontend/templates/review/write.html:44
+#: critiquebrainz/frontend/templates/review/edit.html:38
+#: critiquebrainz/frontend/templates/review/write.html:30
 #, python-format
 msgid ""
-"You can use <a href=\"%(url)s\" target=\"_blank\">Markdown</a> syntax to "
-"apply custom formatting."
-msgstr ""
+"You can use <a href=\"%(url)s\">Markdown</a> syntax to apply custom "
+"formatting."
+msgstr "Voit käyttää <a href=\"%(url)s\">Markdown</a>-syntaksia muotoiluun."
 
-#: critiquebrainz/frontend/templates/review/edit.html:73
-#: critiquebrainz/frontend/templates/review/edit.html:126
-#: critiquebrainz/frontend/templates/review/write.html:56
-#: critiquebrainz/frontend/templates/review/write.html:120
+#: critiquebrainz/frontend/templates/review/edit.html:50
+#: critiquebrainz/frontend/templates/review/edit.html:67
+#: critiquebrainz/frontend/templates/review/write.html:42
+#: critiquebrainz/frontend/templates/review/write.html:59
 msgid "Loading preview..."
-msgstr ""
+msgstr "Ladataan esikatselua..."
 
-#: critiquebrainz/frontend/templates/review/edit.html:86
-#: critiquebrainz/frontend/templates/review/write.html:72
-msgid "You cannot change the license after the review is published."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/edit.html:92
-#: critiquebrainz/frontend/templates/review/write.html:92
+#: critiquebrainz/frontend/templates/review/edit.html:77
+#: critiquebrainz/frontend/templates/review/write.html:98
 msgid "Publish"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/edit.html:93
-#: critiquebrainz/frontend/templates/review/write.html:93
-msgid "Save draft"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/edit.html:95
-msgid "Update"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/edit.html:97
-msgid "Discard changes"
-msgstr ""
+msgstr "Julkaise"
 
 #: critiquebrainz/frontend/templates/review/write.html:3
 #, python-format
 msgid "Write review of \"%(rg)s\""
-msgstr ""
+msgstr "Kirjoita arvostelu julkaisulle \"%(rg)s\""
 
-#: critiquebrainz/frontend/templates/review/write.html:14
+#: critiquebrainz/frontend/templates/review/write.html:13
 msgid "Write review"
-msgstr ""
+msgstr "Kirjoita arvostelu"
 
-#: critiquebrainz/frontend/templates/review/write.html:61
+#: critiquebrainz/frontend/templates/review/write.html:67
 msgid "Please, specify language of this review:"
-msgstr ""
+msgstr "Määritä arvostelun kieli:"
 
-#: critiquebrainz/frontend/templates/review/write.html:80
+#: critiquebrainz/frontend/templates/review/write.html:85
 msgid ""
-"You acknowledge and agree that your contributed reviews to CritiqueBrainz"
-" are licensed under a\n"
-"        Creative Commons Attribution-ShareAlike 3.0 Unported or Creative "
-"Commons Attribution-ShareAlike-NonCommercial\n"
-"        license as per your choice above. You agree to license your work "
-"under this license.\n"
-"        You represent and warrant that you own or control all rights in "
-"and to the work, that nothing in the work\n"
-"        infringes the rights of any third-party, and that you have the "
-"permission to use and to license the work\n"
-"        under the selected Creative Commons license. Finally, you give "
-"the MetaBrainz Foundation permission to license\n"
-"        this content for commercial use outside of Creative Commons "
-"licenses in order to support the operations of the organization."
-msgstr ""
+"You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a\n"
+"\t\t  Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial\n"
+"\t\t  license as per your choice above. You agree to license your work under this license.\n"
+"\t\t  You represent and warrant that you own or control all rights in and to the work, that nothing in the work\n"
+"\t\t  infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
+"\t\t  under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
+"\t\t  this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
+msgstr "Tiedostat ja hyväksyt, että CritiqueBrainziin luomasi arvostelut lisensoidaan\n\t\t  Creative Commons Nimeä-Tarttuva 3.0 Muokkaamaton tai Creative Commons Nimeä-Tarttuva-Epäkaupallinen\n\t\t  -lisenssillä, yllä valitsemasi mukaan. Hyväksyt teoksesi julkaisun tämän lisenssin ehdoilla.\n\t\t  Vakuutat ja takaat, että omistat tai hallitset kaikki oikeudet teokseen, ja ettei mikään teoksessa\n\t\t  loukkaa kolmansien osapuolten oikeuksia, ja sinulla on oikeudet käyttää ja lisensoida teos\n\t\t  valitun Creative Commons -lisenssin alla. Tämän lisäksi, annat MetaBrainz-säätiölle oikeuden lisensoida\n\t\t  tämä sisältö kaupallisiin tarkoituksiin Creative Commons -lisenssien ulkopuolella säätiön toimintojen tukemiseksi."
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"
-msgstr ""
+msgstr "Hakutulokset"
 
 #: critiquebrainz/frontend/templates/search/index.html:17
 msgid "Query"
-msgstr ""
+msgstr "Kysely"
 
 #: critiquebrainz/frontend/templates/search/index.html:23
 #: critiquebrainz/frontend/templates/search/index.html:50
 #: critiquebrainz/frontend/templates/search/index.html:57
 #: critiquebrainz/frontend/templates/search/selector.html:42
 msgid "Type"
-msgstr ""
+msgstr "Muoto"
 
 #: critiquebrainz/frontend/templates/search/index.html:41
 #: critiquebrainz/frontend/templates/search/selector.html:34
 msgid "No results found"
-msgstr ""
+msgstr "Ei tuloksia"
 
 #: critiquebrainz/frontend/templates/search/index.html:49
 msgid "Sort name"
-msgstr ""
+msgstr "Lajittelunimi"
 
 #: critiquebrainz/frontend/templates/search/index.html:51
 msgid "Country"
-msgstr ""
+msgstr "Maa"
 
 #: critiquebrainz/frontend/templates/search/index.html:66
 #: critiquebrainz/frontend/templates/search/selector.html:52
 msgid "Load more results"
-msgstr ""
+msgstr "Lataa lisää tuloksia"
 
 #: critiquebrainz/frontend/templates/search/index.html:67
 #: critiquebrainz/frontend/templates/search/selector.html:53
 msgid "Loading more results..."
-msgstr ""
+msgstr "Ladataan lisää tuloksia..."
 
 #: critiquebrainz/frontend/templates/search/index.html:95
 #: critiquebrainz/frontend/templates/search/selector.html:85
 msgid "Failed to load more search results!"
-msgstr ""
+msgstr "Epäonnistui lataamaan lisää hakutuloksia!"
 
 #: critiquebrainz/frontend/templates/search/selector.html:3
 #: critiquebrainz/frontend/templates/search/selector.html:6
 msgid "Release group selection"
-msgstr ""
+msgstr "Julkaisuryhmän valinta"
 
 #: critiquebrainz/frontend/templates/search/selector.html:57
 msgid "Continue"
-msgstr ""
+msgstr "Jatka"
 
 #: critiquebrainz/frontend/templates/user/base.html:17
 #: critiquebrainz/frontend/templates/user/info.html:3
 msgid "Info"
-msgstr ""
+msgstr "Tiedot"
 
 #: critiquebrainz/frontend/templates/user/info.html:9
 msgid "General information"
-msgstr ""
+msgstr "Yleistä tietoa"
 
 #: critiquebrainz/frontend/templates/user/info.html:11
 msgid "Member since"
-msgstr ""
+msgstr "Jäsenenä"
 
 #: critiquebrainz/frontend/templates/user/info.html:12
 msgid "User type"
-msgstr ""
+msgstr "Käyttäjän tyyppi"
 
 #: critiquebrainz/frontend/templates/user/info.html:13
 msgid "Karma"
-msgstr ""
+msgstr "Karma"
 
 #: critiquebrainz/frontend/templates/user/info.html:19
 msgid "Limits"
-msgstr ""
+msgstr "Rajoitukset"
 
 #: critiquebrainz/frontend/templates/user/info.html:21
 msgid "Reviews/day"
-msgstr ""
+msgstr "Arvosteluja/päivä"
 
 #: critiquebrainz/frontend/templates/user/info.html:22
 msgid "Votes/day"
-msgstr ""
+msgstr "Ääniä/päivä"
 
 #: critiquebrainz/frontend/templates/user/info.html:31
 #: critiquebrainz/frontend/templates/user/info.html:37
 msgid "Today"
-msgstr ""
+msgstr "Tänään"
 
 #: critiquebrainz/frontend/templates/user/info.html:32
 #: critiquebrainz/frontend/templates/user/info.html:38
 msgid "Last 7 days"
-msgstr ""
+msgstr "Viimeiset seitsemän päivää"
 
 #: critiquebrainz/frontend/templates/user/info.html:33
 #: critiquebrainz/frontend/templates/user/info.html:39
 msgid "This month"
-msgstr ""
+msgstr "Tässä kuussa"
 
 #: critiquebrainz/frontend/templates/user/info.html:35
 msgid "Votes"
-msgstr ""
+msgstr "Äänet"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:43
+#: critiquebrainz/frontend/templates/user/reviews.html:16
+msgid "Class"
+msgstr "Luokka"
+
+#: critiquebrainz/frontend/templates/user/reviews.html:35
 msgid "Read"
-msgstr ""
+msgstr "Lue"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:45
+#: critiquebrainz/frontend/templates/user/reviews.html:37
 msgid "Edit"
-msgstr ""
+msgstr "Muokkaa"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:57
+#: critiquebrainz/frontend/templates/user/reviews.html:49
 msgid "Newer"
-msgstr ""
+msgstr "Uudempi"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:60
+#: critiquebrainz/frontend/templates/user/reviews.html:52
 msgid "Older"
-msgstr ""
-
+msgstr "Vanhempi"
