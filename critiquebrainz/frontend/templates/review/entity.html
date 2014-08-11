@@ -95,11 +95,17 @@
             <div class="row">
               <div class="col-md-8">
                 <form method="POST" action="{{ url_for('review.vote_submit', review_id=review.id) }}">
-                  {{ _('Did you find this review useful?') }}
-                  <button type="submit" class="btn btn-default btn-xs {% if vote.vote == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
-                  <button type="submit" class="btn btn-default btn-xs {% if vote.vote == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
-                  {% if vote.vote == True or vote.vote == False %}
-                    <a href="{{ url_for('review.vote_delete', id=review.id) }}">{{ _('(delete your vote)') }}</a>
+                  {% if vote == None %}
+                    {{ _('Did you find this review useful?') }}
+                    <button type="submit" class="btn btn-default btn-xs {% if vote.vote == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
+                    <button type="submit" class="btn btn-default btn-xs {% if vote.vote == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
+                  {% else %}
+                    {% if vote.vote == True %}
+                      <span class="text-success">{{ _('You found this review useful.') }}</span>
+                    {% else %}
+                      <span class="text-warning">{{ _('You didn\'t find this review useful.') }}</span>
+                    {% endif %}
+                    <a href="{{ url_for('review.vote_delete', id=review.id) }}" class="btn btn-default btn-xs" title="{{ _('Delete your vote') }}"><span class="glyphicon glyphicon-trash"></span></a>
                   {% endif %}
                 </form>
               </div>
