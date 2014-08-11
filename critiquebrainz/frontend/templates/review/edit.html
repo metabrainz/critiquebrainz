@@ -74,6 +74,19 @@
       </div>
     </div>
   </div>
+  <hr />
+  {% if review.is_draft %}
+    <div class="form-group">
+      <div class="col-sm-12">
+        {% for choice in form.license_choice %}
+          <div class="radio">
+            <label>{{ choice }}{{ choice.label.text | safe }}</label>
+          </div>
+        {% endfor %}
+        <br /><small class="text-warning"><em>{{ _('You cannot change the license after the review is published.') }}</em></small>
+      </div>
+    </div>
+  {% endif %}
 </form>
 {% if review.is_draft %}
   <button id="btn-publish" class="btn btn-primary">{{ _('Publish') }}</button>

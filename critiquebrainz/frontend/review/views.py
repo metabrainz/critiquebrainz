@@ -85,10 +85,14 @@ def edit_handler(id):
     if review.user != current_user:
         abort(403)
 
-    form = ReviewEditForm()
+    form = ReviewEditForm(default_license_id=review.license_id)
+    if not review.is_draft:
+        # Can't change license if review is published.
+        del form.license_choice
+
     if form.validate_on_submit():
-        review.update(text=form.text.data, is_draft=(form.state.data == 'draft'))
-        flash(gettext("Review has been modified."), 'success')
+        review.update(text=form.text.data, is_draft=(form.state.data == 'draft'), license_id=form.license_choice.data)
+        flash(gettext("Review has been updated."), 'success')
         return redirect(url_for('.entity', id=review.id))
     else:
         form.text.data = review.text
