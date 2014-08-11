@@ -81,6 +81,7 @@
 {% else %}
   <button id="btn-publish" class="btn btn-primary">{{ _('Update') }}</button>
 {% endif %}
+<a class="btn btn-link" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Discard changes') }}</a>
 {% endblock %}
 
 {% block scripts %}
