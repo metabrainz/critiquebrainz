@@ -50,7 +50,7 @@ class Review(db.Model):
         return response
 
     def delete(self):
-        self.is_archived = True
+        db.session.delete(self)
         db.session.commit()
         return self
 
