@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% set release_group = review.release_group | release_group_details %}
+{% set rg_title = release_group.title | default(_('[Unknown release group]')) %}
+
+{% block title %}{{ _('Delete review of %(release_group)s', release_group = rg_title) }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+  <h2>{{ _('Deleting review') }}</h2>
+  <hr />
+  <form method="POST" role="form">
+    <div class="form-group">
+      <p class="lead">{{ _('Are you sure you want to delete your review of %(release_group)s?', release_group = rg_title) }}</p>
+      <p class="text-warning">{{ _('There is no way to undo this action!') }}</p>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-danger">{{ _('Delete review') }}</button>
+      <a href="{{ url_for('user.reviews', user_id=current_user.id) }}" class="btn btn-default">{{ _('Cancel') }}</a>
+    </div>
+  </form>
+{% endblock %}

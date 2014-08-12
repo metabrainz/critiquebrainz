@@ -96,7 +96,7 @@ def edit_handler(id):
     return render_template('review/edit.html', form=form, review=review)
 
 
-@review_bp.route('/<uuid:id>/delete', endpoint='delete')
+@review_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'], endpoint='delete')
 @login_required
 def delete_handler(id):
     review = Review.query.get_or_404(str(id))
@@ -104,9 +104,11 @@ def delete_handler(id):
         raise NotFound
     if review.user != current_user:
         abort(403)
-    review.delete()
-    flash(gettext("Review has been deleted."), 'success')
-    return redirect(url_for('user.reviews', user_id=current_user.id))
+    if request.method == 'POST':
+        review.delete()
+        flash(gettext("Review has been deleted."), 'success')
+        return redirect(url_for('user.reviews', user_id=current_user.id))
+    return render_template('review/delete.html', review=review)
 
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['POST'], endpoint='vote_submit')
