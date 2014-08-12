@@ -74,6 +74,10 @@
       </div>
     </div>
   </div>
+  <div class="form-group">
+    <label class="control-label col-sm-4" for="review-language">{{ _('Please, specify language of this review:') }}</label>
+    <div class="col-sm-8">{{ form.language(id="review-language", class="form-control") | safe }}</div>
+  </div>
   <hr />
   {% if review.is_draft %}
     <div class="form-group">

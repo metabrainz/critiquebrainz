@@ -155,7 +155,7 @@ class Review(db.Model):
         db.session.commit()
         return review
 
-    def update(self, text, is_draft=None, license_id=None):
+    def update(self, text, is_draft=None, license_id=None, language=None):
         """Update contents of this review.
 
         :returns New revision of this review.
@@ -169,6 +169,9 @@ class Review(db.Model):
             if not self.is_draft:  # If trying to convert published review into draft.
                 raise InvalidRequest("Changing license of a published review is not allowed.")
             self.license_id = license_id
+
+        if language is not None:
+            self.language = language
 
         new_revision = Revision(review_id=self.id, text=text)
         db.session.add(new_revision)
