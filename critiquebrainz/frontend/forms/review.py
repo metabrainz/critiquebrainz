@@ -31,16 +31,13 @@ class ReviewEditForm(Form):
             ('CC BY-NC-SA 3.0', gettext('Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),
         ],
         validators=[validators.DataRequired(message=gettext("You need to choose a license!"))])
+    language = SelectField(gettext("Language"), choices=languages)
 
-    def __init__(self, default_license_id='CC BY-SA 3.0', **kwargs):
+    def __init__(self, default_license_id='CC BY-SA 3.0', default_language='en', **kwargs):
        kwargs.setdefault('license_choice', default_license_id)
+       kwargs.setdefault('language', default_language)
        Form.__init__(self, **kwargs)
 
 
 class ReviewCreateForm(ReviewEditForm):
-    language = SelectField(gettext("Language"), choices=languages)
     agreement = BooleanField(validators=[validators.DataRequired(message=gettext("You need to accept the license agreement!"))])
-
-    def __init__(self, default_language='en', **kwargs):
-       kwargs.setdefault('language', default_language)
-       ReviewEditForm.__init__(self, **kwargs)
