@@ -15,8 +15,10 @@ mb_auth = MusicBrainzAuthentication(
 
 
 login_manager = LoginManager()
+login_manager.init_app(current_app)
 login_manager.login_view = 'login.index'
-login_manager.login_message = gettext("Please sign in to access this page.")
+login_manager.login_message = gettext(u"Please sign in to access this page.")
+login_manager.localize_callback = gettext
 
 
 @login_manager.user_loader

@@ -3,7 +3,6 @@ from flask import Flask
 
 def create_app():
     app = Flask(__name__)
-
     # Configuration files
     import critiquebrainz.default_config
     app.config.from_object(critiquebrainz.default_config)
@@ -24,15 +23,12 @@ def create_app():
     from critiquebrainz.data import db
     db.init_app(app)
 
+    import babel
+    babel.init_app(app)
+    
     with app.app_context():
         import apis
         import login
-
-    import babel
-    babel.init_app(app)
-
-    from login import login_manager
-    login_manager.init_app(app)
 
     # Template utilities
     app.jinja_env.add_extension('jinja2.ext.do')
