@@ -19,8 +19,8 @@
       <div class="panel panel-default">
         <div class="panel-heading"><strong>{{ _('Statistics') }}</strong></div>
         <div class="panel-body">
-          {{ _('Reviews:') }} {{ reviews_total }}
-          <br/>{{ _('Users:') }} {{ users_total }}
+          {{ _('Reviews: %(reviews_count)s', reviews_count = reviews_total) }}
+          <br/>{{ _('Users: %(users_count)s', users_count = users_total) }}
         </div>
       </div>
     </div>
