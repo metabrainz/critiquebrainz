@@ -120,14 +120,20 @@
       $(function() {
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
           if (e.target.hash.substring(1) == "preview") {
-            $.ajax({
-              type: "POST",
-              url: "{{ url_for('review.preview') }}",
-              data: { text: $("#review-content").val() },
-              success: function(data) { $("#preview").html(data); }
-            });
+            var text = $("#review-content").val();
+            if (!text) {
+              $("#preview").html('<em class="text-muted">{{ _('Review is empty.') }}</em>');
+            } else {
+              $.ajax({
+                type: "POST",
+                url: "{{ url_for('review.preview') }}",
+                data: { text: text },
+                success: function(data) { $("#preview").html(data); },
+                error: function() { $("#preview").html('<em class="text-danger">{{ _('Failed to load preview.') }}</em>'); }
+              });
+            }
           } else {
-            $("#preview").html('<span class="text-muted">{{ _('Loading preview...') }}</span>');
+            $("#preview").html('<em class="text-muted">{{ _('Loading preview...') }}</em>');
           }
         });
       });
