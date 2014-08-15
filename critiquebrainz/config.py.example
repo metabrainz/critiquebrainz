@@ -12,6 +12,10 @@ MUSICBRAINZ_CLIENT_SECRET = "<your musicbrainz client secret>"
 # Administrator list (emails)
 ADMINS = []
 
+# Server with Spotify mappings
+MBSPOTIFY_BASE_URI = "http://127.0.0.1:8080/"
+MBSPOTIFY_ACCESS_KEY = "INSERT_YOUR_ACCESS_KEY"
+
 
 # Settings defined below have default values in default_config.py, but can be overridden in this file.
 
@@ -20,9 +24,6 @@ ADMINS = []
 #TEST_SQLALCHEMY_DATABASE_URI = "postgresql://<test_user>:<test_pass>@<host>:<port>/<test_db>"
 
 #SSL_AVAILABLE = True
-
-# Server with Spotify mappings
-#MBSPOTIFY_BASE_URI = "http://127.0.0.1:8080/"
 
 #MEMCACHED_SERVERS = ["127.0.0.1:11211"]
 #MEMCACHED_NAMESPACE = "CB"

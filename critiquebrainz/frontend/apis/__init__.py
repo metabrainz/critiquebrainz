@@ -8,6 +8,6 @@ from spotify import SpotifyClient
 musicbrainz = MusicBrainzClient()
 musicbrainz.init_app("CritiqueBrainz Client", __version__)
 
-mbspotify = MBSpotifyClient(current_app.config['MBSPOTIFY_BASE_URI'])
+mbspotify = MBSpotifyClient(current_app.config['MBSPOTIFY_BASE_URI'], current_app.config['MBSPOTIFY_ACCESS_KEY'])
 
 spotify = SpotifyClient()
