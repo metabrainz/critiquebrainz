@@ -43,7 +43,7 @@ def review_creation_selector_handler():
     release_group = request.args.get('release_group')
     next = request.args.get('next')
     if not next:
-        return redirect(url_for('index'))
+        return redirect(url_for('frontend.index'))
     if artist or release_group:
         count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
                                                            limit=RESULTS_LIMIT)
