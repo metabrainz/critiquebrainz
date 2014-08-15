@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-15 10:36+0000\n"
+"POT-Creation-Date: 2014-08-15 16:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -740,6 +740,14 @@ msgstr ""
 msgid ""
 "If you can't find the right album in search results, you can paste "
 "Spotify URI there:"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/matching/spotify.html:63
+msgid "Spotify URI"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/matching/spotify.html:65
+msgid "Submit"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:71
