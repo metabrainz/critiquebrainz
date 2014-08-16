@@ -9,7 +9,7 @@ import json
 class ReviewViewsTestCase(WebServiceTestCase):
 
     def test_review_count(self):
-        resp = self.client.get('/ws/1/review/')
+        resp = self.client.get('/review/')
         data = json.loads(resp.data)
         assert data['count'] == 0
 
@@ -24,9 +24,10 @@ class ReviewViewsTestCase(WebServiceTestCase):
         review = Review.create(user=user,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=text,
+                               is_draft=False,
                                license_id=license.id)
 
-        resp = self.client.get('/ws/1/review/')
+        resp = self.client.get('/review/')
         data = json.loads(resp.data)
 
         assert data['count'] == 1

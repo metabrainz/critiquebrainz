@@ -3,7 +3,7 @@ from flask import Flask
 
 def create_app():
     app = Flask(__name__)
-    
+
     # Configuration files
     import critiquebrainz.default_config
     app.config.from_object(critiquebrainz.default_config)
@@ -24,12 +24,26 @@ def create_app():
     from critiquebrainz.data import db
     db.init_app(app)
 
+    from critiquebrainz.cache import cache
+    cache.set_servers(app.config['MEMCACHED_SERVERS'])
+
     import babel
     babel.init_app(app)
 
-    with app.app_context():
-        import apis
-        import login
+    import login
+    login.login_manager.init_app(app)
+    from login.provider import MusicBrainzAuthentication
+    login.mb_auth = MusicBrainzAuthentication(
+        name='musicbrainz',
+        client_id=app.config['MUSICBRAINZ_CLIENT_ID'],
+        client_secret=app.config['MUSICBRAINZ_CLIENT_SECRET'],
+        authorize_url="https://musicbrainz.org/oauth2/authorize",
+        access_token_url="https://musicbrainz.org/oauth2/token",
+        base_url="https://musicbrainz.org/")
+
+    import apis
+    apis.musicbrainz.init_app("CritiqueBrainz Client", critiquebrainz.__version__)
+    apis.mbspotify.init_app(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
 
     # Template utilities
     app.jinja_env.add_extension('jinja2.ext.do')

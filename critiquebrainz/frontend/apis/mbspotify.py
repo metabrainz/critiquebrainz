@@ -7,7 +7,7 @@ class MBSpotifyClient(object):
     Source code of this application is available at https://github.com/metabrainz/mbspotify.
     """
 
-    def __init__(self, base_url, access_key):
+    def init_app(self, base_url, access_key):
         self.base_url = base_url
         self.key = access_key
 

@@ -89,6 +89,7 @@ class UserTestCase(DataTestCase):
         review = Review.create(user=user_1,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
+                               is_draft=False,
                                license_id=license.id)
         db.session.add(review)
         db.session.commit()

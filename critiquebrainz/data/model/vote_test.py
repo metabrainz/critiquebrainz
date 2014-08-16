@@ -19,6 +19,7 @@ class VoteTestCase(DataTestCase):
         review = Review.create(release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
                                user=author,
+                               is_draft=False,
                                license_id=license.id)
 
         vote_u1_positive = Vote.create(user_1, review, True)

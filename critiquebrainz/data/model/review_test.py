@@ -25,6 +25,7 @@ class ReviewTestCase(DataTestCase):
         review = Review.create(user=self.user,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=text,
+                               is_draft=False,
                                license_id=self.license.id)
         db.session.add(review)
         db.session.commit()
@@ -41,11 +42,13 @@ class ReviewTestCase(DataTestCase):
         review_en = Review.create(user=self.user,
                                   release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                   text=text,
+                                  is_draft=False,
                                   license_id=self.license.id,
                                   language='en')
         review_de = Review.create(user=self.user,
                                   release_group='e7aad618-fa86-3983-9e77-405e21796ece',
                                   text=text,
+                                  is_draft=False,
                                   license_id=self.license.id,
                                   language='de')
         db.session.add(review_en)

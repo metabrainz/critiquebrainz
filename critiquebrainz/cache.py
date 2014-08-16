@@ -2,7 +2,8 @@ from flask import current_app
 import hashlib
 import memcache
 
-cache = memcache.Client(current_app.config['MEMCACHED_SERVERS'], debug=0)
+# Servers are reset during app creation process when configuration is available.
+cache = memcache.Client(["127.0.0.1:11211"])
 
 
 def generate_cache_key(id, type=None, source=None, params=None):
