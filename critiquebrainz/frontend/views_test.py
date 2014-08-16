@@ -4,7 +4,9 @@ from critiquebrainz.frontend.testing import FrontendTestCase
 class ViewsTestCase(FrontendTestCase):
 
     def test_home_page(self):
-        self.client.get("/")
+        response = self.client.get("/")
+        assert response.status_code == 200
 
     def test_404(self):
-        self.client.get("/404")
+        response = self.client.get("/404")
+        assert response.status_code == 404
