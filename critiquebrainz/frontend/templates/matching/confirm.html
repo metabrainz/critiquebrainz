@@ -26,7 +26,7 @@
     </div>
   </div>
   <hr />
-  <form role="form" method="POST" action="{{ url_for('matching.spotify_submit', spotify_uri=spotify_album.uri, release_group_id=release_group.id) }}">
+  <form role="form" method="POST" action="{{ url_for('matching.spotify_confirm', spotify_ref=spotify_album.uri, release_group_id=release_group.id) }}">
     <button type="submit" class="btn btn-success">{{ _('Connect') }}</button>
     <a href="{{ url_for('release_group.entity', id=release_group.id) }}" class="btn btn-danger">{{ _('Cancel') }}</a>
   </form>
