@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-15 16:53+0000\n"
+"POT-Creation-Date: 2014-08-16 03:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,39 +208,37 @@ msgstr ""
 msgid "Login failed."
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:15
-#: critiquebrainz/frontend/matching/views.py:44
-#: critiquebrainz/frontend/matching/views.py:81
+#: critiquebrainz/frontend/matching/views.py:17
+#: critiquebrainz/frontend/matching/views.py:46
 msgid "Thanks, but this album is already matched to Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:20
-#: critiquebrainz/frontend/matching/views.py:49
-#: critiquebrainz/frontend/matching/views.py:75
+#: critiquebrainz/frontend/matching/views.py:22
+#: critiquebrainz/frontend/matching/views.py:51
 msgid "Only existing release groups can be matched to Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:54
+#: critiquebrainz/frontend/matching/views.py:56
 msgid "You need to select an album from Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:58
-msgid "You need to specify correct Spotify URI for this album!"
+#: critiquebrainz/frontend/matching/views.py:61
+msgid "You need to specify correct reference to Spotify for this album!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:63
+#: critiquebrainz/frontend/matching/views.py:66
 msgid "You need to specify existing album from Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:88
-msgid "Connection is added!"
+#: critiquebrainz/frontend/matching/views.py:71
+msgid "Spotify mapping has been added!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:98
+#: critiquebrainz/frontend/matching/views.py:83
 msgid "Can't find release group with that ID!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:103
+#: critiquebrainz/frontend/matching/views.py:88
 msgid "This album is not matched to Spotify yet!"
 msgstr ""
 
@@ -409,12 +407,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: critiquebrainz/frontend/templates/artist.html:69
-#: critiquebrainz/frontend/templates/matching/spotify.html:44
+#: critiquebrainz/frontend/templates/matching/spotify.html:45
 msgid "Previous"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/artist.html:72
-#: critiquebrainz/frontend/templates/matching/spotify.html:47
+#: critiquebrainz/frontend/templates/matching/spotify.html:48
 msgid "Next"
 msgstr ""
 
@@ -725,38 +723,47 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:14
 #, python-format
-msgid "Please, select the album %(album)s by %(artist)s"
+msgid ""
+"Please, select the album %(album)s by %(artist)s or submit reference to "
+"Spotify manually below"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:33
+#: critiquebrainz/frontend/templates/matching/spotify.html:34
 msgid "Listen on Spotify"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:54
+#: critiquebrainz/frontend/templates/matching/spotify.html:55
 msgid "No similar albums found"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:60
+#: critiquebrainz/frontend/templates/matching/spotify.html:61
 msgid ""
 "If you can't find the right album in search results, you can paste "
-"Spotify URI there:"
+"Spotify URI or HTTP link there:"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:63
-msgid "Spotify URI"
+#: critiquebrainz/frontend/templates/matching/spotify.html:64
+msgid "Spotify URI or HTTP link"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:65
+#: critiquebrainz/frontend/templates/matching/spotify.html:66
 msgid "Submit"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:71
+#: critiquebrainz/frontend/templates/matching/spotify.html:69
+#, python-format
+msgid ""
+"Spotify URI should look like %(uri_example)s, and link like "
+"%(link_example)s."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/matching/spotify.html:79
 msgid ""
 "It's fine if you can't find the right album. It might not be available on"
 " Spotify yet."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:72
+#: critiquebrainz/frontend/templates/matching/spotify.html:80
 #, python-format
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
 msgstr ""
