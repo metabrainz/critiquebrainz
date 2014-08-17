@@ -4,14 +4,13 @@ from flask import current_app, jsonify
 from flask.json import JSONEncoder
 from datetime import datetime
 from time import gmtime, strftime
-from urlparse import urlsplit
 import unicodedata
 import shutil
 import subprocess
 import os
 import re
 
-from critiquebrainz.data import db
+from critiquebrainz.data import db, explode_db_url
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.license import License
 
@@ -20,7 +19,14 @@ backup_manager = Manager()
 
 @backup_manager.command
 def dump_db(location=os.path.join(os.getcwd(), 'backup'), clean=False):
-    """Create complete dump of PostgreSQL database."""
+    """Create complete dump of PostgreSQL database.
+
+    This command creates database dump using pg_dump and puts it into specified directory
+    (default is *backup*). It's also possible to remove all previously created backups
+    except two most recent ones. If you want to do that, set *clean* argument to True.
+
+    File with a dump will be a tar archive with a timestamp in the name: `%Y%m%d-%H%M%S.tar.bz2`.
+    """
 
     # Creating backup directory, if needed
     exit_code = subprocess.call('mkdir -p %s' % location, shell=True)
@@ -33,6 +39,7 @@ def dump_db(location=os.path.join(os.getcwd(), 'backup'), clean=False):
     print('Creating database dump in "%s"...' % location)
 
     # Executing pg_dump command
+    # More info about it is available at http://www.postgresql.org/docs/9.3/static/app-pgdump.html
     dump_file = "%s/%s%s" % (location, FILE_PREFIX, strftime("%Y%m%d-%H%M%S", gmtime()))
     if subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db_name, dump_file), shell=True) != 0:
         raise Exception("Failed to create database dump!")
@@ -71,7 +78,11 @@ class DumpJSONEncoder(JSONEncoder):
 
 @backup_manager.command
 def dump_json(location=os.path.join(os.getcwd(), 'dump')):
-    """Create JSON dump with all reviews."""
+    """Create JSON dumps with all reviews.
+
+    This command will create an archive for each license available on CB.
+    Archives will be put into a specified directory (default is *dump*).
+    """
     current_app.json_encoder = DumpJSONEncoder
 
     for license in License.query.all():
@@ -90,18 +101,17 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump')):
             rg_dir_part = '%s/%s' % (release_group[0:1], release_group[0:2])
             reviews = Review.list(release_group, license_id=license.id)[0]
             if len(reviews) > 0:
-                json = jsonify(reviews=[r.to_dict(['user']) for r in reviews]).data
                 rg_dir = '%s/%s' % (license_dir, rg_dir_part)
                 exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
                 if exit_code != 0:
                     raise Exception("Failed to create directory for release group!")
                 f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
-                f.write(json)
+                f.write(jsonify(reviews=[r.to_dict() for r in reviews]).data)
                 f.close()
 
         # Copying legal text
         try:
-            shutil.copyfile("licenses/%s.txt" % safe_name, '%s/COPYING' % license_dir)
+            shutil.copyfile("critiquebrainz/data/licenses/%s.txt" % safe_name, '%s/COPYING' % license_dir)
         except IOError:
             print("Failed to copy license text for %s!" % license.id)
 
@@ -121,8 +131,3 @@ def slugify(value):
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
     value = re.sub('[^\w\s-]', '', value).strip().lower()
     return re.sub('[-\s]+', '-', value)
-
-
-def explode_db_url(url):
-    url = urlsplit(url)
-    return url.hostname, url.path[1:], url.username, url.password

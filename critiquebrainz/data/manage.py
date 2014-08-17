@@ -1,7 +1,7 @@
 from flask.ext.script import Manager
 from flask import current_app
 from critiquebrainz import data
-from urlparse import urlsplit
+from critiquebrainz.data import explode_db_url
 import fixtures as _fixtures
 import subprocess
 
@@ -51,8 +51,3 @@ def init_postgres(uri):
     exit_code = subprocess.call('sudo -u postgres psql -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' % ('uuid-ossp', db), shell=True)
     if exit_code != 0:
         raise Exception('Failed to create PostgreSQL extension!')
-
-
-def explode_db_url(url):
-    url = urlsplit(url)
-    return url.hostname, url.path[1:], url.username, url.password
