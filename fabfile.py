@@ -4,8 +4,13 @@ from critiquebrainz.frontend import create_app
 
 
 def extract_strings():
-    """Extract all strings into messages.pot."""
-    local("pybabel extract -F critiquebrainz/frontend/babel.cfg -k lazy_gettext -o messages.pot critiquebrainz/frontend")
+    """Extract all strings into messages.pot.
+
+    This command should be run after any translatable strings are updated.
+    Otherwise updates are not going to be available on Transifex.
+    """
+    local("pybabel extract -F critiquebrainz/frontend/babel.cfg -k lazy_gettext -o critiquebrainz/frontend/messages.pot critiquebrainz/frontend")
+    print(green("Strings have been successfully extracted into messages.pot file.", bold=True))
 
 
 def pull_translations():

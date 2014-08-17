@@ -3,7 +3,7 @@ host = https://www.transifex.com
 
 [critiquebrainz.critiquebrainz]
 file_filter = critiquebrainz/frontend/translations/<lang>/LC_MESSAGES/messages.po
-source_file = messages.pot
+source_file = critiquebrainz/frontend/messages.pot
 source_lang = en
 type = PO
 
