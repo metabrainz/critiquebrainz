@@ -1,11 +1,26 @@
-*.pyc
-*.swp
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
 
-.vagrant
-
+# Virtual environment
 env
 venv
-*.log
 
+# Logs
+*.log
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Backups and dumps
 /dump/
 /backup/
+
+# Test results
+/cover/
+nosetests.xml
+.tox/
+.cache
+.coverage
+
+# Vagrant
+.vagrant
