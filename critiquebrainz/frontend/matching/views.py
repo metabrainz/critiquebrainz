@@ -58,7 +58,7 @@ def spotify_matching_submit_handler(release_group_id):
 
     spotify_id = parse_spotify_id(spotify_ref)
     if not spotify_id:
-        flash(gettext("You need to specify correct reference to Spotify for this album!"), 'error')
+        flash(gettext("You need to specify a correct link to this album on Spotify!"), 'error')
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
     album = spotify.album(spotify_id)

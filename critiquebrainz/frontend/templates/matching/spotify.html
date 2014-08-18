@@ -11,7 +11,7 @@
     {% set album = '"%s"' % release_group.title %}
   {% endif %}
 
-  {{ _('Please, select the album %(album)s by %(artist)s or submit reference to Spotify manually below',
+  {{ _('Please select the album "%(album)s" by %(artist)s, or provide a link to Spotify below.',
        album=album, artist=release_group['artist-credit-phrase']) }}
 </p>
 {% if search_results %}
@@ -58,7 +58,7 @@
 <hr />
 
 <p>
-  <p>{{ _('If you can\'t find the right album in search results, you can paste Spotify URI or HTTP link there:') }}</p>
+  <p>{{ _('If you can\'t find the right album in search results, you can paste a Spotify link there:') }}</p>
   <form class="form-inline" role="form" action="{{ url_for('matching.spotify_confirm', release_group_id=release_group.id) }}" method="GET">
     <div class="form-group">
       <input type="text" class="form-control input-sm" name="spotify_ref" placeholder="{{ _('Spotify URI or HTTP link') }}" size="40">
@@ -66,7 +66,7 @@
     <button type="submit" class="btn btn-default btn-sm">{{ _('Submit') }}</button>
   </form>
   <br /><small class="text-muted">
-    {{ _('Spotify URI should look like %(uri_example)s, and link like %(link_example)s.',
+    {{ _('A Spotify link should look like %(uri_example)s or %(link_example)s.',
          uri_example = '<code>spotify:album:3CCO9PhQXCQXUWjcEfys9B</code>' | safe,
          link_example = '<code>https://play.spotify.com/album/3CCO9PhQXCQXUWjcEfys9B</code>' | safe) }}
   </small>

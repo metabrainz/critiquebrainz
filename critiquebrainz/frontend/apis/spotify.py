@@ -22,7 +22,7 @@ class SpotifyClient(object):
 
     def album(self, spotify_id):
         """Get Spotify catalog information for a single album."""
-        key = generate_cache_key('albumz', source='spotify', params=[spotify_id])
+        key = generate_cache_key('album', source='spotify', params=[spotify_id])
         resp = cache.get(key)
         if not resp:
             resp = requests.get("%s/albums/%s" % (self.BASE_URL, spotify_id)).json()
