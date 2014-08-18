@@ -17,7 +17,7 @@ def review_entity_handler(id):
     review = Review.query.get_or_404(str(id))
     # Not showing review if it's archived or (isn't published yet and not viewed by author).
     if review.is_archived or (review.is_draft and not (current_user.is_authenticated() and current_user == review.user)):
-        raise NotFound
+        raise NotFound("Can't find review with a specified ID.")
 
     spotify_mapping = mbspotify.mapping([review.release_group])
 
@@ -78,7 +78,7 @@ def preview_handler():
 def edit_handler(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived or (review.is_draft and current_user != review.user):
-        raise NotFound
+        raise NotFound("Can't find review with a specified ID.")
     if review.user != current_user:
         abort(403)
 
@@ -106,7 +106,7 @@ def edit_handler(id):
 def delete_handler(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound
+        raise NotFound("Can't find review with a specified ID.")
     if review.user != current_user:
         abort(403)
     if request.method == 'POST':
@@ -127,7 +127,7 @@ def review_vote_submit_handler(review_id):
 
     review = Review.query.get_or_404(review_id)
     if review.is_archived is True:
-        raise NotFound
+        raise NotFound("Can't find review with a specified ID.")
     if review.user == current_user:
         flash(gettext("You cannot rate your own review."), 'error')
         return redirect(url_for('.entity', id=review_id))
@@ -151,7 +151,7 @@ def review_vote_submit_handler(review_id):
 def review_vote_delete_handler(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound
+        raise NotFound("Can't find review with a specified ID.")
     vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
         flash(gettext("This review is not rated yet."), 'error')
