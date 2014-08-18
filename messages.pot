@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-16 03:32+0000\n"
+"POT-Creation-Date: 2014-08-18 10:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -223,7 +223,7 @@ msgid "You need to select an album from Spotify!"
 msgstr ""
 
 #: critiquebrainz/frontend/matching/views.py:61
-msgid "You need to specify correct reference to Spotify for this album!"
+msgid "You need to specify a correct link to this album on Spotify!"
 msgstr ""
 
 #: critiquebrainz/frontend/matching/views.py:66
@@ -724,8 +724,8 @@ msgstr ""
 #: critiquebrainz/frontend/templates/matching/spotify.html:14
 #, python-format
 msgid ""
-"Please, select the album %(album)s by %(artist)s or submit reference to "
-"Spotify manually below"
+"Please select the album \"%(album)s\" by %(artist)s, or provide a link to"
+" Spotify below."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:34
@@ -738,8 +738,8 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:61
 msgid ""
-"If you can't find the right album in search results, you can paste "
-"Spotify URI or HTTP link there:"
+"If you can't find the right album in search results, you can paste a "
+"Spotify link there:"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:64
@@ -752,9 +752,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:69
 #, python-format
-msgid ""
-"Spotify URI should look like %(uri_example)s, and link like "
-"%(link_example)s."
+msgid "A Spotify link should look like %(uri_example)s or %(link_example)s."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:79
