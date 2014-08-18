@@ -97,6 +97,7 @@ def parse_spotify_id(spotify_ref):
         return spotify_ref[14:]
 
     # Link to Spotify
+    # TODO: Improve checking there. See https://bitbucket.org/metabrainz/critiquebrainz/pull-request/167/cb-115-support-for-different-types-of/activity#comment-2757329
     if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
         if spotify_ref.endswith('/'):
             spotify_ref = spotify_ref[:-1]
