@@ -5,7 +5,7 @@ from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditFor
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
-from critiquebrainz.data.model.report import SpamReport
+from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.frontend.exceptions import NotFound
 from markdown import markdown
 
