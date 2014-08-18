@@ -151,33 +151,33 @@ class User(db.Model, UserMixin):
     def to_dict(self, includes=None, confidential=False):
         if includes is None:
             includes = []
-        response = dict(id = self.id,
-            display_name = self.display_name,
-            created = self.created,
-            karma = self.karma,
-            user_type = self.user_type.label)
+        response = dict(id=self.id,
+                        display_name=self.display_name,
+                        created=self.created,
+                        karma=self.karma,
+                        user_type=self.user_type.label)
+
         if confidential is True:
             response.update(dict(email=self.email,
                                  show_gravatar=self.show_gravatar,
                                  musicbrainz_id=self.musicbrainz_id))
+
         if 'user_type' in includes:
             response['user_type'] = dict(
-                label = self.user_type.label,
-                reviews_per_day = self.user_type.reviews_per_day,
-                votes_per_day = self.user_type.votes_per_day)
+                label=self.user_type.label,
+                reviews_per_day=self.user_type.reviews_per_day,
+                votes_per_day=self.user_type.votes_per_day)
+
         if 'stats' in includes:
             today = date.today()
             response['stats'] = dict(
-                reviews_today = self.reviews_today_count(),
-                reviews_last_7_days = self.reviews_since_count(
-                    today-timedelta(days=7)),
-                reviews_this_month = self.reviews_since_count(
-                    date(today.year, today.month, 1)),
-                votes_today = self.votes_today_count(),
-                votes_last_7_days = self.votes_since_count(
-                    today-timedelta(days=7)),
-                votes_this_month = self.votes_since_count(
-                    date(today.year, today.month, 1)))
+                reviews_today=self.reviews_today_count(),
+                reviews_last_7_days=self.reviews_since_count(today - timedelta(days=7)),
+                reviews_this_month=self.reviews_since_count(date(today.year, today.month, 1)),
+                votes_today=self.votes_today_count(),
+                votes_last_7_days=self.votes_since_count(today - timedelta(days=7)),
+                votes_this_month=self.votes_since_count(date(today.year, today.month, 1)))
+
         return response
 
     @property
