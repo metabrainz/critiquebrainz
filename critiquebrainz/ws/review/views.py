@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from critiquebrainz.data.model.review import Review, supported_languages
 from critiquebrainz.data.model.vote import Vote
-from critiquebrainz.data.model.report import SpamReport
+from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser

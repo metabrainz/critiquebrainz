@@ -4,5 +4,5 @@ from .revision import Revision
 from .user import User
 from .license import License
 from .vote import Vote
-from .report import SpamReport
+from .spam_report import SpamReport
 from .oauth import OAuthClient, OAuthGrant, OAuthToken
