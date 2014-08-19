@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-18 10:26+0000\n"
+"POT-Creation-Date: 2014-08-19 12:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,53 +17,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:29
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:16
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:29
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:16
 msgid "Wikidata"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:30
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:17
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:30
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:17
 msgid "Discogs"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:31
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:18
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:31
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:18
 msgid "Allmusic"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:32
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:32
 msgid "Bandcamp"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:33
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:19
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:33
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:19
 msgid "Official homepage"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:34
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:34
 msgid "BBC Music"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:46
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:32
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:46
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:32
 msgid "Lyrics"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:52
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:38
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:52
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:38
 msgid "Wikipedia"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:65
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:65
 msgid "YouTube"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:73
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:73
 msgid "Twitter"
 msgstr ""
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:20
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:20
 msgid "Recording studio"
 msgstr ""
 
@@ -200,7 +200,7 @@ msgstr ""
 msgid "Show my Gravatar"
 msgstr ""
 
-#: critiquebrainz/frontend/login/__init__.py:20
+#: critiquebrainz/frontend/login/__init__.py:11
 msgid "Please sign in to access this page."
 msgstr ""
 
