@@ -29,6 +29,10 @@ def fixtures():
 
 
 def init_postgres(uri):
+    """Initializes PostgreSQL database from provided URI.
+
+    New user and database will be created, if needed. It also creates uuid-ossp extension.
+    """
     hostname, db, username, password = explode_db_url(uri)
     if hostname not in ['localhost', '127.0.0.1']:
         raise Exception('Cannot configure a remote database')

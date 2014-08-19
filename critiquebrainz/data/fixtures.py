@@ -20,6 +20,11 @@ def install(app, *args):
 
 
 class LicenseData(object):
+    """Licenses that can be used with reviews.
+
+    If you add new ones or remove existing, make sure to update forms,
+    views, and other stuff that needs to be updated.
+    """
     cc_by_sa_3 = License(
         id=u"CC BY-SA 3.0",
         full_name=u"Creative Commons Attribution-ShareAlike 3.0 Unported",
@@ -30,4 +35,5 @@ class LicenseData(object):
         info_url=u"https://creativecommons.org/licenses/by-nc-sa/3.0/")
 
 
+# Include all objects into this tuple.
 all_data = (LicenseData, )

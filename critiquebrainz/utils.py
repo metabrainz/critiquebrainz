@@ -29,16 +29,17 @@ def validate_uuid(string):
 
 def generate_string(length):
     """Generates random string with a specified length."""
-    return ''.join([random.choice(string.ascii_letters.decode('ascii') + string.digits.decode('ascii')) for x in xrange(length)])
+    return ''.join([random.choice(string.ascii_letters.decode('ascii') + string.digits.decode('ascii'))
+                    for x in xrange(length)])
 
 
 def reformat_date(value, format=None):
-    """Converts date into string formatted according to current locale."""
+    """Converts date into string formatted for current locale."""
     return format_date(value, format)
 
 
 def reformat_datetime(value, format=None):
-    """Converts datetime into string formatted according to current locale."""
+    """Converts datetime into string formatted for current locale."""
     return format_datetime(value.replace(tzinfo=None), format)
 
 
