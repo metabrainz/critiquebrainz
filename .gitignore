@@ -9,3 +9,7 @@ venv
 
 /dump/
 /backup/
+
+# Test results
+.coverage
+/cover/
