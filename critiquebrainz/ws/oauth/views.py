@@ -40,7 +40,7 @@ def oauth_token_handler():
         user_id = token.user.id
         scope = token.scopes
     else:
-        raise UnsupportedGrantType
+        raise UnsupportedGrantType("Specified grant_type is unsupported. Please, use authorization_code or refresh_token.")
 
     # Deleting grant and/or existing token(s)
     # TODO: Check if that's necessary
