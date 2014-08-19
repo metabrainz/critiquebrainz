@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from vote import Vote
 from revision import Revision
 from critiquebrainz.data.constants import review_classes
-from critiquebrainz.frontend.exceptions import InvalidRequest
+from critiquebrainz.frontend.exceptions import InvalidRequest  # TODO: Remove this dependency on frontend.
 import pycountry
 
 DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
@@ -160,11 +160,6 @@ class Review(db.Model):
 
         :returns New revision of this review.
         """
-        if is_draft is not None:
-            if not self.is_draft and is_draft:  # If trying to convert published review into draft.
-                raise InvalidRequest("Converting published reviews back to drafts is not allowed.")
-            self.is_draft = is_draft
-
         if license_id is not None:
             if not self.is_draft:  # If trying to convert published review into draft.
                 raise InvalidRequest("Changing license of a published review is not allowed.")
@@ -172,6 +167,11 @@ class Review(db.Model):
 
         if language is not None:
             self.language = language
+
+        if is_draft is not None:  # This should be done after all changes that depend on review being a draft.
+            if not self.is_draft and is_draft:  # If trying to convert published review into draft.
+                raise InvalidRequest("Converting published reviews back to drafts is not allowed.")
+            self.is_draft = is_draft
 
         new_revision = Revision(review_id=self.id, text=text)
         db.session.add(new_revision)
