@@ -19,5 +19,5 @@ service postgresql restart
 cd /vagrant
 # TODO: Activate virtualenv
 pip install -r requirements.txt
-python manage.py create_db
-python manage.py fixtures
+python manage.py data create_db
+python manage.py data fixtures
