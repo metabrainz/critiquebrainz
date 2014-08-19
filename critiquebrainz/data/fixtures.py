@@ -12,10 +12,10 @@ def install(app, *args):
                     db.session.add(entity)
                     db.session.flush()
                 except:
-                    print 'failed to add %s' % key
+                    print('Failed to add %s!' % key)
                     db.session.rollback()
                 else:
-                    print 'added %s' % key
+                    print('Added %s.' % key)
     db.session.commit()
 
 

@@ -4,13 +4,13 @@ from musicbrainzngs.musicbrainz import ResponseError
 
 from critiquebrainz.cache import cache, generate_cache_key
 from critiquebrainz.frontend.apis.exceptions import APIError
-from critiquebrainz.frontend.apis.musicbrainz.relationships import artist as artist_rel, release_group as release_group_rel
+from relationships import artist as artist_rel, release_group as release_group_rel
 
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
 
 
-class MusicBrainzClient:
+class MusicBrainzClient(object):
     """Provides an interface to MusicBrainz data."""
 
     def init_app(self, app_name, app_version):
