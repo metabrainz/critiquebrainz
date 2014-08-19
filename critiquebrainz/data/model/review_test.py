@@ -27,6 +27,7 @@ class ReviewTestCase(DataTestCase):
         review = Review.create(user=self.user,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
+                               is_draft=False,
                                license_id=self.license.id)
 
         reviews = Review.query.all()
@@ -58,11 +59,13 @@ class ReviewTestCase(DataTestCase):
         review_en = Review.create(user=self.user,
                                   release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                   text=u"Testing!",
+                                  is_draft=False,
                                   license_id=self.license.id,
                                   language='en')
         review_de = Review.create(user=self.user,
                                   release_group='e7aad618-fa86-3983-9e77-405e21796ece',
                                   text=u"Testing!",
+                                  is_draft=False,
                                   license_id=self.license.id,
                                   language='de')
 
