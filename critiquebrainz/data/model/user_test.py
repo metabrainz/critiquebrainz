@@ -10,13 +10,16 @@ class UserTestCase(DataTestCase):
 
     def test_user_list(self):
         users, count = User.list()
-        assert len(users) == 0 and count == 0
+        self.assertEqual(len(users), 0)
+        self.assertEqual(count, 0)
 
         users, count = User.list(0, 0)
-        assert len(users) == 0 and count == 0
+        self.assertEqual(len(users), 0)
+        self.assertEqual(count, 0)
 
         users, count = User.list(0, 10)
-        assert len(users) == 0 and count == 0
+        self.assertEqual(len(users), 0)
+        self.assertEqual(count, 0)
 
         user_1 = User(display_name=u'Tester #1')
         user_2 = User(display_name=u'Tester #2')
@@ -25,13 +28,16 @@ class UserTestCase(DataTestCase):
         db.session.commit()
 
         users, count = User.list()
-        assert len(users) == 2 and count == 2
+        self.assertEqual(len(users), 2)
+        self.assertEqual(count, 2)
 
         users, count = User.list(0, 0)
-        assert len(users) == 0 and count == 2
+        self.assertEqual(len(users), 0)
+        self.assertEqual(count, 2)
 
         users, count = User.list(1, 1)
-        assert len(users) == 1 and count == 2
+        self.assertEqual(len(users), 1)
+        self.assertEqual(count, 2)
 
     def test_user_creation_and_removal(self):
         user_1 = User(display_name=u'Tester #1', email=u'tester@testing.org')
@@ -41,37 +47,37 @@ class UserTestCase(DataTestCase):
         db.session.commit()
 
         users, count = User.list()
-        assert count == 2
+        self.assertEqual(count, 2)
 
         db.session.delete(user_1)
         db.session.commit()
 
         users, count = User.list()
-        assert count == 1
+        self.assertEqual(count, 1)
 
         stored_user = users[0]
-        assert stored_user.id == user_2.id
-        assert stored_user.display_name == user_2.display_name
-        assert stored_user.email is None
+        self.assertEqual(stored_user.id, user_2.id)
+        self.assertEqual(stored_user.display_name, user_2.display_name)
+        self.assertIsNone(stored_user.email)
 
     def test_user_get_or_create(self):
         user_1 = User.get_or_create(u'Tester #1', musicbrainz_id=u'1')
         user_2 = User.get_or_create(u'Tester #2', musicbrainz_id=u'1')
         user_3 = User.get_or_create(u'Tester #3', musicbrainz_id=u'2')
 
-        assert user_1 == user_2
-        assert user_1 != user_3
+        self.assertEqual(user_1, user_2)
+        self.assertNotEqual(user_1, user_3)
 
-        assert User.query.count() == 2
+        self.assertEqual(User.query.count(), 2)
 
     def test_user_delete(self):
         user = User(display_name=u'Tester')
         db.session.add(user)
         db.session.commit()
-        assert User.query.count() == 1
+        self.assertEqual(User.query.count(), 1)
 
         user.delete()
-        assert User.query.count() == 0
+        self.assertEqual(User.query.count(), 0)
 
     def test_user_update(self):
         user = User(display_name=u'Tester #1')
@@ -115,16 +121,16 @@ class UserTestCase(DataTestCase):
         db.session.add(user_2)
         db.session.commit()
 
-        assert not user_2.has_voted(review)
+        self.assertFalse(user_2.has_voted(review))
         Vote.create(user_2, review, True)
-        assert user_2.has_voted(review)
+        self.assertTrue(user_2.has_voted(review))
 
     def test_reviews_property(self):
         user = User(display_name=u'Tester')
         db.session.add(user)
         db.session.commit()
 
-        assert len(user.reviews) == 0
+        self.assertEqual(len(user.reviews), 0)
 
         license = License(id=u"Test", full_name=u'Test License')
         db.session.add(license)
@@ -136,12 +142,10 @@ class UserTestCase(DataTestCase):
                                license_id=license.id)
         db.session.add(review)
         db.session.commit()
-
-        assert len(user.reviews) == 1
+        self.assertEqual(len(user.reviews), 1)
 
         review.delete()
-
-        assert len(user.reviews) == 0
+        self.assertEqual(len(user.reviews), 0)
 
     def test_avatar_property(self):
         user = User(display_name=u'Tester', email=u"example@example.org")
@@ -165,6 +169,6 @@ class UserTestCase(DataTestCase):
         db.session.add(user)
         db.session.commit()
 
-        assert len(user.votes) == 0
+        self.assertEqual(len(user.votes), 0)
 
         # TODO: Try to add new votes and see if values change.

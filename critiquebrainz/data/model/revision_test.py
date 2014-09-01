@@ -32,7 +32,7 @@ class RevisionTestCase(DataTestCase):
                                                       text=revision.text))
 
     def test_revision_deletion(self):
-        assert len(self.review.revisions) == 1
+        self.assertEqual(len(self.review.revisions), 1)
 
         self.review.revisions[0].delete()
-        assert len(self.review.revisions) == 0
+        self.assertEqual(len(self.review.revisions), 0)

@@ -25,11 +25,14 @@ class VoteTestCase(DataTestCase):
         vote_u1_positive = Vote.create(user_1, review, True)
 
         votes = db.session.query(Vote).all()
-        assert len(votes) == 1 and vote_u1_positive in votes
+        self.assertEqual(len(votes), 1)
+        self.assertIn(vote_u1_positive, votes)
 
         vote_u2_negative = Vote.create(user_2, review, False)
 
         votes = db.session.query(Vote).all()
-        assert len(votes) == 2 and vote_u1_positive in votes and vote_u2_negative in votes
+        self.assertEqual(len(votes), 2)
+        self.assertIn(vote_u1_positive, votes)
+        self.assertIn(vote_u2_negative, votes)
 
         # TODO: Test vote overwriting

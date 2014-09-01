@@ -22,7 +22,7 @@ class ReviewTestCase(DataTestCase):
         db.session.commit()
 
     def test_review_creation(self):
-        assert Review.query.count() == 0
+        self.assertEqual(Review.query.count(), 0)
 
         review = Review.create(user=self.user,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
@@ -31,10 +31,10 @@ class ReviewTestCase(DataTestCase):
                                license_id=self.license.id)
 
         reviews = Review.query.all()
-        assert len(reviews) == 1
-        assert reviews[0].id == review.id
-        assert reviews[0].release_group == review.release_group
-        assert reviews[0].license_id == review.license_id
+        self.assertEqual(len(reviews), 1)
+        self.assertEqual(reviews[0].id, review.id)
+        self.assertEqual(reviews[0].release_group, review.release_group)
+        self.assertEqual(reviews[0].license_id, review.license_id)
 
     def test_created_property(self):
         review = Review.create(user=self.user,
@@ -50,10 +50,10 @@ class ReviewTestCase(DataTestCase):
                                text=u"Testing!",
                                is_draft=False,
                                license_id=self.license.id)
-        assert Review.query.count() == 1
+        self.assertEqual(Review.query.count(), 1)
 
         review.delete()
-        assert Review.query.count() == 0
+        self.assertEqual(Review.query.count(), 0)
 
     def test_languages(self):
         review_en = Review.create(user=self.user,
@@ -70,7 +70,12 @@ class ReviewTestCase(DataTestCase):
                                   language='de')
 
         reviews, count = Review.list(language='de')
-        assert len(reviews) == 1 and count == 1
+        self.assertEqual(len(reviews), 1)
+        self.assertEqual(count, 1)
+
+        reviews, count = Review.list(language='ru')
+        self.assertEqual(len(reviews), 0)
+        self.assertEqual(count, 0)
 
     def test_update(self):
         review = Review.create(user=self.user,
@@ -91,7 +96,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(retrieved_review.language, 'es')
 
         # Updating should create a new revision.
-        assert len(retrieved_review.revisions) == 2
+        self.assertEqual(len(retrieved_review.revisions), 2)
         self.assertNotEqual(retrieved_review.first_revision, retrieved_review.last_revision)
 
         # Let's try doing some things that shouldn't be allowed!
@@ -108,10 +113,10 @@ class ReviewTestCase(DataTestCase):
                                text=u"Awesome!",
                                is_draft=False,
                                license_id=self.license.id)
-        assert len(review.revisions) == 1
+        self.assertEqual(len(review.revisions), 1)
         self.assertEqual(review.first_revision, review.last_revision)
 
         # Updating should create a new revision.
         review.update(u"The worst!")
-        assert len(review.revisions) == 2
+        self.assertEqual(len(review.revisions), 2)
         self.assertNotEqual(review.first_revision, review.last_revision)
