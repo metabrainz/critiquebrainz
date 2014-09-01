@@ -6,28 +6,28 @@ class ViewsTestCase(FrontendTestCase):
     def test_artist_page(self):
         # Basic artist page should be available.
         response = self.client.get("/artist/aef06569-098f-4218-a577-b413944d9493")
-        assert response.status_code == 200
-        assert "HAIM" in response.data
+        self.assert200(response)
+        self.assertIn("HAIM", response.data)
 
         # Album tab
         response = self.client.get("/artist/aef06569-098f-4218-a577-b413944d9493?release_type=album")
-        assert response.status_code == 200
-        assert "Days Are Gone" in response.data
+        self.assert200(response)
+        self.assertIn("Days Are Gone", response.data)
 
         # Singles tab
         response = self.client.get("/artist/aef06569-098f-4218-a577-b413944d9493?release_type=single")
-        assert response.status_code == 200
-        assert "The Wire" in response.data
+        self.assert200(response)
+        self.assertIn("The Wire", response.data)
 
         # EPs tab
         response = self.client.get("/artist/aef06569-098f-4218-a577-b413944d9493?release_type=ep")
-        assert response.status_code == 200
-        assert "Forever" in response.data
+        self.assert200(response)
+        self.assertIn("Forever", response.data)
 
         # Broadcasts tab
         response = self.client.get("/artist/aef06569-098f-4218-a577-b413944d9493?release_type=broadcast")
-        assert response.status_code == 200
+        self.assert200(response)
 
         # Other releases tab
         response = self.client.get("/artist/aef06569-098f-4218-a577-b413944d9493?release_type=other")
-        assert response.status_code == 200
+        self.assert200(response)

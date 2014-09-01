@@ -9,7 +9,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def test_review_count(self):
         resp = self.client.get('/review/').json
-        self.assertEquals(resp['count'], 0)
+        self.assertEqual(resp['count'], 0)
 
     def test_review_creation(self):
         # Preparing test data
@@ -26,7 +26,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
                                license_id=license.id)
 
         resp = self.client.get('/review/').json
-        self.assertEquals(resp['count'], 1)
-        self.assertEquals(len(resp['reviews']), 1)
-        self.assertEquals(resp['reviews'][0], review.id)
+        self.assertEqual(resp['count'], 1)
+        self.assertEqual(len(resp['reviews']), 1)
+        self.assertEqual(resp['reviews'][0]['id'], review.id)
         # TODO: Completely verify output (I encountered unicode issues when tried to do that).

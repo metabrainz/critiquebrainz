@@ -17,8 +17,7 @@ class UserViewsTestCase(WebServiceTestCase):
         user = User(display_name=u'Tester 1', email=u'tester1@tesing.org')
         db.session.add(user)
         db.session.commit()
-        resp = self.client.get('/user/')
-        decoded = resp.json
-        self.assertEquals(decoded['count'], 1)
-        self.assertEquals(len(decoded['users']), 1)
+        resp = self.client.get('/user/').json
+        self.assertEqual(resp['count'], 1)
+        self.assertEqual(len(resp['users']), 1)
         # TODO: Completely verify output (I encountered unicode issues when tried to do that).

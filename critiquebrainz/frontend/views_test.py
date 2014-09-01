@@ -5,8 +5,8 @@ class ViewsTestCase(FrontendTestCase):
 
     def test_home_page(self):
         response = self.client.get("/")
-        assert response.status_code == 200
+        self.assert200(response)
 
     def test_404(self):
         response = self.client.get("/404")
-        assert response.status_code == 404
+        self.assert404(response)

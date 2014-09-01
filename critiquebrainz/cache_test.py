@@ -6,7 +6,6 @@ from frontend import create_app
 
 
 class CacheTestCase(unittest.TestCase):
-
     def setUp(self):
         self.app = create_app()
 
@@ -15,21 +14,20 @@ class CacheTestCase(unittest.TestCase):
         self.app.config['MEMCACHED_NAMESPACE'] = namespace
 
         with self.app.app_context():
-
             # Simple key
-            self.assertEquals(cache.generate_cache_key('test'), '%s:%s' % (namespace, 'test'))
+            self.assertEqual(cache.generate_cache_key('test'), '%s:%s' % (namespace, 'test'))
 
             # With source
-            self.assertEquals(cache.generate_cache_key('test', source='spotify'),
-                              '%s:%s:%s' % (namespace, 'spotify', 'test'))
+            self.assertEqual(cache.generate_cache_key('test', source='spotify'),
+                             '%s:%s:%s' % (namespace, 'spotify', 'test'))
 
             # With type
-            self.assertEquals(cache.generate_cache_key('test', type='user'),
-                              '%s:%s:%s' % (namespace, 'user', 'test'))
+            self.assertEqual(cache.generate_cache_key('test', type='user'),
+                             '%s:%s:%s' % (namespace, 'user', 'test'))
 
             # With source and type
-            self.assertEquals(cache.generate_cache_key('test', source='spotify', type='user'),
-                              '%s:%s:%s:%s' % (namespace, 'spotify', 'user', 'test'))
+            self.assertEqual(cache.generate_cache_key('test', source='spotify', type='user'),
+                             '%s:%s:%s:%s' % (namespace, 'spotify', 'user', 'test'))
 
             # Let's try long keys
             id = ''.join(random.choice(string.lowercase) for x in range(200))
