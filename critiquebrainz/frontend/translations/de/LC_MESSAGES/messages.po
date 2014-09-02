@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-18 10:26+0000\n"
-"PO-Revision-Date: 2014-08-19 09:56+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"POT-Creation-Date: 2014-08-19 12:48+0000\n"
+"PO-Revision-Date: 2014-08-20 14:45+0000\n"
+"Last-Translator: S.Brandt <s.brandt@mixxx.org>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/critiquebrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,53 +21,53 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:29
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:16
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:29
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:16
 msgid "Wikidata"
 msgstr "Wikidata"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:30
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:17
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:30
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:17
 msgid "Discogs"
 msgstr "Discogs"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:31
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:18
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:31
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:18
 msgid "Allmusic"
 msgstr "Allmusic"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:32
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:32
 msgid "Bandcamp"
 msgstr "Bandcamp"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:33
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:19
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:33
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:19
 msgid "Official homepage"
 msgstr "Offizielle Webseite"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:34
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:34
 msgid "BBC Music"
 msgstr "BBC-Music"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:46
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:32
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:46
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:32
 msgid "Lyrics"
 msgstr "Songtexte"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:52
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:38
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:52
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:38
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:65
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:65
 msgid "YouTube"
 msgstr "YouTube"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/artist.py:73
+#: critiquebrainz/frontend/apis/mb/relationships/artist.py:73
 msgid "Twitter"
 msgstr "Twitter"
 
-#: critiquebrainz/frontend/apis/musicbrainz/relationships/release_group.py:20
+#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:20
 msgid "Recording studio"
 msgstr "Tonstudio"
 
@@ -204,7 +204,7 @@ msgstr "E-Mail-Feld enthält keine gültige E-Mail-Adresse."
 msgid "Show my Gravatar"
 msgstr "Zeige meinen Gravatar"
 
-#: critiquebrainz/frontend/login/__init__.py:20
+#: critiquebrainz/frontend/login/__init__.py:11
 msgid "Please sign in to access this page."
 msgstr "Logge dich bitte ein, um auf diese Seite zuzugreifen."
 
@@ -228,7 +228,7 @@ msgstr "Du musst ein Album von Spotify auswählen!"
 
 #: critiquebrainz/frontend/matching/views.py:61
 msgid "You need to specify a correct link to this album on Spotify!"
-msgstr ""
+msgstr "Du musst einen korrekte Link zu diesem Album auf Spotify angeben!"
 
 #: critiquebrainz/frontend/matching/views.py:66
 msgid "You need to specify existing album from Spotify!"
@@ -236,7 +236,7 @@ msgstr "Du musst ein vorhandenes Album von Spotify angeben!"
 
 #: critiquebrainz/frontend/matching/views.py:71
 msgid "Spotify mapping has been added!"
-msgstr ""
+msgstr "Spotify-Mapping wurde hinzugefügt!"
 
 #: critiquebrainz/frontend/matching/views.py:83
 msgid "Can't find release group with that ID!"
@@ -339,7 +339,7 @@ msgid ""
 "<strong>CritiqueBrainz is a repository for Creative Commons licensed music reviews.</strong>\n"
 "  Here you can read what others have written about an album or write your own review!\n"
 "  It is based on data from MusicBrainz - open music encyclopedia."
-msgstr ""
+msgstr "<strong>CritiqueBrainz ist eine Quelle für Creative Commons lizenzierte Musikrezensionen.</strong>\nLese hier, was andere Leute über ein Album geschrieben haben oder schreibe deine eigene Rezension!\nEs basiert auf Daten von MusicBrainz - Offene Musik-Enzyklopädie."
 
 #: critiquebrainz/frontend/templates/about.html:15
 msgid "What is it for?"
@@ -460,7 +460,7 @@ msgstr "Willkommen bei CritiqueBrainz!"
 msgid ""
 "CritiqueBrainz is a repository for Creative Commons licensed music reviews.\n"
 "        Here you can read what other people have written about an album or write your own review!"
-msgstr ""
+msgstr "CritiqueBrainz ist eine Quelle für Creative Commons lizenzierte Musikrezensionen.\nLese hier, was andere Leute über ein Album geschrieben haben oder schreibe deine eigene Rezension!"
 
 #: critiquebrainz/frontend/templates/index.html:14
 msgid ""
@@ -718,7 +718,7 @@ msgstr "Abbrechen"
 msgid ""
 "Please select the album \"%(album)s\" by %(artist)s, or provide a link to "
 "Spotify below."
-msgstr ""
+msgstr "Bitte wähle das Album \"%(album)s\" von %(artist)s, oder gebe unten einen Link zu Spotify an."
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:34
 msgid "Listen on Spotify"
@@ -732,11 +732,11 @@ msgstr "Keine ähnlichen Alben gefunden"
 msgid ""
 "If you can't find the right album in search results, you can paste a Spotify"
 " link there:"
-msgstr ""
+msgstr "Wenn du das richtige Album in den Suchergebnissen nicht findest, kannst du hier den Spotify-Link einfügen:"
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:64
 msgid "Spotify URI or HTTP link"
-msgstr ""
+msgstr "Spotify URI oder HTTP-Link"
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:66
 msgid "Submit"
@@ -745,7 +745,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/matching/spotify.html:69
 #, python-format
 msgid "A Spotify link should look like %(uri_example)s or %(link_example)s."
-msgstr ""
+msgstr "Ein Spotify-Link sollte wie %(uri_example)s oder %(link_example)s aussehen."
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:79
 msgid ""
@@ -962,7 +962,7 @@ msgstr "Status"
 #: critiquebrainz/frontend/templates/review/edit.html:39
 #: critiquebrainz/frontend/templates/user/reviews.html:27
 msgid "Draft"
-msgstr ""
+msgstr "Entwurf"
 
 #: critiquebrainz/frontend/templates/review/edit.html:41
 #: critiquebrainz/frontend/templates/user/reviews.html:29
@@ -1012,7 +1012,7 @@ msgstr "Veröffentlichen"
 #: critiquebrainz/frontend/templates/review/edit.html:97
 #: critiquebrainz/frontend/templates/review/write.html:93
 msgid "Save draft"
-msgstr ""
+msgstr "Entwurf speichern"
 
 #: critiquebrainz/frontend/templates/review/edit.html:99
 msgid "Update"
