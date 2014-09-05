@@ -70,18 +70,3 @@ def crossdomain(origin='*', methods=None, headers=None,
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
     return decorator
-
-
-def ssl_required(f):
-    # Based on snippet by Dmitry Chaplinsky located at http://flask.pocoo.org/snippets/93/.
-    @wraps(f)
-    def decorated_view(*args, **kwargs):
-        if not current_app.debug and current_app.config['SSL_AVAILABLE']:  # Not required when debug mode is enabled
-            if request.is_secure:
-                return f(*args, **kwargs)
-            else:
-                return redirect(request.url.replace("http://", "https://"))
-
-        return f(*args, **kwargs)
-
-    return decorated_view

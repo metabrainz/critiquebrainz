@@ -23,8 +23,6 @@ MBSPOTIFY_ACCESS_KEY = "INSERT_YOUR_ACCESS_KEY"
 #SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 #TEST_SQLALCHEMY_DATABASE_URI = "postgresql://<test_user>:<test_pass>@<host>:<port>/<test_db>"
 
-#SSL_AVAILABLE = True
-
 #MEMCACHED_SERVERS = ["127.0.0.1:11211"]
 #MEMCACHED_NAMESPACE = "CB"
 
