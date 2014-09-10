@@ -90,10 +90,7 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump')):
     for license in License.query.all():
         safe_name = slugify(license.id)
         license_dir = '%s/%s' % (location, safe_name)
-
-        exit_code = subprocess.call('mkdir -p %s' % license_dir, shell=True)
-        if exit_code != 0:
-            raise Exception("Failed to create directory for %s reviews!" % license.id)
+        create_path(license_dir)
 
         # Finding release groups that have reviews with current license
         query = db.session.query(Review.release_group).group_by(Review.release_group)
@@ -104,9 +101,7 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump')):
             reviews = Review.list(release_group, license_id=license.id)[0]
             if len(reviews) > 0:
                 rg_dir = '%s/%s' % (license_dir, rg_dir_part)
-                exit_code = subprocess.call('mkdir -p %s' % rg_dir, shell=True)
-                if exit_code != 0:
-                    raise Exception("Failed to create directory for release group!")
+                create_path(rg_dir)
                 f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
                 f.write(jsonify(reviews=[r.to_dict() for r in reviews]).data)
                 f.close()
