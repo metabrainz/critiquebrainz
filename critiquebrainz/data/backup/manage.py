@@ -4,6 +4,7 @@ from flask import current_app, jsonify
 from flask.json import JSONEncoder
 from datetime import datetime
 from time import gmtime, strftime
+import errno
 import unicodedata
 import shutil
 import subprocess
@@ -11,6 +12,7 @@ import os
 import re
 
 from critiquebrainz.data import db, explode_db_url
+from critiquebrainz.data import model
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.license import License
 
@@ -124,6 +126,52 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump')):
         subprocess.call('rm -rf %s' % license_dir, shell=True)
 
 
+@backup_manager.command
+def dump(location=os.path.join(os.getcwd(), 'dump')):
+    # Getting psycopg2 cursor
+    cursor = db.session.connection().connection.cursor()
+
+    for license in License.query.all():
+        safe_name = slugify(license.id)
+        license_dir = '%s/%s' % (location, safe_name)
+        tables_dir = '%s/cbdump' % license_dir
+        create_path(tables_dir)
+
+        # Dumping database tables
+        with open('%s/user' % tables_dir, 'w') as f:
+            cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
+        with open('%s/license' % tables_dir, 'w') as f:
+            cursor.copy_to(f, 'license')
+        with open('%s/review' % tables_dir, 'w') as f:
+            cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id)
+        with open('%s/revision' % tables_dir, 'w') as f:
+            cursor.copy_to(f, 'revision')
+
+        # Copying legal text
+        try:
+            shutil.copyfile("critiquebrainz/data/licenses/%s.txt" % safe_name, '%s/COPYING' % license_dir)
+        except IOError:
+            print("Failed to copy license text for %s!" % license.id)
+
+        time_now = datetime.today()
+        with open('%s/TIMESTAMP' % license_dir, 'w') as f:
+            f.write(time_now.isoformat(' '))
+
+        with open('%s/SCHEMA_SEQUENCE' % license_dir, 'w') as f:
+            f.write(str(model.__version__))
+
+        # Creating archive
+        exit_code = subprocess.call('tar -cjf %s/critiquebrainz-%s-%s-dump.tar.bz2 -C "%s" %s' %
+                                    (location, time_now.strftime('%Y%m%d'), safe_name, location, safe_name), shell=True)
+        if exit_code != 0:
+            raise Exception("Failed to create an archive for %s reviews!" % license.id)
+
+        # Cleanup
+        subprocess.call('rm -rf %s' % license_dir, shell=True)
+
+        print("Created dump with %s licensed reviews." % license.id)
+
+
 def slugify(value):
     """Converts to lowercase, removes alphanumerics and underscores, and converts spaces to hyphens.
     Also strips leading and trailing whitespace.
@@ -131,3 +179,12 @@ def slugify(value):
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
     value = re.sub('[^\w\s-]', '', value).strip().lower()
     return re.sub('[-\s]+', '-', value)
+
+
+def create_path(path):
+    """Creates a directory structure if it doesn't exist yet."""
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
