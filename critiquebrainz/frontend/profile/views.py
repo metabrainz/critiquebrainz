@@ -1,14 +1,12 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user
 from flask.ext.babel import gettext
-from critiquebrainz.decorators import ssl_required
 from critiquebrainz.frontend.forms.user import UserForm
 
 profile_bp = Blueprint('profile_details', __name__)
 
 
 @profile_bp.route('/edit', methods=['GET', 'POST'], endpoint='edit')
-@ssl_required
 @login_required
 def edit_handler():
     form = UserForm()

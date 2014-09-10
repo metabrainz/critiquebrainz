@@ -97,6 +97,20 @@ Finally, save the obtained ``OAuth Client ID`` and ``OAuth Client Secret`` field
 in your ``config.py`` fields ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
 respectively.
 
+Security
+^^^^^^^^
+
+Unless you are doing development, it might be a good idea to make your installation
+HTTPS-only. You can read about pros and cons at https://security.stackexchange.com/questions/258/.
+If you don't want to do that yet, here's a list of blueprints that should be kept secure:
+
+* ``profile_details`` (private user info)
+* ``profile_applications`` (secret info about user's applications)
+* ``ws_oauth`` (OAuth 2.0 token endpoint)
+
+More information about importance of keeping transport layer secure is available at
+https://www.owasp.org/index.php/Top_10_2010-A9-Insufficient_Transport_Layer_Protection.
+
 Running
 -------
 
