@@ -20,12 +20,12 @@ backup_manager = Manager()
 
 
 @backup_manager.command
-def backup_db(location=os.path.join(os.getcwd(), 'backup'), clean=False):
+def backup_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
     """Create complete dump of PostgreSQL database.
 
     This command creates database dump using pg_dump and puts it into specified directory
     (default is *backup*). It's also possible to remove all previously created backups
-    except two most recent ones. If you want to do that, set *clean* argument to True.
+    except two most recent ones. If you want to do that, set *rotate* argument to True.
 
     File with a dump will be a tar archive with a timestamp in the name: `%Y%m%d-%H%M%S.tar.bz2`.
     """
@@ -50,9 +50,9 @@ def backup_db(location=os.path.join(os.getcwd(), 'backup'), clean=False):
 
     print('Done! Created "%s.tar.bz2".' % dump_file)
 
-    if clean:
+    if rotate:
         # Removing old backups (except two latest)
-        print('Removing old backups...')
+        print("Removing old backups...")
         files = [os.path.join(location, f) for f in os.listdir(location)]
         pattern = re.compile("%s[0-9]+-[0-9]+.tar" % FILE_PREFIX)
         archives = filter(lambda x: pattern.search(x), files)  # Selecting only our backup files
@@ -77,7 +77,7 @@ class DumpJSONEncoder(JSONEncoder):
 
 
 @backup_manager.command
-def dump_json(location=os.path.join(os.getcwd(), 'dump')):
+def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
     """Create JSON dumps with all reviews.
 
     This command will create an archive for each license available on CB.
@@ -120,6 +120,20 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump')):
         # Cleanup
         subprocess.call('rm -rf %s' % license_dir, shell=True)
 
+    if rotate:
+        # Removing old backups
+        print("Removing old backups...")
+        files = [os.path.join(location, f) for f in os.listdir(location)]
+        pattern = re.compile("critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2")
+        archives = filter(lambda x: pattern.search(x), files)  # Selecting only our backup files
+        archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
+        # Leaving only two latest sets of archives
+        for old_archive in archives[:(-2 * License.query.count())]:
+            print(' - ', old_archive)
+            os.remove(old_archive)
+
+    print("Done!")
+
 
 @backup_manager.command
 def dump(location=os.path.join(os.getcwd(), 'dump')):
@@ -157,7 +171,8 @@ def dump(location=os.path.join(os.getcwd(), 'dump')):
 
         # Creating archive
         exit_code = subprocess.call('tar -cjf %s/critiquebrainz-%s-%s-dump.tar.bz2 -C "%s" %s' %
-                                    (location, time_now.strftime('%Y%m%d'), safe_name, location, safe_name), shell=True)
+                                    (location, time_now.strftime('%Y%m%d'), safe_name, location, safe_name),
+                                    shell=True)
         if exit_code != 0:
             raise Exception("Failed to create an archive for %s reviews!" % license.id)
 
@@ -165,6 +180,20 @@ def dump(location=os.path.join(os.getcwd(), 'dump')):
         subprocess.call('rm -rf %s' % license_dir, shell=True)
 
         print("Created dump with %s licensed reviews." % license.id)
+
+    if rotate:
+        # Removing old backups
+        print("Removing old backups...")
+        files = [os.path.join(location, f) for f in os.listdir(location)]
+        pattern = re.compile("critiquebrainz-[0-9]+-[-\w]+-dump.tar.bz2")
+        archives = filter(lambda x: pattern.search(x), files)  # Selecting only our backup files
+        archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
+        # Leaving only two latest sets of archives
+        for old_archive in archives[:(-2 * License.query.count())]:
+            print(' - ', old_archive)
+            os.remove(old_archive)
+
+    print("Done!")
 
 
 def slugify(value):
