@@ -48,7 +48,7 @@ def backup_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
     if subprocess.call('bzip2 "%s.tar"' % dump_file, shell=True) != 0:
         raise Exception("Failed to create database dump!")
 
-    print('Done! Created "%s.tar.bz2".' % dump_file)
+    print('Created %s.tar.bz2' % dump_file)
 
     if rotate:
         # Removing old backups (except two latest)
@@ -58,8 +58,10 @@ def backup_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
         archives = filter(lambda x: pattern.search(x), files)  # Selecting only our backup files
         archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
         for old_archive in archives[:-2]:
-            print(' - ', old_archive)
+            print(' -', old_archive)
             os.remove(old_archive)
+
+    print("Done!")
 
 
 class DumpJSONEncoder(JSONEncoder):
@@ -85,6 +87,7 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
     """
     current_app.json_encoder = DumpJSONEncoder
 
+    print("Creating new archives...")
     for license in License.query.all():
         safe_name = slugify(license.id)
         license_dir = '%s/%s' % (location, safe_name)
@@ -120,16 +123,18 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
         # Cleanup
         subprocess.call('rm -rf %s' % license_dir, shell=True)
 
+        print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
+
     if rotate:
         # Removing old backups
-        print("Removing old backups...")
+        print("Removing old archives...")
         files = [os.path.join(location, f) for f in os.listdir(location)]
         pattern = re.compile("critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2")
         archives = filter(lambda x: pattern.search(x), files)  # Selecting only our backup files
         archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
         # Leaving only two latest sets of archives
         for old_archive in archives[:(-2 * License.query.count())]:
-            print(' - ', old_archive)
+            print(' -', old_archive)
             os.remove(old_archive)
 
     print("Done!")
@@ -140,6 +145,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
     # Getting psycopg2 cursor
     cursor = db.session.connection().connection.cursor()
 
+    print("Creating new archives...")
     for license in License.query.all():
         safe_name = slugify(license.id)
         license_dir = '%s/%s' % (location, safe_name)
@@ -179,7 +185,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         # Cleanup
         subprocess.call('rm -rf %s' % license_dir, shell=True)
 
-        print("Created dump with %s licensed reviews." % license.id)
+        print(" + %s/critiquebrainz-%s-%s-dump.tar.bz2" % (location, time_now.strftime('%Y%m%d'), safe_name))
 
     if rotate:
         # Removing old backups
@@ -190,7 +196,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
         # Leaving only two latest sets of archives
         for old_archive in archives[:(-2 * License.query.count())]:
-            print(' - ', old_archive)
+            print(' -', old_archive)
             os.remove(old_archive)
 
     print("Done!")
