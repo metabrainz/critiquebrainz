@@ -20,7 +20,7 @@ backup_manager = Manager()
 
 
 @backup_manager.command
-def backup_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
+def dump_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
     """Create complete dump of PostgreSQL database.
 
     This command creates database dump using pg_dump and puts it into specified directory

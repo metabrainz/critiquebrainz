@@ -10,7 +10,7 @@ Creating backups
 
 Complete database dump::
 
-   $ python manage.py data backup backup_db -r
+   $ python manage.py data backup dump_db -r
 
 JSON dump with all reviews *(no private info)*::
 
