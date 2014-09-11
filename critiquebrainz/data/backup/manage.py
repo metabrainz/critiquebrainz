@@ -111,7 +111,9 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump')):
             print("Failed to copy license text for %s!" % license.id)
 
         # Creating archive
-        exit_code = subprocess.call('tar -cjf %s/critiquebrainz-json-%s.tar.bz2 -C "%s" %s' % (location, safe_name, location, safe_name), shell=True)
+        exit_code = subprocess.call('tar -cjf %s/critiquebrainz-%s-%s-json.tar.bz2 -C "%s" %s' %
+                                    (location, datetime.today().strftime('%Y%m%d'), safe_name, location, safe_name),
+                                    shell=True)
         if exit_code != 0:
             raise Exception("Failed to create an archive for %s reviews!" % license.id)
 
