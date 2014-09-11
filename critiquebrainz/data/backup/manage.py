@@ -31,9 +31,7 @@ def backup_db(location=os.path.join(os.getcwd(), 'backup'), clean=False):
     """
 
     # Creating backup directory, if needed
-    exit_code = subprocess.call('mkdir -p %s' % location, shell=True)
-    if exit_code != 0:
-        raise Exception("Failed to create backup directory!")
+    create_path(location)
 
     FILE_PREFIX = "cb-backup-"
     db_hostname, db_name, db_username, db_password = explode_db_url(current_app.config['SQLALCHEMY_DATABASE_URI'])
