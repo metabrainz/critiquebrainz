@@ -136,7 +136,7 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
 
 
 @backup_manager.command
-def dump(location=os.path.join(os.getcwd(), 'dump')):
+def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
     # Getting psycopg2 cursor
     cursor = db.session.connection().connection.cursor()
 
