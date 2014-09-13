@@ -1,11 +1,9 @@
 from __future__ import print_function
 from flask.ext.script import Manager
 from flask import current_app, jsonify
-from flask.json import JSONEncoder
 from datetime import datetime
 from time import gmtime, strftime
-import errno
-import unicodedata
+from util import create_path, slugify, DumpJSONEncoder
 import tarfile
 import shutil
 import subprocess
@@ -62,20 +60,6 @@ def dump_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
             os.remove(old_archive)
 
     print("Done!")
-
-
-class DumpJSONEncoder(JSONEncoder):
-    """Custom JSON encoder for database dumps."""
-    def default(self, obj):
-        try:
-            if isinstance(obj, datetime):
-                return obj.isoformat()
-            iterable = iter(obj)
-        except TypeError:
-            pass
-        else:
-            return list(iterable)
-        return JSONEncoder.default(self, obj)
 
 
 @backup_manager.command
@@ -235,21 +219,3 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
             shutil.rmtree(old_dump)
 
     print("Done!")
-
-
-def slugify(value):
-    """Converts to lowercase, removes alphanumerics and underscores, and converts spaces to hyphens.
-    Also strips leading and trailing whitespace.
-    """
-    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
-    value = re.sub('[^\w\s-]', '', value).strip().lower()
-    return re.sub('[-\s]+', '-', value)
-
-
-def create_path(path):
-    """Creates a directory structure if it doesn't exist yet."""
-    try:
-        os.makedirs(path)
-    except OSError as exception:
-        if exception.errno != errno.EEXIST:
-            raise
