@@ -52,8 +52,7 @@ def dump_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
     print('Created %s.tar.bz2' % dump_file)
 
     if rotate:
-        # Removing old backups (except two latest)
-        print("Removing old backups...")
+        print("Removing old backups (except two latest)...")
         entries = [os.path.join(location, f) for f in os.listdir(location)]
         pattern = re.compile("%s[0-9]+-[0-9]+.tar" % FILE_PREFIX)
         archives = filter(lambda x: pattern.search(x), entries)  # Selecting only our backup files
@@ -87,40 +86,41 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
     Archives will be put into a specified directory (default is *dump*).
     """
     current_app.json_encoder = DumpJSONEncoder
+    temp_dir = '%s/temp' % location
+    create_path(temp_dir)
 
     print("Creating new archives...")
     for license in License.query.all():
         safe_name = slugify(license.id)
-        license_dir = '%s/%s' % (location, safe_name)
-        create_path(license_dir)
+        with tarfile.open("%s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name), "w:bz2") as tar:
+            license_dir = '%s/%s' % (temp_dir, safe_name)
+            create_path(license_dir)
 
-        # Finding release groups that have reviews with current license
-        query = db.session.query(Review.release_group).group_by(Review.release_group)
-        for release_group in query.all():
-            release_group = release_group[0]
-            # Creating directory structure for release group and dumping reviews
-            rg_dir_part = '%s/%s' % (release_group[0:1], release_group[0:2])
-            reviews = Review.list(release_group, license_id=license.id)[0]
-            if len(reviews) > 0:
-                rg_dir = '%s/%s' % (license_dir, rg_dir_part)
-                create_path(rg_dir)
-                f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
-                f.write(jsonify(reviews=[r.to_dict() for r in reviews]).data)
-                f.close()
+            # Finding release groups that have reviews with current license
+            query = db.session.query(Review.release_group).group_by(Review.release_group)
+            for release_group in query.all():
+                release_group = release_group[0]
+                # Creating directory structure for release group and dumping reviews
+                rg_dir_part = '%s/%s' % (release_group[0:1], release_group[0:2])
+                reviews = Review.list(release_group, license_id=license.id)[0]
+                if len(reviews) > 0:
+                    rg_dir = '%s/%s' % (license_dir, rg_dir_part)
+                    create_path(rg_dir)
+                    f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
+                    f.write(jsonify(reviews=[r.to_dict() for r in reviews]).data)
+                    f.close()
 
-        # Copying legal text
-        try:
-            shutil.copyfile("critiquebrainz/data/licenses/%s.txt" % safe_name, '%s/COPYING' % license_dir)
-        except IOError:
-            print("Failed to copy license text for %s!" % license.id)
+            tar.add(license_dir, arcname='reviews')
 
-        create_tarball("%s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name), license_dir)
-        subprocess.call('rm -rf %s' % license_dir, shell=True)  # Cleanup
-        print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
+            # Copying legal text
+            tar.add("critiquebrainz/data/licenses/%s.txt" % safe_name, arcname='COPYING')
+
+            print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
+
+    subprocess.call('rm -rf %s' % temp_dir, shell=True)  # Cleanup
 
     if rotate:
-        # Removing old backups
-        print("Removing old archives...")
+        print("Removing old sets of archives (except two latest)...")
         entries = [os.path.join(location, f) for f in os.listdir(location)]
         pattern = re.compile("critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2")
         archives = filter(lambda x: pattern.search(x), entries)  # Selecting only our backup files
@@ -143,101 +143,87 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
 
     # Creating a directory where all dumps will go
     dump_dir = '%s/%s' % (location, time_now.strftime('%Y%m%d-%H%M%S'))
-    create_path(dump_dir)
+    temp_dir = '%s/temp' % dump_dir
+    create_path(temp_dir)
+
+    # Preparing meta files
+    with open('%s/TIMESTAMP' % temp_dir, 'w') as f:
+        f.write(time_now.isoformat(' '))
+    with open('%s/SCHEMA_SEQUENCE' % temp_dir, 'w') as f:
+        f.write(str(model.__version__))
 
     # BASE ARCHIVE
     # Archiving stuff that is independent from licenses (users, licenses)
-    base_archive_dir = '%s/cbdump' % dump_dir
-    create_path(base_archive_dir)
+    with tarfile.open("%s/cbdump.tar.bz2" % dump_dir, "w:bz2") as tar:
+        base_archive_dir = '%s/cbdump' % temp_dir
+        create_path(base_archive_dir)
 
-    # Dumping tables
-    base_archive_tables_dir = '%s/cbdump' % base_archive_dir
-    create_path(base_archive_tables_dir)
-    with open('%s/base_archive_tables_dir' % base_archive_tables_dir, 'w') as f:
-         cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
-    with open('%s/license' % base_archive_tables_dir, 'w') as f:
-        cursor.copy_to(f, 'license')
+        # Dumping tables
+        base_archive_tables_dir = '%s/cbdump' % base_archive_dir
+        create_path(base_archive_tables_dir)
+        with open('%s/user' % base_archive_tables_dir, 'w') as f:
+             cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
+        with open('%s/license' % base_archive_tables_dir, 'w') as f:
+            cursor.copy_to(f, 'license')
+        tar.add(base_archive_tables_dir, arcname='cbdump')
 
-    # Creating additional information about this archive
-    try:
+        # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
-        shutil.copyfile("critiquebrainz/data/licenses/cc-by-nc-sa-30.txt", '%s/COPYING' % base_archive_dir)
-    except IOError:
-        print("Failed to copy CC BY-NC-SA 3.0 license text!")
-    with open('%s/TIMESTAMP' % base_archive_dir, 'w') as f:
-        f.write(time_now.isoformat(' '))
-    with open('%s/SCHEMA_SEQUENCE' % base_archive_dir, 'w') as f:
-        f.write(str(model.__version__))
+        tar.add('critiquebrainz/data/licenses/cc-by-nc-sa-30.txt', arcname='COPYING')
+        tar.add('%s/TIMESTAMP' % temp_dir, arcname='TIMESTAMP')
+        tar.add('%s/SCHEMA_SEQUENCE' % temp_dir, arcname='SCHEMA_SEQUENCE')
 
-    # Creating archive
-    create_tarball("%s/cbdump.tar.bz2" % dump_dir, base_archive_dir)
-    subprocess.call('rm -rf %s' % base_archive_dir, shell=True)  # Cleanup
-    print(" + %s/cbdump.tar.bz2" % dump_dir)
+        print(" + %s/cbdump.tar.bz2" % dump_dir)
 
     # REVIEWS
     # Archiving review tables (review, revision)
 
     # 1. COMBINED
     # Archiving all reviews (any license)
-    reviews_combined_archive_dir = '%s/cbdump-reviews-all' % dump_dir
-    create_path(reviews_combined_archive_dir)
+    with tarfile.open("%s/cbdump-reviews-all.tar.bz2" % dump_dir, "w:bz2") as tar:
+        # Dumping tables
+        reviews_combined_tables_dir = '%s/cbdump-reviews-all' % temp_dir
+        create_path(reviews_combined_tables_dir)
+        with open('%s/review' % reviews_combined_tables_dir, 'w') as f:
+            cursor.copy_to(f, 'review')
+        with open('%s/revision' % reviews_combined_tables_dir, 'w') as f:
+            cursor.copy_to(f, 'revision')
+        tar.add(reviews_combined_tables_dir, arcname='cbdump')
 
-    # Dumping tables
-    reviews_combined_tables_dir = '%s/cbdump' % reviews_combined_archive_dir
-    create_path(reviews_combined_tables_dir)
-    with open('%s/review' % reviews_combined_tables_dir, 'w') as f:
-        cursor.copy_to(f, 'review')
-    with open('%s/revision' % reviews_combined_tables_dir, 'w') as f:
-        cursor.copy_to(f, 'revision')
-
-    # Creating additional information about this archive
-    try:
+        # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
-        shutil.copyfile("critiquebrainz/data/licenses/cc-by-nc-sa-30.txt", '%s/COPYING' % reviews_combined_tables_dir)
-    except IOError:
-        print("Failed to copy CC BY-NC-SA 3.0 license text!")
-    with open('%s/TIMESTAMP' % reviews_combined_tables_dir, 'w') as f:
-        f.write(time_now.isoformat(' '))
-    with open('%s/SCHEMA_SEQUENCE' % reviews_combined_tables_dir, 'w') as f:
-        f.write(str(model.__version__))
+        tar.add('critiquebrainz/data/licenses/cc-by-nc-sa-30.txt', arcname='COPYING')
+        tar.add('%s/TIMESTAMP' % temp_dir, arcname='TIMESTAMP')
+        tar.add('%s/SCHEMA_SEQUENCE' % temp_dir, arcname='SCHEMA_SEQUENCE')
 
-    # Creating archive
-    create_tarball("%s/cbdump-reviews-all.tar.bz2" % dump_dir, reviews_combined_archive_dir)
-    subprocess.call('rm -rf %s' % reviews_combined_archive_dir, shell=True)  # Cleanup
-    print(" + %s/cbdump-reviews-all.tar.bz2" % dump_dir)
+        print(" + %s/cbdump-reviews-all.tar.bz2" % dump_dir)
 
     # 2. SEPARATE
     # Creating separate archives for each license
     for license in License.query.all():
         safe_name = slugify(license.id)
-        license_dir = '%s/%s' % (dump_dir, safe_name)
+        with tarfile.open("%s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name), "w:bz2") as tar:
+            # Dumping tables
+            tables_dir = '%s/%s' % (temp_dir, safe_name)
+            create_path(tables_dir)
+            with open('%s/review' % tables_dir, 'w') as f:
+                cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id)
+            with open('%s/revision' % tables_dir, 'w') as f:
+                cursor.copy_to(f, "(SELECT revision.* FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" % license.id)
+            tar.add(tables_dir, arcname='cbdump')
 
-        # Dumping tables
-        tables_dir = '%s/cbdump' % license_dir
-        create_path(tables_dir)
-        with open('%s/review' % tables_dir, 'w') as f:
-            cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id)
-        with open('%s/revision' % tables_dir, 'w') as f:
-            cursor.copy_to(f, "(SELECT revision.* FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" % license.id)
+            # Including additional information about this archive
+            tar.add('critiquebrainz/data/licenses/%s.txt' % safe_name, arcname='COPYING')
+            tar.add('%s/TIMESTAMP' % temp_dir, arcname='TIMESTAMP')
+            tar.add('%s/SCHEMA_SEQUENCE' % temp_dir, arcname='SCHEMA_SEQUENCE')
 
-        # Creating additional information about this archive
-        try:
-            shutil.copyfile("critiquebrainz/data/licenses/%s.txt" % safe_name, '%s/COPYING' % license_dir)
-        except IOError:
-            print("Failed to copy license text for %s!" % license.id)
-        with open('%s/TIMESTAMP' % license_dir, 'w') as f:
-            f.write(time_now.isoformat(' '))
-        with open('%s/SCHEMA_SEQUENCE' % license_dir, 'w') as f:
-            f.write(str(model.__version__))
+            print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
 
-        # Creating archive
-        create_tarball("%s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name), license_dir)
-        subprocess.call('rm -rf %s' % license_dir, shell=True)  # Cleanup
-        print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
+    # Cleanup
+    subprocess.call('rm -rf %s' % temp_dir, shell=True)
 
     if rotate:
-        # Removing old dumps
-        print("Removing old dumps...")
+        print("Removing old dumps (except two latest)...")
         entries = [os.path.join(location, f) for f in os.listdir(location)]
         pattern = re.compile("[0-9]+-[0-9]+")
         entries = filter(lambda x: pattern.search(x), entries)
@@ -267,9 +253,3 @@ def create_path(path):
     except OSError as exception:
         if exception.errno != errno.EEXIST:
             raise
-
-
-def create_tarball(archive_name, source_dir):
-    """Creates bzip2 compressed tarball of the specified source directory."""
-    with tarfile.open(archive_name, "w:bz2") as tar:
-        tar.add(source_dir, arcname=os.path.basename(source_dir))
