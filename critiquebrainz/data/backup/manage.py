@@ -6,6 +6,7 @@ from datetime import datetime
 from time import gmtime, strftime
 import errno
 import unicodedata
+import tarfile
 import shutil
 import subprocess
 import os
@@ -113,16 +114,8 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
         except IOError:
             print("Failed to copy license text for %s!" % license.id)
 
-        # Creating archive
-        exit_code = subprocess.call('tar -cjf %s/critiquebrainz-%s-%s-json.tar.bz2 -C "%s" %s' %
-                                    (location, datetime.today().strftime('%Y%m%d'), safe_name, location, safe_name),
-                                    shell=True)
-        if exit_code != 0:
-            raise Exception("Failed to create an archive for %s reviews!" % license.id)
-
-        # Cleanup
-        subprocess.call('rm -rf %s' % license_dir, shell=True)
-
+        create_tarball("%s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name), license_dir)
+        subprocess.call('rm -rf %s' % license_dir, shell=True)  # Cleanup
         print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
 
     if rotate:
@@ -177,11 +170,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         f.write(str(model.__version__))
 
     # Creating archive
-    exit_code = subprocess.call('tar -cjf %s/cbdump.tar.bz2 -C "%s" cbdump' %
-                                (dump_dir, dump_dir),
-                                shell=True)
-    if exit_code != 0:
-        raise Exception("Failed to create cbdump.tar.bz2!")
+    create_tarball("%s/cbdump.tar.bz2" % dump_dir, base_archive_dir)
     subprocess.call('rm -rf %s' % base_archive_dir, shell=True)  # Cleanup
     print(" + %s/cbdump.tar.bz2" % dump_dir)
 
@@ -213,11 +202,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         f.write(str(model.__version__))
 
     # Creating archive
-    exit_code = subprocess.call('tar -cjf %s/cbdump-reviews-all.tar.bz2 -C "%s" cbdump-reviews-all' %
-                                (dump_dir, dump_dir),
-                                shell=True)
-    if exit_code != 0:
-        raise Exception("Failed to create cbdump-reviews-all.tar.bz2!")
+    create_tarball("%s/cbdump-reviews-all.tar.bz2" % dump_dir, reviews_combined_archive_dir)
     subprocess.call('rm -rf %s' % reviews_combined_archive_dir, shell=True)  # Cleanup
     print(" + %s/cbdump-reviews-all.tar.bz2" % dump_dir)
 
@@ -247,11 +232,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
             f.write(str(model.__version__))
 
         # Creating archive
-        exit_code = subprocess.call('tar -cjf %s/cbdump-reviews-%s.tar.bz2 -C "%s" %s' %
-                                    (dump_dir, safe_name, dump_dir, safe_name),
-                                    shell=True)
-        if exit_code != 0:
-            raise Exception("Failed to create an archive for %s reviews!" % license.id)
+        create_tarball("%s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name), license_dir)
         subprocess.call('rm -rf %s' % license_dir, shell=True)  # Cleanup
         print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
 
@@ -287,3 +268,9 @@ def create_path(path):
     except OSError as exception:
         if exception.errno != errno.EEXIST:
             raise
+
+
+def create_tarball(archive_name, source_dir):
+    """Creates bzip2 compressed tarball of the specified source directory."""
+    with tarfile.open(archive_name, "w:bz2") as tar:
+        tar.add(source_dir, arcname=os.path.basename(source_dir))
