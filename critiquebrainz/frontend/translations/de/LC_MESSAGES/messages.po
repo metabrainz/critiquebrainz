@@ -4,6 +4,7 @@
 # 
 # Translators:
 # nikki, 2014
+# Ettore Atalan <atalanttore@googlemail.com>, 2014
 # S.Brandt <s.brandt@mixxx.org>, 2014
 # Shepard, 2014
 msgid ""
@@ -11,8 +12,8 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-08-19 12:48+0000\n"
-"PO-Revision-Date: 2014-08-20 14:45+0000\n"
-"Last-Translator: S.Brandt <s.brandt@mixxx.org>\n"
+"PO-Revision-Date: 2014-09-07 11:43+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/critiquebrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -122,15 +123,15 @@ msgstr "Webseite ist keine gültige URI."
 
 #: critiquebrainz/frontend/forms/app.py:18
 msgid "Authorization callback URL"
-msgstr ""
+msgstr "Berechtigungsrückruf-URL"
 
 #: critiquebrainz/frontend/forms/app.py:19
 msgid "Authorization callback URL field is empty."
-msgstr ""
+msgstr "Berechtigungsrückruf-URL-Feld ist leer."
 
 #: critiquebrainz/frontend/forms/app.py:20
 msgid "Authorization callback URL is invalid."
-msgstr ""
+msgstr "Berechtigungsrückruf-URL ist ungültig."
 
 #: critiquebrainz/frontend/forms/review.py:23
 msgid "Text"
@@ -740,7 +741,7 @@ msgstr "Spotify URI oder HTTP-Link"
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:66
 msgid "Submit"
-msgstr ""
+msgstr "Absenden"
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:69
 #, python-format
@@ -1016,7 +1017,7 @@ msgstr "Entwurf speichern"
 
 #: critiquebrainz/frontend/templates/review/edit.html:99
 msgid "Update"
-msgstr ""
+msgstr "Aktualisierung"
 
 #: critiquebrainz/frontend/templates/review/edit.html:101
 msgid "Discard changes"
@@ -1166,8 +1167,8 @@ msgstr "Bearbeiten"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:57
 msgid "Newer"
-msgstr ""
+msgstr "Neuer"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:60
 msgid "Older"
-msgstr ""
+msgstr "Älter"
