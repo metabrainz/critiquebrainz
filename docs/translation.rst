@@ -28,6 +28,16 @@ To add support for new language add its Transifex code into ``SUPPORTED_LANGUAGE
 
    $ fab pull_translations
 
+You will need to create *.transifexrc* file that will look like::
+
+   [https://www.transifex.com]
+   hostname = https://www.transifex.com
+   username = <YOUR_EMAIL>
+   password = <YOUR_PASSWORD>
+   token =
+
+More info about setup process is available at http://docs.transifex.com/developer/client/setup.
+
 Additional info
 ^^^^^^^^^^^^^^^
 
