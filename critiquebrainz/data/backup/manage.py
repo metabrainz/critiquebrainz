@@ -53,9 +53,9 @@ def dump_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
     if rotate:
         # Removing old backups (except two latest)
         print("Removing old backups...")
-        files = [os.path.join(location, f) for f in os.listdir(location)]
+        entries = [os.path.join(location, f) for f in os.listdir(location)]
         pattern = re.compile("%s[0-9]+-[0-9]+.tar" % FILE_PREFIX)
-        archives = filter(lambda x: pattern.search(x), files)  # Selecting only our backup files
+        archives = filter(lambda x: pattern.search(x), entries)  # Selecting only our backup files
         archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
         for old_archive in archives[:-2]:
             print(' -', old_archive)
@@ -128,9 +128,9 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
     if rotate:
         # Removing old backups
         print("Removing old archives...")
-        files = [os.path.join(location, f) for f in os.listdir(location)]
+        entries = [os.path.join(location, f) for f in os.listdir(location)]
         pattern = re.compile("critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2")
-        archives = filter(lambda x: pattern.search(x), files)  # Selecting only our backup files
+        archives = filter(lambda x: pattern.search(x), entries)  # Selecting only our backup files
         archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
         # Leaving only two latest sets of archives
         for old_archive in archives[:(-2 * License.query.count())]:
@@ -142,62 +142,131 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
 
 @backup_manager.command
 def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
+    print("Creating new archives...")
+    time_now = datetime.today()
+
     # Getting psycopg2 cursor
     cursor = db.session.connection().connection.cursor()
 
-    print("Creating new archives...")
+    # Creating a directory where all dumps will go
+    dump_dir = '%s/%s' % (location, time_now.strftime('%Y%m%d-%H%M%S'))
+    create_path(dump_dir)
+
+    # BASE ARCHIVE
+    # Archiving stuff that is independent from licenses (users, licenses)
+    base_archive_dir = '%s/cbdump' % dump_dir
+    create_path(base_archive_dir)
+
+    # Dumping tables
+    base_archive_tables_dir = '%s/cbdump' % base_archive_dir
+    create_path(base_archive_tables_dir)
+    with open('%s/base_archive_tables_dir' % base_archive_tables_dir, 'w') as f:
+         cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
+    with open('%s/license' % base_archive_tables_dir, 'w') as f:
+        cursor.copy_to(f, 'license')
+
+    # Creating additional information about this archive
+    try:
+        # Copying the most restrictive license there (CC BY-NC-SA 3.0)
+        shutil.copyfile("critiquebrainz/data/licenses/cc-by-nc-sa-30.txt", '%s/COPYING' % base_archive_dir)
+    except IOError:
+        print("Failed to copy CC BY-NC-SA 3.0 license text!")
+    with open('%s/TIMESTAMP' % base_archive_dir, 'w') as f:
+        f.write(time_now.isoformat(' '))
+    with open('%s/SCHEMA_SEQUENCE' % base_archive_dir, 'w') as f:
+        f.write(str(model.__version__))
+
+    # Creating archive
+    exit_code = subprocess.call('tar -cjf %s/cbdump.tar.bz2 -C "%s" cbdump' %
+                                (dump_dir, dump_dir),
+                                shell=True)
+    if exit_code != 0:
+        raise Exception("Failed to create cbdump.tar.bz2!")
+    subprocess.call('rm -rf %s' % base_archive_dir, shell=True)  # Cleanup
+    print(" + %s/cbdump.tar.bz2" % dump_dir)
+
+    # REVIEWS
+    # Archiving review tables (review, revision)
+
+    # 1. COMBINED
+    # Archiving all reviews (any license)
+    reviews_combined_archive_dir = '%s/cbdump-reviews-all' % dump_dir
+    create_path(reviews_combined_archive_dir)
+
+    # Dumping tables
+    reviews_combined_tables_dir = '%s/cbdump' % reviews_combined_archive_dir
+    create_path(reviews_combined_tables_dir)
+    with open('%s/review' % reviews_combined_tables_dir, 'w') as f:
+        cursor.copy_to(f, 'review')
+    with open('%s/revision' % reviews_combined_tables_dir, 'w') as f:
+        cursor.copy_to(f, 'revision')
+
+    # Creating additional information about this archive
+    try:
+        # Copying the most restrictive license there (CC BY-NC-SA 3.0)
+        shutil.copyfile("critiquebrainz/data/licenses/cc-by-nc-sa-30.txt", '%s/COPYING' % reviews_combined_tables_dir)
+    except IOError:
+        print("Failed to copy CC BY-NC-SA 3.0 license text!")
+    with open('%s/TIMESTAMP' % reviews_combined_tables_dir, 'w') as f:
+        f.write(time_now.isoformat(' '))
+    with open('%s/SCHEMA_SEQUENCE' % reviews_combined_tables_dir, 'w') as f:
+        f.write(str(model.__version__))
+
+    # Creating archive
+    exit_code = subprocess.call('tar -cjf %s/cbdump-reviews-all.tar.bz2 -C "%s" cbdump-reviews-all' %
+                                (dump_dir, dump_dir),
+                                shell=True)
+    if exit_code != 0:
+        raise Exception("Failed to create cbdump-reviews-all.tar.bz2!")
+    subprocess.call('rm -rf %s' % reviews_combined_archive_dir, shell=True)  # Cleanup
+    print(" + %s/cbdump-reviews-all.tar.bz2" % dump_dir)
+
+    # 2. SEPARATE
+    # Creating separate archives for each license
     for license in License.query.all():
         safe_name = slugify(license.id)
-        license_dir = '%s/%s' % (location, safe_name)
+        license_dir = '%s/%s' % (dump_dir, safe_name)
+
+        # Dumping tables
         tables_dir = '%s/cbdump' % license_dir
         create_path(tables_dir)
-
-        # Dumping database tables
-        with open('%s/user_sanitised' % tables_dir, 'w') as f:
-            cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
-        with open('%s/license' % tables_dir, 'w') as f:
-            cursor.copy_to(f, 'license')
         with open('%s/review' % tables_dir, 'w') as f:
             cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id)
         with open('%s/revision' % tables_dir, 'w') as f:
+            # TODO: Select only revisions for reviews with current license
             cursor.copy_to(f, 'revision')
 
-        # Copying legal text
+        # Creating additional information about this archive
         try:
             shutil.copyfile("critiquebrainz/data/licenses/%s.txt" % safe_name, '%s/COPYING' % license_dir)
         except IOError:
             print("Failed to copy license text for %s!" % license.id)
-
-        time_now = datetime.today()
         with open('%s/TIMESTAMP' % license_dir, 'w') as f:
             f.write(time_now.isoformat(' '))
-
         with open('%s/SCHEMA_SEQUENCE' % license_dir, 'w') as f:
             f.write(str(model.__version__))
 
         # Creating archive
-        exit_code = subprocess.call('tar -cjf %s/critiquebrainz-%s-%s-dump.tar.bz2 -C "%s" %s' %
-                                    (location, time_now.strftime('%Y%m%d'), safe_name, location, safe_name),
+        exit_code = subprocess.call('tar -cjf %s/cbdump-reviews-%s.tar.bz2 -C "%s" %s' %
+                                    (dump_dir, safe_name, dump_dir, safe_name),
                                     shell=True)
         if exit_code != 0:
             raise Exception("Failed to create an archive for %s reviews!" % license.id)
-
-        # Cleanup
-        subprocess.call('rm -rf %s' % license_dir, shell=True)
-
-        print(" + %s/critiquebrainz-%s-%s-dump.tar.bz2" % (location, time_now.strftime('%Y%m%d'), safe_name))
+        subprocess.call('rm -rf %s' % license_dir, shell=True)  # Cleanup
+        print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
 
     if rotate:
-        # Removing old backups
-        print("Removing old backups...")
-        files = [os.path.join(location, f) for f in os.listdir(location)]
-        pattern = re.compile("critiquebrainz-[0-9]+-[-\w]+-dump.tar.bz2")
-        archives = filter(lambda x: pattern.search(x), files)  # Selecting only our backup files
-        archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
+        # Removing old dumps
+        print("Removing old dumps...")
+        entries = [os.path.join(location, f) for f in os.listdir(location)]
+        pattern = re.compile("[0-9]+-[0-9]+")
+        entries = filter(lambda x: pattern.search(x), entries)
+        entries = filter(os.path.isdir, entries)
+        entries.sort()
         # Leaving only two latest sets of archives
-        for old_archive in archives[:(-2 * License.query.count())]:
-            print(' -', old_archive)
-            os.remove(old_archive)
+        for old_dump in entries[:(-2)]:
+            print(' -', old_dump)
+            shutil.rmtree(old_dump)
 
     print("Done!")
 
