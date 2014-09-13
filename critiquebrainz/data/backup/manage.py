@@ -153,7 +153,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         create_path(tables_dir)
 
         # Dumping database tables
-        with open('%s/user' % tables_dir, 'w') as f:
+        with open('%s/user_sanitised' % tables_dir, 'w') as f:
             cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
         with open('%s/license' % tables_dir, 'w') as f:
             cursor.copy_to(f, 'license')
