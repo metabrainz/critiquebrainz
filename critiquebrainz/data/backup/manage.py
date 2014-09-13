@@ -218,8 +218,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         with open('%s/review' % tables_dir, 'w') as f:
             cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id)
         with open('%s/revision' % tables_dir, 'w') as f:
-            # TODO: Select only revisions for reviews with current license
-            cursor.copy_to(f, 'revision')
+            cursor.copy_to(f, "(SELECT revision.* FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" % license.id)
 
         # Creating additional information about this archive
         try:
