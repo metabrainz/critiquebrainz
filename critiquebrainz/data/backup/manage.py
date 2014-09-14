@@ -101,7 +101,7 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
 
             print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
 
-    subprocess.call('rm -rf %s' % temp_dir, shell=True)  # Cleanup
+    shutil.rmtree(temp_dir)  # Cleanup
 
     if rotate:
         print("Removing old sets of archives (except two latest)...")
@@ -203,8 +203,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
 
             print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
 
-    # Cleanup
-    subprocess.call('rm -rf %s' % temp_dir, shell=True)
+    shutil.rmtree(temp_dir)  # Cleanup
 
     if rotate:
         print("Removing old dumps (except two latest)...")
