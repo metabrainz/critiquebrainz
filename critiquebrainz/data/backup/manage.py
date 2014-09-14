@@ -3,12 +3,11 @@ from flask.ext.script import Manager
 from flask import current_app, jsonify
 from datetime import datetime
 from time import gmtime, strftime
-from util import create_path, slugify, DumpJSONEncoder
+from util import create_path, remove_old_archives, slugify, DumpJSONEncoder
 import tarfile
 import shutil
 import subprocess
 import os
-import re
 
 from critiquebrainz.data import db, explode_db_url
 from critiquebrainz.data import model
@@ -51,13 +50,8 @@ def dump_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
 
     if rotate:
         print("Removing old backups (except two latest)...")
-        entries = [os.path.join(location, f) for f in os.listdir(location)]
-        pattern = re.compile("%s[0-9]+-[0-9]+.tar" % FILE_PREFIX)
-        archives = filter(lambda x: pattern.search(x), entries)  # Selecting only our backup files
-        archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
-        for old_archive in archives[:-2]:
-            print(' -', old_archive)
-            os.remove(old_archive)
+        remove_old_archives(location, "%s[0-9]+-[0-9]+.tar" % FILE_PREFIX,
+                            is_dir=False, sort_key=lambda x: os.path.getmtime(x))
 
     print("Done!")
 
@@ -105,14 +99,8 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
 
     if rotate:
         print("Removing old sets of archives (except two latest)...")
-        entries = [os.path.join(location, f) for f in os.listdir(location)]
-        pattern = re.compile("critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2")
-        archives = filter(lambda x: pattern.search(x), entries)  # Selecting only our backup files
-        archives.sort(key=lambda x: os.path.getmtime(x))  # Sorting by creation time
-        # Leaving only two latest sets of archives
-        for old_archive in archives[:(-2 * License.query.count())]:
-            print(' -', old_archive)
-            os.remove(old_archive)
+        remove_old_archives(location, "critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2",
+                            is_dir=False, sort_key=lambda x: os.path.getmtime(x))
 
     print("Done!")
 
@@ -207,14 +195,6 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
 
     if rotate:
         print("Removing old dumps (except two latest)...")
-        entries = [os.path.join(location, f) for f in os.listdir(location)]
-        pattern = re.compile("[0-9]+-[0-9]+")
-        entries = filter(lambda x: pattern.search(x), entries)
-        entries = filter(os.path.isdir, entries)
-        entries.sort()
-        # Leaving only two latest sets of archives
-        for old_dump in entries[:(-2)]:
-            print(' -', old_dump)
-            shutil.rmtree(old_dump)
+        remove_old_archives(location, "[0-9]+-[0-9]+", is_dir=True)
 
     print("Done!")
