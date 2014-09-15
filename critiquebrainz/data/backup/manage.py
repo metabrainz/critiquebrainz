@@ -135,7 +135,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         # Dumping tables
         base_archive_tables_dir = '%s/cbdump' % base_archive_dir
         create_path(base_archive_tables_dir)
-        with open('%s/user' % base_archive_tables_dir, 'w') as f:
+        with open('%s/user_sanitised' % base_archive_tables_dir, 'w') as f:
              cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
         with open('%s/license' % base_archive_tables_dir, 'w') as f:
             cursor.copy_to(f, 'license')
