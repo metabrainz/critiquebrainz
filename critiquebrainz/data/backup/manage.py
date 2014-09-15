@@ -235,11 +235,17 @@ def import_data(file_name, table_name, columns=None):
     cursor = db_connection.cursor()
     try:
         with open(file_name) as f:
-            print("Importing data into '%s' table." % table_name)
+            # Checking if table already contains any data
+            cursor.execute("SELECT * FROM %s;" % table_name)
+            if cursor.rowcount > 0:
+                print("Table %s already contains data. Skipping." % table_name)
+                return
+            # and if it doesn't, trying to import data
+            print("Importing data into %s table." % table_name)
             cursor.copy_from(f, table_name, columns=columns)
             db_connection.commit()
     except IOError as exception:
         if exception.errno == errno.ENOENT:
-            print("Can't data for '%s' table. Skipping." % table_name)
+            print("Can't find data file for %s table. Skipping." % table_name)
         else:
             sys.exit("Failed to open data file. Error: %s" % exception)
