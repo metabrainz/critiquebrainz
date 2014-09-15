@@ -17,4 +17,5 @@ Contents
 
    installation
    dev
+   backup
    translation
