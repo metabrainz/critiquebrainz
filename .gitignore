@@ -15,6 +15,7 @@ pip-delete-this-directory.txt
 /dump/
 /backup/
 /export/
+/temp/
 
 # Test results
 /cover/

@@ -4,9 +4,11 @@ from flask import current_app, jsonify
 from datetime import datetime
 from time import gmtime, strftime
 from util import create_path, remove_old_archives, slugify, DumpJSONEncoder
+import subprocess
 import tarfile
 import shutil
-import subprocess
+import errno
+import sys
 import os
 
 from critiquebrainz.data import db, explode_db_url
@@ -197,4 +199,74 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         print("Removing old dumps (except two latest)...")
         remove_old_archives(location, "[0-9]+-[0-9]+", is_dir=True)
 
+    print("Done!")
+
+
+@backup_manager.command
+def importer(archive, temp_dir="temp"):
+    archive = tarfile.open(archive, 'r:bz2')
+    archive.extractall(temp_dir)
+
+    # Verifying schema version
+    try:
+        with open('%s/SCHEMA_SEQUENCE' % temp_dir) as f:
+            archive_version = f.readline()
+            if archive_version != str(model.__version__):
+                sys.exit("Incorrect schema version! Expected: %d, got: %c. Please, get the latest version of the dump."
+                         % (model.__version__, archive_version))
+    except IOError as exception:
+        if exception.errno == errno.ENOENT:
+            print("Can't find SCHEMA_SEQUENCE in the specified archive. Importing might fail.")
+        else:
+            sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
+
+    # IMPORTING DATA
+    db_connection = db.session.connection().connection
+    cursor = db_connection.cursor()
+
+    # user (user_sanitised)
+    try:
+        with open('%s/cbdump/user_sanitised' % temp_dir) as f:
+            cursor.copy_from(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
+            db_connection.commit()
+    except IOError as exception:
+        if exception.errno == errno.ENOENT:
+            print("Can't data for 'user' table. Skipping.")
+        else:
+            sys.exit("Failed to open data file. Error: %s" % exception)
+
+    # license
+    try:
+        with open('%s/cbdump/license' % temp_dir) as f:
+            cursor.copy_from(f, 'license')
+            db_connection.commit()
+    except IOError as exception:
+        if exception.errno == errno.ENOENT:
+            print("Can't data for 'license' table. Skipping.")
+        else:
+            sys.exit("Failed to open data file. Error: %s" % exception)
+
+    # review
+    try:
+        with open('%s/cbdump/review' % temp_dir) as f:
+            cursor.copy_from(f, 'review')
+            db_connection.commit()
+    except IOError as exception:
+        if exception.errno == errno.ENOENT:
+            print("Can't data for 'review' table. Skipping.")
+        else:
+            sys.exit("Failed to open data file. Error: %s" % exception)
+
+    # revision
+    try:
+        with open('%s/cbdump/revision' % temp_dir) as f:
+            cursor.copy_from(f, 'revision')
+            db_connection.commit()
+    except IOError as exception:
+        if exception.errno == errno.ENOENT:
+            print("Can't data for 'revision' table. Skipping.")
+        else:
+            sys.exit("Failed to open data file. Error: %s" % exception)
+
+    shutil.rmtree(temp_dir)  # Cleanup
     print("Done!")
