@@ -220,53 +220,26 @@ def importer(archive, temp_dir="temp"):
         else:
             sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
 
-    # IMPORTING DATA
-    db_connection = db.session.connection().connection
-    cursor = db_connection.cursor()
-
-    # user (user_sanitised)
-    try:
-        with open('%s/cbdump/user_sanitised' % temp_dir) as f:
-            cursor.copy_from(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
-            db_connection.commit()
-    except IOError as exception:
-        if exception.errno == errno.ENOENT:
-            print("Can't data for 'user' table. Skipping.")
-        else:
-            sys.exit("Failed to open data file. Error: %s" % exception)
-
-    # license
-    try:
-        with open('%s/cbdump/license' % temp_dir) as f:
-            cursor.copy_from(f, 'license')
-            db_connection.commit()
-    except IOError as exception:
-        if exception.errno == errno.ENOENT:
-            print("Can't data for 'license' table. Skipping.")
-        else:
-            sys.exit("Failed to open data file. Error: %s" % exception)
-
-    # review
-    try:
-        with open('%s/cbdump/review' % temp_dir) as f:
-            cursor.copy_from(f, 'review')
-            db_connection.commit()
-    except IOError as exception:
-        if exception.errno == errno.ENOENT:
-            print("Can't data for 'review' table. Skipping.")
-        else:
-            sys.exit("Failed to open data file. Error: %s" % exception)
-
-    # revision
-    try:
-        with open('%s/cbdump/revision' % temp_dir) as f:
-            cursor.copy_from(f, 'revision')
-            db_connection.commit()
-    except IOError as exception:
-        if exception.errno == errno.ENOENT:
-            print("Can't data for 'revision' table. Skipping.")
-        else:
-            sys.exit("Failed to open data file. Error: %s" % exception)
+    # Importing data
+    import_data('%s/cbdump/user_sanitised' % temp_dir, '"user"', ('id', 'display_name', 'created', 'musicbrainz_id'))
+    import_data('%s/cbdump/license' % temp_dir, 'license')
+    import_data('%s/cbdump/review' % temp_dir, 'review')
+    import_data('%s/cbdump/revision' % temp_dir, 'revision')
 
     shutil.rmtree(temp_dir)  # Cleanup
     print("Done!")
+
+
+def import_data(file_name, table_name, columns=None):
+    db_connection = db.session.connection().connection
+    cursor = db_connection.cursor()
+    try:
+        with open(file_name) as f:
+            print("Importing data into '%s' table." % table_name)
+            cursor.copy_from(f, table_name, columns=columns)
+            db_connection.commit()
+    except IOError as exception:
+        if exception.errno == errno.ENOENT:
+            print("Can't data for '%s' table. Skipping." % table_name)
+        else:
+            sys.exit("Failed to open data file. Error: %s" % exception)
