@@ -107,8 +107,9 @@ class Review(db.Model):
         if not include_drafts:
             query = query.filter(Review.is_draft == False)
 
+        # TODO: Simplify review sorting implementation
+
         if sort == 'rating':
-            # TODO: Improve this
             # prepare subqueries
             r_q = db.session.query(
                 Vote.revision_id, Vote.vote, db.func.count('*').label('c')).group_by(Vote.revision_id, Vote.vote)

@@ -12,6 +12,17 @@ from markdown import markdown
 review_bp = Blueprint('review', __name__)
 
 
+@review_bp.route('/', endpoint='browse')
+def review_browse_handler():
+    page = int(request.args.get('page', default=1))
+    if page < 1:
+        return redirect(url_for('.reviews'))
+    limit = 16
+    offset = (page - 1) * limit
+    reviews, count = Review.list(sort='created', limit=limit, offset=offset)
+    return render_template('review/browse.html',  reviews=reviews, page=page, limit=limit, count=count)
+
+
 @review_bp.route('/<uuid:id>', endpoint='entity')
 def review_entity_handler(id):
     review = Review.query.get_or_404(str(id))
