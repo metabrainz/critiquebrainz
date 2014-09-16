@@ -139,11 +139,15 @@ class Review(db.Model):
             query = query.filter(Review.license_id == license_id)
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
+
+        count = query.count()  # Total count should be calculated before limits
+
         if limit is not None:
             query = query.limit(limit)
         if offset is not None:
             query = query.offset(offset)
-        return query.all(), query.count()
+
+        return query.all(), count
 
     @classmethod
     def create(cls, release_group, user, text, is_draft, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None, language=None):
