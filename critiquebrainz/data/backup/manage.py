@@ -223,7 +223,7 @@ def importer(archive, temp_dir="temp"):
             sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
 
     # Importing data
-    import_data('%s/cbdump/user_sanitised' % temp_dir, model.User, ('id', 'display_name', 'created', 'musicbrainz_id'))
+    import_data('%s/cbdump/user_sanitised' % temp_dir, model.User, ('id', 'created',  'display_name', 'musicbrainz_id'))
     import_data('%s/cbdump/license' % temp_dir, model.License)
     import_data('%s/cbdump/review' % temp_dir, model.Review)
     import_data('%s/cbdump/revision' % temp_dir, model.Revision)
