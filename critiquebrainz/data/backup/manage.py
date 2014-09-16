@@ -3,7 +3,7 @@ from flask.ext.script import Manager
 from flask import current_app, jsonify
 from datetime import datetime
 from time import gmtime, strftime
-from util import create_path, remove_old_archives, slugify, DumpJSONEncoder
+from util import create_path, remove_old_archives, get_columns, slugify, DumpJSONEncoder
 import subprocess
 import tarfile
 import shutil
@@ -138,7 +138,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         with open('%s/user_sanitised' % base_archive_tables_dir, 'w') as f:
              cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
         with open('%s/license' % base_archive_tables_dir, 'w') as f:
-            cursor.copy_to(f, 'license')
+            cursor.copy_to(f, 'license', columns=get_columns(model.License))
         tar.add(base_archive_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -159,9 +159,9 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         reviews_combined_tables_dir = '%s/cbdump-reviews-all' % temp_dir
         create_path(reviews_combined_tables_dir)
         with open('%s/review' % reviews_combined_tables_dir, 'w') as f:
-            cursor.copy_to(f, 'review')
+            cursor.copy_to(f, 'review', columns=get_columns(model.Review))
         with open('%s/revision' % reviews_combined_tables_dir, 'w') as f:
-            cursor.copy_to(f, 'revision')
+            cursor.copy_to(f, 'revision', columns=get_columns(model.Revision))
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -181,9 +181,10 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
             tables_dir = '%s/%s' % (temp_dir, safe_name)
             create_path(tables_dir)
             with open('%s/review' % tables_dir, 'w') as f:
-                cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id)
+                cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id, columns=get_columns(model.Review))
             with open('%s/revision' % tables_dir, 'w') as f:
-                cursor.copy_to(f, "(SELECT revision.* FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" % license.id)
+                cursor.copy_to(f, "(SELECT revision.* FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" % license.id,
+                               columns=get_columns(model.Revision))
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
@@ -221,31 +222,32 @@ def importer(archive, temp_dir="temp"):
             sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
 
     # Importing data
-    import_data('%s/cbdump/user_sanitised' % temp_dir, '"user"', ('id', 'display_name', 'created', 'musicbrainz_id'))
-    import_data('%s/cbdump/license' % temp_dir, 'license')
-    import_data('%s/cbdump/review' % temp_dir, 'review')
-    import_data('%s/cbdump/revision' % temp_dir, 'revision')
-
+    import_data('%s/cbdump/user_sanitised' % temp_dir, model.User, ('id', 'display_name', 'created', 'musicbrainz_id'))
+    import_data('%s/cbdump/license' % temp_dir, model.License)
+    import_data('%s/cbdump/review' % temp_dir, model.Review)
+    import_data('%s/cbdump/revision' % temp_dir, model.Revision)
     shutil.rmtree(temp_dir)  # Cleanup
     print("Done!")
 
 
-def import_data(file_name, table_name, columns=None):
+def import_data(file_name, model, columns=None):
     db_connection = db.session.connection().connection
     cursor = db_connection.cursor()
     try:
         with open(file_name) as f:
             # Checking if table already contains any data
-            cursor.execute("SELECT * FROM %s;" % table_name)
-            if cursor.rowcount > 0:
-                print("Table %s already contains data. Skipping." % table_name)
+            if model.query.count() > 0:
+                print("Table %s already contains data. Skipping." % model.__tablename__)
                 return
             # and if it doesn't, trying to import data
-            print("Importing data into %s table." % table_name)
-            cursor.copy_from(f, table_name, columns=columns)
+            print("Importing data into %s table." % model.__tablename__)
+            if columns is None:
+                columns = get_columns(model)
+            cursor.copy_from(f, model.__tablename__, columns=columns)
             db_connection.commit()
     except IOError as exception:
         if exception.errno == errno.ENOENT:
-            print("Can't find data file for %s table. Skipping." % table_name)
+            print("Can't find data file for %s table. Skipping." % model.__tablename__)
         else:
             sys.exit("Failed to open data file. Error: %s" % exception)
+
