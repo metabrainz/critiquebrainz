@@ -225,6 +225,7 @@ def importer(archive, temp_dir="temp"):
     archive requires is different from the current. Make sure you have the latest dump available.
     """
     archive = tarfile.open(archive, 'r:bz2')
+    # TODO: Read data from the archive without extracting it into temporary directory
     archive.extractall(temp_dir)
 
     # Verifying schema version
