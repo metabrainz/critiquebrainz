@@ -3,10 +3,12 @@ from flask.ext.script import Manager
 from flask import current_app, jsonify
 from datetime import datetime
 from time import gmtime, strftime
-from util import create_path, remove_old_archives, slugify, DumpJSONEncoder
+from util import create_path, remove_old_archives, get_columns, slugify, DumpJSONEncoder
+import subprocess
 import tarfile
 import shutil
-import subprocess
+import errno
+import sys
 import os
 
 from critiquebrainz.data import db, explode_db_url
@@ -107,6 +109,12 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
 
 @backup_manager.command
 def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
+    """Creates a set of archives with public data.
+
+    1. Base archive with license-independent data (users, licenses).
+    2. Archive with all reviews and revisions.
+    3... Separate archives for each license (contain reviews and revisions associated with specific license).
+    """
     print("Creating new archives...")
     time_now = datetime.today()
 
@@ -133,10 +141,10 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         # Dumping tables
         base_archive_tables_dir = '%s/cbdump' % base_archive_dir
         create_path(base_archive_tables_dir)
-        with open('%s/user' % base_archive_tables_dir, 'w') as f:
-             cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
+        with open('%s/user_sanitised' % base_archive_tables_dir, 'w') as f:
+             cursor.copy_to(f, '"user"', columns=('id', 'created',  'display_name', 'musicbrainz_id'))
         with open('%s/license' % base_archive_tables_dir, 'w') as f:
-            cursor.copy_to(f, 'license')
+            cursor.copy_to(f, 'license', columns=get_columns(model.License))
         tar.add(base_archive_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -157,9 +165,9 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         reviews_combined_tables_dir = '%s/cbdump-reviews-all' % temp_dir
         create_path(reviews_combined_tables_dir)
         with open('%s/review' % reviews_combined_tables_dir, 'w') as f:
-            cursor.copy_to(f, 'review')
+            cursor.copy_to(f, 'review', columns=get_columns(model.Review))
         with open('%s/revision' % reviews_combined_tables_dir, 'w') as f:
-            cursor.copy_to(f, 'revision')
+            cursor.copy_to(f, 'revision', columns=get_columns(model.Revision))
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -179,9 +187,11 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
             tables_dir = '%s/%s' % (temp_dir, safe_name)
             create_path(tables_dir)
             with open('%s/review' % tables_dir, 'w') as f:
-                cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id)
+                cursor.copy_to(f, "(SELECT (%s) FROM review WHERE license_id = '%s')" %
+                               (', '.join(get_columns(model.Review)), license.id))
             with open('%s/revision' % tables_dir, 'w') as f:
-                cursor.copy_to(f, "(SELECT revision.* FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" % license.id)
+                cursor.copy_to(f, "(SELECT (revision.%s) FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" %
+                               (', revision.'.join(get_columns(model.Revision)), license.id))
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
@@ -198,3 +208,66 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         remove_old_archives(location, "[0-9]+-[0-9]+", is_dir=True)
 
     print("Done!")
+
+
+@backup_manager.command
+def importer(archive, temp_dir="temp"):
+    """Imports database dump (archive) produced by export command.
+
+    Before importing make sure that all required data is already imported or exists in the archive. For example,
+    importing will fail if you'll try to import review without users or licenses. Same applies to revisions. To get more
+    information about various dependencies see database schema.
+
+    You should only import data into empty tables. Data will not be imported into tables that already have rows. This is
+    done to prevent conflicts. Feel free improve current implementation. :)
+
+    Importing only supported for bzip2 compressed tar archives. It will fail if version of the schema that provided
+    archive requires is different from the current. Make sure you have the latest dump available.
+    """
+    archive = tarfile.open(archive, 'r:bz2')
+    # TODO: Read data from the archive without extracting it into temporary directory
+    archive.extractall(temp_dir)
+
+    # Verifying schema version
+    try:
+        with open('%s/SCHEMA_SEQUENCE' % temp_dir) as f:
+            archive_version = f.readline()
+            if archive_version != str(model.__version__):
+                sys.exit("Incorrect schema version! Expected: %d, got: %c. Please, get the latest version of the dump."
+                         % (model.__version__, archive_version))
+    except IOError as exception:
+        if exception.errno == errno.ENOENT:
+            print("Can't find SCHEMA_SEQUENCE in the specified archive. Importing might fail.")
+        else:
+            sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
+
+    # Importing data
+    import_data('%s/cbdump/user_sanitised' % temp_dir, model.User, ('id', 'created',  'display_name', 'musicbrainz_id'))
+    import_data('%s/cbdump/license' % temp_dir, model.License)
+    import_data('%s/cbdump/review' % temp_dir, model.Review)
+    import_data('%s/cbdump/revision' % temp_dir, model.Revision)
+    shutil.rmtree(temp_dir)  # Cleanup
+    print("Done!")
+
+
+def import_data(file_name, model, columns=None):
+    db_connection = db.session.connection().connection
+    cursor = db_connection.cursor()
+    try:
+        with open(file_name) as f:
+            # Checking if table already contains any data
+            if model.query.count() > 0:
+                print("Table %s already contains data. Skipping." % model.__tablename__)
+                return
+            # and if it doesn't, trying to import data
+            print("Importing data into %s table." % model.__tablename__)
+            if columns is None:
+                columns = get_columns(model)
+            cursor.copy_from(f, '"%s"' % model.__tablename__, columns=columns)
+            db_connection.commit()
+    except IOError as exception:
+        if exception.errno == errno.ENOENT:
+            print("Can't find data file for %s table. Skipping." % model.__tablename__)
+        else:
+            sys.exit("Failed to open data file. Error: %s" % exception)
+
