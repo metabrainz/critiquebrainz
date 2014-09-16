@@ -20,7 +20,7 @@ def index_handler():
         review.preview = ''.join(BeautifulSoup(preview).findAll(text=True))
 
     # Recent reviews
-    recent_reviews, _ = Review.list(sort='created', limit=6)
+    recent_reviews, _ = Review.list(sort='created', limit=9)
 
     # Getting counts and formatting them
     review_count = format_number(Review.query.filter(Review.is_archived == False).filter(Review.is_draft == False).count())
