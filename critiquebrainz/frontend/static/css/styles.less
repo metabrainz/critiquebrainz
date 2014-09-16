@@ -306,6 +306,36 @@ a#edit-review { margin-top: 20px; }
 }
 
 
+// Review browsing page
+#reviews-browse {
+  margin-top: 20px;
+  @review-height: 74px;
+  .review {
+    height: @review-height;
+    margin-bottom: 10px;
+    color: @text-color;
+    text-decoration: none;
+    .cover-art-container {
+      width: @review-height;
+      height: @review-height;
+      margin-right: 10px;
+      img {
+        max-width: @review-height;
+        max-height: @review-height;
+      }
+    }
+    .album { padding-top: 4px; }
+    .album, .reviewer {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .review:hover {
+    background-color: fadeout(@mb-purple, 95%);
+  }
+}
+
 // Review entity page
 #review-entity {
   #title { margin-bottom: 0px; }

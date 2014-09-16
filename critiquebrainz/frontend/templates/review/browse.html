@@ -6,24 +6,32 @@
 <h2>{{ _('Reviews') }}</h2>
 <p><em class="text-muted">{{ _('Ordered by creation date') }}</em></p>
 
-<div class="row">
+<div id="reviews-browse" class="row">
 {% for review in reviews %}
-  {% set release_group = review.release_group | release_group_details %}
-  <div class="col-sm-4 col-md-3">
-    <div class="thumbnail">
-      <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
-      <script>
-        $("img").last()
-            .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-            .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
-      </script>
-      <div class="caption">
-        <a href="{{ url_for('review.entity', id=review.id) }}"><b>{{ release_group.title | default(_('[Unknown release group]')) }}</b><br />{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</a>
-        <br />{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}
-        <br />{{ review.created | date }}
+        <div class="col-md-4 review">
+          {% set release_group = review.release_group | release_group_details %}
+          <div class="cover-art-container pull-left">
+            <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
+            <script>
+              $("img").last()
+                  .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+                  .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+            </script>
+          </div>
+          <div class="album">
+            <a href="{{ url_for('review.entity', id=review.id) }}">
+              {{ _('%(album)s by %(artist)s',
+                   album = '<b>'|safe + release_group.title | default(_('[Unknown release group]')) + '</b>'|safe,
+                   artist = release_group['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
+            </a>
+          </div>
+          <div class="reviewer">
+            <p>
+              {{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}
+              <br />{{ review.created | date }}
+            </p>
       </div>
     </div>
-  </div>
 {% endfor %}
 </div>
 

@@ -17,7 +17,7 @@ def review_browse_handler():
     page = int(request.args.get('page', default=1))
     if page < 1:
         return redirect(url_for('.reviews'))
-    limit = 16
+    limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
     reviews, count = Review.list(sort='created', limit=limit, offset=offset)
     return render_template('review/browse.html',  reviews=reviews, page=page, limit=limit, count=count)
