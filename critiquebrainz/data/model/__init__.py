@@ -1,3 +1,6 @@
+# This value should be incremented after any schema changes!
+__version__ = 1
+
 # All models must be imported in this file
 from .review import Review
 from .revision import Revision
