@@ -24,8 +24,9 @@ def create_app():
     from critiquebrainz.data import db
     db.init_app(app)
 
-    from critiquebrainz.cache import cache
-    cache.set_servers(app.config['MEMCACHED_SERVERS'])
+    from critiquebrainz import cache
+    cache.cache.set_servers(app.config['MEMCACHED_SERVERS'])
+    cache.set_namespace(app.config['MEMCACHED_NAMESPACE'])
 
     import babel
     babel.init_app(app)
