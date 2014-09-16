@@ -136,7 +136,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
         base_archive_tables_dir = '%s/cbdump' % base_archive_dir
         create_path(base_archive_tables_dir)
         with open('%s/user_sanitised' % base_archive_tables_dir, 'w') as f:
-             cursor.copy_to(f, '"user"', columns=('id', 'display_name', 'created', 'musicbrainz_id'))
+             cursor.copy_to(f, '"user"', columns=('id', 'created',  'display_name', 'musicbrainz_id'))
         with open('%s/license' % base_archive_tables_dir, 'w') as f:
             cursor.copy_to(f, 'license', columns=get_columns(model.License))
         tar.add(base_archive_tables_dir, arcname='cbdump')
@@ -181,10 +181,11 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
             tables_dir = '%s/%s' % (temp_dir, safe_name)
             create_path(tables_dir)
             with open('%s/review' % tables_dir, 'w') as f:
-                cursor.copy_to(f, "(SELECT * FROM review WHERE license_id = '%s')" % license.id, columns=get_columns(model.Review))
+                cursor.copy_to(f, "(SELECT (%s) FROM review WHERE license_id = '%s')" %
+                               (', '.join(get_columns(model.Review)), license.id))
             with open('%s/revision' % tables_dir, 'w') as f:
-                cursor.copy_to(f, "(SELECT revision.* FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" % license.id,
-                               columns=get_columns(model.Revision))
+                cursor.copy_to(f, "(SELECT (revision.%s) FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" %
+                               (', revision.'.join(get_columns(model.Revision)), license.id))
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
@@ -243,7 +244,7 @@ def import_data(file_name, model, columns=None):
             print("Importing data into %s table." % model.__tablename__)
             if columns is None:
                 columns = get_columns(model)
-            cursor.copy_from(f, model.__tablename__, columns=columns)
+            cursor.copy_from(f, '"%s"' % model.__tablename__, columns=columns)
             db_connection.commit()
     except IOError as exception:
         if exception.errno == errno.ENOENT:
