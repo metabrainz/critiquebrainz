@@ -18,11 +18,7 @@
             .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
       </script>
       <div class="caption">
-        <a href="{{ url_for('review.entity', id=review.id) }}">
-          {{ _('%(album)s by %(artist)s',
-            album = '<b>'|safe + release_group.title | default(_('[Unknown release group]')) + '</b>'|safe,
-            artist = release_group['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
-        </a>
+        <a href="{{ url_for('review.entity', id=review.id) }}"><b>{{ release_group.title | default(_('[Unknown release group]')) }}</b><br />{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</a>
         <br />{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}
         <br />{{ review.created | date }}
       </div>
