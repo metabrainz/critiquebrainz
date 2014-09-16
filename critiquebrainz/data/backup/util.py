@@ -26,6 +26,13 @@ def create_path(path):
             sys.exit("Failed to create directory structure %s. Error: %s" % (path, exception))
 
 
+def get_columns(model):
+    """Returns tuple of sorted columns for a specified model."""
+    columns = model.__table__.columns._data.keys()
+    columns.sort()
+    return tuple(columns)
+
+
 def remove_old_archives(location, pattern, is_dir=False, sort_key=None):
     """Removes all files or directories that match specified pattern except two last.
 
