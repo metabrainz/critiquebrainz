@@ -109,6 +109,12 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
 
 @backup_manager.command
 def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
+    """Creates a set of archives with public data.
+
+    1. Base archive with license-independent data (users, licenses).
+    2. Archive with all reviews and revisions.
+    3... Separate archives for each license (contain reviews and revisions associated with specific license).
+    """
     print("Creating new archives...")
     time_now = datetime.today()
 
@@ -206,6 +212,18 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
 
 @backup_manager.command
 def importer(archive, temp_dir="temp"):
+    """Imports database dump (archive) produced by export command.
+
+    Before importing make sure that all required data is already imported or exists in the archive. For example,
+    importing will fail if you'll try to import review without users or licenses. Same applies to revisions. To get more
+    information about various dependencies see database schema.
+
+    You should only import data into empty tables. Data will not be imported into tables that already have rows. This is
+    done to prevent conflicts. Feel free improve current implementation. :)
+
+    Importing only supported for bzip2 compressed tar archives. It will fail if version of the schema that provided
+    archive requires is different from the current. Make sure you have the latest dump available.
+    """
     archive = tarfile.open(archive, 'r:bz2')
     archive.extractall(temp_dir)
 
