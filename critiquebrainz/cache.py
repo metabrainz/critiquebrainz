@@ -10,14 +10,18 @@ More information about memcached can be found at http://memcached.org/.
 import hashlib
 import memcache
 
-# Trying to load configuration
 try:
     import config
     cache = memcache.Client(config.MEMCACHED_SERVERS)
-    _namespace = config.MEMCACHED_NAMESPACE
 except (ImportError, AttributeError):
     import default_config
     cache = memcache.Client(default_config.MEMCACHED_SERVERS)
+
+try:
+    import config
+    _namespace = config.MEMCACHED_NAMESPACE
+except (ImportError, AttributeError):
+    import default_config
     _namespace = default_config.MEMCACHED_NAMESPACE
 
 
