@@ -1,10 +1,13 @@
-# This module provides helper function for Spotify Web API.
-# More information about it is available at https://developer.spotify.com/web-api/.
+"""
+This module provides functions that can help access Spotify Web API.
+
+More information about it is available at https://developer.spotify.com/web-api/.
+"""
 import requests
 import urllib
 from critiquebrainz.cache import cache, generate_cache_key
 
-DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
+DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 
 BASE_URL = "https://api.spotify.com/v1"
 
