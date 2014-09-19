@@ -9,9 +9,18 @@ class CacheTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
 
+    def test_set_namespace(self):
+        new_namespace = "NAMESPACE_1"
+        cache.set_namespace(new_namespace)
+        self.assertEqual(cache._namespace, new_namespace)
+
+        another_namespace = "NAMESPACE_2"
+        cache.set_namespace(another_namespace)
+        self.assertEqual(cache._namespace, another_namespace)
+
     def test_key_generator(self):
         namespace = 'TEST_NAMESPACE'
-        self.app.config['MEMCACHED_NAMESPACE'] = namespace
+        cache.set_namespace(namespace)
 
         with self.app.app_context():
             # Simple key
