@@ -6,7 +6,6 @@ from critiquebrainz.cache import cache, generate_cache_key
 from critiquebrainz.frontend.apis.exceptions import APIError
 from relationships import artist as artist_rel, release_group as release_group_rel
 
-from multiprocessing import Pool
 
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
@@ -120,12 +119,3 @@ def get_release_by_id(id, includes=None):
 
 def release_group_details(mbid):
     return get_release_group_by_id(mbid, includes=['artists'])
-
-
-def get_multiple_release_groups(mbids):
-    pool = Pool(processes=10)
-    return dict(pool.map(_get_rg, mbids))
-
-
-def _get_rg(mbid):
-    return mbid, release_group_details(mbid)
