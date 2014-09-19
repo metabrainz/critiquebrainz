@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-19 12:48+0000\n"
+"POT-Creation-Date: 2014-09-13 21:10+0000\n"
 "PO-Revision-Date: 2014-09-07 11:43+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/critiquebrainz/language/de/)\n"
@@ -247,19 +247,19 @@ msgstr "Veröffentlichungsgruppe mit dieser ID konnte nicht gefunden werden!"
 msgid "This album is not matched to Spotify yet!"
 msgstr ""
 
-#: critiquebrainz/frontend/profile/views.py:19
+#: critiquebrainz/frontend/profile/views.py:17
 msgid "Profile updated."
 msgstr "Profil bearbeitet."
 
-#: critiquebrainz/frontend/profile/applications/views.py:31
+#: critiquebrainz/frontend/profile/applications/views.py:28
 msgid "You have created an application!"
 msgstr "Du hast eine Anwendung erstellt!"
 
-#: critiquebrainz/frontend/profile/applications/views.py:47
+#: critiquebrainz/frontend/profile/applications/views.py:43
 msgid "You have updated an application!"
 msgstr "Du hast eine Anwendung bearbeitet!"
 
-#: critiquebrainz/frontend/profile/applications/views.py:66
+#: critiquebrainz/frontend/profile/applications/views.py:61
 msgid "You have deleted an application."
 msgstr "Du hast eine Anwendung gelöscht."
 
