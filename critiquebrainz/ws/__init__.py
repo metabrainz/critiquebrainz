@@ -16,7 +16,7 @@ def create_app():
     # Logging
     if app.debug is False:
         from critiquebrainz import loggers
-        loggers.init_loggers(app)
+        loggers.add_all_loggers(app)
 
     from flask.ext.uuid import FlaskUUID
     FlaskUUID(app)
