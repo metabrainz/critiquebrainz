@@ -1,17 +1,26 @@
+"""
+This module simplifies access to the MusicBrainz webservice. It uses musicbrainzngs package.
+
+Package musicbrainzngs is available at https://pypi.python.org/pypi/musicbrainzngs/.
+More information about the MusicBrainz webservice can be found at http://wiki.musicbrainz.org/XML_Web_Service.
+"""
 import musicbrainzngs
 from musicbrainzngs.musicbrainz import ResponseError
 
 import critiquebrainz
 from critiquebrainz.cache import cache, generate_cache_key
 from critiquebrainz.frontend.apis.exceptions import APIError
+
 from relationships import artist as artist_rel, release_group as release_group_rel
 
 from multiprocessing import Pool
 
+# We need to identify our application to access the MusicBrainz webservice.
+# See https://python-musicbrainzngs.readthedocs.org/en/latest/usage/#identification for more info.
+musicbrainzngs.set_useragent("CritiqueBrainz", critiquebrainz.__version__)
 
-DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds
 
-musicbrainzngs.set_useragent("CritiqueBrainz Client", critiquebrainz.__version__)
+DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 
 
 def search_release_groups(query='', artist='', release_group='', limit=None, offset=None):
@@ -52,9 +61,7 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
 
 def get_artist_by_id(id, includes=None):
     """Get artist with the MusicBrainz ID.
-    Available includes: recordings, releases, release-groups, works, various-artists, discids, media, isrcs,
-    aliases, annotation, tags, user-tags, ratings, user-ratings, area-rels, artist-rels, label-rels, place-rels,
-    recording-rels, release-rels, release-group-rels, url-rels, work-rels.
+    Available includes can be found at https://python-musicbrainzngs.readthedocs.org/en/latest/api/#musicbrainzngs.get_artist_by_id
     """
     if includes is None:
         includes = []
@@ -75,9 +82,7 @@ def get_artist_by_id(id, includes=None):
 
 def get_release_group_by_id(id, includes=None):
     """Get release group with the MusicBrainz ID.
-    Available includes: artists, releases, discids, media, artist-credits, annotation, aliases, tags, user-tags,
-    ratings, user-ratings, area-rels, artist-rels, label-rels, place-rels, recording-rels, release-rels,
-    release-group-rels, url-rels, work-rels.
+    Available includes can be found at https://python-musicbrainzngs.readthedocs.org/en/latest/api/#musicbrainzngs.get_release_group_by_id
     """
     if includes is None:
         includes = []
@@ -98,9 +103,7 @@ def get_release_group_by_id(id, includes=None):
 
 def get_release_by_id(id, includes=None):
     """Get release with the MusicBrainz ID.
-    Available includes: artists, labels, recordings, release-groups, media, artist-credits, discids, isrcs,
-    recording-level-rels, work-level-rels, annotation, aliases, area-rels, artist-rels, label-rels, place-rels,
-    recording-rels, release-rels, release-group-rels, url-rels, work-rels.
+    Available includes can be found at https://python-musicbrainzngs.readthedocs.org/en/latest/api/#musicbrainzngs.get_release_by_id
     """
     if includes is None:
         includes = []

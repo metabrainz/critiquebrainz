@@ -1,5 +1,8 @@
-# Provides interface to Spotify ID mapper - MBSpotify.
-# Source code of this application is available at https://github.com/metabrainz/mbspotify.
+"""
+This module provides interface to Spotify ID mapper - mbspotify.
+
+Source code of mbspotify is available at https://github.com/metabrainz/mbspotify.
+"""
 import json
 import requests
 
@@ -7,10 +10,10 @@ _base_url = ""
 _key = ""
 
 
-def init_app(base_url, access_key):
-        global _base_url, _key
-        _base_url = base_url
-        _key = access_key
+def init(base_url, access_key):
+    global _base_url, _key
+    _base_url = base_url
+    _key = access_key
 
 
 def mapping(mbids=None):

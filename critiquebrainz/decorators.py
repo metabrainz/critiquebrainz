@@ -1,6 +1,6 @@
 from functools import wraps, update_wrapper
 from datetime import timedelta
-from flask import request, redirect, current_app, make_response
+from flask import request, current_app, make_response
 
 
 def add_response_headers(headers=None):

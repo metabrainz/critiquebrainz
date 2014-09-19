@@ -16,7 +16,7 @@ def create_app():
     # Logging
     if app.debug is False:
         from critiquebrainz import loggers
-        loggers.init_loggers(app)
+        loggers.add_all_loggers(app)
 
     from flask.ext.uuid import FlaskUUID
     FlaskUUID(app)
@@ -39,7 +39,7 @@ def create_app():
         base_url="https://musicbrainz.org/")
 
     from apis import mbspotify
-    mbspotify.init_app(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
+    mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
 
     # Template utilities
     app.jinja_env.add_extension('jinja2.ext.do')
