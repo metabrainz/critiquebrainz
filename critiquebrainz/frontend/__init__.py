@@ -18,7 +18,7 @@ def create_app():
         from critiquebrainz import loggers
         loggers.add_all_loggers(app)
 
-    from flask.ext.uuid import FlaskUUID
+    from flask_uuid import FlaskUUID
     FlaskUUID(app)
 
     from critiquebrainz.data import db

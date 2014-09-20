@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask.ext.login import login_required, current_user
-from flask.ext.babel import gettext
+from flask_login import login_required, current_user
+from flask_babel import gettext
 from critiquebrainz.frontend.forms.user import UserForm
 
 profile_bp = Blueprint('profile_details', __name__)

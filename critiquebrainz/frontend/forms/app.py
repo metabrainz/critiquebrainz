@@ -1,6 +1,6 @@
 from flask_wtf import Form
+from flask_babel import gettext
 from wtforms import StringField, validators
-from flask.ext.babel import gettext
 
 
 class ApplicationForm(Form):

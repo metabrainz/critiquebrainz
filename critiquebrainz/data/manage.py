@@ -1,4 +1,4 @@
-from flask.ext.script import Manager
+from flask_script import Manager
 from flask import current_app
 from critiquebrainz import data
 from critiquebrainz.data import explode_db_url

@@ -1,6 +1,6 @@
 from flask import redirect, url_for
-from flask.ext.login import LoginManager, current_user
-from flask.ext.babel import gettext
+from flask_login import LoginManager, current_user
+from flask_babel import gettext
 from critiquebrainz.data.model.user import User
 from functools import wraps
 

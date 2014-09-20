@@ -1,5 +1,5 @@
 from __future__ import print_function
-from flask.ext.script import Manager
+from flask_script import Manager
 from flask import current_app, jsonify
 from datetime import datetime
 from time import gmtime, strftime

@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from urlparse import urlsplit
 
 db = SQLAlchemy()

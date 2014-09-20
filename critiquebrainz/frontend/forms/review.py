@@ -1,7 +1,7 @@
 from flask_wtf import Form
+from flask_babel import gettext, Locale
 from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators
 from wtforms.widgets import HiddenInput
-from flask.ext.babel import gettext, Locale
 from babel.core import UnknownLocaleError
 from critiquebrainz.data.model.review import supported_languages
 import pycountry

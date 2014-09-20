@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from flask.ext.babel import format_number
+from flask_babel import format_number
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.review import Review
 from bs4 import BeautifulSoup
