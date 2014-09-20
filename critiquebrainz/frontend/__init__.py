@@ -16,16 +16,13 @@ def create_app():
     # Logging
     if app.debug is False:
         from critiquebrainz import loggers
-        loggers.init_loggers(app)
+        loggers.add_all_loggers(app)
 
     from flask.ext.uuid import FlaskUUID
     FlaskUUID(app)
 
     from critiquebrainz.data import db
     db.init_app(app)
-
-    from critiquebrainz.cache import cache
-    cache.set_servers(app.config['MEMCACHED_SERVERS'])
 
     import babel
     babel.init_app(app)
@@ -41,9 +38,8 @@ def create_app():
         access_token_url="https://musicbrainz.org/oauth2/token",
         base_url="https://musicbrainz.org/")
 
-    import apis
-    apis.musicbrainz.init_app("CritiqueBrainz Client", critiquebrainz.__version__)
-    apis.mbspotify.init_app(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
+    from apis import mbspotify
+    mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
 
     # Template utilities
     app.jinja_env.add_extension('jinja2.ext.do')
@@ -51,7 +47,8 @@ def create_app():
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
-    app.jinja_env.filters['release_group_details'] = apis.musicbrainz.release_group_details
+    from apis import musicbrainz
+    app.jinja_env.filters['release_group_details'] = musicbrainz.release_group_details
 
     # Blueprints
     from views import frontend_bp
