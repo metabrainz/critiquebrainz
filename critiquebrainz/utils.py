@@ -12,25 +12,25 @@ def build_url(base, additional_params=None):
     query_params.update(urlparse.parse_qsl(url.query, True))
     if additional_params is not None:
         query_params.update(additional_params)
-        for k, v in additional_params.iteritems():
-            if v is None:
-                query_params.pop(k)
+        for key, val in additional_params.iteritems():
+            if val is None:
+                query_params.pop(key)
 
     return urlparse.urlunparse(
-        (url.scheme, url.netloc, url.path, url.params, urllib.urlencode(query_params), url.fragment))
+        (url.scheme, url.netloc, url.path, url.params,
+         urllib.urlencode(query_params), url.fragment))
 
 
 def validate_uuid(string):
-    if not UUID_RE.match(string):
-        return False
-    else:
-        return True
+    """Validates UUID. Returns True if valid, False otherwise."""
+    return True if UUID_RE.match(string) else False
 
 
 def generate_string(length):
     """Generates random string with a specified length."""
-    return ''.join([random.choice(string.ascii_letters.decode('ascii') + string.digits.decode('ascii'))
-                    for x in xrange(length)])
+    return ''.join([random.choice(string.ascii_letters.decode('ascii')
+                                  + string.digits.decode('ascii'))
+                    for _ in xrange(length)])
 
 
 def reformat_date(value, format=None):
@@ -44,7 +44,7 @@ def reformat_datetime(value, format=None):
 
 
 def track_length(value):
-    """Converts track length from MusicBrainz into pretty string."""
+    """Converts track length specified in milliseconds into a pretty string."""
     seconds = int(value) / 1000
     minutes, seconds = divmod(seconds, 60)
     return '%i:%02i' % (minutes, seconds)

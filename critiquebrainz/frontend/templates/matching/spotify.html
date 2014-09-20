@@ -11,7 +11,7 @@
     {% set album = '"%s"' % release_group.title %}
   {% endif %}
 
-  {{ _('Please select the album "%(album)s" by %(artist)s, or provide a link to Spotify below.',
+  {{ _('Please select the album %(album)s by %(artist)s, or provide a link to Spotify below.',
        album=album, artist=release_group['artist-credit-phrase']) }}
 </p>
 {% if search_results %}
