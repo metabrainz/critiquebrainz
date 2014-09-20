@@ -21,10 +21,8 @@ def build_url(base, additional_params=None):
 
 
 def validate_uuid(string):
-    if not UUID_RE.match(string):
-        return False
-    else:
-        return True
+    """Validates UUID. Returns True if valid, False otherwise."""
+    return True if UUID_RE.match(string) else False
 
 
 def generate_string(length):
