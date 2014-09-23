@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash, jsonify
-from flask.ext.login import login_required, current_user
-from flask.ext.babel import gettext
+from flask_login import login_required, current_user
+from flask_babel import gettext
 from critiquebrainz.frontend.apis import musicbrainz, spotify, mbspotify
 from urlparse import urlparse
 import os.path

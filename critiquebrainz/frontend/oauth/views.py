@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, request
-from flask.ext.login import login_required, current_user
+from flask_login import login_required, current_user
 
 from critiquebrainz.utils import build_url
 from critiquebrainz.ws.oauth import oauth
