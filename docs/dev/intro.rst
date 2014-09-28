@@ -23,13 +23,16 @@ After that you can start a VM and connect to it::
    $ vagrant up
    $ vagrant ssh
 
-After starting a VM you should be able to access server at ``http://127.0.0.1:5000/``.
+After VM is created and running, you can start the application::
+
+    $ cd /vagrant
+    $ python run.py
+
+Web server should be accessible at http://localhost:5000/.
+
 PostgreSQL will be available on port *15432* with `trust`_ authentication method.
 
 .. _trust: http://www.postgresql.org/docs/9.1/static/auth-methods.html#AUTH-TRUST
-
-Server will be running in a separate `screen <https://www.gnu.org/software/screen/>`_.
-You can connect to it to see standard output, do maintenance or other tasks.
 
 Testing
 ^^^^^^^
