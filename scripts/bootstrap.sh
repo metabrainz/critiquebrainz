@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 apt-get update
-apt-get install -y memcached python-virtualenv python-dev screen make
+apt-get install -y memcached python-virtualenv python-dev
 
 # PostgreSQL
-PG_VERSION=9.1
+PG_VERSION=9.3
 apt-get -y install "postgresql-$PG_VERSION" "postgresql-contrib-$PG_VERSION" "postgresql-server-dev-$PG_VERSION"
 PG_CONF="/etc/postgresql/$PG_VERSION/main/postgresql.conf"
 PG_HBA="/etc/postgresql/$PG_VERSION/main/pg_hba.conf"
@@ -15,14 +15,12 @@ sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" "$PG_CONF"
 echo "host all all all trust" >> "$PG_HBA"
 service postgresql restart
 
-# Setting up CritiqueBrainz
+# Setting up server
 cd /vagrant
-# TODO: Activate virtualenv
 pip install -r requirements.txt
 python manage.py data create_db
 python manage.py data fixtures
 
 # Installing requirements for documentation
 cd /vagrant/docs
-# TODO: Activate virtualenv
 pip install -r requirements.txt
