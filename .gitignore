@@ -5,6 +5,7 @@ __pycache__/
 # Virtual environment
 env
 venv
+/build
 
 # Logs
 *.log
