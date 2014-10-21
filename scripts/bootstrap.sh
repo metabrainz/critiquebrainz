@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 apt-get update
-apt-get install -y memcached python-virtualenv python-dev screen make
+apt-get install -y build-essential python-virtualenv python-dev curl memcached
 
 # PostgreSQL
 PG_VERSION=9.1
@@ -15,14 +15,12 @@ sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" "$PG_CONF"
 echo "host all all all trust" >> "$PG_HBA"
 service postgresql restart
 
-# Setting up CritiqueBrainz
+# Setting up server
 cd /vagrant
-# TODO: Activate virtualenv
 pip install -r requirements.txt
 python manage.py data create_db
 python manage.py data fixtures
 
 # Installing requirements for documentation
 cd /vagrant/docs
-# TODO: Activate virtualenv
 pip install -r requirements.txt
