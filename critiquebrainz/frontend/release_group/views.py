@@ -20,7 +20,7 @@ def release_group_entity_handler(id):
         release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'], includes=['recordings', 'media'])
     else:
         release = None
-    spotify_mapping = mbspotify.mapping([id])
+    spotify_mapping = mbspotify.mappings(id)
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated():

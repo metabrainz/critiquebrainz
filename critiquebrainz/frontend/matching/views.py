@@ -11,8 +11,11 @@ matching_bp = Blueprint('matching', __name__)
 
 @matching_bp.route('/spotify/<uuid:release_group_id>', endpoint='spotify')
 def spotify_matching_handler(release_group_id):
+    # TODO: Get list of existing mappings and show them here. Let the user add another one if there's something else to add.
+    # TODO: Implement UI around that. Some kind of table with links that allow marking each mapping as incorrect.
+
     # Checking if release group is already matched
-    spotify_mapping = mbspotify.mapping([str(release_group_id)])
+    spotify_mapping = mbspotify.mappings(str(release_group_id))
     if len(spotify_mapping) > 0:
         flash(gettext("Thanks, but this album is already matched to Spotify!"))
         return redirect(url_for('release_group.entity', id=release_group_id))
@@ -41,7 +44,8 @@ def spotify_matching_handler(release_group_id):
 @login_required
 def spotify_matching_submit_handler(release_group_id):
     # Checking if release group is already matched
-    spotify_mapping = mbspotify.mapping([str(release_group_id)])
+    # TODO: No need to check there, just try to add again. If the same mapping exist already, don't return errors (or do?).
+    spotify_mapping = mbspotify.mappings(str(release_group_id))
     if len(spotify_mapping) > 0:
         flash(gettext("Thanks, but this album is already matched to Spotify!"))
         return redirect(url_for('release_group.entity', id=release_group_id))
@@ -83,7 +87,7 @@ def spotify_matching_report_handler(release_group_id):
         return jsonify(success=False, error=gettext("Can't find release group with that ID!"))
 
     # Checking if release group is matched
-    spotify_mapping = mbspotify.mapping([str(release_group_id)])
+    spotify_mapping = mbspotify.mappings(str(release_group_id))
     if len(spotify_mapping) < 1:
         return jsonify(success=False, error=gettext("This album is not matched to Spotify yet!"))
 

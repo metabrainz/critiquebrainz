@@ -16,17 +16,11 @@ def init(base_url, access_key):
     _key = access_key
 
 
-def mapping(mbids=None):
-    """Get mapping to Spotify for a set of MusicBrainz IDs."""
-    if mbids is None:
-        mbids = []
-    try:
-        headers = {'Content-Type': 'application/json'}
-        resp = requests.post(_base_url + 'mapping', headers=headers, data=json.dumps({'mbids': mbids}))
-        return resp.json().get('mapping')
-    except Exception as e:
-        # TODO: Catch errors properly and return informative errors.
-        return []
+def mappings(mbid=None):
+    """Get mappings to Spotify for a specified MusicBrainz ID."""
+    headers = {'Content-Type': 'application/json'}
+    resp = requests.post(_base_url + 'mapping', headers=headers, data=json.dumps({'mbid': mbid}))
+    return resp.json().get('mapping')
 
 
 def add_mapping(mbid, spotify_uri, user_id):

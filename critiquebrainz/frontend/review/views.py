@@ -19,7 +19,7 @@ def review_entity_handler(id):
     if review.is_archived or (review.is_draft and not (current_user.is_authenticated() and current_user == review.user)):
         raise NotFound("Can't find review with a specified ID.")
 
-    spotify_mapping = mbspotify.mapping([review.release_group])
+    spotify_mapping = mbspotify.mappings(review.release_group)
 
     if not review.is_draft and current_user.is_authenticated():  # if user is logged in, get his vote for this review
         vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
