@@ -5,6 +5,10 @@ Source code of mbspotify is available at https://github.com/metabrainz/mbspotify
 """
 import json
 import requests
+from requests.exceptions import RequestException
+from requests.adapters import HTTPAdapter
+from flask import flash
+from flask_babel import gettext
 
 _base_url = ""
 _key = ""
@@ -17,10 +21,21 @@ def init(base_url, access_key):
 
 
 def mappings(mbid=None):
-    """Get mappings to Spotify for a specified MusicBrainz ID."""
-    headers = {'Content-Type': 'application/json'}
-    resp = requests.post(_base_url + 'mapping', headers=headers, data=json.dumps({'mbid': mbid}))
-    return resp.json().get('mapping')
+    """Get mappings to Spotify for a specified MusicBrainz ID.
+
+    Returns:
+        List containing Spotify URIs that are mapped to specified MBID.
+    """
+    try:
+        session = requests.Session()
+        session.mount(_base_url, HTTPAdapter(max_retries=2))
+        resp = session.post(_base_url + 'mapping',
+                            headers={'Content-Type': 'application/json'},
+                            data=json.dumps({'mbid': mbid}))
+        return resp.json().get('mapping')
+    except RequestException:
+        flash(gettext("Spotify mapping server is unavailable. You will not see an embedded player."), "warning")
+        return []
 
 
 def add_mapping(mbid, spotify_uri, user_id):
