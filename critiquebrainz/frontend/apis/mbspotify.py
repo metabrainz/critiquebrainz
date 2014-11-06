@@ -39,10 +39,21 @@ def mappings(mbid=None):
 
 
 def add_mapping(mbid, spotify_uri, user_id):
-    """Submit new spotify mapping."""
-    # TODO: Catch errors during submission.
-    requests.post(_base_url + 'mapping/add?key=' + _key, headers={'Content-Type': 'application/json'},
-                  data=json.dumps({'mbid': str(mbid), 'spotify_uri': spotify_uri, 'user': str(user_id)}))
+    """Submit new Spotify mapping.
+
+    Returns:
+        Returns two values. First one is a boolean that indicates whether the submission has been successful.
+        The second is an exception in case errors occur. If there are no errors, this value is None.
+    """
+    try:
+        session = requests.Session()
+        session.mount(_base_url, HTTPAdapter(max_retries=2))
+        resp = session.post(_base_url + 'mapping/add?key=' + _key,
+                            headers={'Content-Type': 'application/json'},
+                            data=json.dumps({'mbid': str(mbid), 'spotify_uri': spotify_uri, 'user': str(user_id)}))
+        return resp.status_code == 200, None
+    except RequestException as e:
+        return False, e
 
 
 def vote(mbid, user_id):

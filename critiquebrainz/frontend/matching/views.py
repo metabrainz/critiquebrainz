@@ -71,6 +71,7 @@ def spotify_matching_submit_handler(release_group_id):
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
     if request.method == 'POST':
+        # TODO: Check returned values that are returned by add_mapping (also take a look at related JS)
         mbspotify.add_mapping(release_group_id, 'spotify:album:%s' % spotify_id, current_user.id)
         flash(gettext("Spotify mapping has been added!"), 'success')
         return redirect(url_for('release_group.entity', id=release_group_id))
