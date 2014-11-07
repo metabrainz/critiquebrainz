@@ -1,3 +1,7 @@
+"""
+Review model doesn't contain text of the review, it references revision which
+contain different versions of the test.
+"""
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from vote import Vote

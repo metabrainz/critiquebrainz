@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 apt-get update
-apt-get install -y memcached python-virtualenv python-dev
+apt-get install -y build-essential python-virtualenv python-dev curl memcached
 
 # PostgreSQL
-PG_VERSION=9.3
+PG_VERSION=9.1
 apt-get -y install "postgresql-$PG_VERSION" "postgresql-contrib-$PG_VERSION" "postgresql-server-dev-$PG_VERSION"
 PG_CONF="/etc/postgresql/$PG_VERSION/main/postgresql.conf"
 PG_HBA="/etc/postgresql/$PG_VERSION/main/pg_hba.conf"

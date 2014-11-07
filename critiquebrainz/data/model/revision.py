@@ -1,3 +1,9 @@
+"""
+Revision model defines revisions of reviews. Each review must have at least one revision.
+New revisions are created after edits. Each review contains a timestamp that indicates
+a time when specific revision has been created, so you can get the latest version using
+that timestamp.
+"""
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
