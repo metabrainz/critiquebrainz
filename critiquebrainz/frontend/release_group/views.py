@@ -20,7 +20,7 @@ def release_group_entity_handler(id):
         release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'], includes=['recordings', 'media'])
     else:
         release = None
-    spotify_mapping = mbspotify.mappings(id)
+    spotify_mappings = mbspotify.mappings(id)
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated():
@@ -33,5 +33,5 @@ def release_group_entity_handler(id):
         my_review = None
     reviews, count = Review.list(release_group=id, sort='created', limit=limit, offset=offset)
     return render_template('release_group.html', id=id, release_group=release_group, reviews=reviews,
-                           release=release, my_review=my_review, spotify_mapping=spotify_mapping,
+                           release=release, my_review=my_review, spotify_mappings=spotify_mappings,
                            limit=limit, offset=offset, count=count)

@@ -15,8 +15,9 @@ def spotify_matching_handler(release_group_id):
     # TODO: Implement UI around that. Some kind of table with links that allow marking each mapping as incorrect.
 
     # Checking if release group is already matched
-    spotify_mapping = mbspotify.mappings(str(release_group_id))
-    if len(spotify_mapping) > 0:
+    spotify_mappings = mbspotify.mappings(str(release_group_id))
+    if len(spotify_mappings) > 0:
+        # TODO: Fix this
         flash(gettext("Thanks, but this album is already matched to Spotify!"))
         return redirect(url_for('release_group.entity', id=release_group_id))
 
@@ -45,8 +46,9 @@ def spotify_matching_handler(release_group_id):
 def spotify_matching_submit_handler(release_group_id):
     # Checking if release group is already matched
     # TODO: No need to check there, just try to add again. If the same mapping exist already, don't return errors (or do?).
-    spotify_mapping = mbspotify.mappings(str(release_group_id))
-    if len(spotify_mapping) > 0:
+    spotify_mappings = mbspotify.mappings(str(release_group_id))
+    if len(spotify_mappings) > 0:
+        # TODO: Fix this
         flash(gettext("Thanks, but this album is already matched to Spotify!"))
         return redirect(url_for('release_group.entity', id=release_group_id))
 
@@ -88,8 +90,9 @@ def spotify_matching_report_handler(release_group_id):
         return jsonify(success=False, error=gettext("Can't find release group with that ID!"))
 
     # Checking if release group is matched
-    spotify_mapping = mbspotify.mappings(str(release_group_id))
-    if len(spotify_mapping) < 1:
+    spotify_mappings = mbspotify.mappings(str(release_group_id))
+    if len(spotify_mappings) < 1:
+        # TODO: Fix this
         return jsonify(success=False, error=gettext("This album is not matched to Spotify yet!"))
 
     mbspotify.vote(release_group_id, current_user.id)

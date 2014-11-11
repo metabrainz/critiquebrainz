@@ -46,8 +46,8 @@
           .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
     </script>
     <div id="spotify-play-button">
-      {% if id in spotify_mapping %}
-        <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[id] }}&theme=white"
+      {% if spotify_mappings %}
+        <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white"
                 width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
         {% if current_user.is_authenticated() %}
           <em>
@@ -178,7 +178,7 @@
 </div>
 {% endblock %}
 
-{% if current_user.is_authenticated() and id in spotify_mapping %}
+{% if current_user.is_authenticated() and spotify_mappings %}
   {% block scripts %}
     {{ super() }}
     <script>

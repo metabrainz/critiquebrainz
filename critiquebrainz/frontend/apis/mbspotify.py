@@ -32,7 +32,7 @@ def mappings(mbid=None):
         resp = session.post(_base_url + 'mapping',
                             headers={'Content-Type': 'application/json'},
                             data=json.dumps({'mbid': mbid}))
-        return resp.json().get('mapping')
+        return resp.json().get('mappings')
     except RequestException:
         flash(gettext("Spotify mapping server is unavailable. You will not see an embedded player."), "warning")
         return []
