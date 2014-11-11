@@ -1,12 +1,15 @@
 Server Web API
 ==============
 
-CritiqueBrainz server provides web service that can be used to interact with data. It uses JSON format.
+CritiqueBrainz provides various endpoints that can be used to interact with the
+data. Web API uses JSON format.
 
 **Root URL**: ``https://critiquebrainz.org/ws/1``
 
 Reference
 ---------
+
+Below you will find description of all available endpoints.
 
 Reviews
 ^^^^^^^

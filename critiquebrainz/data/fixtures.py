@@ -23,7 +23,7 @@ class LicenseData(object):
     """Licenses that can be used with reviews.
 
     If you add new ones or remove existing, make sure to update forms,
-    views, and other stuff that needs to be updated.
+    views, and other stuff that depends on that.
     """
     cc_by_sa_3 = License(
         id=u"CC BY-SA 3.0",

@@ -1,3 +1,6 @@
+"""
+Votes for reviews. Ether positive (vote is True) or negative (vote is False).
+"""
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime

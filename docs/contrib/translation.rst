@@ -1,9 +1,20 @@
-Client translation
-==================
+Translation
+===========
 
-CritiqueBrainz uses `Transifex <https://www.transifex.com/>`_ to manage translations.
-Project homepage is located at https://www.transifex.com/projects/p/critiquebrainz/.
-If you want to contribute translations, that's where you should to do it.
+Our goal is to make CritiqueBrainz project accessible to readers and writers
+all over the world. You can post reviews in any language you want, but it is
+also important to provide good way to find these reviews.
+That's why we need your help!
+
+Translation process is being done on `Transifex <https://www.transifex.com/>`_
+platform. You can submit your translation suggestions there and collaborate
+with other translators. If you want to contribute translations, that's where
+you should to do it.
+
+Our project page is located at https://www.transifex.com/projects/p/critiquebrainz/.
+
+There are a couple of things you should know if you are trying to modify strings.
+See the info below.
 
 Working locally
 ---------------

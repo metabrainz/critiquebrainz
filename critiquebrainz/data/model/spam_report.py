@@ -1,3 +1,7 @@
+"""
+SpamReport model defines spam reports for specific revisions of reviews. Only one
+spam report can be created by a single user for a specific revision.
+"""
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
