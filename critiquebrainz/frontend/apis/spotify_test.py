@@ -24,5 +24,5 @@ class SpotifyTestCase(unittest.TestCase):
 
     def test_album(self):
         self.assertDictEqual(
-            spotify.album('random-spotify-id'),
+            spotify.get_album('random-spotify-id'),
             dict(url="https://api.spotify.com/v1/albums/random-spotify-id"))

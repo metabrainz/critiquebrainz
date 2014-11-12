@@ -26,7 +26,7 @@ def search(query, type, limit=20, offset=0):
     return resp
 
 
-def album(spotify_id):
+def get_album(spotify_id):
     """Get Spotify catalog information for a single album.
 
     Returns:
@@ -41,7 +41,7 @@ def album(spotify_id):
     return resp
 
 
-def several_albums(spotify_ids):
+def get_multiple_albums(spotify_ids):
     """Get Spotify catalog information for multiple albums identified by their Spotify IDs.
 
     Returns:

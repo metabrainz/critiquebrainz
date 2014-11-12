@@ -19,7 +19,7 @@ def spotify_matching_handler(release_group_id):
     for mapping in spotify_mappings:
         spotify_ids.append(mapping[14:])
 
-    spotify_albums = spotify.several_albums(spotify_ids)
+    spotify_albums = spotify.get_multiple_albums(spotify_ids)
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
         raise NotFound("Can't find release group with a specified ID.")
@@ -70,7 +70,7 @@ def spotify_matching_submit_handler():
         flash(gettext("You need to specify a correct link to this album on Spotify!"), 'error')
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
-    album = spotify.album(spotify_id)
+    album = spotify.get_album(spotify_id)
     if not album or album.get('error'):
         flash(gettext("You need to specify existing album from Spotify!"), 'error')
         return redirect(url_for('.spotify', release_group_id=release_group_id))
@@ -109,7 +109,7 @@ def spotify_matching_report_handler():
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     else:
-        album = spotify.album(spotify_id)
+        album = spotify.get_album(spotify_id)
         if not album or album.get('error'):
             flash(gettext("You need to specify existing album from Spotify!"), 'error')
             return redirect(url_for('.spotify_list', release_group_id=release_group_id))
