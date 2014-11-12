@@ -44,7 +44,7 @@
           <tr>
             <td><img src="{{ album.images[-1].url }}" style="max-height: 25px;" /></td>
             <td>{{ album.type }}</td>
-            <td>{{ album.id }}</td>
+            <td><a href="{{ album.external_urls.spotify }}">{{ album.id }}</a></td>
             <td>{{ album.name }}</td>
             <td>
               {# Generating a list of artists #}
