@@ -56,8 +56,12 @@ def add_mapping(mbid, spotify_uri, user_id):
         return False, e
 
 
-def vote(mbid, user_id):
+def vote(mbid, spotify_uri, user_id):
     """Submit report about incorrect Spotify mapping."""
     # TODO: Catch errors during voting.
     requests.post(_base_url + 'mapping/vote?key=' + _key, headers={'Content-Type': 'application/json'},
-                  data=json.dumps({'mbid': str(mbid), 'user': str(user_id)}))
+                  data=json.dumps({
+                      'mbid': str(mbid),
+                      'user': str(user_id),
+                      'spotify_uri': str(spotify_uri),
+                  }))

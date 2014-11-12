@@ -13,7 +13,10 @@ BASE_URL = "https://api.spotify.com/v1"
 
 
 def search(query, type, limit=20, offset=0):
-    """Get Spotify catalog information about artists, albums, or tracks that match a keyword string."""
+    """Get Spotify catalog information about artists, albums, or tracks that match a keyword string.
+
+    More information is available at https://developer.spotify.com/web-api/search-item/.
+    """
     key = generate_cache_key('search', source='spotify', params=[query, type, limit, offset])
     resp = cache.get(key)
     if not resp:
@@ -24,10 +27,30 @@ def search(query, type, limit=20, offset=0):
 
 
 def album(spotify_id):
-    """Get Spotify catalog information for a single album."""
+    """Get Spotify catalog information for a single album.
+
+    Returns:
+        Album object from Spotify. More info about this type of object is available at
+        https://developer.spotify.com/web-api/object-model/#album-object.
+    """
     key = generate_cache_key('album', source='spotify', params=[spotify_id])
     resp = cache.get(key)
     if not resp:
         resp = requests.get("%s/albums/%s" % (BASE_URL, spotify_id)).json()
+        cache.set(key, resp, DEFAULT_CACHE_EXPIRATION)
+    return resp
+
+
+def several_albums(spotify_ids):
+    """Get Spotify catalog information for multiple albums identified by their Spotify IDs.
+
+    Returns:
+        List of album objects from Spotify. More info about this type of objects is available
+        at https://developer.spotify.com/web-api/object-model/#album-object.
+    """
+    key = generate_cache_key('albums', source='spotify', params=spotify_ids)
+    resp = cache.get(key)
+    if not resp:
+        resp = requests.get("%s/albums?ids=%s" % (BASE_URL, ','.join(spotify_ids))).json()['albums']
         cache.set(key, resp, DEFAULT_CACHE_EXPIRATION)
     return resp

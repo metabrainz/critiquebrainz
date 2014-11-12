@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, url_for, redirect, flash, jsonify
+from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask_login import login_required, current_user
 from flask_babel import gettext
 from critiquebrainz.frontend.apis import musicbrainz, spotify, mbspotify
+from critiquebrainz.frontend.exceptions import NotFound
 from urlparse import urlparse
 import os.path
 import string
@@ -9,17 +10,26 @@ import string
 matching_bp = Blueprint('matching', __name__)
 
 
-@matching_bp.route('/spotify/<uuid:release_group_id>', endpoint='spotify')
+@matching_bp.route('/<uuid:release_group_id>', endpoint='spotify_list')
 def spotify_matching_handler(release_group_id):
-    # TODO: Get list of existing mappings and show them here. Let the user add another one if there's something else to add.
-    # TODO: Implement UI around that. Some kind of table with links that allow marking each mapping as incorrect.
-
-    # Checking if release group is already matched
     spotify_mappings = mbspotify.mappings(str(release_group_id))
-    if len(spotify_mappings) > 0:
-        # TODO: Fix this
-        flash(gettext("Thanks, but this album is already matched to Spotify!"))
-        return redirect(url_for('release_group.entity', id=release_group_id))
+
+    # Converting Spotify URIs to IDs
+    spotify_ids = []
+    for mapping in spotify_mappings:
+        spotify_ids.append(mapping[14:])
+
+    spotify_albums = spotify.several_albums(spotify_ids)
+    release_group = musicbrainz.release_group_details(release_group_id)
+    if not release_group:
+        raise NotFound("Can't find release group with a specified ID.")
+    return render_template('matching/list.html', spotify_albums=spotify_albums,
+                           release_group=release_group)
+
+
+@matching_bp.route('/spotify/add', endpoint='spotify')
+def spotify_matching_handler():
+    release_group_id = request.args.get('release_group_id')
 
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
@@ -41,17 +51,10 @@ def spotify_matching_handler(release_group_id):
                            page=page, limit=limit, count=response.get('total'))
 
 
-@matching_bp.route('/spotify/<uuid:release_group_id>/confirm', methods=['GET', 'POST'], endpoint='spotify_confirm')
+@matching_bp.route('/spotify/confirm', methods=['GET', 'POST'], endpoint='spotify_confirm')
 @login_required
-def spotify_matching_submit_handler(release_group_id):
-    # Checking if release group is already matched
-    # TODO: No need to check there, just try to add again. If the same mapping exist already, don't return errors (or do?).
-    spotify_mappings = mbspotify.mappings(str(release_group_id))
-    if len(spotify_mappings) > 0:
-        # TODO: Fix this
-        flash(gettext("Thanks, but this album is already matched to Spotify!"))
-        return redirect(url_for('release_group.entity', id=release_group_id))
-
+def spotify_matching_submit_handler():
+    release_group_id = request.args.get('release_group_id')
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
         flash(gettext("Only existing release groups can be matched to Spotify!"), 'error')
@@ -76,27 +79,42 @@ def spotify_matching_submit_handler(release_group_id):
         # TODO: Check returned values that are returned by add_mapping (also take a look at related JS)
         mbspotify.add_mapping(release_group_id, 'spotify:album:%s' % spotify_id, current_user.id)
         flash(gettext("Spotify mapping has been added!"), 'success')
-        return redirect(url_for('release_group.entity', id=release_group_id))
+        return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     return render_template('matching/confirm.html', release_group=release_group, spotify_album=album)
 
 
-@matching_bp.route('/spotify/<uuid:release_group_id>/report', methods=['POST'], endpoint='spotify_report')
+@matching_bp.route('/spotify/report', methods=['GET', 'POST'], endpoint='spotify_report')
 @login_required
-def spotify_matching_report_handler(release_group_id):
+def spotify_matching_report_handler():
+    release_group_id = request.args.get('release_group_id')
+    spotify_id = request.args.get('spotify_id')
+    spotify_uri = "spotify:album:" + spotify_id
+
     # Checking if release group exists
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
-        return jsonify(success=False, error=gettext("Can't find release group with that ID!"))
+        flash(gettext("Can't find release group with that ID!"), 'error')
+        return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     # Checking if release group is matched
     spotify_mappings = mbspotify.mappings(str(release_group_id))
-    if len(spotify_mappings) < 1:
-        # TODO: Fix this
-        return jsonify(success=False, error=gettext("This album is not matched to Spotify yet!"))
+    if not (spotify_uri in spotify_mappings):
+        flash(gettext("This album is not matched to Spotify yet!"), 'error')
+        return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
-    mbspotify.vote(release_group_id, current_user.id)
-    return jsonify(success=True)
+    if request.method == 'POST':
+        mbspotify.vote(release_group_id, spotify_uri, current_user.id)
+        flash(gettext("Incorrect Spotify mapping has been reported. Thank you!"), 'success')
+        return redirect(url_for('.spotify_list', release_group_id=release_group_id))
+
+    else:
+        album = spotify.album(spotify_id)
+        if not album or album.get('error'):
+            flash(gettext("You need to specify existing album from Spotify!"), 'error')
+            return redirect(url_for('.spotify_list', release_group_id=release_group_id))
+
+        return render_template('matching/report.html', release_group=release_group, spotify_album=album)
 
 
 def parse_spotify_id(spotify_ref):

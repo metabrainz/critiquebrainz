@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ _('Incrorrect mapping reporting') }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<h2>{{ _('Incorrect mapping reporting') }}</h2>
+<div class="text-center">
+  <strong style="font-size: 16px">{{ _('Are you sure you want to report incorrect mapping?') }}</strong>
+  <hr />
+  <div class="row">
+    <div class="col-md-6">
+      <h4>CritiqueBrainz</h4>
+      <p>{{ _('%(album)s by %(artist)s', album=release_group.title, artist=release_group['artist-credit-phrase']) }}</p>
+      <img id="cover-art">
+      <script>
+        $("img").last()
+            .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+            .attr("src", "//coverartarchive.org/release-group/{{ release_group.id }}/front-250");
+      </script>
+    </div>
+    <div class="col-md-6">
+      <h4>{{ _('Spotify') }}</h4>
+      <p>{{ _('URI:') }} {{ spotify_album.uri }}</p>
+      <iframe src="https://embed.spotify.com/?uri={{ spotify_album.uri }}&theme=white"
+              width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
+    </div>
+  </div>
+  <hr />
+  <form role="form" method="POST" action="{{ url_for('matching.spotify_report', release_group_id=release_group.id, spotify_id=spotify_album.id) }}">
+    <button type="submit" class="btn btn-danger">{{ _('Report incorrect mapping') }}</button>
+    <a href="{{ url_for('matching.spotify_list', release_group_id=release_group.id) }}" class="btn btn-default">{{ _('Cancel') }}</a>
+  </form>
+</div>
+{% endblock %}
