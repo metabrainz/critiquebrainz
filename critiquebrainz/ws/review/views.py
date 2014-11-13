@@ -153,7 +153,7 @@ def review_post_handler(user):
 
 @review_bp.route('/languages', methods=['GET'])
 @crossdomain()
-def review_list_handler():
+def languages_list_handler():
     """Get list of supported review languages (language codes from ISO 639-1).
 
     :resheader Content-Type: *application/json*
