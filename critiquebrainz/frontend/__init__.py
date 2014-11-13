@@ -47,7 +47,7 @@ def create_app():
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
-    from apis import musicbrainz
+    from critiquebrainz.frontend.apis import musicbrainz
     app.jinja_env.filters['release_group_details'] = musicbrainz.release_group_details
 
     # Blueprints
