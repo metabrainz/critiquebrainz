@@ -4,8 +4,8 @@ contain different versions of the test.
 """
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
-from vote import Vote
-from revision import Revision
+from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.constants import review_classes
 from critiquebrainz.frontend.exceptions import InvalidRequest  # TODO: Remove this dependency on frontend.
 import pycountry

@@ -1,8 +1,8 @@
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
-from review import Review
-from revision import Revision
-from vote import Vote
+from critiquebrainz.data.model.review import Review
+from critiquebrainz.data.model.revision import Revision
+from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.constants import user_types
 from flask_login import UserMixin
 from datetime import datetime, date, timedelta

@@ -1,6 +1,6 @@
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
-from license import License
+from critiquebrainz.data.model.license import License
 
 
 class LicenceTestCase(DataTestCase):

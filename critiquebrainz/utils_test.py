@@ -1,5 +1,5 @@
 import unittest
-import utils
+from critiquebrainz import utils
 
 
 class UtilsTestCase(unittest.TestCase):

@@ -2,7 +2,7 @@ import unittest
 import cache
 import random
 import string
-from frontend import create_app
+from critiquebrainz.frontend import create_app
 
 
 class CacheTestCase(unittest.TestCase):

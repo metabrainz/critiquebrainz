@@ -1,5 +1,5 @@
 import unittest
-import spotify
+from critiquebrainz.frontend.apis import spotify
 
 
 class FakeSpotifyResponse():

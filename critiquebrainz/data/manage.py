@@ -2,7 +2,7 @@ from flask_script import Manager
 from flask import current_app
 from critiquebrainz import data
 from critiquebrainz.data import explode_db_url
-import fixtures as _fixtures
+import critiquebrainz.data.fixtures as _fixtures
 import subprocess
 
 data_manager = Manager()

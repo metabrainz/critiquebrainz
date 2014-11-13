@@ -1,11 +1,11 @@
 # This value should be incremented after any schema changes!
 __version__ = 1
 
-# All models must be imported in this file
-from .review import Review
-from .revision import Revision
-from .user import User
-from .license import License
-from .vote import Vote
-from .spam_report import SpamReport
-from .oauth import OAuthClient, OAuthGrant, OAuthToken
+# All models must be imported there:
+from critiquebrainz.data.model.review import Review
+from critiquebrainz.data.model.revision import Revision
+from critiquebrainz.data.model.user import User
+from critiquebrainz.data.model.license import License
+from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.data.model.spam_report import SpamReport
+from critiquebrainz.data.model.oauth import OAuthClient, OAuthGrant, OAuthToken
