@@ -9,8 +9,8 @@ from critiquebrainz.data.model.review import Review
 release_group_bp = Blueprint('release_group', __name__)
 
 
-@release_group_bp.route('/<uuid:id>', endpoint='entity')
-def release_group_entity_handler(id):
+@release_group_bp.route('/<uuid:id>')
+def entity(id):
     id = str(id)
     release_group = musicbrainz.get_release_group_by_id(
         id, includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'work-rels'])
