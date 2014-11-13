@@ -7,7 +7,7 @@ from critiquebrainz.ws.parser import Parser
 user_bp = Blueprint('ws_user', __name__)
 
 
-@user_bp.route('/me', endpoint='me')
+@user_bp.route('/me')
 @crossdomain()
 @oauth.require_auth()
 def user_me_handler(user):
@@ -21,7 +21,7 @@ def user_me_handler(user):
     return jsonify(user=user.to_dict(inc, confidential=True))
 
 
-@user_bp.route('/me/reviews', endpoint='reviews')
+@user_bp.route('/me/reviews')
 @oauth.require_auth()
 @crossdomain()
 def user_reviews_handler(user):
@@ -32,7 +32,7 @@ def user_reviews_handler(user):
     return redirect(url_for('review.list', user_id=user.id, **request.args))
 
 
-@user_bp.route('/me/applications', endpoint='applications')
+@user_bp.route('/me/applications')
 @oauth.require_auth()
 @crossdomain()
 def user_applications_handler(user):
@@ -43,7 +43,7 @@ def user_applications_handler(user):
     return jsonify(applications=[c.to_dict() for c in user.clients])
 
 
-@user_bp.route('/me/tokens', endpoint='tokens')
+@user_bp.route('/me/tokens')
 @oauth.require_auth()
 @crossdomain()
 def user_tokens_handler(user):
@@ -54,7 +54,7 @@ def user_tokens_handler(user):
     return jsonify(tokens=[t.to_dict() for t in user.tokens])
 
 
-@user_bp.route('/me', endpoint='modify', methods=['POST'])
+@user_bp.route('/me', methods=['POST'])
 @oauth.require_auth('user')
 @crossdomain()
 def user_modify_handler(user):
@@ -81,7 +81,7 @@ def user_modify_handler(user):
     return jsonify(message='Request processed successfully')
 
 
-@user_bp.route('/me', endpoint='delete', methods=['DELETE'])
+@user_bp.route('/me', methods=['DELETE'])
 @oauth.require_auth('user')
 @crossdomain()
 def user_delete_handler(user):
@@ -95,7 +95,7 @@ def user_delete_handler(user):
     return jsonify(message='Request processed successfully')
 
 
-@user_bp.route('/<uuid:user_id>', endpoint='entity', methods=['GET'])
+@user_bp.route('/<uuid:user_id>', methods=['GET'])
 @crossdomain()
 def user_entity_handler(user_id):
     """Get profile of a user with a specified UUID.
@@ -107,7 +107,7 @@ def user_entity_handler(user_id):
     return jsonify(user=user.to_dict(inc))
 
 
-@user_bp.route('/', endpoint='list', methods=['GET'])
+@user_bp.route('/', methods=['GET'])
 @crossdomain()
 def review_list_handler():
     """Get list of users.
