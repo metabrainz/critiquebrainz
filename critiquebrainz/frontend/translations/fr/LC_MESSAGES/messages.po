@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-13 21:10+0000\n"
-"PO-Revision-Date: 2014-08-19 13:57+0000\n"
+"POT-Creation-Date: 2014-09-19 20:33+0000\n"
+"PO-Revision-Date: 2014-09-22 14:42+0000\n"
 "Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/critiquebrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -714,9 +714,9 @@ msgstr "Annuler"
 #: critiquebrainz/frontend/templates/matching/spotify.html:14
 #, python-format
 msgid ""
-"Please select the album \"%(album)s\" by %(artist)s, or provide a link to "
+"Please select the album %(album)s by %(artist)s, or provide a link to "
 "Spotify below."
-msgstr "Veuillez choisir l'album « %(album)s » par %(artist)s, ou fournir un lien vers Spotify ci-dessous."
+msgstr "Veuillez choisir l'album %(album)s par %(artist)s, ou fournir un lien vers Spotify ci-dessous."
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:34
 msgid "Listen on Spotify"
