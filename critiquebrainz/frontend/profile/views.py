@@ -6,9 +6,9 @@ from critiquebrainz.frontend.forms.user import UserForm
 profile_bp = Blueprint('profile_details', __name__)
 
 
-@profile_bp.route('/edit', methods=['GET', 'POST'], endpoint='edit')
+@profile_bp.route('/edit', methods=['GET', 'POST'])
 @login_required
-def edit_handler():
+def edit():
     form = UserForm()
     if form.validate_on_submit():
         current_user.update(display_name=form.display_name.data,
@@ -23,9 +23,9 @@ def edit_handler():
     return render_template('profile/edit.html', form=form)
 
 
-@profile_bp.route('/delete', methods=['GET', 'POST'], endpoint='delete')
+@profile_bp.route('/delete', methods=['GET', 'POST'])
 @login_required
-def delete_handler():
+def delete():
     if request.method == 'POST':
         current_user.delete()
         return redirect(url_for('frontend.index'))

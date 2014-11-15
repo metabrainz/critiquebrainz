@@ -8,17 +8,17 @@ from critiquebrainz.frontend.forms.app import ApplicationForm
 profile_apps_bp = Blueprint('profile_applications', __name__)
 
 
-@profile_apps_bp.route('/', endpoint='index')
+@profile_apps_bp.route('/')
 @login_required
-def index_handler():
+def index():
     return render_template('profile/applications/index.html',
                            applications=[c.to_dict() for c in current_user.clients],
                            tokens=[t.to_dict() for t in current_user.tokens])
 
 
-@profile_apps_bp.route('/create', endpoint='create', methods=['GET', 'POST'])
+@profile_apps_bp.route('/create', methods=['GET', 'POST'])
 @login_required
-def create_handler():
+def create():
     """Create application."""
     form = ApplicationForm()
     if form.validate_on_submit():
@@ -30,9 +30,9 @@ def create_handler():
     return render_template('profile/applications/create.html', form=form)
 
 
-@profile_apps_bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
+@profile_apps_bp.route('/<client_id>/edit', methods=['GET', 'POST'])
 @login_required
-def edit_handler(client_id):
+def edit(client_id):
     application = OAuthClient.query.get_or_404(client_id)
     if application.user != current_user:
         abort(403)
@@ -50,9 +50,9 @@ def edit_handler(client_id):
     return render_template('profile/applications/edit.html', form=form)
 
 
-@profile_apps_bp.route('/<client_id>/delete', endpoint='delete')
+@profile_apps_bp.route('/<client_id>/delete')
 @login_required
-def delete_handler(client_id):
+def delete(client_id):
     client = OAuthClient.query.get_or_404(client_id)
     if client.user != current_user:
         abort(403)
@@ -62,8 +62,8 @@ def delete_handler(client_id):
     return redirect(url_for('.index'))
 
 
-@profile_apps_bp.route('/<client_id>/token/delete', endpoint='token_delete')
+@profile_apps_bp.route('/<client_id>/token/delete')
 @login_required
-def token_delete_handler(client_id):
+def token_delete(client_id):
     OAuthToken.purge_tokens(client_id=client_id, user_id=current_user.id)
     return redirect(url_for('.index'))

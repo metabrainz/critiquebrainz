@@ -13,7 +13,7 @@ REVIEW_MAX_LENGTH = 100000
 REVIEW_MIN_LENGTH = 25
 
 
-@review_bp.route('/<uuid:review_id>', endpoint='entity', methods=['GET'])
+@review_bp.route('/<uuid:review_id>', methods=['GET'])
 @crossdomain()
 def review_entity_handler(review_id):
     """Get review with a specified UUID.
@@ -29,7 +29,7 @@ def review_entity_handler(review_id):
     return jsonify(review=review.to_dict())
 
 
-@review_bp.route('/<uuid:review_id>', endpoint='delete', methods=['DELETE'])
+@review_bp.route('/<uuid:review_id>', methods=['DELETE'])
 @oauth.require_auth('review')
 @crossdomain()
 def review_delete_handler(review_id, user):
@@ -52,7 +52,7 @@ def review_delete_handler(review_id, user):
     return jsonify(message='Request processed successfully')
 
 
-@review_bp.route('/<uuid:review_id>', endpoint='modify', methods=['POST'])
+@review_bp.route('/<uuid:review_id>', methods=['POST'])
 @oauth.require_auth('review')
 @crossdomain()
 def review_modify_handler(review_id, user):
@@ -82,7 +82,7 @@ def review_modify_handler(review_id, user):
                    review=dict(id=review.id))
 
 
-@review_bp.route('/', endpoint='list', methods=['GET'])
+@review_bp.route('/', methods=['GET'])
 @crossdomain()
 def review_list_handler():
     """Get list of reviews.
@@ -114,7 +114,7 @@ def review_list_handler():
                    reviews=[p.to_dict() for p in reviews])
 
 
-@review_bp.route('/', endpoint='create', methods=['POST'])
+@review_bp.route('/', methods=['POST'])
 @oauth.require_auth('review')
 @crossdomain()
 def review_post_handler(user):
@@ -151,9 +151,9 @@ def review_post_handler(user):
     return jsonify(message='Request processed successfully', id=review.id)
 
 
-@review_bp.route('/languages', endpoint='languages', methods=['GET'])
+@review_bp.route('/languages', methods=['GET'])
 @crossdomain()
-def review_list_handler():
+def languages_list_handler():
     """Get list of supported review languages (language codes from ISO 639-1).
 
     :resheader Content-Type: *application/json*
@@ -237,7 +237,7 @@ def review_vote_delete_handler(review_id, user):
     return jsonify(message='Request processed successfully')
 
 
-@review_bp.route('/<uuid:review_id>/report', endpoint='report', methods=['POST'])
+@review_bp.route('/<uuid:review_id>/report', methods=['POST'])
 @oauth.require_auth('vote')
 @crossdomain()
 def review_spam_report_handler(review_id, user):

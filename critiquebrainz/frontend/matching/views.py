@@ -10,8 +10,8 @@ import string
 matching_bp = Blueprint('matching', __name__)
 
 
-@matching_bp.route('/<uuid:release_group_id>', endpoint='spotify_list')
-def spotify_matching_handler(release_group_id):
+@matching_bp.route('/<uuid:release_group_id>')
+def spotify_list(release_group_id):
     spotify_mappings = mbspotify.mappings(str(release_group_id))
 
     # Converting Spotify URIs to IDs
@@ -27,8 +27,8 @@ def spotify_matching_handler(release_group_id):
                            release_group=release_group)
 
 
-@matching_bp.route('/spotify/add', endpoint='spotify')
-def spotify_matching_handler():
+@matching_bp.route('/spotify/add')
+def spotify():
     release_group_id = request.args.get('release_group_id')
 
     release_group = musicbrainz.release_group_details(release_group_id)
@@ -51,9 +51,9 @@ def spotify_matching_handler():
                            page=page, limit=limit, count=response.get('total'))
 
 
-@matching_bp.route('/spotify/confirm', methods=['GET', 'POST'], endpoint='spotify_confirm')
+@matching_bp.route('/spotify/confirm', methods=['GET', 'POST'])
 @login_required
-def spotify_matching_submit_handler():
+def spotify_confirm():
     release_group_id = request.args.get('release_group_id')
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
@@ -84,9 +84,9 @@ def spotify_matching_submit_handler():
     return render_template('matching/confirm.html', release_group=release_group, spotify_album=album)
 
 
-@matching_bp.route('/spotify/report', methods=['GET', 'POST'], endpoint='spotify_report')
+@matching_bp.route('/spotify/report', methods=['GET', 'POST'])
 @login_required
-def spotify_matching_report_handler():
+def spotify_report():
     release_group_id = request.args.get('release_group_id')
     spotify_id = request.args.get('spotify_id')
     spotify_uri = "spotify:album:" + spotify_id

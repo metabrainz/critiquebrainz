@@ -6,22 +6,23 @@ from critiquebrainz.frontend.login import mb_auth, login_forbidden
 login_bp = Blueprint('login', __name__)
 
 
-@login_bp.route('/', endpoint='index')
+@login_bp.route('/')
 @login_forbidden
-def login_handler():
+def index():
     return render_template('login/login.html')
 
 
-@login_bp.route('/musicbrainz', endpoint='musicbrainz')
+@login_bp.route('/musicbrainz')
 @login_forbidden
-def mb_oauth():
+def musicbrainz():
     session['next'] = request.args.get('next')
     return redirect(mb_auth.get_authentication_uri())
 
 
-@login_bp.route('/musicbrainz/post', endpoint='musicbrainz_post')
+@login_bp.route('/musicbrainz/post')
 @login_forbidden
-def mb_oauth_callback():
+def musicbrainz_post():
+    """Callback endpoint."""
     if mb_auth.validate_post_login():
         login_user(mb_auth.get_user())
         next = session.get('next')
@@ -32,7 +33,7 @@ def mb_oauth_callback():
     return redirect(url_for('frontend.index'))
 
 
-@login_bp.route('/logout', endpoint='logout')
+@login_bp.route('/logout')
 @login_required
 def logout():
     logout_user()
