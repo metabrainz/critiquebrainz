@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-13 21:10+0000\n"
-"PO-Revision-Date: 2014-08-19 10:28+0000\n"
+"POT-Creation-Date: 2014-09-19 20:33+0000\n"
+"PO-Revision-Date: 2014-10-02 09:56+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/critiquebrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -378,7 +378,7 @@ msgstr "Singles"
 
 #: critiquebrainz/frontend/templates/artist.html:24
 msgid "EPs"
-msgstr "EP's"
+msgstr "EP’s"
 
 #: critiquebrainz/frontend/templates/artist.html:27
 msgid "Broadcasts"
@@ -604,7 +604,7 @@ msgstr "Afmelden"
 
 #: critiquebrainz/frontend/templates/navbar.html:33
 msgid "Write a review"
-msgstr "Een recensie schrijven"
+msgstr "Recensie schrijven"
 
 #: critiquebrainz/frontend/templates/navbar.html:39
 #: critiquebrainz/frontend/templates/search/index.html:7
@@ -714,9 +714,9 @@ msgstr "Annuleren"
 #: critiquebrainz/frontend/templates/matching/spotify.html:14
 #, python-format
 msgid ""
-"Please select the album \"%(album)s\" by %(artist)s, or provide a link to "
+"Please select the album %(album)s by %(artist)s, or provide a link to "
 "Spotify below."
-msgstr "Selecteer het album „%(album)s\" van %(artist)s, of geef hieronder een koppeling naar Spotify op."
+msgstr "Selecteer het album %(album)s van %(artist)s, of geef hieronder een koppeling naar Spotify op."
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:34
 msgid "Listen on Spotify"
@@ -937,7 +937,7 @@ msgstr "Recensie verwijderen"
 #: critiquebrainz/frontend/templates/review/edit.html:7
 #, python-format
 msgid "Edit review of \"%(rg)s\""
-msgstr "Recensie van „%(rg)s\" bewerken"
+msgstr "Recensie van ‘%(rg)s’ bewerken"
 
 #: critiquebrainz/frontend/templates/review/edit.html:19
 msgid "Editing review"
@@ -1033,7 +1033,7 @@ msgstr "Het laden van de voorvertoning is mislukt."
 #: critiquebrainz/frontend/templates/review/write.html:3
 #, python-format
 msgid "Write review of \"%(rg)s\""
-msgstr "Schrijf een recensie van „%(rg)s\""
+msgstr "Schrijf een recensie van ‘%(rg)s’"
 
 #: critiquebrainz/frontend/templates/review/write.html:14
 msgid "Write review"
