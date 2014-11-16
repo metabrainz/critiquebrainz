@@ -3,37 +3,40 @@
 {% block title %}{{ _('Edit profile') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-{% for field in form.errors %}
-  {% for error in form.errors[field] %}
-  <div class="alert alert-danger">
-    {{ error }}
-  </div>
+  <h2>{{ _('Editing profile') }}</h2>
+  <hr/>
+
+  {% for field in form.errors %}
+    {% for error in form.errors[field] %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
   {% endfor %}
-{% endfor %}
-<h2>{{ _('Editing profile') }}</h2>
-<hr />
-<form method="POST" class="form-horizontal" role="form">
-  {{ form.hidden_tag() }}
-  <fieldset>
-    <div class="form-group">
-      <label class="col-sm-2 control-label">{{ _('Display name') }}</label>
-      <div class="col-sm-4">{{ form.display_name(class="form-control") | safe }}</div>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-2 control-label">{{ _('Email') }}</label>
-      <div class="col-sm-4">{{ form.email(class="form-control") | safe }}</div>
-    </div>
+
+  <form method="POST" class="form-horizontal" role="form">
+    {{ form.hidden_tag() }}
+    <fieldset>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ form.display_name.label.text }}</label>
+        <div class="col-sm-4">{{ form.display_name(class="form-control", required="required") }}</div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ form.email.label.text }}</label>
+        <div class="col-sm-4">{{ form.email(class="form-control") }}</div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>{{ form.show_gravatar }} {{ form.show_gravatar.label.text }}</label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <div class="checkbox">{{ form.show_gravatar() | safe }} {{ _('Show my Gravatar') }}</div>
+        <button type="submit" class="btn btn-primary">{{ _('Save') }}</button>
       </div>
     </div>
-  </fieldset>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-primary">{{ _('Save') }}</button>
-      <a href="{{ url_for('profile_details.delete') }}" class="btn btn-danger">{{ _('Delete account') }}</a>
-    </div>
-  </div>
-</form>
+  </form>
+
+  <div class="col-sm-offset-2"><i><a href="{{ url_for('profile_details.delete') }}" class="text-danger">{{ _('Delete my account') }}</a></i></div>
 {% endblock %}
