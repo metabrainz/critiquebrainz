@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_babel import gettext
 from critiquebrainz.data.model.oauth import OAuthClient, OAuthToken
-from critiquebrainz.frontend.forms.app import ApplicationForm
+from critiquebrainz.frontend.profile.applications.forms import ApplicationForm
 
 
 profile_apps_bp = Blueprint('profile_applications', __name__)
