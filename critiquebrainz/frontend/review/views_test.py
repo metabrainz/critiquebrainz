@@ -4,11 +4,11 @@ from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.license import License
 
 
-class ViewsTestCase(FrontendTestCase):
+class ReviewViewsTestCase(FrontendTestCase):
 
     def setUp(self):
-        super(ViewsTestCase, self).setUp()
-        self.user = User.get_or_create(u"Tester", "aef06569-098f-4218-a577-b413944d9493")
+        super(ReviewViewsTestCase, self).setUp()
+        self.user = User.get_or_create(u"Tester", u"aef06569-098f-4218-a577-b413944d9493")
         self.license = License.create(u"Test", u"Test License")
 
     def test_review_page(self):
