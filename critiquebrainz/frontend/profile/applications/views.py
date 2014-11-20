@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_babel import gettext
-from critiquebrainz.data.model.oauth import OAuthClient, OAuthToken
+from critiquebrainz.data.model.oauth_client import OAuthClient
+from critiquebrainz.data.model.oauth_token import OAuthToken
 from critiquebrainz.frontend.forms.app import ApplicationForm
 
 
