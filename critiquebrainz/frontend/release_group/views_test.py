@@ -1,7 +1,7 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
 
 
-class ViewsTestCase(FrontendTestCase):
+class ReleaseGroupViewsTestCase(FrontendTestCase):
 
     def test_release_group_page(self):
         # Basic release group page should be available.
