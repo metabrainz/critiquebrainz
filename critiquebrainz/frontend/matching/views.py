@@ -19,7 +19,10 @@ def spotify_list(release_group_id):
     for mapping in spotify_mappings:
         spotify_ids.append(mapping[14:])
 
-    spotify_albums = spotify.get_multiple_albums(spotify_ids)
+    if len(spotify_ids) > 0:
+        spotify_albums = spotify.get_multiple_albums(spotify_ids)
+    else:
+        spotify_albums = []
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
         raise NotFound("Can't find release group with a specified ID.")
