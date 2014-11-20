@@ -1,7 +1,7 @@
-from critiquebrainz.frontend.exceptions import CritiqueBrainzError
+from critiquebrainz.frontend.exceptions import FrontendError
 
 
-class APIError(CritiqueBrainzError):
+class APIError(FrontendError):
     def __init__(self, status=500, desc=None, code=None):
         super(APIError, self).__init__()
         self.status = status
