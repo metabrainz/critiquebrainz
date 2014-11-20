@@ -11,8 +11,9 @@ import errno
 import sys
 import os
 
-from critiquebrainz.data import db, explode_db_url
+from critiquebrainz.data import db
 from critiquebrainz.data import model
+from critiquebrainz.data.utils import explode_db_uri
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.license import License
 
@@ -34,7 +35,7 @@ def dump_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
     create_path(location)
 
     FILE_PREFIX = "cb-backup-"
-    db_hostname, db_name, db_username, db_password = explode_db_url(current_app.config['SQLALCHEMY_DATABASE_URI'])
+    db_hostname, db_name, db_username, db_password = explode_db_uri(current_app.config['SQLALCHEMY_DATABASE_URI'])
 
     print('Creating database dump in "%s"...' % location)
 
