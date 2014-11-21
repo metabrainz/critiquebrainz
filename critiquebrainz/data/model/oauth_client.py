@@ -49,14 +49,15 @@ class OAuthClient(db.Model):
         return self
 
     def to_dict(self):
-        response = dict(client_id=self.client_id,
-                        client_secret=self.client_secret,
-                        user_id=self.user_id,
-                        name=self.name,
-                        desc=self.desc,
-                        website=self.website,
-                        redirect_uri=self.redirect_uri)
-        return response
+        return dict(
+            client_id=self.client_id,
+            client_secret=self.client_secret,
+            user_id=self.user_id,
+            name=self.name,
+            desc=self.desc,
+            website=self.website,
+            redirect_uri=self.redirect_uri
+        )
 
     def update(self, name=None, desc=None, website=None, redirect_uri=None):
         if name is not None:
