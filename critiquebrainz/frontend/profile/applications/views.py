@@ -23,9 +23,9 @@ def create():
     """Create application."""
     form = ApplicationForm()
     if form.validate_on_submit():
-        OAuthClient.generate(user=current_user, name=form.name.data,
-                             desc=form.desc.data, website=form.website.data,
-                             redirect_uri=form.redirect_uri.data)
+        OAuthClient.create(user=current_user, name=form.name.data,
+                           desc=form.desc.data, website=form.website.data,
+                           redirect_uri=form.redirect_uri.data)
         flash(gettext('You have created an application!'), 'success')
         return redirect(url_for('.index'))
     return render_template('profile/applications/create.html', form=form)

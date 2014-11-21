@@ -21,11 +21,24 @@ class OAuthClient(db.Model):
     allowed_includes = []
 
     @classmethod
-    def generate(cls, user, name, desc, website, redirect_uri):
+    def create(cls, user, name, desc, website, redirect_uri):
+        """Creates new OAuth client and generates a secret key for it.
+
+        Args:
+            user: User who manages the client.
+            name: Name of the client.
+            desc: Client description.
+            website: Client web site.
+            redirect_uri: URI where responses will be sent.
+
+        Returns:
+            New OAuth client.
+        """
         client_id = generate_string(20)
         client_secret = generate_string(40)
         client = cls(client_id=client_id, client_secret=client_secret,
-                     user=user, name=name, desc=desc, website=website, redirect_uri=redirect_uri)
+                     user=user, name=name, desc=desc, website=website,
+                     redirect_uri=redirect_uri)
         db.session.add(client)
         db.session.commit()
         return client
