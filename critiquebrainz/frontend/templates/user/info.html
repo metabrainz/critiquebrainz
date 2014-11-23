@@ -3,6 +3,13 @@
 {% block title %}{{ user.display_name }} - {{ _('Info') }} - CritiqueBrainz{% endblock %}
 
 {% block profile_content %}
+  {% if user.musicbrainz_id %}
+    <div>
+      <img src="{{ url_for('static', filename='favicons/musicbrainz-16.ico') }}" />
+      <b><a href="https://musicbrainz.org/user/{{ user.musicbrainz_id }}">See profile on MusicBrainz</a></b>
+    </div>
+  {% endif %}
+
   <div class="row">
 
     <div class="col-md-7">
