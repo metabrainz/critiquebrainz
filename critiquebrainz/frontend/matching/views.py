@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask_login import login_required, current_user
 from flask_babel import gettext
-from critiquebrainz.frontend.apis import musicbrainz, spotify, mbspotify
+import critiquebrainz.frontend.apis.spotify as spotify_api
+from critiquebrainz.frontend.apis import musicbrainz, mbspotify
 from critiquebrainz.frontend.exceptions import NotFound
 from urlparse import urlparse
 import os.path
@@ -19,7 +20,10 @@ def spotify_list(release_group_id):
     for mapping in spotify_mappings:
         spotify_ids.append(mapping[14:])
 
-    spotify_albums = spotify.get_multiple_albums(spotify_ids)
+    if len(spotify_ids) > 0:
+        spotify_albums = spotify_api.get_multiple_albums(spotify_ids)
+    else:
+        spotify_albums = []
     release_group = musicbrainz.release_group_details(release_group_id)
     if not release_group:
         raise NotFound("Can't find release group with a specified ID.")
@@ -46,7 +50,7 @@ def spotify():
     punctuation_map = dict((ord(char), None) for char in string.punctuation)
     query = unicode(release_group['title']).translate(punctuation_map)
     # Searching...
-    response = spotify.search(query, 'album', limit, offset).get('albums')
+    response = spotify_api.search(query, 'album', limit, offset).get('albums')
     return render_template('matching/spotify.html', release_group=release_group, search_results=response.get('items'),
                            page=page, limit=limit, count=response.get('total'))
 
@@ -70,7 +74,7 @@ def spotify_confirm():
         flash(gettext("You need to specify a correct link to this album on Spotify!"), 'error')
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
-    album = spotify.get_album(spotify_id)
+    album = spotify_api.get_album(spotify_id)
     if not album or album.get('error'):
         flash(gettext("You need to specify existing album from Spotify!"), 'error')
         return redirect(url_for('.spotify', release_group_id=release_group_id))
@@ -109,7 +113,7 @@ def spotify_report():
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     else:
-        album = spotify.get_album(spotify_id)
+        album = spotify_api.get_album(spotify_id)
         if not album or album.get('error'):
             flash(gettext("You need to specify existing album from Spotify!"), 'error')
             return redirect(url_for('.spotify_list', release_group_id=release_group_id))
