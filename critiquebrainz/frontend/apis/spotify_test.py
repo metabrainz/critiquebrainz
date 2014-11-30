@@ -15,8 +15,7 @@ class SpotifyTestCase(FrontendTestCase):
     def setUp(self):
         super(SpotifyTestCase, self).setUp()
         spotify.requests.get = lambda url: FakeSpotifyResponse(url)
-        spotify.cache.mc.get = lambda key: None
-        spotify.generate_cache_key = lambda id, source, params: "key"
+        spotify.cache.get = lambda key, key_prefix: None
 
     def test_search(self):
         self.assertDictEqual(

@@ -40,7 +40,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for album in spotify_albums %}
+        {% for mbid, album in spotify_albums.iteritems() %}
           <tr>
             <td><img src="{{ album.images[-1].url }}" style="max-height: 25px;" /></td>
             <td>{{ album.type }}</td>

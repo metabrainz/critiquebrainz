@@ -14,6 +14,8 @@ from critiquebrainz import cache
 _base_url = ""
 _key = ""
 
+cache_key_prefix = 'mbspotify_mappings'
+
 
 def init(base_url, access_key):
     global _base_url, _key
@@ -27,8 +29,7 @@ def mappings(mbid=None):
     Returns:
         List containing Spotify URIs that are mapped to specified MBID.
     """
-    key = cache.generate_cache_key('mappings', source='mbspotify', params=[mbid])
-    resp = cache.mc.get(key)
+    resp = cache.get(mbid, cache_key_prefix)
     if not resp:
         try:
             session = requests.Session()
@@ -39,7 +40,7 @@ def mappings(mbid=None):
         except RequestException:
             flash(gettext("Spotify mapping server is unavailable. You will not see an embedded player."), "warning")
             return []
-        cache.mc.set(key, resp)
+        cache.set(key=mbid, key_prefix=cache_key_prefix, val=resp)
     return resp
 
 
@@ -56,7 +57,7 @@ def add_mapping(mbid, spotify_uri, user_id):
         resp = session.post(_base_url + 'mapping/add?key=' + _key,
                             headers={'Content-Type': 'application/json'},
                             data=json.dumps({'mbid': str(mbid), 'spotify_uri': spotify_uri, 'user': str(user_id)}))
-        cache.mc.delete(cache.generate_cache_key('mappings', source='mbspotify', params=[mbid]))
+        cache.delete(mbid, cache_key_prefix)
         return resp.status_code == 200, None
     except RequestException as e:
         return False, e
@@ -71,4 +72,4 @@ def vote(mbid, spotify_uri, user_id):
                       'user': str(user_id),
                       'spotify_uri': str(spotify_uri),
                   }))
-    cache.mc.delete(cache.generate_cache_key('mappings', source='mbspotify', params=[mbid]))
+    cache.delete(mbid, cache_key_prefix)
