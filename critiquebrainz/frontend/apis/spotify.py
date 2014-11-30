@@ -5,7 +5,7 @@ More information about it is available at https://developer.spotify.com/web-api/
 """
 import requests
 import urllib
-from critiquebrainz.cache import cache, generate_cache_key
+from critiquebrainz import cache
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 
@@ -17,12 +17,12 @@ def search(query, type, limit=20, offset=0):
 
     More information is available at https://developer.spotify.com/web-api/search-item/.
     """
-    key = generate_cache_key('search', source='spotify', params=[query, type, limit, offset])
-    resp = cache.get(key)
+    key = cache.generate_cache_key('search', source='spotify', params=[query, type, limit, offset])
+    resp = cache.mc.get(key)
     if not resp:
         resp = requests.get("%s/search?q=%s&type=%s&limit=%s&offset=%s" %
                             (BASE_URL, urllib.quote(query.encode('utf8')), type, str(limit), str(offset))).json()
-        cache.set(key, resp, DEFAULT_CACHE_EXPIRATION)
+        cache.mc.set(key, resp, DEFAULT_CACHE_EXPIRATION)
     return resp
 
 
@@ -33,11 +33,11 @@ def get_album(spotify_id):
         Album object from Spotify. More info about this type of object is available at
         https://developer.spotify.com/web-api/object-model/#album-object.
     """
-    key = generate_cache_key('album', source='spotify', params=[spotify_id])
-    resp = cache.get(key)
+    key = cache.generate_cache_key('album', source='spotify', params=[spotify_id])
+    resp = cache.mc.get(key)
     if not resp:
         resp = requests.get("%s/albums/%s" % (BASE_URL, spotify_id)).json()
-        cache.set(key, resp, DEFAULT_CACHE_EXPIRATION)
+        cache.mc.set(key, resp, DEFAULT_CACHE_EXPIRATION)
     return resp
 
 
@@ -48,9 +48,9 @@ def get_multiple_albums(spotify_ids):
         List of album objects from Spotify. More info about this type of objects is available
         at https://developer.spotify.com/web-api/object-model/#album-object.
     """
-    key = generate_cache_key('albums', source='spotify', params=spotify_ids)
-    resp = cache.get(key)
+    key = cache.generate_cache_key('albums', source='spotify', params=spotify_ids)
+    resp = cache.mc.get(key)
     if not resp:
         resp = requests.get("%s/albums?ids=%s" % (BASE_URL, ','.join(spotify_ids))).json()['albums']
-        cache.set(key, resp, DEFAULT_CACHE_EXPIRATION)
+        cache.mc.set(key, resp, DEFAULT_CACHE_EXPIRATION)
     return resp

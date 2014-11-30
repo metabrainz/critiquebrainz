@@ -1,4 +1,4 @@
-import unittest
+from critiquebrainz.frontend.testing import FrontendTestCase
 from critiquebrainz.frontend.apis import spotify
 
 
@@ -10,11 +10,12 @@ class FakeSpotifyResponse():
         return dict(url=self.url)
 
 
-class SpotifyTestCase(unittest.TestCase):
+class SpotifyTestCase(FrontendTestCase):
 
     def setUp(self):
+        super(SpotifyTestCase, self).setUp()
         spotify.requests.get = lambda url: FakeSpotifyResponse(url)
-        spotify.cache.get = lambda key: None
+        spotify.cache.mc.get = lambda key: None
         spotify.generate_cache_key = lambda id, source, params: "key"
 
     def test_search(self):

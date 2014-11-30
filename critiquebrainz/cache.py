@@ -10,7 +10,7 @@ More information about memcached can be found at http://memcached.org/.
 import hashlib
 import memcache
 
-cache = None
+mc = None
 _namespace = ""
 
 
@@ -22,8 +22,8 @@ def init(servers, namespace="", debug=0):
         namespace: Optional namespace that will be prepended to all keys.
         debug: Whether to display error messages when a server can't be contacted.
     """
-    global cache, _namespace
-    cache = memcache.Client(servers, debug=debug)
+    global mc, _namespace
+    mc = memcache.Client(servers, debug=debug)
     _namespace = namespace
 
 

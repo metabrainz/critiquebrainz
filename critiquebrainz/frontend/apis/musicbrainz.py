@@ -8,7 +8,7 @@ import musicbrainzngs
 from musicbrainzngs.musicbrainz import ResponseError
 
 import critiquebrainz
-from critiquebrainz.cache import cache, generate_cache_key
+from critiquebrainz import cache
 from critiquebrainz.frontend.apis.exceptions import APIError
 
 from relationships import artist as artist_rel, release_group as release_group_rel
@@ -41,9 +41,9 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
     """
     if release_types is None:
         release_types = []
-    key = generate_cache_key(str(artist_id), type='browse_release_groups', source='api',
+    key = cache.generate_cache_key(str(artist_id), type='browse_release_groups', source='api',
                              params=[limit, offset] + release_types)
-    release_groups = cache.get(key)
+    release_groups = cache.mc.get(key)
     if not release_groups:
         try:
             api_resp = musicbrainzngs.browse_release_groups(artist=artist_id, release_type=release_types,
@@ -54,7 +54,7 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
                 return None
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
-        cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
+        cache.mc.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
     return release_groups
 
 
@@ -64,8 +64,8 @@ def get_artist_by_id(id, includes=None):
     """
     if includes is None:
         includes = []
-    key = generate_cache_key(id, type='artist', source='api', params=includes)
-    artist = cache.get(key)
+    key = cache.generate_cache_key(id, type='artist', source='api', params=includes)
+    artist = cache.mc.get(key)
     if not artist:
         try:
             artist = musicbrainzngs.get_artist_by_id(id, includes).get('artist')
@@ -75,7 +75,7 @@ def get_artist_by_id(id, includes=None):
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
         artist = artist_rel.process(artist)
-        cache.set(key, artist, DEFAULT_CACHE_EXPIRATION)
+        cache.mc.set(key, artist, DEFAULT_CACHE_EXPIRATION)
     return artist
 
 
@@ -85,8 +85,8 @@ def get_release_group_by_id(id, includes=None):
     """
     if includes is None:
         includes = []
-    key = generate_cache_key(id, type='release_group', source='api', params=includes)
-    release_group = cache.get(key)
+    key = cache.generate_cache_key(id, type='release_group', source='api', params=includes)
+    release_group = cache.mc.get(key)
     if not release_group:
         try:
             release_group = musicbrainzngs.get_release_group_by_id(id, includes).get('release-group')
@@ -96,7 +96,7 @@ def get_release_group_by_id(id, includes=None):
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
         release_group = release_group_rel.process(release_group)
-        cache.set(key, release_group, DEFAULT_CACHE_EXPIRATION)
+        cache.mc.set(key, release_group, DEFAULT_CACHE_EXPIRATION)
     return release_group
 
 
@@ -106,8 +106,8 @@ def get_release_by_id(id, includes=None):
     """
     if includes is None:
         includes = []
-    key = generate_cache_key(id, type='release', source='api', params=includes)
-    release = cache.get(key)
+    key = cache.generate_cache_key(id, type='release', source='api', params=includes)
+    release = cache.mc.get(key)
     if not release:
         try:
             release = musicbrainzngs.get_release_by_id(id, includes).get('release')
@@ -116,7 +116,7 @@ def get_release_by_id(id, includes=None):
                 return None
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
-        cache.set(key, release, DEFAULT_CACHE_EXPIRATION)
+        cache.mc.set(key, release, DEFAULT_CACHE_EXPIRATION)
     return release
 
 
