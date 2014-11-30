@@ -1,8 +1,8 @@
 """
-This module simplifies interaction with memcached. It uses python-memcached package to create client.
+This module simplifies interaction with memcached. It uses python-memcached
+package to interact with the server(s).
 
-Connection info is loaded from custom configuration file (config.py) or default configuration file
-(default_config.py) if custom file doesn't exist.
+Module needs to be initialized before use. See init() function.
 
 Package python-memcached is available at https://pypi.python.org/pypi/python-memcached/.
 More information about memcached can be found at http://memcached.org/.
@@ -10,19 +10,20 @@ More information about memcached can be found at http://memcached.org/.
 import hashlib
 import memcache
 
-try:
-    import config
-    cache = memcache.Client(config.MEMCACHED_SERVERS)
-except (ImportError, AttributeError):
-    import default_config
-    cache = memcache.Client(default_config.MEMCACHED_SERVERS)
+cache = None
+_namespace = ""
 
-try:
-    import config
-    _namespace = config.MEMCACHED_NAMESPACE
-except (ImportError, AttributeError):
-    import default_config
-    _namespace = default_config.MEMCACHED_NAMESPACE
+
+def init(servers, namespace=""):
+    """Initializes memcached client.
+
+    Args:
+        server: List of strings with memcached server addresses (host:port).
+        namespace: Optional namespace that will be prepended to all keys.
+    """
+    global cache, _namespace
+    cache = memcache.Client(servers)
+    _namespace = namespace
 
 
 def set_namespace(namespace):

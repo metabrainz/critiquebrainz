@@ -24,6 +24,10 @@ def create_app():
     from critiquebrainz.data import db
     db.init_app(app)
 
+    # Memcached
+    from critiquebrainz import cache
+    cache.init(app.config['MEMCACHED_SERVERS'], app.config['MEMCACHED_NAMESPACE'])
+
     import babel
     babel.init_app(app)
 
