@@ -27,16 +27,6 @@ def init(servers, namespace="", debug=0):
     _namespace = namespace
 
 
-def set_namespace(namespace):
-    """Sets namespace for cache keys that will be generated.
-
-    Default namespace is defined in default config file. You can set
-    your own default value by modifying custom config file.
-    """
-    global _namespace
-    _namespace = namespace
-
-
 def generate_cache_key(id, type=None, source=None, params=None):
     """Generates cache key that can be used to fetch items from cache and save them.
 
