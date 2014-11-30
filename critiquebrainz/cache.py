@@ -14,15 +14,16 @@ cache = None
 _namespace = ""
 
 
-def init(servers, namespace=""):
+def init(servers, namespace="", debug=0):
     """Initializes memcached client.
 
     Args:
         server: List of strings with memcached server addresses (host:port).
         namespace: Optional namespace that will be prepended to all keys.
+        debug: Whether to display error messages when a server can't be contacted.
     """
     global cache, _namespace
-    cache = memcache.Client(servers)
+    cache = memcache.Client(servers, debug=debug)
     _namespace = namespace
 
 

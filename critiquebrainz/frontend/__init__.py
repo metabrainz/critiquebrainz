@@ -26,7 +26,9 @@ def create_app():
 
     # Memcached
     from critiquebrainz import cache
-    cache.init(app.config['MEMCACHED_SERVERS'], app.config['MEMCACHED_NAMESPACE'])
+    cache.init(app.config['MEMCACHED_SERVERS'],
+               app.config['MEMCACHED_NAMESPACE'],
+               debug=1 if app.debug else 0)
 
     import babel
     babel.init_app(app)
