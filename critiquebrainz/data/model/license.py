@@ -1,7 +1,8 @@
 from critiquebrainz.data import db
+from critiquebrainz.data.model.mixins import DeleteMixin
 
 
-class License(db.Model):
+class License(db.Model, DeleteMixin):
     __tablename__ = 'license'
 
     id = db.Column(db.Unicode, primary_key=True)
@@ -22,8 +23,3 @@ class License(db.Model):
                         full_name=self.full_name,
                         info_url=self.info_url)
         return response
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self

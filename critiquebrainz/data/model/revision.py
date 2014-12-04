@@ -6,10 +6,11 @@ that timestamp.
 """
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
+from critiquebrainz.data.model.mixins import DeleteMixin
 from datetime import datetime
 
 
-class Revision(db.Model):
+class Revision(db.Model, DeleteMixin):
     __tablename__ = 'revision'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -38,8 +39,3 @@ class Revision(db.Model):
                         timestamp=self.timestamp,
                         text=self.text)
         return response
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self

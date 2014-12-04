@@ -6,6 +6,7 @@ from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.revision import Revision
+from critiquebrainz.data.model.mixins import DeleteMixin
 from critiquebrainz.data.constants import review_classes
 from critiquebrainz.frontend.exceptions import InvalidRequest  # TODO: Remove this dependency on frontend.
 import pycountry
@@ -17,7 +18,7 @@ for lang in list(pycountry.languages):
         supported_languages.append(lang.alpha2)
 
 
-class Review(db.Model):
+class Review(db.Model, DeleteMixin):
     __tablename__ = 'review'
 
     id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
@@ -52,11 +53,6 @@ class Review(db.Model):
                         source_url=self.source_url,
                         review_class=self.review_class.label)
         return response
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
 
     @property
     def first_revision(self):
