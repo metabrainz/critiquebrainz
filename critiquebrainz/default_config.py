@@ -28,6 +28,8 @@ MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
 LOG_FILE = "server.log"
 LOG_EMAIL_TOPIC = "CritiqueBrainz Failure"
 
+MB_USERAGENT = "CritiqueBrainz"
+
 # List of supported UI languages.
 # Valid language codes can be obtained from Transifex.
 SUPPORTED_LANGUAGES = [
