@@ -1,15 +1,14 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
-from markdown import markdown
-
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.frontend.exceptions import NotFound
-
+from werkzeug.exceptions import Unauthorized
+from markdown import markdown
 
 review_bp = Blueprint('review', __name__)
 
@@ -108,9 +107,9 @@ def edit(id):
 def delete(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound(gettext("Can't find review with a specified ID."))
     if review.user != current_user:
-        abort(403)
+        raise Unauthorized(gettext("Only author can delete this review."))
     if request.method == 'POST':
         review.delete()
         flash(gettext("Review has been deleted."), 'success')

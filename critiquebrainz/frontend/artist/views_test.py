@@ -1,7 +1,7 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
 
 
-class ViewsTestCase(FrontendTestCase):
+class ArtistViewsTestCase(FrontendTestCase):
 
     def test_artist_page(self):
         # Basic artist page should be available.
