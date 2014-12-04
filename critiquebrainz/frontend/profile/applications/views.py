@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flask_babel import gettext
-from critiquebrainz.data.model.oauth import OAuthClient, OAuthToken
+from critiquebrainz.data.model.oauth_client import OAuthClient
+from critiquebrainz.data.model.oauth_token import OAuthToken
 from critiquebrainz.frontend.profile.applications.forms import ApplicationForm
 
 
@@ -22,9 +23,9 @@ def create():
     """Create application."""
     form = ApplicationForm()
     if form.validate_on_submit():
-        OAuthClient.generate(user=current_user, name=form.name.data,
-                             desc=form.desc.data, website=form.website.data,
-                             redirect_uri=form.redirect_uri.data)
+        OAuthClient.create(user=current_user, name=form.name.data,
+                           desc=form.desc.data, website=form.website.data,
+                           redirect_uri=form.redirect_uri.data)
         flash(gettext('You have created an application!'), 'success')
         return redirect(url_for('.index'))
     return render_template('profile/applications/create.html', form=form)

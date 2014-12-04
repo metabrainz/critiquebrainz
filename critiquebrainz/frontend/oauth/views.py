@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from critiquebrainz.utils import build_url
 from critiquebrainz.ws.oauth import oauth
-from critiquebrainz.data.model.oauth import OAuthClient
+from critiquebrainz.data.model.oauth_client import OAuthClient
 
 oauth_bp = Blueprint('oauth', __name__)
 
