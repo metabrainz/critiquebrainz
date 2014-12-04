@@ -4,6 +4,16 @@ from exceptions import *
 
 def init_error_handlers(app):
 
+    @app.errorhandler(InvalidRequest)
+    @app.errorhandler(400)
+    def not_found_handler(error):
+        return render_template('errors/400.html', error=error), 400
+
+    @app.errorhandler(AccessDenied)
+    @app.errorhandler(403)
+    def not_found_handler(error):
+        return render_template('errors/403.html', error=error), 403
+
     @app.errorhandler(NotFound)
     @app.errorhandler(404)
     def not_found_handler(error):
