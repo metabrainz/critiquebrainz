@@ -6,8 +6,7 @@ from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
-from critiquebrainz.frontend.exceptions import NotFound, AccessDenied
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, NotFound
 from markdown import markdown
 
 review_bp = Blueprint('review', __name__)
@@ -81,7 +80,7 @@ def edit(id):
     if review.is_archived or (review.is_draft and current_user != review.user):
         raise NotFound(gettext("Can't find review with a specified ID."))
     if review.user != current_user:
-        raise AccessDenied(gettext("Only author can edit this review."))
+        raise Unauthorized(gettext("Only author can edit this review."))
 
     form = ReviewEditForm(default_license_id=review.license_id, default_language=review.language)
     if not review.is_draft:

@@ -1,11 +1,2 @@
 {% extends 'errors/base.html' %}
-
 {% block error_title %}{{ _('Invalid Request') }}{% endblock %}
-
-{% block error_description %}
-  {% if error.desc %}
-    {{ error.desc }}
-  {% else %}
-    {{ _('The request could not be understood by the server due to malformed syntax.) }}
-  {% endif %}
-{% endblock %}

@@ -1,11 +1,2 @@
 {% extends 'errors/base.html' %}
-
 {% block error_title %}{{ _('Access Denied') }}{% endblock %}
-
-{% block error_description %}
-  {% if error.desc %}
-    {{ error.desc }}
-  {% else %}
-    {{ _('Access to this page is forbiden!') }}
-  {% endif %}
-{% endblock %}

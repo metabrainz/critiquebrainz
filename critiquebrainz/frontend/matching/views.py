@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask_login import login_required, current_user
 from flask_babel import gettext
+from werkzeug.exceptions import NotFound
 import critiquebrainz.frontend.apis.spotify as spotify_api
 from critiquebrainz.frontend.apis import musicbrainz, mbspotify
-from critiquebrainz.frontend.exceptions import NotFound
 from urlparse import urlparse
 import os.path
 import string

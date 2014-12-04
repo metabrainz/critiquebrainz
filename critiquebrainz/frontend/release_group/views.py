@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
 from critiquebrainz.frontend.apis import musicbrainz, mbspotify
-from critiquebrainz.frontend.exceptions import NotFound
 from critiquebrainz.data.model.review import Review
+from werkzeug.exceptions import NotFound
 
 
 release_group_bp = Blueprint('release_group', __name__)

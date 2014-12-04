@@ -1,9 +1,10 @@
-from critiquebrainz.frontend.exceptions import FrontendError
+from werkzeug.exceptions import InternalServerError
 
 
-class APIError(FrontendError):
+# TODO: Get rid of this class
+class APIError(InternalServerError):
     def __init__(self, status=500, desc=None, code=None):
-        super(APIError, self).__init__()
+        super(APIError, self).__init__(description=desc)
         self.status = status
         if desc is not None:
             self.desc = desc
