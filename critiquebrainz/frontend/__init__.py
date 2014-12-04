@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 def create_app():
@@ -17,6 +18,11 @@ def create_app():
     if app.debug is False:
         from critiquebrainz import loggers
         loggers.add_all_loggers(app)
+
+    if app.debug:
+        # Debug toolbar
+        DebugToolbarExtension(app)
+        app.config['DEBUG_TB_TEMPLATE_EDITOR_ENABLED'] = True
 
     from flask_uuid import FlaskUUID
     FlaskUUID(app)
