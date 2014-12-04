@@ -31,7 +31,7 @@ def entity(id):
             my_review = None
     else:
         my_review = None
-    reviews, count = Review.list(release_group=id, sort='created', limit=limit, offset=offset)
+    reviews, count = Review.list(release_group=id, sort='rating', limit=limit, offset=offset)
     return render_template('release_group.html', id=id, release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings,
                            limit=limit, offset=offset, count=count)

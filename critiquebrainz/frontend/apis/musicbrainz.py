@@ -6,20 +6,19 @@ More information about the MusicBrainz webservice can be found at http://wiki.mu
 """
 import musicbrainzngs
 from musicbrainzngs.musicbrainz import ResponseError
-
-import critiquebrainz
 from critiquebrainz import cache
 from critiquebrainz.frontend.apis.exceptions import APIError
-
-from relationships import artist as artist_rel, release_group as release_group_rel
-
-
-# We need to identify our application to access the MusicBrainz webservice.
-# See https://python-musicbrainzngs.readthedocs.org/en/latest/usage/#identification for more info.
-musicbrainzngs.set_useragent("CritiqueBrainz", critiquebrainz.__version__)
+from critiquebrainz.frontend.apis.relationships import artist as artist_rel
+from critiquebrainz.frontend.apis.relationships import release_group as release_group_rel
 
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
+
+
+def init(app_name, app_version):
+    # We need to identify our application to access the MusicBrainz webservice.
+    # See https://python-musicbrainzngs.readthedocs.org/en/latest/usage/#identification for more info.
+    musicbrainzngs.set_useragent(app_name, app_version)
 
 
 def search_release_groups(query='', artist='', release_group='', limit=None, offset=None):

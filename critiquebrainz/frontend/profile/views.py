@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_babel import gettext
-from critiquebrainz.frontend.forms.user import UserForm
+from critiquebrainz.frontend.profile.forms import ProfileEditForm
+
 
 profile_bp = Blueprint('profile_details', __name__)
 
@@ -9,7 +10,7 @@ profile_bp = Blueprint('profile_details', __name__)
 @profile_bp.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-    form = UserForm()
+    form = ProfileEditForm()
     if form.validate_on_submit():
         current_user.update(display_name=form.display_name.data,
                             email=form.email.data,
