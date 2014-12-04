@@ -96,11 +96,12 @@ def prep_cache_key(key, attributes=None):
 
     if not isinstance(key, basestring):
         key = str(key)
+    key = key.encode('ascii', errors='xmlcharrefreplace')
 
     for attr in attributes:
         if not isinstance(attr, basestring):
             attr = str(attr)
-        key += '_' + attr.encode('ascii', 'ignore')
+        key += '_' + attr.encode('ascii', errors='xmlcharrefreplace')
     key = key.replace(' ', '_')  # spaces are not allowed
 
     if _mc.server_max_key_length != 0 and \
