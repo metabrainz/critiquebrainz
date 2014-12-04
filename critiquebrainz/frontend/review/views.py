@@ -60,7 +60,7 @@ def create():
             flash(gettext("Review has been published!"), 'success')
         return redirect(url_for('.entity', id=review.id))
 
-    release_group_details = musicbrainz.release_group_details(release_group)
+    release_group_details = musicbrainz.get_release_group_by_id(release_group)
     if not release_group_details:
         flash(gettext("You can only write a review for a release group that exists on MusicBrainz!"), 'error')
         return redirect(url_for('search.selector', next=url_for('.create')))

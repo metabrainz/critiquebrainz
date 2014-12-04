@@ -57,18 +57,18 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
     return release_groups
 
 
-def get_artist_by_id(id, includes=None):
+def get_artist_by_id(id):
     """Get artist with the MusicBrainz ID.
-    Available includes can be found at https://python-musicbrainzngs.readthedocs.org/en/latest/api/#musicbrainzngs.get_artist_by_id
+
+    Returns:
+        Artist object with the following includes: url-rels, artist-rels.
     """
-    if includes is None:
-        includes = []
-    key = cache.prep_cache_key(id, includes)
+    key = cache.prep_cache_key(id)
     key_prefix = "mb_artist"
     artist = cache.get(key, key_prefix)
     if not artist:
         try:
-            artist = musicbrainzngs.get_artist_by_id(id, includes).get('artist')
+            artist = musicbrainzngs.get_artist_by_id(id, ['url-rels', 'artist-rels']).get('artist')
         except ResponseError as e:
             if e.cause.code == 404:
                 return None
@@ -79,18 +79,21 @@ def get_artist_by_id(id, includes=None):
     return artist
 
 
-def get_release_group_by_id(id, includes=None):
+def get_release_group_by_id(id):
     """Get release group with the MusicBrainz ID.
-    Available includes can be found at https://python-musicbrainzngs.readthedocs.org/en/latest/api/#musicbrainzngs.get_release_group_by_id
+
+    Returns:
+        Release group object with the following includes: artists, releases,
+        release-group-rels, url-rels, work-rels.
     """
-    if includes is None:
-        includes = []
-    key = cache.prep_cache_key(id, includes)
+    key = cache.prep_cache_key(id)
     key_prefix = "mb_release_group"
     release_group = cache.get(key, key_prefix)
     if not release_group:
         try:
-            release_group = musicbrainzngs.get_release_group_by_id(id, includes).get('release-group')
+            release_group = musicbrainzngs.get_release_group_by_id(
+                id, ['artists', 'releases', 'release-group-rels', 'url-rels', 'work-rels']
+            ).get('release-group')
         except ResponseError as e:
             if e.cause.code == 404:
                 return None
@@ -101,18 +104,18 @@ def get_release_group_by_id(id, includes=None):
     return release_group
 
 
-def get_release_by_id(id, includes=None):
+def get_release_by_id(id):
     """Get release with the MusicBrainz ID.
-    Available includes can be found at https://python-musicbrainzngs.readthedocs.org/en/latest/api/#musicbrainzngs.get_release_by_id
+
+    Returns:
+        Release object with the following includes: recordings, media.
     """
-    if includes is None:
-        includes = []
-    key = cache.prep_cache_key(id, includes)
+    key = cache.prep_cache_key(id)
     key_prefix = "mb_release"
     release = cache.get(key, key_prefix)
     if not release:
         try:
-            release = musicbrainzngs.get_release_by_id(id, includes).get('release')
+            release = musicbrainzngs.get_release_by_id(id, ['recordings', 'media']).get('release')
         except ResponseError as e:
             if e.cause.code == 404:
                 return None
@@ -120,7 +123,3 @@ def get_release_by_id(id, includes=None):
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
         cache.set(key=key, key_prefix=key_prefix, val=release, time=DEFAULT_CACHE_EXPIRATION)
     return release
-
-
-def release_group_details(mbid):
-    return get_release_group_by_id(mbid, includes=['artists'])
