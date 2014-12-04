@@ -7,9 +7,9 @@ More information about the MusicBrainz webservice can be found at http://wiki.mu
 import musicbrainzngs
 from musicbrainzngs.musicbrainz import ResponseError
 from critiquebrainz.cache import cache, generate_cache_key
-from critiquebrainz.frontend.apis.exceptions import APIError
 from critiquebrainz.frontend.apis.relationships import artist as artist_rel
 from critiquebrainz.frontend.apis.relationships import release_group as release_group_rel
+from werkzeug.exceptions import InternalServerError
 
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
@@ -52,7 +52,7 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
             if e.cause.code == 404:
                 return None
             else:
-                raise APIError(code=e.cause.code, desc=e.cause.msg)
+                raise InternalServerError(e.cause.msg)
         cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
     return release_groups
 
@@ -72,7 +72,7 @@ def get_artist_by_id(id, includes=None):
             if e.cause.code == 404:
                 return None
             else:
-                raise APIError(code=e.cause.code, desc=e.cause.msg)
+                raise InternalServerError(e.cause.msg)
         artist = artist_rel.process(artist)
         cache.set(key, artist, DEFAULT_CACHE_EXPIRATION)
     return artist
@@ -93,7 +93,7 @@ def get_release_group_by_id(id, includes=None):
             if e.cause.code == 404:
                 return None
             else:
-                raise APIError(code=e.cause.code, desc=e.cause.msg)
+                raise InternalServerError(e.cause.msg)
         release_group = release_group_rel.process(release_group)
         cache.set(key, release_group, DEFAULT_CACHE_EXPIRATION)
     return release_group
@@ -114,7 +114,7 @@ def get_release_by_id(id, includes=None):
             if e.cause.code == 404:
                 return None
             else:
-                raise APIError(code=e.cause.code, desc=e.cause.msg)
+                raise InternalServerError(e.cause.msg)
         cache.set(key, release, DEFAULT_CACHE_EXPIRATION)
     return release
 
