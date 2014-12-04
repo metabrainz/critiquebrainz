@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
@@ -6,7 +6,7 @@ from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
-from critiquebrainz.frontend.exceptions import NotFound
+from critiquebrainz.frontend.exceptions import NotFound, AccessDenied
 from werkzeug.exceptions import Unauthorized
 from markdown import markdown
 
@@ -79,9 +79,9 @@ def preview():
 def edit(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived or (review.is_draft and current_user != review.user):
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound(gettext("Can't find review with a specified ID."))
     if review.user != current_user:
-        abort(403)
+        raise AccessDenied(gettext("Only author can edit this review."))
 
     form = ReviewEditForm(default_license_id=review.license_id, default_language=review.language)
     if not review.is_draft:

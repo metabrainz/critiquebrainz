@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, abort
+from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_babel import gettext
 from critiquebrainz.data.model.oauth_client import OAuthClient
 from critiquebrainz.data.model.oauth_token import OAuthToken
+from critiquebrainz.frontend.exceptions import NotFound
 from critiquebrainz.frontend.profile.applications.forms import ApplicationForm
 
 
@@ -36,7 +37,7 @@ def create():
 def edit(client_id):
     application = OAuthClient.query.get_or_404(client_id)
     if application.user != current_user:
-        abort(403)
+        raise NotFound()
     form = ApplicationForm()
     if form.validate_on_submit():
         application.update(name=form.name.data, desc=form.desc.data,
@@ -56,7 +57,7 @@ def edit(client_id):
 def delete(client_id):
     client = OAuthClient.query.get_or_404(client_id)
     if client.user != current_user:
-        abort(403)
+        raise NotFound()
     client.delete()
 
     flash(gettext('You have deleted an application.'), 'success')
