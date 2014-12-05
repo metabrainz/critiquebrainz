@@ -41,8 +41,7 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
     if release_types is None:
         release_types = []
     key = cache.prep_cache_key(artist_id, [limit, offset] + release_types)
-    key_prefix = "mb_browse_release_groups"
-    release_groups = cache.get(key, key_prefix)
+    release_groups = cache.get(key)
     if not release_groups:
         try:
             api_resp = musicbrainzngs.browse_release_groups(artist=artist_id, release_type=release_types,
@@ -53,7 +52,7 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
                 return None
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
-        cache.set(key=key, key_prefix=key_prefix, val=release_groups, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key=key, val=release_groups, time=DEFAULT_CACHE_EXPIRATION)
     return release_groups
 
 
@@ -64,8 +63,7 @@ def get_artist_by_id(id):
         Artist object with the following includes: url-rels, artist-rels.
     """
     key = cache.prep_cache_key(id)
-    key_prefix = "mb_artist"
-    artist = cache.get(key, key_prefix)
+    artist = cache.get(key)
     if not artist:
         try:
             artist = musicbrainzngs.get_artist_by_id(id, ['url-rels', 'artist-rels']).get('artist')
@@ -75,7 +73,7 @@ def get_artist_by_id(id):
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
         artist = artist_rel.process(artist)
-        cache.set(key=key, key_prefix=key_prefix, val=artist, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key=key, val=artist, time=DEFAULT_CACHE_EXPIRATION)
     return artist
 
 
@@ -87,8 +85,7 @@ def get_release_group_by_id(id):
         release-group-rels, url-rels, work-rels.
     """
     key = cache.prep_cache_key(id)
-    key_prefix = "mb_release_group"
-    release_group = cache.get(key, key_prefix)
+    release_group = cache.get(key)
     if not release_group:
         try:
             release_group = musicbrainzngs.get_release_group_by_id(
@@ -100,7 +97,7 @@ def get_release_group_by_id(id):
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
         release_group = release_group_rel.process(release_group)
-        cache.set(key=key, key_prefix=key_prefix, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
     return release_group
 
 
@@ -111,8 +108,7 @@ def get_release_by_id(id):
         Release object with the following includes: recordings, media.
     """
     key = cache.prep_cache_key(id)
-    key_prefix = "mb_release"
-    release = cache.get(key, key_prefix)
+    release = cache.get(key)
     if not release:
         try:
             release = musicbrainzngs.get_release_by_id(id, ['recordings', 'media']).get('release')
@@ -121,5 +117,5 @@ def get_release_by_id(id):
                 return None
             else:
                 raise APIError(code=e.cause.code, desc=e.cause.msg)
-        cache.set(key=key, key_prefix=key_prefix, val=release, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key=key, val=release, time=DEFAULT_CACHE_EXPIRATION)
     return release
