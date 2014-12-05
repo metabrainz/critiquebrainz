@@ -27,6 +27,8 @@ def create_app():
     from critiquebrainz.cache import cache
     cache.set_servers(app.config['MEMCACHED_SERVERS'])
 
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+
     # Blueprints
     from oauth.views import oauth_bp
     from review.views import review_bp
