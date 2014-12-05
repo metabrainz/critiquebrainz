@@ -44,3 +44,6 @@ SUPPORTED_LANGUAGES = [
     'nl',  # Dutch
     'hr',  # Croatian
 ]
+
+# Compile styling in browser if set to True
+COMPILE_LESS = False
