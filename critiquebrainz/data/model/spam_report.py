@@ -4,10 +4,11 @@ spam report can be created by a single user for a specific revision.
 """
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
+from critiquebrainz.data.model.mixins import DeleteMixin
 from datetime import datetime
 
 
-class SpamReport(db.Model):
+class SpamReport(db.Model, DeleteMixin):
     __tablename__ = 'spam_report'
 
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
@@ -20,8 +21,3 @@ class SpamReport(db.Model):
         db.session.add(report)
         db.session.commit()
         return report
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
