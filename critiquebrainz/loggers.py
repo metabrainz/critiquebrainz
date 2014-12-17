@@ -2,14 +2,17 @@ import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
 
-def add_all_loggers(app):
-    add_file_handler(app, app.config['LOG_FILE'])
-    add_email_handler(app)
+def init_loggers(app):
+    if 'LOG_FILE_ENABLED' in app.config and app.config['LOG_FILE_ENABLED']:
+        _add_file_handler(app, app.config['LOG_FILE'])
+    if 'LOG_EMAIL_ENABLED' in app.config and app.config['LOG_EMAIL_ENABLED']:
+        _add_email_handler(app, logging.ERROR)
 
 
-def add_file_handler(app, filename, max_bytes=512 * 1024, backup_count=100):
+def _add_file_handler(app, filename, max_bytes=512 * 1024, backup_count=100):
     """Adds file logging."""
-    file_handler = RotatingFileHandler(filename, maxBytes=max_bytes, backupCount=backup_count)
+    file_handler = RotatingFileHandler(filename, maxBytes=max_bytes,
+                                       backupCount=backup_count)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s '
         '[in %(pathname)s:%(lineno)d]'
@@ -17,18 +20,15 @@ def add_file_handler(app, filename, max_bytes=512 * 1024, backup_count=100):
     app.logger.addHandler(file_handler)
 
 
-def add_email_handler(app):
-    """Adds email notifications."""
-    credentials = None
-    if 'MAIL_USERNAME' in app.config or 'MAIL_PASSWORD' in app.config:
-        credentials = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
+def _add_email_handler(app, level=logging.NOTSET):
+    """Adds email notifications about captured logs."""
     mail_handler = SMTPHandler(
         (app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
-        app.config['MAIL_FROM_ADDR'],
-        app.config['ADMINS'],
-        app.config['LOG_EMAIL_TOPIC'],
-        credentials)
-    mail_handler.setLevel(logging.ERROR)
+        "logs@" + app.config['MAIL_FROM_HOST'],
+        app.config['LOG_EMAIL_RECIPIENTS'],
+        app.config['LOG_EMAIL_TOPIC']
+    )
+    mail_handler.setLevel(level)
 
     mail_handler.setFormatter(logging.Formatter('''
     Message type: %(levelname)s

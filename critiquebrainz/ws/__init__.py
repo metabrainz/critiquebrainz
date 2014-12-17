@@ -14,9 +14,8 @@ def create_app():
     errors.init_error_handlers(app)
 
     # Logging
-    if app.debug is False:
-        from critiquebrainz import loggers
-        loggers.add_all_loggers(app)
+    from critiquebrainz import loggers
+    loggers.init_loggers(app)
 
     from flask_uuid import FlaskUUID
     FlaskUUID(app)
