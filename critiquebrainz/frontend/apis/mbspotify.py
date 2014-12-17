@@ -14,7 +14,8 @@ from critiquebrainz import cache
 _base_url = ""
 _key = ""
 
-cache_key_prefix = 'mbspotify_mappings'
+_cache_key_prefix = 'mbspotify_mappings'
+_unavailable_msg = "Spotify mapping server is unavailable. You will not see an embedded player."
 
 
 def init(base_url, access_key):
@@ -29,7 +30,11 @@ def mappings(mbid=None):
     Returns:
         List containing Spotify URIs that are mapped to specified MBID.
     """
-    resp = cache.get(mbid, cache_key_prefix)
+    if _base_url is None:
+        flash(gettext(_unavailable_msg), "warning")
+        return []
+
+    resp = cache.get(mbid, _cache_key_prefix)
     if not resp:
         try:
             session = requests.Session()
@@ -40,7 +45,7 @@ def mappings(mbid=None):
         except RequestException:
             flash(gettext("Spotify mapping server is unavailable. You will not see an embedded player."), "warning")
             return []
-        cache.set(key=mbid, key_prefix=cache_key_prefix, val=resp)
+        cache.set(key=mbid, key_prefix=_cache_key_prefix, val=resp)
     return resp
 
 
@@ -51,13 +56,16 @@ def add_mapping(mbid, spotify_uri, user_id):
         Returns two values. First one is a boolean that indicates whether the submission has been successful.
         The second is an exception in case errors occur. If there are no errors, this value is None.
     """
+    if _base_url is None or _key is None:
+        return False, None
+
     try:
         session = requests.Session()
         session.mount(_base_url, HTTPAdapter(max_retries=2))
         resp = session.post(_base_url + 'mapping/add?key=' + _key,
                             headers={'Content-Type': 'application/json'},
                             data=json.dumps({'mbid': str(mbid), 'spotify_uri': spotify_uri, 'user': str(user_id)}))
-        cache.delete(mbid, cache_key_prefix)
+        cache.delete(mbid, _cache_key_prefix)
         return resp.status_code == 200, None
     except RequestException as e:
         return False, e
@@ -65,6 +73,9 @@ def add_mapping(mbid, spotify_uri, user_id):
 
 def vote(mbid, spotify_uri, user_id):
     """Submit report about incorrect Spotify mapping."""
+    if _base_url is None or _key is None:
+        return
+
     # TODO: Catch errors during voting.
     requests.post(_base_url + 'mapping/vote?key=' + _key, headers={'Content-Type': 'application/json'},
                   data=json.dumps({
@@ -72,4 +83,4 @@ def vote(mbid, spotify_uri, user_id):
                       'user': str(user_id),
                       'spotify_uri': str(spotify_uri),
                   }))
-    cache.delete(mbid, cache_key_prefix)
+    cache.delete(mbid, _cache_key_prefix)

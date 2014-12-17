@@ -8,7 +8,7 @@ def create_app():
     # Configuration files
     import critiquebrainz.default_config
     app.config.from_object(critiquebrainz.default_config)
-    app.config.from_object('critiquebrainz.config')
+    app.config.from_pyfile('../config.py', silent=True)
 
     # Error handling
     import errors
@@ -31,10 +31,11 @@ def create_app():
     db.init_app(app)
 
     # Memcached
-    from critiquebrainz import cache
-    cache.init(app.config['MEMCACHED_SERVERS'],
-               app.config['MEMCACHED_NAMESPACE'],
-               debug=1 if app.debug else 0)
+    if 'MEMCACHED_SERVERS' in app.config:
+        from critiquebrainz import cache
+        cache.init(app.config['MEMCACHED_SERVERS'],
+                   app.config['MEMCACHED_NAMESPACE'],
+                   debug=1 if app.debug else 0)
 
     import babel
     babel.init_app(app)
@@ -54,7 +55,7 @@ def create_app():
     from apis import mbspotify
     mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
     from apis import musicbrainz
-    musicbrainz.init(app.config['MB_USERAGENT'], critiquebrainz.__version__)
+    musicbrainz.init(app.config['MUSICBRAINZ_USERAGENT'], critiquebrainz.__version__)
 
     # Template utilities
     app.jinja_env.add_extension('jinja2.ext.do')

@@ -1,12 +1,9 @@
 # DEFAULT CONFIGURATION
 
-# Primary database
-SQLALCHEMY_DATABASE_URI = "postgresql://cb:cb@localhost:5432/cb"
+SECRET_KEY = "secret"
 
 # Database for testing
 TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@localhost:5432/cb_test"
-
-SSL_AVAILABLE = True
 
 # CritiqueBrainz OAuth configuration
 OAUTH_TOKEN_LENGTH = 40
@@ -14,7 +11,6 @@ OAUTH_GRANT_EXPIRE = 60
 OAUTH_TOKEN_EXPIRE = 3600
 
 # Memcached
-MEMCACHED_SERVERS = ["127.0.0.1:11211"]
 MEMCACHED_NAMESPACE = "CB"
 
 # Mail server
@@ -24,10 +20,7 @@ MAIL_USERNAME = None
 MAIL_PASSWORD = None
 MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
 
-# Logging
-LOG_FILE = "server.log"
-LOG_EMAIL_TOPIC = "CritiqueBrainz Failure"
-
+# User-Agent string that is used to access MusicBrainz
 MB_USERAGENT = "CritiqueBrainz"
 
 # List of supported UI languages.
@@ -45,5 +38,14 @@ SUPPORTED_LANGUAGES = [
     'hr',  # Croatian
 ]
 
-# Compile styling in browser if set to True
-COMPILE_LESS = False
+
+# EXTERNAL SERVICES
+
+# MusicBrainz
+MUSICBRAINZ_USERAGENT = "CritiqueBrainz Custom"
+MUSICBRAINZ_CLIENT_ID = ""
+MUSICBRAINZ_CLIENT_SECRET = ""
+
+# mbspotify
+MBSPOTIFY_BASE_URI = None
+MBSPOTIFY_ACCESS_KEY = None
