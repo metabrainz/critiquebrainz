@@ -1,9 +1,10 @@
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.utils import generate_string
+from critiquebrainz.data.model.mixins import DeleteMixin
 
 
-class OAuthClient(db.Model):
+class OAuthClient(db.Model, DeleteMixin):
     __tablename__ = 'oauth_client'
 
     client_id = db.Column(db.Unicode, primary_key=True)
@@ -42,11 +43,6 @@ class OAuthClient(db.Model):
         db.session.add(client)
         db.session.commit()
         return client
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
 
     def to_dict(self):
         return dict(

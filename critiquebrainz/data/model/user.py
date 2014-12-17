@@ -3,13 +3,14 @@ from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.data.model.mixins import DeleteMixin
 from critiquebrainz.data.constants import user_types
 from flask_login import UserMixin
 from datetime import datetime, date, timedelta
 import hashlib
 
 
-class User(db.Model, UserMixin):
+class User(db.Model, UserMixin, DeleteMixin):
     __tablename__ = 'user'
 
     id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
@@ -28,11 +29,6 @@ class User(db.Model, UserMixin):
 
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user_type', 'stats')
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
 
     @classmethod
     def get(cls, **kwargs):

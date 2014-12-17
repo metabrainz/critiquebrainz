@@ -1,8 +1,9 @@
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
+from critiquebrainz.data.model.mixins import DeleteMixin
 
 
-class OAuthToken(db.Model):
+class OAuthToken(db.Model, DeleteMixin):
     __tablename__ = 'oauth_token'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -22,11 +23,6 @@ class OAuthToken(db.Model):
             else:
                 self._scopes = []
         return self._scopes
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
 
     @classmethod
     def purge_tokens(cls, client_id, user_id):

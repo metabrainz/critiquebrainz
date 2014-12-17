@@ -3,7 +3,7 @@
 # CUSTOM CONFIGURATION FILE
 # Optional variables are commented out.
 
-DEBUG = False  # set to False in production mode
+DEBUG = True  # set to False in production mode
 
 SECRET_KEY = "CHANGE_THIS"
 
@@ -61,4 +61,3 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 
 # Compile styling in browser if set to True
 #COMPILE_LESS = True
-

@@ -1,29 +1,24 @@
-class CritiqueBrainzError(Exception):
-    """ Base class for app exceptions. """
-    pass
-
-
-class BaseError(CritiqueBrainzError):
+class WebServiceError(Exception):
     def __init__(self, code, desc=None, status=400):
         self.code = code
         self.desc = desc
         self.status = status
 
 
-class LoginError(CritiqueBrainzError):
+class LoginError(WebServiceError):
     def __init__(self, code, redirect_uri=None):
         self.code = code
         self.redirect_uri = redirect_uri
 
 
-class NotFound(CritiqueBrainzError):
+class NotFound(WebServiceError):
     def __init__(self, desc=None):
         self.code = 'not_found'
         self.desc = desc
         self.status = 404
 
 
-class AccessDenied(BaseError):
+class AccessDenied(WebServiceError):
     def __init__(self):
         super(AccessDenied, self).__init__(
             code='access_denied',
@@ -31,7 +26,7 @@ class AccessDenied(BaseError):
             status=403)
 
 
-class NotAuthorized(BaseError):
+class NotAuthorized(WebServiceError):
     def __init__(self):
         super(NotAuthorized, self).__init__(
             code='not_authorized',
@@ -39,7 +34,7 @@ class NotAuthorized(BaseError):
             status=401)
 
 
-class ServerError(BaseError):
+class ServerError(WebServiceError):
     def __init__(self):
         super(ServerError, self).__init__(
             code='server_error',
@@ -48,7 +43,7 @@ class ServerError(BaseError):
             status=500)
 
 
-class LimitExceeded(BaseError):
+class LimitExceeded(WebServiceError):
     def __init__(self, desc=''):
         super(LimitExceeded, self).__init__(
             code='limit_exceeded',
@@ -56,7 +51,7 @@ class LimitExceeded(BaseError):
             status=403)
 
 
-class InvalidRequest(BaseError):
+class InvalidRequest(WebServiceError):
     def __init__(self, desc=''):
         super(InvalidRequest, self).__init__(
             code='invalid_request',
@@ -64,7 +59,7 @@ class InvalidRequest(BaseError):
             status=400)
 
 
-class ParserError(CritiqueBrainzError):
+class ParserError(WebServiceError):
     def __init__(self, key, desc):
         self.key = key
         self.desc = desc
