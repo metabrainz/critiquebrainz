@@ -34,6 +34,9 @@ SECRET_KEY = "CHANGE_THIS"
 #LOG_EMAIL_TOPIC = "CritiqueBrainz Failure"
 #LOG_EMAIL_RECIPIENTS = []  # Array with email addresses (strings)
 
+#LOG_SENTRY_ENABLED = True
+#SENTRY_DSN = ""
+
 
 # EXTERNAL SERVICES
 
