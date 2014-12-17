@@ -1,8 +1,9 @@
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
+from critiquebrainz.data.model.mixins import DeleteMixin
 
 
-class OAuthGrant(db.Model):
+class OAuthGrant(db.Model, DeleteMixin):
     __tablename__ = 'oauth_grant'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -19,8 +20,3 @@ class OAuthGrant(db.Model):
         if hasattr(self, '_scopes') is False:
             self._scopes = self.scopes.split()
         return self._scopes
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self

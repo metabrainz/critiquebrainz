@@ -1,5 +1,6 @@
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
+from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.license import License
 from critiquebrainz.data.model.review import Review
@@ -32,7 +33,16 @@ class RevisionTestCase(DataTestCase):
                                                       text=revision.text))
 
     def test_revision_deletion(self):
-        self.assertEqual(len(self.review.revisions), 1)
+        self.assertEqual(Revision.query.count(), 1)  # Got one from review created in setUp method
 
-        self.review.revisions[0].delete()
-        self.assertEqual(len(self.review.revisions), 0)
+        new_revision = Revision()
+        new_revision.review_id = self.review.id
+        new_revision.text = u"Testing something else!"
+        db.session.add(new_revision)
+        db.session.commit()
+
+        self.assertEqual(Revision.query.count(), 2)
+
+        new_revision.delete()
+
+        self.assertEqual(Revision.query.count(), 1)

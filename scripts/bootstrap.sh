@@ -21,6 +21,12 @@ pip install -r requirements.txt
 python manage.py data create_db
 python manage.py data fixtures
 
+# Less compiler
+curl -sL https://deb.nodesource.com/setup | sudo bash -
+apt-get install -y nodejs
+npm install -g less
+npm install -g less-plugin-clean-css
+
 # Installing requirements for documentation
 cd /vagrant/docs
 pip install -r requirements.txt

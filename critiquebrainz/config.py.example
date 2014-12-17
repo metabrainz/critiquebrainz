@@ -3,7 +3,7 @@
 # CUSTOM CONFIGURATION FILE
 # Optional variables are commented out.
 
-DEBUG = False  # set to False in production mode
+DEBUG = True  # set to False in production mode
 
 SECRET_KEY = "CHANGE_THIS"
 
@@ -11,7 +11,9 @@ SECRET_KEY = "CHANGE_THIS"
 # DATABASE
 
 # Primary database
-#SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
+# Example:
+# SQLALCHEMY_DATABASE_URI = "postgresql://cb:cb@localhost:5432/critiquebrainz"
+SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 
 # Database for testing
 # You shouldn't specify this value yourself, unless you have custom database
@@ -62,4 +64,3 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 
 # Compile styling in browser if set to True
 #COMPILE_LESS = True
-

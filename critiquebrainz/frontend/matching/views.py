@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask_login import login_required, current_user
 from flask_babel import gettext
+from werkzeug.exceptions import NotFound
 import critiquebrainz.frontend.apis.spotify as spotify_api
 from critiquebrainz.frontend.apis import musicbrainz, mbspotify
-from critiquebrainz.frontend.exceptions import NotFound
 from urlparse import urlparse
 import os.path
 import string
@@ -34,6 +34,8 @@ def spotify_list(release_group_id):
 @matching_bp.route('/spotify/add')
 def spotify():
     release_group_id = request.args.get('release_group_id')
+    if not release_group_id:
+        return redirect(url_for('frontend.index'))
 
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:

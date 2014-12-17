@@ -1,7 +1,7 @@
-from critiquebrainz.ws.exceptions import *
+from critiquebrainz.ws.exceptions import WebServiceError
 
 
-class OAuthError(BaseError):
+class OAuthError(WebServiceError):
     pass
 
 

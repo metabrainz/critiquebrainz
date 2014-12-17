@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
@@ -6,8 +6,7 @@ from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
-from critiquebrainz.frontend.exceptions import NotFound
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, NotFound
 from markdown import markdown
 
 review_bp = Blueprint('review', __name__)
@@ -18,7 +17,7 @@ def entity(id):
     review = Review.query.get_or_404(str(id))
     # Not showing review if it's archived or (isn't published yet and not viewed by author).
     if review.is_archived or (review.is_draft and not (current_user.is_authenticated() and current_user == review.user)):
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
 
     spotify_mappings = mbspotify.mappings(review.release_group)
 
@@ -79,9 +78,9 @@ def preview():
 def edit(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived or (review.is_draft and current_user != review.user):
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
-        abort(403)
+        raise Unauthorized(gettext("Only author can edit this review."))
 
     form = ReviewEditForm(default_license_id=review.license_id, default_language=review.language)
     if not review.is_draft:
@@ -107,9 +106,9 @@ def edit(id):
 def delete(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound(gettext("Can't find review with a specified ID."))
+        raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
-        raise Unauthorized(gettext("Only author can delete this review."))
+        raise Unauthorized(gettext("Only the author can delete this review."))
     if request.method == 'POST':
         review.delete()
         flash(gettext("Review has been deleted."), 'success')
@@ -128,7 +127,7 @@ def vote_submit(review_id):
 
     review = Review.query.get_or_404(review_id)
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     if review.user == current_user:
         flash(gettext("You cannot rate your own review."), 'error')
         return redirect(url_for('.entity', id=review_id))
@@ -152,7 +151,7 @@ def vote_submit(review_id):
 def vote_delete(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
         flash(gettext("This review is not rated yet."), 'error')
