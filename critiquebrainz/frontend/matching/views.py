@@ -34,6 +34,8 @@ def spotify_list(release_group_id):
 @matching_bp.route('/spotify/add')
 def spotify():
     release_group_id = request.args.get('release_group_id')
+    if not release_group_id:
+        return redirect(url_for('frontend.index'))
 
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
