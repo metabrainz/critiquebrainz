@@ -24,6 +24,8 @@ def create_app():
     from critiquebrainz.data import db
     db.init_app(app)
 
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+
     # Blueprints
     from oauth.views import oauth_bp
     from review.views import review_bp
