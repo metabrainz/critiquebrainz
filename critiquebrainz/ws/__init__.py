@@ -7,7 +7,7 @@ def create_app():
     # Configuration files
     import critiquebrainz.default_config
     app.config.from_object(critiquebrainz.default_config)
-    app.config.from_object('critiquebrainz.config')
+    app.config.from_pyfile('../config.py', silent=True)
 
     # Error handling
     import errors

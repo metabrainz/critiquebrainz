@@ -11,10 +11,10 @@ import hashlib
 import memcache
 
 _mc = None
-_namespace = ""
+_namespace = "CB"
 
 
-def init(servers, namespace="", debug=0):
+def init(servers, namespace="CB", debug=0):
     """Initializes memcached client.
 
     Args:
@@ -33,6 +33,7 @@ def set(key, val, time=0, key_prefix=''):
     Returns:
         True if stored successfully, False otherwise.
     """
+    if _mc is None: return
     not_stored = _mc.set_multi({key: val}, time, _namespace + key_prefix)
     return len(not_stored) == 0
 
@@ -43,6 +44,7 @@ def get(key, key_prefix=''):
     Returns:
         Stored value or None if it's not found.
     """
+    if _mc is None: return
     result = _mc.get_multi([key], _namespace + key_prefix)
     if key in result:
         return result[key]
@@ -56,6 +58,7 @@ def delete(key, key_prefix=''):
     Returns:
           True if deleted successfully, False otherwise.
     """
+    if _mc is None: return
     return _mc.delete_multi([key], key_prefix=_namespace + key_prefix) == 1
 
 
@@ -67,6 +70,7 @@ def set_multi(mapping, time=0, key_prefix=''):
     Returns:
         List of keys which failed to be stored (memcache out of memory, etc.).
     """
+    if _mc is None: return
     return _mc.set_multi(mapping, time, _namespace + key_prefix)
 
 
@@ -79,6 +83,7 @@ def get_multi(keys, key_prefix=''):
         A dictionary of key/value pairs that were available. If key_prefix was
         provided, the keys in the returned dictionary will not have it present.
     """
+    if _mc is None: return
     return _mc.get_multi(keys, _namespace + key_prefix)
 
 
@@ -91,6 +96,8 @@ def prep_cache_key(key, attributes=None):
     Returns:
         New key that can be used with cache.
     """
+    if _mc is None: return key
+
     if attributes is None:
         attributes = []
 
