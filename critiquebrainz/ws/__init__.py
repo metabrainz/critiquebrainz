@@ -24,9 +24,6 @@ def create_app():
     from critiquebrainz.data import db
     db.init_app(app)
 
-    from critiquebrainz.cache import cache
-    cache.set_servers(app.config['MEMCACHED_SERVERS'])
-
     # Blueprints
     from oauth.views import oauth_bp
     from review.views import review_bp
