@@ -25,7 +25,7 @@ def review_entity_handler(review_id):
     """
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     return jsonify(review=review.to_dict())
 
 
@@ -45,7 +45,7 @@ def review_delete_handler(review_id, user):
     """
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     if review.user_id != user.id:
         raise AccessDenied
     review.delete()
@@ -73,7 +73,7 @@ def review_modify_handler(review_id, user):
 
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     if review.user_id != user.id:
         raise AccessDenied
     text = fetch_params()
@@ -203,7 +203,7 @@ def review_vote_put_handler(review_id, user):
 
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     vote = fetch_params()
     if review.user_id == user.id:
         raise InvalidRequest(desc='You cannot rate your own review.')
@@ -229,7 +229,7 @@ def review_vote_delete_handler(review_id, user):
     """
     review = Review.query.get_or_404(str(review_id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     vote = Vote.query.filter_by(user=user, review=review).first()
     if not vote:
         raise InvalidRequest(desc='Review is not rated yet.')

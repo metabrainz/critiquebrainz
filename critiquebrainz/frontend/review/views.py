@@ -17,7 +17,7 @@ def entity(id):
     review = Review.query.get_or_404(str(id))
     # Not showing review if it's archived or (isn't published yet and not viewed by author).
     if review.is_archived or (review.is_draft and not (current_user.is_authenticated() and current_user == review.user)):
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
 
     spotify_mappings = mbspotify.mappings(review.release_group)
 
@@ -78,7 +78,7 @@ def preview():
 def edit(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived or (review.is_draft and current_user != review.user):
-        raise NotFound(gettext("Can't find review with a specified ID."))
+        raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
         raise Unauthorized(gettext("Only author can edit this review."))
 
@@ -106,9 +106,9 @@ def edit(id):
 def delete(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound(gettext("Can't find review with a specified ID."))
+        raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
-        raise Unauthorized(gettext("Only author can delete this review."))
+        raise Unauthorized(gettext("Only the author can delete this review."))
     if request.method == 'POST':
         review.delete()
         flash(gettext("Review has been deleted."), 'success')
@@ -127,7 +127,7 @@ def vote_submit(review_id):
 
     review = Review.query.get_or_404(review_id)
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     if review.user == current_user:
         flash(gettext("You cannot rate your own review."), 'error')
         return redirect(url_for('.entity', id=review_id))
@@ -151,7 +151,7 @@ def vote_submit(review_id):
 def vote_delete(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
         flash(gettext("This review is not rated yet."), 'error')
