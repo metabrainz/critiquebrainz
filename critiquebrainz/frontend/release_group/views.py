@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
 from critiquebrainz.frontend.apis import musicbrainz, mbspotify
-from critiquebrainz.frontend.exceptions import NotFound
 from critiquebrainz.data.model.review import Review
+from werkzeug.exceptions import NotFound
 
 
 release_group_bp = Blueprint('release_group', __name__)
@@ -12,12 +12,11 @@ release_group_bp = Blueprint('release_group', __name__)
 @release_group_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    release_group = musicbrainz.get_release_group_by_id(
-        id, includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'work-rels'])
+    release_group = musicbrainz.get_release_group_by_id(id)
     if not release_group:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
     if len(release_group['release-list']) > 0:
-        release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'], includes=['recordings', 'media'])
+        release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'])
     else:
         release = None
     spotify_mappings = mbspotify.mappings(id)

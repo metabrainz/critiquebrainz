@@ -30,6 +30,12 @@ def create_app():
     from critiquebrainz.data import db
     db.init_app(app)
 
+    # Memcached
+    from critiquebrainz import cache
+    cache.init(app.config['MEMCACHED_SERVERS'],
+               app.config['MEMCACHED_NAMESPACE'],
+               debug=1 if app.debug else 0)
+
     import babel
     babel.init_app(app)
 
@@ -56,7 +62,7 @@ def create_app():
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
-    app.jinja_env.filters['release_group_details'] = musicbrainz.release_group_details
+    app.jinja_env.filters['release_group_details'] = musicbrainz.get_release_group_by_id
 
     # Blueprints
     from views import frontend_bp

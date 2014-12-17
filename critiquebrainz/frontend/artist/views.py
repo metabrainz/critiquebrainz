@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 from critiquebrainz.frontend.apis import musicbrainz
-from critiquebrainz.frontend.exceptions import NotFound
 from critiquebrainz.data.model.review import Review
 
 artist_bp = Blueprint('artist', __name__)
@@ -10,7 +9,7 @@ artist_bp = Blueprint('artist', __name__)
 
 @artist_bp.route('/<uuid:id>')
 def entity(id):
-    artist = musicbrainz.get_artist_by_id(id, includes=['url-rels', 'artist-rels'])
+    artist = musicbrainz.get_artist_by_id(id)
     if not artist:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 

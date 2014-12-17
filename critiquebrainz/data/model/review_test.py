@@ -1,6 +1,6 @@
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
-from critiquebrainz.frontend.exceptions import InvalidRequest
+from werkzeug.exceptions import BadRequest
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.license import License
 from critiquebrainz.data.model.review import Review
@@ -101,10 +101,10 @@ class ReviewTestCase(DataTestCase):
 
         # Let's try doing some things that shouldn't be allowed!
 
-        with self.assertRaises(InvalidRequest):  # like changing license...
+        with self.assertRaises(BadRequest):  # like changing license...
             review.update(text=u"Sucks!", license_id=self.license.id)
 
-        with self.assertRaises(InvalidRequest):  # or converting review back to draft...
+        with self.assertRaises(BadRequest):  # or converting review back to draft...
             review.update(text=u"Sucks!", is_draft=True)
 
     def test_revisions(self):

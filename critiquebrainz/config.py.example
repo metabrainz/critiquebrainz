@@ -38,3 +38,6 @@ MBSPOTIFY_ACCESS_KEY = "INSERT_YOUR_ACCESS_KEY"
 # Logging
 #LOG_FILE = "server.log"
 #LOG_EMAIL_TOPIC = "CritiqueBrainz Failure"
+
+# Compile styling in browser if set to True
+#COMPILE_LESS = False

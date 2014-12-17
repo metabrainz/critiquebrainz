@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-19 20:33+0000\n"
-"PO-Revision-Date: 2014-10-02 09:56+0000\n"
+"POT-Creation-Date: 2014-11-13 13:28+0000\n"
+"PO-Revision-Date: 2014-11-21 09:14+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/critiquebrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -19,53 +19,58 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:29
-#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:16
+#: critiquebrainz/frontend/apis/mbspotify.py:37
+msgid ""
+"Spotify mapping server is unavailable. You will not see an embedded player."
+msgstr ""
+
+#: critiquebrainz/frontend/apis/relationships/artist.py:29
+#: critiquebrainz/frontend/apis/relationships/release_group.py:16
 msgid "Wikidata"
 msgstr "Wikidata"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:30
-#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:17
+#: critiquebrainz/frontend/apis/relationships/artist.py:30
+#: critiquebrainz/frontend/apis/relationships/release_group.py:17
 msgid "Discogs"
 msgstr "Discogs"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:31
-#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:18
+#: critiquebrainz/frontend/apis/relationships/artist.py:31
+#: critiquebrainz/frontend/apis/relationships/release_group.py:18
 msgid "Allmusic"
 msgstr "Allmusic"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:32
+#: critiquebrainz/frontend/apis/relationships/artist.py:32
 msgid "Bandcamp"
 msgstr "Bandcamp"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:33
-#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:19
+#: critiquebrainz/frontend/apis/relationships/artist.py:33
+#: critiquebrainz/frontend/apis/relationships/release_group.py:19
 msgid "Official homepage"
 msgstr "Officiële thuispagina"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:34
+#: critiquebrainz/frontend/apis/relationships/artist.py:34
 msgid "BBC Music"
 msgstr "BBC Music"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:46
-#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:32
+#: critiquebrainz/frontend/apis/relationships/artist.py:46
+#: critiquebrainz/frontend/apis/relationships/release_group.py:32
 msgid "Lyrics"
 msgstr "Teksten"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:52
-#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:38
+#: critiquebrainz/frontend/apis/relationships/artist.py:52
+#: critiquebrainz/frontend/apis/relationships/release_group.py:38
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:65
+#: critiquebrainz/frontend/apis/relationships/artist.py:65
 msgid "YouTube"
 msgstr "YouTube"
 
-#: critiquebrainz/frontend/apis/mb/relationships/artist.py:73
+#: critiquebrainz/frontend/apis/relationships/artist.py:73
 msgid "Twitter"
 msgstr "Twitter"
 
-#: critiquebrainz/frontend/apis/mb/relationships/release_group.py:20
+#: critiquebrainz/frontend/apis/relationships/release_group.py:20
 msgid "Recording studio"
 msgstr "Opnamestudio"
 
@@ -206,43 +211,43 @@ msgstr "Toon mijn Gravatar"
 msgid "Please sign in to access this page."
 msgstr "Meld u aan om deze pagina te openen."
 
-#: critiquebrainz/frontend/login/views.py:32
+#: critiquebrainz/frontend/login/views.py:31
 msgid "Login failed."
 msgstr "Aanmelden mislukt."
 
-#: critiquebrainz/frontend/matching/views.py:17
-#: critiquebrainz/frontend/matching/views.py:46
-msgid "Thanks, but this album is already matched to Spotify!"
-msgstr "Bedankt, maar dit album is al aan Spotify gekoppeld!"
-
-#: critiquebrainz/frontend/matching/views.py:22
-#: critiquebrainz/frontend/matching/views.py:51
+#: critiquebrainz/frontend/matching/views.py:36
+#: critiquebrainz/frontend/matching/views.py:60
 msgid "Only existing release groups can be matched to Spotify!"
 msgstr "Alleen bestaande uitgavegroepen kunnen aan Spotify gekoppeld worden!"
 
-#: critiquebrainz/frontend/matching/views.py:56
+#: critiquebrainz/frontend/matching/views.py:65
 msgid "You need to select an album from Spotify!"
 msgstr "U moet een album van Spotify selecteren!"
 
-#: critiquebrainz/frontend/matching/views.py:61
+#: critiquebrainz/frontend/matching/views.py:70
 msgid "You need to specify a correct link to this album on Spotify!"
 msgstr "U moet een correcte koppeling naar dit album op Spotify opgeven!"
 
-#: critiquebrainz/frontend/matching/views.py:66
+#: critiquebrainz/frontend/matching/views.py:75
+#: critiquebrainz/frontend/matching/views.py:114
 msgid "You need to specify existing album from Spotify!"
 msgstr "U moet een op Spotify bestaand album opgeven!"
 
-#: critiquebrainz/frontend/matching/views.py:71
+#: critiquebrainz/frontend/matching/views.py:81
 msgid "Spotify mapping has been added!"
 msgstr "De verbinding met Spotify is toegevoegd!"
 
-#: critiquebrainz/frontend/matching/views.py:83
+#: critiquebrainz/frontend/matching/views.py:97
 msgid "Can't find release group with that ID!"
 msgstr "Geen uitgavegroep met die ID gevonden!"
 
-#: critiquebrainz/frontend/matching/views.py:88
+#: critiquebrainz/frontend/matching/views.py:103
 msgid "This album is not matched to Spotify yet!"
 msgstr "Dit album is nog niet aan Spotify gekoppeld!"
+
+#: critiquebrainz/frontend/matching/views.py:108
+msgid "Incorrect Spotify mapping has been reported. Thank you!"
+msgstr ""
 
 #: critiquebrainz/frontend/profile/views.py:17
 msgid "Profile updated."
@@ -494,6 +499,7 @@ msgstr "Geen recensies gevonden"
 #: critiquebrainz/frontend/templates/index.html:47
 #: critiquebrainz/frontend/templates/index.html:81
 #: critiquebrainz/frontend/templates/matching/confirm.html:13
+#: critiquebrainz/frontend/templates/matching/report.html:13
 #, python-format
 msgid "%(album)s by %(artist)s"
 msgstr "%(album)s van %(artist)s"
@@ -529,58 +535,62 @@ msgid "Error!"
 msgstr "Fout!"
 
 #: critiquebrainz/frontend/templates/macros.html:6
+msgid "Warning!"
+msgstr "Waarschuwing!"
+
+#: critiquebrainz/frontend/templates/macros.html:9
 msgid "Success!"
 msgstr "Succes!"
 
-#: critiquebrainz/frontend/templates/macros.html:9
+#: critiquebrainz/frontend/templates/macros.html:12
 msgid "Notice!"
 msgstr "Let op!"
 
-#: critiquebrainz/frontend/templates/macros.html:21
+#: critiquebrainz/frontend/templates/macros.html:24
 msgid "Modify profile info and delete your profile."
 msgstr "Profielinformatie bewerken en uw profiel verwijderen."
 
-#: critiquebrainz/frontend/templates/macros.html:21
+#: critiquebrainz/frontend/templates/macros.html:24
 msgid "Profile data"
 msgstr "Profielgegevens"
 
-#: critiquebrainz/frontend/templates/macros.html:24
+#: critiquebrainz/frontend/templates/macros.html:27
 msgid "Create and modify your reviews."
 msgstr "Uw recensies aanmaken en bewerken."
 
-#: critiquebrainz/frontend/templates/macros.html:24
+#: critiquebrainz/frontend/templates/macros.html:27
 #: critiquebrainz/frontend/templates/user/base.html:16
 #: critiquebrainz/frontend/templates/user/info.html:29
 #: critiquebrainz/frontend/templates/user/reviews.html:3
 msgid "Reviews"
 msgstr "Recensies"
 
-#: critiquebrainz/frontend/templates/macros.html:26
+#: critiquebrainz/frontend/templates/macros.html:29
 msgid "Modify your applications (create, edit, delete)."
 msgstr "Uw applicaties bewerken (aanmaken, bewerken, verwijderen)."
 
-#: critiquebrainz/frontend/templates/macros.html:26
+#: critiquebrainz/frontend/templates/macros.html:29
 #: critiquebrainz/frontend/templates/navbar.html:27
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
 msgid "Applications"
 msgstr "Applicaties"
 
-#: critiquebrainz/frontend/templates/macros.html:29
+#: critiquebrainz/frontend/templates/macros.html:32
 msgid ""
 "Manage access to your profile for other apps (can allow complete access to "
 "your profile and remove existing access authorizations)."
 msgstr "Beheer de toegang tot uw profiel voor andere applicaties (kan complete toegang tot uw profiel toestaan en bestaande autorisaties intrekken)."
 
-#: critiquebrainz/frontend/templates/macros.html:29
+#: critiquebrainz/frontend/templates/macros.html:32
 msgid "Authorization"
 msgstr "Autorisatie"
 
-#: critiquebrainz/frontend/templates/macros.html:32
+#: critiquebrainz/frontend/templates/macros.html:35
 msgid "Submit and delete your votes."
 msgstr "Indienen en uw stemmen verwijderen."
 
-#: critiquebrainz/frontend/templates/macros.html:32
+#: critiquebrainz/frontend/templates/macros.html:35
 msgid "Review votes"
 msgstr "Stemmen op recensies"
 
@@ -695,10 +705,12 @@ msgid "Are you sure you want to create a connection?"
 msgstr "Weet u zeker dat u een verbinding wilt maken?"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:22
+#: critiquebrainz/frontend/templates/matching/report.html:22
 msgid "Spotify"
 msgstr "Spotify"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:23
+#: critiquebrainz/frontend/templates/matching/report.html:23
 msgid "URI:"
 msgstr "URI:"
 
@@ -707,9 +719,26 @@ msgid "Connect"
 msgstr "Verbinden"
 
 #: critiquebrainz/frontend/templates/matching/confirm.html:31
+#: critiquebrainz/frontend/templates/matching/report.html:31
 #: critiquebrainz/frontend/templates/review/delete.html:18
 msgid "Cancel"
 msgstr "Annuleren"
+
+#: critiquebrainz/frontend/templates/matching/report.html:3
+msgid "Incrorrect mapping reporting"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/matching/report.html:6
+msgid "Incorrect mapping reporting"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/matching/report.html:8
+msgid "Are you sure you want to report incorrect mapping?"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/matching/report.html:30
+msgid "Report incorrect mapping"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:14
 #, python-format

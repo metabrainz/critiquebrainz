@@ -6,8 +6,10 @@ from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.revision import Revision
+from critiquebrainz.data.model.mixins import DeleteMixin
 from critiquebrainz.data.constants import review_classes
-from critiquebrainz.frontend.exceptions import InvalidRequest  # TODO: Remove this dependency on frontend.
+from werkzeug.exceptions import BadRequest
+from flask_babel import gettext
 import pycountry
 
 DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
@@ -17,7 +19,7 @@ for lang in list(pycountry.languages):
         supported_languages.append(lang.alpha2)
 
 
-class Review(db.Model):
+class Review(db.Model, DeleteMixin):
     __tablename__ = 'review'
 
     id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
@@ -52,11 +54,6 @@ class Review(db.Model):
                         source_url=self.source_url,
                         review_class=self.review_class.label)
         return response
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
 
     @property
     def first_revision(self):
@@ -170,7 +167,7 @@ class Review(db.Model):
         """
         if license_id is not None:
             if not self.is_draft:  # If trying to convert published review into draft.
-                raise InvalidRequest("Changing license of a published review is not allowed.")
+                raise BadRequest(gettext("Changing license of a published review is not allowed."))
             self.license_id = license_id
 
         if language is not None:
@@ -178,7 +175,7 @@ class Review(db.Model):
 
         if is_draft is not None:  # This should be done after all changes that depend on review being a draft.
             if not self.is_draft and is_draft:  # If trying to convert published review into draft.
-                raise InvalidRequest("Converting published reviews back to drafts is not allowed.")
+                raise BadRequest(gettext("Converting published reviews back to drafts is not allowed."))
             self.is_draft = is_draft
 
         new_revision = Revision(review_id=self.id, text=text)

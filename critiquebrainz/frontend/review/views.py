@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
@@ -6,8 +6,7 @@ from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
-from critiquebrainz.frontend.exceptions import NotFound
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, NotFound
 from markdown import markdown
 
 review_bp = Blueprint('review', __name__)
@@ -60,7 +59,7 @@ def create():
             flash(gettext("Review has been published!"), 'success')
         return redirect(url_for('.entity', id=review.id))
 
-    release_group_details = musicbrainz.release_group_details(release_group)
+    release_group_details = musicbrainz.get_release_group_by_id(release_group)
     if not release_group_details:
         flash(gettext("You can only write a review for a release group that exists on MusicBrainz!"), 'error')
         return redirect(url_for('search.selector', next=url_for('.create')))
@@ -79,9 +78,9 @@ def preview():
 def edit(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived or (review.is_draft and current_user != review.user):
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound(gettext("Can't find review with a specified ID."))
     if review.user != current_user:
-        abort(403)
+        raise Unauthorized(gettext("Only author can edit this review."))
 
     form = ReviewEditForm(default_license_id=review.license_id, default_language=review.language)
     if not review.is_draft:
