@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-17 12:29+0000\n"
+"POT-Creation-Date: 2014-12-18 02:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: critiquebrainz/frontend/apis/mbspotify.py:41
+#: critiquebrainz/frontend/apis/mbspotify.py:46
 msgid ""
 "Spotify mapping server is unavailable. You will not see an embedded "
 "player."
@@ -85,37 +85,37 @@ msgstr ""
 msgid "Login failed."
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:40
-#: critiquebrainz/frontend/matching/views.py:64
+#: critiquebrainz/frontend/matching/views.py:42
+#: critiquebrainz/frontend/matching/views.py:66
 msgid "Only existing release groups can be matched to Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:69
+#: critiquebrainz/frontend/matching/views.py:71
 msgid "You need to select an album from Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:74
+#: critiquebrainz/frontend/matching/views.py:76
 msgid "You need to specify a correct link to this album on Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:79
-#: critiquebrainz/frontend/matching/views.py:118
+#: critiquebrainz/frontend/matching/views.py:81
+#: critiquebrainz/frontend/matching/views.py:120
 msgid "You need to specify existing album from Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:85
+#: critiquebrainz/frontend/matching/views.py:87
 msgid "Spotify mapping has been added!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:101
+#: critiquebrainz/frontend/matching/views.py:103
 msgid "Can't find release group with that ID!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:107
+#: critiquebrainz/frontend/matching/views.py:109
 msgid "This album is not matched to Spotify yet!"
 msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:112
+#: critiquebrainz/frontend/matching/views.py:114
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr ""
 
@@ -736,9 +736,6 @@ msgid "Cancel"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/matching/report.html:3
-msgid "Incrorrect mapping reporting"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/matching/report.html:6
 msgid "Incorrect mapping reporting"
 msgstr ""

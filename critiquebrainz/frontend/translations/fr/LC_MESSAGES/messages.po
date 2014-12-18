@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-12-04 13:57+0000\n"
-"PO-Revision-Date: 2014-12-17 09:57+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2014-12-17 19:14+0000\n"
+"Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/critiquebrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,12 +21,12 @@ msgstr ""
 
 #: critiquebrainz/frontend/exceptions.py:16
 msgid "Access to the requested resource has been denied"
-msgstr ""
+msgstr "L'accès à la ressource demandée a été refusé"
 
 #: critiquebrainz/frontend/apis/mbspotify.py:37
 msgid ""
 "Spotify mapping server is unavailable. You will not see an embedded player."
-msgstr ""
+msgstr "Le serveur de mappage de Spotify n'est pas disponible. Vous ne verrez pas de lecteur intégré."
 
 #: critiquebrainz/frontend/apis/relationships/artist.py:29
 #: critiquebrainz/frontend/apis/relationships/release_group.py:16
@@ -122,7 +122,7 @@ msgstr "Cet album n'est pas encore mis en concordance avec Spotify !"
 
 #: critiquebrainz/frontend/matching/views.py:112
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
-msgstr ""
+msgstr "Le mappage erroné de Spotify a été signalé. Merci !"
 
 #: critiquebrainz/frontend/profile/forms.py:8
 msgid "Display name"
@@ -297,11 +297,11 @@ msgstr "La critique a été mise à jour."
 
 #: critiquebrainz/frontend/review/views.py:110
 msgid "Can't find review with a specified ID."
-msgstr ""
+msgstr "Impossible de trouver une critique avec un ID spécifié."
 
 #: critiquebrainz/frontend/review/views.py:112
 msgid "Only author can delete this review."
-msgstr ""
+msgstr "Seul l'auteur peut supprimer cette critique."
 
 #: critiquebrainz/frontend/review/views.py:115
 msgid "Review has been deleted."
@@ -545,7 +545,7 @@ msgstr "Erreur !"
 
 #: critiquebrainz/frontend/templates/macros.html:6
 msgid "Warning!"
-msgstr ""
+msgstr "Avertissement !"
 
 #: critiquebrainz/frontend/templates/macros.html:9
 msgid "Success!"
@@ -735,19 +735,19 @@ msgstr "Annuler"
 
 #: critiquebrainz/frontend/templates/matching/report.html:3
 msgid "Incrorrect mapping reporting"
-msgstr ""
+msgstr "Signaler un mappage erroné"
 
 #: critiquebrainz/frontend/templates/matching/report.html:6
 msgid "Incorrect mapping reporting"
-msgstr ""
+msgstr "Signaler un mappage erroné"
 
 #: critiquebrainz/frontend/templates/matching/report.html:8
 msgid "Are you sure you want to report incorrect mapping?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir signaler un mappage erroné ?"
 
 #: critiquebrainz/frontend/templates/matching/report.html:30
 msgid "Report incorrect mapping"
-msgstr ""
+msgstr "Signaler un mappage erroné"
 
 #: critiquebrainz/frontend/templates/matching/spotify.html:14
 #, python-format
@@ -881,7 +881,7 @@ msgstr "Enregistrer"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:41
 msgid "Delete my account"
-msgstr ""
+msgstr "Supprimer mon compte"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:3
 #: critiquebrainz/frontend/templates/profile/applications/create.html:6
@@ -1089,7 +1089,7 @@ msgid ""
 "            infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
 "            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
 "            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
-msgstr ""
+msgstr "Vous convenez et reconnaissez que les critiques auxquelles vous avez collaboré sur CritiqueBrainz sont sous licences\nCreative Commons Attribution - Partage dans les mêmes conditions 3.0 non transposé ou Attribution - Pas d’utilisation commerciale - Partage dans les mêmes conditions\nd'après votre choix ci-dessus. Vous acceptez de concéder une licence\nd'exploitation de vos écrits sous ces termes.\nVous déclarez et garantissez que vous êtes propriétaire des droits sur\nces écrits ou que vous contrôlez\nautrement tous ces droits, que rien dans ces écrits ne porte atteinte aux droits d'un tiers, et que vous avez\nla permission d'utiliser et de concéder une licence d'exploitation de ces écrits sous la licence Creative Commons\nchoisie. Pour finir, vous donnez à la Fondation MetaBrainz la permission de concéder une licence pour ce contenu\ndans le but d'utilisation commerciale en dehors des licences Creative Commons afin de soutenir les activités de l'organisation."
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"
