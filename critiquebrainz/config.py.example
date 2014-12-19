@@ -36,6 +36,9 @@ SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 #LOG_EMAIL_TOPIC = "CritiqueBrainz Failure"
 #LOG_EMAIL_RECIPIENTS = []  # Array with email addresses (strings)
 
+#LOG_SENTRY_ENABLED = True
+#SENTRY_DSN = ""
+
 
 # EXTERNAL SERVICES
 
