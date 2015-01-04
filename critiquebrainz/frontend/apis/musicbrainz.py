@@ -10,10 +10,10 @@ from critiquebrainz import cache
 from critiquebrainz.frontend.apis.relationships import artist as artist_rel
 from critiquebrainz.frontend.apis.relationships import release_group as release_group_rel
 from werkzeug.exceptions import InternalServerError
-from multiprocessing import Pool
-
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
+
+THREAD_POOL_PROCESSES = 10
 
 
 def init(app_name, app_version):
@@ -103,8 +103,8 @@ def get_release_group_by_id(id):
 
 
 def get_multiple_release_groups(mbids):
-    pool = Pool(processes=10)
-    return dict(pool.map(_get_rg, mbids))
+    import multiprocessing.dummy as multiprocessing
+    return dict(multiprocessing.Pool(THREAD_POOL_PROCESSES).map(_get_rg, mbids))
 
 
 def _get_rg(mbid):
