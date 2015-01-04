@@ -1,4 +1,5 @@
 from critiquebrainz.data import db
+from sqlalchemy.orm import backref
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.revision import Revision
@@ -20,12 +21,13 @@ class User(db.Model, UserMixin, DeleteMixin):
     musicbrainz_id = db.Column(db.Unicode, unique=True)
     show_gravatar = db.Column(db.Boolean, nullable=False, server_default="False")
 
-    _reviews = db.relationship('Review', cascade='delete', lazy='dynamic', backref='user')
-    _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='user')
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
     clients = db.relationship('OAuthClient', cascade='delete', backref='user')
     grants = db.relationship('OAuthGrant', cascade='delete', backref='user')
     tokens = db.relationship('OAuthToken', cascade='delete', backref='user')
+
+    _reviews = db.relationship('Review', cascade='delete', lazy='dynamic', backref=backref('user', lazy='joined'))
+    _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='user')
 
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user_type', 'stats')
