@@ -1,41 +1,43 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, abort
-from flask.ext.login import login_required, current_user
-from flask.ext.babel import gettext
-from critiquebrainz.data.model.oauth import OAuthClient, OAuthToken
-from critiquebrainz.frontend.forms.app import ApplicationForm
+from flask import Blueprint, render_template, flash, redirect, url_for
+from flask_login import login_required, current_user
+from flask_babel import gettext
+from werkzeug.exceptions import NotFound
+from critiquebrainz.data.model.oauth_client import OAuthClient
+from critiquebrainz.data.model.oauth_token import OAuthToken
+from critiquebrainz.frontend.profile.applications.forms import ApplicationForm
 
 
 profile_apps_bp = Blueprint('profile_applications', __name__)
 
 
-@profile_apps_bp.route('/', endpoint='index')
+@profile_apps_bp.route('/')
 @login_required
-def index_handler():
+def index():
     return render_template('profile/applications/index.html',
                            applications=[c.to_dict() for c in current_user.clients],
                            tokens=[t.to_dict() for t in current_user.tokens])
 
 
-@profile_apps_bp.route('/create', endpoint='create', methods=['GET', 'POST'])
+@profile_apps_bp.route('/create', methods=['GET', 'POST'])
 @login_required
-def create_handler():
+def create():
     """Create application."""
     form = ApplicationForm()
     if form.validate_on_submit():
-        OAuthClient.generate(user=current_user, name=form.name.data,
-                             desc=form.desc.data, website=form.website.data,
-                             redirect_uri=form.redirect_uri.data)
+        OAuthClient.create(user=current_user, name=form.name.data,
+                           desc=form.desc.data, website=form.website.data,
+                           redirect_uri=form.redirect_uri.data)
         flash(gettext('You have created an application!'), 'success')
         return redirect(url_for('.index'))
     return render_template('profile/applications/create.html', form=form)
 
 
-@profile_apps_bp.route('/<client_id>/edit', endpoint='edit', methods=['GET', 'POST'])
+@profile_apps_bp.route('/<client_id>/edit', methods=['GET', 'POST'])
 @login_required
-def edit_handler(client_id):
+def edit(client_id):
     application = OAuthClient.query.get_or_404(client_id)
     if application.user != current_user:
-        abort(403)
+        raise NotFound()
     form = ApplicationForm()
     if form.validate_on_submit():
         application.update(name=form.name.data, desc=form.desc.data,
@@ -50,20 +52,20 @@ def edit_handler(client_id):
     return render_template('profile/applications/edit.html', form=form)
 
 
-@profile_apps_bp.route('/<client_id>/delete', endpoint='delete')
+@profile_apps_bp.route('/<client_id>/delete')
 @login_required
-def delete_handler(client_id):
+def delete(client_id):
     client = OAuthClient.query.get_or_404(client_id)
     if client.user != current_user:
-        abort(403)
+        raise NotFound()
     client.delete()
 
     flash(gettext('You have deleted an application.'), 'success')
     return redirect(url_for('.index'))
 
 
-@profile_apps_bp.route('/<client_id>/token/delete', endpoint='token_delete')
+@profile_apps_bp.route('/<client_id>/token/delete')
 @login_required
-def token_delete_handler(client_id):
+def token_delete(client_id):
     OAuthToken.purge_tokens(client_id=client_id, user_id=current_user.id)
     return redirect(url_for('.index'))

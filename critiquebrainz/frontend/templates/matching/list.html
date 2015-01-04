@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ _('Spotify mappings') }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+  <h2>
+  {% set artist = [] %}
+  {% for credit in release_group['artist-credit'] %}
+    {% if credit.artist %}
+      {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
+    {% else %}
+      {% do artist.append(credit) %}
+    {% endif %}
+  {% endfor %}
+
+    {{ _('%(album)s by %(artist)s',
+     album = '<a href="%s">%s</a>'|safe % (url_for('release_group.entity', id=release_group.id), release_group.title),
+     artist = artist|join()) }}
+
+    {% if release_group['first-release-date'] %}
+      <small>{{ release_group['first-release-date'][:4] }}</small>
+    {% endif %}
+  </h2>
+
+  <h3>{{ _('Spotify mappings') }}</h3>
+
+  {% if not spotify_albums %}
+    <p class="lead" style="text-align:center;">{{ _('No mappings') }}</p>
+  {% else %}
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>{# Cover art #}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('ID') }}</th>
+          <th>{{ _('Album') }}</th>
+          <th>{{ _('Artist') }}</th>
+          <th>{{ _('Release date') }}</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for mbid, album in spotify_albums.iteritems() %}
+          <tr>
+            <td><img src="{{ album.images[-1].url }}" style="max-height: 25px;" /></td>
+            <td>{{ album.type }}</td>
+            <td><a href="{{ album.external_urls.spotify }}">{{ album.id }}</a></td>
+            <td>{{ album.name }}</td>
+            <td>
+              {# Generating a list of artists #}
+              {% set artists = [] %}
+              {% for artist in album.artists %}
+                {% do artists.append(artist.name) %}
+              {% endfor %}
+              {{ artists|join(', ') }}
+            </td>
+            <td>{{ album.release_date }}</td>
+            <td><a class="btn btn-danger btn-xs" href="{{ url_for('matching.spotify_report', release_group_id=release_group.id, spotify_id=album.id) }}">{{ _('Incorrect') }}</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+  {% endif %}
+  <b><a class="btn btn-primary btn-default" href="{{ url_for('matching.spotify', release_group_id=release_group.id) }}">{{ _('+ Add new mapping') }}</a></b>
+{% endblock %}

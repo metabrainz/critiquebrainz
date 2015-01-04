@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/sh -e
 
 apt-get update
-apt-get install -y memcached python-virtualenv python-dev screen make
+apt-get install -y python-pip python-dev memcached
 
 # PostgreSQL
 PG_VERSION=9.1
@@ -15,14 +15,18 @@ sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" "$PG_CONF"
 echo "host all all all trust" >> "$PG_HBA"
 service postgresql restart
 
-# Setting up CritiqueBrainz
+# Setting up server
 cd /vagrant
-# TODO: Activate virtualenv
 pip install -r requirements.txt
 python manage.py data create_db
 python manage.py data fixtures
 
+# Less compiler
+curl -sL https://deb.nodesource.com/setup | sudo bash -
+apt-get install -y nodejs
+npm install -g less
+npm install -g less-plugin-clean-css
+
 # Installing requirements for documentation
 cd /vagrant/docs
-# TODO: Activate virtualenv
 pip install -r requirements.txt

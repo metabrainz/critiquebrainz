@@ -1,8 +1,7 @@
-from flask.ext.script import Manager
+from flask_script import Manager
 from flask import current_app
-from critiquebrainz import data
-from critiquebrainz.data import explode_db_url
-import fixtures as _fixtures
+from critiquebrainz.data.utils import create_tables, explode_db_uri
+import critiquebrainz.data.fixtures as _fixtures
 import subprocess
 
 data_manager = Manager()
@@ -19,7 +18,7 @@ def create_db():
 
 @data_manager.command
 def tables():
-    data.create_tables(current_app)
+    create_tables(current_app)
 
 
 @data_manager.command
@@ -28,12 +27,12 @@ def fixtures():
     _fixtures.install(current_app, *_fixtures.all_data)
 
 
-def init_postgres(uri):
+def init_postgres(db_uri):
     """Initializes PostgreSQL database from provided URI.
 
     New user and database will be created, if needed. It also creates uuid-ossp extension.
     """
-    hostname, db, username, password = explode_db_url(uri)
+    hostname, db, username, password = explode_db_uri(db_uri)
     if hostname not in ['localhost', '127.0.0.1']:
         raise Exception('Cannot configure a remote database')
 

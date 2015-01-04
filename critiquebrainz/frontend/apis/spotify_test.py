@@ -1,5 +1,5 @@
-import unittest
-import spotify
+from critiquebrainz.frontend.testing import FrontendTestCase
+from critiquebrainz.frontend.apis import spotify
 
 
 class FakeSpotifyResponse():
@@ -10,12 +10,12 @@ class FakeSpotifyResponse():
         return dict(url=self.url)
 
 
-class SpotifyTestCase(unittest.TestCase):
+class SpotifyTestCase(FrontendTestCase):
 
     def setUp(self):
+        super(SpotifyTestCase, self).setUp()
         spotify.requests.get = lambda url: FakeSpotifyResponse(url)
-        spotify.cache.get = lambda key: None
-        spotify.generate_cache_key = lambda id, source, params: "key"
+        spotify.cache.get = lambda key, key_prefix='': None
 
     def test_search(self):
         self.assertDictEqual(
@@ -24,5 +24,5 @@ class SpotifyTestCase(unittest.TestCase):
 
     def test_album(self):
         self.assertDictEqual(
-            spotify.album('random-spotify-id'),
+            spotify.get_album('random-spotify-id'),
             dict(url="https://api.spotify.com/v1/albums/random-spotify-id"))

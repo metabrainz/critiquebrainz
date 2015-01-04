@@ -1,5 +1,5 @@
 from flask import g, request
-from flask.ext.babel import Babel, Locale
+from flask_babel import Babel, Locale
 
 
 def init_app(app):

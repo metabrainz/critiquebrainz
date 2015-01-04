@@ -1,38 +1,66 @@
 # -*- coding: utf-8 -*-
-# CUSTOM CONFIGURATION
+# CRITIQUEBRAINZ
+# CUSTOM CONFIGURATION FILE
+# Optional variables are commented out.
 
 DEBUG = True  # set to False in production mode
 
 SECRET_KEY = "CHANGE_THIS"
 
-# MusicBrainz OAuth2 configuration
-MUSICBRAINZ_CLIENT_ID = "<your musicbrainz client id>"
-MUSICBRAINZ_CLIENT_SECRET = "<your musicbrainz client secret>"
 
-# Administrator list (emails)
-ADMINS = []
+# DATABASE
 
-# Server with Spotify mappings
-MBSPOTIFY_BASE_URI = "http://127.0.0.1:8080/"
-MBSPOTIFY_ACCESS_KEY = "INSERT_YOUR_ACCESS_KEY"
+# Primary database
+# Example:
+# SQLALCHEMY_DATABASE_URI = "postgresql://cb:cb@localhost:5432/critiquebrainz"
+SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 
-
-# Settings defined below have default values in default_config.py, but can be overridden in this file.
-
-# Database
-#SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
+# Database for testing
+# You shouldn't specify this value yourself, unless you have custom database
+# for testing purpose.
 #TEST_SQLALCHEMY_DATABASE_URI = "postgresql://<test_user>:<test_pass>@<host>:<port>/<test_db>"
+
+
+# CACHE
 
 #MEMCACHED_SERVERS = ["127.0.0.1:11211"]
 #MEMCACHED_NAMESPACE = "CB"
 
-# Mail server
-#MAIL_SERVER = 'localhost'
-#MAIL_PORT = 25
-#MAIL_USERNAME = None
-#MAIL_PASSWORD = None
-#MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
 
-# Logging
+# LOGGING
+
+#LOG_FILE_ENABLED = True
 #LOG_FILE = "server.log"
+
+#LOG_EMAIL_ENABLED = True
 #LOG_EMAIL_TOPIC = "CritiqueBrainz Failure"
+#LOG_EMAIL_RECIPIENTS = []  # Array with email addresses (strings)
+
+#LOG_SENTRY_ENABLED = True
+#SENTRY_DSN = ""
+
+
+# EXTERNAL SERVICES
+
+# MusicBrainz
+MUSICBRAINZ_USERAGENT = "CritiqueBrainz Custom"
+MUSICBRAINZ_CLIENT_ID = ""
+MUSICBRAINZ_CLIENT_SECRET = ""
+
+# Server with Spotify mappings
+# https://github.com/metabrainz/mbspotify
+#MBSPOTIFY_BASE_URI = "http://mbspotify.mbsandbox.org/"
+#MBSPOTIFY_ACCESS_KEY = ""
+
+
+# OTHER STUFF
+
+# Mail server
+#MAIL_SERVER = "localhost"
+#MAIL_PORT = 25
+#MAIL_FROM_HOST = "critiquebrainz.org"
+
+#DEBUG_TB_TEMPLATE_EDITOR_ENABLED = True
+
+# Compile styling in browser if set to True
+#COMPILE_LESS = True

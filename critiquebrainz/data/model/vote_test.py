@@ -1,9 +1,9 @@
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
-from vote import Vote
-from user import User
-from review import Review
-from license import License
+from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.data.model.user import User
+from critiquebrainz.data.model.review import Review
+from critiquebrainz.data.model.license import License
 
 
 class VoteTestCase(DataTestCase):

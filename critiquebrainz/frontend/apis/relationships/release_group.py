@@ -1,6 +1,6 @@
 from urlparse import urlparse
+from flask_babel import gettext
 import urllib
-from flask.ext.babel import gettext
 
 
 def process(release_group):

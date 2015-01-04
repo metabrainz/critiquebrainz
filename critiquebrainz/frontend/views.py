@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from flask.ext.babel import format_number
+from flask_babel import format_number
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.review import Review
 from bs4 import BeautifulSoup
@@ -10,8 +10,8 @@ DEFAULT_CACHE_EXPIRATION = 10 * 60  # seconds
 frontend_bp = Blueprint('frontend', __name__)
 
 
-@frontend_bp.route('/', endpoint='index')
-def index_handler():
+@frontend_bp.route('/')
+def index():
     # Popular reviews
     popular_reviews, _ = Review.list(sort='rating', limit=6)
     for review in popular_reviews:
@@ -30,6 +30,6 @@ def index_handler():
                            reviews_total=review_count, users_total=user_count)
 
 
-@frontend_bp.route('/about', endpoint='about')
-def about_page():
+@frontend_bp.route('/about')
+def about():
     return render_template('about.html')

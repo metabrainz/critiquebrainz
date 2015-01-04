@@ -18,16 +18,16 @@ def search_wrapper(query, type, offset=None):
         count, results = 0, []
     return count, results
 
-@search_bp.route('/', endpoint='index')
-def search_handler():
+@search_bp.route('/')
+def index():
     query = request.args.get('query')
     type = request.args.get('type')
     count, results = search_wrapper(query, type)
     return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=RESULTS_LIMIT)
 
 
-@search_bp.route('/more', endpoint='more')
-def more_handler():
+@search_bp.route('/more')
+def more():
     query = request.args.get('query')
     type = request.args.get('type')
     page = int(request.args.get('page', default=0))
@@ -37,8 +37,8 @@ def more_handler():
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
 
 
-@search_bp.route('/selector', endpoint='selector')
-def review_creation_selector_handler():
+@search_bp.route('/selector')
+def selector():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')
     next = request.args.get('next')
@@ -53,8 +53,8 @@ def review_creation_selector_handler():
                            results=results, count=count, limit=RESULTS_LIMIT)
 
 
-@search_bp.route('/selector/more', endpoint='selector_more')
-def selector_more_handler():
+@search_bp.route('/selector/more')
+def selector_more():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')
     page = int(request.args.get('page', default=0))

@@ -1,4 +1,4 @@
-﻿from flask.ext.script import Manager
+﻿from flask_script import Manager
 from critiquebrainz.frontend import create_app
 from critiquebrainz.data.manage import data_manager
 

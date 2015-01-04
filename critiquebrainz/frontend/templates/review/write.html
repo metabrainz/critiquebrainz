@@ -3,94 +3,93 @@
 {% block title %}{{ _('Write review of "%(rg)s"', rg=release_group.title) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-{% for field in form.errors %}
-  {% for error in form.errors[field] %}
-  <div class="alert alert-danger">
-    {{ error }}
-  </div>
-  {% endfor %}
-{% endfor %}
-
-<h2>{{ _('Write review') }}</h2>
-
-<div class="row">
-  <div class="col-md-10">
-    <dl class="dl-horizontal">
-      <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
-      <dt>{{ _('Release group') }}</dt>
-      <dd>
-        {{ release_group.title }}
-        {% if release_group['first-release-date'] %}
-          <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
-        {% endif %}
-      </dd>
-    </dl>
-  </div>
-  <div class="col-md-2">
-    <img id="cover-art" class="img-responsive" style="max-height:120px;max-width:120px;">
-    <script>
-      $("img").last()
-          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-          .attr("src", "//coverartarchive.org/release-group/{{ release_group.id }}/front-250");
-    </script>
-  </div>
-</div>
-
-<div class="clearfix">
-  <ul class="nav nav-tabs" style="margin-bottom:-1px;">
-    <li class="active"><a href="#write" data-toggle="tab">{{ _('Write') }}</a></li>
-    <li><a href="#preview" data-toggle="tab">{{ _('Preview') }}</a></li>
-    <small class="text-muted pull-right" style="margin-top:20px;font-style:italic;">
-      {{ _('You can use <a href="%(url)s" target="_blank">Markdown</a> syntax to apply custom formatting.', url='http://daringfireball.net/projects/markdown/syntax') }}
-    </small>
-  </ul>
-</div>
-<form id="review-editor" method="POST" class="form-horizontal" role="form">
-  {{ form.hidden_tag() }}
-  <div class="form-group">
-    <div class="col-sm-12 tab-content">
-      <div class="tab-pane fade in active" id="write">
-        {{ form.text(id="review-content", class="form-control", rows="5") | safe }}
-      </div>
-      <div class="tab-pane fade" id="preview" style="margin-top:20px;">
-        <span class="text-muted">{{ _('Loading preview...') }}</span>
-      </div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-4" for="review-language">{{ _('Please, specify language of this review:') }}</label>
-    <div class="col-sm-8">{{ form.language(id="review-language", class="form-control") | safe }}</div>
-  </div>
+  <h2>{{ _('Write review') }}</h2>
   <hr />
-  <div class="form-group">
-    <div class="col-sm-12">
-      {% for choice in form.license_choice %}
-        <div class="radio">
-          <label>{{ choice }}{{ choice.label.text | safe }}</label>
-        </div>
-      {% endfor %}
-      <br /><small class="text-warning"><em>{{ _('You cannot change the license after the review is published.') }}</em></small>
+
+  {% for field in form.errors %}
+    {% for error in form.errors[field] %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+  {% endfor %}
+
+  <div class="row">
+    <div class="col-md-10">
+      <dl class="dl-horizontal">
+        <dt>{{ _('Artist') }}</dt><dd>{{ release_group['artist-credit-phrase'] }}</dd>
+        <dt>{{ _('Release group') }}</dt>
+        <dd>
+          {{ release_group.title }}
+          {% if release_group['first-release-date'] %}
+            <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
+          {% endif %}
+        </dd>
+      </dl>
+    </div>
+    <div class="col-md-2">
+      <img id="cover-art" class="img-responsive" style="max-height:120px;max-width:120px;">
+      <script>
+        $("img").last()
+            .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+            .attr("src", "//coverartarchive.org/release-group/{{ release_group.id }}/front-250");
+      </script>
     </div>
   </div>
-  <div class="form-group">
-    <div class="col-sm-12">
-      <div class="checkbox">
-      <label id="agreement">
-        {{ form.agreement() | safe }}
-        {{ _('You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a
-        Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial
-        license as per your choice above. You agree to license your work under this license.
-        You represent and warrant that you own or control all rights in and to the work, that nothing in the work
-        infringes the rights of any third-party, and that you have the permission to use and to license the work
-        under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license
-        this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization.') }}
-      </label>
+
+  <div class="clearfix">
+    <ul class="nav nav-tabs" style="margin-bottom:-1px;">
+      <li class="active"><a href="#write" data-toggle="tab">{{ _('Write') }}</a></li>
+      <li><a href="#preview" data-toggle="tab">{{ _('Preview') }}</a></li>
+      <small class="text-muted pull-right" style="margin-top:20px;font-style:italic;">
+        {{ _('You can use <a href="%(url)s" target="_blank">Markdown</a> syntax to apply custom formatting.', url='http://daringfireball.net/projects/markdown/syntax') }}
+      </small>
+    </ul>
+  </div>
+  <form id="review-editor" method="POST" class="form-horizontal" role="form">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <div class="col-sm-12 tab-content">
+        <div class="tab-pane fade in active" id="write">
+          {{ form.text(id="review-content", class="form-control", rows="5") }}
+        </div>
+        <div class="tab-pane fade" id="preview" style="margin-top:20px;">
+          <span class="text-muted">{{ _('Loading preview...') }}</span>
+        </div>
       </div>
     </div>
-  </div>
-</form>
-<button id="btn-publish" class="btn btn-primary">{{ _('Publish') }}</button>
-<button id="btn-draft" class="btn btn-default">{{ _('Save draft') }}</button>
+    <div class="form-group">
+      <label class="control-label col-sm-4" for="review-language">{{ _('Please, specify language of this review:') }}</label>
+      <div class="col-sm-8">{{ form.language(id="review-language", class="form-control") }}</div>
+    </div>
+    <hr />
+    <div class="form-group">
+      <div class="col-sm-12">
+        {% for choice in form.license_choice %}
+          <div class="radio">
+            <label>{{ choice }}{{ choice.label.text | safe }}</label>
+          </div>
+        {% endfor %}
+        <br /><small class="text-warning"><em>{{ _('You cannot change the license after the review is published.') }}</em></small>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <div class="checkbox">
+          <label id="agreement">
+            {{ form.agreement }}
+            {{ _('You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a
+            Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial
+            license as per your choice above. You agree to license your work under this license.
+            You represent and warrant that you own or control all rights in and to the work, that nothing in the work
+            infringes the rights of any third-party, and that you have the permission to use and to license the work
+            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license
+            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization.') }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </form>
+  <button id="btn-publish" class="btn btn-primary">{{ _('Publish') }}</button>
+  <button id="btn-draft" class="btn btn-default">{{ _('Save draft') }}</button>
 {% endblock %}
 
 {% block scripts %}

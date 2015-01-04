@@ -1,10 +1,10 @@
 from flask import jsonify
-from exceptions import *
+from critiquebrainz.ws.exceptions import *
 
 
 def init_error_handlers(app):
 
-    @app.errorhandler(BaseError)
+    @app.errorhandler(WebServiceError)
     def base_error_handler(error):
         return jsonify(error=error.code, description=error.desc), error.status
 

@@ -1,7 +1,7 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
 
 
-class ViewsTestCase(FrontendTestCase):
+class SearchViewsTestCase(FrontendTestCase):
 
     def test_search_page(self):
         response = self.client.get("/search/?query=The+Beatles&type=artist")

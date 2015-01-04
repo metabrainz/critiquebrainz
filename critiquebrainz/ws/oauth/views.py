@@ -6,7 +6,7 @@ from critiquebrainz.decorators import nocache, crossdomain
 oauth_bp = Blueprint('ws_oauth', __name__)
 
 
-@oauth_bp.route('/token', methods=['POST'], endpoint='token')
+@oauth_bp.route('/token', methods=['POST'])
 @nocache
 @crossdomain()
 def oauth_token_handler():

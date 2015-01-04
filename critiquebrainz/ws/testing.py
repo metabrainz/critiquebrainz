@@ -1,4 +1,4 @@
-from flask.ext.testing import TestCase
+from flask_testing import TestCase
 from critiquebrainz.ws import create_app
 from critiquebrainz.data import db
 

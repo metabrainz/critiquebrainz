@@ -46,17 +46,10 @@
           .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
     </script>
     <div id="spotify-play-button">
-      {% if id in spotify_mapping %}
-        <iframe src="https://embed.spotify.com/?uri={{ spotify_mapping[id] }}&theme=white"
+      {% if spotify_mappings %}
+        <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white"
                 width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-        {% if current_user.is_authenticated() %}
-          <em>
-            <small id="spotify-report">
-              <a id="spotify-report-link" class="text-danger" href="javascript:reportSpotifyMatching()">{{ _('Report incorrect Spotify mapping') }}</a>
-              <span id="spotify-report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>
-            </small>
-          </em>
-        {% endif %}
+        <em><small><a class="text-muted" href="{{ url_for('matching.spotify_list', release_group_id=id) }}">{{ _('View Spotify mapping information') }}</a></small></em>
       {% else %}
         <span class="text-muted">
           {{ _('We don\'t have a match on Spotify for this release group.
@@ -177,31 +170,3 @@
   </div>
 </div>
 {% endblock %}
-
-{% if current_user.is_authenticated() and id in spotify_mapping %}
-  {% block scripts %}
-    {{ super() }}
-    <script>
-      function reportSpotifyMatching() {
-        $("#spotify-report-link").hide();
-        var resultBlock = $("#spotify-report-result");
-        resultBlock.show();
-        $.ajax({
-          type: "POST",
-          url: "{{ url_for('matching.spotify_report', release_group_id=release_group.id) }}",
-          success: function(result) {
-            resultBlock.removeClass('text-muted');
-            if (result.success) {
-              resultBlock.text("{{ _('Incorrect mapping has been reported!') }}");
-              resultBlock.addClass('text-success');
-            } else {
-              resultBlock.text("{{ _('Unknown error occurred!') }}");
-              console.log(result.error);
-              resultBlock.addClass('text-danger');
-            }
-          }
-        });
-      }
-    </script>
-  {% endblock %}
-{% endif %}

@@ -1,13 +1,13 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
-from flask.ext.login import login_required, current_user
-from flask.ext.babel import gettext, get_locale
-from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask_login import login_required, current_user
+from flask_babel import gettext, get_locale
+from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data import db
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
-from critiquebrainz.frontend.exceptions import NotFound
+from werkzeug.exceptions import Unauthorized, NotFound
 from markdown import markdown
 
 review_bp = Blueprint('review', __name__)
@@ -32,26 +32,26 @@ def review_browse_handler():
     return render_template('review/browse.html', reviews=reviews, page=page, limit=limit, count=count)
 
 
-@review_bp.route('/<uuid:id>', endpoint='entity')
-def review_entity_handler(id):
+@review_bp.route('/<uuid:id>')
+def entity(id):
     review = Review.query.get_or_404(str(id))
     # Not showing review if it's archived or (isn't published yet and not viewed by author).
     if review.is_archived or (review.is_draft and not (current_user.is_authenticated() and current_user == review.user)):
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
 
-    spotify_mapping = mbspotify.mapping([review.release_group])
+    spotify_mappings = mbspotify.mappings(review.release_group)
 
     if not review.is_draft and current_user.is_authenticated():  # if user is logged in, get his vote for this review
         vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     else:  # otherwise set vote to None, its value will not be used
         vote = None
     review.text_html = markdown(review.text, safe_mode="escape")
-    return render_template('review/entity.html', review=review, spotify_mapping=spotify_mapping, vote=vote)
+    return render_template('review/entity.html', review=review, spotify_mappings=spotify_mappings, vote=vote)
 
 
-@review_bp.route('/write', methods=('GET', 'POST'), endpoint='create')
+@review_bp.route('/write', methods=('GET', 'POST'))
 @login_required
-def create_handler():
+def create():
     release_group = request.args.get('release_group')
     if not release_group:
         flash('Please choose release group that you want to review.')
@@ -79,28 +79,28 @@ def create_handler():
             flash(gettext("Review has been published!"), 'success')
         return redirect(url_for('.entity', id=review.id))
 
-    release_group_details = musicbrainz.release_group_details(release_group)
+    release_group_details = musicbrainz.get_release_group_by_id(release_group)
     if not release_group_details:
         flash(gettext("You can only write a review for a release group that exists on MusicBrainz!"), 'error')
         return redirect(url_for('search.selector', next=url_for('.create')))
     return render_template('review/write.html', form=form, release_group=release_group_details)
 
 
-@review_bp.route('/write/preview', methods=['POST'], endpoint='preview')
+@review_bp.route('/write/preview', methods=['POST'])
 @login_required
-def preview_handler():
+def preview():
     """Get markdown preview of a text."""
     return markdown(request.form['text'], safe_mode="escape")
 
 
-@review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'), endpoint='edit')
+@review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))
 @login_required
-def edit_handler(id):
+def edit(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived or (review.is_draft and current_user != review.user):
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
-        abort(403)
+        raise Unauthorized(gettext("Only author can edit this review."))
 
     form = ReviewEditForm(default_license_id=review.license_id, default_language=review.language)
     if not review.is_draft:
@@ -121,14 +121,14 @@ def edit_handler(id):
     return render_template('review/edit.html', form=form, review=review)
 
 
-@review_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'], endpoint='delete')
+@review_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'])
 @login_required
-def delete_handler(id):
+def delete(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
-        abort(403)
+        raise Unauthorized(gettext("Only the author can delete this review."))
     if request.method == 'POST':
         review.delete()
         flash(gettext("Review has been deleted."), 'success')
@@ -136,9 +136,9 @@ def delete_handler(id):
     return render_template('review/delete.html', review=review)
 
 
-@review_bp.route('/<uuid:review_id>/vote', methods=['POST'], endpoint='vote_submit')
+@review_bp.route('/<uuid:review_id>/vote', methods=['POST'])
 @login_required
-def review_vote_submit_handler(review_id):
+def vote_submit(review_id):
     review_id = str(review_id)
     if 'yes' in request.form:
         vote = True
@@ -147,7 +147,7 @@ def review_vote_submit_handler(review_id):
 
     review = Review.query.get_or_404(review_id)
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     if review.user == current_user:
         flash(gettext("You cannot rate your own review."), 'error')
         return redirect(url_for('.entity', id=review_id))
@@ -166,12 +166,12 @@ def review_vote_submit_handler(review_id):
     return redirect(url_for('.entity', id=review_id))
 
 
-@review_bp.route('/<uuid:id>/vote/delete', methods=['GET'], endpoint='vote_delete')
+@review_bp.route('/<uuid:id>/vote/delete', methods=['GET'])
 @login_required
-def review_vote_delete_handler(id):
+def vote_delete(id):
     review = Review.query.get_or_404(str(id))
     if review.is_archived is True:
-        raise NotFound("Can't find review with a specified ID.")
+        raise NotFound("Can't find a review with the specified ID.")
     vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
         flash(gettext("This review is not rated yet."), 'error')
@@ -181,9 +181,9 @@ def review_vote_delete_handler(id):
     return redirect(url_for('.entity', id=id))
 
 
-@review_bp.route('/<uuid:id>/report', methods=['POST'], endpoint='report')
+@review_bp.route('/<uuid:id>/report', methods=['POST'])
 @login_required
-def review_spam_report_handler(id):
+def report(id):
     review = Review.query.get_or_404(str(id))
     if review.user == current_user:
         return jsonify(success=False, error='own')

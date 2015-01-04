@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 def create_app():
@@ -7,22 +8,33 @@ def create_app():
     # Configuration files
     import critiquebrainz.default_config
     app.config.from_object(critiquebrainz.default_config)
-    app.config.from_object('critiquebrainz.config')
+    app.config.from_pyfile('../config.py', silent=True)
 
     # Error handling
     import errors
     errors.init_error_handlers(app)
 
     # Logging
-    if app.debug is False:
-        from critiquebrainz import loggers
-        loggers.add_all_loggers(app)
+    from critiquebrainz import loggers
+    loggers.init_loggers(app)
 
-    from flask.ext.uuid import FlaskUUID
+    if app.debug:
+        # Debug toolbar
+        DebugToolbarExtension(app)
+        app.config['DEBUG_TB_TEMPLATE_EDITOR_ENABLED'] = True
+
+    from flask_uuid import FlaskUUID
     FlaskUUID(app)
 
     from critiquebrainz.data import db
     db.init_app(app)
+
+    # Memcached
+    if 'MEMCACHED_SERVERS' in app.config:
+        from critiquebrainz import cache
+        cache.init(app.config['MEMCACHED_SERVERS'],
+                   app.config['MEMCACHED_NAMESPACE'],
+                   debug=1 if app.debug else 0)
 
     import babel
     babel.init_app(app)
@@ -38,8 +50,11 @@ def create_app():
         access_token_url="https://musicbrainz.org/oauth2/token",
         base_url="https://musicbrainz.org/")
 
+    # APIs
     from apis import mbspotify
     mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
+    from apis import musicbrainz
+    musicbrainz.init(app.config['MUSICBRAINZ_USERAGENT'], critiquebrainz.__version__)
 
     # Template utilities
     app.jinja_env.add_extension('jinja2.ext.do')
@@ -47,8 +62,7 @@ def create_app():
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
-    from apis import musicbrainz
-    app.jinja_env.filters['release_group_details'] = musicbrainz.release_group_details
+    app.jinja_env.filters['release_group_details'] = musicbrainz.get_release_group_by_id
 
     # Blueprints
     from views import frontend_bp

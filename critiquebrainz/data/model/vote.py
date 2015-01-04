@@ -1,9 +1,13 @@
+"""
+Votes for reviews. Ether positive (vote is True) or negative (vote is False).
+"""
 from critiquebrainz.data import db
 from sqlalchemy.dialects.postgresql import UUID
+from critiquebrainz.data.model.mixins import DeleteMixin
 from datetime import datetime
 
 
-class Vote(db.Model):
+class Vote(db.Model, DeleteMixin):
     __tablename__ = 'vote'
 
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
@@ -24,12 +28,6 @@ class Vote(db.Model):
         db.session.add(vote_obj)
         db.session.commit()
         return vote_obj
-
-    def delete(self):
-        review = self.revision.review
-        db.session.delete(self)
-        db.session.commit()
-        return self
 
     def to_dict(self):
         response = dict(vote=self.vote, voted_at=self.rated_at)

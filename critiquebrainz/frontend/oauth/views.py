@@ -1,16 +1,16 @@
 from flask import Blueprint, render_template, redirect, request
-from flask.ext.login import login_required, current_user
+from flask_login import login_required, current_user
 
 from critiquebrainz.utils import build_url
 from critiquebrainz.ws.oauth import oauth
-from critiquebrainz.data.model.oauth import OAuthClient
+from critiquebrainz.data.model.oauth_client import OAuthClient
 
 oauth_bp = Blueprint('oauth', __name__)
 
 
-@oauth_bp.route('/authorize', methods=['GET', 'POST'], endpoint='authorize_prompt')
+@oauth_bp.route('/authorize', methods=['GET', 'POST'])
 @login_required
-def oauth_authorize_prompt_handler():
+def authorize_prompt():
     """OAuth 2.0 authorization endpoint."""
     response_type = request.args.get('response_type')
     client_id = request.args.get('client_id')

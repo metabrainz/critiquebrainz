@@ -1,5 +1,5 @@
-from flask.ext.uuid import UUID_RE
-from flask.ext.babel import format_datetime, format_date
+from flask_uuid import UUID_RE
+from flask_babel import format_datetime, format_date
 import urllib
 import urlparse
 import string

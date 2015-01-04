@@ -2,6 +2,9 @@
   {% if category == "error" %}
     {% set head = _("Error!") %}
     {% set alert_class="alert-danger" %}
+  {% elif category == "warning" %}
+    {% set head = _("Warning!") %}
+    {% set alert_class="alert-warning" %}
   {% elif category == "success" %}
     {% set head = _("Success!") %}
     {% set alert_class="alert-success" %}
