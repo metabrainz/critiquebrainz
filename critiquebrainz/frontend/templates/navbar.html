@@ -13,7 +13,7 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="cb-navbar-collapse">
-      {% if not error %} {# Not showing this stuff on error pages. If attempt to load user info failes there, page will not render. #}
+      {% if not error %} {# Not showing this stuff on error pages. If attempt to load user info fails there, page will not render. #}
         <ul class="nav navbar-nav">
           {% if not current_user or current_user.is_anonymous() %}
             <li><a href="{{ url_for('login.index') }}">{{ _('Sign in') }}</a></li>
