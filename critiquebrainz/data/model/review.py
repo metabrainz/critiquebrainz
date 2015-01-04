@@ -115,6 +115,27 @@ class Review(db.Model, DeleteMixin):
     @classmethod
     def list(cls, release_group=None, user_id=None, sort=None, limit=None,
              offset=None, language=None, license_id=None, inc_drafts=False):
+        """Get a list of reviews.
+
+        This method provides several filters that can be used to select
+        specific reviews. See argument description below for more info.
+
+        Args:
+            release_group: MBID of the release group that is associated with a
+                review.
+            user_id: UUID of the author.
+            sort: Order of returned reviews. Can be either "rating" (order by
+                rating) or "created" (order by creation time).
+            limit: Maximum number of reviews returned by this method.
+            offset: Offset that can be used in conjunction with the limit.
+            language: Language (code) of returned reviews.
+            licence_id: License of returned reviews.
+            inc_drafts: True if reviews marked as drafts should be included,
+                False if not.
+
+        Returns:
+            List of reviews that match applied filters (if any).
+        """
         query = Review.query.filter(Review.is_archived == False)
         if not inc_drafts:
             query = query.filter(Review.is_draft == False)
@@ -172,7 +193,8 @@ class Review(db.Model, DeleteMixin):
     def update(self, text, is_draft=None, license_id=None, language=None):
         """Update contents of this review.
 
-        :returns New revision of this review.
+        Returns:
+            New revision of this review.
         """
         if license_id is not None:
             if not self.is_draft:  # If trying to convert published review into draft.
