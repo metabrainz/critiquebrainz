@@ -88,7 +88,6 @@ def get_release_group_by_id(id):
     key = cache.prep_cache_key(id)
     release_group = cache.get(key)
     if not release_group:
-        print "MISS!"
         try:
             release_group = musicbrainzngs.get_release_group_by_id(
                 id, ['artists', 'releases', 'release-group-rels', 'url-rels', 'work-rels']
