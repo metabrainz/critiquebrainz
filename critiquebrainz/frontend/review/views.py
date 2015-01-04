@@ -3,7 +3,6 @@ from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
-from critiquebrainz.data import db
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
@@ -21,15 +20,11 @@ def review_browse_handler():
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
     reviews, count = Review.list(sort='created', limit=limit, offset=offset)
-
     # Loading info about release groups for reviews
     rg_mbids = [review.release_group for review in reviews]
     rg_info = musicbrainz.get_multiple_release_groups(rg_mbids)
-    db.session.autoflush = False
-    for review in reviews:
-        review.release_group = rg_info[str(review.release_group)]
-
-    return render_template('review/browse.html', reviews=reviews, page=page, limit=limit, count=count)
+    return render_template('review/browse.html', reviews=reviews, release_groups=rg_info,
+                           page=page, limit=limit, count=count)
 
 
 @review_bp.route('/<uuid:id>')
