@@ -3,6 +3,8 @@ Review model doesn't contain text of the review, it references revision which
 contain different versions of the test.
 """
 from critiquebrainz.data import db
+from sqlalchemy import desc
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.revision import Revision
@@ -33,7 +35,8 @@ class Review(db.Model, DeleteMixin):
     source = db.Column(db.Unicode)
     source_url = db.Column(db.Unicode)
 
-    revisions = db.relationship('Revision', order_by='Revision.timestamp', cascade='delete', backref='review')
+    revisions = db.relationship('Revision', order_by='Revision.timestamp', backref='review',
+                                lazy='joined', cascade='delete')
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
@@ -70,10 +73,17 @@ class Review(db.Model, DeleteMixin):
         """Returns text of the latest revision."""
         return self.last_revision.text  # latest revision
 
-    @property
+    @hybrid_property
     def created(self):
         """Returns creation time of this review (first revision)."""
-        return self.first_revision.timestamp  # first revision
+        if self.revisions:
+            return self.revisions[0].timestamp
+        else:
+            return None
+
+    @created.expression
+    def created(cls):
+        return Revision.timestamp
 
     @property
     def votes_positive_count(self):
@@ -103,9 +113,10 @@ class Review(db.Model, DeleteMixin):
         return self._rating
 
     @classmethod
-    def list(cls, release_group=None, user_id=None, sort=None, limit=None, offset=None, language=None, license_id=None, include_drafts=False):
+    def list(cls, release_group=None, user_id=None, sort=None, limit=None,
+             offset=None, language=None, license_id=None, inc_drafts=False):
         query = Review.query.filter(Review.is_archived == False)
-        if not include_drafts:
+        if not inc_drafts:
             query = query.filter(Review.is_draft == False)
 
         # TODO: Simplify review sorting implementation
@@ -127,11 +138,8 @@ class Review(db.Model, DeleteMixin):
             # order by (positive votes - negative votes) formula
             query = query.order_by(db.desc(db.func.coalesce(r_pos.c.c, 0) - db.func.coalesce(r_neg.c.c, 0)))
 
-        elif sort == 'created':
-            rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time'))\
-                .group_by(Revision.review_id).subquery('time')
-            query = query.outerjoin(rev_q, Review.id == rev_q.c.review_id)  # left join creation times
-            query = query.order_by(db.desc('creation_time'))  # order by creation time
+        elif sort == 'created':  # order by creation time
+            query = query.order_by(desc(Review.created)).join(Review.revisions)
 
         if release_group is not None:
             query = query.filter(Review.release_group == release_group)
