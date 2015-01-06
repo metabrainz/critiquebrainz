@@ -13,7 +13,7 @@ frontend_bp = Blueprint('frontend', __name__)
 @frontend_bp.route('/')
 def index():
     # Popular reviews
-    popular_reviews, _ = Review.list(sort='rating', limit=6)
+    popular_reviews, _ = Review.list(sort='popularity', limit=6)
     for review in popular_reviews:
         # Preparing text for preview
         preview = markdown(review.text, safe_mode="escape")
