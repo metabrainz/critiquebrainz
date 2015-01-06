@@ -13,7 +13,7 @@ frontend_bp = Blueprint('frontend', __name__)
 @frontend_bp.route('/')
 def index():
     # Popular reviews
-    popular_reviews, _ = Review.list(sort='rating', limit=6)
+    popular_reviews = Review.get_popular(6)
     for review in popular_reviews:
         # Preparing text for preview
         preview = markdown(review.text, safe_mode="escape")
@@ -22,7 +22,7 @@ def index():
     # Recent reviews
     recent_reviews, _ = Review.list(sort='created', limit=9)
 
-    # Getting counts and formatting them
+    # Statistics
     review_count = format_number(Review.query.filter(Review.is_archived == False).filter(Review.is_draft == False).count())
     user_count = format_number(User.query.count())
 
