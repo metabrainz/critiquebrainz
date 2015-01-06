@@ -42,7 +42,7 @@ class ReviewTestCase(DataTestCase):
                                text=u"Testing!",
                                is_draft=False,
                                license_id=self.license.id)
-        self.assertEqual(review.created, review.first_revision.timestamp)
+        self.assertEqual(review.created, review.revisions[0].timestamp)
 
     def test_review_deletion(self):
         review = Review.create(user=self.user,
@@ -97,7 +97,7 @@ class ReviewTestCase(DataTestCase):
 
         # Updating should create a new revision.
         self.assertEqual(len(retrieved_review.revisions), 2)
-        self.assertNotEqual(retrieved_review.first_revision, retrieved_review.last_revision)
+        self.assertNotEqual(retrieved_review.revisions[0], retrieved_review.last_revision)
 
         # Let's try doing some things that shouldn't be allowed!
 
@@ -114,9 +114,9 @@ class ReviewTestCase(DataTestCase):
                                is_draft=False,
                                license_id=self.license.id)
         self.assertEqual(len(review.revisions), 1)
-        self.assertEqual(review.first_revision, review.last_revision)
+        self.assertEqual(review.revisions[0], review.last_revision)
 
         # Updating should create a new revision.
         review.update(u"The worst!")
         self.assertEqual(len(review.revisions), 2)
-        self.assertNotEqual(review.first_revision, review.last_revision)
+        self.assertNotEqual(review.revisions[0], review.last_revision)

@@ -61,11 +61,6 @@ class Review(db.Model, DeleteMixin):
         return response
 
     @property
-    def first_revision(self):
-        """Returns first revision of this review."""
-        return self.revisions[0]
-
-    @property
     def last_revision(self):
         """Returns latest revision of this review."""
         return self.revisions[-1]
