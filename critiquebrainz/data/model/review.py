@@ -3,7 +3,7 @@ Review model doesn't contain text of the review, it references revision which
 contain different versions of the test.
 """
 from critiquebrainz.data import db
-from sqlalchemy import desc
+from sqlalchemy import desc, func, and_
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.vote import Vote
@@ -15,6 +15,7 @@ from flask_babel import gettext
 import pycountry
 
 DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
+
 supported_languages = []
 for lang in list(pycountry.languages):
     if 'alpha2' in dir(lang):
@@ -140,27 +141,35 @@ class Review(db.Model, DeleteMixin):
         if not inc_drafts:
             query = query.filter(Review.is_draft == False)
 
-        # TODO: Simplify review sorting implementation
+        # SORTING:
 
-        if sort == 'rating':
-            # prepare subqueries
-            r_q = db.session.query(
-                Vote.revision_id, Vote.vote, db.func.count('*').label('c')).group_by(Vote.revision_id, Vote.vote)
-            # left join positive votes
-            r_pos = r_q.subquery('r_pos')
-            query = query.outerjoin(Revision).outerjoin(r_pos,
-                                    db.and_(r_pos.c.revision_id == Revision.id,
-                                            r_pos.c.vote == True))
-            r_neg = r_q.subquery('r_neg')
-            # left join negative votes
-            query = query.outerjoin(Revision).outerjoin(r_neg,
-                                    db.and_(r_neg.c.revision_id == Revision.id,
-                                            r_neg.c.vote == False))
-            # order by (positive votes - negative votes) formula
-            query = query.order_by(db.desc(db.func.coalesce(r_pos.c.c, 0) - db.func.coalesce(r_neg.c.c, 0)))
+        if sort == 'rating':  # order by rating (positive votes - negative votes)
+            # TODO: Simplify this:
+            vote_query_base = db.session.query(
+                Vote.revision_id,        # revision associated with a vote
+                Vote.vote,               # vote itself (True if positive, False if negative)
+                func.count().label('c')  # number of votes
+            ).group_by(Vote.revision_id, Vote.vote)
+
+            # Getting positive votes
+            votes_pos = vote_query_base.subquery('votes_pos')
+            query = query.outerjoin(Revision).outerjoin(
+                votes_pos, and_(votes_pos.c.revision_id == Revision.id,
+                                votes_pos.c.vote == True))
+
+            # Getting negative votes
+            votes_neg = vote_query_base.subquery('votes_neg')
+            query = query.outerjoin(Revision).outerjoin(
+                votes_neg, and_(votes_neg.c.revision_id == Revision.id,
+                                votes_neg.c.vote == False))
+
+            query = query.order_by(desc(func.coalesce(votes_pos.c.c, 0)
+                                        - func.coalesce(votes_neg.c.c, 0)))
 
         elif sort == 'created':  # order by creation time
             query = query.order_by(desc(Review.created)).join(Review.revisions)
+
+        # FILTERING:
 
         if release_group is not None:
             query = query.filter(Review.release_group == release_group)
