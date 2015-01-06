@@ -143,7 +143,10 @@ class Review(db.Model, DeleteMixin):
         if sort == 'rating' or sort == 'popularity':
             # Ordering by rating (positive votes - negative votes) and
             # popularity (recent votes).
-            # TODO: Simplify this:
+
+            # TODO: Simplify this part. It can probably be rewritten using
+            # hybrid attributes (by making rating property a hybrid_property),
+            # but I'm not sure how to do that.
 
             # Preparing base query for getting votes
             vote_query_base = db.session.query(
