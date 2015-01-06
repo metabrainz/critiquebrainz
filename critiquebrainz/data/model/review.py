@@ -12,6 +12,7 @@ from critiquebrainz.data.model.mixins import DeleteMixin
 from critiquebrainz.data.constants import review_classes
 from werkzeug.exceptions import BadRequest
 from flask_babel import gettext
+from datetime import datetime, timedelta
 import pycountry
 
 DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
@@ -126,7 +127,8 @@ class Review(db.Model, DeleteMixin):
                 review.
             user_id: UUID of the author.
             sort: Order of returned reviews. Can be either "rating" (order by
-                rating) or "created" (order by creation time).
+                rating), "popularity" (order using recent votes), or "created"
+                (order by creation time).
             limit: Maximum number of reviews returned by this method.
             offset: Offset that can be used in conjunction with the limit.
             language: Language (code) of returned reviews.
@@ -143,13 +145,23 @@ class Review(db.Model, DeleteMixin):
 
         # SORTING:
 
-        if sort == 'rating':  # order by rating (positive votes - negative votes)
+        if sort == 'rating' or sort == 'popularity':
+            # Ordering by rating (positive votes - negative votes) and
+            # popularity (recent votes).
             # TODO: Simplify this:
+
+            # Preparing base query for getting votes
             vote_query_base = db.session.query(
                 Vote.revision_id,        # revision associated with a vote
                 Vote.vote,               # vote itself (True if positive, False if negative)
                 func.count().label('c')  # number of votes
             ).group_by(Vote.revision_id, Vote.vote)
+
+            if sort == 'popularity':
+                # When sorting by popularity, we use only votes from the last
+                # two weeks to calculate rating.
+                vote_query_base = vote_query_base\
+                    .filter(Vote.rated_at > datetime.now() - timedelta(weeks=2))
 
             # Getting positive votes
             votes_pos = vote_query_base.subquery('votes_pos')
