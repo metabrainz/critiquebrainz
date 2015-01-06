@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-04 13:57+0000\n"
-"PO-Revision-Date: 2014-12-17 19:14+0000\n"
+"POT-Creation-Date: 2014-12-18 02:20+0000\n"
+"PO-Revision-Date: 2014-12-18 17:42+0000\n"
 "Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/critiquebrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +19,7 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: critiquebrainz/frontend/exceptions.py:16
-msgid "Access to the requested resource has been denied"
-msgstr "L'accès à la ressource demandée a été refusé"
-
-#: critiquebrainz/frontend/apis/mbspotify.py:37
+#: critiquebrainz/frontend/apis/mbspotify.py:46
 msgid ""
 "Spotify mapping server is unavailable. You will not see an embedded player."
 msgstr "Le serveur de mappage de Spotify n'est pas disponible. Vous ne verrez pas de lecteur intégré."
@@ -78,7 +74,7 @@ msgstr "Twitter"
 msgid "Recording studio"
 msgstr "Studio d'enregistrement"
 
-#: critiquebrainz/frontend/artist/views.py:15
+#: critiquebrainz/frontend/artist/views.py:14
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
 msgstr "Désolé, nous n'avons pas pu trouver d'artiste avec cet ID Musicbrainz."
 
@@ -90,37 +86,37 @@ msgstr "Veuillez vous connecter pour accéder à cette page."
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
-#: critiquebrainz/frontend/matching/views.py:40
-#: critiquebrainz/frontend/matching/views.py:64
+#: critiquebrainz/frontend/matching/views.py:42
+#: critiquebrainz/frontend/matching/views.py:66
 msgid "Only existing release groups can be matched to Spotify!"
 msgstr "Seuls les groupes de parution existants peuvent correspondre à Spotify !"
 
-#: critiquebrainz/frontend/matching/views.py:69
+#: critiquebrainz/frontend/matching/views.py:71
 msgid "You need to select an album from Spotify!"
 msgstr "Vous devez choisir un album sur Spotify !"
 
-#: critiquebrainz/frontend/matching/views.py:74
+#: critiquebrainz/frontend/matching/views.py:76
 msgid "You need to specify a correct link to this album on Spotify!"
 msgstr "Vous devez spécifier un lien correct vers cet album sur Spotify !"
 
-#: critiquebrainz/frontend/matching/views.py:79
-#: critiquebrainz/frontend/matching/views.py:118
+#: critiquebrainz/frontend/matching/views.py:81
+#: critiquebrainz/frontend/matching/views.py:120
 msgid "You need to specify existing album from Spotify!"
 msgstr "Vous devez spécifier un album existant sur Spotify !"
 
-#: critiquebrainz/frontend/matching/views.py:85
+#: critiquebrainz/frontend/matching/views.py:87
 msgid "Spotify mapping has been added!"
 msgstr "Le mappage Spotify a été ajouté !"
 
-#: critiquebrainz/frontend/matching/views.py:101
+#: critiquebrainz/frontend/matching/views.py:103
 msgid "Can't find release group with that ID!"
 msgstr "Impossible de trouver un groupe de parution avec cet ID !"
 
-#: critiquebrainz/frontend/matching/views.py:107
+#: critiquebrainz/frontend/matching/views.py:109
 msgid "This album is not matched to Spotify yet!"
 msgstr "Cet album n'est pas encore mis en concordance avec Spotify !"
 
-#: critiquebrainz/frontend/matching/views.py:112
+#: critiquebrainz/frontend/matching/views.py:114
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr "Le mappage erroné de Spotify a été signalé. Merci !"
 
@@ -214,19 +210,19 @@ msgstr "Le champ d'URL de rappel d’autorisation est vide."
 msgid "Authorization callback URL is invalid."
 msgstr "L'URL de rappel d’autorisation est invalide."
 
-#: critiquebrainz/frontend/profile/applications/views.py:29
+#: critiquebrainz/frontend/profile/applications/views.py:30
 msgid "You have created an application!"
 msgstr "Vous avez créé une application !"
 
-#: critiquebrainz/frontend/profile/applications/views.py:44
+#: critiquebrainz/frontend/profile/applications/views.py:45
 msgid "You have updated an application!"
 msgstr "Vous avez mis une application à jour !"
 
-#: critiquebrainz/frontend/profile/applications/views.py:62
+#: critiquebrainz/frontend/profile/applications/views.py:63
 msgid "You have deleted an application."
 msgstr "Vous avez supprimé une application."
 
-#: critiquebrainz/frontend/release_group/views.py:18
+#: critiquebrainz/frontend/release_group/views.py:17
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
 msgstr "Désolé, nous n'avons pas pu trouver de groupe de parution avec cet ID MusicBrainz."
 
@@ -270,65 +266,70 @@ msgstr "Langue"
 msgid "You need to accept the license agreement!"
 msgstr "Vous devez accepter la licence d'utilisation !"
 
-#: critiquebrainz/frontend/review/views.py:46
+#: critiquebrainz/frontend/review/views.py:45
 msgid "You have already published a review for this album!"
 msgstr "Vous avez déjà publié une critique pour cet album !"
 
-#: critiquebrainz/frontend/review/views.py:50
+#: critiquebrainz/frontend/review/views.py:49
 msgid "You have exceeded your limit of reviews per day."
 msgstr "Vous avez dépassé votre limite de critiques par jour."
 
-#: critiquebrainz/frontend/review/views.py:58
+#: critiquebrainz/frontend/review/views.py:57
 msgid "Review has been saved!"
 msgstr "La critique a été enregistrée !"
 
-#: critiquebrainz/frontend/review/views.py:60
+#: critiquebrainz/frontend/review/views.py:59
 msgid "Review has been published!"
 msgstr "La critique a été publiée !"
 
-#: critiquebrainz/frontend/review/views.py:65
+#: critiquebrainz/frontend/review/views.py:64
 msgid ""
 "You can only write a review for a release group that exists on MusicBrainz!"
 msgstr "Vous pouvez seulement rédiger une critique pour un groupe de parution qui existe dans MusicBrainz !"
 
-#: critiquebrainz/frontend/review/views.py:98
+#: critiquebrainz/frontend/review/views.py:81
+#: critiquebrainz/frontend/review/views.py:109
+msgid "Can't find a review with the specified ID."
+msgstr "Impossible de trouver une critique avec l'ID spécifié."
+
+#: critiquebrainz/frontend/review/views.py:83
+msgid "Only author can edit this review."
+msgstr "Seul l'auteur peut modifier cette critique."
+
+#: critiquebrainz/frontend/review/views.py:97
 msgid "Review has been updated."
 msgstr "La critique a été mise à jour."
 
-#: critiquebrainz/frontend/review/views.py:110
-msgid "Can't find review with a specified ID."
-msgstr "Impossible de trouver une critique avec un ID spécifié."
-
-#: critiquebrainz/frontend/review/views.py:112
-msgid "Only author can delete this review."
+#: critiquebrainz/frontend/review/views.py:111
+msgid "Only the author can delete this review."
 msgstr "Seul l'auteur peut supprimer cette critique."
 
-#: critiquebrainz/frontend/review/views.py:115
+#: critiquebrainz/frontend/review/views.py:114
 msgid "Review has been deleted."
 msgstr "La critique a été supprimée."
 
-#: critiquebrainz/frontend/review/views.py:133
+#: critiquebrainz/frontend/review/views.py:132
 msgid "You cannot rate your own review."
 msgstr "Vous ne pouvez pas évaluer votre propre critique."
 
-#: critiquebrainz/frontend/review/views.py:136
+#: critiquebrainz/frontend/review/views.py:135
 msgid "You have exceeded your limit of votes per day."
 msgstr "Vous avez dépassé votre limite de votes par jour."
 
-#: critiquebrainz/frontend/review/views.py:139
-#: critiquebrainz/frontend/review/views.py:142
+#: critiquebrainz/frontend/review/views.py:138
+#: critiquebrainz/frontend/review/views.py:141
 msgid "You are not allowed to rate this review."
 msgstr "Il ne vous est pas permis d'évaluer cette critique."
 
-#: critiquebrainz/frontend/review/views.py:146
+#: critiquebrainz/frontend/review/views.py:145
 msgid "You have rated this review!"
 msgstr "Vous avez évalué cette critique !"
 
-#: critiquebrainz/frontend/review/views.py:158
+#: critiquebrainz/frontend/review/views.py:157
 msgid "This review is not rated yet."
 msgstr "Cette critique n'est pas encore évaluée."
 
-#: critiquebrainz/frontend/review/views.py:161
+#: critiquebrainz/frontend/review/views.py:160
 msgid "You have deleted your vote for this review!"
 msgstr "Vous avez supprimé votre vote pour cette critique !"
 
@@ -655,35 +656,25 @@ msgstr "Artiste"
 msgid "Release group"
 msgstr "Groupe de parution"
 
-#: critiquebrainz/frontend/templates/errors/404.html:3
+#: critiquebrainz/frontend/templates/errors/400.html:2
+msgid "Invalid request"
+msgstr "Demande invalide"
+
+#: critiquebrainz/frontend/templates/errors/403.html:2
+msgid "Access denied"
+msgstr "Accès refusé"
+
+#: critiquebrainz/frontend/templates/errors/404.html:2
 msgid "Page not found"
 msgstr "Page introuvable"
 
-#: critiquebrainz/frontend/templates/errors/404.html:9
-msgid ""
-"The requested URL was not found on the server. If you entered the URL "
-"manually please check your spelling and try again."
-msgstr "L'URL demandée est introuvable sur le serveur. Si vous avez saisi l'URL manuellement, veuillez vérifier l'orthographe et ressayer."
+#: critiquebrainz/frontend/templates/errors/500.html:2
+msgid "Internal server error"
+msgstr "Erreur interne du serveur"
 
-#: critiquebrainz/frontend/templates/errors/500.html:3
-msgid "Server error"
-msgstr "Erreur du serveur"
-
-#: critiquebrainz/frontend/templates/errors/500.html:6
-msgid ""
-"Server failed to process your request. Developers have been notified. You "
-"can try again later."
-msgstr "Le serveur n'a pas pu traiter votre requête. Les développeurs ont été avertis. Vous pouvez ressayer ultérieurement."
-
-#: critiquebrainz/frontend/templates/errors/503.html:3
+#: critiquebrainz/frontend/templates/errors/503.html:2
 msgid "Service unavailable"
 msgstr "Service non disponible"
-
-#: critiquebrainz/frontend/templates/errors/503.html:6
-msgid ""
-"CritiqueBrainz server is temporarily unavailable. Developers have been "
-"notified. You can try again later."
-msgstr "Le serveur de CritiqueBrainz est temporairement non disponible. Les développeurs ont été avertis. Vous pouvez ressayer ultérieurement."
 
 #: critiquebrainz/frontend/templates/errors/base.html:9
 msgid "Back to home page"
@@ -734,9 +725,6 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #: critiquebrainz/frontend/templates/matching/report.html:3
-msgid "Incrorrect mapping reporting"
-msgstr "Signaler un mappage erroné"
-
 #: critiquebrainz/frontend/templates/matching/report.html:6
 msgid "Incorrect mapping reporting"
 msgstr "Signaler un mappage erroné"
