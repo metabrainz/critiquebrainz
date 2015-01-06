@@ -20,9 +20,11 @@ def browse():
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
     reviews, count = Review.list(sort='created', limit=limit, offset=offset)
+
     # Loading info about release groups for reviews
     rg_mbids = [review.release_group for review in reviews]
     rg_info = musicbrainz.get_multiple_release_groups(rg_mbids)
+
     return render_template('review/browse.html', reviews=reviews, release_groups=rg_info,
                            page=page, limit=limit, count=count)
 
