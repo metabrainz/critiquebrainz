@@ -10,6 +10,7 @@ from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.mixins import DeleteMixin
 from critiquebrainz.data.constants import review_classes
+from critiquebrainz import cache
 from werkzeug.exceptions import BadRequest
 from flask_babel import gettext
 from datetime import datetime, timedelta
@@ -233,40 +234,49 @@ class Review(db.Model, DeleteMixin):
         difference between positive votes and negative. In this case only votes
         from the last month are used to calculate rating.
 
+        Results are cached for 12 hours.
+
         Args:
             limit: Maximum number of reviews to return.
 
         Returns:
             Randomized list of popular reviews.
         """
-        query = Review.query.filter(and_(Review.is_archived == False,
-                                         Review.is_draft == False))\
-            .distinct(Review.release_group)  # different release groups
+        cache_key = cache.prep_cache_key('popular_reviews', [limit])
+        reviews = cache.get(cache_key)
 
-        # Preparing base query for getting votes
-        vote_query_base = db.session.query(Vote.revision_id, Vote.vote, func.count().label('c'))\
-            .group_by(Vote.revision_id, Vote.vote)\
-            .filter(Vote.rated_at > datetime.now() - timedelta(weeks=4))
+        if not reviews:
+            query = Review.query.filter(and_(Review.is_archived == False,
+                                             Review.is_draft == False)) \
+                .distinct(Review.release_group)  # different release groups
 
-        # Getting positive votes
-        votes_pos = vote_query_base.subquery('votes_pos')
-        query = query.outerjoin(Revision).outerjoin(
-            votes_pos, and_(votes_pos.c.revision_id == Revision.id,
-                            votes_pos.c.vote == True))
+            # Preparing base query for getting votes
+            vote_query_base = db.session.query(
+                Vote.revision_id, Vote.vote, func.count().label('c')) \
+                .group_by(Vote.revision_id, Vote.vote) \
+                .filter(Vote.rated_at > datetime.now() - timedelta(weeks=4))
 
-        # Getting negative votes
-        votes_neg = vote_query_base.subquery('votes_neg')
-        query = query.outerjoin(Revision).outerjoin(
-            votes_neg, and_(votes_neg.c.revision_id == Revision.id,
-                            votes_neg.c.vote == False))
+            # Getting positive votes
+            votes_pos = vote_query_base.subquery('votes_pos')
+            query = query.outerjoin(Revision).outerjoin(
+                votes_pos, and_(votes_pos.c.revision_id == Revision.id,
+                                votes_pos.c.vote == True))
 
-        query = query.order_by(Review.release_group,
-                               desc(func.coalesce(votes_pos.c.c, 0) - func.coalesce(votes_neg.c.c, 0)))
+            # Getting negative votes
+            votes_neg = vote_query_base.subquery('votes_neg')
+            query = query.outerjoin(Revision).outerjoin(
+                votes_neg, and_(votes_neg.c.revision_id == Revision.id,
+                                votes_neg.c.vote == False))
 
-        if limit is not None:
-            query = query.limit(limit * 4)
+            query = query.order_by(Review.release_group,
+                                   desc(func.coalesce(votes_pos.c.c, 0)
+                                        - func.coalesce(votes_neg.c.c, 0)))
 
-        reviews = query.all()
+            if limit is not None:
+                query = query.limit(limit * 4)
+
+            reviews = query.all()
+            cache.set(cache_key, reviews, 12 * 60 * 60)  # 12 hours
+
         shuffle(reviews)  # a bit more variety
-
         return reviews[:limit]
