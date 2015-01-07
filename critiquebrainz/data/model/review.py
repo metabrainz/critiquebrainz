@@ -252,8 +252,7 @@ class Review(db.Model, DeleteMixin):
             # If there are multiple reviews for a release group we don't choose
             # the most popular.
             distinct_subquery = db.session.query(Review) \
-                .filter(and_(Review.is_archived == False,
-                             Review.is_draft == False)) \
+                .filter(Review.is_draft == False) \
                 .distinct(Review.release_group).subquery()
 
             # Randomizing results to get some variety
