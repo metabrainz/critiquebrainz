@@ -32,7 +32,6 @@ class Review(db.Model, DeleteMixin):
     release_group = db.Column(UUID, index=True, nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     edits = db.Column(db.Integer, nullable=False, default=0)
-    is_archived = db.Column(db.Boolean, nullable=False, default=False)
     is_draft = db.Column(db.Boolean, nullable=False, default=False)
     license_id = db.Column(db.Unicode, db.ForeignKey('license.id', ondelete='CASCADE'), nullable=False)
     language = db.Column(db.String(3), default='en', nullable=False)
@@ -135,7 +134,7 @@ class Review(db.Model, DeleteMixin):
         Returns:
             List of reviews that match applied filters (if any).
         """
-        query = Review.query.filter(Review.is_archived == False)
+        query = Review.query
         if not inc_drafts:
             query = query.filter(Review.is_draft == False)
 

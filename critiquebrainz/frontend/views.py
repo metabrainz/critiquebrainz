@@ -23,7 +23,8 @@ def index():
     recent_reviews, _ = Review.list(sort='created', limit=9)
 
     # Statistics
-    review_count = format_number(Review.query.filter(Review.is_archived == False).filter(Review.is_draft == False).count())
+    # TODO: Move these into models:
+    review_count = format_number(Review.query.filter(Review.is_draft == False).count())
     user_count = format_number(User.query.count())
 
     return render_template('index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
