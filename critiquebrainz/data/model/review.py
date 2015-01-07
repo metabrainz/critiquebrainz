@@ -4,6 +4,7 @@ contain different versions of the test.
 """
 from critiquebrainz.data import db
 from sqlalchemy import desc, func, and_
+from sqlalchemy.orm import aliased
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.vote import Vote
@@ -246,9 +247,21 @@ class Review(db.Model, DeleteMixin):
         reviews = cache.get(cache_key)
 
         if not reviews:
-            query = Review.query.filter(and_(Review.is_archived == False,
-                                             Review.is_draft == False)) \
-                .distinct(Review.release_group)  # different release groups
+            # Selecting reviews for distinct release groups
+            # TODO: The is a problem with selecting popular reviews like this:
+            # If there are multiple reviews for a release group we don't choose
+            # the most popular.
+            distinct_subquery = db.session.query(Review) \
+                .filter(and_(Review.is_archived == False,
+                             Review.is_draft == False)) \
+                .distinct(Review.release_group).subquery()
+
+            # Randomizing results to get some variety
+            rand_subquery = db.session.query(aliased(Review, distinct_subquery)) \
+                .order_by(func.random()).subquery()
+
+            # Sorting reviews by rating
+            query = db.session.query(aliased(Review, rand_subquery))
 
             # Preparing base query for getting votes
             vote_query_base = db.session.query(
@@ -268,11 +281,12 @@ class Review(db.Model, DeleteMixin):
                 votes_neg, and_(votes_neg.c.revision_id == Revision.id,
                                 votes_neg.c.vote == False))
 
-            query = query.order_by(Review.release_group,
-                                   desc(func.coalesce(votes_pos.c.c, 0)
+            query = query.order_by(desc(func.coalesce(votes_pos.c.c, 0)
                                         - func.coalesce(votes_neg.c.c, 0)))
 
             if limit is not None:
+                # Selecting more reviews there so we'll have something
+                # different to show (shuffling is done below).
                 query = query.limit(limit * 4)
 
             reviews = query.all()
