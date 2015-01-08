@@ -28,6 +28,7 @@ for lang in list(pycountry.languages):
 
 class Review(db.Model, DeleteMixin):
     __tablename__ = 'review'
+    CACHE_NAMESPACE = 'Review'
 
     id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
     release_group = db.Column(UUID, index=True, nullable=False)
@@ -200,6 +201,9 @@ class Review(db.Model, DeleteMixin):
         db.session.flush()
         db.session.add(Revision(review_id=review.id, text=text))
         db.session.commit()
+
+        cache.invalidate_namespace(Review.CACHE_NAMESPACE)
+
         return review
 
     def update(self, text, is_draft=None, license_id=None, language=None):
@@ -221,9 +225,10 @@ class Review(db.Model, DeleteMixin):
                 raise BadRequest(gettext("Converting published reviews back to drafts is not allowed."))
             self.is_draft = is_draft
 
-        new_revision = Revision(review_id=self.id, text=text)
-        db.session.add(new_revision)
-        db.session.commit()
+        new_revision = Revision.create(self.id, text)
+
+        cache.invalidate_namespace(Review.CACHE_NAMESPACE)
+
         return new_revision
 
     @classmethod
@@ -242,8 +247,8 @@ class Review(db.Model, DeleteMixin):
         Returns:
             Randomized list of popular reviews.
         """
-        cache_key = cache.prep_cache_key('popular_reviews', [limit])
-        reviews = cache.get(cache_key)
+        cache_key = cache.gen_key('popular_reviews', [limit])
+        reviews = cache.get(cache_key, Review.CACHE_NAMESPACE)
 
         if not reviews:
             # Selecting reviews for distinct release groups
@@ -288,7 +293,7 @@ class Review(db.Model, DeleteMixin):
                 query = query.limit(limit * 4)
 
             reviews = query.all()
-            cache.set(cache_key, reviews, 12 * 60 * 60)  # 12 hours
+            cache.set(cache_key, reviews, 12 * 60 * 60, Review.CACHE_NAMESPACE)  # 12 hours
 
         shuffle(reviews)  # a bit more variety
         return reviews[:limit]

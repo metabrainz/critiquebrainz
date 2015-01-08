@@ -41,7 +41,7 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
     """
     if release_types is None:
         release_types = []
-    key = cache.prep_cache_key(artist_id, [limit, offset] + release_types)
+    key = cache.gen_key(artist_id, [limit, offset] + release_types)
     release_groups = cache.get(key)
     if not release_groups:
         try:
@@ -63,7 +63,7 @@ def get_artist_by_id(id):
     Returns:
         Artist object with the following includes: url-rels, artist-rels.
     """
-    key = cache.prep_cache_key(id)
+    key = cache.gen_key(id)
     artist = cache.get(key)
     if not artist:
         try:
@@ -85,7 +85,7 @@ def get_release_group_by_id(id):
         Release group object with the following includes: artists, releases,
         release-group-rels, url-rels, work-rels.
     """
-    key = cache.prep_cache_key(id)
+    key = cache.gen_key(id)
     release_group = cache.get(key)
     if not release_group:
         try:
@@ -117,7 +117,7 @@ def get_release_by_id(id):
     Returns:
         Release object with the following includes: recordings, media.
     """
-    key = cache.prep_cache_key(id)
+    key = cache.gen_key(id)
     release = cache.get(key)
     if not release:
         try:

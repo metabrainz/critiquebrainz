@@ -11,7 +11,7 @@ import hashlib
 import memcache
 
 _mc = None
-_namespace = "CB"
+_glob_namespace = "CB"
 
 
 def init(servers, namespace="CB", debug=0):
@@ -19,50 +19,49 @@ def init(servers, namespace="CB", debug=0):
 
     Args:
         server: List of strings with memcached server addresses (host:port).
-        namespace: Optional namespace that will be prepended to all keys.
+        namespace: Optional global namespace that will be prepended to all keys.
         debug: Whether to display error messages when a server can't be contacted.
     """
-    global _mc, _namespace
+    global _mc, _glob_namespace
     _mc = memcache.Client(servers, debug=debug)
-    _namespace = namespace + ":"
+    # TODO: Check length of the namespace (should fit with hash appended)
+    _glob_namespace = namespace + ":"
 
 
-def set(key, val, time=0, key_prefix=''):
+def set(key, val, time=0, namespace=None):
     """Set a key to a given value.
 
     Returns:
         True if stored successfully, False otherwise.
     """
     if _mc is None: return
-    not_stored = _mc.set_multi({key: val}, time, _namespace + key_prefix)
-    return len(not_stored) == 0
+    not_stored_count = set_multi({key: val}, time, namespace)
+    return len(not_stored_count) == 0
 
 
-def get(key, key_prefix=''):
+def get(key, namespace=None):
     """Retrieve a key.
 
     Returns:
         Stored value or None if it's not found.
     """
     if _mc is None: return
-    result = _mc.get_multi([key], _namespace + key_prefix)
-    if key in result:
-        return result[key]
-    else:
-        return None
+    key = _prep_key(key, namespace)
+    result = _mc.get_multi([key], _glob_namespace)
+    return result[key] if key in result else None
 
 
-def delete(key, key_prefix=''):
+def delete(key, namespace=None):
     """Delete a key.
 
     Returns:
           True if deleted successfully, False otherwise.
     """
     if _mc is None: return
-    return _mc.delete_multi([key], key_prefix=_namespace + key_prefix) == 1
+    return delete_multi([key], namespace) == 1
 
 
-def set_multi(mapping, time=0, key_prefix=''):
+def set_multi(mapping, time=0, namespace=None):
     """Set multiple keys doing just one query.
 
     Args:
@@ -71,10 +70,10 @@ def set_multi(mapping, time=0, key_prefix=''):
         List of keys which failed to be stored (memcache out of memory, etc.).
     """
     if _mc is None: return
-    return _mc.set_multi(mapping, time, _namespace + key_prefix)
+    return _mc.set_multi(_prep_dict(mapping, namespace), time, _glob_namespace)
 
 
-def get_multi(keys, key_prefix=''):
+def get_multi(keys, namespace=None):
     """Retrieve multiple keys doing just one query.
 
     Args:
@@ -84,20 +83,23 @@ def get_multi(keys, key_prefix=''):
         provided, the keys in the returned dictionary will not have it present.
     """
     if _mc is None: return
-    return _mc.get_multi(keys, _namespace + key_prefix)
+    return _mc.get_multi(_prep_list(keys, namespace), _glob_namespace)
 
 
-def prep_cache_key(key, attributes=None):
-    """Creates a key with attached attributes.
+def delete_multi(keys, namespace=None):
+    if _mc is None: return
+    return _mc.delete_multi(_prep_list(keys, namespace), key_prefix=_glob_namespace)
+
+
+def gen_key(key, attributes=None):
+    """Helper function that generates a key with attached attributes.
 
     Args:
         key: Original key.
         attributes: List of attributes.
     Returns:
-        New key that can be used with cache.
+        Key that can be used with cache.
     """
-    if _mc is None: return key
-
     if attributes is None:
         attributes = []
 
@@ -109,12 +111,48 @@ def prep_cache_key(key, attributes=None):
         if not isinstance(attr, basestring):
             attr = str(attr)
         key += '_' + attr.encode('ascii', errors='xmlcharrefreplace')
+
     key = key.replace(' ', '_')  # spaces are not allowed
 
-    if _mc.server_max_key_length != 0 and \
-        len(_namespace) + _mc.server_max_key_length:
-        key = hashlib.sha1(key).hexdigest()
-
-    _mc.check_key(_namespace + key)
-
     return key
+
+
+def invalidate_namespace(namespace):
+    """Invalidates specified namespace by incrementing its version.
+
+    Args:
+        namespace: Namespace that needs to be invalidated.
+    """
+    version_key = _glob_namespace + namespace
+    if _mc.incr(version_key) is None:  # namespace isn't initialized
+        _mc.set(version_key, 1)  # initializing the namespace
+
+
+def _get_namespace_version(namespace):
+    version_key = _glob_namespace + namespace
+    version = _mc.get(version_key)
+    if version is None:  # namespace isn't initialized
+        version = 1
+        _mc.set(version_key, version)  # initializing the namespace
+    return version
+
+
+def _prep_key(key, namespace=None):
+    """Prepares a key for use with memcached."""
+    if namespace:
+        key = "%s:%s:%s" % (namespace, _get_namespace_version(namespace), key)
+    key = hashlib.sha1(key).hexdigest()
+    _mc.check_key(key)
+    return key
+
+
+def _prep_list(l, namespace=None):
+    """Wrapper for _prep_key function that works with lists."""
+    return [_prep_key(k, namespace) for k in l]
+
+
+def _prep_dict(dictionary, namespace=None):
+    """Wrapper for _prep_key function that works with dictionaries."""
+    for key in dictionary.keys():
+        dictionary[_prep_key(key, namespace)] = dictionary.pop(key)
+    return dictionary

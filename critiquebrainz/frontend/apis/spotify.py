@@ -18,14 +18,14 @@ def search(query, type, limit=20, offset=0):
 
     More information is available at https://developer.spotify.com/web-api/search-item/.
     """
-    key = cache.prep_cache_key(query, [type, limit, offset])
-    key_prefix = "spotify_search"
-    result = cache.get(key, key_prefix)
+    key = cache.gen_key(query, [type, limit, offset])
+    namespace = "spotify_search"
+    result = cache.get(key, namespace)
     if not result:
         result = requests.get("%s/search?q=%s&type=%s&limit=%s&offset=%s" %
                               (BASE_URL, urllib.quote(query.encode('utf8')),
                                type, str(limit), str(offset))).json()
-        cache.set(key=key, key_prefix=key_prefix, val=result,
+        cache.set(key=key, namespace=namespace, val=result,
                   time=DEFAULT_CACHE_EXPIRATION)
     return result
 
@@ -37,11 +37,11 @@ def get_album(spotify_id):
         Album object from Spotify. More info about this type of object is
         available at https://developer.spotify.com/web-api/object-model/#album-object.
     """
-    key_prefix = "spotify_album"
-    album = cache.get(spotify_id, key_prefix)
+    namespace = "spotify_album"
+    album = cache.get(spotify_id, namespace)
     if not album:
         album = requests.get("%s/albums/%s" % (BASE_URL, spotify_id)).json()
-        cache.set(key=spotify_id, key_prefix=key_prefix, val=album,
+        cache.set(key=spotify_id, namespace=namespace, val=album,
                   time=DEFAULT_CACHE_EXPIRATION)
     return album
 
@@ -54,8 +54,8 @@ def get_multiple_albums(spotify_ids):
         List of album objects from Spotify. More info about this type of objects
         is available at https://developer.spotify.com/web-api/object-model/#album-object.
     """
-    key_prefix = "spotify_album"
-    albums = cache.get_multi(spotify_ids, key_prefix)
+    namespace = "spotify_album"
+    albums = cache.get_multi(spotify_ids, namespace)
 
     # Checking which albums weren't in cache
     for album_id in albums.keys():
@@ -69,7 +69,7 @@ def get_multiple_albums(spotify_ids):
         for album in resp:
             received_albums[album['id']] = album
 
-        cache.set_multi(received_albums, key_prefix=key_prefix, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set_multi(received_albums, namespace=namespace, time=DEFAULT_CACHE_EXPIRATION)
 
         albums = dict(albums.items() + received_albums.items())
 

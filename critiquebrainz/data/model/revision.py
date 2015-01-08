@@ -39,3 +39,10 @@ class Revision(db.Model, DeleteMixin):
                         timestamp=self.timestamp,
                         text=self.text)
         return response
+
+    @classmethod
+    def create(cls, review_id, text):
+        revision = cls(review_id=review_id, text=text)
+        db.session.add(revision)
+        db.session.commit()
+        return revision
