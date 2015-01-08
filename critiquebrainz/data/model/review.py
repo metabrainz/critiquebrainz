@@ -293,7 +293,7 @@ class Review(db.Model, DeleteMixin):
                 query = query.limit(limit * 4)
 
             reviews = query.all()
-            cache.set(cache_key, reviews, 12 * 60 * 60, Review.CACHE_NAMESPACE)  # 12 hours
+            cache.set(cache_key, reviews, 1 * 60 * 60, Review.CACHE_NAMESPACE)  # 1 hour
 
         shuffle(reviews)  # a bit more variety
         return reviews[:limit]
