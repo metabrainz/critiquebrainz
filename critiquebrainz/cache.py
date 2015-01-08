@@ -1,8 +1,14 @@
 """
-This module simplifies interaction with memcached. It uses python-memcached
-package to interact with the server(s).
+This module serves as an interface to memcached instance.
 
 Module needs to be initialized before use. See init() function.
+
+It basically serves as a wrapper for python-memcached package with additional
+functionality and tweaks specific to CritiqueBrainz needs.
+
+There's also support for namespacing, which simplifies management of different
+versions of data saved in the cache. You can invalidate whole namespace using
+invalidate_namespace() function. See its description for more info.
 
 Package python-memcached is available at https://pypi.python.org/pypi/python-memcached/.
 More information about memcached can be found at http://memcached.org/.
@@ -15,7 +21,7 @@ _glob_namespace = "CB"
 
 
 def init(servers, namespace="CB", debug=0):
-    """Initializes memcached client.
+    """Initializes memcached client. Needs to be called before use.
 
     Args:
         server: List of strings with memcached server addresses (host:port).
@@ -24,12 +30,20 @@ def init(servers, namespace="CB", debug=0):
     """
     global _mc, _glob_namespace
     _mc = memcache.Client(servers, debug=debug)
-    # TODO: Check length of the namespace (should fit with hash appended)
+    # TODO: Check length of the namespace (should fit with hash appended):
     _glob_namespace = namespace + ":"
 
 
 def set(key, val, time=0, namespace=None):
     """Set a key to a given value.
+
+    Args:
+        key: Key of the item.
+        value: Item's value.
+        time: The time after which this value should expire, either as a delta
+            number of seconds, or an absolute unix time-since-the-epoch value.
+            If set to 0, value will be stored "forever".
+        namespace: Optional namespace in which key needs to be defined.
 
     Returns:
         True if stored successfully, False otherwise.
@@ -40,7 +54,11 @@ def set(key, val, time=0, namespace=None):
 
 
 def get(key, namespace=None):
-    """Retrieve a key.
+    """Retrieve an item.
+
+    Args:
+        key: Key of the item that needs to be retrieved.
+        namespace: Optional namespace in which key was defined.
 
     Returns:
         Stored value or None if it's not found.
@@ -52,7 +70,11 @@ def get(key, namespace=None):
 
 
 def delete(key, namespace=None):
-    """Delete a key.
+    """Delete an item.
+
+    Args:
+        key: Key of the item that needs to be deleted.
+        namespace: Optional namespace in which key was defined.
 
     Returns:
           True if deleted successfully, False otherwise.
@@ -66,6 +88,7 @@ def set_multi(mapping, time=0, namespace=None):
 
     Args:
         mapping: A dict of key/value pairs to set.
+
     Returns:
         List of keys which failed to be stored (memcache out of memory, etc.).
     """
@@ -78,6 +101,7 @@ def get_multi(keys, namespace=None):
 
     Args:
         keys: Array of keys that need to be retrieved.
+
     Returns:
         A dictionary of key/value pairs that were available. If key_prefix was
         provided, the keys in the returned dictionary will not have it present.
@@ -97,6 +121,7 @@ def gen_key(key, attributes=None):
     Args:
         key: Original key.
         attributes: List of attributes.
+
     Returns:
         Key that can be used with cache.
     """
@@ -118,7 +143,9 @@ def gen_key(key, attributes=None):
 
 
 def invalidate_namespace(namespace):
-    """Invalidates specified namespace by incrementing its version.
+    """Invalidates specified namespace.
+
+    Invalidation is done by incrementing version of the namespace
 
     Args:
         namespace: Namespace that needs to be invalidated.
