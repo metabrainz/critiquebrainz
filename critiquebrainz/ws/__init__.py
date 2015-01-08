@@ -23,6 +23,13 @@ def create_app():
     from critiquebrainz.data import db
     db.init_app(app)
 
+    # Memcached
+    if 'MEMCACHED_SERVERS' in app.config:
+        from critiquebrainz import cache
+        cache.init(app.config['MEMCACHED_SERVERS'],
+                   app.config['MEMCACHED_NAMESPACE'],
+                   debug=1 if app.debug else 0)
+
     app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 
     # Blueprints
