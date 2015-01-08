@@ -120,3 +120,18 @@ class ReviewTestCase(DataTestCase):
         review.update(u"The worst!")
         self.assertEqual(len(review.revisions), 2)
         self.assertNotEqual(review.revisions[0], review.last_revision)
+
+    def test_get_popular(self):
+        reviews = Review.get_popular()
+        self.assertEqual(len(reviews), 0)
+
+        new_review = Review.create(
+            user=self.user,
+            release_group='e7aad618-fa86-3983-9e77-405e21796eca',
+            text=u"Testing!",
+            is_draft=False,
+            license_id=self.license.id
+        )
+
+        reviews = Review.get_popular()
+        self.assertEqual(len(reviews), 1)
