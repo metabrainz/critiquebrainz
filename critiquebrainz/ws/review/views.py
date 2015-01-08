@@ -6,6 +6,7 @@ from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest,
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
 from critiquebrainz.decorators import crossdomain
+from critiquebrainz import cache
 
 review_bp = Blueprint('ws_review', __name__)
 
@@ -90,22 +91,34 @@ def review_list_handler():
 
     :resheader Content-Type: *application/json*
     """
+    release_group = Parser.uuid('uri', 'release_group', optional=True)
+    user_id = Parser.uuid('uri', 'user_id', optional=True)
+    sort = Parser.string('uri', 'sort', valid_values=['rating', 'created'], optional=True)
+    limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
+    offset = Parser.int('uri', 'offset', optional=True) or 0
+    language = Parser.string('uri', 'language', min=2, max=3, optional=True)
+    if language and language not in supported_languages:
+        raise InvalidRequest(desc='Unsupported language')
 
-    def fetch_params():
-        release_group = Parser.uuid('uri', 'release_group', optional=True)
-        user_id = Parser.uuid('uri', 'user_id', optional=True)
-        sort = Parser.string('uri', 'sort', valid_values=['rating', 'created'], optional=True) or 'rating'
-        limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
-        offset = Parser.int('uri', 'offset', optional=True) or 0
-        language = Parser.string('uri', 'language', min=2, max=3, optional=True)
-        if language and language not in supported_languages:
-            raise InvalidRequest(desc='Unsupported language')
-        return release_group, user_id, sort, limit, offset, language
+    # TODO: Ideally caching logic should live inside the model. Otherwise it
+    # becomes hard to track all this stuff.
+    cache_key = cache.gen_key('list', [
+        release_group, user_id, sort, limit, offset, language
+    ])
+    cached_result = cache.get(cache_key, Review.CACHE_NAMESPACE)
+    if cached_result:
+        reviews = cached_result['reviews']
+        count = cached_result['count']
 
-    release_group, user_id, sort, limit, offset, language = fetch_params()
-    reviews, count = Review.list(release_group, user_id, sort, limit, offset, language)
-    return jsonify(limit=limit, offset=offset, count=count,
-                   reviews=[p.to_dict() for p in reviews])
+    else:
+        reviews, count = Review.list(release_group, user_id, sort, limit, offset, language)
+        reviews = [p.to_dict() for p in reviews]
+        cache.set(cache_key, {
+            'reviews': reviews,
+            'count': count,
+        }, namespace=Review.CACHE_NAMESPACE)
+
+    return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 
 
 @review_bp.route('/', methods=['POST'])
