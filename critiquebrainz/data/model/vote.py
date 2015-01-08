@@ -18,9 +18,6 @@ class Vote(db.Model, DeleteMixin):
     @classmethod
     def create(cls, user, review, vote):
         """Create new vote for the latest revision of a specified review."""
-        # Voting for an archived review is forbidden
-        if review.is_archived is True:
-            return
         # Deleting the vote from the last revision if it exists
         user.display_name, cls.query.filter_by(user=user, revision=review.last_revision).delete()
         # Creating a new vote for the last revision

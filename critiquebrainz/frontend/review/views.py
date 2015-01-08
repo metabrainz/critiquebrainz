@@ -32,8 +32,9 @@ def browse():
 @review_bp.route('/<uuid:id>')
 def entity(id):
     review = Review.query.get_or_404(str(id))
-    # Not showing review if it's archived or (isn't published yet and not viewed by author).
-    if review.is_archived or (review.is_draft and not (current_user.is_authenticated() and current_user == review.user)):
+    # Not showing review if it isn't published yet and not viewed by author.
+    if review.is_draft and not (current_user.is_authenticated()
+                                and current_user == review.user):
         raise NotFound("Can't find a review with the specified ID.")
 
     spotify_mappings = mbspotify.mappings(review.release_group)
@@ -94,7 +95,7 @@ def preview():
 @login_required
 def edit(id):
     review = Review.query.get_or_404(str(id))
-    if review.is_archived or (review.is_draft and current_user != review.user):
+    if review.is_draft and current_user != review.user:
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
         raise Unauthorized(gettext("Only author can edit this review."))
@@ -122,8 +123,6 @@ def edit(id):
 @login_required
 def delete(id):
     review = Review.query.get_or_404(str(id))
-    if review.is_archived is True:
-        raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
         raise Unauthorized(gettext("Only the author can delete this review."))
     if request.method == 'POST':
@@ -143,8 +142,6 @@ def vote_submit(review_id):
         vote = False
 
     review = Review.query.get_or_404(review_id)
-    if review.is_archived is True:
-        raise NotFound("Can't find a review with the specified ID.")
     if review.user == current_user:
         flash(gettext("You cannot rate your own review."), 'error')
         return redirect(url_for('.entity', id=review_id))
@@ -167,8 +164,6 @@ def vote_submit(review_id):
 @login_required
 def vote_delete(id):
     review = Review.query.get_or_404(str(id))
-    if review.is_archived is True:
-        raise NotFound("Can't find a review with the specified ID.")
     vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
         flash(gettext("This review is not rated yet."), 'error')
@@ -184,8 +179,6 @@ def report(id):
     review = Review.query.get_or_404(str(id))
     if review.user == current_user:
         return jsonify(success=False, error='own')
-    if review.is_archived is True:
-        return jsonify(success=False, error='archived')
     last_revision_id = review.revisions[-1].id
     count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
     if count > 0:
