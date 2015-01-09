@@ -140,6 +140,19 @@ class Review(db.Model, DeleteMixin):
         if not inc_drafts:
             query = query.filter(Review.is_draft == False)
 
+        # FILTERING:
+
+        if release_group is not None:
+            query = query.filter(Review.release_group == release_group)
+        if language is not None:
+            query = query.filter(Review.language == language)
+        if license_id is not None:
+            query = query.filter(Review.license_id == license_id)
+        if user_id is not None:
+            query = query.filter(Review.user_id == user_id)
+
+        count = query.count()  # Total count should be calculated before limits
+
         # SORTING:
 
         if sort == 'rating':  # order by rating (positive votes - negative votes)
@@ -172,19 +185,6 @@ class Review(db.Model, DeleteMixin):
 
         elif sort == 'created':  # order by creation time
             query = query.order_by(desc(Review.created)).join(Review.revisions)
-
-        # FILTERING:
-
-        if release_group is not None:
-            query = query.filter(Review.release_group == release_group)
-        if language is not None:
-            query = query.filter(Review.language == language)
-        if license_id is not None:
-            query = query.filter(Review.license_id == license_id)
-        if user_id is not None:
-            query = query.filter(Review.user_id == user_id)
-
-        count = query.count()  # Total count should be calculated before limits
 
         if limit is not None:
             query = query.limit(limit)
