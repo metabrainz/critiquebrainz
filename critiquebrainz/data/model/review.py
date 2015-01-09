@@ -152,7 +152,7 @@ class Review(db.Model, DeleteMixin):
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
 
-        count = query.count()  # Total count should be calculated before limits
+        count = query.count()  # Total count should be calculated before limits and sorting
 
         # SORTING:
 
