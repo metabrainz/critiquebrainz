@@ -134,7 +134,8 @@ class Review(db.Model, DeleteMixin):
                 False if not.
 
         Returns:
-            List of reviews that match applied filters (if any).
+            Pair of values: list of reviews that match applied filters and
+            total number of reviews.
         """
         query = Review.query
         if not inc_drafts:
