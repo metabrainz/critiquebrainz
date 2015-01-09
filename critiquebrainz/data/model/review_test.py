@@ -121,6 +121,39 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(len(review.revisions), 2)
         self.assertNotEqual(review.revisions[0], review.last_revision)
 
+    def test_list(self):
+        reviews, count = Review.list()
+        self.assertEqual(count, 0)
+        self.assertEqual(len(reviews), 0)
+
+        review = Review.create(
+            user=self.user,
+            release_group='e7aad618-fa86-3983-9e77-405e21796eca',
+            text=u"Awesome!",
+            is_draft=False,
+            license_id=self.license.id
+        )
+        reviews, count = Review.list()
+        self.assertEqual(count, 1)
+        self.assertEqual(len(reviews), 1)
+        self.assertEqual(reviews[0].text, u"Awesome!")
+
+        review.update(
+            text=u"Beautiful!",
+        )
+        reviews, count = Review.list()
+        self.assertEqual(count, 1)
+        self.assertEqual(len(reviews), 1)
+        self.assertEqual(reviews[0].text, u"Beautiful!")
+
+        reviews, count = Review.list(sort='rating')
+        self.assertEqual(count, 1)
+        self.assertEqual(len(reviews), 1)
+
+        reviews, count = Review.list(sort='created')
+        self.assertEqual(count, 1)
+        self.assertEqual(len(reviews), 1)
+
     def test_get_popular(self):
         reviews = Review.get_popular()
         self.assertEqual(len(reviews), 0)
