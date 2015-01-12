@@ -6,5 +6,5 @@ class DeleteMixin(object):
     def delete(self):
         """Delete this object from the DB."""
         db.session.delete(self)
-        db.session.flush()
+        db.session.commit()
         return self
