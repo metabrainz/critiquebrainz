@@ -150,12 +150,14 @@ def invalidate_namespace(namespace):
     Args:
         namespace: Namespace that needs to be invalidated.
     """
+    if _mc is None: return
     version_key = _glob_namespace + namespace
     if _mc.incr(version_key) is None:  # namespace isn't initialized
         _mc.set(version_key, 1)  # initializing the namespace
 
 
 def _get_namespace_version(namespace):
+    if _mc is None: return
     version_key = _glob_namespace + namespace
     version = _mc.get(version_key)
     if version is None:  # namespace isn't initialized
@@ -166,6 +168,7 @@ def _get_namespace_version(namespace):
 
 def _prep_key(key, namespace=None):
     """Prepares a key for use with memcached."""
+    if _mc is None: return
     if namespace:
         key = "%s:%s:%s" % (namespace, _get_namespace_version(namespace), key)
     key = hashlib.sha1(key).hexdigest()
