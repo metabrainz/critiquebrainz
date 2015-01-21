@@ -27,3 +27,5 @@ nosetests.xml
 
 # Vagrant
 .vagrant
+
+.transifexrc

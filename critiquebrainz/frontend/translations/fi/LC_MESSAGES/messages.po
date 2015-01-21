@@ -1,5 +1,5 @@
 # Translations template for PROJECT.
-# Copyright (C) 2014 ORGANIZATION
+# Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # 
 # Translators:
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-18 02:20+0000\n"
-"PO-Revision-Date: 2014-12-18 09:55+0000\n"
+"POT-Creation-Date: 2015-01-06 12:25+0000\n"
+"PO-Revision-Date: 2015-01-07 09:54+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/critiquebrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -266,70 +266,70 @@ msgstr "Kieli"
 msgid "You need to accept the license agreement!"
 msgstr "Lisensointisopimus tulee hyväksyä!"
 
-#: critiquebrainz/frontend/review/views.py:45
+#: critiquebrainz/frontend/review/views.py:62
 msgid "You have already published a review for this album!"
 msgstr "Olet jo julkaissut arvostelun tälle julkaisulle!"
 
-#: critiquebrainz/frontend/review/views.py:49
+#: critiquebrainz/frontend/review/views.py:66
 msgid "You have exceeded your limit of reviews per day."
 msgstr "Olet kirjoittanut sallitun määrän arvosteluja tälle päivälle."
 
-#: critiquebrainz/frontend/review/views.py:57
+#: critiquebrainz/frontend/review/views.py:74
 msgid "Review has been saved!"
 msgstr "Arvostelu tallennettu!"
 
-#: critiquebrainz/frontend/review/views.py:59
+#: critiquebrainz/frontend/review/views.py:76
 msgid "Review has been published!"
 msgstr "Arvostelu julkaistu!"
 
-#: critiquebrainz/frontend/review/views.py:64
+#: critiquebrainz/frontend/review/views.py:81
 msgid ""
 "You can only write a review for a release group that exists on MusicBrainz!"
 msgstr "Arvostelu voidaan kirjoittaa vain julkaisuryhmälle, joka löytyy MusicBrainzista!"
 
-#: critiquebrainz/frontend/review/views.py:81
-#: critiquebrainz/frontend/review/views.py:109
+#: critiquebrainz/frontend/review/views.py:98
+#: critiquebrainz/frontend/review/views.py:126
 msgid "Can't find a review with the specified ID."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:83
+#: critiquebrainz/frontend/review/views.py:100
 msgid "Only author can edit this review."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:97
+#: critiquebrainz/frontend/review/views.py:114
 msgid "Review has been updated."
 msgstr "Arvostelu päivitetty."
 
-#: critiquebrainz/frontend/review/views.py:111
+#: critiquebrainz/frontend/review/views.py:128
 msgid "Only the author can delete this review."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:114
+#: critiquebrainz/frontend/review/views.py:131
 msgid "Review has been deleted."
 msgstr "Arvostelu poistettu."
 
-#: critiquebrainz/frontend/review/views.py:132
+#: critiquebrainz/frontend/review/views.py:149
 msgid "You cannot rate your own review."
 msgstr "Et voi arvioida omaa arvosteluasi."
 
-#: critiquebrainz/frontend/review/views.py:135
+#: critiquebrainz/frontend/review/views.py:152
 msgid "You have exceeded your limit of votes per day."
 msgstr "Olet äänestänyt sallitun määrän tälle päivälle."
 
-#: critiquebrainz/frontend/review/views.py:138
-#: critiquebrainz/frontend/review/views.py:141
+#: critiquebrainz/frontend/review/views.py:155
+#: critiquebrainz/frontend/review/views.py:158
 msgid "You are not allowed to rate this review."
 msgstr "Et voi arvioida tätä arvostelua."
 
-#: critiquebrainz/frontend/review/views.py:145
+#: critiquebrainz/frontend/review/views.py:162
 msgid "You have rated this review!"
 msgstr "Olet arvioinut tämän arvostelun!"
 
-#: critiquebrainz/frontend/review/views.py:157
+#: critiquebrainz/frontend/review/views.py:174
 msgid "This review is not rated yet."
 msgstr "Tätä arvostelua ei ole arvioitu vielä."
 
-#: critiquebrainz/frontend/review/views.py:160
+#: critiquebrainz/frontend/review/views.py:177
 msgid "You have deleted your vote for this review!"
 msgstr "Poistit äänesi tältä arvostelulta!"
 
@@ -339,7 +339,7 @@ msgstr "Tietoja CritiqueBrainzista"
 
 #: critiquebrainz/frontend/templates/about.html:6
 #: critiquebrainz/frontend/templates/base.html:49
-#: critiquebrainz/frontend/templates/navbar.html:34
+#: critiquebrainz/frontend/templates/navbar.html:35
 msgid "About"
 msgstr "Tietoja"
 
@@ -416,11 +416,13 @@ msgstr[1] "%(num)d arvostelua"
 
 #: critiquebrainz/frontend/templates/artist.html:69
 #: critiquebrainz/frontend/templates/matching/spotify.html:45
+#: critiquebrainz/frontend/templates/review/browse.html:42
 msgid "Previous"
 msgstr "Edellinen"
 
 #: critiquebrainz/frontend/templates/artist.html:72
 #: critiquebrainz/frontend/templates/matching/spotify.html:48
+#: critiquebrainz/frontend/templates/review/browse.html:45
 msgid "Next"
 msgstr "Seuraava"
 
@@ -510,12 +512,14 @@ msgstr "Ei arvosteluja"
 #: critiquebrainz/frontend/templates/index.html:81
 #: critiquebrainz/frontend/templates/matching/confirm.html:13
 #: critiquebrainz/frontend/templates/matching/report.html:13
+#: critiquebrainz/frontend/templates/review/browse.html:23
 #, python-format
 msgid "%(album)s by %(artist)s"
 msgstr "Julkaisu %(album)s artistilta %(artist)s"
 
 #: critiquebrainz/frontend/templates/index.html:48
 #: critiquebrainz/frontend/templates/index.html:82
+#: critiquebrainz/frontend/templates/review/browse.html:24
 #: critiquebrainz/frontend/templates/review/delete.html:4
 #: critiquebrainz/frontend/templates/review/edit.html:6
 #: critiquebrainz/frontend/templates/review/edit.html:26
@@ -525,6 +529,7 @@ msgstr "[Tuntematon julkaisuryhmä]"
 
 #: critiquebrainz/frontend/templates/index.html:49
 #: critiquebrainz/frontend/templates/index.html:83
+#: critiquebrainz/frontend/templates/review/browse.html:25
 #: critiquebrainz/frontend/templates/review/edit.html:23
 #: critiquebrainz/frontend/templates/user/reviews.html:33
 msgid "[Unknown artist]"
@@ -532,6 +537,7 @@ msgstr "[Tuntematon artisti]"
 
 #: critiquebrainz/frontend/templates/index.html:53
 #: critiquebrainz/frontend/templates/index.html:87
+#: critiquebrainz/frontend/templates/review/browse.html:30
 #, python-format
 msgid "Review by %(user)s"
 msgstr "Arvostelu käyttäjältä %(user)s"
@@ -539,6 +545,10 @@ msgstr "Arvostelu käyttäjältä %(user)s"
 #: critiquebrainz/frontend/templates/index.html:63
 msgid "Recent reviews"
 msgstr "Viimeaikaisia arvosteluja"
+
+#: critiquebrainz/frontend/templates/index.html:93
+msgid "View all reviews..."
+msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:3
 msgid "Error!"
@@ -569,6 +579,8 @@ msgid "Create and modify your reviews."
 msgstr "Luo ja muokkaa arvostelujasi."
 
 #: critiquebrainz/frontend/templates/macros.html:27
+#: critiquebrainz/frontend/templates/review/browse.html:3
+#: critiquebrainz/frontend/templates/review/browse.html:6
 #: critiquebrainz/frontend/templates/user/base.html:16
 #: critiquebrainz/frontend/templates/user/info.html:36
 #: critiquebrainz/frontend/templates/user/reviews.html:3
@@ -623,10 +635,14 @@ msgid "Sign out"
 msgstr "Kirjaudu ulos"
 
 #: critiquebrainz/frontend/templates/navbar.html:33
+msgid "Browse reviews"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/navbar.html:34
 msgid "Write a review"
 msgstr "Kirjoita arvostelu"
 
-#: critiquebrainz/frontend/templates/navbar.html:39
+#: critiquebrainz/frontend/templates/navbar.html:40
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
 #: critiquebrainz/frontend/templates/search/index.html:33
@@ -634,7 +650,7 @@ msgstr "Kirjoita arvostelu"
 msgid "Search"
 msgstr "Etsi"
 
-#: critiquebrainz/frontend/templates/navbar.html:43
+#: critiquebrainz/frontend/templates/navbar.html:44
 #: critiquebrainz/frontend/templates/review/edit.html:23
 #: critiquebrainz/frontend/templates/review/write.html:18
 #: critiquebrainz/frontend/templates/search/index.html:26
@@ -645,7 +661,7 @@ msgstr "Etsi"
 msgid "Artist"
 msgstr "Artisti"
 
-#: critiquebrainz/frontend/templates/navbar.html:44
+#: critiquebrainz/frontend/templates/navbar.html:45
 #: critiquebrainz/frontend/templates/review/edit.html:24
 #: critiquebrainz/frontend/templates/review/write.html:19
 #: critiquebrainz/frontend/templates/search/index.html:27
@@ -940,6 +956,10 @@ msgstr "Ei mitään eritystä"
 #: critiquebrainz/frontend/templates/profile/applications/index.html:79
 msgid "Revoke access"
 msgstr "Poista oikeudet"
+
+#: critiquebrainz/frontend/templates/review/browse.html:7
+msgid "Ordered by creation date"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/review/delete.html:6
 #, python-format
