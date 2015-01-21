@@ -31,8 +31,6 @@ def full_db(location=os.path.join(os.getcwd(), 'export', 'full'), rotate=False):
 
     File with a dump will be a tar archive with a timestamp in the name: `%Y%m%d-%H%M%S.tar.bz2`.
     """
-
-    # Creating backup directory, if needed
     create_path(location)
 
     FILE_PREFIX = "cb-backup-"
@@ -67,6 +65,8 @@ def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
     This command will create an archive for each license available on CB.
     Archives will be put into a specified directory (default is *dump*).
     """
+    create_path(location)
+
     current_app.json_encoder = DumpJSONEncoder
 
     print("Creating new archives...")
