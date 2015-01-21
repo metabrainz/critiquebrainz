@@ -55,11 +55,11 @@
               {{ artists|join(', ') }}
             </td>
             <td>{{ album.release_date }}</td>
-            <td><a class="btn btn-danger btn-xs" href="{{ url_for('matching.spotify_report', release_group_id=release_group.id, spotify_id=album.id) }}">{{ _('Incorrect') }}</a></td>
+            <td><a class="btn btn-danger btn-xs" href="{{ url_for('mapping.spotify_report', release_group_id=release_group.id, spotify_id=album.id) }}">{{ _('Incorrect') }}</a></td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
   {% endif %}
-  <b><a class="btn btn-primary btn-default" href="{{ url_for('matching.spotify', release_group_id=release_group.id) }}">{{ _('+ Add new mapping') }}</a></b>
+  <b><a class="btn btn-primary btn-default" href="{{ url_for('mapping.spotify', release_group_id=release_group.id) }}">{{ _('+ Add new mapping') }}</a></b>
 {% endblock %}

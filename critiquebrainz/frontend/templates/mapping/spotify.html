@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ _('Spotify album matching') }} - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Spotify album mapping') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<h2>{{ _('Spotify album matching') }}</h2>
+<h2>{{ _('Spotify album mapping') }}</h2>
 <p class="lead">
   {% if release_group['first-release-date'] %}
     {% set album = '"%s" <span class="text-muted">(%s)</span>'|safe % (release_group.title, release_group['first-release-date'][:4]) %}
@@ -20,7 +20,7 @@
     <div class="col-md-3">
       <div class="thumbnail">
         <div class="cover-art-container">
-          <a href="{{ url_for('matching.spotify_confirm', release_group_id=release_group.id, spotify_ref=item.uri) }}" class="match-link" data-toggle="tooltip" data-placement="bottom" title="This is the same album!" rel="nofollow">
+          <a href="{{ url_for('mapping.spotify_confirm', release_group_id=release_group.id, spotify_ref=item.uri) }}" class="match-link" data-toggle="tooltip" data-placement="bottom" title="This is the same album!" rel="nofollow">
             {% if item.images[0] %}
               <img class="img-responsive" src="{{ item.images[0].url }}" />
             {% else %}
@@ -42,10 +42,10 @@
       <div class="col-md-12">
         <ul class="pager">
           {% if page > 1 %}
-            <li class="previous"><a href="{{ url_for('matching.spotify', release_group_id=release_group.id, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
+            <li class="previous"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
           {% endif %}
           {% if page-1 < count//limit %}
-            <li class="next"><a href="{{ url_for('matching.spotify', release_group_id=release_group.id, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
+            <li class="next"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
           {% endif %}
         </ul>
       </div>
@@ -59,7 +59,7 @@
 
 <p>
   <p>{{ _('If you can\'t find the right album in search results, you can paste a Spotify link there:') }}</p>
-  <form class="form-inline" role="form" action="{{ url_for('matching.spotify_confirm', release_group_id=release_group.id) }}" method="GET">
+  <form class="form-inline" role="form" action="{{ url_for('mapping.spotify_confirm', release_group_id=release_group.id) }}" method="GET">
     <div class="form-group">
       <input type="text" class="form-control input-sm" name="spotify_ref" placeholder="{{ _('Spotify URI or HTTP link') }}" size="40">
     </div>

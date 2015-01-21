@@ -8,10 +8,10 @@ from urlparse import urlparse
 import os.path
 import string
 
-matching_bp = Blueprint('matching', __name__)
+mapping_bp = Blueprint('mapping', __name__)
 
 
-@matching_bp.route('/<uuid:release_group_id>')
+@mapping_bp.route('/<uuid:release_group_id>')
 def spotify_list(release_group_id):
     spotify_mappings = mbspotify.mappings(str(release_group_id))
 
@@ -27,11 +27,11 @@ def spotify_list(release_group_id):
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
         raise NotFound("Can't find release group with a specified ID.")
-    return render_template('matching/list.html', spotify_albums=spotify_albums,
+    return render_template('mapping/list.html', spotify_albums=spotify_albums,
                            release_group=release_group)
 
 
-@matching_bp.route('/spotify/add')
+@mapping_bp.route('/spotify/add')
 def spotify():
     release_group_id = request.args.get('release_group_id')
     if not release_group_id:
@@ -39,7 +39,7 @@ def spotify():
 
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
-        flash(gettext("Only existing release groups can be matched to Spotify!"), 'error')
+        flash(gettext("Only existing release groups can be mapped to Spotify!"), 'error')
         return redirect(url_for('search.index'))
 
     page = int(request.args.get('page', default=1))
@@ -53,17 +53,17 @@ def spotify():
     query = unicode(release_group['title']).translate(punctuation_map)
     # Searching...
     response = spotify_api.search(query, 'album', limit, offset).get('albums')
-    return render_template('matching/spotify.html', release_group=release_group, search_results=response.get('items'),
+    return render_template('mapping/spotify.html', release_group=release_group, search_results=response.get('items'),
                            page=page, limit=limit, count=response.get('total'))
 
 
-@matching_bp.route('/spotify/confirm', methods=['GET', 'POST'])
+@mapping_bp.route('/spotify/confirm', methods=['GET', 'POST'])
 @login_required
 def spotify_confirm():
     release_group_id = request.args.get('release_group_id')
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
-        flash(gettext("Only existing release groups can be matched to Spotify!"), 'error')
+        flash(gettext("Only existing release groups can be mapped to Spotify!"), 'error')
         return redirect(url_for('search.index'))
 
     spotify_ref = request.args.get('spotify_ref', default=None)
@@ -87,10 +87,10 @@ def spotify_confirm():
         flash(gettext("Spotify mapping has been added!"), 'success')
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
-    return render_template('matching/confirm.html', release_group=release_group, spotify_album=album)
+    return render_template('mapping/confirm.html', release_group=release_group, spotify_album=album)
 
 
-@matching_bp.route('/spotify/report', methods=['GET', 'POST'])
+@mapping_bp.route('/spotify/report', methods=['GET', 'POST'])
 @login_required
 def spotify_report():
     release_group_id = request.args.get('release_group_id')
@@ -103,10 +103,10 @@ def spotify_report():
         flash(gettext("Can't find release group with that ID!"), 'error')
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
-    # Checking if release group is matched
+    # Checking if release group is mapped to Spotify
     spotify_mappings = mbspotify.mappings(str(release_group_id))
     if not (spotify_uri in spotify_mappings):
-        flash(gettext("This album is not matched to Spotify yet!"), 'error')
+        flash(gettext("This album is not mapped to Spotify yet!"), 'error')
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     if request.method == 'POST':
@@ -120,7 +120,7 @@ def spotify_report():
             flash(gettext("You need to specify existing album from Spotify!"), 'error')
             return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
-        return render_template('matching/report.html', release_group=release_group, spotify_album=album)
+        return render_template('mapping/report.html', release_group=release_group, spotify_album=album)
 
 
 def parse_spotify_id(spotify_ref):
