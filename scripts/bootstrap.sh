@@ -18,8 +18,8 @@ service postgresql restart
 # Setting up server
 cd /vagrant
 pip install -r requirements.txt
-python manage.py data create_db
-python manage.py data fixtures
+python manage.py create_db
+python manage.py fixtures
 
 # Less compiler
 curl -sL https://deb.nodesource.com/setup | sudo bash -

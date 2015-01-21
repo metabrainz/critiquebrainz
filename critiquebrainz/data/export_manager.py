@@ -1,9 +1,14 @@
 from __future__ import print_function
 from flask_script import Manager
 from flask import current_app, jsonify
+from flask.json import JSONEncoder
+from critiquebrainz.data.utils import create_path, remove_old_archives, get_columns, slugify, explode_db_uri
+from critiquebrainz.data.model.review import Review
+from critiquebrainz.data.model.license import License
+from critiquebrainz.data import db
+from critiquebrainz.data import model
 from datetime import datetime
 from time import gmtime, strftime
-from util import create_path, remove_old_archives, get_columns, slugify, DumpJSONEncoder
 import subprocess
 import tarfile
 import shutil
@@ -11,17 +16,12 @@ import errno
 import sys
 import os
 
-from critiquebrainz.data import db
-from critiquebrainz.data import model
-from critiquebrainz.data.utils import explode_db_uri
-from critiquebrainz.data.model.review import Review
-from critiquebrainz.data.model.license import License
 
-backup_manager = Manager()
+manager = Manager()
 
 
-@backup_manager.command
-def dump_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
+@manager.command
+def full_db(location=os.path.join(os.getcwd(), 'export', 'full'), rotate=False):
     """Create complete dump of PostgreSQL database.
 
     This command creates database dump using pg_dump and puts it into specified directory
@@ -59,8 +59,8 @@ def dump_db(location=os.path.join(os.getcwd(), 'backup'), rotate=False):
     print("Done!")
 
 
-@backup_manager.command
-def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
+@manager.command
+def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
     """Create JSON dumps with all reviews.
 
     This command will create an archive for each license available on CB.
@@ -108,8 +108,8 @@ def dump_json(location=os.path.join(os.getcwd(), 'dump'), rotate=False):
     print("Done!")
 
 
-@backup_manager.command
-def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
+@manager.command
+def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False):
     """Creates a set of archives with public data.
 
     1. Base archive with license-independent data (users, licenses).
@@ -211,7 +211,7 @@ def export(location=os.path.join(os.getcwd(), 'export'), rotate=False):
     print("Done!")
 
 
-@backup_manager.command
+@manager.command
 def importer(archive, temp_dir="temp"):
     """Imports database dump (archive) produced by export command.
 
@@ -272,3 +272,16 @@ def import_data(file_name, model, columns=None):
         else:
             sys.exit("Failed to open data file. Error: %s" % exception)
 
+
+class DumpJSONEncoder(JSONEncoder):
+    """Custom JSON encoder for database dumps."""
+    def default(self, obj):
+        try:
+            if isinstance(obj, datetime):
+                return obj.isoformat()
+            iterable = iter(obj)
+        except TypeError:
+            pass
+        else:
+            return list(iterable)
+        return JSONEncoder.default(self, obj)
