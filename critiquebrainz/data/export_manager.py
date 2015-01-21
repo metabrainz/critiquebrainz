@@ -10,6 +10,7 @@ from critiquebrainz.data import model
 from datetime import datetime
 from time import gmtime, strftime
 import subprocess
+import tempfile
 import tarfile
 import shutil
 import errno
@@ -41,7 +42,7 @@ def full_db(location=os.path.join(os.getcwd(), 'export', 'full'), rotate=False):
 
     # Executing pg_dump command
     # More info about it is available at http://www.postgresql.org/docs/9.3/static/app-pgdump.html
-    dump_file = "%s/%s%s" % (location, FILE_PREFIX, strftime("%Y%m%d-%H%M%S", gmtime()))
+    dump_file = os.path.join(location, FILE_PREFIX + strftime("%Y%m%d-%H%M%S", gmtime()))
     if subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db_name, dump_file), shell=True) != 0:
         raise Exception("Failed to create database dump!")
 
@@ -67,14 +68,14 @@ def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
     Archives will be put into a specified directory (default is *dump*).
     """
     current_app.json_encoder = DumpJSONEncoder
-    temp_dir = '%s/temp' % location
-    create_path(temp_dir)
 
     print("Creating new archives...")
     for license in License.query.all():
         safe_name = slugify(license.id)
-        with tarfile.open("%s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name), "w:bz2") as tar:
-            license_dir = '%s/%s' % (temp_dir, safe_name)
+        with tarfile.open(os.path.join(location, "critiquebrainz-%s-%s-json.tar.bz2" %
+                          (datetime.today().strftime('%Y%m%d'), safe_name)), "w:bz2") as tar:
+            temp_dir = tempfile.mkdtemp()
+            license_dir = os.path.join(temp_dir, safe_name)
             create_path(license_dir)
 
             # Finding release groups that have reviews with current license
@@ -82,7 +83,7 @@ def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
             for release_group in query.all():
                 release_group = release_group[0]
                 # Creating directory structure for release group and dumping reviews
-                rg_dir_part = '%s/%s' % (release_group[0:1], release_group[0:2])
+                rg_dir_part = os.path.join(release_group[0:1], release_group[0:2])
                 reviews = Review.list(release_group, license_id=license.id)[0]
                 if len(reviews) > 0:
                     rg_dir = '%s/%s' % (license_dir, rg_dir_part)
@@ -94,11 +95,11 @@ def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
             tar.add(license_dir, arcname='reviews')
 
             # Copying legal text
-            tar.add("critiquebrainz/data/licenses/%s.txt" % safe_name, arcname='COPYING')
+            tar.add(os.path.join("critiquebrainz", "data", "licenses", safe_name + ".txt"), arcname='COPYING')
 
             print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
 
-    shutil.rmtree(temp_dir)  # Cleanup
+            shutil.rmtree(temp_dir)  # Cleanup
 
     if rotate:
         print("Removing old sets of archives (except two latest)...")
@@ -116,43 +117,43 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
     2. Archive with all reviews and revisions.
     3... Separate archives for each license (contain reviews and revisions associated with specific license).
     """
-    print("Creating new archives...")
+    print("Creating public database dump...")
     time_now = datetime.today()
 
-    # Getting psycopg2 cursor
     cursor = db.session.connection().connection.cursor()
 
     # Creating a directory where all dumps will go
-    dump_dir = '%s/%s' % (location, time_now.strftime('%Y%m%d-%H%M%S'))
-    temp_dir = '%s/temp' % dump_dir
-    create_path(temp_dir)
+    dump_dir = os.path.join(location, time_now.strftime('%Y%m%d-%H%M%S'))
+    create_path(dump_dir)
+
+    temp_dir = tempfile.mkdtemp()
 
     # Preparing meta files
-    with open('%s/TIMESTAMP' % temp_dir, 'w') as f:
+    with open(os.path.join(temp_dir, 'TIMESTAMP'), 'w') as f:
         f.write(time_now.isoformat(' '))
-    with open('%s/SCHEMA_SEQUENCE' % temp_dir, 'w') as f:
+    with open(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), 'w') as f:
         f.write(str(model.__version__))
 
     # BASE ARCHIVE
     # Archiving stuff that is independent from licenses (users, licenses)
-    with tarfile.open("%s/cbdump.tar.bz2" % dump_dir, "w:bz2") as tar:
-        base_archive_dir = '%s/cbdump' % temp_dir
+    with tarfile.open(os.path.join(dump_dir, "cbdump.tar.bz2"), "w:bz2") as tar:
+        base_archive_dir = os.path.join(temp_dir, 'cbdump')
         create_path(base_archive_dir)
 
         # Dumping tables
-        base_archive_tables_dir = '%s/cbdump' % base_archive_dir
+        base_archive_tables_dir = os.path.join(base_archive_dir, 'cbdump')
         create_path(base_archive_tables_dir)
-        with open('%s/user_sanitised' % base_archive_tables_dir, 'w') as f:
-             cursor.copy_to(f, '"user"', columns=('id', 'created',  'display_name', 'musicbrainz_id'))
-        with open('%s/license' % base_archive_tables_dir, 'w') as f:
+        with open(os.path.join(base_archive_tables_dir, 'user_sanitised'), 'w') as f:
+            cursor.copy_to(f, '"user"', columns=('id', 'created',  'display_name', 'musicbrainz_id'))
+        with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
             cursor.copy_to(f, 'license', columns=get_columns(model.License))
         tar.add(base_archive_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
-        tar.add('critiquebrainz/data/licenses/cc-by-nc-sa-30.txt', arcname='COPYING')
-        tar.add('%s/TIMESTAMP' % temp_dir, arcname='TIMESTAMP')
-        tar.add('%s/SCHEMA_SEQUENCE' % temp_dir, arcname='SCHEMA_SEQUENCE')
+        tar.add(os.path.join('critiquebrainz', 'data', 'licenses', 'cc-by-nc-sa-30.txt'), arcname='COPYING')
+        tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
+        tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
         print(" + %s/cbdump.tar.bz2" % dump_dir)
 
@@ -161,21 +162,21 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
 
     # 1. COMBINED
     # Archiving all reviews (any license)
-    with tarfile.open("%s/cbdump-reviews-all.tar.bz2" % dump_dir, "w:bz2") as tar:
+    with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-all.tar.bz2"), "w:bz2") as tar:
         # Dumping tables
-        reviews_combined_tables_dir = '%s/cbdump-reviews-all' % temp_dir
+        reviews_combined_tables_dir = os.path.join(temp_dir, 'cbdump-reviews-all')
         create_path(reviews_combined_tables_dir)
-        with open('%s/review' % reviews_combined_tables_dir, 'w') as f:
+        with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
             cursor.copy_to(f, 'review', columns=get_columns(model.Review))
-        with open('%s/revision' % reviews_combined_tables_dir, 'w') as f:
+        with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
             cursor.copy_to(f, 'revision', columns=get_columns(model.Revision))
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
-        tar.add('critiquebrainz/data/licenses/cc-by-nc-sa-30.txt', arcname='COPYING')
-        tar.add('%s/TIMESTAMP' % temp_dir, arcname='TIMESTAMP')
-        tar.add('%s/SCHEMA_SEQUENCE' % temp_dir, arcname='SCHEMA_SEQUENCE')
+        tar.add(os.path.join('critiquebrainz', 'data', 'licenses', 'cc-by-nc-sa-30.txt'), arcname='COPYING')
+        tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
+        tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
         print(" + %s/cbdump-reviews-all.tar.bz2" % dump_dir)
 
@@ -183,24 +184,24 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
     # Creating separate archives for each license
     for license in License.query.all():
         safe_name = slugify(license.id)
-        with tarfile.open("%s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name), "w:bz2") as tar:
+        with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-%s.tar.bz2" % safe_name), "w:bz2") as tar:
             # Dumping tables
-            tables_dir = '%s/%s' % (temp_dir, safe_name)
+            tables_dir = os.path.join(temp_dir, safe_name)
             create_path(tables_dir)
-            with open('%s/review' % tables_dir, 'w') as f:
+            with open(os.path.join(tables_dir, 'review'), 'w') as f:
                 cursor.copy_to(f, "(SELECT (%s) FROM review WHERE license_id = '%s')" %
                                (', '.join(get_columns(model.Review)), license.id))
-            with open('%s/revision' % tables_dir, 'w') as f:
+            with open(os.path.join(tables_dir, 'revision'), 'w') as f:
                 cursor.copy_to(f, "(SELECT (revision.%s) FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" %
                                (', revision.'.join(get_columns(model.Revision)), license.id))
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
-            tar.add('critiquebrainz/data/licenses/%s.txt' % safe_name, arcname='COPYING')
-            tar.add('%s/TIMESTAMP' % temp_dir, arcname='TIMESTAMP')
-            tar.add('%s/SCHEMA_SEQUENCE' % temp_dir, arcname='SCHEMA_SEQUENCE')
+            tar.add(os.path.join("critiquebrainz", "data", "licenses", safe_name + ".txt"), arcname='COPYING')
+            tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
+            tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
-            print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
+        print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
 
     shutil.rmtree(temp_dir)  # Cleanup
 
@@ -212,7 +213,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
 
 
 @manager.command
-def importer(archive, temp_dir="temp"):
+def importer(archive):
     """Imports database dump (archive) produced by export command.
 
     Before importing make sure that all required data is already imported or exists in the archive. For example,
@@ -225,30 +226,33 @@ def importer(archive, temp_dir="temp"):
     Importing only supported for bzip2 compressed tar archives. It will fail if version of the schema that provided
     archive requires is different from the current. Make sure you have the latest dump available.
     """
-    archive = tarfile.open(archive, 'r:bz2')
-    # TODO: Read data from the archive without extracting it into temporary directory
-    archive.extractall(temp_dir)
+    with tarfile.open(archive, 'r:bz2') as archive:
+        # TODO: Read data from the archive without extracting it into temporary directory
+        temp_dir = tempfile.mkdtemp()
+        archive.extractall(temp_dir)
 
-    # Verifying schema version
-    try:
-        with open('%s/SCHEMA_SEQUENCE' % temp_dir) as f:
-            archive_version = f.readline()
-            if archive_version != str(model.__version__):
-                sys.exit("Incorrect schema version! Expected: %d, got: %c. Please, get the latest version of the dump."
-                         % (model.__version__, archive_version))
-    except IOError as exception:
-        if exception.errno == errno.ENOENT:
-            print("Can't find SCHEMA_SEQUENCE in the specified archive. Importing might fail.")
-        else:
-            sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
+        # Verifying schema version
+        try:
+            with open(os.path.join(temp_dir, 'SCHEMA_SEQUENCE')) as f:
+                archive_version = f.readline()
+                if archive_version != str(model.__version__):
+                    sys.exit("Incorrect schema version! Expected: %d, got: %c. Please, get the latest version of the dump."
+                             % (model.__version__, archive_version))
+        except IOError as exception:
+            if exception.errno == errno.ENOENT:
+                print("Can't find SCHEMA_SEQUENCE in the specified archive. Importing might fail.")
+            else:
+                sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
 
-    # Importing data
-    import_data('%s/cbdump/user_sanitised' % temp_dir, model.User, ('id', 'created',  'display_name', 'musicbrainz_id'))
-    import_data('%s/cbdump/license' % temp_dir, model.License)
-    import_data('%s/cbdump/review' % temp_dir, model.Review)
-    import_data('%s/cbdump/revision' % temp_dir, model.Revision)
-    shutil.rmtree(temp_dir)  # Cleanup
-    print("Done!")
+        # Importing data
+        import_data(os.path.join(temp_dir, 'cbdump', 'user_sanitised'), model.User,
+                    ('id', 'created',  'display_name', 'musicbrainz_id'))
+        import_data(os.path.join(temp_dir, 'cbdump', 'license'), model.License)
+        import_data(os.path.join(temp_dir, 'cbdump', 'review'), model.Review)
+        import_data(os.path.join(temp_dir, 'cbdump', 'revision'), model.Revision)
+
+        shutil.rmtree(temp_dir)  # Cleanup
+        print("Done!")
 
 
 def import_data(file_name, model, columns=None):
