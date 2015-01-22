@@ -9,7 +9,7 @@ Flask-SQLAlchemy == 2.0
 SQLAlchemy == 0.9.7
 WTForms == 2.0.1
 psycopg2 == 2.5.4
-rauth == 0.7.0
+rauth == 0.7.1
 wsgiref == 0.1.2
 pycountry == 1.8
 pyOpenSSL == 0.13
