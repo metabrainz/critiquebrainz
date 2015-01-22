@@ -1,0 +1,5 @@
+BEGIN;
+
+ALTER TABLE "user" ADD COLUMN mb_access_code CHARACTER VARYING;
+
+COMMIT;
