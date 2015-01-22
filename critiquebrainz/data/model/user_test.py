@@ -61,9 +61,9 @@ class UserTestCase(DataTestCase):
         self.assertIsNone(stored_user.email)
 
     def test_user_get_or_create(self):
-        user_1 = User.get_or_create(u'Tester #1', musicbrainz_id=u'1')
-        user_2 = User.get_or_create(u'Tester #2', musicbrainz_id=u'1')
-        user_3 = User.get_or_create(u'Tester #3', musicbrainz_id=u'2')
+        user_1 = User.get_or_create(display_name='Tester #1', musicbrainz_id=u'1')
+        user_2 = User.get_or_create(display_name=u'Tester #2', musicbrainz_id=u'1')
+        user_3 = User.get_or_create(display_name=u'Tester #3', musicbrainz_id=u'2')
 
         self.assertEqual(user_1, user_2)
         self.assertNotEqual(user_1, user_3)

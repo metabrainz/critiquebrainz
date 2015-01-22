@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, render_template, url_for, session, flash
 from flask_login import login_user, logout_user, login_required
 from flask_babel import gettext
-from critiquebrainz.frontend.login import mb_auth, login_forbidden
+from critiquebrainz.frontend.login import login_forbidden, provider
 
 login_bp = Blueprint('login', __name__)
 
@@ -16,15 +16,15 @@ def index():
 @login_forbidden
 def musicbrainz():
     session['next'] = request.args.get('next')
-    return redirect(mb_auth.get_authentication_uri())
+    return redirect(provider.get_authentication_uri())
 
 
 @login_bp.route('/musicbrainz/post')
 @login_forbidden
 def musicbrainz_post():
     """Callback endpoint."""
-    if mb_auth.validate_post_login():
-        login_user(mb_auth.get_user())
+    if provider.validate_post_login():
+        login_user(provider.get_user())
         next = session.get('next')
         if next:
             return redirect(next)

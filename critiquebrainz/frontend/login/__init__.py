@@ -4,7 +4,6 @@ from flask_babel import gettext
 from critiquebrainz.data.model.user import User
 from functools import wraps
 
-mb_auth = None
 
 login_manager = LoginManager()
 login_manager.login_view = 'login.index'

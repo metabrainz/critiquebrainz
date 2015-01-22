@@ -41,14 +41,9 @@ def create_app():
 
     import login
     login.login_manager.init_app(app)
-    from login.provider import MusicBrainzAuthentication
-    login.mb_auth = MusicBrainzAuthentication(
-        name='musicbrainz',
-        client_id=app.config['MUSICBRAINZ_CLIENT_ID'],
-        client_secret=app.config['MUSICBRAINZ_CLIENT_SECRET'],
-        authorize_url="https://musicbrainz.org/oauth2/authorize",
-        access_token_url="https://musicbrainz.org/oauth2/token",
-        base_url="https://musicbrainz.org/")
+    from critiquebrainz.frontend.login import provider
+    provider.init(app.config['MUSICBRAINZ_CLIENT_ID'],
+                  app.config['MUSICBRAINZ_CLIENT_SECRET'])
 
     # APIs
     from apis import mbspotify

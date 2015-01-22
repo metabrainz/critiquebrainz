@@ -6,7 +6,7 @@ from critiquebrainz.data.model.user import User
 class OAuthClientTestCase(DataTestCase):
     def setUp(self):
         super(OAuthClientTestCase, self).setUp()
-        self.user = User.get_or_create(u'Author', u'189d7863-d23c-49d9-ae7e-031b41qb2805')
+        self.user = User.get_or_create(u'189d7863-d23c-49d9-ae7e-031b41qb2805', u'Author')
 
     def test_create(self):
         self.assertEqual(OAuthClient.query.count(), 0)

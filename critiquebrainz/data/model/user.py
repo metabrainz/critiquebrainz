@@ -38,12 +38,22 @@ class User(db.Model, UserMixin, DeleteMixin):
         return cls.query.filter_by(**kwargs).first()
 
     @classmethod
-    def get_or_create(cls, display_name, musicbrainz_id, **kwargs):
-        user = cls.query.filter_by(musicbrainz_id=musicbrainz_id, **kwargs).first()
+    def get_or_create(cls, musicbrainz_id, display_name, mb_access_code=None):
+        """Get user with a specified MusicBrainz ID or create a new one if
+        record is missing.
+        """
+        user = cls.query.filter_by(musicbrainz_id=musicbrainz_id).first()
         if user is None:
-            user = cls(display_name=display_name, musicbrainz_id=musicbrainz_id, **kwargs)
+            user = cls(
+                musicbrainz_id=musicbrainz_id,
+                display_name=display_name,
+                mb_access_code=mb_access_code,
+            )
             db.session.add(user)
-            db.session.commit()
+        else:
+            # Updating access code
+            user.mb_access_code = mb_access_code
+        db.session.commit()
         return user
 
     @classmethod

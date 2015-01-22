@@ -13,7 +13,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def test_review_creation(self):
         # Preparing test data
-        user = User.get_or_create(u'Tester', musicbrainz_id=u'1')
+        user = User.get_or_create(display_name=u'Tester', musicbrainz_id=u'1')
         license = License(id=u'Test', full_name=u'Test License')
         db.session.add(license)
         db.session.commit()

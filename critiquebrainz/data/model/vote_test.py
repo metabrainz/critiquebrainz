@@ -10,9 +10,9 @@ class VoteTestCase(DataTestCase):
 
     def test_vote_create(self):
         # Preparing test data
-        author = User.get_or_create(u'Author', musicbrainz_id=u'0')
-        user_1 = User.get_or_create(u'Tester #1', musicbrainz_id=u'1')
-        user_2 = User.get_or_create(u'Tester #2', musicbrainz_id=u'2')
+        author = User.get_or_create(display_name=u'Author', musicbrainz_id=u'0')
+        user_1 = User.get_or_create(display_name=u'Tester #1', musicbrainz_id=u'1')
+        user_2 = User.get_or_create(display_name=u'Tester #2', musicbrainz_id=u'2')
         license = License(id=u'Test', full_name=u'Test License')
         db.session.add(license)
         db.session.commit()
