@@ -19,6 +19,7 @@ class User(db.Model, UserMixin, DeleteMixin):
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
+    mb_access_code = db.Column(db.Unicode)  # OAuth access code
     show_gravatar = db.Column(db.Boolean, nullable=False, server_default="False")
 
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')

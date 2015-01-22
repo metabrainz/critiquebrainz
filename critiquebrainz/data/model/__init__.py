@@ -1,5 +1,5 @@
 # This value should be incremented after any schema changes!
-__version__ = 2
+__version__ = 3
 
 # All models must be imported there:
 from critiquebrainz.data.model.review import Review
