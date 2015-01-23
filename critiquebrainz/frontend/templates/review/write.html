@@ -23,19 +23,20 @@
             <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
           {% endif %}
         </dd>
-        <dt>{{ _('Rating:') }}</dt>
-        <dd>
-          {# TODO: Show current rating #}
-          <span>
-            <input class="star-rating" type="radio" name="rating" value="1" title="Rate 1 star" /><i></i>
-            <input class="star-rating" type="radio" name="rating" value="2" title="Rate 2 stars" /><i></i>
-            <input class="star-rating" type="radio" name="rating" value="3" title="Rate 3 stars" /><i></i>
-            <input class="star-rating" type="radio" name="rating" value="4" title="Rate 4 stars" /><i></i>
-            <input class="star-rating" type="radio" name="rating" value="5" title="Rate 5 stars" /><i></i>
-          </span>
-          <span id="remove-rating" style="display:none;">(<a id="remove-rating-link" href="#">remove rating</a>)</span>
-        </dd>
       </dl>
+      <p id="rating-block">
+        <strong>{{ _('Rating:') }}</strong>
+        {# TODO: Show current rating #}
+        <span>
+          <input class="star-rating" type="radio" name="rating" value="1" title="Rate 1 star" /><i></i>
+          <input class="star-rating" type="radio" name="rating" value="2" title="Rate 2 stars" /><i></i>
+          <input class="star-rating" type="radio" name="rating" value="3" title="Rate 3 stars" /><i></i>
+          <input class="star-rating" type="radio" name="rating" value="4" title="Rate 4 stars" /><i></i>
+          <input class="star-rating" type="radio" name="rating" value="5" title="Rate 5 stars" /><i></i>
+        </span>
+        <span id="remove-rating" style="display:none;">(<a id="remove-rating-link" href="#">remove rating</a>)</span>
+        <br /><em><span class="text-muted small">This rating will be submitted to MusicBrainz</span></em>
+      </p>
     </div>
     <div class="col-md-2">
       <img id="cover-art" class="img-responsive" style="max-height:120px;max-width:120px;">
