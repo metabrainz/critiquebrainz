@@ -1,10 +1,12 @@
 from rauth import OAuth2Service
-from flask import request, session, url_for
+from flask import request, session, url_for, flash
 from flask_login import current_user
+from flask_babel import gettext
 import critiquebrainz
 from critiquebrainz.data.model.user import User
 from critiquebrainz.utils import generate_string
 import xml.etree.ElementTree as ET
+import logging
 import json
 
 _musicbrainz = None
@@ -54,9 +56,14 @@ def get_release_group_rating(release_group):
         Rating that user have given to that release group, or None if there is
         it's not rated yet.
     """
-    s = _get_auth_session()
-    data = s.get('ws/2/release-group/%s?inc=user-ratings&fmt=json' % release_group).json()
-    return data['user-rating']['value'] if 'user-rating' in data else None
+    try:
+        s = _get_auth_session()
+        data = s.get('ws/2/release-group/%s?inc=user-ratings&fmt=json' % release_group).json()
+        return data['user-rating']['value'] if 'user-rating' in data else None
+    except (MissingTokenException, KeyError) as e:
+        logging.warning(e)
+        flash(gettext("Failed to get your rating of this release group from "
+                      "MusicBrainz. You might want to sign in again."), 'warning')
 
 
 def submit_release_group_rating(release_group, rating):
@@ -75,16 +82,21 @@ def submit_release_group_rating(release_group, rating):
     rating_xml.text = str(rating)
     xml = ET.tostring(root, "utf-8")
 
-    s = _get_auth_session()
-    return s.post('ws/2/rating?client=%s' % _get_client_string(), data=xml,
-                  headers={'Content-Type': 'application/xml;charset=UTF-8'})
+    try:
+        s = _get_auth_session()
+        s.post('ws/2/rating?client=%s' % _get_client_string(), data=xml,
+               headers={'Content-Type': 'application/xml;charset=UTF-8'})
+    except (MissingTokenException, KeyError) as e:
+        logging.warning(e)
+        flash(gettext("Failed to submit your rating to MusicBrainz. "
+                      "You might want to sign in again."), 'warning')
 
 
 def _get_auth_session():
     """Creates auth session using current user's refresh token."""
     # TODO: If possible, use refresh token only if access_token is expired.
     if not current_user.mb_refresh_token:
-        raise Exception('MusicBrainz OAuth refresh token is missing!')
+        raise MissingTokenException("MusicBrainz OAuth refresh token is missing!")
 
     return _musicbrainz.get_auth_session(data={
         'refresh_token': current_user.mb_refresh_token,
@@ -146,3 +158,7 @@ def _fetch_data(key, default=None):
 
 def _get_client_string():
     return 'critiquebrainz-' + str(critiquebrainz.__version__)
+
+
+class MissingTokenException(Exception):
+    pass

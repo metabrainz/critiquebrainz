@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
+from critiquebrainz.frontend.login.provider import submit_release_group_rating, get_release_group_rating
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
@@ -76,6 +77,10 @@ def create():
             flash(gettext("Review has been saved!"), 'success')
         else:
             flash(gettext("Review has been published!"), 'success')
+
+        # Submitting rating to MusicBrainz
+        submit_release_group_rating(release_group, form.rating.data * 20)
+
         return redirect(url_for('.entity', id=review.id))
 
     release_group_details = musicbrainz.get_release_group_by_id(release_group)
@@ -117,6 +122,10 @@ def edit(id):
                       license_id=license_choice, language=form.language.data,
                       rating=rating)
         flash(gettext("Review has been updated."), 'success')
+
+        # Submitting rating to MusicBrainz
+        submit_release_group_rating(review.release_group, form.rating.data * 20)
+
         return redirect(url_for('.entity', id=review.id))
     else:
         form.text.data = review.text
