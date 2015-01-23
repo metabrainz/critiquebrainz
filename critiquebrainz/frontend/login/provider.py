@@ -1,8 +1,10 @@
 from rauth import OAuth2Service
 from flask import request, session, url_for
 from flask_login import current_user
+import critiquebrainz
 from critiquebrainz.data.model.user import User
 from critiquebrainz.utils import generate_string
+import xml.etree.ElementTree as ET
 import json
 
 _musicbrainz = None
@@ -24,7 +26,6 @@ def init(client_id, client_secret, session_key='musicbrainz'):
 
 def get_user():
     """Function should fetch user data from database, or, if necessary, create it, and return it."""
-    print(_fetch_data('code'))
     s = _musicbrainz.get_auth_session(data={
         'code': _fetch_data('code'),
         'grant_type': 'authorization_code',
@@ -46,24 +47,50 @@ def get_user():
     )
 
 
-def get_user_rating(release_group):
+def get_release_group_rating(release_group):
     """Get current user's rating for a specified release group.
 
     Returns:
         Rating that user have given to that release group, or None if there is
         it's not rated yet.
     """
+    s = _get_auth_session()
+    data = s.get('ws/2/release-group/%s?inc=user-ratings&fmt=json' % release_group).json()
+    return data['user-rating']['value'] if 'user-rating' in data else None
+
+
+def submit_release_group_rating(release_group, rating):
+    """Submit user's rating for a specified release group.
+
+    Rating is a number between 0 and 100, at intervals of 20 (20 per "star").
+    Submitting a rating of 0 will remove the user's rating.
+    """
+    # Building XML content
+    NS = "http://musicbrainz.org/ns/mmd-2.0#"
+    root = ET.Element("{%s}metadata" % NS)
+    e_list = ET.SubElement(root, "{%s}release-group-list" % NS)
+    e_xml = ET.SubElement(e_list, "{%s}release-group" % NS)
+    e_xml.set("{%s}id" % NS, release_group)
+    rating_xml = ET.SubElement(e_xml, "{%s}user-rating" % NS)
+    rating_xml.text = str(rating)
+    xml = ET.tostring(root, "utf-8")
+
+    s = _get_auth_session()
+    return s.post('ws/2/rating?client=%s' % _get_client_string(), data=xml,
+                  headers={'Content-Type': 'application/xml;charset=UTF-8'})
+
+
+def _get_auth_session():
+    """Creates auth session using current user's refresh token."""
     # TODO: If possible, use refresh token only if access_token is expired.
     if not current_user.mb_refresh_token:
         raise Exception('MusicBrainz OAuth refresh token is missing!')
 
-    s = _musicbrainz.get_auth_session(data={
+    return _musicbrainz.get_auth_session(data={
         'refresh_token': current_user.mb_refresh_token,
         'grant_type': 'refresh_token',
         'redirect_uri': url_for('login.musicbrainz_post', _external=True)
     }, decoder=json.loads)
-    data = s.get('ws/2/release-group/%s?inc=user-ratings&fmt=json' % release_group).json()
-    return data['user-rating']['value'] if 'user-rating' in data else None
 
 
 def get_authentication_uri():
@@ -112,3 +139,7 @@ def _fetch_data(key, default=None):
         return None
     else:
         return session[_session_key].get(key, default)
+
+
+def _get_client_string():
+    return 'critiquebrainz-' + str(critiquebrainz.__version__)
