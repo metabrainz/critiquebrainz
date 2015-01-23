@@ -93,16 +93,19 @@ def _get_auth_session():
     }, decoder=json.loads)
 
 
-def get_authentication_uri():
+def get_authentication_uri(approval_prompt='auto'):
     """Prepare and return uri to authentication service login form.
-    All passed parameters should be included in a callback uri,
-    to which user will be redirected after a successful authentication.
+
+    Args:
+        approval_prompt: Either 'auto' or 'force'. Second forces approval form
+            display. Default is 'auto'.
     """
     csrf = generate_string(20)
     _persist_data(csrf=csrf)
     params = {
         'response_type': 'code',
         'redirect_uri': url_for('login.musicbrainz_post', _external=True),
+        'approval_prompt': approval_prompt,
         'access_type': 'offline',
         'scope': 'profile rating',
         'state': csrf,

@@ -16,7 +16,8 @@ def index():
 @login_forbidden
 def musicbrainz():
     session['next'] = request.args.get('next')
-    return redirect(provider.get_authentication_uri())
+    force_prompt = 'force' if request.args.get('force') else 'auto'
+    return redirect(provider.get_authentication_uri(force_prompt))
 
 
 @login_bp.route('/musicbrainz/post')
@@ -24,7 +25,11 @@ def musicbrainz():
 def musicbrainz_post():
     """Callback endpoint."""
     if provider.validate_post_login():
-        login_user(provider.get_user())
+        user = provider.get_user()
+        if not user.mb_refresh_token:
+            # Making sure that we have refresh token for this user
+            return redirect(url_for('.musicbrainz', force=True))
+        login_user(user)
         next = session.get('next')
         if next:
             return redirect(next)
