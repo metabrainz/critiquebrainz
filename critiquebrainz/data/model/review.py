@@ -33,7 +33,7 @@ class Review(db.Model, DeleteMixin):
     id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
     release_group = db.Column(UUID, index=True, nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    edits = db.Column(db.Integer, nullable=False, default=0)
+    rating = db.Column(db.SmallInteger)
     is_draft = db.Column(db.Boolean, nullable=False, default=False)
     license_id = db.Column(db.Unicode, db.ForeignKey('license.id', ondelete='CASCADE'), nullable=False)
     language = db.Column(db.String(3), default='en', nullable=False)
@@ -46,22 +46,23 @@ class Review(db.Model, DeleteMixin):
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
     def to_dict(self):
-        response = dict(id=self.id,
-                        release_group=self.release_group,
-                        user=self.user.to_dict(),
-                        text=self.text,
-                        created=self.revisions[0].timestamp,
-                        last_updated=self.revisions[-1].timestamp,
-                        edits=self.edits,
-                        votes_positive=self.votes_positive_count,
-                        votes_negative=self.votes_negative_count,
-                        rating=self.points,  # TODO: Rename "rating"
-                        license=self.license.to_dict(),
-                        language=self.language,
-                        source=self.source,
-                        source_url=self.source_url,
-                        review_class=self.review_class.label)
-        return response
+        return dict(
+            id=self.id,
+            release_group=self.release_group,
+            user=self.user.to_dict(),
+            text=self.text,
+            created=self.revisions[0].timestamp,
+            last_updated=self.revisions[-1].timestamp,
+            votes_positive=self.votes_positive_count,
+            votes_negative=self.votes_negative_count,
+            license=self.license.to_dict(),
+            language=self.language,
+            source=self.source,
+            source_url=self.source_url,
+            review_class=self.review_class.label,
+            # TODO: Rename this and return the actual rating:
+            rating=self.points,
+        )
 
     @property
     def last_revision(self):
@@ -195,9 +196,18 @@ class Review(db.Model, DeleteMixin):
         return query.all(), count
 
     @classmethod
-    def create(cls, release_group, user, text, is_draft, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None, language=None):
-        review = Review(release_group=release_group, user=user, language=language, is_draft=is_draft,
-                        license_id=license_id, source=source, source_url=source_url)
+    def create(cls, release_group, user, text, is_draft, rating=None, language=None,
+               license_id=DEFAULT_LICENSE_ID, source=None, source_url=None):
+        review = Review(
+            release_group=release_group,
+            user=user,
+            is_draft=is_draft,
+            rating=rating,
+            language=language,
+            license_id=license_id,
+            source=source,
+            source_url=source_url,
+        )
         db.session.add(review)
         db.session.flush()
         db.session.add(Revision(review_id=review.id, text=text))
@@ -207,7 +217,7 @@ class Review(db.Model, DeleteMixin):
 
         return review
 
-    def update(self, text, is_draft=None, license_id=None, language=None):
+    def update(self, text, is_draft=None, rating=None, license_id=None, language=None):
         """Update contents of this review.
 
         Returns:
@@ -217,6 +227,9 @@ class Review(db.Model, DeleteMixin):
             if not self.is_draft:  # If trying to convert published review into draft.
                 raise BadRequest(gettext("Changing license of a published review is not allowed."))
             self.license_id = license_id
+
+        if rating is not None:
+            self.rating = rating
 
         if language is not None:
             self.language = language

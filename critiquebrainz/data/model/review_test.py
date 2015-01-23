@@ -117,7 +117,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(review.revisions[0], review.last_revision)
 
         # Updating should create a new revision.
-        review.update(u"The worst!")
+        review.update(text=u"The worst!")
         self.assertEqual(len(review.revisions), 2)
         self.assertNotEqual(review.revisions[0], review.last_revision)
 
@@ -138,9 +138,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0].text, u"Awesome!")
 
-        review.update(
-            text=u"Beautiful!",
-        )
+        review.update(text=u"Beautiful!")
         reviews, count = Review.list()
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
