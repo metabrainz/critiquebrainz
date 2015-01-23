@@ -19,7 +19,7 @@ class User(db.Model, UserMixin, DeleteMixin):
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
-    mb_access_code = db.Column(db.Unicode)  # OAuth access code
+    mb_refresh_token = db.Column(db.Unicode)  # OAuth2 refresh token
     show_gravatar = db.Column(db.Boolean, nullable=False, server_default="False")
 
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
@@ -38,7 +38,7 @@ class User(db.Model, UserMixin, DeleteMixin):
         return cls.query.filter_by(**kwargs).first()
 
     @classmethod
-    def get_or_create(cls, musicbrainz_id, display_name, mb_access_code=None):
+    def get_or_create(cls, musicbrainz_id, display_name, mb_refresh_token=None):
         """Get user with a specified MusicBrainz ID or create a new one if
         record is missing.
         """
@@ -47,12 +47,13 @@ class User(db.Model, UserMixin, DeleteMixin):
             user = cls(
                 musicbrainz_id=musicbrainz_id,
                 display_name=display_name,
-                mb_access_code=mb_access_code,
+                mb_refresh_token=mb_refresh_token,
             )
             db.session.add(user)
         else:
-            # Updating access code
-            user.mb_access_code = mb_access_code
+            if mb_refresh_token:
+                # Updating refresh token if new one is specified
+                user.mb_refresh_token = mb_refresh_token
         db.session.commit()
         return user
 
