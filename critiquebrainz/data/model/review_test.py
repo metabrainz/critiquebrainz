@@ -146,7 +146,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0].text, u"Beautiful!")
 
-        reviews, count = Review.list(sort='rating')
+        reviews, count = Review.list(sort='points')
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 

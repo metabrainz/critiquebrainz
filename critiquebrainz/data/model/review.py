@@ -55,7 +55,7 @@ class Review(db.Model, DeleteMixin):
                         edits=self.edits,
                         votes_positive=self.votes_positive_count,
                         votes_negative=self.votes_negative_count,
-                        rating=self.rating,
+                        rating=self.points,  # TODO: Rename "rating"
                         license=self.license.to_dict(),
                         language=self.language,
                         source=self.source,
@@ -107,10 +107,10 @@ class Review(db.Model, DeleteMixin):
         return self._review_class
 
     @property
-    def rating(self):
-        if hasattr(self, '_rating') is False:
-            self._rating = self.votes_positive_count - self.votes_negative_count
-        return self._rating
+    def points(self):
+        if hasattr(self, '_points') is False:
+            self._points = self.votes_positive_count - self.votes_negative_count
+        return self._points
 
     @classmethod
     def list(cls, release_group=None, user_id=None, sort=None, limit=None,
@@ -124,8 +124,8 @@ class Review(db.Model, DeleteMixin):
             release_group: MBID of the release group that is associated with a
                 review.
             user_id: UUID of the author.
-            sort: Order of returned reviews. Can be either "rating" (order by
-                rating), or "created" (order by creation time).
+            sort: Order of returned reviews. Can be either "points" (order by
+                review's points), or "created" (order by creation time).
             limit: Maximum number of reviews returned by this method.
             offset: Offset that can be used in conjunction with the limit.
             language: Language (code) of returned reviews.
@@ -156,10 +156,10 @@ class Review(db.Model, DeleteMixin):
 
         # SORTING:
 
-        if sort == 'rating':  # order by rating (positive votes - negative votes)
+        if sort == 'points':  # order by points (positive votes - negative votes)
 
             # TODO: Simplify this part. It can probably be rewritten using
-            # hybrid attributes (by making rating property a hybrid_property),
+            # hybrid attributes (by making points property a hybrid_property),
             # but I'm not sure how to do that.
 
             # Preparing base query for getting votes
@@ -236,9 +236,9 @@ class Review(db.Model, DeleteMixin):
     def get_popular(cls, limit=None):
         """Get list of popular reviews.
 
-        Popularity is determined by rating of a particular review. Rating is a
+        Popularity is determined by review's points. Points represent a
         difference between positive votes and negative. In this case only votes
-        from the last month are used to calculate rating.
+        from the last month are used to calculate points.
 
         Results are cached for 12 hours.
 
@@ -264,7 +264,7 @@ class Review(db.Model, DeleteMixin):
             rand_subquery = db.session.query(aliased(Review, distinct_subquery)) \
                 .order_by(func.random()).subquery()
 
-            # Sorting reviews by rating
+            # Sorting reviews by points
             query = db.session.query(aliased(Review, rand_subquery))
 
             # Preparing base query for getting votes

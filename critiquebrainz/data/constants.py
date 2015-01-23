@@ -46,40 +46,40 @@ user_types = (blocked, spammer, noob, apprentice, sorcerer)
 # REVIEW CLASSES
 class ReviewClass(object):
 
-    def __init__(self, label, rating, upvote, downvote, mark_spam):
+    def __init__(self, label, points, upvote, downvote, mark_spam):
         self.label = label
-        self.rating = rating
+        self.points = points
         self.upvote = upvote
         self.downvote = downvote
         self.mark_spam = mark_spam
 
     def is_instance(self, review):
-        return self.rating(review.rating)
+        return self.points(review.points)
 
 spam = ReviewClass(
     label='Spam',
-    rating=lambda x: (x < -10),
+    points=lambda x: (x < -10),
     upvote=(apprentice, sorcerer),
     downvote=(noob, apprentice, sorcerer),
     mark_spam=(apprentice, sorcerer))
 
 neutral = ReviewClass(
     label='Neutral',
-    rating=lambda x: (x >= -10 and x < 10),
+    points=lambda x: (x >= -10 and x < 10),
     upvote=(noob, apprentice, sorcerer),
     downvote=(noob, apprentice, sorcerer),
     mark_spam=(apprentice, sorcerer))
 
 promising = ReviewClass(
     label='Promising',
-    rating=lambda x: (x >= 10 and x < 30),
+    points=lambda x: (x >= 10 and x < 30),
     upvote=(spammer, noob, apprentice, sorcerer),
     downvote=(noob, apprentice, sorcerer),
     mark_spam=(apprentice, sorcerer))
 
 trusted = ReviewClass(
     label='Trusted',
-    rating=lambda x: (x >= 30),
+    points=lambda x: (x >= 30),
     upvote=(spammer, noob, apprentice, sorcerer),
     downvote=(apprentice, sorcerer),
     mark_spam=(apprentice, sorcerer))

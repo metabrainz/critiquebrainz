@@ -94,6 +94,9 @@ def review_list_handler():
     release_group = Parser.uuid('uri', 'release_group', optional=True)
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     sort = Parser.string('uri', 'sort', valid_values=['rating', 'created'], optional=True)
+    # TODO: Fix this hack:
+    if sort == 'rating':
+        sort = 'points'
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
     offset = Parser.int('uri', 'offset', optional=True) or 0
     language = Parser.string('uri', 'language', min=2, max=3, optional=True)

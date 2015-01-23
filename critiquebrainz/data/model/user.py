@@ -90,7 +90,7 @@ class User(db.Model, UserMixin, DeleteMixin):
 
     @property
     def karma(self):
-        """User's karma. Based on ratings of revisions."""
+        """User's karma. Based on points of revisions."""
         if hasattr(self, '_karma') is False:
             # TODO: Improve this
             q = db.session.query(Vote).outerjoin(Revision).outerjoin(Review).outerjoin(User).filter(User.id == self.id)
