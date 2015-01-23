@@ -1,16 +1,17 @@
 from rauth import OAuth2Service
 from flask import request, session, url_for
+from flask_login import current_user
 from critiquebrainz.data.model.user import User
 from critiquebrainz.utils import generate_string
 import json
 
-_service = None
+_musicbrainz = None
 _session_key = None
 
 
 def init(client_id, client_secret, session_key='musicbrainz'):
-    global _service, _session_key
-    _service = OAuth2Service(
+    global _musicbrainz, _session_key
+    _musicbrainz = OAuth2Service(
         name='musicbrainz',
         base_url="https://musicbrainz.org/",
         authorize_url="https://musicbrainz.org/oauth2/authorize",
@@ -21,19 +22,48 @@ def init(client_id, client_secret, session_key='musicbrainz'):
     _session_key = session_key
 
 
-def persist_data(**kwargs):
-    """Save data in session."""
-    if _session_key not in session:
-        session[_session_key] = dict()
-    session[_session_key].update(**kwargs)
+def get_user():
+    """Function should fetch user data from database, or, if necessary, create it, and return it."""
+    print(_fetch_data('code'))
+    s = _musicbrainz.get_auth_session(data={
+        'code': _fetch_data('code'),
+        'grant_type': 'authorization_code',
+        'redirect_uri': url_for('login.musicbrainz_post', _external=True)
+    }, decoder=json.loads)
 
-
-def fetch_data(key, default=None):
-    """Fetch data from session."""
-    if _session_key not in session:
-        return None
+    access_token_response = s.access_token_response.json()
+    if 'refresh_token' in access_token_response:
+        # We get a refresh token the first time exchange of an authorization code happens.
+        refresh_token = s.access_token_response.json()['refresh_token']
     else:
-        return session[_session_key].get(key, default)
+        refresh_token = None
+
+    data = s.get('oauth2/userinfo').json()
+    return User.get_or_create(
+        musicbrainz_id=data.get('sub'),
+        display_name=data.get('sub'),
+        mb_refresh_token=refresh_token,
+    )
+
+
+def get_user_rating(release_group):
+    """Get current user's rating for a specified release group.
+
+    Returns:
+        Rating that user have given to that release group, or None if there is
+        it's not rated yet.
+    """
+    # TODO: If possible, use refresh token only if access_token is expired.
+    if not current_user.mb_refresh_token:
+        raise Exception('MusicBrainz OAuth refresh token is missing!')
+
+    s = _musicbrainz.get_auth_session(data={
+        'refresh_token': current_user.mb_refresh_token,
+        'grant_type': 'refresh_token',
+        'redirect_uri': url_for('login.musicbrainz_post', _external=True)
+    }, decoder=json.loads)
+    data = s.get('ws/2/release-group/%s?inc=user-ratings&fmt=json' % release_group).json()
+    return data['user-rating']['value'] if 'user-rating' in data else None
 
 
 def get_authentication_uri():
@@ -42,28 +72,15 @@ def get_authentication_uri():
     to which user will be redirected after a successful authentication.
     """
     csrf = generate_string(20)
-    persist_data(csrf=csrf)
-    params = dict(response_type='code',
-                  redirect_uri=url_for('login.musicbrainz_post', _external=True),
-                  scope='profile rating',
-                  state=csrf)
-    return _service.get_authorize_url(**params)
-
-
-def get_user():
-    """Function should fetch user data from database, or, if necessary, create it, and return it."""
-    data = dict(
-        code=fetch_data('code'),
-        grant_type='authorization_code',
-        redirect_uri=url_for('login.musicbrainz_post', _external=True)
-    )
-    s = _service.get_auth_session(data=data, decoder=json.loads)
-    data = s.get('oauth2/userinfo').json()
-    return User.get_or_create(
-        musicbrainz_id=data.get('sub'),
-        display_name=data.get('sub'),
-        mb_access_code=fetch_data('code'),
-    )
+    _persist_data(csrf=csrf)
+    params = {
+        'response_type': 'code',
+        'redirect_uri': url_for('login.musicbrainz_post', _external=True),
+        'access_type': 'offline',
+        'scope': 'profile rating',
+        'state': csrf,
+    }
+    return _musicbrainz.get_authorize_url(**params)
 
 
 def validate_post_login():
@@ -72,10 +89,26 @@ def validate_post_login():
     """
     if request.args.get('error'):
         return False
-    if fetch_data('csrf') != request.args.get('state'):
+    if _fetch_data('csrf') != request.args.get('state'):
         return False
     code = request.args.get('code')
     if not code:
         return False
-    persist_data(code=code)
+    _persist_data(code=code)
     return True
+
+
+def _persist_data(**kwargs):
+    """Save data in session."""
+    if _session_key not in session:
+        session[_session_key] = dict()
+    session[_session_key].update(**kwargs)
+    session.modified = True
+
+
+def _fetch_data(key, default=None):
+    """Fetch data from session."""
+    if _session_key not in session:
+        return None
+    else:
+        return session[_session_key].get(key, default)
