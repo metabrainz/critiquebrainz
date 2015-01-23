@@ -23,6 +23,18 @@
             <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
           {% endif %}
         </dd>
+        <dt>{{ _('Rating:') }}</dt>
+        <dd>
+          {# TODO: Show current rating #}
+          <span>
+            <input class="star-rating" type="radio" name="rating" value="1" title="Rate 1 star" /><i></i>
+            <input class="star-rating" type="radio" name="rating" value="2" title="Rate 2 stars" /><i></i>
+            <input class="star-rating" type="radio" name="rating" value="3" title="Rate 3 stars" /><i></i>
+            <input class="star-rating" type="radio" name="rating" value="4" title="Rate 4 stars" /><i></i>
+            <input class="star-rating" type="radio" name="rating" value="5" title="Rate 5 stars" /><i></i>
+          </span>
+          <span id="remove-rating" style="display:none;">(<a id="remove-rating-link" href="#">remove rating</a>)</span>
+        </dd>
       </dl>
     </div>
     <div class="col-md-2">
@@ -96,11 +108,27 @@
   {{ super() }}
   <script>
     $(document).ready(function() {
-      $("#btn-publish").click(function(){
+      // Rating
+      var removeRatingLink = $('#remove-rating');
+      var ratingContainer = $('#rating');
+      $('#remove-rating-link').click(function () {
+        $('.star-rating').prop('checked', false);
+        ratingContainer.attr('value', 0);
+        removeRatingLink.hide();
+      });
+      $('.star-rating').change(
+        function () {
+          console.log(this.value + ' stars');
+          ratingContainer.attr('value', this.value);
+          removeRatingLink.show();
+        }
+      );
+
+      $("#btn-publish").click(function () {
         $("#state").attr('value', 'publish');
         $("#review-editor").submit();
       });
-      $("#btn-draft").click(function(){
+      $("#btn-draft").click(function () {
         $("#state").attr('value', 'draft');
         $("#review-editor").submit();
       });

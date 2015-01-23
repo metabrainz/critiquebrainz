@@ -68,9 +68,10 @@ def create():
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
         is_draft = form.state.data == 'draft'
+        rating = form.rating.data if form.state.data > 0 else None
         review = Review.create(user=current_user, release_group=release_group, text=form.text.data,
                                license_id=form.license_choice.data, language=form.language.data,
-                               is_draft=is_draft)
+                               is_draft=is_draft, rating=rating)
         if is_draft:
             flash(gettext("Review has been saved!"), 'success')
         else:
@@ -110,8 +111,11 @@ def edit(id):
             license_choice = form.license_choice.data
         else:
             license_choice = None
+
+        rating = form.rating.data if form.state.data > 0 else None
         review.update(text=form.text.data, is_draft=(form.state.data == 'draft'),
-                      license_id=license_choice, language=form.language.data)
+                      license_id=license_choice, language=form.language.data,
+                      rating=rating)
         flash(gettext("Review has been updated."), 'success')
         return redirect(url_for('.entity', id=review.id))
     else:
