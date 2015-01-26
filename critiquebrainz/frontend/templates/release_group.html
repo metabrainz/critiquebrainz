@@ -68,6 +68,7 @@
         <thead>
           <tr>
             <th></th>
+            <th>{# Rating #}</th>
             <th>{{ _('Published on') }}</th>
             <th>{{ _('Votes (+/-)') }}</th>
           </tr>
@@ -80,6 +81,13 @@
                   {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
                 </a>
               </td>
+              <td>
+                {% if review.rating %}
+                  <div class="rateit" data-rateit-value="{{ review.rating }}"
+                         data-rateit-ispreset="true" data-rateit-readonly="true"></div></td>
+                {% else %}
+                  <span class="footnote">{{ _('no rating') }}</span>
+                {% endif %}
               <td>{{ review.created | date }}</td>
               <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
             </tr>

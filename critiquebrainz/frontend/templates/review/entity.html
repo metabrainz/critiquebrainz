@@ -70,6 +70,13 @@
         </em>
       {% endif %}
 
+      {% if review.rating %}
+        <div class="rating">
+          <div class="rateit" data-rateit-value="{{ review.rating }}"
+               data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+        </div>
+      {% endif %}
+
       <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text_html|safe }}</p>
 
       <hr />
