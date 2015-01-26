@@ -49,6 +49,9 @@
 @import "bootstrap/utilities";
 @import "bootstrap/responsive-utilities";
 
+// RateIt jQuery plugin styling
+@import "rateit";
+
 
 @icon-font-path:"/static/fonts/";
 
@@ -79,6 +82,12 @@ body {
   > li {
     > a { color: @mb-purple; }
   }
+}
+
+.footnote {
+  .text-muted();
+  .small();
+  font-style: italic;
 }
 
 
@@ -367,6 +376,11 @@ a#edit-review { margin-top: 20px; }
 
 // Review editor
 #review-editor {
+  #rating-block {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    #rating-stars { margin-left: 4px; }
+  }
   #agreement {
     font-size: @font-size-base - 2;
   }

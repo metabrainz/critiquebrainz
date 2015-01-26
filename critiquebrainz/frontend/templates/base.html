@@ -19,8 +19,10 @@
     {% endif %}
     {% endblock %}
 
-    <!-- This needs to be before body because it's used during cover art loading. -->
+    {# These scripts need to be loaded before the body because some parts of
+    the page use these scripts "early" (like cover art loading or rating display). #}
     <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.rateit.min.js') }}"></script>
   </head>
 
   <body>

@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+<div id="review-editor">
   <h2>{{ _('Editing review') }}</h2>
   <hr />
 
@@ -41,19 +42,14 @@
           {% endif %}
         </dd>
       </dl>
-      <p id="rating-block">
-        <strong>{{ _('Rating:') }}</strong>
-        {# TODO: Show current rating #}
-        <span>
-          <input class="star-rating" type="radio" name="rating" value="1" title="Rate 1 star" /><i></i>
-          <input class="star-rating" type="radio" name="rating" value="2" title="Rate 2 stars" /><i></i>
-          <input class="star-rating" type="radio" name="rating" value="3" title="Rate 3 stars" /><i></i>
-          <input class="star-rating" type="radio" name="rating" value="4" title="Rate 4 stars" /><i></i>
-          <input class="star-rating" type="radio" name="rating" value="5" title="Rate 5 stars" /><i></i>
-        </span>
-        <span id="remove-rating" style="display:none;">(<a id="remove-rating-link" href="#">remove rating</a>)</span>
-        <br /><em><span class="text-muted small">This rating will be submitted to MusicBrainz</span></em>
-      </p>
+
+      <div id="rating-block" class="clearfix">
+        <strong class="pull-left">{{ _('Rating:') }} </strong>
+        <div id="rating-stars" class="rateit" data-rateit-step="1" data-rateit-resetable="false" data-rateit-value="{{ review.rating }}" data-rateit-ispreset="true"></div>
+        <span id="remove-rating" {{ 'style=display:none;' if not review.rating }}>(<a id="remove-rating-link" href="#">remove rating</a>)</span>
+        <br /><span class="footnote">This rating will be submitted to MusicBrainz</span>
+      </div>
+
     </div>
     <div class="col-md-2">
       <img id="cover-art" class="img-responsive" style="max-height:120px;max-width:120px;">
@@ -74,7 +70,7 @@
       </small>
     </ul>
   </div>
-  <form id="review-editor" method="POST" class="form-horizontal" role="form">
+  <form id="editor-form" method="POST" class="form-horizontal" role="form">
     {{ form.hidden_tag() }}
     <div class="form-group">
       <div class="col-sm-12 tab-content">
@@ -111,6 +107,7 @@
     <button id="btn-publish" class="btn btn-primary">{{ _('Update') }}</button>
   {% endif %}
   <a class="btn btn-link" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Discard changes') }}</a>
+</div>
 {% endblock %}
 
 {% block scripts %}
@@ -118,24 +115,22 @@
   <script>
     $(document).ready(function() {
       // Rating
-      var removeRatingLink = $('#remove-rating');
       var ratingContainer = $('#rating');
+      var ratingStars = $('#rating-stars');
+      var removeRatingLink = $('#remove-rating');
+      ratingStars.bind('rated', function (event, value) {
+        ratingContainer.attr('value', value);
+        removeRatingLink.show();
+      });
       $('#remove-rating-link').click(function () {
-        $('.star-rating').prop('checked', false);
+        ratingStars.rateit('reset');
         ratingContainer.attr('value', 0);
         removeRatingLink.hide();
       });
-      $('.star-rating').change(
-        function () {
-          console.log(this.value + ' stars');
-          ratingContainer.attr('value', this.value);
-          removeRatingLink.show();
-        }
-      );
 
       $("#btn-publish").click(function(){
         $("#state").attr('value', 'publish');
-        $("#review-editor").submit();
+        $("#editor-form").submit();
       });
       {% if review.is_draft %}
         $("#btn-draft").click(function(){
