@@ -13,10 +13,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Backups and dumps
-/dump/
-/backup/
 /export/
-/temp/
 
 # Test results
 /cover/
