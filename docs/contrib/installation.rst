@@ -111,13 +111,7 @@ If you don't want to do that yet, here's a list of blueprints that should be kep
 More information about importance of keeping transport layer secure is available at
 https://www.owasp.org/index.php/Top_10_2010-A9-Insufficient_Transport_Layer_Protection.
 
-Running
--------
-
-Don't forget to enter your virtual environment first::
-
-   $ source ./env
-
-Now you can safely run the webservice app::
+Running the server
+------------------
 
    $ python run.py

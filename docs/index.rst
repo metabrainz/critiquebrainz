@@ -1,22 +1,22 @@
 CritiqueBrainz
 ==============
 
-Hello there! Thanks for your interest in CritiqueBrainz project. In case you
-don't know what this project is about, here's more info:
-
-CritiqueBrainz is a repository for Creative Commons licensed music reviews. You
-can read what other people have written about an album or write your own review!
-CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.
-Everyone - including you - can participate and contribute.
+Hello there! Thanks for your interest in CritiqueBrainz project. It is a
+repository for Creative Commons licensed music reviews. You see what other
+people have written about an album or write your own review! This project is
+based on data from MusicBrainz - open music encyclopedia. Everyone - including
+you - can participate and contribute.
 
 This is an open source project. Source code is available `on GitHub <https://github.com/metabrainz/critiquebrainz>`_.
 
 Documentation is divided into two parts:
-1. Information for developers who want to use our web service to get reviews and
-do some fun stuff with them.
-2. Information for contributors, who want to make CritiqueBrainz a better
-project. You can help by writing code, translating the interface, or doing
-something else.
+
+#. :doc:`Information for developers <dev>` who want to use our web service to
+   get reviews and do some fun stuff with them.
+#. :doc:`Information for contributors <contrib>`, who want to make
+   CritiqueBrainz a better project. You can help by writing code, translating
+   the interface, or doing something else.
+
 
 Contents
 --------

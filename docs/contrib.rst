@@ -7,5 +7,5 @@ Contributing
    contrib/intro
    contrib/installation
    contrib/db
-   contrib/backup
+   contrib/export
    contrib/translation
