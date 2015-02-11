@@ -62,5 +62,7 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 
 #DEBUG_TB_TEMPLATE_EDITOR_ENABLED = True
 
+#GOOGLE_ANALYTICS_TRACKING_ID = ""
+
 # Compile styling in browser if set to True
 #COMPILE_LESS = True
