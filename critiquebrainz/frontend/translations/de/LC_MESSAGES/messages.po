@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-01-06 12:25+0000\n"
-"PO-Revision-Date: 2015-01-07 09:54+0000\n"
+"POT-Creation-Date: 2015-01-21 08:38+0000\n"
+"PO-Revision-Date: 2015-01-24 09:53+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/critiquebrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -90,37 +90,37 @@ msgstr "Logge dich bitte ein, um auf diese Seite zuzugreifen."
 msgid "Login failed."
 msgstr "Fehler bei der Anmeldung."
 
-#: critiquebrainz/frontend/matching/views.py:42
-#: critiquebrainz/frontend/matching/views.py:66
-msgid "Only existing release groups can be matched to Spotify!"
-msgstr "Nur vorhandene Veröffentlichungsgruppen können mit Spotify abgestimmt werden!"
+#: critiquebrainz/frontend/mapping/views.py:42
+#: critiquebrainz/frontend/mapping/views.py:66
+msgid "Only existing release groups can be mapped to Spotify!"
+msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:71
+#: critiquebrainz/frontend/mapping/views.py:71
 msgid "You need to select an album from Spotify!"
 msgstr "Du musst ein Album von Spotify auswählen!"
 
-#: critiquebrainz/frontend/matching/views.py:76
+#: critiquebrainz/frontend/mapping/views.py:76
 msgid "You need to specify a correct link to this album on Spotify!"
 msgstr "Du musst einen korrekte Link zu diesem Album auf Spotify angeben!"
 
-#: critiquebrainz/frontend/matching/views.py:81
-#: critiquebrainz/frontend/matching/views.py:120
+#: critiquebrainz/frontend/mapping/views.py:81
+#: critiquebrainz/frontend/mapping/views.py:120
 msgid "You need to specify existing album from Spotify!"
 msgstr "Du musst ein vorhandenes Album von Spotify angeben!"
 
-#: critiquebrainz/frontend/matching/views.py:87
+#: critiquebrainz/frontend/mapping/views.py:87
 msgid "Spotify mapping has been added!"
 msgstr "Spotify-Zuordnung wurde hinzugefügt!"
 
-#: critiquebrainz/frontend/matching/views.py:103
+#: critiquebrainz/frontend/mapping/views.py:103
 msgid "Can't find release group with that ID!"
 msgstr "Veröffentlichungsgruppe mit dieser ID konnte nicht gefunden werden!"
 
-#: critiquebrainz/frontend/matching/views.py:109
-msgid "This album is not matched to Spotify yet!"
-msgstr "Dieses Album ist noch nicht mit Spotify abgestimmt!"
+#: critiquebrainz/frontend/mapping/views.py:109
+msgid "This album is not mapped to Spotify yet!"
+msgstr ""
 
-#: critiquebrainz/frontend/matching/views.py:114
+#: critiquebrainz/frontend/mapping/views.py:114
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr "Die falsche Spotify-Zuordnung wurde gemeldet. Vielen Dank!"
 
@@ -270,70 +270,69 @@ msgstr "Sprache"
 msgid "You need to accept the license agreement!"
 msgstr "Du musst die Lizenzvereinbarung akzeptieren!"
 
-#: critiquebrainz/frontend/review/views.py:62
+#: critiquebrainz/frontend/review/views.py:63
 msgid "You have already published a review for this album!"
 msgstr "Du hast bereits eine Rezension für dieses Album veröffentlicht!"
 
-#: critiquebrainz/frontend/review/views.py:66
+#: critiquebrainz/frontend/review/views.py:67
 msgid "You have exceeded your limit of reviews per day."
 msgstr "Du hast dein Limit an Rezensionen pro Tag überschritten."
 
-#: critiquebrainz/frontend/review/views.py:74
+#: critiquebrainz/frontend/review/views.py:75
 msgid "Review has been saved!"
 msgstr "Rezension wurde gespeichert!"
 
-#: critiquebrainz/frontend/review/views.py:76
+#: critiquebrainz/frontend/review/views.py:77
 msgid "Review has been published!"
 msgstr "Rezension wurde veröffentlicht!"
 
-#: critiquebrainz/frontend/review/views.py:81
+#: critiquebrainz/frontend/review/views.py:82
 msgid ""
 "You can only write a review for a release group that exists on MusicBrainz!"
 msgstr "Du kannst nur eine Rezension für eine Veröffentlichgsgruppe schreiben welche auf MusicBrainz existiert!"
 
-#: critiquebrainz/frontend/review/views.py:98
-#: critiquebrainz/frontend/review/views.py:126
+#: critiquebrainz/frontend/review/views.py:99
 msgid "Can't find a review with the specified ID."
 msgstr "Eine Rezension mit der angegebenen ID konnte nicht gefunden werden."
 
-#: critiquebrainz/frontend/review/views.py:100
+#: critiquebrainz/frontend/review/views.py:101
 msgid "Only author can edit this review."
 msgstr "Nur der Autor kann diese Rezension bearbeiten."
 
-#: critiquebrainz/frontend/review/views.py:114
+#: critiquebrainz/frontend/review/views.py:115
 msgid "Review has been updated."
 msgstr "Rezension wurde aktualisiert."
 
-#: critiquebrainz/frontend/review/views.py:128
+#: critiquebrainz/frontend/review/views.py:127
 msgid "Only the author can delete this review."
 msgstr "Nur der Autor kann diese Rezension löschen."
 
-#: critiquebrainz/frontend/review/views.py:131
+#: critiquebrainz/frontend/review/views.py:130
 msgid "Review has been deleted."
 msgstr "Rezension wurde gelöscht."
 
-#: critiquebrainz/frontend/review/views.py:149
+#: critiquebrainz/frontend/review/views.py:146
 msgid "You cannot rate your own review."
 msgstr "Du kannst deine eigenen Rezension nicht bewerten."
 
-#: critiquebrainz/frontend/review/views.py:152
+#: critiquebrainz/frontend/review/views.py:149
 msgid "You have exceeded your limit of votes per day."
 msgstr "Du hast dein Limit an Abstimmungen pro Tag überschritten."
 
+#: critiquebrainz/frontend/review/views.py:152
 #: critiquebrainz/frontend/review/views.py:155
-#: critiquebrainz/frontend/review/views.py:158
 msgid "You are not allowed to rate this review."
 msgstr "Du kannst diese Rezension nicht bewerten."
 
-#: critiquebrainz/frontend/review/views.py:162
+#: critiquebrainz/frontend/review/views.py:159
 msgid "You have rated this review!"
 msgstr "Du hast diese Rezension bewertet!"
 
-#: critiquebrainz/frontend/review/views.py:174
+#: critiquebrainz/frontend/review/views.py:169
 msgid "This review is not rated yet."
 msgstr "Diese Rezension ist noch nicht bewertet."
 
-#: critiquebrainz/frontend/review/views.py:177
+#: critiquebrainz/frontend/review/views.py:172
 msgid "You have deleted your vote for this review!"
 msgstr "Du hast deine Stimme für diese Rezension gelöscht!"
 
@@ -419,13 +418,13 @@ msgstr[0] "%(num)d Rezension"
 msgstr[1] "%(num)d Rezensionen"
 
 #: critiquebrainz/frontend/templates/artist.html:69
-#: critiquebrainz/frontend/templates/matching/spotify.html:45
+#: critiquebrainz/frontend/templates/mapping/spotify.html:45
 #: critiquebrainz/frontend/templates/review/browse.html:42
 msgid "Previous"
 msgstr "Vorherige"
 
 #: critiquebrainz/frontend/templates/artist.html:72
-#: critiquebrainz/frontend/templates/matching/spotify.html:48
+#: critiquebrainz/frontend/templates/mapping/spotify.html:48
 #: critiquebrainz/frontend/templates/review/browse.html:45
 msgid "Next"
 msgstr "Nächste"
@@ -514,8 +513,8 @@ msgstr "Keine Rezensionen gefunden"
 
 #: critiquebrainz/frontend/templates/index.html:47
 #: critiquebrainz/frontend/templates/index.html:81
-#: critiquebrainz/frontend/templates/matching/confirm.html:13
-#: critiquebrainz/frontend/templates/matching/report.html:13
+#: critiquebrainz/frontend/templates/mapping/confirm.html:13
+#: critiquebrainz/frontend/templates/mapping/report.html:13
 #: critiquebrainz/frontend/templates/review/browse.html:23
 #, python-format
 msgid "%(album)s by %(artist)s"
@@ -710,94 +709,97 @@ msgstr "Um dich einzuloggen, benutze dein MusicBrainz-Konto und gewähre Critiqu
 msgid "Sign in with MusicBrainz"
 msgstr "Mit MusicBrainz einloggen"
 
-#: critiquebrainz/frontend/templates/matching/confirm.html:3
-msgid "Matching confirmation"
-msgstr "Zuordnungsbestätigung"
+#: critiquebrainz/frontend/templates/mapping/confirm.html:3
+msgid "New Spotify mapping confirmation"
+msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/confirm.html:6
-#: critiquebrainz/frontend/templates/matching/spotify.html:3
-#: critiquebrainz/frontend/templates/matching/spotify.html:6
-msgid "Spotify album matching"
-msgstr "Spotify-Album-Zuordnung"
+#: critiquebrainz/frontend/templates/mapping/confirm.html:6
+msgid "Spotify album mapping confirmation"
+msgstr ""
 
-#: critiquebrainz/frontend/templates/matching/confirm.html:8
+#: critiquebrainz/frontend/templates/mapping/confirm.html:8
 msgid "Are you sure you want to create a connection?"
 msgstr "Bist du sicher, dass du eine Verbindung erstellen willst?"
 
-#: critiquebrainz/frontend/templates/matching/confirm.html:22
-#: critiquebrainz/frontend/templates/matching/report.html:22
+#: critiquebrainz/frontend/templates/mapping/confirm.html:22
+#: critiquebrainz/frontend/templates/mapping/report.html:22
 msgid "Spotify"
 msgstr "Spotify"
 
-#: critiquebrainz/frontend/templates/matching/confirm.html:23
-#: critiquebrainz/frontend/templates/matching/report.html:23
+#: critiquebrainz/frontend/templates/mapping/confirm.html:23
+#: critiquebrainz/frontend/templates/mapping/report.html:23
 msgid "URI:"
 msgstr "URI:"
 
-#: critiquebrainz/frontend/templates/matching/confirm.html:30
+#: critiquebrainz/frontend/templates/mapping/confirm.html:30
 msgid "Connect"
 msgstr "Verbinden"
 
-#: critiquebrainz/frontend/templates/matching/confirm.html:31
-#: critiquebrainz/frontend/templates/matching/report.html:31
+#: critiquebrainz/frontend/templates/mapping/confirm.html:31
+#: critiquebrainz/frontend/templates/mapping/report.html:31
 #: critiquebrainz/frontend/templates/review/delete.html:18
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: critiquebrainz/frontend/templates/matching/report.html:3
-#: critiquebrainz/frontend/templates/matching/report.html:6
+#: critiquebrainz/frontend/templates/mapping/report.html:3
+#: critiquebrainz/frontend/templates/mapping/report.html:6
 msgid "Incorrect mapping reporting"
 msgstr "Falsche Spotify-Zuordnung melden"
 
-#: critiquebrainz/frontend/templates/matching/report.html:8
+#: critiquebrainz/frontend/templates/mapping/report.html:8
 msgid "Are you sure you want to report incorrect mapping?"
 msgstr "Bist du sicher, dass du eine falsche Spotify-Zuordnung melden willst?"
 
-#: critiquebrainz/frontend/templates/matching/report.html:30
+#: critiquebrainz/frontend/templates/mapping/report.html:30
 msgid "Report incorrect mapping"
 msgstr "Falsche Spotify-Zuordnung melden"
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:14
+#: critiquebrainz/frontend/templates/mapping/spotify.html:3
+#: critiquebrainz/frontend/templates/mapping/spotify.html:6
+msgid "Spotify album mapping"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/mapping/spotify.html:14
 #, python-format
 msgid ""
 "Please select the album %(album)s by %(artist)s, or provide a link to "
 "Spotify below."
 msgstr "Bitte wähle das Album %(album)s von %(artist)s, oder gebe unten einen Link zu Spotify an."
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:34
+#: critiquebrainz/frontend/templates/mapping/spotify.html:34
 msgid "Listen on Spotify"
 msgstr "Auf Spotify anhören"
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:55
+#: critiquebrainz/frontend/templates/mapping/spotify.html:55
 msgid "No similar albums found"
 msgstr "Keine ähnlichen Alben gefunden"
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:61
+#: critiquebrainz/frontend/templates/mapping/spotify.html:61
 msgid ""
 "If you can't find the right album in search results, you can paste a Spotify"
 " link there:"
 msgstr "Wenn du das richtige Album in den Suchergebnissen nicht findest, kannst du hier den Spotify-Link einfügen:"
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:64
+#: critiquebrainz/frontend/templates/mapping/spotify.html:64
 msgid "Spotify URI or HTTP link"
 msgstr "Spotify URI oder HTTP-Link"
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:66
+#: critiquebrainz/frontend/templates/mapping/spotify.html:66
 msgid "Submit"
 msgstr "Absenden"
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:69
+#: critiquebrainz/frontend/templates/mapping/spotify.html:69
 #, python-format
 msgid "A Spotify link should look like %(uri_example)s or %(link_example)s."
 msgstr "Ein Spotify-Link sollte wie %(uri_example)s oder %(link_example)s aussehen."
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:79
+#: critiquebrainz/frontend/templates/mapping/spotify.html:79
 msgid ""
 "It's fine if you can't find the right album. It might not be available on "
 "Spotify yet."
 msgstr "Es ist ok, wenn du das richtige Album nicht finden kannst. Möglicherweise ist es noch nicht auf Spotify verfügbar."
 
-#: critiquebrainz/frontend/templates/matching/spotify.html:80
+#: critiquebrainz/frontend/templates/mapping/spotify.html:80
 #, python-format
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
 msgstr "Du kannst <a href=\"%(link)s\">zur Veröffentlichungsgruppenseite zurückgehen</a>."

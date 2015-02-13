@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-01-21 08:38+0000\n"
+"POT-Creation-Date: 2015-02-13 11:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -257,7 +257,7 @@ msgid "You need to choose a license!"
 msgstr ""
 
 #: critiquebrainz/frontend/review/forms.py:34
-#: critiquebrainz/frontend/templates/base.html:55
+#: critiquebrainz/frontend/templates/base.html:66
 msgid "Language"
 msgstr ""
 
@@ -337,7 +337,7 @@ msgid "About CritiqueBrainz"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/about.html:6
-#: critiquebrainz/frontend/templates/base.html:49
+#: critiquebrainz/frontend/templates/base.html:60
 #: critiquebrainz/frontend/templates/navbar.html:35
 msgid "About"
 msgstr ""
@@ -466,11 +466,11 @@ msgstr ""
 msgid "Edit on MusicBrainz"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/base.html:50
+#: critiquebrainz/frontend/templates/base.html:61
 msgid "Blog"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/base.html:51
+#: critiquebrainz/frontend/templates/base.html:62
 msgid "Developers"
 msgstr ""
 
