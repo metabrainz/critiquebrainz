@@ -2,7 +2,7 @@ from __future__ import with_statement
 from fabric.api import local
 from fabric.colors import green, yellow
 from critiquebrainz.frontend import create_app
-from critiquebrainz.data.manage import init_postgres
+from manage import init_postgres
 
 
 def extract_strings():
