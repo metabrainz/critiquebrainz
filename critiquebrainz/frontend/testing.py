@@ -9,6 +9,7 @@ class FrontendTestCase(TestCase):
         app = create_app()
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = app.config['TEST_SQLALCHEMY_DATABASE_URI']
+        app.config['WTF_CSRF_ENABLED'] = False
         return app
 
     def setUp(self):
@@ -18,3 +19,9 @@ class FrontendTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+
+    def temporary_login(self, user):
+        """ http://stackoverflow.com/a/16238537 """
+        with self.client.session_transaction() as session:
+            session['user_id'] = user.id
+            session['_fresh'] = True
