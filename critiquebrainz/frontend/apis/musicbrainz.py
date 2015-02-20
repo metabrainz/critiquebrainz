@@ -16,10 +16,12 @@ DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 THREAD_POOL_PROCESSES = 10
 
 
-def init(app_name, app_version):
+def init(app_name, app_version, hostname=None):
     # We need to identify our application to access the MusicBrainz webservice.
     # See https://python-musicbrainzngs.readthedocs.org/en/latest/usage/#identification for more info.
     musicbrainzngs.set_useragent(app_name, app_version)
+    if hostname:
+        musicbrainzngs.set_hostname(hostname)
 
 
 def search_release_groups(query='', artist='', release_group='', limit=None, offset=None):

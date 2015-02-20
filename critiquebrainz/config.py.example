@@ -43,6 +43,7 @@ SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 # EXTERNAL SERVICES
 
 # MusicBrainz
+#MUSICBRAINZ_HOSTNAME = "musicbrainz.org"
 MUSICBRAINZ_USERAGENT = "CritiqueBrainz Custom"
 MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""

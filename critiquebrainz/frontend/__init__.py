@@ -54,7 +54,8 @@ def create_app():
     from apis import mbspotify
     mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
     from apis import musicbrainz
-    musicbrainz.init(app.config['MUSICBRAINZ_USERAGENT'], critiquebrainz.__version__)
+    musicbrainz.init(app.config['MUSICBRAINZ_USERAGENT'], critiquebrainz.__version__,
+                     hostname=app.config['MUSICBRAINZ_HOSTNAME'])
 
     # Template utilities
     app.jinja_env.add_extension('jinja2.ext.do')
