@@ -23,26 +23,26 @@ class ReviewViewsTestCase(FrontendTestCase):
         )
         return review
 
-    def test_review_page(self):
+    def test_browse(self):
         response = self.client.get("/review/")
         self.assert200(response)
 
-    def test_review_by_uuid_page(self):
+    def test_entity(self):
         review = self.create_dummy_review()
         response = self.client.get("/review/%s" % review.id)
         self.assert200(response)
         self.assertIn(self.review_text, response.data)
 
-    def test_draft_review_page(self):
+    def test_draft_review(self):
         review = self.create_dummy_review(is_draft=True)
         response = self.client.get("/review/%s" % review.id)
         self.assert404(response, "Drafts shouldn't be publicly visible.")
 
-    def test_missing_review_page(self):
+    def test_missing_review(self):
         response = self.client.get("/review/aef06569-098f-4218-a577-b413944d9493")
         self.assert404(response)
 
-    def test_write_review_page(self):
+    def test_create(self):
         data = dict(
             release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
             state='draft',
@@ -58,7 +58,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.assert200(response)
         self.assertIn(self.review_text, response.data)
 
-    def test_edit_review_page(self):
+    def test_edit(self):
         updated_text = "The text has now been updated"
         data = dict(
             release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
@@ -77,7 +77,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.assert200(response)
         self.assertIn(updated_text, response.data)
 
-    def test_delete_review_page(self):
+    def test_delete(self):
         review = self.create_dummy_review()
 
         self.temporary_login(self.hacker)
@@ -88,7 +88,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.post("/review/%s/delete" % review.id, follow_redirects=True)
         self.assert200(response)
 
-    def test_vote_review_page(self):
+    def test_vote_submit_delete(self):
         review = self.create_dummy_review()
 
         self.temporary_login(self.user)
@@ -103,7 +103,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get("/review/%s/vote/delete" % review.id, follow_redirects=True)
         self.assertIn("You have deleted your vote for this review!", response.data)
 
-    def test_report_review_page(self):
+    def test_report(self):
         review = self.create_dummy_review()
 
         self.temporary_login(self.user)

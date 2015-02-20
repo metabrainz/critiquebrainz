@@ -21,7 +21,7 @@ class FrontendTestCase(TestCase):
         db.drop_all()
 
     def temporary_login(self, user):
-        """ http://stackoverflow.com/a/16238537 """
+        """Based on: http://stackoverflow.com/a/16238537."""
         with self.client.session_transaction() as session:
             session['user_id'] = user.id
             session['_fresh'] = True
