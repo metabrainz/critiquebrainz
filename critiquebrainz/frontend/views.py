@@ -16,8 +16,8 @@ def index():
     popular_reviews = Review.get_popular(6)
     for review in popular_reviews:
         # Preparing text for preview
-        preview = markdown(review.text, safe_mode="escape")
-        review.preview = ''.join(BeautifulSoup(preview).findAll(text=True))
+        preview = markdown(review['text'], safe_mode="escape")
+        review['preview'] = ''.join(BeautifulSoup(preview).findAll(text=True))
 
     # Recent reviews
     recent_reviews, _ = Review.list(sort='created', limit=9)
