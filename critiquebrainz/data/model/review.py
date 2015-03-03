@@ -250,7 +250,7 @@ class Review(db.Model, DeleteMixin):
         Returns:
             Randomized list of popular reviews.
         """
-        cache_key = cache.gen_key('popular_reviews', [limit])
+        cache_key = cache.gen_key('popular_reviews', limit)
         reviews = cache.get(cache_key, Review.CACHE_NAMESPACE)
 
         if not reviews:
