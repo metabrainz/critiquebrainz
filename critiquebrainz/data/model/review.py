@@ -254,7 +254,8 @@ class Review(db.Model, DeleteMixin):
             limit: Maximum number of reviews to return.
 
         Returns:
-            Randomized list of popular reviews.
+            Randomized list of popular reviews which are converted into
+            dictionaries using to_dict method.
         """
         cache_key = cache.gen_key('popular_reviews', [limit])
         reviews = cache.get(cache_key, Review.CACHE_NAMESPACE)
