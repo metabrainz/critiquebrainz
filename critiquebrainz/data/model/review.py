@@ -41,7 +41,7 @@ class Review(db.Model, DeleteMixin):
     source_url = db.Column(db.Unicode)
 
     revisions = db.relationship('Revision', order_by='Revision.timestamp', backref='review',
-                                lazy='joined', cascade='delete')
+                                cascade='delete')
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
@@ -185,9 +185,14 @@ class Review(db.Model, DeleteMixin):
                                         - func.coalesce(votes_neg.c.c, 0)))
 
         elif sort == 'created':  # order by creation time
-            query = query.join(Revision) \
-                .group_by(Review.id) \
-                .order_by(desc(func.max(Revision.timestamp)))
+            # Getting publication times for all reviews
+            pub_times = db.session.query(
+                func.min(Revision.timestamp).label('published_on'),
+                Revision.review_id,
+            ).group_by(Revision.review_id).subquery('pub_times')
+
+            # Joining and sorting by publication time
+            query = query.outerjoin(pub_times).order_by(desc('pub_times.published_on'))
 
         if limit is not None:
             query = query.limit(limit)
