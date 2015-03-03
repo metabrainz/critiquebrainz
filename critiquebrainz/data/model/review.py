@@ -185,7 +185,9 @@ class Review(db.Model, DeleteMixin):
                                         - func.coalesce(votes_neg.c.c, 0)))
 
         elif sort == 'created':  # order by creation time
-            query = query.order_by(desc(Review.created)).join(Review.revisions)
+            query = query.join(Revision) \
+                .group_by(Review.id) \
+                .order_by(desc(func.max(Revision.timestamp)))
 
         if limit is not None:
             query = query.limit(limit)
