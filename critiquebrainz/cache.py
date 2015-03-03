@@ -153,6 +153,11 @@ def invalidate_namespace(namespace):
         _mc.set(version_key, 1)  # initializing the namespace
 
 
+def flush_all():
+    if _mc is None: return
+    _mc.flush_all()
+
+
 def _get_namespace_version(namespace):
     if _mc is None: return
     version_key = _glob_namespace + namespace
