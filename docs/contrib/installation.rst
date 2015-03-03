@@ -57,6 +57,9 @@ First, you need to create custom configuration file. Copy the skeleton configura
 Then, open ``critiquebrainz/config.py`` in your favourite text editor, uncomment
 ``SQLALCHEMY_DATABASE_URI`` variable, and fill in the fields in angle brackets.
 
+Database initialization
+^^^^^^^^^^^^^^^^^^^^^^^
+
 Now, you need to create and configure the database with::
 
    $ python manage.py data create_db
@@ -71,6 +74,11 @@ You also need to update the newly created database with default schema
 and testing data. To do this type::
 
    $ python manage.py data fixtures
+
+Importing data
+""""""""""""""
+
+Download archive from ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
 
 Preparing login
 ^^^^^^^^^^^^^^^
