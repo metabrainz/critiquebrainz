@@ -2,6 +2,7 @@ from __future__ import with_statement
 from fabric.api import local
 from fabric.colors import green, yellow
 from critiquebrainz.frontend import create_app
+from critiquebrainz import cache
 from manage import init_postgres
 
 
@@ -49,10 +50,17 @@ def compile_styling():
     print(green("Style sheets have been compiled successfully.", bold=True))
 
 
+def clear_memcached():
+    with create_app().app_context():
+        cache.flush_all()
+    print(green("Flushed everything from memcached.", bold=True))
+
+
 def deploy():
-    """Compile translations and styling."""
+    """Compile translations and styling, clear memcached."""
     compile_translations()
     compile_styling()
+    clear_memcached()
 
 
 def test(init_db=True, coverage=True):
