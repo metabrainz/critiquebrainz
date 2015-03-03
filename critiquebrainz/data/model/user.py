@@ -157,6 +157,7 @@ class User(db.Model, UserMixin, DeleteMixin):
 
         if confidential is True:
             response.update(dict(email=self.email,
+                                 avatar=self.avatar,
                                  show_gravatar=self.show_gravatar,
                                  musicbrainz_id=self.musicbrainz_id))
 

@@ -45,23 +45,24 @@ class Review(db.Model, DeleteMixin):
 
     __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
 
-    def to_dict(self):
-        response = dict(id=self.id,
-                        release_group=self.release_group,
-                        user=self.user.to_dict(),
-                        text=self.text,
-                        created=self.revisions[0].timestamp,
-                        last_updated=self.revisions[-1].timestamp,
-                        edits=self.edits,
-                        votes_positive=self.votes_positive_count,
-                        votes_negative=self.votes_negative_count,
-                        rating=self.rating,
-                        license=self.license.to_dict(),
-                        language=self.language,
-                        source=self.source,
-                        source_url=self.source_url,
-                        review_class=self.review_class.label)
-        return response
+    def to_dict(self, confidential=False):
+        return dict(
+            id=self.id,
+            release_group=self.release_group,
+            user=self.user.to_dict(confidential=confidential),
+            text=self.text,
+            created=self.revisions[0].timestamp,
+            last_updated=self.revisions[-1].timestamp,
+            edits=self.edits,
+            votes_positive=self.votes_positive_count,
+            votes_negative=self.votes_negative_count,
+            rating=self.rating,
+            license=self.license.to_dict(),
+            language=self.language,
+            source=self.source,
+            source_url=self.source_url,
+            review_class=self.review_class.label
+        )
 
     @property
     def last_revision(self):
@@ -301,6 +302,7 @@ class Review(db.Model, DeleteMixin):
                 query = query.limit(limit * 4)
 
             reviews = query.all()
+            reviews = [review.to_dict(confidential=True) for review in reviews]
             cache.set(cache_key, reviews, 1 * 60 * 60, Review.CACHE_NAMESPACE)  # 1 hour
 
         shuffle(reviews)  # a bit more variety
