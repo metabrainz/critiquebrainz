@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-01-21 08:38+0000\n"
+"POT-Creation-Date: 2015-02-13 11:29+0000\n"
 "PO-Revision-Date: 2015-01-24 09:56+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/critiquebrainz/language/nl/)\n"
@@ -258,7 +258,7 @@ msgid "You need to choose a license!"
 msgstr "U moet een licentie kiezen!"
 
 #: critiquebrainz/frontend/review/forms.py:34
-#: critiquebrainz/frontend/templates/base.html:55
+#: critiquebrainz/frontend/templates/base.html:66
 msgid "Language"
 msgstr "Taal"
 
@@ -337,7 +337,7 @@ msgid "About CritiqueBrainz"
 msgstr "Over CritiqueBrainz"
 
 #: critiquebrainz/frontend/templates/about.html:6
-#: critiquebrainz/frontend/templates/base.html:49
+#: critiquebrainz/frontend/templates/base.html:60
 #: critiquebrainz/frontend/templates/navbar.html:35
 msgid "About"
 msgstr "Over"
@@ -458,11 +458,11 @@ msgstr "Externe koppelingen"
 msgid "Edit on MusicBrainz"
 msgstr "Op MusicBrainz bewerken"
 
-#: critiquebrainz/frontend/templates/base.html:50
+#: critiquebrainz/frontend/templates/base.html:61
 msgid "Blog"
 msgstr "Blog"
 
-#: critiquebrainz/frontend/templates/base.html:51
+#: critiquebrainz/frontend/templates/base.html:62
 msgid "Developers"
 msgstr "Ontwikkelaars"
 
