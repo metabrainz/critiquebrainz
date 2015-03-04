@@ -82,7 +82,7 @@ def spotify_confirm():
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
     if request.method == 'POST':
-        # TODO: Check returned values that are returned by add_mapping (also take a look at related JS)
+        # TODO(roman): Check values that are returned by add_mapping (also take a look at related JS).
         mbspotify.add_mapping(release_group_id, 'spotify:album:%s' % spotify_id, current_user.id)
         flash(gettext("Spotify mapping has been added!"), 'success')
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
@@ -129,7 +129,7 @@ def parse_spotify_id(spotify_ref):
         return spotify_ref[14:]
 
     # Link to Spotify
-    # TODO: Improve checking there. See https://bitbucket.org/metabrainz/critiquebrainz/pull-request/167/cb-115-support-for-different-types-of/activity#comment-2757329
+    # TODO(roman): Improve checking there. See https://bitbucket.org/metabrainz/critiquebrainz/pull-request/167/cb-115-support-for-different-types-of/activity#comment-2757329
     if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
         if spotify_ref.endswith('/'):
             spotify_ref = spotify_ref[:-1]

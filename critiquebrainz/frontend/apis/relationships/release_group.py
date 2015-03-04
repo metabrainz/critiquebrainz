@@ -41,10 +41,10 @@ def _url(list):
                             'icon': 'wikipedia-16.png',
                         }.items()))
                 else:
-                    # TODO: Process other types here
+                    # TODO(roman): Process other types here
                     pass
-            except Exception as e:
-                # TODO: Log error
+            except Exception as e:  # FIXME(roman): Too broad exception clause.
+                # TODO(roman): Log error.
                 pass
     external_urls.sort()
     return external_urls

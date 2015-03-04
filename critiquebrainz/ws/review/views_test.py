@@ -29,4 +29,4 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.assertEqual(resp['count'], 1)
         self.assertEqual(len(resp['reviews']), 1)
         self.assertEqual(resp['reviews'][0]['id'], review.id)
-        # TODO: Completely verify output (I encountered unicode issues when tried to do that).
+        # TODO(roman): Completely verify output (I encountered unicode issues when tried to do that).

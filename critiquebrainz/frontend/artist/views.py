@@ -36,7 +36,7 @@ def entity(id):
     count, release_groups = musicbrainz.browse_release_groups(artist_id=id, release_types=[release_type],
                                                               limit=limit, offset=offset)
     for release_group in release_groups:
-        # TODO: Count reviews instead of fetching them
+        # TODO(roman): Count reviews instead of fetching them.
         reviews, review_count = Review.list(release_group=release_group['id'], sort='created', limit=1)
         release_group['review_count'] = review_count
     return render_template('artist.html', id=id, artist=artist, release_type=release_type,

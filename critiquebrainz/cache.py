@@ -30,7 +30,7 @@ def init(servers, namespace="CB", debug=0):
     """
     global _mc, _glob_namespace
     _mc = memcache.Client(servers, debug=debug)
-    # TODO: Check length of the namespace (should fit with hash appended):
+    # TODO(roman): Check length of the namespace (should fit with hash appended):
     _glob_namespace = namespace + ":"
 
 
