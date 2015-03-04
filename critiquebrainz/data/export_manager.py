@@ -212,6 +212,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
     print("Done!")
 
 
+# TODO: Improve name of this command ("export importer" sounds kind of strange):
 @manager.command
 def importer(archive):
     """Imports database dump (archive) produced by export command.
