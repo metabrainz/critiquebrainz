@@ -78,7 +78,17 @@ and testing data. To do this type::
 Importing data
 """"""""""""""
 
-Download archive from ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
+We provide daily data dumps from https://critiquebrainz.org that include reviews
+and most of the data associated with them. If you want to import that into your
+own installation, download archives from ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
+(you'll need to get the base archive ``cbdump.tar.bz2`` and one with reviews)
+and use ``python manage.py export importer`` command. First you need to import
+base archive and then one that contains reviews. For example::
+
+   $ python manage.py export importer cbdump.tar.bz2
+   $ python manage.py export importer cbdump-reviews-all.tar.bz2
+
+Keep in mind that CritiqueBrainz only supports importing into an empty database.
 
 Preparing login
 ^^^^^^^^^^^^^^^
