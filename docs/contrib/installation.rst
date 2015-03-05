@@ -132,4 +132,6 @@ https://www.owasp.org/index.php/Top_10_2010-A9-Insufficient_Transport_Layer_Prot
 Running the server
 ------------------
 
+To run the server you can use ``run.py`` script::
+
    $ python run.py
