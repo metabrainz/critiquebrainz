@@ -16,7 +16,7 @@ review_bp = Blueprint('review', __name__)
 def browse():
     page = int(request.args.get('page', default=1))
     if page < 1:
-        return redirect(url_for('.reviews'))
+        return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
     reviews, count = Review.list(sort='created', limit=limit, offset=offset)
