@@ -1,3 +1,8 @@
+"""
+Package login provides authentication functionality for CritiqueBrainz.
+
+It is based on OAuth2 protocol. MusicBrainz is the only supported provider.
+"""
 from flask import redirect, url_for
 from flask_login import LoginManager, current_user
 from flask_babel import gettext

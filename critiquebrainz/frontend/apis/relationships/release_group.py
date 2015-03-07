@@ -1,3 +1,6 @@
+"""
+Relationship processor for release group entity.
+"""
 from urlparse import urlparse
 from flask_babel import gettext
 import urllib

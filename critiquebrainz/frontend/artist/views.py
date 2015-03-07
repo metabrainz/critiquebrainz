@@ -9,6 +9,11 @@ artist_bp = Blueprint('artist', __name__)
 
 @artist_bp.route('/<uuid:id>')
 def entity(id):
+    """Artist page.
+
+    Displays release groups (split up into several sections depending on their
+    type), artist information (type, members/member of, external links).
+    """
     artist = musicbrainz.get_artist_by_id(id)
     if not artist:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
