@@ -62,7 +62,7 @@ Database initialization
 
 Now, you need to create and configure the database with::
 
-   $ python manage.py data create_db
+   $ python manage.py create_db
 
 This command will
 
@@ -70,10 +70,10 @@ This command will
 * create new PostgreSQL database, if needed
 * register ``uuid-ossp`` PostgreSQL extension, if needed
 
-You also need to update the newly created database with default schema
-and testing data. To do this type::
+You also need to add initial data for models (predefined licenses). To do this
+use ``fixtures`` command::
 
-   $ python manage.py data fixtures
+   $ python manage.py fixtures
 
 Importing data
 """"""""""""""
