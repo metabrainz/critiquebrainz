@@ -1,5 +1,5 @@
 """
-This module provides functions that can help access Spotify Web API.
+This module provides access to Spotify Web API.
 
 More information about it is available at https://developer.spotify.com/web-api/.
 """

@@ -159,7 +159,7 @@ class Review(db.Model, DeleteMixin):
 
         if sort == 'rating':  # order by rating (positive votes - negative votes)
 
-            # TODO: Simplify this part. It can probably be rewritten using
+            # TODO(roman): Simplify this part. It can probably be rewritten using
             # hybrid attributes (by making rating property a hybrid_property),
             # but I'm not sure how to do that.
 
@@ -262,9 +262,9 @@ class Review(db.Model, DeleteMixin):
 
         if not reviews:
             # Selecting reviews for distinct release groups
-            # TODO: The is a problem with selecting popular reviews like this:
-            # If there are multiple reviews for a release group we don't choose
-            # the most popular.
+            # TODO(roman): The is a problem with selecting popular reviews like
+            # this: if there are multiple reviews for a release group we don't
+            # choose the most popular.
             distinct_subquery = db.session.query(Review) \
                 .filter(Review.is_draft == False) \
                 .distinct(Review.release_group).subquery()

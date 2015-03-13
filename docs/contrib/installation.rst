@@ -57,9 +57,12 @@ First, you need to create custom configuration file. Copy the skeleton configura
 Then, open ``critiquebrainz/config.py`` in your favourite text editor, uncomment
 ``SQLALCHEMY_DATABASE_URI`` variable, and fill in the fields in angle brackets.
 
+Database initialization
+^^^^^^^^^^^^^^^^^^^^^^^
+
 Now, you need to create and configure the database with::
 
-   $ python manage.py data create_db
+   $ python manage.py create_db
 
 This command will
 
@@ -67,10 +70,25 @@ This command will
 * create new PostgreSQL database, if needed
 * register ``uuid-ossp`` PostgreSQL extension, if needed
 
-You also need to update the newly created database with default schema
-and testing data. To do this type::
+You also need to add initial data for models (predefined licenses). To do this
+use ``fixtures`` command::
 
-   $ python manage.py data fixtures
+   $ python manage.py fixtures
+
+Importing data
+""""""""""""""
+
+We provide daily data dumps from https://critiquebrainz.org that include reviews
+and most of the data associated with them. If you want to import that into your
+own installation, download archives from ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
+(you'll need to get the base archive ``cbdump.tar.bz2`` and one with reviews)
+and use ``python manage.py export importer`` command. First you need to import
+base archive and then one that contains reviews. For example::
+
+   $ python manage.py export importer cbdump.tar.bz2
+   $ python manage.py export importer cbdump-reviews-all.tar.bz2
+
+Keep in mind that CritiqueBrainz only supports importing into an empty database.
 
 Preparing login
 ^^^^^^^^^^^^^^^
@@ -113,5 +131,7 @@ https://www.owasp.org/index.php/Top_10_2010-A9-Insufficient_Transport_Layer_Prot
 
 Running the server
 ------------------
+
+To run the server you can use ``run.py`` script::
 
    $ python run.py

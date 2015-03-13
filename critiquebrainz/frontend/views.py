@@ -23,7 +23,7 @@ def index():
     recent_reviews, _ = Review.list(sort='created', limit=9)
 
     # Statistics
-    # TODO: Move these into models:
+    # TODO(roman): Move these into models:
     review_count = format_number(Review.query.filter(Review.is_draft == False).count())
     user_count = format_number(User.query.count())
 

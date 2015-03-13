@@ -20,4 +20,4 @@ class UserViewsTestCase(WebServiceTestCase):
         resp = self.client.get('/user/').json
         self.assertEqual(resp['count'], 1)
         self.assertEqual(len(resp['users']), 1)
-        # TODO: Completely verify output (I encountered unicode issues when tried to do that).
+        # TODO(roman): Completely verify output (I encountered unicode issues when tried to do that).

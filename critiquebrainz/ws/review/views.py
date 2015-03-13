@@ -100,7 +100,7 @@ def review_list_handler():
     if language and language not in supported_languages:
         raise InvalidRequest(desc='Unsupported language')
 
-    # TODO: Ideally caching logic should live inside the model. Otherwise it
+    # TODO(roman): Ideally caching logic should live inside the model. Otherwise it
     # becomes hard to track all this stuff.
     cache_key = cache.gen_key('list', release_group, user_id, sort, limit, offset, language)
     cached_result = cache.get(cache_key, Review.CACHE_NAMESPACE)

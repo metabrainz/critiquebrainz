@@ -13,7 +13,7 @@ class DataTestCase(TestCase):
 
     def setUp(self):
         db.create_all()
-        # TODO: Add stuff form fixtures
+        # TODO(roman): Add stuff form fixtures.
 
     def tearDown(self):
         db.session.remove()

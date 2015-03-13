@@ -76,7 +76,7 @@ def vote(mbid, spotify_uri, user_id):
     if _base_url is None or _key is None:
         return
 
-    # TODO: Catch errors during voting.
+    # TODO(roman): Catch errors during voting.
     requests.post(_base_url + 'mapping/vote?key=' + _key, headers={'Content-Type': 'application/json'},
                   data=json.dumps({
                       'mbid': str(mbid),

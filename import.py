@@ -1,7 +1,7 @@
 # This script imports reviews from BBC's MySQL dump into CritiqueBrainz server.
 # Note: Before running it, dump has to be imported into local MySQL instance!
 
-# TODO: Create proper importing functionality and integrate it into data package.
+# TODO(roman): Create proper importing functionality and integrate it into data package.
 
 from __future__ import print_function
 import re

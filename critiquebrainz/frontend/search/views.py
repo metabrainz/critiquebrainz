@@ -18,6 +18,7 @@ def search_wrapper(query, type, offset=None):
         count, results = 0, []
     return count, results
 
+
 @search_bp.route('/')
 def index():
     query = request.args.get('query')
