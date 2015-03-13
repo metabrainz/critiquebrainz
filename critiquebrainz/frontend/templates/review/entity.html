@@ -153,13 +153,13 @@
           success: function(result) {
             resultBlock.removeClass('text-muted');
             if (result.success) {
-              resultBlock.text("{{ _('Review reported!') }}");
+              resultBlock.text({{ _('Review reported!') | tojson }});
               resultBlock.addClass('text-success');
             } else {
               if (result.error == "reported") {
-                resultBlock.text("{{ _('You have already reported this review!') }}");
+                resultBlock.text({{ _('You have already reported this review!') | tojson }});
               } else {
-                resultBlock.text("{{ _('Unknown error occurred!') }}");
+                resultBlock.text({{ _('Unknown error occurred!') | tojson }});
                 console.log(result.error)
               }
               resultBlock.addClass('text-danger');
