@@ -18,7 +18,7 @@ def search(query, type, limit=20, offset=0):
 
     More information is available at https://developer.spotify.com/web-api/search-item/.
     """
-    key = cache.gen_key(query, [type, limit, offset])
+    key = cache.gen_key(query, type, limit, offset)
     namespace = "spotify_search"
     result = cache.get(key, namespace)
     if not result:

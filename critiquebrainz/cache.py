@@ -115,19 +115,16 @@ def delete_multi(keys, namespace=None):
     return _mc.delete_multi(_prep_list(keys, namespace), key_prefix=_glob_namespace)
 
 
-def gen_key(key, attributes=None):
+def gen_key(key, *attributes):
     """Helper function that generates a key with attached attributes.
 
     Args:
         key: Original key.
-        attributes: List of attributes.
+        attributes: Attributes that will be appended a key.
 
     Returns:
         Key that can be used with cache.
     """
-    if attributes is None:
-        attributes = []
-
     if not isinstance(key, basestring):
         key = str(key)
     key = key.encode('ascii', errors='xmlcharrefreplace')

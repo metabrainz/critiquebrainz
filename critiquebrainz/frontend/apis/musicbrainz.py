@@ -43,7 +43,7 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
     """
     if release_types is None:
         release_types = []
-    key = cache.gen_key(artist_id, [limit, offset] + release_types)
+    key = cache.gen_key(artist_id, limit, offset, *release_types)
     release_groups = cache.get(key)
     if not release_groups:
         try:
