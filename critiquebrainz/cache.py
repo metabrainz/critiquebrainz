@@ -106,7 +106,7 @@ def get_multi(keys, namespace=None):
         A dictionary of key/value pairs that were available. If key_prefix was
         provided, the keys in the returned dictionary will not have it present.
     """
-    if _mc is None: return
+    if _mc is None: return {}
     return _mc.get_multi(_prep_list(keys, namespace), _glob_namespace)
 
 
