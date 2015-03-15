@@ -42,7 +42,10 @@
         <tbody>
         {% for mbid, album in spotify_albums.iteritems() %}
           <tr>
-            <td><img src="{{ album.images[-1].url }}" style="max-height: 25px;" /></td>
+            <td>
+              <img src="{{ album.images[-1].url if album.images else '/static/img/missing-art.png' }}"
+                   style="max-height: 25px;" />
+            </td>
             <td>{{ album.type }}</td>
             <td><a href="{{ album.external_urls.spotify }}">{{ album.id }}</a></td>
             <td>{{ album.name }}</td>

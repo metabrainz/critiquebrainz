@@ -35,4 +35,4 @@ class VoteTestCase(DataTestCase):
         self.assertIn(vote_u1_positive, votes)
         self.assertIn(vote_u2_negative, votes)
 
-        # TODO: Test vote overwriting
+        # TODO(roman): Test vote overwriting.

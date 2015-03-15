@@ -16,14 +16,14 @@ def index():
     popular_reviews = Review.get_popular(6)
     for review in popular_reviews:
         # Preparing text for preview
-        preview = markdown(review.text, safe_mode="escape")
-        review.preview = ''.join(BeautifulSoup(preview).findAll(text=True))
+        preview = markdown(review['text'], safe_mode="escape")
+        review['preview'] = ''.join(BeautifulSoup(preview).findAll(text=True))
 
     # Recent reviews
     recent_reviews, _ = Review.list(sort='created', limit=9)
 
     # Statistics
-    # TODO: Move these into models:
+    # TODO(roman): Move these into models:
     review_count = format_number(Review.query.filter(Review.is_draft == False).count())
     user_count = format_number(User.query.count())
 

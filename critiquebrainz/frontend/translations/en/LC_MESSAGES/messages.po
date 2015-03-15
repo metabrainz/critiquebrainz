@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-01-21 08:38+0000\n"
+"POT-Creation-Date: 2015-02-13 11:29+0000\n"
 "PO-Revision-Date: 2015-01-24 09:53+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: English (http://www.transifex.com/projects/p/critiquebrainz/language/en/)\n"
@@ -257,7 +257,7 @@ msgid "You need to choose a license!"
 msgstr "You need to choose a license!"
 
 #: critiquebrainz/frontend/review/forms.py:34
-#: critiquebrainz/frontend/templates/base.html:55
+#: critiquebrainz/frontend/templates/base.html:66
 msgid "Language"
 msgstr "Language"
 
@@ -336,7 +336,7 @@ msgid "About CritiqueBrainz"
 msgstr "About CritiqueBrainz"
 
 #: critiquebrainz/frontend/templates/about.html:6
-#: critiquebrainz/frontend/templates/base.html:49
+#: critiquebrainz/frontend/templates/base.html:60
 #: critiquebrainz/frontend/templates/navbar.html:35
 msgid "About"
 msgstr "About"
@@ -457,11 +457,11 @@ msgstr "External links"
 msgid "Edit on MusicBrainz"
 msgstr "Edit on MusicBrainz"
 
-#: critiquebrainz/frontend/templates/base.html:50
+#: critiquebrainz/frontend/templates/base.html:61
 msgid "Blog"
 msgstr "Blog"
 
-#: critiquebrainz/frontend/templates/base.html:51
+#: critiquebrainz/frontend/templates/base.html:62
 msgid "Developers"
 msgstr "Developers"
 

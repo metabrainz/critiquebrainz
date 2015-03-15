@@ -171,4 +171,4 @@ class UserTestCase(DataTestCase):
 
         self.assertEqual(len(user.votes), 0)
 
-        # TODO: Try to add new votes and see if values change.
+        # TODO(roman): Try to add new votes and see if values change.

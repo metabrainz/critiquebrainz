@@ -123,7 +123,11 @@
             {% for track in medium['track-list'] %}
               <tr>
                 <td>{{ track.number }}</td>
-                <td>{{ track.recording.title }}</td>
+                <td>
+                  <a href="http://acousticbrainz.org/{{ track.recording.id }}" title="View on AcousticBrainz">
+                    {{ track.recording.title }}
+                  </a>
+                </td>
                 <td>
                   {% if track.recording.length %}
                     {{ track.recording.length | track_length }}

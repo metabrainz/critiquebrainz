@@ -82,7 +82,7 @@
               if (data.more === true) more_button.show();
             })
             .fail(function() {
-              alert("{{ _('Failed to load more search results!') }}");
+              alert({{ _('Failed to load more search results!') | tojson }});
             });
       }
     </script>

@@ -13,6 +13,7 @@ mapping_bp = Blueprint('mapping', __name__)
 
 @mapping_bp.route('/<uuid:release_group_id>')
 def spotify_list(release_group_id):
+    """This view lists all Spotify albums mapped to a specified release group."""
     spotify_mappings = mbspotify.mappings(str(release_group_id))
 
     # Converting Spotify URIs to IDs
@@ -60,6 +61,7 @@ def spotify():
 @mapping_bp.route('/spotify/confirm', methods=['GET', 'POST'])
 @login_required
 def spotify_confirm():
+    """Confirmation page for adding new Spotify mapping."""
     release_group_id = request.args.get('release_group_id')
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
@@ -82,7 +84,7 @@ def spotify_confirm():
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
     if request.method == 'POST':
-        # TODO: Check returned values that are returned by add_mapping (also take a look at related JS)
+        # TODO(roman): Check values that are returned by add_mapping (also take a look at related JS).
         mbspotify.add_mapping(release_group_id, 'spotify:album:%s' % spotify_id, current_user.id)
         flash(gettext("Spotify mapping has been added!"), 'success')
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
@@ -93,6 +95,10 @@ def spotify_confirm():
 @mapping_bp.route('/spotify/report', methods=['GET', 'POST'])
 @login_required
 def spotify_report():
+    """Endpoint for reporting incorrect Spotify mappings.
+
+    Shows confirmation page before submitting report to mbspotify.
+    """
     release_group_id = request.args.get('release_group_id')
     spotify_id = request.args.get('spotify_id')
     spotify_uri = "spotify:album:" + spotify_id
@@ -124,13 +130,21 @@ def spotify_report():
 
 
 def parse_spotify_id(spotify_ref):
+    """Extracts Spotify ID out of reference to an album on Spotify.
+
+    Supported reference types:
+      - Spotify URI (spotify:album:6IH6co1QUS7uXoyPDv0rIr)
+      - HTTP link (http://open.spotify.com/album/6IH6co1QUS7uXoyPDv0rIr)
+    """
     # Spotify URI
     if spotify_ref.startswith('spotify:album:'):
         return spotify_ref[14:]
 
     # Link to Spotify
-    # TODO: Improve checking there. See https://bitbucket.org/metabrainz/critiquebrainz/pull-request/167/cb-115-support-for-different-types-of/activity#comment-2757329
+    # TODO(roman): Improve checking there. See https://bitbucket.org/metabrainz/critiquebrainz/pull-request/167/cb-115-support-for-different-types-of/activity#comment-2757329
     if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
         if spotify_ref.endswith('/'):
             spotify_ref = spotify_ref[:-1]
         return os.path.split(urlparse(spotify_ref).path)[-1]
+
+    # TODO(roman): Raise exception if failed to parse!

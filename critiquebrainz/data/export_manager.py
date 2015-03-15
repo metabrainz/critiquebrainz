@@ -212,6 +212,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
     print("Done!")
 
 
+# TODO(roman): Improve name of this command ("export importer" sounds kind of strange):
 @manager.command
 def importer(archive):
     """Imports database dump (archive) produced by export command.
@@ -227,7 +228,7 @@ def importer(archive):
     archive requires is different from the current. Make sure you have the latest dump available.
     """
     with tarfile.open(archive, 'r:bz2') as archive:
-        # TODO: Read data from the archive without extracting it into temporary directory
+        # TODO(roman): Read data from the archive without extracting it into temporary directory.
         temp_dir = tempfile.mkdtemp()
         archive.extractall(temp_dir)
 

@@ -30,7 +30,7 @@ def init(servers, namespace="CB", debug=0):
     """
     global _mc, _glob_namespace
     _mc = memcache.Client(servers, debug=debug)
-    # TODO: Check length of the namespace (should fit with hash appended):
+    # TODO(roman): Check length of the namespace (should fit with hash appended):
     _glob_namespace = namespace + ":"
 
 
@@ -106,7 +106,7 @@ def get_multi(keys, namespace=None):
         A dictionary of key/value pairs that were available. If key_prefix was
         provided, the keys in the returned dictionary will not have it present.
     """
-    if _mc is None: return
+    if _mc is None: return {}
     return _mc.get_multi(_prep_list(keys, namespace), _glob_namespace)
 
 
@@ -151,6 +151,11 @@ def invalidate_namespace(namespace):
     version_key = _glob_namespace + namespace
     if _mc.incr(version_key) is None:  # namespace isn't initialized
         _mc.set(version_key, 1)  # initializing the namespace
+
+
+def flush_all():
+    if _mc is None: return
+    _mc.flush_all()
 
 
 def _get_namespace_version(namespace):

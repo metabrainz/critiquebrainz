@@ -9,4 +9,4 @@ class ReleaseGroupViewsTestCase(FrontendTestCase):
         self.assert200(response)
         self.assertIn("Days Are Gone", response.data)
         self.assertIn("No reviews found", response.data)
-        # TODO: Try to add review and check it's displayed there!
+        # TODO(roman): Try to add review and check it's displayed there!

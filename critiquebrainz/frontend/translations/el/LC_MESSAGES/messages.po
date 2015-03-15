@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PROJECT project.
 # 
 # Translators:
-# Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2014
+# Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-01-21 08:38+0000\n"
-"PO-Revision-Date: 2015-01-24 09:53+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"POT-Creation-Date: 2015-02-13 11:29+0000\n"
+"PO-Revision-Date: 2015-02-14 22:52+0000\n"
+"Last-Translator: Γιάννης Ανθυμίδης <yannanth@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/critiquebrainz/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -139,7 +139,7 @@ msgstr ""
 #: critiquebrainz/frontend/profile/forms.py:12
 #: critiquebrainz/frontend/templates/user/info.html:22
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: critiquebrainz/frontend/profile/forms.py:14
 msgid "Email field is not a valid email address."
@@ -228,7 +228,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/review/forms.py:23
 msgid "Text"
-msgstr ""
+msgstr "Κείμενο"
 
 #: critiquebrainz/frontend/review/forms.py:24
 msgid "Review is empty!"
@@ -258,9 +258,9 @@ msgid "You need to choose a license!"
 msgstr ""
 
 #: critiquebrainz/frontend/review/forms.py:34
-#: critiquebrainz/frontend/templates/base.html:55
+#: critiquebrainz/frontend/templates/base.html:66
 msgid "Language"
-msgstr ""
+msgstr "Γλώσσα"
 
 #: critiquebrainz/frontend/review/forms.py:43
 msgid "You need to accept the license agreement!"
@@ -337,7 +337,7 @@ msgid "About CritiqueBrainz"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/about.html:6
-#: critiquebrainz/frontend/templates/base.html:49
+#: critiquebrainz/frontend/templates/base.html:60
 #: critiquebrainz/frontend/templates/navbar.html:35
 msgid "About"
 msgstr ""
@@ -380,11 +380,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/artist.html:15
 msgid "Discography"
-msgstr ""
+msgstr "Δισκογραφία"
 
 #: critiquebrainz/frontend/templates/artist.html:18
 msgid "Albums"
-msgstr ""
+msgstr "Δίσκοι"
 
 #: critiquebrainz/frontend/templates/artist.html:21
 msgid "Singles"
@@ -431,11 +431,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/artist.html:88
 msgid "Member of"
-msgstr ""
+msgstr "Μέλος του"
 
 #: critiquebrainz/frontend/templates/artist.html:90
 msgid "Members"
-msgstr ""
+msgstr "Μέλη"
 
 #: critiquebrainz/frontend/templates/artist.html:97
 #, python-format
@@ -458,11 +458,11 @@ msgstr ""
 msgid "Edit on MusicBrainz"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/base.html:50
+#: critiquebrainz/frontend/templates/base.html:61
 msgid "Blog"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/base.html:51
+#: critiquebrainz/frontend/templates/base.html:62
 msgid "Developers"
 msgstr ""
 
@@ -485,7 +485,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/index.html:20
 #: critiquebrainz/frontend/templates/user/info.html:35
 msgid "Statistics"
-msgstr ""
+msgstr "Στατιστικά"
 
 #: critiquebrainz/frontend/templates/index.html:22
 #, python-format
@@ -551,15 +551,15 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:3
 msgid "Error!"
-msgstr ""
+msgstr "Σφάλμα!"
 
 #: critiquebrainz/frontend/templates/macros.html:6
 msgid "Warning!"
-msgstr ""
+msgstr "Προσοχή!"
 
 #: critiquebrainz/frontend/templates/macros.html:9
 msgid "Success!"
-msgstr ""
+msgstr "Επιτυχία!"
 
 #: critiquebrainz/frontend/templates/macros.html:12
 msgid "Notice!"
@@ -647,7 +647,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:33
 #: critiquebrainz/frontend/templates/search/selector.html:25
 msgid "Search"
-msgstr ""
+msgstr "Αναζήτηση"
 
 #: critiquebrainz/frontend/templates/navbar.html:44
 #: critiquebrainz/frontend/templates/review/edit.html:23
@@ -658,7 +658,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/selector.html:40
 #: critiquebrainz/frontend/templates/user/reviews.html:13
 msgid "Artist"
-msgstr ""
+msgstr "Καλλιτέχνης"
 
 #: critiquebrainz/frontend/templates/navbar.html:45
 #: critiquebrainz/frontend/templates/review/edit.html:24
@@ -681,7 +681,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/errors/404.html:2
 msgid "Page not found"
-msgstr ""
+msgstr "Σελίδα δε βρέθηκε"
 
 #: critiquebrainz/frontend/templates/errors/500.html:2
 msgid "Internal server error"
@@ -729,13 +729,13 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:30
 msgid "Connect"
-msgstr ""
+msgstr "Σύνδεση"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:31
 #: critiquebrainz/frontend/templates/mapping/report.html:31
 #: critiquebrainz/frontend/templates/review/delete.html:18
 msgid "Cancel"
-msgstr ""
+msgstr "Ακύρωση"
 
 #: critiquebrainz/frontend/templates/mapping/report.html:3
 #: critiquebrainz/frontend/templates/mapping/report.html:6
@@ -782,7 +782,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:66
 msgid "Submit"
-msgstr ""
+msgstr "Αποστολή"
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:69
 #, python-format
@@ -818,13 +818,13 @@ msgstr ""
 #: critiquebrainz/frontend/templates/profile/applications/index.html:54
 #: critiquebrainz/frontend/templates/search/index.html:48
 msgid "Name"
-msgstr ""
+msgstr "Όνομα"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:16
 #: critiquebrainz/frontend/templates/profile/applications/index.html:21
 #: critiquebrainz/frontend/templates/profile/applications/index.html:55
 msgid "Website"
-msgstr ""
+msgstr "Ιστοσελίδα"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:23
 #, python-format
@@ -883,7 +883,7 @@ msgstr "Επεξεργάζεστε το προφίλ σας"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:36
 msgid "Save"
-msgstr ""
+msgstr "Αποθήκευση"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:41
 msgid "Delete my account"
@@ -932,7 +932,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/profile/applications/index.html:36
 #: critiquebrainz/frontend/templates/user/reviews.html:46
 msgid "Delete"
-msgstr ""
+msgstr "Διαγραφή"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:43
 #, python-format
@@ -997,21 +997,21 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/edit.html:31
 #: critiquebrainz/frontend/templates/user/reviews.html:15
 msgid "Created on"
-msgstr ""
+msgstr "Δημιουργήθηκε στις"
 
 #: critiquebrainz/frontend/templates/review/edit.html:33
 #: critiquebrainz/frontend/templates/user/reviews.html:16
 msgid "Votes (+/-)"
-msgstr ""
+msgstr "Ψήφοι (+/-)"
 
 #: critiquebrainz/frontend/templates/review/edit.html:35
 msgid "Status"
-msgstr ""
+msgstr "Κατάσταση"
 
 #: critiquebrainz/frontend/templates/review/edit.html:38
 #: critiquebrainz/frontend/templates/user/reviews.html:27
 msgid "Draft"
-msgstr ""
+msgstr "Πρόχειρο"
 
 #: critiquebrainz/frontend/templates/review/edit.html:40
 #: critiquebrainz/frontend/templates/user/reviews.html:29
@@ -1026,7 +1026,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/edit.html:58
 #: critiquebrainz/frontend/templates/review/write.html:41
 msgid "Preview"
-msgstr ""
+msgstr "Προεπισκόπηση"
 
 #: critiquebrainz/frontend/templates/review/edit.html:60
 #: critiquebrainz/frontend/templates/review/write.html:43
@@ -1065,7 +1065,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/edit.html:98
 msgid "Update"
-msgstr ""
+msgstr "Ενημέρωση"
 
 #: critiquebrainz/frontend/templates/review/edit.html:100
 msgid "Discard changes"
@@ -1156,19 +1156,19 @@ msgstr "Συνέχεια"
 #: critiquebrainz/frontend/templates/user/base.html:17
 #: critiquebrainz/frontend/templates/user/info.html:3
 msgid "Info"
-msgstr ""
+msgstr "Πληροφορίες"
 
 #: critiquebrainz/frontend/templates/user/info.html:16
 msgid "General information"
-msgstr ""
+msgstr "Γενικές πληροφορίες"
 
 #: critiquebrainz/frontend/templates/user/info.html:18
 msgid "Member since"
-msgstr ""
+msgstr "Μέλος από τις"
 
 #: critiquebrainz/frontend/templates/user/info.html:19
 msgid "User type"
-msgstr ""
+msgstr "Τύπος χρήστη"
 
 #: critiquebrainz/frontend/templates/user/info.html:20
 msgid "Karma"
@@ -1184,7 +1184,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/user/info.html:29
 msgid "Votes/day"
-msgstr ""
+msgstr "Ψήφοι/ημέρα"
 
 #: critiquebrainz/frontend/templates/user/info.html:38
 #: critiquebrainz/frontend/templates/user/info.html:44
@@ -1194,7 +1194,7 @@ msgstr "Σήμερα"
 #: critiquebrainz/frontend/templates/user/info.html:39
 #: critiquebrainz/frontend/templates/user/info.html:45
 msgid "Last 7 days"
-msgstr ""
+msgstr "Τελευταίες 7 ημέρες"
 
 #: critiquebrainz/frontend/templates/user/info.html:40
 #: critiquebrainz/frontend/templates/user/info.html:46
@@ -1203,7 +1203,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/user/info.html:42
 msgid "Votes"
-msgstr ""
+msgstr "Ψήφοι"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:43
 msgid "Read"

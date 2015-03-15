@@ -1,5 +1,7 @@
 """
-This module simplifies access to the MusicBrainz webservice. It uses musicbrainzngs package.
+This module provides access to the MusicBrainz webservice.
+
+It uses musicbrainzngs package for making requests and parsing results.
 
 Package musicbrainzngs is available at https://pypi.python.org/pypi/musicbrainzngs/.
 More information about the MusicBrainz webservice can be found at http://wiki.musicbrainz.org/XML_Web_Service.

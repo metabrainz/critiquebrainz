@@ -111,18 +111,18 @@
           if (e.target.hash.substring(1) == "preview") {
             var text = $("#review-content").val();
             if (!text) {
-              $("#preview").html('<em class="text-muted">{{ _('Review is empty.') }}</em>');
+              $("#preview").html('<em class="text-muted">' + {{ _('Review is empty.') | tojson }} + '</em>');
             } else {
               $.ajax({
                 type: "POST",
                 url: "{{ url_for('review.preview') }}",
                 data: { text: text },
                 success: function(data) { $("#preview").html(data); },
-                error: function() { $("#preview").html('<em class="text-danger">{{ _('Failed to load preview.') }}</em>'); }
+                error: function() { $("#preview").html('<em class="text-danger">' + {{ _('Failed to load preview.') | tojson }} + '</em>'); }
               });
             }
           } else {
-            $("#preview").html('<em class="text-muted">{{ _('Loading preview...') }}</em>');
+            $("#preview").html('<em class="text-muted">' + {{ _('Loading preview...') | tojson }} + '</em>');
           }
         });
       });

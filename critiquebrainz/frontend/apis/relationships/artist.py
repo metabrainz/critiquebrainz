@@ -1,3 +1,6 @@
+"""
+Relationship processor for artist entity.
+"""
 from urlparse import urlparse
 from flask_babel import gettext
 import urllib
@@ -75,10 +78,10 @@ def _url(list):
                                 'icon': 'twitter-16.png',
                             }.items()))
                 else:
-                    # TODO: Process other types here
+                    # TODO(roman): Process other types here
                     pass
-            except Exception as e:
-                # TODO: Log error
+            except Exception as e:  # FIXME(roman): Too broad exception clause.
+                # TODO(roman): Log error.
                 pass
     external_urls.sort()
     return external_urls

@@ -27,11 +27,14 @@ MB_USERAGENT = "CritiqueBrainz"
 # Valid language codes can be obtained from Transifex.
 SUPPORTED_LANGUAGES = [
     'en',  # English
+    'sv',  # Swedish
     'es',  # Spanish
+    'it',  # Italian
     'ru',  # Russian
     'el',  # Greek
     'de',  # German
     'fr',  # French
+    'et',  # Estonian
     'fi',  # Finnish
     'eo',  # Esperanto
     'nl',  # Dutch
