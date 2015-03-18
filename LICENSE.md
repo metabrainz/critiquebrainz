@@ -8,7 +8,9 @@ a small number of files are available under a different license.
 The following files are licensed under the MIT license, which is
 included in this file below the GPL version 2 license text:
 
+* critiquebrainz/frontend/static/fonts/
 * critiquebrainz/frontend/static/css/bootstrap/
+* critiquebrainz/frontend/static/js/bootstrap.min.js
 * critiquebrainz/frontend/static/js/jquery-2.1.0.min.js
 
 The following files are licensed under the Apache License, Version 2.0,
