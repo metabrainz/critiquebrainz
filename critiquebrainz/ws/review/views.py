@@ -133,16 +133,19 @@ def review_post_handler(user):
     :json string text: review contents, min length is 25, max is 5000
     :json string license_choice: license ID
     :json string lang: language code (ISO 639-1), default is ``en`` **(optional)**
+    :json boolean is_draft: whether the review should be saved as a draft or not
 
     :resheader Content-Type: *application/json*
     """
 
     def fetch_params():
+        is_draft = Parser.bool('json', 'is_draft')
+        if is_draft:
+            REVIEW_MIN_LENGTH = REVIEW_MAX_LENGTH = None
         release_group = Parser.uuid('json', 'release_group')
         text = Parser.string('json', 'text', min=REVIEW_MIN_LENGTH, max=REVIEW_MAX_LENGTH)
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
-        is_draft = Parser.bool('json', 'is_draft')
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
         if Review.query.filter_by(user=user, release_group=release_group).count():
