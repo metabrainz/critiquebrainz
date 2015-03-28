@@ -91,7 +91,7 @@
         {% endif %}
       </b>
       <ul class="list-unstyled">
-        {% for member in artist.current_members %}
+        {% for member in artist.current_members[:15] %}
           <li>
             <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
               {% if member.begin %}title="{{ _('Member since %(date)s', date=member.begin) }}"{% endif %}>
@@ -99,6 +99,19 @@
             {% if member.artist.disambiguation %}<span class="text-muted">({{ member.artist.disambiguation }})</span>{% endif %}
           </li>
         {% endfor %}
+        {% if artist.current_members | length > 15 %}
+        <div id="moreMembers" class="collapse">
+        {% for member in artist.current_members[15:] %}
+          <li>
+            <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
+              {% if member.begin %}title="{{ _('Member since %(date)s', date=member.begin) }}"{% endif %}>
+              {{ member.artist.name }}</a>
+            {% if member.artist.disambiguation %}<span class="text-muted">({{ member.artist.disambiguation }})</span>{% endif %}
+          </li>
+        {% endfor %}
+        </div>
+        <a data-toggle="collapse" data-target="#moreMembers" style="cursor: pointer;">{{ _('View all members...') }}</a>
+        {% endif %}
       </ul>
     {% endif %}
 
@@ -111,12 +124,23 @@
         {% endif %}
       </b>
       <ul class="list-unstyled">
-        {% for member in artist.former_members %}
+        {% for member in artist.former_members[0:15] %}
           <li>
             <a href="{{ url_for('artist.entity', id=member.artist.id) }}">{{ member.artist.name }}</a>
             {% if member.begin or member.end %}<span class="text-muted">({{ member.begin }} - {{ member.end }})</span>{% endif %}
           </li>
         {% endfor %}
+        {% if artist.former_members | length > 15 %}
+        <div id="moreFormerMembers" class="collapse">
+        {% for member in artist.former_members[0:15] %}
+          <li>
+            <a href="{{ url_for('artist.entity', id=member.artist.id) }}">{{ member.artist.name }}</a>
+            {% if member.begin or member.end %}<span class="text-muted">({{ member.begin }} - {{ member.end }})</span>{% endif %}
+          </li>
+        {% endfor %}
+        </div>
+        <a data-toggle="collapse" data-target="#moreFormerMembers" style="cursor: pointer;">{{ _('View all members...') }}</a>
+        {% endif %}
       </ul>
     {% endif %}
 
