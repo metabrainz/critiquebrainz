@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-13 11:29+0000\n"
+"POT-Creation-Date: 2015-03-04 19:24+0000\n"
 "PO-Revision-Date: 2015-01-24 09:56+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/critiquebrainz/language/nl/)\n"
@@ -226,43 +226,43 @@ msgstr "U heeft een applicatie verwijderd."
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
 msgstr "Excuus, we konden geen uitgavegroep vinden met die MusicBrainz-ID."
 
-#: critiquebrainz/frontend/review/forms.py:23
+#: critiquebrainz/frontend/review/forms.py:34
 msgid "Text"
 msgstr "Tekst"
 
-#: critiquebrainz/frontend/review/forms.py:24
+#: critiquebrainz/frontend/review/forms.py:35
 msgid "Review is empty!"
 msgstr "De recensie is leeg!"
 
-#: critiquebrainz/frontend/review/forms.py:26
+#: critiquebrainz/frontend/review/forms.py:37
 #, python-format
 msgid "Review length needs to be between %(min)d and %(max)d characters."
 msgstr "De lengte van de recensie moet tussen de %(min)d en %(max)d tekens zijn."
 
-#: critiquebrainz/frontend/review/forms.py:30
+#: critiquebrainz/frontend/review/forms.py:41
 msgid ""
 "Allow commercial use of this review (<a "
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
 "target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr "Sta commercieel gebruik van deze recensie toe. (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 licentie</a>)"
 
-#: critiquebrainz/frontend/review/forms.py:31
+#: critiquebrainz/frontend/review/forms.py:42
 msgid ""
 "Do not allow commercial use of this review, unless approved by MetaBrainz "
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr "Sta commercieel gebruik van deze recensie niet toe, tenzij dat door de MetaBrainz Foundation wordt goedgekeurd. (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 licentie</a>)"
 
-#: critiquebrainz/frontend/review/forms.py:33
+#: critiquebrainz/frontend/review/forms.py:44
 msgid "You need to choose a license!"
 msgstr "U moet een licentie kiezen!"
 
-#: critiquebrainz/frontend/review/forms.py:34
+#: critiquebrainz/frontend/review/forms.py:45
 #: critiquebrainz/frontend/templates/base.html:66
 msgid "Language"
 msgstr "Taal"
 
-#: critiquebrainz/frontend/review/forms.py:43
+#: critiquebrainz/frontend/review/forms.py:54
 msgid "You need to accept the license agreement!"
 msgstr "U moet de licentieovereenkomst accepteren!"
 
