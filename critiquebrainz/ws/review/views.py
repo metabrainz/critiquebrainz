@@ -133,11 +133,15 @@ def review_post_handler(user):
     :json string text: review contents, min length is 25, max is 5000
     :json string license_choice: license ID
     :json string lang: language code (ISO 639-1), default is ``en`` **(optional)**
+    :json boolean is_draft: whether the review should be saved as a draft or not, default is ``False`` **(optional)**
 
     :resheader Content-Type: *application/json*
     """
 
     def fetch_params():
+        is_draft = Parser.bool('json', 'is_draft', optional=True) or False
+        if is_draft:
+            REVIEW_MIN_LENGTH = None
         release_group = Parser.uuid('json', 'release_group')
         text = Parser.string('json', 'text', min=REVIEW_MIN_LENGTH, max=REVIEW_MAX_LENGTH)
         license_choice = Parser.string('json', 'license_choice')
@@ -146,13 +150,13 @@ def review_post_handler(user):
             raise InvalidRequest(desc='Unsupported language')
         if Review.query.filter_by(user=user, release_group=release_group).count():
             raise InvalidRequest(desc='You have already published a review for this album')
-        return release_group, text, license_choice, language
+        return release_group, text, license_choice, language, is_draft
 
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
-    release_group, text, license_choice, language = fetch_params()
+    release_group, text, license_choice, language, is_draft = fetch_params()
     review = Review.create(user=user, release_group=release_group, text=text, license_id=license_choice,
-                           language=language)
+                           language=language, is_draft=is_draft)
     return jsonify(message='Request processed successfully', id=review.id)
 
 
