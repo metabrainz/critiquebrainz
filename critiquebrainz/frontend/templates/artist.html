@@ -2,6 +2,22 @@
 
 {% block title %}{{ artist.name }} - CritiqueBrainz{% endblock %}
 
+{% macro print_members(members) %}
+  {% for member in members %}
+    <li>
+      <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
+         {% if member.begin %}title="{{ _('Member since %(date)s', date=member.begin) }}"{% endif %}>
+        {{ member.artist.name }}
+      </a>
+      {% if member.end %}
+        <span class="text-muted">({{ member.begin }} - {{ member.end }})</span>
+      {% elif member.artist.disambiguation %}
+        <span class="text-muted">({{ member.artist.disambiguation }})</span>
+      {% endif %}
+    </li>
+  {% endfor %}
+{% endmacro %}
+
 {% block content %}
 <h2>
   {{ artist.name }}
@@ -91,21 +107,6 @@
         {% endif %}
       </b>
       <ul class="list-unstyled">
-        {% macro print_members(members) -%}
-          {% for member in members %}
-            <li>
-              <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
-                {% if member.begin %}title="{{ _('Member since %(date)s', date=member.begin) }}"{% endif %}>
-                {{ member.artist.name }}
-              </a>
-              {% if member.end %}
-                <span class="text-muted">({{ member.begin }} - {{ member.end }})</span>
-              {% elif member.artist.disambiguation %}
-                <span class="text-muted">({{ member.artist.disambiguation }})</span>
-              {% endif %}
-            </li>
-          {% endfor %}
-        {%- endmacro %}
         {{ print_members(artist.current_members[:15]) }}
         {% if artist.current_members | length > 15 %}
           <div id="more-members" class="collapse">
