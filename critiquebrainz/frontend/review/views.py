@@ -55,14 +55,15 @@ def create():
         flash('Please choose release group that you want to review.')
         return redirect(url_for('search.selector', next=url_for('.create')))
 
+    # Checking if the user already wrote a review for this release group
+    review = Review.query.filter_by(user=current_user, release_group=release_group).first()
+    if review:
+        flash(gettext("You have already published a review for this album!"), 'error')
+        return redirect(url_for('review.entity', id=review.id))
+
     form = ReviewCreateForm(default_language=get_locale())
 
     if form.validate_on_submit():
-        # Checking if review has been published
-        if Review.query.filter_by(user=current_user, release_group=release_group).count():
-            flash(gettext("You have already published a review for this album!"), 'error')
-            return redirect(url_for('user.reviews', user_id=current_user.id))
-
         if current_user.is_review_limit_exceeded:
             flash(gettext("You have exceeded your limit of reviews per day."), 'error')
             return redirect(url_for('user.reviews', user_id=current_user.id))
