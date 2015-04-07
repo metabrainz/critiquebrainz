@@ -114,8 +114,7 @@ class Review(db.Model, DeleteMixin):
         return self._rating
 
     @classmethod
-    def list(cls, release_group=None, user_id=None, sort=None, limit=None,
-             offset=None, language=None, license_id=None, inc_drafts=False):
+    def list(cls, **kwargs):
         """Get a list of reviews.
 
         This method provides several filters that can be used to select
@@ -139,23 +138,32 @@ class Review(db.Model, DeleteMixin):
             total number of reviews.
         """
         query = Review.query
+        inc_drafts = kwargs.pop('inc_drafts', None)
         if not inc_drafts:
             query = query.filter(Review.is_draft == False)
 
         # FILTERING:
 
+        release_group = kwargs.pop('release_group', None)
         if release_group is not None:
             query = query.filter(Review.release_group == release_group)
+
+        language = kwargs.pop('language', None)
         if language is not None:
             query = query.filter(Review.language == language)
+
+        license_id = kwargs.pop('license_id', None)
         if license_id is not None:
             query = query.filter(Review.license_id == license_id)
+
+        user_id = kwargs.pop('user_id', None)
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
 
         count = query.count()  # Total count should be calculated before limits and sorting
 
         # SORTING:
+        sort = kwargs.pop('sort', None)
 
         if sort == 'rating':  # order by rating (positive votes - negative votes)
 
@@ -195,48 +203,72 @@ class Review(db.Model, DeleteMixin):
             # Joining and sorting by publication time
             query = query.outerjoin(pub_times).order_by(desc('pub_times.published_on'))
 
+        limit = kwargs.pop('limit', None)
         if limit is not None:
             query = query.limit(limit)
+
+        offset = kwargs.pop('offset', None)
         if offset is not None:
             query = query.offset(offset)
+
+        if kwargs:
+            raise TypeError('Unexpected **kwargs: %r' % kwargs)
 
         return query.all(), count
 
     @classmethod
-    def create(cls, release_group, user, text, is_draft, license_id=DEFAULT_LICENSE_ID, source=None, source_url=None, language=None):
-        review = Review(release_group=release_group, user=user, language=language, is_draft=is_draft,
-                        license_id=license_id, source=source, source_url=source_url)
+    def create(cls, **kwargs):
+        review = Review(
+            release_group=kwargs.pop('release_group'),
+            user=kwargs.pop('user'),
+            language=kwargs.pop('language', None),
+            is_draft=kwargs.pop('is_draft', False),
+            license_id=kwargs.pop('license_id', DEFAULT_LICENSE_ID),
+            source=kwargs.pop('source', None),
+            source_url=kwargs.pop('source_url', None)
+        )
         db.session.add(review)
         db.session.flush()
-        db.session.add(Revision(review_id=review.id, text=text))
-        db.session.commit()
+        db.session.add(Revision(review_id=review.id, text=kwargs.pop('text')))
 
+        if kwargs:
+            db.session.rollback()
+            raise TypeError('Unexpected **kwargs: %r' % kwargs)
+
+        db.session.commit()
         cache.invalidate_namespace(Review.CACHE_NAMESPACE)
 
         return review
 
-    def update(self, text, is_draft=None, license_id=None, language=None):
+    def update(self, **kwargs):
         """Update contents of this review.
 
         Returns:
             New revision of this review.
         """
+        license_id = kwargs.pop('license_id', None)
         if license_id is not None:
             if not self.is_draft:  # If trying to convert published review into draft.
                 raise BadRequest(gettext("Changing license of a published review is not allowed."))
             self.license_id = license_id
 
+        language = kwargs.pop('language', None)
         if language is not None:
             self.language = language
 
+        is_draft = kwargs.pop('is_draft', None)
         if is_draft is not None:  # This should be done after all changes that depend on review being a draft.
             if not self.is_draft and is_draft:  # If trying to convert published review into draft.
                 raise BadRequest(gettext("Converting published reviews back to drafts is not allowed."))
             self.is_draft = is_draft
 
-        new_revision = Revision.create(self.id, text)
-
+        new_revision = Revision.create(self.id, kwargs.pop('text'))
         cache.invalidate_namespace(Review.CACHE_NAMESPACE)
+
+        if kwargs:
+            # FIXME: Revision creation and other changes need to be rolled back
+            # there, but there's a `commit` in Revision.create.
+            raise TypeError('Unexpected **kwargs: %r' % kwargs)
 
         return new_revision
 

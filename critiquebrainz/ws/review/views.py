@@ -109,7 +109,14 @@ def review_list_handler():
         count = cached_result['count']
 
     else:
-        reviews, count = Review.list(release_group, user_id, sort, limit, offset, language)
+        reviews, count = Review.list(
+            release_group=release_group,
+            user_id=user_id,
+            sort=sort,
+            limit=limit,
+            offset=offset,
+            language=language,
+        )
         reviews = [p.to_dict() for p in reviews]
         cache.set(cache_key, {
             'reviews': reviews,
