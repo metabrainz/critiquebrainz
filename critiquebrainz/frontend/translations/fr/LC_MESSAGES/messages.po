@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-03-04 19:24+0000\n"
-"PO-Revision-Date: 2015-01-29 16:10+0000\n"
+"POT-Creation-Date: 2015-03-30 00:20+0000\n"
+"PO-Revision-Date: 2015-03-30 14:40+0000\n"
 "Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/critiquebrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -24,61 +24,61 @@ msgid ""
 "Spotify mapping server is unavailable. You will not see an embedded player."
 msgstr "Le serveur de mappage de Spotify n'est pas disponible. Vous ne verrez pas de lecteur intégré."
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:29
-#: critiquebrainz/frontend/apis/relationships/release_group.py:16
+#: critiquebrainz/frontend/apis/relationships/artist.py:32
+#: critiquebrainz/frontend/apis/relationships/release_group.py:19
 msgid "Wikidata"
 msgstr "Wikidata"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:30
-#: critiquebrainz/frontend/apis/relationships/release_group.py:17
+#: critiquebrainz/frontend/apis/relationships/artist.py:33
+#: critiquebrainz/frontend/apis/relationships/release_group.py:20
 msgid "Discogs"
 msgstr "Discogs"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:31
-#: critiquebrainz/frontend/apis/relationships/release_group.py:18
+#: critiquebrainz/frontend/apis/relationships/artist.py:34
+#: critiquebrainz/frontend/apis/relationships/release_group.py:21
 msgid "Allmusic"
 msgstr "Allmusic"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:32
+#: critiquebrainz/frontend/apis/relationships/artist.py:35
 msgid "Bandcamp"
 msgstr "Bandcamp"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:33
-#: critiquebrainz/frontend/apis/relationships/release_group.py:19
+#: critiquebrainz/frontend/apis/relationships/artist.py:36
+#: critiquebrainz/frontend/apis/relationships/release_group.py:22
 msgid "Official homepage"
 msgstr "Page Web officielle"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:34
+#: critiquebrainz/frontend/apis/relationships/artist.py:37
 msgid "BBC Music"
 msgstr "BBC Musique"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:46
-#: critiquebrainz/frontend/apis/relationships/release_group.py:32
+#: critiquebrainz/frontend/apis/relationships/artist.py:49
+#: critiquebrainz/frontend/apis/relationships/release_group.py:35
 msgid "Lyrics"
 msgstr "Paroles sur Lyrics"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:52
-#: critiquebrainz/frontend/apis/relationships/release_group.py:38
+#: critiquebrainz/frontend/apis/relationships/artist.py:55
+#: critiquebrainz/frontend/apis/relationships/release_group.py:41
 msgid "Wikipedia"
 msgstr "Wikipédia"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:65
+#: critiquebrainz/frontend/apis/relationships/artist.py:68
 msgid "YouTube"
 msgstr "YouTube"
 
-#: critiquebrainz/frontend/apis/relationships/artist.py:73
+#: critiquebrainz/frontend/apis/relationships/artist.py:76
 msgid "Twitter"
 msgstr "Twitter"
 
-#: critiquebrainz/frontend/apis/relationships/release_group.py:20
+#: critiquebrainz/frontend/apis/relationships/release_group.py:23
 msgid "Recording studio"
 msgstr "Studio d'enregistrement"
 
-#: critiquebrainz/frontend/artist/views.py:14
+#: critiquebrainz/frontend/artist/views.py:19
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
 msgstr "Désolé, nous n'avons pas pu trouver d'artiste avec cet ID Musicbrainz."
 
-#: critiquebrainz/frontend/login/__init__.py:11
+#: critiquebrainz/frontend/login/__init__.py:16
 msgid "Please sign in to access this page."
 msgstr "Veuillez vous connecter pour accéder à cette page."
 
@@ -86,37 +86,37 @@ msgstr "Veuillez vous connecter pour accéder à cette page."
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
-#: critiquebrainz/frontend/mapping/views.py:42
-#: critiquebrainz/frontend/mapping/views.py:66
+#: critiquebrainz/frontend/mapping/views.py:43
+#: critiquebrainz/frontend/mapping/views.py:68
 msgid "Only existing release groups can be mapped to Spotify!"
 msgstr "Seuls les groupes de parution existants peuvent être mappés vers Spotify !"
 
-#: critiquebrainz/frontend/mapping/views.py:71
+#: critiquebrainz/frontend/mapping/views.py:73
 msgid "You need to select an album from Spotify!"
 msgstr "Vous devez choisir un album sur Spotify !"
 
-#: critiquebrainz/frontend/mapping/views.py:76
+#: critiquebrainz/frontend/mapping/views.py:78
 msgid "You need to specify a correct link to this album on Spotify!"
 msgstr "Vous devez spécifier un lien correct vers cet album sur Spotify !"
 
-#: critiquebrainz/frontend/mapping/views.py:81
-#: critiquebrainz/frontend/mapping/views.py:120
+#: critiquebrainz/frontend/mapping/views.py:83
+#: critiquebrainz/frontend/mapping/views.py:126
 msgid "You need to specify existing album from Spotify!"
 msgstr "Vous devez spécifier un album existant sur Spotify !"
 
-#: critiquebrainz/frontend/mapping/views.py:87
+#: critiquebrainz/frontend/mapping/views.py:89
 msgid "Spotify mapping has been added!"
 msgstr "Le mappage Spotify a été ajouté !"
 
-#: critiquebrainz/frontend/mapping/views.py:103
+#: critiquebrainz/frontend/mapping/views.py:109
 msgid "Can't find release group with that ID!"
 msgstr "Impossible de trouver un groupe de parution avec cet ID !"
 
-#: critiquebrainz/frontend/mapping/views.py:109
+#: critiquebrainz/frontend/mapping/views.py:115
 msgid "This album is not mapped to Spotify yet!"
 msgstr "Cet album n'est pas encore mappé vers Spotify !"
 
-#: critiquebrainz/frontend/mapping/views.py:114
+#: critiquebrainz/frontend/mapping/views.py:120
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr "Le mappage erroné de Spotify a été signalé. Merci !"
 
@@ -266,69 +266,69 @@ msgstr "Langue"
 msgid "You need to accept the license agreement!"
 msgstr "Vous devez accepter la licence d'utilisation !"
 
-#: critiquebrainz/frontend/review/views.py:63
+#: critiquebrainz/frontend/review/views.py:61
 msgid "You have already published a review for this album!"
 msgstr "Vous avez déjà publié une critique pour cet album !"
 
-#: critiquebrainz/frontend/review/views.py:67
+#: critiquebrainz/frontend/review/views.py:68
 msgid "You have exceeded your limit of reviews per day."
 msgstr "Vous avez dépassé votre limite de critiques par jour."
 
-#: critiquebrainz/frontend/review/views.py:75
+#: critiquebrainz/frontend/review/views.py:76
 msgid "Review has been saved!"
 msgstr "La critique a été enregistrée !"
 
-#: critiquebrainz/frontend/review/views.py:77
+#: critiquebrainz/frontend/review/views.py:78
 msgid "Review has been published!"
 msgstr "La critique a été publiée !"
 
-#: critiquebrainz/frontend/review/views.py:82
+#: critiquebrainz/frontend/review/views.py:83
 msgid ""
 "You can only write a review for a release group that exists on MusicBrainz!"
 msgstr "Vous pouvez seulement rédiger une critique pour un groupe de parution qui existe dans MusicBrainz !"
 
-#: critiquebrainz/frontend/review/views.py:99
+#: critiquebrainz/frontend/review/views.py:100
 msgid "Can't find a review with the specified ID."
 msgstr "Impossible de trouver une critique avec l'ID spécifié."
 
-#: critiquebrainz/frontend/review/views.py:101
+#: critiquebrainz/frontend/review/views.py:102
 msgid "Only author can edit this review."
 msgstr "Seul l'auteur peut modifier cette critique."
 
-#: critiquebrainz/frontend/review/views.py:115
+#: critiquebrainz/frontend/review/views.py:116
 msgid "Review has been updated."
 msgstr "La critique a été mise à jour."
 
-#: critiquebrainz/frontend/review/views.py:127
+#: critiquebrainz/frontend/review/views.py:128
 msgid "Only the author can delete this review."
 msgstr "Seul l'auteur peut supprimer cette critique."
 
-#: critiquebrainz/frontend/review/views.py:130
+#: critiquebrainz/frontend/review/views.py:131
 msgid "Review has been deleted."
 msgstr "La critique a été supprimée."
 
-#: critiquebrainz/frontend/review/views.py:146
+#: critiquebrainz/frontend/review/views.py:147
 msgid "You cannot rate your own review."
 msgstr "Vous ne pouvez pas évaluer votre propre critique."
 
-#: critiquebrainz/frontend/review/views.py:149
+#: critiquebrainz/frontend/review/views.py:150
 msgid "You have exceeded your limit of votes per day."
 msgstr "Vous avez dépassé votre limite de votes par jour."
 
-#: critiquebrainz/frontend/review/views.py:152
-#: critiquebrainz/frontend/review/views.py:155
+#: critiquebrainz/frontend/review/views.py:153
+#: critiquebrainz/frontend/review/views.py:156
 msgid "You are not allowed to rate this review."
 msgstr "Il ne vous est pas permis d'évaluer cette critique."
 
-#: critiquebrainz/frontend/review/views.py:159
+#: critiquebrainz/frontend/review/views.py:160
 msgid "You have rated this review!"
 msgstr "Vous avez évalué cette critique !"
 
-#: critiquebrainz/frontend/review/views.py:169
+#: critiquebrainz/frontend/review/views.py:170
 msgid "This review is not rated yet."
 msgstr "Cette critique n'est pas encore évaluée."
 
-#: critiquebrainz/frontend/review/views.py:172
+#: critiquebrainz/frontend/review/views.py:173
 msgid "You have deleted your vote for this review!"
 msgstr "Vous avez supprimé votre vote pour cette critique !"
 
@@ -437,24 +437,29 @@ msgstr "Membre de"
 msgid "Members"
 msgstr "Membres"
 
-#: critiquebrainz/frontend/templates/artist.html:97
+#: critiquebrainz/frontend/templates/artist.html:98
 #, python-format
 msgid "Member since %(date)s"
 msgstr "Membre depuis %(date)s"
 
-#: critiquebrainz/frontend/templates/artist.html:108
+#: critiquebrainz/frontend/templates/artist.html:114
+#: critiquebrainz/frontend/templates/artist.html:133
+msgid "View all..."
+msgstr "Tout visualiser..."
+
+#: critiquebrainz/frontend/templates/artist.html:122
 msgid "Former member of"
 msgstr "Ancien membre de"
 
-#: critiquebrainz/frontend/templates/artist.html:110
+#: critiquebrainz/frontend/templates/artist.html:124
 msgid "Former members"
 msgstr "Anciens membres"
 
-#: critiquebrainz/frontend/templates/artist.html:124
+#: critiquebrainz/frontend/templates/artist.html:139
 msgid "External links"
 msgstr "Liens externes"
 
-#: critiquebrainz/frontend/templates/artist.html:144
+#: critiquebrainz/frontend/templates/artist.html:159
 msgid "Edit on MusicBrainz"
 msgstr "Modifier sur MusicBrainz"
 

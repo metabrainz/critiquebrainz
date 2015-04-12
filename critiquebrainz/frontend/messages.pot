@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-03-30 00:20+0000\n"
+"POT-Creation-Date: 2015-04-12 10:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -386,88 +386,88 @@ msgid ""
 "  music enthusiasts like you find good reviews."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:15
+#: critiquebrainz/frontend/templates/artist.html:9
+#, python-format
+msgid "Member since %(date)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/artist.html:31
 msgid "Discography"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:18
+#: critiquebrainz/frontend/templates/artist.html:34
 msgid "Albums"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:21
+#: critiquebrainz/frontend/templates/artist.html:37
 msgid "Singles"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:24
+#: critiquebrainz/frontend/templates/artist.html:40
 msgid "EPs"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:27
+#: critiquebrainz/frontend/templates/artist.html:43
 msgid "Broadcasts"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:30
+#: critiquebrainz/frontend/templates/artist.html:46
 msgid "Other releases"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:34
+#: critiquebrainz/frontend/templates/artist.html:50
 msgid "No releases found"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:43
+#: critiquebrainz/frontend/templates/artist.html:59
 #, python-format
 msgid "%(num)d review"
 msgid_plural "%(num)d reviews"
 msgstr[0] ""
 msgstr[1] ""
 
-#: critiquebrainz/frontend/templates/artist.html:69
+#: critiquebrainz/frontend/templates/artist.html:85
 #: critiquebrainz/frontend/templates/mapping/spotify.html:45
 #: critiquebrainz/frontend/templates/review/browse.html:42
 msgid "Previous"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:72
+#: critiquebrainz/frontend/templates/artist.html:88
 #: critiquebrainz/frontend/templates/mapping/spotify.html:48
 #: critiquebrainz/frontend/templates/review/browse.html:45
 msgid "Next"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:82
+#: critiquebrainz/frontend/templates/artist.html:98
 msgid "Artist information"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:88
+#: critiquebrainz/frontend/templates/artist.html:104
 msgid "Member of"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:90
+#: critiquebrainz/frontend/templates/artist.html:106
 msgid "Members"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:98
-#, python-format
-msgid "Member since %(date)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/artist.html:114
-#: critiquebrainz/frontend/templates/artist.html:133
+#: critiquebrainz/frontend/templates/artist.html:115
+#: critiquebrainz/frontend/templates/artist.html:134
 msgid "View all..."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:122
+#: critiquebrainz/frontend/templates/artist.html:123
 msgid "Former member of"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:124
+#: critiquebrainz/frontend/templates/artist.html:125
 msgid "Former members"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:139
+#: critiquebrainz/frontend/templates/artist.html:140
 msgid "External links"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist.html:159
+#: critiquebrainz/frontend/templates/artist.html:160
 msgid "Edit on MusicBrainz"
 msgstr ""
 
