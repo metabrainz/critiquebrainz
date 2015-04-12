@@ -77,7 +77,7 @@ def test(init_db=True, coverage=True):
         init_postgres(create_app().config['TEST_SQLALCHEMY_DATABASE_URI'])
 
     if coverage:
-        local("nosetests --exe --with-coverage --verbose --cover-package=critiquebrainz --cover-erase --cover-html")
+        local("nosetests --exe --with-coverage --cover-package=critiquebrainz --cover-erase --cover-html")
         print(yellow("Coverage report can be found in cover/index.html file.", bold=True))
     else:
         local("nosetests --exe")
