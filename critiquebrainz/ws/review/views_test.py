@@ -74,3 +74,29 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
         resp = self.client.post('/review/', headers=self.header(self.user), data=json.dumps(review))
         self.assert200(resp)
+
+    def test_review_vote_entity(self):
+        review = self.create_dummy_review()
+        resp = self.client.get('/review/%s/vote' % review.id, headers=self.header(self.user))
+        self.assert404(resp)
+
+    def test_review_vote_put(self):
+        review = self.create_dummy_review()
+
+        vote = dict(vote=True)
+        resp = self.client.put('/review/%s/vote' % review.id, headers=self.header(self.user), data=json.dumps(vote))
+        self.assertEqual(resp.json['description'], 'You cannot rate your own review.')
+
+        resp = self.client.put('/review/%s/vote' % review.id, headers=self.header(self.hacker), data=json.dumps(vote))
+        self.assert200(resp)
+
+    def test_review_vote_delete(self):
+        review = self.create_dummy_review()
+
+        resp = self.client.delete('/review/%s/vote' % review.id, headers=self.header(self.hacker))
+        self.assert400(resp)
+
+        vote = dict(vote=True)
+        self.client.put('/review/%s/vote' % review.id, headers=self.header(self.hacker), data=json.dumps(vote))
+        resp = self.client.delete('/review/%s/vote' % review.id, headers=self.header(self.hacker))
+        self.assert200(resp)
