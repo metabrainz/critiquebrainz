@@ -21,6 +21,13 @@ class ReviewViewsTestCase(WebServiceTestCase):
             license_id=self.license.id,
         )
 
+    def header(self, user):
+        data = {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + self.create_dummy_token(user)
+        }
+        return data
+
     def create_dummy_review(self):
         return Review.create(**self.review)
 
@@ -35,24 +42,18 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def test_review_delete(self):
         review = self.create_dummy_review()
-        header = {'Authorization': "Bearer " + self.create_dummy_token(self.user)}
-        resp = self.client.delete('/review/%s' % review.id, headers=header).json
-        self.assertEqual(resp['message'], 'Request processed successfully')
+        resp = self.client.delete('/review/%s' % review.id, headers=self.header(self.user))
+        self.assert200(resp)
 
     def test_review_modify(self):
         review = self.create_dummy_review()
 
-        header = {'Authorization': "Bearer " + self.create_dummy_token(self.hacker)}
-        resp = self.client.post('/review/%s' % review.id, headers=header)
+        resp = self.client.post('/review/%s' % review.id, headers=self.header(self.hacker))
         self.assert403(resp, "Shouldn't be able to edit someone else's review.")
 
-        header = {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + self.create_dummy_token(self.user)
-        }
         data = dict(text="Some updated text with length more than twenty five.")
-        resp = self.client.post('/review/%s' % review.id, headers=header, data=json.dumps(data)).json
-        self.assertEqual(resp['message'], 'Request processed successfully')
+        resp = self.client.post('/review/%s' % review.id, headers=self.header(self.user), data=json.dumps(data))
+        self.assert200(resp)
 
     def test_review_list(self):
         review = self.create_dummy_review()
@@ -63,11 +64,6 @@ class ReviewViewsTestCase(WebServiceTestCase):
         # TODO (roman): Completely verify output (I encountered unicode issues when tried to do that).
 
     def test_review_post(self):
-        header = {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + self.create_dummy_token(self.user)
-        }
-
         review = dict(
             release_group=self.review['release_group'],
             text=self.review['text'],
@@ -76,5 +72,5 @@ class ReviewViewsTestCase(WebServiceTestCase):
             is_draft=True
         )
 
-        resp = self.client.post('/review/', headers=header, data=json.dumps(review)).json
-        self.assertEqual(resp['message'], 'Request processed successfully')
+        resp = self.client.post('/review/', headers=self.header(self.user), data=json.dumps(review))
+        self.assert200(resp)
