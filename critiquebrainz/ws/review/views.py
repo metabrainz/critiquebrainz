@@ -188,7 +188,7 @@ def review_vote_entity_handler(review_id, user):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
-    vote = Vote.query.filter_by(user=user, review=review).first()
+    vote = Vote.query.filter_by(user=user, revision=review.last_revision).first()
     if not vote:
         raise NotFound("Can't find your vote for this review.")
     else:
@@ -242,7 +242,7 @@ def review_vote_delete_handler(review_id, user):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
-    vote = Vote.query.filter_by(user=user, review=review).first()
+    vote = Vote.query.filter_by(user=user, revision=review.last_revision).first()
     if not vote:
         raise InvalidRequest(desc='Review is not rated yet.')
     vote.delete()
