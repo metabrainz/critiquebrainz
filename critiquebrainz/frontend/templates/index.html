@@ -2,10 +2,10 @@
 {% block content %}
 <div id="homepage">
 
-  <h4><strong>{{ _('Welcome to CritiqueBrainz!') }}</strong></h4>
-
-  <div id="project-description" class="row">
-    <div class="col-md-8">
+  <div id="header" class="row">
+    <div class="col-md-8 clearfix">
+      <img src="{{ url_for('static', filename='img/logo_big.svg') }}" id="big-logo" />
+      <h2>{{ _('Welcome to CritiqueBrainz!') }}</h2>
       <p>
         {{ _('CritiqueBrainz is a repository for Creative Commons licensed music reviews.
         Here you can read what other people have written about an album or write your own review!') }}
@@ -16,7 +16,7 @@
       </p>
     </div>
     <div class="col-md-4">
-      <div class="panel panel-default">
+      <div id="stats" class="panel panel-default">
         <div class="panel-heading"><strong>{{ _('Statistics') }}</strong></div>
         <div class="panel-body">
           {{ _('Reviews: %(reviews_count)s', reviews_count = reviews_total) }}
