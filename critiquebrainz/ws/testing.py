@@ -40,5 +40,6 @@ class WebServiceTestCase(TestCase):
     def create_dummy_token(self, user, client=None):
         if client is None:
             client = self.create_dummy_client(user)
-        token = oauth.generate_token(client.client_id, "", user.id, "review vote user")
+        token = oauth.generate_token(client_id=client.client_id, refresh_token="",
+                                     user_id=user.id, scope="review vote user")
         return token[0]
