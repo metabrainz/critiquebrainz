@@ -1,3 +1,5 @@
+from __future__ import division
+from math import ceil
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
@@ -20,6 +22,12 @@ def browse():
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
     reviews, count = Review.list(sort='created', limit=limit, offset=offset)
+
+    if not reviews:
+        if page - 1 > count / limit:
+            return redirect(url_for('review.browse', page=int(ceil(count/limit))))
+        else:
+            raise NotFound("No reviews to display.")
 
     # Loading info about release groups for reviews
     rg_mbids = [review.release_group for review in reviews]
