@@ -2,7 +2,6 @@ from flask_testing import TestCase
 from critiquebrainz.ws import create_app
 from critiquebrainz.data import db
 
-from critiquebrainz.ws.exceptions import *
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.data.model.oauth_client import OAuthClient
 
@@ -32,8 +31,8 @@ class WebServiceTestCase(TestCase):
             user=user,
             name="Dummy Client",
             desc="Created for testing the webservice",
-            website="http://dummy.com/",
-            redirect_uri="http://dummy.com/redirect/"
+            website="http://example.com/",
+            redirect_uri="http://example.com/redirect/",
         )
         return client
 

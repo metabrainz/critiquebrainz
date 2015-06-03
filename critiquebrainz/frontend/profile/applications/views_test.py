@@ -12,8 +12,8 @@ class ProfileApplicationViewsTestCase(FrontendTestCase):
         self.application = dict(
             name="Some Application",
             desc="Created for some purpose",
-            website="http://some.app.in/",
-            redirect_uri="http://some.app.in/cb/"
+            website="http://example.com/",
+            redirect_uri="http://example.com/redirect/",
         )
 
     def create_dummy_application(self):

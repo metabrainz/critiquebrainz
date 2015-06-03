@@ -61,7 +61,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.assertEqual(resp['count'], 1)
         self.assertEqual(len(resp['reviews']), 1)
         self.assertEqual(resp['reviews'][0]['id'], review.id)
-        # TODO (roman): Completely verify output (I encountered unicode issues when tried to do that).
+        # TODO(roman): Completely verify output (I encountered unicode issues when tried to do that).
 
     def test_review_post(self):
         review = dict(
