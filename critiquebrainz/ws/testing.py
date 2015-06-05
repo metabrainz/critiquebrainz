@@ -9,7 +9,7 @@ from critiquebrainz.data.model.oauth_client import OAuthClient
 class WebServiceTestCase(TestCase):
 
     def create_app(self):
-        app = create_app()
+        app = create_app(debug=False)
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = app.config['TEST_SQLALCHEMY_DATABASE_URI']
         app.config['OAUTH_TOKEN_LENGTH'] = 40

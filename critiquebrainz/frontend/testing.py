@@ -6,7 +6,7 @@ from critiquebrainz.data import db
 class FrontendTestCase(TestCase):
 
     def create_app(self):
-        app = create_app()
+        app = create_app(debug=False)
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = app.config['TEST_SQLALCHEMY_DATABASE_URI']
         app.config['WTF_CSRF_ENABLED'] = False

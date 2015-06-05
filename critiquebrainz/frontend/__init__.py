@@ -2,13 +2,15 @@ from flask import Flask
 from flask_debugtoolbar import DebugToolbarExtension
 
 
-def create_app():
+def create_app(debug=None):
     app = Flask(__name__)
 
     # Configuration files
     import critiquebrainz.default_config
     app.config.from_object(critiquebrainz.default_config)
     app.config.from_pyfile('../config.py', silent=True)
+    if debug is not None:
+        app.debug = debug
 
     # Error handling
     import errors
