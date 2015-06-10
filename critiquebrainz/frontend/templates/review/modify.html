@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 
-{% block title %} {% endblock %}
-
 {% block content %}
-  {% block header %} {% endblock %}
+  {% block header %}{% endblock %}
   <hr />
 
   {% for field in form.errors %}
@@ -24,6 +22,7 @@
           {% endif %}
         </dd>
         {% block more_info %}
+        {# Information like creation date, votes etc. #}
         {% endblock %}
       </dl>
     </div>
@@ -42,7 +41,8 @@
       <li class="active"><a href="#write" data-toggle="tab">{{ _('Write') }}</a></li>
       <li><a href="#preview" data-toggle="tab">{{ _('Preview') }}</a></li>
       <small class="text-muted pull-right" style="margin-top:20px;font-style:italic;">
-        {{ _('You can use <a href="%(url)s" target="_blank">Markdown</a> syntax to apply custom formatting.', url='http://daringfireball.net/projects/markdown/syntax') }}
+        {{ _('You can use <a href="%(url)s" target="_blank">Markdown</a> syntax to apply custom formatting.',
+              url='http://daringfireball.net/projects/markdown/syntax') }}
       </small>
     </ul>
   </div>
@@ -75,7 +75,7 @@
         </div>
       </div>
     {% endif %}
-    {% block write_license %} {% endblock %}
+    {% block license_agreement_input %} {% endblock %}
   </form>
   {% block buttons %} {% endblock %}
 {% endblock %}

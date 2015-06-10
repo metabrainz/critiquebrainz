@@ -3,27 +3,27 @@
 {% set release_group = review.release_group | release_group_details %}
 
 {% block title %}
-{% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
-{{ _('Edit review of "%(rg)s"', rg=release_group_title) }} - CritiqueBrainz
+  {% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
+  {{ _('Edit review of "%(rg)s"', rg=release_group_title) }} - CritiqueBrainz
 {% endblock %}
 
 {% block header %}
-<h2>{{ _('Editing review') }}</h2>
+  <h2>{{ _('Editing review') }}</h2>
 {% endblock %}
 
 {% block more_info %}
-<dt>{{ _('Created on') }}</dt><dd>{{ review.created | date }}</dd>
-{% if not review.is_draft %}
-  <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</dd>
-{% endif %}
-<dt>{{ _('Status') }}</dt>
-<dd>
-  {% if review.is_draft %}
-    <span class="label label-default">{{ _('Draft') }}</span>
-  {% else %}
-    <span class="label label-primary">{{ _('Published') }}</span>
+  <dt>{{ _('Created on') }}</dt><dd>{{ review.created | date }}</dd>
+  {% if not review.is_draft %}
+    <dt>{{ _('Votes (+/-)') }}</dt><dd>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</dd>
   {% endif %}
-</dd>
+  <dt>{{ _('Status') }}</dt>
+  <dd>
+    {% if review.is_draft %}
+      <span class="label label-default">{{ _('Draft') }}</span>
+    {% else %}
+      <span class="label label-primary">{{ _('Published') }}</span>
+    {% endif %}
+  </dd>
 {% endblock %}
 
 {% block buttons %}
