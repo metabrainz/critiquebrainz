@@ -27,7 +27,7 @@ def browse():
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count/limit))))
         else:
-            raise NotFound("No reviews to display.")
+            raise NotFound(gettext("No reviews to display."))
 
     # Loading info about release groups for reviews
     rg_mbids = [review.release_group for review in reviews]
@@ -43,7 +43,7 @@ def entity(id):
     # Not showing review if it isn't published yet and not viewed by author.
     if review.is_draft and not (current_user.is_authenticated()
                                 and current_user == review.user):
-        raise NotFound("Can't find a review with the specified ID.")
+        raise NotFound(gettext("Can't find a review with the specified ID."))
 
     spotify_mappings = mbspotify.mappings(review.release_group)
 
@@ -60,7 +60,7 @@ def entity(id):
 def create():
     release_group = request.args.get('release_group')
     if not release_group:
-        flash('Please choose release group that you want to review.')
+        flash(gettext("Please choose release group that you want to review."))
         return redirect(url_for('search.selector', next=url_for('.create')))
 
     # Checking if the user already wrote a review for this release group
