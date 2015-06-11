@@ -24,8 +24,8 @@ class ReviewViewsTestCase(FrontendTestCase):
         return review
 
     def test_browse(self):
-        response = self.client.get("/review/")
-        self.assert200(response)
+        # Should return 404 if there are no reviews.
+        self.assert404(self.client.get("/review/"))
 
     def test_entity(self):
         review = self.create_dummy_review()
