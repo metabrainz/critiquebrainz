@@ -84,13 +84,27 @@
   {{ super() }}
   <script>
     $(document).ready(function() {
+      // Show warning when leaving review editor without saving changes
+      var beingSaved = false;
+      var oldData = $('#review-editor').serialize();
+      $(window).bind('beforeunload', function(e) {
+        if (beingSaved || (oldData == $('#review-editor').serialize())) {
+          return undefined;
+        }
+        var confirmationMessage = "Your review has not been saved.";
+        (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
+        return confirmationMessage;                                // Gecko and WebKit
+      });
+
       $("#btn-publish").click(function(){
+        beingSaved = true;
         $("#state").attr('value', 'publish');
         $("#review-editor").submit();
       });
 
       {% if not review or review.is_draft %}
         $("#btn-draft").click(function(){
+          beingSaved = true;
           $("#state").attr('value', 'draft');
           $("#review-editor").submit();
         });
