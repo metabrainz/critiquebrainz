@@ -37,8 +37,9 @@ def browse():
                            page=page, limit=limit, count=count)
 
 
+@review_bp.route('/<uuid:id>/revisions/<int:rev>')
 @review_bp.route('/<uuid:id>')
-def entity(id):
+def entity(id, rev=None):
     review = Review.query.get_or_404(str(id))
     # Not showing review if it isn't published yet and not viewed by author.
     if review.is_draft and not (current_user.is_authenticated()
@@ -47,11 +48,19 @@ def entity(id):
 
     spotify_mappings = mbspotify.mappings(review.release_group)
 
+    count = len(review.revisions)
+    if not rev:
+        rev = count
+    if rev < count:
+        flash(gettext('You are viewing an old revision, the review has been updated since then.'))
+    elif rev > count:
+        raise NotFound(gettext("The revision you are looking for does not exist."))
+
     if not review.is_draft and current_user.is_authenticated():  # if user is logged in, get his vote for this review
-        vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
+        vote = Vote.query.filter_by(user=current_user, revision=review.revisions[rev-1]).first()
     else:  # otherwise set vote to None, its value will not be used
         vote = None
-    review.text_html = markdown(review.text, safe_mode="escape")
+    review.text_html = markdown(review.revisions[rev-1].text, safe_mode="escape")
     return render_template('review/entity.html', review=review, spotify_mappings=spotify_mappings, vote=vote)
 
 
