@@ -55,6 +55,18 @@ def entity(id):
     return render_template('review/entity.html', review=review, spotify_mappings=spotify_mappings, vote=vote)
 
 
+@review_bp.route('/<uuid:id>/revisions')
+def revisions(id):
+    review = Review.query.get_or_404(str(id))
+
+    # Not showing review if it isn't published yet and not viewed by author.
+    if review.is_draft and not (current_user.is_authenticated()
+                                and current_user == review.user):
+        raise NotFound("Can't find a review with the specified ID.")
+
+    return render_template('review/revisions.html', review=review)
+
+
 @review_bp.route('/write', methods=('GET', 'POST'))
 @login_required
 def create():

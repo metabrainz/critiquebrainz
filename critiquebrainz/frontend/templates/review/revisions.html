@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% set release_group = review.release_group | release_group_details %}
+
+{% block title %}
+{% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
+{{ _('Revisions of Review of "%(rg)s" by %(user)s', rg=release_group_title, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block content %}
+  <h2 id="title">
+    {% if release_group %}
+      {% set rg_name = '<a href="%s">'|safe % url_for('release_group.entity', id=review.release_group) ~ release_group.title ~ '</a>'|safe %}
+    {% else %}
+      {% set rg_name =  _('[Unknown release group]') %}
+    {% endif %}
+
+    {% if release_group['artist-credit'] %}
+      {% set artist = [] %}
+      {% for credit in release_group['artist-credit'] %}
+        {% if credit.artist %}
+          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) + credit.artist.name + '</a>'|safe) %}
+        {% else %}
+          {% do artist.append(credit) %}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% set artist = _('[Unknown artist]') %}
+    {% endif %}
+
+    {{ _('%(album)s by %(artist)s', album = rg_name, artist = artist|join()) }}
+
+    {% if release_group['first-release-date'] %}
+      <small>{{ release_group['first-release-date'][:4] }}</small>
+    {% endif %}
+  </h2>
+
+  <h3>{{ _('Revisions of Review by %(user)s', user = ('<img class="avatar" src="%s&s=24" /> '|safe % review.user.avatar) + ('<a href="%s">'|safe % url_for('user.reviews', user_id=review.user.id)) + review.user.display_name + '</a>'|safe) }}</h3>
+
+  <div style="margin-top: 50px;">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>Revision</th>
+      <th>{{ _('Created on') }}</th>
+      <th>{{ _('Votes (+/-)') }}</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for revision in review.revisions | reverse %}
+      <tr data-review-id="{{ loop.index }}">
+        <td>{{ (review.revisions | count) + 1 - loop.index }}</td>
+        <td>{{ revision.timestamp | date }}</td>
+        <td>{{ revision.votes_positive_count }}/{{ revision.votes_negative_count }}</td>
+        <td>
+          <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id, rev=loop.index) }}">{{ _('Read') }}</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+{% endblock %}
