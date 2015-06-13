@@ -8,6 +8,7 @@ from critiquebrainz.data.model.oauth_client import OAuthClient
 from critiquebrainz.data.model.oauth_grant import OAuthGrant
 from critiquebrainz.data.model.oauth_token import OAuthToken
 from critiquebrainz.ws.constants import available_scopes
+from critiquebrainz.ws.exceptions import NotAuthorized
 from critiquebrainz.utils import generate_string
 
 
