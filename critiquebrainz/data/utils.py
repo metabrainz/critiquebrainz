@@ -10,7 +10,7 @@ import re
 
 
 def create_tables(app):
-    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], client_encoding='utf8')
     db.metadata.create_all(engine)
     return engine
 
