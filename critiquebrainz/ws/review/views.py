@@ -28,6 +28,46 @@ def review_entity_handler(review_id):
     return jsonify(review=review.to_dict())
 
 
+@review_bp.route('/<uuid:review_id>/revisions', methods=['GET'])
+@crossdomain()
+def review_revisions_handler(review_id):
+    """Get revisions of review with a specified UUID.
+
+    :statuscode 200: no error
+    :statuscode 404: review not found
+
+    :resheader Content-Type: *application/json*
+    """
+    review = Review.query.get_or_404(str(review_id))
+    revisions = []
+    for i, r in enumerate(review.revisions):
+        revision = r.to_dict()
+        revision.update(id=i+1)
+        revisions.append(revision)
+    return jsonify(revisions=revisions)
+
+
+@review_bp.route('/<uuid:review_id>/revisions/<int:rev>', methods=['GET'])
+@crossdomain()
+def review_revision_entity_handler(review_id, rev):
+    """Get a particular revisions of review with a specified UUID.
+
+    :statuscode 200: no error
+    :statuscode 404: review not found
+
+    :resheader Content-Type: *application/json*
+    """
+    review = Review.query.get_or_404(str(review_id))
+
+    count = len(review.revisions)
+    if rev > count:
+        raise NotFound("Can't find the revision you are looking for.")
+
+    revision = review.revisions[rev-1].to_dict()
+    revision.update(id=rev)
+    return jsonify(revision=revision)
+
+
 @review_bp.route('/<uuid:review_id>', methods=['DELETE'])
 @oauth.require_auth('review')
 @crossdomain()

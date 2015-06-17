@@ -37,6 +37,8 @@ class Revision(db.Model, DeleteMixin):
         response = dict(id=self.id,
                         review_id=self.review_id,
                         timestamp=self.timestamp,
+                        votes_positive=self.votes_positive_count,
+                        votes_negative=self.votes_negative_count,
                         text=self.text)
         return response
 
