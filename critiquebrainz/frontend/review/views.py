@@ -1,10 +1,10 @@
 from __future__ import division
 from itertools import izip
 from math import ceil
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
-from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
+from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm, ReviewReportForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.revision import Revision
@@ -236,15 +236,24 @@ def vote_delete(id):
     return redirect(url_for('.entity', id=id))
 
 
-@review_bp.route('/<uuid:id>/report', methods=['POST'])
+@review_bp.route('/<uuid:id>/report', methods=['GET', 'POST'])
 @login_required
 def report(id):
     review = Review.query.get_or_404(str(id))
     if review.user == current_user:
-        return jsonify(success=False, error='own')
-    last_revision_id = review.revisions[-1].id
-    count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
-    if count > 0:
-        return jsonify(success=False, error='reported')
-    SpamReport.create(last_revision_id, current_user)
-    return jsonify(success=True)
+        flash(gettext("You cannot report your own review."), 'error')
+        return redirect(url_for('.entity', id=id))
+
+    form = ReviewReportForm()
+    if form.validate_on_submit():
+        last_revision_id = review.last_revision.id
+        count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
+        if count > 0:
+            flash(gettext("You have already reported this review."), 'error')
+            return redirect(url_for('.entity', id=id))
+
+        SpamReport.create(last_revision_id, current_user, form.reason.data)
+        flash(gettext("Review has been reported."), 'success')
+        return redirect(url_for('.entity', id=id))
+
+    return render_template('review/report.html', review=review, form=form)

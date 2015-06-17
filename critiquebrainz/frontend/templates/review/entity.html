@@ -113,7 +113,7 @@
                 <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="report-toggle text-danger">{{ _('Report spam') }}</a>
                 <span class="report-toggle" style="display:none">
                   {{ _('Report this review as spam?') }}
-                  <a href="javascript:void(0)" onclick="report()" class="btn btn-default btn-xs" role="button">{{ _('Yes') }}</a>
+                  <a href="{{ url_for('review.report', id=review.id) }}" class="btn btn-default btn-xs" role="button">{{ _('Yes') }}</a>
                   <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="btn btn-default btn-xs" role="button">{{ _('No') }}</a>
                 </span>
                 <span id="report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>
@@ -145,35 +145,3 @@
   </div>
 </div>
 {% endblock %}
-
-{% if current_user.is_authenticated() and current_user != review.user %}
-  {% block scripts %}
-    {{ super() }}
-    <script>
-      function report() {
-        var resultBlock = $("#report-result");
-        resultBlock.show();
-        $(".report-toggle").hide();
-        $.ajax({
-          type: "POST",
-          url: "{{ url_for('review.report', id=review.id) }}",
-          success: function(result) {
-            resultBlock.removeClass('text-muted');
-            if (result.success) {
-              resultBlock.text({{ _('Review reported!') | tojson }});
-              resultBlock.addClass('text-success');
-            } else {
-              if (result.error == "reported") {
-                resultBlock.text({{ _('You have already reported this review!') | tojson }});
-              } else {
-                resultBlock.text({{ _('Unknown error occurred!') | tojson }});
-                console.log(result.error)
-              }
-              resultBlock.addClass('text-danger');
-            }
-          }
-        });
-      }
-    </script>
-  {% endblock %}
-{% endif %}

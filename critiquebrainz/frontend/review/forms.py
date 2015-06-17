@@ -52,3 +52,6 @@ class ReviewEditForm(Form):
 
 class ReviewCreateForm(ReviewEditForm):
     agreement = BooleanField(validators=[validators.DataRequired(message=gettext("You need to accept the license agreement!"))])
+
+class ReviewReportForm(Form):
+    reason = TextAreaField(default='Spam', validators=[validators.DataRequired()])

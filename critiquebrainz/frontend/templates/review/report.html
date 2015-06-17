@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% set release_group = review.release_group | release_group_details %}
+{% set rg_title = release_group.title | default(_('[Unknown release group]')) %}
+
+{% block title %}{{ _('Report review of %(release_group)s', release_group = rg_title) }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+  <h2>{{ _('Reporting review') }}</h2>
+  <hr />
+
+  {% for field in form.errors %}
+    {% for error in form.errors[field] %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+  {% endfor %}
+
+  <div class="col-md-7">
+    <form method="POST" role="form">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        <p class="lead">{{ _('Please tell us what you found wrong with the review.') }}</p>
+        <div>{{ form.reason(class="form-control", required="required") }}</div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">{{ _('Report review') }}</button>
+        <a href="{{ request.referrer or url_for('.entity', id=review.id) }}" class="btn btn-default">{{ _('Cancel') }}</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
