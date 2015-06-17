@@ -1,4 +1,5 @@
 from __future__ import division
+from itertools import izip
 from math import ceil
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
@@ -12,6 +13,14 @@ from werkzeug.exceptions import Unauthorized, NotFound
 from markdown import markdown
 
 review_bp = Blueprint('review', __name__)
+
+RESULTS_LIMIT = 10
+
+
+def reverse_enumerate(iterable):
+    """Enumerate over an iterable in reverse order while retaining proper indexes."""
+
+    return izip(reversed(xrange(len(iterable))), reversed(iterable))
 
 
 @review_bp.route('/')
@@ -73,7 +82,31 @@ def revisions(id):
                                 and current_user == review.user):
         raise NotFound("Can't find a review with the specified ID.")
 
-    return render_template('review/revisions.html', review=review)
+    count = len(review.revisions)
+    revisions = list(reverse_enumerate(review.revisions))
+    results = revisions[0:RESULTS_LIMIT]
+
+    return render_template('review/revisions.html', review=review, results=results, count=count, limit=RESULTS_LIMIT)
+
+
+@review_bp.route('/<uuid:id>/revisions/more')
+def revisions_more(id):
+    review = Review.query.get_or_404(str(id))
+
+    # Not showing review if it isn't published yet and not viewed by author.
+    if review.is_draft and not (current_user.is_authenticated()
+                                and current_user == review.user):
+        raise NotFound("Can't find a review with the specified ID.")
+
+    page = int(request.args.get('page', default=0))
+    offset = page * RESULTS_LIMIT
+
+    count = len(review.revisions)
+    revisions = list(reverse_enumerate(review.revisions))
+    results = revisions[offset:offset+RESULTS_LIMIT]
+
+    template = render_template('review/revision_results.html', review=review, results=results)
+    return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
 
 
 @review_bp.route('/write', methods=('GET', 'POST'))

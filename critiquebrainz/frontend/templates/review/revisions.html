@@ -48,18 +48,40 @@
       <th></th>
     </tr>
     </thead>
-    <tbody>
-    {% for revision in review.revisions | reverse %}
-      <tr data-review-id="{{ loop.index }}">
-        <td>{{ (review.revisions | count) + 1 - loop.index }}</td>
-        <td>{{ revision.timestamp | date }}</td>
-        <td>{{ revision.votes_positive_count }}/{{ revision.votes_negative_count }}</td>
-        <td>
-          <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id, rev=loop.index) }}">{{ _('Read') }}</a>
-        </td>
-      </tr>
-    {% endfor %}
-    </tbody>
+    <tbody id="results">{% include 'review/revision_results.html' %}</tbody>
   </table>
+  {% if count > limit %}
+    <div>
+    <button id="more-button" type="button" class="btn btn-primary" onclick="load_more();" >{{ _('Load older revisions') }}</button>
+    <span id="loading-message" class="text-muted" style="display:none;">{{ _('Loading older revisions...') }}</span>
+  </div>
+  {% endif %}
   </div>
 {% endblock %}
+
+{% if count > limit %}
+  {% block scripts %}
+    {{ super() }}
+    <script>
+      var current_page = 0;
+      function load_more() {
+        var more_button = $("#more-button");
+        var loading_message = $("#loading-message");
+        more_button.hide();
+        loading_message.show();
+        $.ajax({
+          url: "{{ url_for('review.revisions_more', id=review.id) }}",
+          data: { page: ++current_page }
+        })
+        .done(function(data) {
+          loading_message.hide();
+          $("#results").append(data.results);
+          if (data.more === true) more_button.show();
+        })
+        .fail(function() {
+          alert({{ _('Failed to load older revisions!') | tojson }});
+        });
+      }
+    </script>
+  {% endblock %}
+{% endif %}
