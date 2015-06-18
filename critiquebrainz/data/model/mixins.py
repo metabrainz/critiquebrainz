@@ -1,4 +1,6 @@
 from critiquebrainz.data import db
+from flask import current_app
+from flask_login import UserMixin
 
 
 class DeleteMixin(object):
@@ -8,3 +10,9 @@ class DeleteMixin(object):
         db.session.delete(self)
         db.session.commit()
         return self
+
+
+class AdminMixin(UserMixin):
+    """Allows a method to check if the current user is admin."""
+    def is_admin(self):
+        return self.display_name in current_app.config['ADMINS']
