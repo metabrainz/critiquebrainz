@@ -7,6 +7,10 @@ def init_error_handlers(app):
     def bad_request(error):
         return render_template('errors/400.html', error=error), 400
 
+    @app.errorhandler(401)
+    def unauthorized(error):
+        return render_template('errors/401.html', error=error), 401
+
     @app.errorhandler(403)
     def forbidden(error):
         return render_template('errors/403.html', error=error), 403
