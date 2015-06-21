@@ -6,6 +6,7 @@ from critiquebrainz.data import db
 from sqlalchemy import desc
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.mixins import DeleteMixin
+from critiquebrainz.data.model.review import Review
 from datetime import datetime
 
 
@@ -16,6 +17,10 @@ class SpamReport(db.Model, DeleteMixin):
     reason = db.Column(db.Unicode)
     revision_id = db.Column(db.Integer, db.ForeignKey('revision.id', ondelete='CASCADE'), primary_key=True)
     reported_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    @property
+    def review(self):
+        return Review.get(id=self.revision.review_id)
 
     @classmethod
     def create(cls, revision_id, user, reason):

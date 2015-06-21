@@ -64,6 +64,10 @@ class Review(db.Model, DeleteMixin):
             review_class=self.review_class.label
         )
 
+    @classmethod
+    def get(cls, **kwargs):
+        return cls.query.filter_by(**kwargs).first()
+
     @property
     def last_revision(self):
         """Returns latest revision of this review."""
