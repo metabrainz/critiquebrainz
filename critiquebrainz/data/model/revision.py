@@ -19,7 +19,7 @@ class Revision(db.Model, DeleteMixin):
     text = db.Column(db.Unicode, nullable=False)
 
     _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='revision')
-    _spam_reports = db.relationship('SpamReport', cascade='delete', lazy='dynamic', backref='review')
+    _spam_reports = db.relationship('SpamReport', cascade='delete', lazy='dynamic', backref='revision')
 
     @property
     def votes_positive_count(self):
