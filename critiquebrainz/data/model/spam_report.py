@@ -3,6 +3,7 @@ SpamReport model defines spam reports for specific revisions of reviews. Only on
 spam report can be created by a single user for a specific revision.
 """
 from critiquebrainz.data import db
+from sqlalchemy import desc
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.mixins import DeleteMixin
 from datetime import datetime
@@ -22,3 +23,40 @@ class SpamReport(db.Model, DeleteMixin):
         db.session.add(report)
         db.session.commit()
         return report
+
+    @classmethod
+    def list(cls, **kwargs):
+        """Get a list of reports.
+
+        Args:
+            user_id: UUID of the user who created the report.
+            limit: Maximum number of reviews returned by this method.
+            offset: Offset that can be used in conjunction with the limit.
+
+        Returns:
+            Pair of values: list of report that match applied filters and
+            total number of reports.
+        """
+
+        query = SpamReport.query
+
+        user_id = kwargs.pop('user_id', None)
+        if user_id is not None:
+            query = query.filter(SpamReport.user_id == user_id)
+
+        count = query.count()
+
+        query = query.order_by(desc(SpamReport.reported_at))
+
+        limit = kwargs.pop('limit', None)
+        if limit is not None:
+            query = query.limit(limit)
+
+        offset = kwargs.pop('offset', None)
+        if offset is not None:
+            query = query.offset(offset)
+
+        if kwargs:
+            raise TypeError('Unexpected **kwargs: %r' % kwargs)
+
+        return query.all(), count
