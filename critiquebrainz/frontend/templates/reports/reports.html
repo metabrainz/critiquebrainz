@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ _('Recent Reports') }} - CritiqueBrainz
+{% endblock %}
+
+{% block content %}
+  <h2 id="title"> Recent Reports </h2>
+
+  <div style="margin-top: 50px;">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th></th>
+      <th>{{ _('Reported on') }}</th>
+      <th>{{ _('Reported by') }}</th>
+      <th>{{ _('Reason') }}</th>
+      <th>{{ _('Votes (+/-)') }}</th>
+      <th>Quick Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for report in reports %}
+      <tr>
+        <td><input type="checkbox" name="reports" value="{{ loop.index }}"></td>
+        <td>{{ report.reported_at | date }}</td>
+        <td> <a href="{{ url_for('user.info', user_id=report.user.id) }}">{{ report.user.display_name }}</a> </td>
+        <td> {{ report.reason }} </td>
+        <td>{{ report.revision.votes_positive_count }}/{{ report.revision.votes_negative_count }}</td>
+        <td>
+          {#
+            Todo: Link the read revision buttons, needs the revisions-ui branch gets merged.
+
+            We'll need a method to convert revision ids like 8092 to a id that can be passed
+            to the review.revision view.
+
+            We could even add a new view /revision/{revision_id} that redirects to
+            /review/revision/{revision_number}
+          #}
+          <a class="btn btn-success btn-xs" href="{{ report.revision.id }}">{{ _('Read') }}</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+{% endblock %}
+
