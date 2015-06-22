@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, jsonify, request
+from flask import Blueprint, render_template, flash, url_for, redirect, request, jsonify
 from flask_login import login_required
+from flask_babel import gettext
+from werkzeug.exceptions import NotFound
 from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.frontend.login import admin_view
 from sqlalchemy import desc
@@ -30,3 +32,16 @@ def more():
 
     template = render_template('reports/reports_results.html', results=results)
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
+
+
+@reports_bp.route('/<uuid:user_id>/<int:revision_id>/delete')
+@login_required
+@admin_view
+def delete(user_id, revision_id):
+    report = SpamReport.get(user_id=str(user_id), revision_id=revision_id)
+    if not report:
+        raise NotFound("Can't find the specified report.")
+
+    report.delete()
+    flash(gettext("Report has been deleted."), 'success')
+    return redirect(url_for('.browse'))

@@ -19,6 +19,10 @@ class SpamReport(db.Model, DeleteMixin):
     revision_id = db.Column(db.Integer, db.ForeignKey('revision.id', ondelete='CASCADE'), primary_key=True)
     reported_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
+    @classmethod
+    def get(cls, **kwargs):
+        return cls.query.filter_by(**kwargs).first()
+
     @property
     def review(self):
         return Review.get(id=self.revision.review_id)
