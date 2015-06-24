@@ -18,45 +18,40 @@
       <th>Quick Actions</th>
     </tr>
     </thead>
-    <tbody>
-    {% for report in reports %}
-      <tr>
-        <td>{{ report.reported_at | date }}</td>
-        <td> <a href="{{ url_for('user.info', user_id=report.user.id) }}">{{ report.user.display_name }}</a> </td>
-        <td> {{ report.reason }} </td>
-        <td>{{ report.revision.votes_positive_count }}/{{ report.revision.votes_negative_count }}</td>
-        <td>
-          {#
-            Todo: Link the read revision buttons, needs the revisions-ui branch gets merged.
-
-            We'll need a method to convert revision ids like 8092 to a id that can be passed
-            to the review.revision view.
-
-            We could even add a new view /revision/{revision_id} that redirects to
-            /review/revision/{revision_number}
-          #}
-          <div class="btn-group">
-            <a class="btn btn-sm btn-info">Read</a>
-            <a class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-              <span class="caret"></span>
-              <span class="sr-only">Toggle Dropdown</span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-              {% if report.revision != report.review.last_revision %}
-                <li><a href="{{ report.review.last_revision.id }}">{{ _('Read Latest') }}</a>
-                <li class="divider"></li>
-              {% endif %}
-              <li><a href="#">Edit review</a></li>
-              <li><a href="#">Delete review</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Delete report</a></li>
-            </ul>
-          </div>
-        </td>
-      </tr>
-    {% endfor %}
-    </tbody>
+    <tbody id="results">{% include 'reports/reports_results.html' %}</tbody>
   </table>
+  {% if count > limit %}
+    <div>
+    <button id="more-button" type="button" class="btn btn-primary" onclick="load_more();" >{{ _('Load older reports') }}</button>
+    <span id="loading-message" class="text-muted" style="display:none;">{{ _('Loading older reports...') }}</span>
+  </div>
+  {% endif %}
   </div>
 {% endblock %}
 
+{% if count > limit %}
+  {% block scripts %}
+    {{ super() }}
+    <script>
+      var current_page = 0;
+      function load_more() {
+        var more_button = $("#more-button");
+        var loading_message = $("#loading-message");
+        more_button.hide();
+        loading_message.show();
+        $.ajax({
+          url: "{{ url_for('reports.more') }}",
+          data: { page: ++current_page }
+        })
+        .done(function(data) {
+          loading_message.hide();
+          $("#results").append(data.results);
+          if (data.more === true) more_button.show();
+        })
+        .fail(function() {
+          alert({{ _('Failed to load older reports!') | tojson }});
+        });
+      }
+    </script>
+  {% endblock %}
+{% endif %}
