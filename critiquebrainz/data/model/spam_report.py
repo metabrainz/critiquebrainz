@@ -7,6 +7,7 @@ from sqlalchemy import desc
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.mixins import DeleteMixin
 from critiquebrainz.data.model.review import Review
+from critiquebrainz.data.model.revision import Revision
 from datetime import datetime
 
 
@@ -34,6 +35,7 @@ class SpamReport(db.Model, DeleteMixin):
         """Get a list of reports.
 
         Args:
+            review_id: UUID of the review that is associated with the report.
             user_id: UUID of the user who created the report.
             limit: Maximum number of reviews returned by this method.
             offset: Offset that can be used in conjunction with the limit.
@@ -44,6 +46,11 @@ class SpamReport(db.Model, DeleteMixin):
         """
 
         query = SpamReport.query
+
+        review_id = kwargs.pop('review_id', None)
+        if review_id is not None:
+            revision_ids = db.session.query(Revision.id).filter_by(review_id=review_id)
+            query = SpamReport.query.filter(SpamReport.revision_id.in_(revision_ids))
 
         user_id = kwargs.pop('user_id', None)
         if user_id is not None:
