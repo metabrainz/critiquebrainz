@@ -5,6 +5,20 @@
 {% block content %}
   <h2 id="title">{{ _('Recent reports') }}</h2>
 
+  <div id="confirm-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          {# TODO: replace the href with url_for('log.browse') #}
+          <p class="text-muted pull-left">This action will be <a href="/log">logged</a>.</p>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <table class="table table-hover">
     <thead>
     <tr>
@@ -28,10 +42,10 @@
   {% endif %}
 {% endblock %}
 
-{% if count > limit %}
-  {% block scripts %}
-    {{ super() }}
-    <script>
+{% block scripts %}
+  {{ super() }}
+  <script>
+    {% if count > limit %}
       var current_page = 0;
       function load_more() {
         var more_button = $("#more-button");
@@ -51,6 +65,20 @@
           alert({{ _('Failed to load older reports!') | tojson }});
         });
       }
-    </script>
-  {% endblock %}
-{% endif %}
+    {% endif %}
+
+    // Display a modal to confirm the action
+    $('.confirm-first').on('click', function(e){
+      e.preventDefault();
+
+      // Set the data for action
+      var href = $(this).attr('href');
+      var text = $(this).attr('data-confirm-text');
+      $('#confirm-modal').find('.btn-danger').attr('href', href);
+      $('#confirm-modal').find('.modal-body').text(text);
+
+      // Display the modal
+      $('#confirm-modal').modal();
+    });
+  </script>
+{% endblock %}
