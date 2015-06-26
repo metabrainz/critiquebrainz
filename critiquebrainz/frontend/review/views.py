@@ -12,16 +12,11 @@ from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
 from werkzeug.exceptions import Unauthorized, NotFound
 from markdown import markdown
+from sqlalchemy import desc
 
 review_bp = Blueprint('review', __name__)
 
 RESULTS_LIMIT = 10
-
-
-def reverse_enumerate(iterable):
-    """Enumerate over an iterable in reverse order while retaining proper indexes."""
-
-    return izip(reversed(xrange(len(iterable))), reversed(iterable))
 
 
 @review_bp.route('/')
@@ -85,9 +80,10 @@ def revisions(id):
                                 and current_user == review.user):
         raise NotFound("Can't find a review with the specified ID.")
 
-    count = len(review.revisions)
-    revisions = list(reverse_enumerate(review.revisions))
-    results = revisions[0:RESULTS_LIMIT]
+    revisions = Revision.query.filter_by(review=review)
+    count = revisions.count()
+    revisions = revisions.order_by(desc(Revision.timestamp)).limit(RESULTS_LIMIT)
+    results = list(izip(reversed(range(count-RESULTS_LIMIT, count)), revisions))
 
     return render_template('review/revisions.html', review=review, results=results, count=count, limit=RESULTS_LIMIT)
 
@@ -104,9 +100,10 @@ def revisions_more(id):
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
 
-    count = len(review.revisions)
-    revisions = list(reverse_enumerate(review.revisions))
-    results = revisions[offset:offset+RESULTS_LIMIT]
+    revisions = Revision.query.filter_by(review=review)
+    count = revisions.count()
+    revisions = revisions.order_by(desc(Revision.timestamp)).offset(offset).limit(RESULTS_LIMIT)
+    results = list(izip(reversed(range(count-offset-RESULTS_LIMIT, count-offset)), revisions))
 
     template = render_template('review/revision_results.html', review=review, results=results)
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
