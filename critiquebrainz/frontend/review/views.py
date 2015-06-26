@@ -7,6 +7,7 @@ from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.data.model.review import Review
+from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
 from werkzeug.exceptions import Unauthorized, NotFound
@@ -57,7 +58,8 @@ def entity(id, rev=None):
 
     spotify_mappings = mbspotify.mappings(review.release_group)
 
-    count = len(review.revisions)
+    revisions = Revision.query.filter_by(review=review)
+    count = revisions.count()
     if not rev:
         rev = count
     if rev < count:
@@ -65,11 +67,12 @@ def entity(id, rev=None):
     elif rev > count:
         raise NotFound(gettext("The revision you are looking for does not exist."))
 
+    revision = revisions.offset(count-rev).first()
     if not review.is_draft and current_user.is_authenticated():  # if user is logged in, get his vote for this review
-        vote = Vote.query.filter_by(user=current_user, revision=review.revisions[rev-1]).first()
+        vote = Vote.query.filter_by(user=current_user, revision=revision).first()
     else:  # otherwise set vote to None, its value will not be used
         vote = None
-    review.text_html = markdown(review.revisions[rev-1].text, safe_mode="escape")
+    review.text_html = markdown(revision.text, safe_mode="escape")
     return render_template('review/entity.html', review=review, spotify_mappings=spotify_mappings, vote=vote)
 
 
