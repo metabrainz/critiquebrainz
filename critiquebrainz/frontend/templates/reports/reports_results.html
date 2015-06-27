@@ -39,6 +39,16 @@
           </li>
           <li class="divider"></li>
           <li>
+            <a href="{{ url_for('user.reviews', user_id=report.review.user.id) }}">
+               View review's author</a>
+          </li>
+          <li>
+            <a href="{{ url_for('user.delete', user_id=report.review.user.id) }}"
+               class="confirm-first" data-confirm-text="Are your sure you want to delete the author's account and all their reviews?">
+               Delete review's author</a>
+          </li>
+          <li class="divider"></li>
+          <li>
             <a href="{{ url_for('reports.delete', user_id=report.user.id, revision_id=report.revision_id) }}">
                Delete report</a>
           </li>
