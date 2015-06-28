@@ -184,8 +184,8 @@ def edit(id):
     review = Review.query.get_or_404(str(id))
     if review.is_draft and current_user != review.user:
         raise NotFound(gettext("Can't find a review with the specified ID."))
-    if review.user != current_user and not current_user.is_admin():
-        raise Unauthorized(gettext("Only the author or an admin can edit this review."))
+    if review.user != current_user:
+        raise Unauthorized(gettext("Only author can edit this review."))
 
     form = ReviewEditForm(default_license_id=review.license_id, default_language=review.language)
     if not review.is_draft:
