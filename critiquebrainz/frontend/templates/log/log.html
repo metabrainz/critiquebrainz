@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ _('Admin Activity Log') }} - CritiqueBrainz
+{% endblock %}
+
+{% macro log_entry(timestamp, admin, action, user='') %}
+    {{ timestamp.strftime('%I:%M %p') }} -
+    <a href="{{ url_for('user.info', user_id=admin.id) }}">{{ admin.display_name }}</a>
+    {{ action }}
+    {% if user %}
+      <a href="{{ url_for('user.info', user_id=user.id) }}">{{ user.display_name }}</a>.
+    {% endif %}
+{%- endmacro %}
+
+{% block content %}
+  {% for date, logs in results %}
+    <div class="log-day">
+      <h3>{{ date }}</h3>
+      <ul class="log-entries">
+        {% for log in logs %}
+        <li>
+          {% if log.action == "delete_review" %}
+            {{ log_entry(log.timestamp, log.admin, 'deleted a review written by', log.user) }}
+           {% elif log.action == "ban_user" %}
+            {{ log_entry(log.timestamp, log.admin, 'banned', log.user) }}
+          {% elif log.action == "other_action" %}
+            {{ log_entry(log.timestamp, log.admin, 'performed some other action') }}
+          {% elif log.action == "yet_another_action" %}
+            {{ log_entry(log.timestamp, log.admin, 'performed yet another action.') }}
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+{% endblock %}

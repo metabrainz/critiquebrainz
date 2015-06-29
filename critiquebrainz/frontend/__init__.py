@@ -80,6 +80,7 @@ def create_app(debug=None):
     from login.views import login_bp
     from oauth.views import oauth_bp
     from reports.views import reports_bp
+    from log.views import log_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
@@ -93,5 +94,6 @@ def create_app(debug=None):
     app.register_blueprint(login_bp, url_prefix='/login')
     app.register_blueprint(oauth_bp, url_prefix='/oauth')
     app.register_blueprint(reports_bp, url_prefix='/reports')
+    app.register_blueprint(log_bp, url_prefix='/log')
 
     return app
