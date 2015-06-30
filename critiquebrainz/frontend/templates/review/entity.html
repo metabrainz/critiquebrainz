@@ -109,9 +109,6 @@
                   {% endif %}
                 </form>
               </div>
-              <div class="col-md-4" id="old-revisions">
-                <a href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
-              </div>
               <div class="col-md-4" id="reporting">
                 <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="report-toggle text-danger">{{ _('Report spam') }}</a>
                 <span class="report-toggle" style="display:none">
@@ -131,13 +128,13 @@
                class="btn btn-danger btn-sm pull-right">
               <span class="glyphicon glyphicon-remove"></span> {{ _('Delete this review') }}
             </a>
-            <div id="old-revisions" style="margin-top: 10px">
-              <a href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
-            </div>
+            <!-- Used to display older revisions link properly -->
+            <div class="clearfix" style="margin-bottom: 8px;"></div>
           {% endif %}
         {% else %}
           {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
         {% endif %}
+        <a id="old-revisions" href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
       </div>
 
       <!-- Sharing -->
