@@ -30,6 +30,8 @@ class RevisionTestCase(DataTestCase):
         self.assertDictEqual(revision.to_dict(), dict(id=revision.id,
                                                       review_id=revision.review_id,
                                                       timestamp=revision.timestamp,
+                                                      votes_positive=revision.votes_positive_count,
+                                                      votes_negative=revision.votes_negative_count,
                                                       text=revision.text))
 
     def test_revision_deletion(self):
