@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% macro log_entry(timestamp, admin, action, user='') %}
-    {{ timestamp.strftime('%I:%M %p') }} -
-    <a href="{{ url_for('user.info', user_id=admin.id) }}">{{ admin.display_name }}</a>
-    {{ action }}
-    {% if user %}
-      <a href="{{ url_for('user.info', user_id=user.id) }}">{{ user.display_name }}</a>.
-    {% endif %}
+  {{ timestamp.strftime('%I:%M %p') }} -
+  <a href="{{ url_for('user.info', user_id=admin.id) }}">{{ admin.display_name }}</a>
+  {{ action }}
+  {% if user %}
+    <a href="{{ url_for('user.info', user_id=user.id) }}">{{ user.display_name }}</a>.
+  {% endif %}
 {%- endmacro %}
 
 {% block content %}
