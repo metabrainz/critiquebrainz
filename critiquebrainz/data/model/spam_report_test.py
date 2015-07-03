@@ -29,7 +29,7 @@ class SpamReportTestCase(DataTestCase):
         # There should be no spam reports initially.
         self.assertEqual(SpamReport.query.count(), 0)
 
-        report = SpamReport.create(self.review.last_revision.id, self.reporter)
+        report = SpamReport.create(self.review.last_revision.id, self.reporter, "Testing Reason")
 
         all_reports = SpamReport.query.all()
         self.assertEqual(len(all_reports), 1)
@@ -37,11 +37,11 @@ class SpamReportTestCase(DataTestCase):
         self.assertEqual(all_reports[0].revision_id, report.revision_id)
 
         # Let's try to add spam report using the author. This shouldn't be allowed.
-        authors_report = SpamReport.create(self.review.last_revision.id, self.author)
+        SpamReport.create(self.review.last_revision.id, self.author, "Testing Reason")
         self.assertEqual(len(all_reports), 1)  # hence count is the same as before
 
     def test_spam_report_deletion(self):
-        report = SpamReport.create(self.review.last_revision.id, self.reporter)
+        report = SpamReport.create(self.review.last_revision.id, self.reporter, "Testing Reason")
         self.assertEqual(SpamReport.query.count(), 1)
 
         report.delete()
