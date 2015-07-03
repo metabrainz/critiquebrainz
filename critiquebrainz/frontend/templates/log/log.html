@@ -24,10 +24,6 @@
             {{ log_entry(log.timestamp, log.admin, 'deleted a review written by', log.user) }}
            {% elif log.action == "ban_user" %}
             {{ log_entry(log.timestamp, log.admin, 'banned', log.user) }}
-          {% elif log.action == "other_action" %}
-            {{ log_entry(log.timestamp, log.admin, 'performed some other action') }}
-          {% elif log.action == "yet_another_action" %}
-            {{ log_entry(log.timestamp, log.admin, 'performed yet another action.') }}
           {% endif %}
         </li>
         {% endfor %}
