@@ -3,6 +3,7 @@ AdminLog model defines logs for various activities that the moderators can take
 via the moderator interface. A new log entry is created for every action.
 """
 from critiquebrainz.data import db
+from sqlalchemy import desc
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.mixins import DeleteMixin
@@ -36,3 +37,40 @@ class AdminLog(db.Model, DeleteMixin):
         db.session.add(log)
         db.session.commit()
         return log
+
+    @classmethod
+    def list(cls, **kwargs):
+        """Get a list of log entries.
+
+        Args:
+            admin_id: UUID of the admin whose actions generated the log.
+            limit: Maximum number of reviews returned by this method.
+            offset: Offset that can be used in conjunction with the limit.
+
+        Returns:
+            Pair of values: list of log entries that match applied filters and
+            total number of log entries.
+        """
+
+        query = AdminLog.query
+
+        admin_id = kwargs.pop('admin_id', None)
+        if admin_id is not None:
+            query = query.filter(AdminLog.admin_id == admin_id)
+
+        count = query.count()
+
+        query = query.order_by(desc(AdminLog.timestamp))
+
+        limit = kwargs.pop('limit', None)
+        if limit is not None:
+            query = query.limit(limit)
+
+        offset = kwargs.pop('offset', None)
+        if offset is not None:
+            query = query.offset(offset)
+
+        if kwargs:
+            raise TypeError('Unexpected **kwargs: %r' % kwargs)
+
+        return query.all(), count
