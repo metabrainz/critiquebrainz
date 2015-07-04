@@ -3,10 +3,10 @@
 {% set release_group = review.release_group | release_group_details %}
 {% set rg_title = release_group.title | default(_('[Unknown release group]')) %}
 
-{% block title %}{{ _('Report review of %(release_group)s', release_group = rg_title) }} - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Report %(user)s\'s review of "%(rg)s"', rg=rg_title, user=review.user.display_name) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-  <h2>{{ _('Reporting review') }}</h2>
+  <h2>{{ _('Report %(user)s\'s review of "%(rg)s"', rg=rg_title, user=review.user.display_name) }}</h2>
   <hr />
 
   {% for field in form.errors %}
