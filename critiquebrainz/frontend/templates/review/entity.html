@@ -110,13 +110,7 @@
                 </form>
               </div>
               <div class="col-md-4" id="reporting">
-                <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="report-toggle text-danger">{{ _('Report spam') }}</a>
-                <span class="report-toggle" style="display:none">
-                  {{ _('Report this review as spam?') }}
-                  <a href="{{ url_for('review.report', id=review.id) }}" class="btn btn-default btn-xs" role="button">{{ _('Yes') }}</a>
-                  <a href="javascript:void(0)" onclick="$('.report-toggle').toggle()" class="btn btn-default btn-xs" role="button">{{ _('No') }}</a>
-                </span>
-                <span id="report-result" class="text-muted" style="display:none">{{ _('Reporting...') }}</span>
+                <a href="{{ url_for('review.report', id=review.id) }}" class="text-danger">{{ _('Report spam') }}</a>
               </div>
             </div>
           {% else %}
