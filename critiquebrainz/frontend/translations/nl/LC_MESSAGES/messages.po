@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-03-30 00:20+0000\n"
-"PO-Revision-Date: 2015-04-03 12:37+0000\n"
+"PO-Revision-Date: 2015-05-31 12:55+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/critiquebrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -351,7 +351,7 @@ msgid ""
 "<strong>CritiqueBrainz is a repository for Creative Commons licensed music reviews.</strong>\n"
 "  Here you can read what others have written about an album or write your own review!\n"
 "  It is based on data from MusicBrainz - open music encyclopedia."
-msgstr "<strong>CritiqueBrainz is een verzameling van muziekrecensies onder een Creative Commons licentie.</strong>\nHier kan u lezen wat anderen over een album hebben geschreven of uw eigen recensie schrijven!\nHet is gebaseerd op gegevens van MusicBrainz - de open muziekencyclopedie."
+msgstr "<strong>CritiqueBrainz is een verzameling van muziekrecensies onder een Creative Commons licentie.</strong>\nHier kan u lezen wat anderen over een album hebben geschreven of uw eigen recensie schrijven!\nHet is gebaseerd op gegevens van MusicBrainz – de open muziekencyclopedie."
 
 #: critiquebrainz/frontend/templates/about.html:15
 msgid "What is it for?"
@@ -370,7 +370,7 @@ msgid ""
 "  and contribute. If you are good at writing and want to share your thoughts about\n"
 "  an album - feel free to write a new review. If that's not your thing and you just\n"
 "  want to read opinions - that's fine too."
-msgstr "Dit is een open platform. Dat betekent dat iedereen - ook u - mee kan doen en kan bijdragen. Schrijf een recensie als u goed kunt schrijven en uw gedachtes over een album wilt delen. Als dat niets voor u is en u liever opinies leest, dan is dat ook goed."
+msgstr "Dit is een open platform. Dat betekent dat iedereen – ook u – mee kan doen en kan bijdragen. Schrijf een recensie als u goed kunt schrijven en uw gedachtes over een album wilt delen. Als dat niets voor u is en u liever opinies leest, dan is dat ook goed."
 
 #: critiquebrainz/frontend/templates/about.html:28
 msgid ""
@@ -485,7 +485,7 @@ msgstr "CritiqueBrainz is een verzameling van muziekrecensies onder een Creative
 msgid ""
 "CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
-msgstr "CritiqueBrainz is gebaseerd op gegevens van MusicBrainz - de open muziekencyclopedie.\n<br>Iedereen - ook u - kan meedoen en bijdragen."
+msgstr "CritiqueBrainz is gebaseerd op gegevens van MusicBrainz – de open muziekencyclopedie.\n<br>Iedereen – ook u – kan meedoen en bijdragen."
 
 #: critiquebrainz/frontend/templates/index.html:20
 #: critiquebrainz/frontend/templates/user/info.html:35
