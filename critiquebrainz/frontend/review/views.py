@@ -244,14 +244,14 @@ def report(id):
         flash(gettext("You cannot report your own review."), 'error')
         return redirect(url_for('.entity', id=id))
 
+    last_revision_id = review.last_revision.id
+    count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
+    if count > 0:
+        flash(gettext("You have already reported this review."), 'error')
+        return redirect(url_for('.entity', id=id))
+
     form = ReviewReportForm()
     if form.validate_on_submit():
-        last_revision_id = review.last_revision.id
-        count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
-        if count > 0:
-            flash(gettext("You have already reported this review."), 'error')
-            return redirect(url_for('.entity', id=id))
-
         SpamReport.create(last_revision_id, current_user, form.reason.data)
         flash(gettext("Review has been reported."), 'success')
         return redirect(url_for('.entity', id=id))
