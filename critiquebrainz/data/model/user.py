@@ -203,3 +203,15 @@ class User(db.Model, AdminMixin, DeleteMixin):
             self.show_gravatar = show_gravatar
         self.email = email
         db.session.commit()
+
+    @property
+    def is_blocked(self):
+        return self.status == STATUS_BLOCKED
+
+    def block(self):
+        self.status = STATUS_BLOCKED
+        db.session.commit()
+
+    def unblock(self):
+        self.status = STATUS_ACTIVE
+        db.session.commit()
