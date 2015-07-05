@@ -42,9 +42,8 @@
                View review's author</a>
           </li>
           <li>
-            <a href="{{ url_for('user.delete', user_id=report.review.user.id) }}"
-               class="confirm-first" data-confirm-text="Are your sure you want to delete the author's account and all their reviews?">
-               Delete review's author</a>
+            <a href="{{ url_for('user.block', user_id=report.review.user.id) }}">
+               Block review's author</a>
           </li>
           <li class="divider"></li>
           <li>

@@ -32,11 +32,11 @@ def info(user_id):
     return render_template('user/info.html', section='info', user=User.query.get_or_404(str(user_id)))
 
 
-@user_bp.route('/<uuid:user_id>/delete')
+@user_bp.route('/<uuid:user_id>/block')
 @login_required
 @admin_view
-def delete(user_id):
+def block(user_id):
     user = User.query.get_or_404(str(user_id))
-    user.delete()
-    flash(gettext("User has been deleted."), 'success')
-    return redirect(url_for(request.referrer))
+    user.block()
+    flash(gettext("User has been blocked."), 'success')
+    return redirect(request.referrer or url_for('frontend.index'))
