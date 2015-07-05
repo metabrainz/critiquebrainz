@@ -40,3 +40,16 @@ def block(user_id):
     user.block()
     flash(gettext("User has been blocked."), 'success')
     return redirect(request.referrer or url_for('frontend.index'))
+
+
+@user_bp.route('/<uuid:user_id>/unblock')
+@login_required
+def unblock(user_id):
+    user = User.query.get_or_404(str(user_id))
+
+    if not current_user.is_admin():
+        raise Unauthorized(gettext("Only an admin can block/unblock a user account."))
+
+    user.unblock()
+    flash(gettext("User has been unblocked."), 'success')
+    return redirect(request.referrer or url_for('frontend.index'))
