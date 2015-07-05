@@ -141,6 +141,10 @@ def create():
         flash(gettext("Please choose release group that you want to review."))
         return redirect(url_for('search.selector', next=url_for('.create')))
 
+    if current_user.is_blocked:
+        flash(gettext("You are not allowed to write a new review as your account has been blocked by an admin."), 'error')
+        return redirect(url_for('log.browse'))
+
     # Checking if the user already wrote a review for this release group
     review = Review.query.filter_by(user=current_user, release_group=release_group).first()
     if review:
@@ -234,6 +238,9 @@ def vote_submit(review_id):
         return redirect(url_for('.entity', id=review_id))
     if current_user.is_vote_limit_exceeded is True and current_user.has_voted(review) is False:
         flash(gettext("You have exceeded your limit of votes per day."), 'error')
+        return redirect(url_for('.entity', id=review_id))
+    if current_user.is_blocked:
+        flash(gettext("You are not allowed to rate this review as your account has been blocked by an admin."), 'error')
         return redirect(url_for('.entity', id=review_id))
     if vote is True and current_user.user_type not in review.review_class.upvote:
         flash(gettext("You are not allowed to rate this review."), 'error')
