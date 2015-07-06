@@ -106,10 +106,13 @@ class ReviewViewsTestCase(FrontendTestCase):
     def test_report(self):
         review = self.create_dummy_review()
 
+        data = dict(reason="Testing reason.")
+
         self.temporary_login(self.user)
         response = self.client.post("/review/%s/report" % review.id, follow_redirects=True)
-        self.assertFalse(response.json['success'], "Shouldn't be able to report your own reviews.")
+        self.assertIn("You cannot report your own review.", response.data)
 
         self.temporary_login(self.hacker)
-        response = self.client.post("/review/%s/report" % review.id, follow_redirects=True)
-        self.assertTrue(response.json['success'])
+        response = self.client.post("/review/%s/report" % review.id, data=data,
+                                    query_string=data, follow_redirects=True)
+        self.assertIn("Review has been reported.", response.data)
