@@ -275,6 +275,10 @@ def report(id):
         flash(gettext("You cannot report your own review."), 'error')
         return redirect(url_for('.entity', id=id))
 
+    if current_user.is_blocked:
+        flash(gettext("You are not allowed to report a review as your account has been blocked by an admin."), 'error')
+        return redirect(url_for('.entity', id=id))
+
     last_revision_id = review.last_revision.id
     count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
     if count > 0:
