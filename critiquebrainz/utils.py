@@ -1,9 +1,12 @@
 from flask_uuid import UUID_RE
 from flask_babel import format_datetime, format_date
+import difflib
 import urllib
 import urlparse
 import string
 import random
+
+tags = {'+': ('<ins>', '</ins>'), '-': ('<del>', '</del>'), ' ': (' ', '')}
 
 
 def build_url(base, additional_params=None):
@@ -48,3 +51,38 @@ def track_length(value):
     seconds = int(value) / 1000
     minutes, seconds = divmod(seconds, 60)
     return '%i:%02i' % (minutes, seconds)
+
+
+def side_by_side_diff(old, new):
+    left, right = [], []
+
+    # Deletions on the left, insertions on the right.
+    def append(tag, text):
+        if tag == '<ins>':
+            right.append(text)
+        elif tag == '<del>':
+            left.append(text)
+        else:
+            left.append(text)
+            right.append(text)
+
+    # Generates a compact word diff
+    prev_start, prev_end = None, ''
+    prev_item = ''
+
+    for item in difflib.ndiff(old.split(), new.split()):
+        tag = tags.get(item[0])
+
+        if not tag:
+            continue
+
+        if prev_start == tag[0]:
+            prev_item += item[1:]
+        else:
+            append(prev_start, prev_item + prev_end)
+            prev_start, prev_end = tag
+            prev_item = prev_start + item[1:]
+
+    append(prev_start, prev_item + prev_end)
+
+    return " ".join(left), " ".join(right)
