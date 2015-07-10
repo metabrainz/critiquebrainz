@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Difference between revisions - CritiqueBrainz
+{% endblock %}
+
+{% block content %}
+  <div id="diff" class="row">
+    <div class="col-md-6">
+      <div class="diff-header">
+        <h3>Revision {{ left.number }}</h3>
+        <p class="small">as on {{ left.timestamp | datetime }}</p>
+      </div>
+      <div class="diff-content">{{ left.text | safe }}</div>
+    </div>
+    <div class="col-md-6">
+      <div class="diff-header">
+        <h3>Revision {{ right.number }}</h3>
+        <p class="small">as on {{ right.timestamp | datetime }}</p>
+      </div>
+      <div class="diff-content">{{ right.text | safe }}</div>
+    </div>
+  </div>
+{% endblock %}
