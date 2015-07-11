@@ -6,5 +6,9 @@
     <td>
       <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id, rev=result[0]+1) }}">{{ _('Read') }}</a>
     </td>
+    <td>
+      <input type="radio" name="old" value="{{ result[0] + 1 }}" >
+      <input type="radio" name="new" value="{{ result[0] + 1 }}">
+    </td>
   </tr>
 {% endfor %}

@@ -39,23 +39,25 @@
   + ('<a href="%s">'|safe % url_for('user.reviews', user_id=review.user.id)) + review.user.display_name + '</a>'|safe) }} </h3>
 
   <div style="margin-top: 50px;">
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th>Revision</th>
-      <th>{{ _('Created on') }}</th>
-      <th>{{ _('Votes (+/-)') }}</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody id="results">{% include 'review/revision_results.html' %}</tbody>
-  </table>
-  {% if count > limit %}
-    <div>
-    <button id="more-button" type="button" class="btn btn-primary" onclick="load_more();" >{{ _('Load older revisions') }}</button>
-    <span id="loading-message" class="text-muted" style="display:none;">{{ _('Loading older revisions...') }}</span>
-  </div>
-  {% endif %}
+    <form action="{{ url_for('review.compare', id=review.id) }}" method="GET">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Revision</th>
+          <th>{{ _('Created on') }}</th>
+          <th>{{ _('Votes (+/-)') }}</th>
+          <th>Action</th>
+          <th>Select</th>
+        </tr>
+        </thead>
+        <tbody id="results">{% include 'review/revision_results.html' %}</tbody>
+      </table>
+      {% if count > limit %}
+        <button id="more-button" type="button" class="btn btn-primary" onclick="load_more();" >{{ _('Load older revisions') }}</button>
+        <span id="loading-message" class="text-muted" style="display:none;">{{ _('Loading older revisions...') }}</span>
+      {% endif %}
+      <button type="submit" type="button" class="btn btn-info pull-right">{{ _('Compare Revisions') }}</button>
+    </form>
   </div>
 {% endblock %}
 
