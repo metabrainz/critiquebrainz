@@ -7,6 +7,7 @@ from flask import redirect, url_for
 from flask_login import LoginManager, current_user
 from flask_babel import gettext
 from critiquebrainz.data.model.user import User
+from werkzeug.exceptions import Unauthorized
 from functools import wraps
 
 mb_auth = None
@@ -27,6 +28,16 @@ def login_forbidden(f):
     def decorated(*args, **kwargs):
         if current_user.is_anonymous() is False:
             return redirect(url_for('frontend.index'))
+        return f(*args, **kwargs)
+
+    return decorated
+
+
+def admin_view(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not current_user.is_admin():
+            raise Unauthorized(gettext('You must be an administrator to view this page.'))
         return f(*args, **kwargs)
 
     return decorated
