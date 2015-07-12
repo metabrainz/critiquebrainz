@@ -2,14 +2,14 @@
   {% set release_group = report.review.release_group | release_group_details %}
   <tr>
     <td>{{ report.reported_at | date }}</td>
-    <td> <a href="{{ url_for('user.info', user_id=report.user.id) }}">{{ report.user.display_name }}</a> </td>
-    <td> {{ report.reason }} </td>
+    <td><a href="{{ url_for('user.info', user_id=report.user.id) }}">{{ report.user.display_name }}</a></td>
+    <td>{{ report.reason }}</td>
     <td>
       {{ release_group.title | default(_('[Unknown release group]')) }}
       by
       {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
     </td>
-    <td> <a href="{{ url_for('user.info', user_id=report.review.user.id) }}">{{ report.review.user.display_name }}</a> </td>
+    <td><a href="{{ url_for('user.info', user_id=report.review.user.id) }}">{{ report.review.user.display_name }}</a></td>
     <td>
       {#
         Todo: Link the read revision buttons, needs the revisions-ui branch gets merged.
