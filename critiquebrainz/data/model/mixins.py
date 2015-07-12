@@ -15,4 +15,4 @@ class DeleteMixin(object):
 class AdminMixin(UserMixin):
     """Allows a method to check if the current user is admin."""
     def is_admin(self):
-        return self.display_name in current_app.config['ADMINS']
+        return self.musicbrainz_id in current_app.config['ADMINS']
