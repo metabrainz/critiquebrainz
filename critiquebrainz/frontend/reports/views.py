@@ -15,7 +15,6 @@ RESULTS_LIMIT = 20
 def index():
     count = SpamReport.query.count()
     results = SpamReport.query.order_by(desc(SpamReport.reported_at)).limit(RESULTS_LIMIT)
-
     return render_template('reports/reports.html', count=count, results=results, limit=RESULTS_LIMIT)
 
 
