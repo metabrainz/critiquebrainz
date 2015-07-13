@@ -46,7 +46,9 @@
           <th></th>
           <th>{{ _('Created on') }}</th>
           <th>{{ _('Votes (+/-)') }}</th>
-          <th><button type="submit" type="button" class="btn btn-info btn-xs">{{ _('Compare') }}</button></th>
+          {% if count > 1 %}
+            <th><button type="submit" type="button" class="btn btn-info btn-xs">{{ _('Compare') }}</button></th>
+          {% endif %}
         </tr>
         </thead>
         <tbody id="results">{% include 'review/revision_results.html' %}</tbody>
