@@ -21,17 +21,8 @@
         /review/revision/{revision_number}
       #}
       <div class="btn-group">
-        <a class="btn btn-xs btn-info">Read</a>
-        <a class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-          <span class="caret"></span>
-          <span class="sr-only">Toggle Dropdown</span>
-        </a>
-        <ul class="dropdown-menu" role="menu">
-          {% if report.revision != report.review.last_revision %}
-            <li><a href="{{ report.review.last_revision.id }}">{{ _('Read Latest') }}</a>
-            <li class="divider"></li>
-          {% endif %}
-        </ul>
+        <a href="{{ url_for('review.entity', id=report.review.id) }}"
+           class="btn btn-xs btn-info">Read</a>
       </div>
     </td>
   </tr>
