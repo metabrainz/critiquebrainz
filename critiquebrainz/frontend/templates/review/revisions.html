@@ -46,7 +46,7 @@
           <th></th>
           <th>{{ _('Created on') }}</th>
           <th>{{ _('Votes (+/-)') }}</th>
-          <th>Select</th>
+          <th><button type="submit" type="button" class="btn btn-info btn-xs">{{ _('Compare') }}</button></th>
         </tr>
         </thead>
         <tbody id="results">{% include 'review/revision_results.html' %}</tbody>
@@ -55,7 +55,6 @@
         <button id="more-button" type="button" class="btn btn-primary" onclick="load_more();" >{{ _('Load older revisions') }}</button>
         <span id="loading-message" class="text-muted" style="display:none;">{{ _('Loading older revisions...') }}</span>
       {% endif %}
-      <button type="submit" type="button" class="btn btn-info pull-right">{{ _('Compare Revisions') }}</button>
     </form>
   </div>
 {% endblock %}
