@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-03-30 00:20+0000\n"
-"PO-Revision-Date: 2015-05-31 12:55+0000\n"
+"PO-Revision-Date: 2015-07-05 10:37+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
-"Language-Team: Dutch (http://www.transifex.com/projects/p/critiquebrainz/language/nl/)\n"
+"Language-Team: Dutch (http://www.transifex.com/p/critiquebrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1152,7 +1152,7 @@ msgstr "Het laden van meer resultaten is mislukt!"
 #: critiquebrainz/frontend/templates/search/selector.html:3
 #: critiquebrainz/frontend/templates/search/selector.html:6
 msgid "Release group selection"
-msgstr "Selectie van de uitgavegroep"
+msgstr "Uitgavegroep selecteren"
 
 #: critiquebrainz/frontend/templates/search/selector.html:57
 msgid "Continue"

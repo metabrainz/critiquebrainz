@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ _('Recent Reports') }} - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Recent reports') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-  <h2 id="title">{{ _('Recent Reports') }}</h2>
+  <h2 id="title">{{ _('Recent reports') }}</h2>
 
   <table class="table table-hover">
     <thead>
@@ -13,7 +13,7 @@
       <th>{{ _('Reason') }}</th>
       <th>{{ _('Review') }}</th>
       <th>{{ _('Author') }}</th>
-      <th>{{ _('Quick Actions') }}</th>
+      <th>{{ _('Quick actions') }}</th>
     </tr>
     </thead>
     <tbody id="results">{% include 'reports/reports_results.html' %}</tbody>
