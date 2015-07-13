@@ -68,5 +68,7 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 # Compile styling in browser if set to True
 #COMPILE_LESS = True
 
-# List of admin usernames
-ADMINS = ['ruaok']
+# List of administrators (MusicBrainz usernames)
+ADMINS = [
+    "ruaok",
+]
