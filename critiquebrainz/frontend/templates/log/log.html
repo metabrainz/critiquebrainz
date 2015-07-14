@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}
-{{ _('Admin Activity Log') }} - CritiqueBrainz
-{% endblock %}
+{% block title %} {{ _('Admin Activity Log') }} - CritiqueBrainz {% endblock %}
 
 {% macro log_entry(timestamp, admin, action, user='') %}
   {{ timestamp.strftime('%I:%M %p') }} -
