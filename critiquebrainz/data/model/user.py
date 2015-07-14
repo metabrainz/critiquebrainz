@@ -25,7 +25,7 @@ class User(db.Model, AdminMixin, DeleteMixin):
     status = db.Column(db.Enum(
         STATUS_ACTIVE,
         STATUS_BLOCKED,
-        name='status_types'
+        name='user_status_types'
     ), nullable=False, default=STATUS_ACTIVE)
 
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
