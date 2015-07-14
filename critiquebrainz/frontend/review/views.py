@@ -1,7 +1,7 @@
 from __future__ import division
 from itertools import izip
 from math import ceil
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm, ReviewReportForm
