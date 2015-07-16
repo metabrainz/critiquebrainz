@@ -10,6 +10,7 @@ from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
+from critiquebrainz.utils import side_by_side_diff
 from werkzeug.exceptions import Unauthorized, NotFound
 from markdown import markdown
 from sqlalchemy import desc
@@ -69,6 +70,29 @@ def entity(id, rev=None):
         vote = None
     review.text_html = markdown(revision.text, safe_mode="escape")
     return render_template('review/entity.html', review=review, spotify_mappings=spotify_mappings, vote=vote)
+
+
+@review_bp.route('/<uuid:id>/revisions/compare')
+def compare(id):
+    review = Review.query.get_or_404(str(id))
+    if review.is_draft and not (current_user.is_authenticated()
+                                and current_user == review.user):
+        raise NotFound(gettext("Can't find a review with the specified ID."))
+
+    revisions = Revision.query.filter_by(review=review)
+    count = revisions.count()
+    old, new = int(request.args.get('old')), int(request.args.get('new'))
+    if old > count or new > count:
+        raise NotFound(gettext("The revision(s) you are looking for does not exist."))
+    if old > new:
+        return redirect(url_for('.compare', id=id, old=new, new=old))
+
+    left = revisions.offset(count-old).first()
+    right = revisions.offset(count-new).first()
+    left.number, right.number = old, new
+    left.text, right.text = side_by_side_diff(left.text, right.text)
+
+    return render_template('review/compare.html', review=review, left=left, right=right)
 
 
 @review_bp.route('/<uuid:id>/revisions')
