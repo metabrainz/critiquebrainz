@@ -55,6 +55,9 @@ class SpamReport(db.Model, DeleteMixin):
         """
 
         query = SpamReport.query
+        inc_archived = kwargs.pop('inc_archived', None)
+        if not inc_archived:
+            query = query.filter(SpamReport.is_archive == False)
 
         review_id = kwargs.pop('review_id', None)
         if review_id is not None:
