@@ -23,7 +23,7 @@
       <div class="btn-group">
         <a href="{{ url_for('review.entity', id=report.review.id) }}"
            class="btn btn-xs btn-info">Read</a>
-        <a class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <a class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
           <span class="caret"></span>
           <span class="sr-only">Toggle Dropdown</span>
         </a>
@@ -47,8 +47,8 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="{{ url_for('reports.delete', user_id=report.user.id, revision_id=report.revision_id) }}">
-               Delete report</a>
+            <a href="{{ url_for('reports.archive', user_id=report.user.id, revision_id=report.revision_id) }}">
+               Archive report</a>
           </li>
         </ul>
       </div>
