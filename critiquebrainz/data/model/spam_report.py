@@ -18,6 +18,7 @@ class SpamReport(db.Model, DeleteMixin):
     reason = db.Column(db.Unicode)
     revision_id = db.Column(db.Integer, db.ForeignKey('revision.id', ondelete='CASCADE'), primary_key=True)
     reported_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    is_archive = db.Column(db.Boolean, nullable=False, default=False)
 
     @classmethod
     def get(cls, **kwargs):
