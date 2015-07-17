@@ -34,14 +34,14 @@ def more():
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
 
 
-@reports_bp.route('/<uuid:user_id>/<int:revision_id>/delete')
+@reports_bp.route('/<uuid:user_id>/<int:revision_id>/archive')
 @login_required
 @admin_view
-def delete(user_id, revision_id):
+def archive(user_id, revision_id):
     report = SpamReport.get(user_id=str(user_id), revision_id=revision_id)
     if not report:
         raise NotFound("Can't find the specified report.")
 
-    report.delete()
-    flash(gettext("Report has been deleted."), 'success')
-    return redirect(url_for('.browse'))
+    report.archive()
+    flash(gettext("Report has been archived."), 'success')
+    return redirect(url_for('.index'))

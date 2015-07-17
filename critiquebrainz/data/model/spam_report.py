@@ -35,6 +35,10 @@ class SpamReport(db.Model, DeleteMixin):
         db.session.commit()
         return report
 
+    def archive(self):
+        self.is_archive = True
+        db.session.commit()
+
     @classmethod
     def list(cls, **kwargs):
         """Get a list of reports.
