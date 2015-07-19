@@ -118,6 +118,14 @@ class Review(db.Model, DeleteMixin):
             self._rating = self.votes_positive_count - self.votes_negative_count
         return self._rating
 
+    def archive(self):
+        self.is_archive = True
+        db.session.commit()
+
+    def unarchive(self):
+        self.is_archive = False
+        db.session.commit()
+
     @classmethod
     def list(cls, **kwargs):
         """Get a list of reviews.

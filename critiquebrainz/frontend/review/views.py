@@ -6,6 +6,7 @@ from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm, ReviewReportForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
+from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.vote import Vote
@@ -292,3 +293,23 @@ def report(id):
         return redirect(url_for('.entity', id=id))
 
     return render_template('review/report.html', review=review, form=form)
+
+
+@review_bp.route('/<uuid:id>/archive', methods=['POST'])
+@login_required
+@admin_view
+def archive(id):
+    review = Review.query.get_or_404(str(id))
+    review.archive()
+    flash(gettext("Review has been archived."), 'success')
+    return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
+
+
+@review_bp.route('/<uuid:id>/unarchive', methods=['POST'])
+@login_required
+@admin_view
+def unarchive(id):
+    review = Review.query.get_or_404(str(id))
+    review.unarchive()
+    flash(gettext("Review has been unarchived."), 'success')
+    return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
