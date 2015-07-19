@@ -1,0 +1,5 @@
+BEGIN;
+
+ALTER TABLE review ADD COLUMN is_archive boolean NOT NULL DEFAULT FALSE;
+
+COMMIT;
