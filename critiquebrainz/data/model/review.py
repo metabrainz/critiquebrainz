@@ -155,6 +155,10 @@ class Review(db.Model, DeleteMixin):
         if not inc_drafts:
             query = query.filter(Review.is_draft == False)
 
+        inc_archived = kwargs.pop('inc_archived', None)
+        if not inc_archived:
+            query = query.filter(Review.is_archive == False)
+
         # FILTERING:
 
         release_group = kwargs.pop('release_group', None)
