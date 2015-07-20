@@ -133,3 +133,24 @@ def get_release_by_id(id):
                 raise InternalServerError(e.cause.msg)
         cache.set(key=key, val=release, time=DEFAULT_CACHE_EXPIRATION)
     return release
+
+
+def get_event_by_id(id):
+    """Get event with the MusicBrainz ID.
+
+    Returns:
+        Event object with the following includes: artist-rels, place-rels, series-rels, url-rels.
+    """
+    key = cache.gen_key(id)
+    event = cache.get(key)
+    if not event:
+        try:
+            event = musicbrainzngs.get_event_by_id(
+                id, ['artist-rels', 'place-rels', 'series-rels', 'url-rels']).get('event')
+        except ResponseError as e:
+            if e.cause.code == 404:
+                return None
+            else:
+                raise InternalServerError(e.cause.msg)
+        cache.set(key=key, val=event, time=DEFAULT_CACHE_EXPIRATION)
+    return event
