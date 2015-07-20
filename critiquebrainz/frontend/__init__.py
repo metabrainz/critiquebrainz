@@ -77,6 +77,7 @@ def create_app(debug=None):
     from critiquebrainz.frontend.search.views import search_bp
     from critiquebrainz.frontend.artist.views import artist_bp
     from critiquebrainz.frontend.release_group.views import release_group_bp
+    from critiquebrainz.frontend.event.views import event_bp
     from critiquebrainz.frontend.mapping.views import mapping_bp
     from critiquebrainz.frontend.user.views import user_bp
     from critiquebrainz.frontend.profile.views import profile_bp
@@ -91,6 +92,7 @@ def create_app(debug=None):
     app.register_blueprint(search_bp, url_prefix='/search')
     app.register_blueprint(artist_bp, url_prefix='/artist')
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
+    app.register_blueprint(event_bp, url_prefix='/event')
     app.register_blueprint(mapping_bp, url_prefix='/mapping')
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(profile_bp, url_prefix='/profile')
