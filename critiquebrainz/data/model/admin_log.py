@@ -9,7 +9,7 @@ from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.mixins import DeleteMixin
 from datetime import datetime
 
-ACTION_DELETE_REVIEW = 'delete_review'
+ACTION_ARCHIVE_REVIEW = 'archive_review'
 ACTION_BAN_USER = 'ban_user'
 
 
@@ -20,7 +20,7 @@ class AdminLog(db.Model, DeleteMixin):
     admin_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'))
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'))
     action = db.Column(db.Enum(
-        ACTION_DELETE_REVIEW,
+        ACTION_ARCHIVE_REVIEW,
         ACTION_BAN_USER,
         name='action_types'
     ))

@@ -1,7 +1,7 @@
 BEGIN;
 
 CREATE TYPE action_types AS ENUM (
-    'delete_review',
+    'archive_review',
     'ban_user'
 );
 

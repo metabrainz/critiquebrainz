@@ -13,7 +13,7 @@
     <ul class="log-entries">
       {% for log in logs %}
       <li>
-        {% if log.action == "delete_review" %}
+        {% if log.action == "archive_review" %}
           {{ log_entry(log.timestamp, log.admin, 'deleted a review written by', log.user) }}
          {% elif log.action == "ban_user" %}
           {{ log_entry(log.timestamp, log.admin, 'banned', log.user) }}
