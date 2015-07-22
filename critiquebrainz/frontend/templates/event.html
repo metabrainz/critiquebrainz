@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event.name }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<h2>
+  {{ event.name }}
+</h2>
+
+<div id="event-details" class="row">
+  <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+  {% if not reviews %}
+    <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+  {% else %}
+    <table class="table table-condensed table-hover">
+      <thead>
+        <tr>
+          <th></th>
+          <th>{{ _('Published on') }}</th>
+          <th>{{ _('Votes (+/-)') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in reviews %}
+          <tr data-review-id="{{ review.id }}">
+            <td>
+              <a href="{{ url_for('review.entity', id=review.id) }}">
+                {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+              </a>
+            </td>
+            <td>{{ review.created | date }}</td>
+            <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <ul class="pagination">
+      {% set pages = count//limit %}
+      {% if count%limit %}
+        {% set pages = pages+1 %}
+      {% endif %}
+      {% if pages>1 %}
+        {% for p in range(pages) %}
+          {% set p_offset = p*limit %}
+          <li {% if offset == p_offset %}class="active"{% endif %}>
+            <a href="{{ url_for('event.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  {% endif %}
+</div>
+{% endblock %}
