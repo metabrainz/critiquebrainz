@@ -94,6 +94,14 @@
   <div class="col-md-3">
     <h4>{{ _('Event information') }}</h4>
 
+    {% set series = event['series-relation-list'][0] %}
+
+    {% if 'series-relation-list' in event %}
+      {% if series['series']['type'] == 'Event' %}
+      <p>Part of: <a href="{{ url_for('event.entity', id=series['target']) }}">{{ series['series']['name'] }}</a></p>
+      {% endif %}
+    {% endif %}
+
     <div class="external-links">
       <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.ico') }}" /></div>
       <a href="//musicbrainz.org/release-group/{{ event.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
