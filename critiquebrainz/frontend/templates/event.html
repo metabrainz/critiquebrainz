@@ -21,6 +21,7 @@
   {% endif %}
 </div>
 
+{% set place = event['place-relation-list'][0]['place']['name'] %}
 {% set lat = event['place-relation-list'][0]['place']['coordinates']['latitude'] | float %}
 {% set long = event['place-relation-list'][0]['place']['coordinates']['longitude'] | float %}
 
@@ -35,6 +36,14 @@
         {
           attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         }).addTo(map);
+
+      var popup = L.popup()
+        .setContent("<b>Held At</b><br> " + {{ place | tojson }})
+
+      var marker = L.marker([{{ lat }}, {{ long }}])
+        .addTo(map)
+        .bindPopup(popup)
+        .openPopup();
     </script>
   </div>
 
