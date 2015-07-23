@@ -21,9 +21,21 @@
   {% endif %}
 </div>
 
+{% set lat = event['place-relation-list'][0]['place']['coordinates']['latitude'] | float %}
+{% set long = event['place-relation-list'][0]['place']['coordinates']['longitude'] | float %}
+
 <div id="event-details" class="row">
   <div class="col-md-4">
-    {# TODO (duffer): Leaflet.js map - from "held at" lat/longs #}
+    <div id="map"></div>
+    <script>
+      L.Icon.Default.imagePath = '/static/img/';
+      var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
+
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+          attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        }).addTo(map);
+    </script>
   </div>
 
   <div class="col-md-5">
