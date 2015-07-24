@@ -19,6 +19,7 @@ class AdminLog(db.Model, DeleteMixin):
     id = db.Column(db.Integer, primary_key=True)
     admin_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'))
+    review_id = db.Column(UUID, db.ForeignKey('review.id', ondelete='CASCADE'))
     action = db.Column(db.Enum(
         ACTION_ARCHIVE_REVIEW,
         ACTION_BAN_USER,
@@ -39,8 +40,11 @@ class AdminLog(db.Model, DeleteMixin):
         return cls.query.filter_by(**kwargs).first()
 
     @classmethod
-    def create(cls, admin_id, user_id, action):
-        log = cls(admin_id=str(admin_id), user_id=str(user_id), action=action)
+    def create(cls, admin_id, action, reason, user_id=None, review_id=None):
+        if user_id:
+            log = cls(admin_id=str(admin_id), action=action, user_id=str(user_id))
+        elif review_id:
+            log = cls(admin_id=str(admin_id), action=action, review_id=str(review_id))
         db.session.add(log)
         db.session.commit()
         return log
