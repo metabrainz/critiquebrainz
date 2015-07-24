@@ -2,6 +2,11 @@
 
 {% block title %}{{ event.name }} - CritiqueBrainz{% endblock %}
 
+{% block scripts_top %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/leaflet.min.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">
