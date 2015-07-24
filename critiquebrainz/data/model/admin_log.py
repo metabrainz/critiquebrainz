@@ -17,13 +17,13 @@ class AdminLog(db.Model, DeleteMixin):
     __tablename__ = 'admin_log'
 
     id = db.Column(db.Integer, primary_key=True)
-    admin_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'))
+    admin_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'))
     action = db.Column(db.Enum(
         ACTION_ARCHIVE_REVIEW,
         ACTION_BAN_USER,
         name='action_types'
-    ))
+    ), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     @property
