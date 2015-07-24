@@ -26,6 +26,7 @@ class AdminLog(db.Model, DeleteMixin):
         name='action_types'
     ), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    reason = db.Column(db.Unicode, nullable=False)
 
     @property
     def user(self):
@@ -42,9 +43,9 @@ class AdminLog(db.Model, DeleteMixin):
     @classmethod
     def create(cls, admin_id, action, reason, user_id=None, review_id=None):
         if user_id:
-            log = cls(admin_id=str(admin_id), action=action, user_id=str(user_id))
+            log = cls(admin_id=str(admin_id), action=action, reason=reason, user_id=str(user_id))
         elif review_id:
-            log = cls(admin_id=str(admin_id), action=action, review_id=str(review_id))
+            log = cls(admin_id=str(admin_id), action=action, reason=reason, review_id=str(review_id))
         db.session.add(log)
         db.session.commit()
         return log
