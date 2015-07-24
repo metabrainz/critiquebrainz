@@ -146,7 +146,7 @@ def get_event_by_id(id):
     if not event:
         try:
             event = musicbrainzngs.get_event_by_id(
-                id, ['artist-rels', 'place-rels', 'series-rels', 'url-rels']).get('event')
+                id, ['artist-rels', 'place-rels', 'series-rels', 'release-group-rels', 'url-rels']).get('event')
         except ResponseError as e:
             if e.cause.code == 404:
                 return None

@@ -101,9 +101,23 @@
         {% endif %}
       {% endfor %}
     {% endif %}
+
+    {% if 'artist-relation-list' in event %}
+      <hr>
+      {% for artist in event['artist-relation-list'] %}
+          <p>{{ artist['type'] | title }} : <a href="{{ url_for('artist.entity', id=artist['target']) }}">{{ artist['artist']['name'] }}</a></p>
+      {% endfor %}
+    {% endif %}
+
+    {% if 'release_group-relation-list' in event %}
+      <hr>
+      {% for rg in event['release_group-relation-list'] %}
+          <p>{{ rg['type'] | title }} : <a href="{{ url_for('release_group.entity', id=rg['target']) }}">{{ rg['release-group']['title'] }}</a></p>
+      {% endfor %}
     {% endif %}
 
     <div class="external-links">
+      <hr>
       <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.ico') }}" /></div>
       <a href="//musicbrainz.org/release-group/{{ event.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
