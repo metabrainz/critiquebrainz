@@ -5,6 +5,8 @@ from flask_babel import gettext
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.frontend.login import admin_view
+from critiquebrainz.frontend.log.forms import AdminActionForm
+from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_BLOCK_USER
 
 user_bp = Blueprint('user', __name__)
 
@@ -32,14 +34,25 @@ def info(user_id):
     return render_template('user/info.html', section='info', user=User.query.get_or_404(str(user_id)))
 
 
-@user_bp.route('/<uuid:user_id>/block')
+@user_bp.route('/<uuid:user_id>/block', methods=['GET', 'POST'])
 @login_required
 @admin_view
 def block(user_id):
     user = User.query.get_or_404(str(user_id))
-    user.block()
-    flash(gettext("User has been blocked."), 'success')
-    return redirect(request.referrer or url_for('frontend.index'))
+
+    if user.is_blocked:
+        flash(gettext("User acount is already blocked."), 'info')
+        return redirect(request.referrer or url_for('user.reviews', user_id=user.id))
+
+    form = AdminActionForm()
+    if form.validate_on_submit():
+        user.block()
+        ModerationLog.create(admin_id=current_user.id, action=ACTION_BLOCK_USER,
+                             reason=form.reason.data, user_id=user.id)
+        flash(gettext("User has been blocked."), 'success')
+        return redirect(request.referrer or url_for('user.reviews', user_id=user.id))
+
+    return render_template('log/action.html', user=user, form=form, action=ACTION_BLOCK_USER)
 
 
 @user_bp.route('/<uuid:user_id>/unblock')
