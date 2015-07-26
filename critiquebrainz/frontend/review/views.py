@@ -5,10 +5,12 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
 from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm, ReviewReportForm
+from critiquebrainz.frontend.log.forms import AdminActionForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.revision import Revision
+from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_ARCHIVE_REVIEW
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.utils import side_by_side_diff
@@ -295,14 +297,21 @@ def report(id):
     return render_template('review/report.html', review=review, form=form)
 
 
-@review_bp.route('/<uuid:id>/archive', methods=['POST'])
+@review_bp.route('/<uuid:id>/archive', methods=['GET', 'POST'])
 @login_required
 @admin_view
 def archive(id):
     review = Review.query.get_or_404(str(id))
-    review.archive()
-    flash(gettext("Review has been archived."), 'success')
-    return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
+
+    form = AdminActionForm()
+    if form.validate_on_submit():
+        review.archive()
+        ModerationLog.create(admin_id=current_user.id, action=ACTION_ARCHIVE_REVIEW,
+                             reason=form.reason.data, review_id=review.id)
+        flash(gettext("Review has been archived."), 'success')
+        return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
+
+    return render_template('log/action.html', review=review, form=form, action=ACTION_ARCHIVE_REVIEW)
 
 
 @review_bp.route('/<uuid:id>/unarchive', methods=['POST'])
