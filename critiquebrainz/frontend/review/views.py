@@ -303,13 +303,17 @@ def report(id):
 def archive(id):
     review = Review.query.get_or_404(str(id))
 
+    if review.is_archive:
+        flash(gettext("Review is already archived."), 'info')
+        return redirect(request.referrer or url_for('.entity', id=review.id))
+
     form = AdminActionForm()
     if form.validate_on_submit():
         review.archive()
         ModerationLog.create(admin_id=current_user.id, action=ACTION_ARCHIVE_REVIEW,
                              reason=form.reason.data, review_id=review.id)
         flash(gettext("Review has been archived."), 'success')
-        return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
+        return redirect(request.referrer or url_for('.entity', id=review.id))
 
     return render_template('log/action.html', review=review, form=form, action=ACTION_ARCHIVE_REVIEW)
 
