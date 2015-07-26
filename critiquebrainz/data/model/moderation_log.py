@@ -10,7 +10,7 @@ from critiquebrainz.data.model.mixins import DeleteMixin
 from datetime import datetime
 
 ACTION_ARCHIVE_REVIEW = 'archive_review'
-ACTION_BAN_USER = 'ban_user'
+ACTION_BLOCK_USER = 'block_user'
 
 
 class ModerationLog(db.Model, DeleteMixin):
@@ -22,7 +22,7 @@ class ModerationLog(db.Model, DeleteMixin):
     review_id = db.Column(UUID, db.ForeignKey('review.id', ondelete='CASCADE'))
     action = db.Column(db.Enum(
         ACTION_ARCHIVE_REVIEW,
-        ACTION_BAN_USER,
+        ACTION_BLOCK_USER,
         name='action_types'
     ), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

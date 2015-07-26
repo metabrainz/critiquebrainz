@@ -9,7 +9,7 @@ ALTER TABLE "user" ADD "status" user_status_types NOT NULL DEFAULT 'active';
 
 CREATE TYPE action_types AS ENUM (
     'archive_review',
-    'ban_user'
+    'block_user'
 );
 
 CREATE TABLE moderation_log (

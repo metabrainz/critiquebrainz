@@ -15,7 +15,7 @@
       <li>
         {% if log.action == "archive_review" %}
           {{ log_entry(log.timestamp, log.admin, 'deleted a review written by', log.user) }}
-         {% elif log.action == "ban_user" %}
+         {% elif log.action == "block_user" %}
           {{ log_entry(log.timestamp, log.admin, 'banned', log.user) }}
         {% endif %}
       </li>
