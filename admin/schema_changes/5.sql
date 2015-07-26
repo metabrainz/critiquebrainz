@@ -1,11 +1,11 @@
 BEGIN;
 
-CREATE TYPE status_types AS ENUM (
+CREATE TYPE user_status_types AS ENUM (
     'active',
     'blocked'
 );
 
-ALTER TABLE "user" ADD "status" status_types NOT NULL DEFAULT 'active';
+ALTER TABLE "user" ADD "status" user_status_types NOT NULL DEFAULT 'active';
 
 CREATE TYPE action_types AS ENUM (
     'archive_review',
