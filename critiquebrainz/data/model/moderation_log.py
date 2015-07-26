@@ -1,5 +1,5 @@
 """
-AdminLog model defines logs for various activities that the moderators can take
+ModerationLog model defines logs for various activities that the moderators can take
 via the moderator interface. A new log entry is created for every action.
 """
 from critiquebrainz.data import db
@@ -13,8 +13,8 @@ ACTION_ARCHIVE_REVIEW = 'archive_review'
 ACTION_BAN_USER = 'ban_user'
 
 
-class AdminLog(db.Model, DeleteMixin):
-    __tablename__ = 'admin_log'
+class ModerationLog(db.Model, DeleteMixin):
+    __tablename__ = 'moderation_log'
 
     id = db.Column(db.Integer, primary_key=True)
     admin_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
@@ -64,15 +64,15 @@ class AdminLog(db.Model, DeleteMixin):
             total number of log entries.
         """
 
-        query = AdminLog.query
+        query = ModerationLog.query
 
         admin_id = kwargs.pop('admin_id', None)
         if admin_id is not None:
-            query = query.filter(AdminLog.admin_id == admin_id)
+            query = query.filter(ModerationLog.admin_id == admin_id)
 
         count = query.count()
 
-        query = query.order_by(desc(AdminLog.timestamp))
+        query = query.order_by(desc(ModerationLog.timestamp))
 
         limit = kwargs.pop('limit', None)
         if limit is not None:

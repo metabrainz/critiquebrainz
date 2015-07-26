@@ -12,7 +12,7 @@ CREATE TYPE action_types AS ENUM (
     'ban_user'
 );
 
-CREATE TABLE admin_log (
+CREATE TABLE moderation_log (
     id SERIAL NOT NULL,
     admin_id UUID NOT NULL,
     user_id UUID,
