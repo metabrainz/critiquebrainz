@@ -6,6 +6,7 @@ from critiquebrainz.data import db
 from sqlalchemy import desc
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.user import User
+from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.mixins import DeleteMixin
 from datetime import datetime
 
@@ -35,6 +36,10 @@ class ModerationLog(db.Model, DeleteMixin):
     @property
     def admin(self):
         return User.get(id=self.admin_id)
+
+    @property
+    def review(self):
+        return Review.get(id=self.review_id)
 
     @classmethod
     def get(cls, **kwargs):
