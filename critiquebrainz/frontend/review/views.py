@@ -303,7 +303,7 @@ def report(id):
 def archive(id):
     review = Review.query.get_or_404(str(id))
 
-    if review.is_archived:
+    if review.is_hidden:
         flash(gettext("Review is already archived."), 'info')
         return redirect(request.referrer or url_for('.entity', id=review.id))
 
