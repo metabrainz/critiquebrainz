@@ -10,7 +10,7 @@ from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.revision import Revision
-from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_ARCHIVE_REVIEW
+from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.utils import side_by_side_diff
@@ -310,12 +310,12 @@ def archive(id):
     form = AdminActionForm()
     if form.validate_on_submit():
         review.archive()
-        ModerationLog.create(admin_id=current_user.id, action=ACTION_ARCHIVE_REVIEW,
+        ModerationLog.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
                              reason=form.reason.data, review_id=review.id)
         flash(gettext("Review has been archived."), 'success')
         return redirect(request.referrer or url_for('.entity', id=review.id))
 
-    return render_template('log/action.html', review=review, form=form, action=ACTION_ARCHIVE_REVIEW)
+    return render_template('log/action.html', review=review, form=form, action=ACTION_HIDE_REVIEW)
 
 
 @review_bp.route('/<uuid:id>/unarchive', methods=['POST'])
