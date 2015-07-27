@@ -14,8 +14,7 @@ RESULTS_LIMIT = 20
 @login_required
 @admin_view
 def index():
-    count = SpamReport.query.count()
-    results, _ = SpamReport.list(limit=RESULTS_LIMIT)
+    results, count = SpamReport.list(limit=RESULTS_LIMIT)
     return render_template('reports/reports.html', count=count, results=results, limit=RESULTS_LIMIT)
 
 
@@ -26,8 +25,7 @@ def more():
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
 
-    count = SpamReport.query.count()
-    results, _ = SpamReport.list(offset=offset, limit=RESULTS_LIMIT)
+    results, count = SpamReport.list(offset=offset, limit=RESULTS_LIMIT)
 
     template = render_template('reports/reports_results.html', results=results)
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)

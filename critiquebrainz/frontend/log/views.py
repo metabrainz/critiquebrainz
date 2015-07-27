@@ -25,8 +25,7 @@ def more():
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
 
-    count = ModerationLog.query.count()
-    results = ModerationLog.list(offset=offset, limit=RESULTS_LIMIT)
+    results, count = ModerationLog.list(offset=offset, limit=RESULTS_LIMIT)
     results = groupby(results, lambda log: log.timestamp.strftime('%d %b, %G'))
 
     template = render_template('log/log_results.html', results=results)
