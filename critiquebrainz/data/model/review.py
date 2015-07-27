@@ -35,7 +35,7 @@ class Review(db.Model, DeleteMixin):
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     edits = db.Column(db.Integer, nullable=False, default=0)
     is_draft = db.Column(db.Boolean, nullable=False, default=False)
-    is_archive = db.Column(db.Boolean, nullable=False, default=False)
+    is_archived = db.Column(db.Boolean, nullable=False, default=False)
     license_id = db.Column(db.Unicode, db.ForeignKey('license.id', ondelete='CASCADE'), nullable=False)
     language = db.Column(db.String(3), default='en', nullable=False)
     source = db.Column(db.Unicode)
@@ -119,11 +119,11 @@ class Review(db.Model, DeleteMixin):
         return self._rating
 
     def archive(self):
-        self.is_archive = True
+        self.is_archived = True
         db.session.commit()
 
     def unarchive(self):
-        self.is_archive = False
+        self.is_archived = False
         db.session.commit()
 
     @classmethod
@@ -157,7 +157,7 @@ class Review(db.Model, DeleteMixin):
 
         inc_archived = kwargs.pop('inc_archived', None)
         if not inc_archived:
-            query = query.filter(Review.is_archive == False)
+            query = query.filter(Review.is_archived == False)
 
         # FILTERING:
 
