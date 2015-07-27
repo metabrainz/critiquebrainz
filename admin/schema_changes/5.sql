@@ -1,11 +1,6 @@
 BEGIN;
 
-CREATE TYPE user_status_types AS ENUM (
-    'active',
-    'blocked'
-);
-
-ALTER TABLE "user" ADD "status" user_status_types NOT NULL DEFAULT 'active';
+ALTER TABLE user ADD COLUMN is_blocked boolean NOT NULL DEFAULT FALSE;
 
 CREATE TYPE action_types AS ENUM (
     'archive_review',

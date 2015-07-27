@@ -9,9 +9,6 @@ from critiquebrainz.data.constants import user_types
 from datetime import datetime, date, timedelta
 import hashlib
 
-STATUS_ACTIVE = 'active'
-STATUS_BLOCKED = 'blocked'
-
 
 class User(db.Model, AdminMixin, DeleteMixin):
     __tablename__ = 'user'
@@ -22,11 +19,7 @@ class User(db.Model, AdminMixin, DeleteMixin):
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
     show_gravatar = db.Column(db.Boolean, nullable=False, server_default="False")
-    status = db.Column(db.Enum(
-        STATUS_ACTIVE,
-        STATUS_BLOCKED,
-        name='user_status_types'
-    ), nullable=False, default=STATUS_ACTIVE)
+    is_blocked = db.Column(db.Boolean, nullable=False, default=False)
 
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
     clients = db.relationship('OAuthClient', cascade='delete', backref='user')
@@ -204,14 +197,10 @@ class User(db.Model, AdminMixin, DeleteMixin):
         self.email = email
         db.session.commit()
 
-    @property
-    def is_blocked(self):
-        return self.status == STATUS_BLOCKED
-
     def block(self):
-        self.status = STATUS_BLOCKED
+        self.blocked = True
         db.session.commit()
 
     def unblock(self):
-        self.status = STATUS_ACTIVE
+        self.blocked = False
         db.session.commit()
