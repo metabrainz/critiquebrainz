@@ -26,7 +26,7 @@ CREATE TABLE moderation_log (
     FOREIGN KEY(review_id) REFERENCES review (id) ON DELETE CASCADE
 );
 
-ALTER TABLE spam_report ADD COLUMN is_archive boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE spam_report ADD COLUMN is_archived boolean NOT NULL DEFAULT FALSE;
 ALTER TABLE review ADD COLUMN is_archived boolean NOT NULL DEFAULT FALSE;
 
 COMMIT;

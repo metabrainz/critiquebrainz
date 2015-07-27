@@ -18,7 +18,7 @@ class SpamReport(db.Model, DeleteMixin):
     reason = db.Column(db.Unicode)
     revision_id = db.Column(db.Integer, db.ForeignKey('revision.id', ondelete='CASCADE'), primary_key=True)
     reported_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    is_archive = db.Column(db.Boolean, nullable=False, default=False)
+    is_archived = db.Column(db.Boolean, nullable=False, default=False)
 
     @classmethod
     def get(cls, **kwargs):
@@ -36,7 +36,7 @@ class SpamReport(db.Model, DeleteMixin):
         return report
 
     def archive(self):
-        self.is_archive = True
+        self.is_archived = True
         db.session.commit()
 
     @classmethod
@@ -57,7 +57,7 @@ class SpamReport(db.Model, DeleteMixin):
         query = SpamReport.query
         inc_archived = kwargs.pop('inc_archived', None)
         if not inc_archived:
-            query = query.filter(SpamReport.is_archive == False)
+            query = query.filter(SpamReport.is_archived == False)
 
         review_id = kwargs.pop('review_id', None)
         if review_id is not None:
