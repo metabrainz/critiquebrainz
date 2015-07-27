@@ -118,11 +118,11 @@ class Review(db.Model, DeleteMixin):
             self._rating = self.votes_positive_count - self.votes_negative_count
         return self._rating
 
-    def archive(self):
+    def hide(self):
         self.is_hidden = True
         db.session.commit()
 
-    def unarchive(self):
+    def unhide(self):
         self.is_hidden = False
         db.session.commit()
 

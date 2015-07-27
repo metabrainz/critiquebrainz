@@ -297,32 +297,32 @@ def report(id):
     return render_template('review/report.html', review=review, form=form)
 
 
-@review_bp.route('/<uuid:id>/archive', methods=['GET', 'POST'])
+@review_bp.route('/<uuid:id>/hide', methods=['GET', 'POST'])
 @login_required
 @admin_view
-def archive(id):
+def hide(id):
     review = Review.query.get_or_404(str(id))
 
     if review.is_hidden:
-        flash(gettext("Review is already archived."), 'info')
+        flash(gettext("Review is already hidden."), 'info')
         return redirect(request.referrer or url_for('.entity', id=review.id))
 
     form = AdminActionForm()
     if form.validate_on_submit():
-        review.archive()
+        review.hide()
         ModerationLog.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
                              reason=form.reason.data, review_id=review.id)
-        flash(gettext("Review has been archived."), 'success')
+        flash(gettext("Review has been hidden."), 'success')
         return redirect(request.referrer or url_for('.entity', id=review.id))
 
     return render_template('log/action.html', review=review, form=form, action=ACTION_HIDE_REVIEW)
 
 
-@review_bp.route('/<uuid:id>/unarchive', methods=['POST'])
+@review_bp.route('/<uuid:id>/unhide', methods=['POST'])
 @login_required
 @admin_view
-def unarchive(id):
+def unhide(id):
     review = Review.query.get_or_404(str(id))
-    review.unarchive()
-    flash(gettext("Review has been unarchived."), 'success')
+    review.unhide()
+    flash(gettext("Review has been unhidden."), 'success')
     return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
