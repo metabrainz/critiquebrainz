@@ -1,9 +1,9 @@
 BEGIN;
 
-ALTER TABLE user ADD COLUMN is_blocked boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE "user" ADD COLUMN is_blocked boolean NOT NULL DEFAULT FALSE;
 
 CREATE TYPE action_types AS ENUM (
-    'archive_review',
+    'hide_review',
     'block_user'
 );
 
