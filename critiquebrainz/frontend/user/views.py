@@ -42,7 +42,7 @@ def block(user_id):
 
     if user.is_blocked:
         flash(gettext("User acount is already blocked."), 'info')
-        return redirect(request.referrer or url_for('user.reviews', user_id=user.id))
+        return redirect(url_for('user.reviews', user_id=user.id))
 
     form = AdminActionForm()
     if form.validate_on_submit():
@@ -50,7 +50,7 @@ def block(user_id):
         ModerationLog.create(admin_id=current_user.id, action=ACTION_BLOCK_USER,
                              reason=form.reason.data, user_id=user.id)
         flash(gettext("User has been blocked."), 'success')
-        return redirect(request.referrer or url_for('user.reviews', user_id=user.id))
+        return redirect(url_for('user.reviews', user_id=user.id))
 
     return render_template('log/action.html', user=user, form=form, action=ACTION_BLOCK_USER)
 

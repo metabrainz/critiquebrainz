@@ -305,7 +305,7 @@ def hide(id):
 
     if review.is_hidden:
         flash(gettext("Review is already hidden."), 'info')
-        return redirect(request.referrer or url_for('.entity', id=review.id))
+        return redirect(url_for('.entity', id=review.id))
 
     form = AdminActionForm()
     if form.validate_on_submit():
@@ -313,7 +313,7 @@ def hide(id):
         ModerationLog.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
                              reason=form.reason.data, review_id=review.id)
         flash(gettext("Review has been hidden."), 'success')
-        return redirect(request.referrer or url_for('.entity', id=review.id))
+        return redirect(url_for('.entity', id=review.id))
 
     return render_template('log/action.html', review=review, form=form, action=ACTION_HIDE_REVIEW)
 
