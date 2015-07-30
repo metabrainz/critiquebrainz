@@ -312,6 +312,8 @@ def hide(id):
         review.hide()
         ModerationLog.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
                              reason=form.reason.data, review_id=review.id)
+        for report in SpamReport.list(review_id=review.id)[0]:
+            report.archive()
         flash(gettext("Review has been hidden."), 'success')
         return redirect(url_for('.entity', id=review.id))
 
