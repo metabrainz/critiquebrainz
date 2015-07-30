@@ -1,12 +1,10 @@
-{% macro log_entry(timestamp, admin, action, user='', reason) %}
-  {{ timestamp.strftime('%I:%M %p') }} -
-  <a href="{{ url_for('user.info', user_id=admin.id) }}">{{ admin.display_name }}</a>
-  {{ action }}
-  {% if user %}
-    <a href="{{ url_for('user.info', user_id=user.id) }}">{{ user.display_name }}</a>.
-  {% endif %}
-  <p class="small">Reason: {{ reason }}</p>
-{%- endmacro %}
+{% macro link_user(user) %}
+  <a href="{{ url_for('user.info', user_id=user.id) }}">{{ user.display_name }}</a>
+{% endmacro %}
+
+{% macro link_review(review) %}
+  <a href="{{ url_for('review.entity', id=review.id) }}">review</a>
+{% endmacro %}
 
 {% for date, logs in results %}
   <div class="log-day">
@@ -14,11 +12,19 @@
     <ul class="log-entries">
       {% for log in logs %}
       <li>
-        {% if log.action == "archive_review" %}
-          {{ log_entry(log.timestamp, log.admin, 'archived a review written by', log.review.user, log.reason) }}
+        {{ log.timestamp.strftime('%I:%M %p') }} -
+        {% if log.action == "hide_review" %}
+          {{
+            _('%(admin)s archived a %(review)s written by %(user)s',
+            admin=link_user(log.admin), review=link_review(log.review), user=link_user(log.review.user))
+          }}
          {% elif log.action == "block_user" %}
-          {{ log_entry(log.timestamp, log.admin, 'blocked', log.user, log.reason) }}
+          {{
+            _('%(admin)s blocked %(user)s',
+            admin=link_user(log.admin), user=link_user(log.user))
+          }}
         {% endif %}
+        <p class="small">Reason: {{ log.reason }}</p>
       </li>
       {% endfor %}
     </ul>
