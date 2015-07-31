@@ -8,8 +8,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :shell, path: "scripts/bootstrap.sh"
 
-  config.vm.network "forwarded_port", guest: 5000, host: 5000
-  
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+
   # PostgreSQL
   config.vm.network "forwarded_port", guest: 5432, host: 15432
 end

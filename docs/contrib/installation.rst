@@ -99,7 +99,7 @@ you need to set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET`` in
 instance of CrituqeBrainz on MusicBrainz.
 
 **Note** ``<your domain>`` field in the urls listed below should probably be set
-to ``127.0.0.1:5000``, if you plan to run your CritiqueBrainz instance locally
+to ``127.0.0.1:8080``, if you plan to run your CritiqueBrainz instance locally
 in development mode.
 
 MusicBrainz
