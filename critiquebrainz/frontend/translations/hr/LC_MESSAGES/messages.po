@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PROJECT project.
 # 
 # Translators:
-# Chris_Kay_083, 2014
+# Chris_Kay_083, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-03-30 00:20+0000\n"
-"PO-Revision-Date: 2015-03-30 10:06+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
-"Language-Team: Croatian (http://www.transifex.com/p/critiquebrainz/language/hr/)\n"
+"PO-Revision-Date: 2015-07-17 19:33+0000\n"
+"Last-Translator: Chris_Kay_083\n"
+"Language-Team: Croatian (http://www.transifex.com/projects/p/critiquebrainz/language/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -89,7 +89,7 @@ msgstr "Prijava nije uspjela "
 #: critiquebrainz/frontend/mapping/views.py:43
 #: critiquebrainz/frontend/mapping/views.py:68
 msgid "Only existing release groups can be mapped to Spotify!"
-msgstr ""
+msgstr "Samo postojeće izdavačke grupe se mogu se mapirati na Spotify!"
 
 #: critiquebrainz/frontend/mapping/views.py:73
 msgid "You need to select an album from Spotify!"
@@ -114,7 +114,7 @@ msgstr " Ne mogu  pronaći izdavačku grupu s tim ID-ijem!"
 
 #: critiquebrainz/frontend/mapping/views.py:115
 msgid "This album is not mapped to Spotify yet!"
-msgstr ""
+msgstr "Ovaj album nije još mapiran na Spotifyu!"
 
 #: critiquebrainz/frontend/mapping/views.py:120
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
@@ -289,11 +289,11 @@ msgstr "Možeš jedino pisati kritički osvrt za izdavačku grupu  koja postoji 
 
 #: critiquebrainz/frontend/review/views.py:100
 msgid "Can't find a review with the specified ID."
-msgstr ""
+msgstr "Nismo mogli pronaći kritički osvrt s tom ID oznakom"
 
 #: critiquebrainz/frontend/review/views.py:102
 msgid "Only author can edit this review."
-msgstr ""
+msgstr "Samo autor moze urediti ovaj kritički osvrt."
 
 #: critiquebrainz/frontend/review/views.py:116
 msgid "Review has been updated."
@@ -301,7 +301,7 @@ msgstr "Kritički osvrt je ažuriran."
 
 #: critiquebrainz/frontend/review/views.py:128
 msgid "Only the author can delete this review."
-msgstr ""
+msgstr "Samo autor moze izbrisati ovaj kritički osvrt."
 
 #: critiquebrainz/frontend/review/views.py:131
 msgid "Review has been deleted."
@@ -446,7 +446,7 @@ msgstr "Član od %(date)s"
 #: critiquebrainz/frontend/templates/artist.html:114
 #: critiquebrainz/frontend/templates/artist.html:133
 msgid "View all..."
-msgstr ""
+msgstr "Vidi sve..."
 
 #: critiquebrainz/frontend/templates/artist.html:122
 msgid "Former member of"
@@ -553,7 +553,7 @@ msgstr "Nedavni kritički osvrti"
 
 #: critiquebrainz/frontend/templates/index.html:93
 msgid "View all reviews..."
-msgstr ""
+msgstr "Vidi sve kritičke osvrte..."
 
 #: critiquebrainz/frontend/templates/macros.html:3
 msgid "Error!"
@@ -641,7 +641,7 @@ msgstr "Odjavi se"
 
 #: critiquebrainz/frontend/templates/navbar.html:33
 msgid "Browse reviews"
-msgstr ""
+msgstr "Pregledaj kritičke osvrte"
 
 #: critiquebrainz/frontend/templates/navbar.html:34
 msgid "Write a review"
@@ -679,11 +679,11 @@ msgstr "Distribucijska grupa"
 
 #: critiquebrainz/frontend/templates/errors/400.html:2
 msgid "Invalid request"
-msgstr ""
+msgstr "Neispravan zahtjev"
 
 #: critiquebrainz/frontend/templates/errors/403.html:2
 msgid "Access denied"
-msgstr ""
+msgstr "Pristup zabranjen"
 
 #: critiquebrainz/frontend/templates/errors/404.html:2
 msgid "Page not found"
@@ -691,7 +691,7 @@ msgstr "Stranica nije nađena"
 
 #: critiquebrainz/frontend/templates/errors/500.html:2
 msgid "Internal server error"
-msgstr ""
+msgstr "Unutarnja greška poslužitelja"
 
 #: critiquebrainz/frontend/templates/errors/503.html:2
 msgid "Service unavailable"
@@ -713,11 +713,11 @@ msgstr "Prijavi se pomoću MusicBrainza"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:3
 msgid "New Spotify mapping confirmation"
-msgstr ""
+msgstr "Nova Spotify potvrda mapiranja"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:6
 msgid "Spotify album mapping confirmation"
-msgstr ""
+msgstr "Potvrda mapiranja albuma na Spotifyu"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:8
 msgid "Are you sure you want to create a connection?"
@@ -759,7 +759,7 @@ msgstr "Prijavni nepravilno mapiranje"
 #: critiquebrainz/frontend/templates/mapping/spotify.html:3
 #: critiquebrainz/frontend/templates/mapping/spotify.html:6
 msgid "Spotify album mapping"
-msgstr ""
+msgstr "Mapiranje albuma na Spotifyu"
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:14
 #, python-format
@@ -893,7 +893,7 @@ msgstr "Pohrani"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:41
 msgid "Delete my account"
-msgstr ""
+msgstr "Izbriši moj račun"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:3
 #: critiquebrainz/frontend/templates/profile/applications/create.html:6
@@ -967,7 +967,7 @@ msgstr "Ukini pristup"
 
 #: critiquebrainz/frontend/templates/review/browse.html:7
 msgid "Ordered by creation date"
-msgstr ""
+msgstr "Slozeno po datumu nastanka"
 
 #: critiquebrainz/frontend/templates/review/delete.html:6
 #, python-format
@@ -1105,7 +1105,7 @@ msgid ""
 "            infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
 "            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
 "            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
-msgstr ""
+msgstr "Potvrđujete i slažete se kako su svi vaši kritički osvrti dani  na CritiqueBrainz licencirani pod \nCreative Commons Attribution-ShareAlike 3.0 Unported ili Creative Commons Attribution-ShareAlike-NonCommercial\nlicencom ovisno o vašem izboru ponuđenog. Slažete se da ćete licencirati vaš rad pod ovom licencom.\nVi tvrdite i garantirate da posjedujete ili kontrolirate sva prava vezana uz vaš rad, da ništa u radu\nne krši prava bilo koje treće stranke i da imate dopuštenje za korištenje i licenciranje rada\npod odabranom Creative Commons licencom. Konačno, dajete Zakladi MetaBrainz dopuštenje da licencira\novaj sadržaj za komercijalnu upotrebu izvan Creative Commons licenci u svrhu podrške djelovanja organizacije."
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"

@@ -4,9 +4,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 
 
 class DeleteMixin(object):
-
     """Provides a 'delete' method deleting an object from the DB."""
-
     def delete(self):
         """Delete this object from the DB."""
         db.session.delete(self)
@@ -15,9 +13,7 @@ class DeleteMixin(object):
 
 
 class AdminMixin(UserMixin):
-
     """Allows a method to check if the current user is admin."""
-
     def is_admin(self):
         return self.musicbrainz_id in current_app.config['ADMINS']
 

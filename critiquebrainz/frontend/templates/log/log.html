@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %} {{ _('Moderation Log') }} - CritiqueBrainz {% endblock %}
+{% block title %} {{ _('Moderation log') }} - CritiqueBrainz {% endblock %}
 
 {% block content %}
-  <h2>{{ _('Moderation Log') }}</h2>
+  <h2>{{ _('Moderation log') }}</h2>
   <div id="results">{% include 'log/log_results.html' %}</div>
   {% if count > limit %}
     <div>

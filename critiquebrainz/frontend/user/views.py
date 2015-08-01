@@ -41,7 +41,7 @@ def block(user_id):
     user = User.query.get_or_404(str(user_id))
 
     if user.is_blocked:
-        flash(gettext("User acount is already blocked."), 'info')
+        flash(gettext("This account is already blocked."), 'info')
         return redirect(url_for('user.reviews', user_id=user.id))
 
     form = AdminActionForm()
@@ -49,7 +49,7 @@ def block(user_id):
         user.block()
         ModerationLog.create(admin_id=current_user.id, action=ACTION_BLOCK_USER,
                              reason=form.reason.data, user_id=user.id)
-        flash(gettext("User has been blocked."), 'success')
+        flash(gettext("This user account has been blocked."), 'success')
         return redirect(url_for('user.reviews', user_id=user.id))
 
     return render_template('log/action.html', user=user, form=form, action=ACTION_BLOCK_USER)
@@ -61,5 +61,5 @@ def block(user_id):
 def unblock(user_id):
     user = User.query.get_or_404(str(user_id))
     user.unblock()
-    flash(gettext("User has been unblocked."), 'success')
-    return redirect(request.referrer or url_for('frontend.index'))
+    flash(gettext("This user account has been unblocked."), 'success')
+    return redirect(url_for('user.reviews', user_id=user.id))

@@ -153,7 +153,8 @@ def create():
         return redirect(url_for('search.selector', next=url_for('.create')))
 
     if current_user.is_blocked:
-        flash(gettext("You are not allowed to write a new review as your account has been blocked by an admin."), 'error')
+        flash(gettext("You are not allowed to write new reviews because your "
+                      "account has been blocked by a moderator."), 'error')
         return redirect(url_for('log.browse'))
 
     # Checking if the user already wrote a review for this release group
@@ -255,7 +256,8 @@ def vote_submit(review_id):
         flash(gettext("You have exceeded your limit of votes per day."), 'error')
         return redirect(url_for('.entity', id=review_id))
     if current_user.is_blocked:
-        flash(gettext("You are not allowed to rate this review as your account has been blocked by an admin."), 'error')
+        flash(gettext("You are not allowed to rate this review because "
+                      "your account has been blocked by a moderator."), 'error')
         return redirect(url_for('.entity', id=review_id))
     if vote is True and current_user.user_type not in review.review_class.upvote:
         flash(gettext("You are not allowed to rate this review."), 'error')
@@ -295,7 +297,8 @@ def report(id):
         return redirect(url_for('.entity', id=id))
 
     if current_user.is_blocked:
-        flash(gettext("You are not allowed to report a review as your account has been blocked by an admin."), 'error')
+        flash(gettext("You are not allowed to report this review because "
+                      "your account has been blocked by a moderator."), 'error')
         return redirect(url_for('.entity', id=id))
 
     last_revision_id = review.last_revision.id

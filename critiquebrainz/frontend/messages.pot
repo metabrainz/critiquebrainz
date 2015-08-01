@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-07-13 04:15+0000\n"
+"POT-Creation-Date: 2015-08-01 17:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,11 +77,19 @@ msgstr ""
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
 msgstr ""
 
-#: critiquebrainz/frontend/login/__init__.py:17
+#: critiquebrainz/frontend/log/forms.py:8
+msgid "You need to sepicify a reason for taking this action."
+msgstr ""
+
+#: critiquebrainz/frontend/log/views.py:16
+msgid "No logs to display."
+msgstr ""
+
+#: critiquebrainz/frontend/login/__init__.py:18
 msgid "Please sign in to access this page."
 msgstr ""
 
-#: critiquebrainz/frontend/login/__init__.py:40
+#: critiquebrainz/frontend/login/__init__.py:42
 msgid "You must be an administrator to view this page."
 msgstr ""
 
@@ -229,6 +237,10 @@ msgstr ""
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
 msgstr ""
 
+#: critiquebrainz/frontend/reports/views.py:43
+msgid "Report has been archived."
+msgstr ""
+
 #: critiquebrainz/frontend/review/forms.py:34
 msgid "Text"
 msgstr ""
@@ -261,7 +273,7 @@ msgid "You need to choose a license!"
 msgstr ""
 
 #: critiquebrainz/frontend/review/forms.py:45
-#: critiquebrainz/frontend/templates/base.html:65
+#: critiquebrainz/frontend/templates/base.html:66
 msgid "Language"
 msgstr ""
 
@@ -269,100 +281,143 @@ msgstr ""
 msgid "You need to accept the license agreement!"
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:35
+#: critiquebrainz/frontend/review/views.py:39
 msgid "No reviews to display."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:52
-#: critiquebrainz/frontend/review/views.py:162
+#: critiquebrainz/frontend/review/views.py:56
+#: critiquebrainz/frontend/review/views.py:85
+#: critiquebrainz/frontend/review/views.py:202
 msgid "Can't find a review with the specified ID."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:61
+#: critiquebrainz/frontend/review/views.py:58
+#: critiquebrainz/frontend/review/views.py:87
+#: critiquebrainz/frontend/review/views.py:114
+#: critiquebrainz/frontend/review/views.py:133
+#: critiquebrainz/frontend/review/views.py:206
+#: critiquebrainz/frontend/review/views.py:251
+#: critiquebrainz/frontend/review/views.py:279
+#: critiquebrainz/frontend/review/views.py:294
+#: critiquebrainz/frontend/review/views.py:336
+msgid "Review has been hidden."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:67
 msgid "You are viewing an old revision, the review has been updated since then."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:63
+#: critiquebrainz/frontend/review/views.py:69
 msgid "The revision you are looking for does not exist."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:117
+#: critiquebrainz/frontend/review/views.py:93
+msgid "The revision(s) you are looking for does not exist."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:152
 msgid "Please choose release group that you want to review."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:123
+#: critiquebrainz/frontend/review/views.py:156
+msgid ""
+"You are not allowed to write new reviews because your account has been "
+"blocked by a moderator."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:163
 msgid "You have already published a review for this album!"
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:130
+#: critiquebrainz/frontend/review/views.py:170
 msgid "You have exceeded your limit of reviews per day."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:138
+#: critiquebrainz/frontend/review/views.py:178
 msgid "Review has been saved!"
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:140
+#: critiquebrainz/frontend/review/views.py:180
 msgid "Review has been published!"
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:145
+#: critiquebrainz/frontend/review/views.py:185
 msgid ""
 "You can only write a review for a release group that exists on "
 "MusicBrainz!"
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:164
+#: critiquebrainz/frontend/review/views.py:204
 msgid "Only author can edit this review."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:178
+#: critiquebrainz/frontend/review/views.py:220
 msgid "Review has been updated."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:190
-msgid "Only the author can delete this review."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:193
-msgid "Review has been deleted."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:209
-msgid "You cannot rate your own review."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:212
-msgid "You have exceeded your limit of votes per day."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:215
-#: critiquebrainz/frontend/review/views.py:218
-msgid "You are not allowed to rate this review."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:222
-msgid "You have rated this review!"
-msgstr ""
-
 #: critiquebrainz/frontend/review/views.py:232
-msgid "This review is not rated yet."
+msgid "Only the author or an admin can delete this review."
 msgstr ""
 
 #: critiquebrainz/frontend/review/views.py:235
-msgid "You have deleted your vote for this review!"
+msgid "Review has been deleted."
 msgstr ""
 
-#: critiquebrainz/frontend/review/views.py:244
-msgid "You cannot report your own review."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:250
-msgid "You have already reported this review."
+#: critiquebrainz/frontend/review/views.py:253
+msgid "You cannot rate your own review."
 msgstr ""
 
 #: critiquebrainz/frontend/review/views.py:256
+msgid "You have exceeded your limit of votes per day."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:259
+msgid ""
+"You are not allowed to rate this review because your account has been "
+"blocked by a moderator."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:263
+#: critiquebrainz/frontend/review/views.py:266
+msgid "You are not allowed to rate this review."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:270
+msgid "You have rated this review!"
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:282
+msgid "This review is not rated yet."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:285
+msgid "You have deleted your vote for this review!"
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:296
+msgid "You cannot report your own review."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:300
+msgid ""
+"You are not allowed to report this review because your account has been "
+"blocked by a moderator."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:307
+msgid "You have already reported this review."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:313
 msgid "Review has been reported."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:326
+msgid "Review is already hidden."
+msgstr ""
+
+#: critiquebrainz/frontend/review/views.py:348
+msgid "Review has been unhidden."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/about.html:3
@@ -512,6 +567,12 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/base.html:62
+#: critiquebrainz/frontend/templates/log/log.html:3
+#: critiquebrainz/frontend/templates/log/log.html:6
+msgid "Moderation log"
+msgstr ""
+
 #: critiquebrainz/frontend/templates/index.html:8
 msgid "Welcome to CritiqueBrainz!"
 msgstr ""
@@ -567,6 +628,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index.html:48
 #: critiquebrainz/frontend/templates/index.html:82
+#: critiquebrainz/frontend/templates/log/action.html:5
 #: critiquebrainz/frontend/templates/reports/reports_results.html:8
 #: critiquebrainz/frontend/templates/review/browse.html:24
 #: critiquebrainz/frontend/templates/review/delete.html:4
@@ -632,7 +694,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/macros.html:27
 #: critiquebrainz/frontend/templates/review/browse.html:3
 #: critiquebrainz/frontend/templates/review/browse.html:6
-#: critiquebrainz/frontend/templates/user/base.html:16
+#: critiquebrainz/frontend/templates/user/base.html:24
 #: critiquebrainz/frontend/templates/user/info.html:36
 #: critiquebrainz/frontend/templates/user/reviews.html:3
 msgid "Reviews"
@@ -749,6 +811,50 @@ msgstr ""
 msgid "Back to home page"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/log/action.html:7
+#, python-format
+msgid "Hide %(user)s's review of \"%(rg)s\""
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/action.html:10
+#, python-format
+msgid "Block %(user)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/action.html:32
+msgid "Please provide a reason for taking this action (required)"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/action.html:36
+#: critiquebrainz/frontend/templates/mapping/confirm.html:31
+#: critiquebrainz/frontend/templates/mapping/report.html:31
+#: critiquebrainz/frontend/templates/review/delete.html:18
+#: critiquebrainz/frontend/templates/review/report.html:27
+msgid "Cancel"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/log.html:11
+msgid "Load older logs"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/log.html:13
+msgid "Loading older logs..."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/log.html:38
+msgid "Failed to load older logs!"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/log_results.html:18
+#, python-format
+msgid "%(admin)s archived a %(review)s written by %(user)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/log_results.html:23
+#, python-format
+msgid "%(admin)s blocked %(user)s"
+msgstr ""
+
 #: critiquebrainz/frontend/templates/login/login.html:7
 msgid ""
 "To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to"
@@ -783,13 +889,6 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:30
 msgid "Connect"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/mapping/confirm.html:31
-#: critiquebrainz/frontend/templates/mapping/report.html:31
-#: critiquebrainz/frontend/templates/review/delete.html:18
-#: critiquebrainz/frontend/templates/review/report.html:27
-msgid "Cancel"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/mapping/report.html:3
@@ -928,7 +1027,7 @@ msgid "No"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/edit.html:3
-#: critiquebrainz/frontend/templates/user/base.html:10
+#: critiquebrainz/frontend/templates/user/base.html:12
 msgid "Edit profile"
 msgstr ""
 
@@ -1019,44 +1118,62 @@ msgstr ""
 msgid "Recent reports"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:11
+#: critiquebrainz/frontend/templates/reports/reports.html:25
 msgid "Reported on"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:12
+#: critiquebrainz/frontend/templates/reports/reports.html:26
 msgid "Reported by"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:13
+#: critiquebrainz/frontend/templates/reports/reports.html:27
 msgid "Reason"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:14
+#: critiquebrainz/frontend/templates/reports/reports.html:28
 msgid "Review"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:15
+#: critiquebrainz/frontend/templates/reports/reports.html:29
 msgid "Author"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:16
+#: critiquebrainz/frontend/templates/reports/reports.html:30
 msgid "Quick actions"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:24
+#: critiquebrainz/frontend/templates/reports/reports.html:38
 msgid "Load older reports"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:26
+#: critiquebrainz/frontend/templates/reports/reports.html:40
 msgid "Loading older reports..."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/reports/reports.html:51
+#: critiquebrainz/frontend/templates/reports/reports.html:65
 msgid "Failed to load older reports!"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/reports/reports_results.html:32
+msgid "Read latest revision"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/browse.html:7
 msgid "Ordered by creation date"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/compare.html:3
+msgid "Difference between revisions"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/compare.html:9
+#: critiquebrainz/frontend/templates/review/compare.html:16
+msgid "Revision"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/compare.html:10
+#: critiquebrainz/frontend/templates/review/compare.html:17
+msgid "as of"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/delete.html:6
@@ -1186,11 +1303,6 @@ msgstr ""
 msgid "Report review"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/review/revision_results.html:7
-#: critiquebrainz/frontend/templates/user/reviews.html:43
-msgid "Read"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/review/write.html:3
 #, python-format
 msgid "Write review of \"%(rg)s\""
@@ -1270,7 +1382,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/user/base.html:17
+#: critiquebrainz/frontend/templates/user/base.html:25
 #: critiquebrainz/frontend/templates/user/info.html:3
 msgid "Info"
 msgstr ""
@@ -1322,6 +1434,10 @@ msgstr ""
 msgid "Votes"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/user/reviews.html:43
+msgid "Read"
+msgstr ""
+
 #: critiquebrainz/frontend/templates/user/reviews.html:45
 msgid "Edit"
 msgstr ""
@@ -1332,5 +1448,17 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/user/reviews.html:60
 msgid "Older"
+msgstr ""
+
+#: critiquebrainz/frontend/user/views.py:44
+msgid "This account is already blocked."
+msgstr ""
+
+#: critiquebrainz/frontend/user/views.py:52
+msgid "This user account has been blocked."
+msgstr ""
+
+#: critiquebrainz/frontend/user/views.py:64
+msgid "This user account has been unblocked."
 msgstr ""
 
