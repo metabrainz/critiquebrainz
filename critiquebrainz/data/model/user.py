@@ -198,9 +198,9 @@ class User(db.Model, AdminMixin, DeleteMixin):
         db.session.commit()
 
     def block(self):
-        self.blocked = True
+        self.is_blocked = True
         db.session.commit()
 
     def unblock(self):
-        self.blocked = False
+        self.is_blocked = False
         db.session.commit()
