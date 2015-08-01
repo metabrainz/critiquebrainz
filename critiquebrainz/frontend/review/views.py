@@ -54,6 +54,8 @@ def entity(id, rev=None):
     if review.is_draft and not (current_user.is_authenticated()
                                 and current_user == review.user):
         raise NotFound(gettext("Can't find a review with the specified ID."))
+    if review.is_hidden and not current_user.is_admin():
+        raise NotFound(gettext("Review has been hidden."))
 
     spotify_mappings = mbspotify.mappings(review.release_group)
 
@@ -81,6 +83,8 @@ def compare(id):
     if review.is_draft and not (current_user.is_authenticated()
                                 and current_user == review.user):
         raise NotFound(gettext("Can't find a review with the specified ID."))
+    if review.is_hidden and not current_user.is_admin():
+        raise NotFound(gettext("Review has been hidden."))
 
     revisions = Revision.query.filter_by(review=review)
     count = revisions.count()
@@ -106,6 +110,8 @@ def revisions(id):
     if review.is_draft and not (current_user.is_authenticated()
                                 and current_user == review.user):
         raise NotFound("Can't find a review with the specified ID.")
+    if review.is_hidden and not current_user.is_admin():
+        raise NotFound(gettext("Review has been hidden."))
 
     revisions = Revision.query.filter_by(review=review)
     count = revisions.count()
@@ -123,6 +129,8 @@ def revisions_more(id):
     if review.is_draft and not (current_user.is_authenticated()
                                 and current_user == review.user):
         raise NotFound("Can't find a review with the specified ID.")
+    if review.is_hidden and not current_user.is_admin():
+        raise NotFound(gettext("Review has been hidden."))
 
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
@@ -193,6 +201,8 @@ def edit(id):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.user != current_user:
         raise Unauthorized(gettext("Only author can edit this review."))
+    if review.is_hidden and not current_user.is_admin():
+        raise NotFound(gettext("Review has been hidden."))
 
     form = ReviewEditForm(default_license_id=review.license_id, default_language=review.language)
     if not review.is_draft:
@@ -236,6 +246,8 @@ def vote_submit(review_id):
         vote = False
 
     review = Review.query.get_or_404(review_id)
+    if review.is_hidden and not current_user.is_admin():
+        raise NotFound(gettext("Review has been hidden."))
     if review.user == current_user:
         flash(gettext("You cannot rate your own review."), 'error')
         return redirect(url_for('.entity', id=review_id))
@@ -261,6 +273,8 @@ def vote_submit(review_id):
 @login_required
 def vote_delete(id):
     review = Review.query.get_or_404(str(id))
+    if review.is_hidden and not current_user.is_admin():
+        raise NotFound(gettext("Review has been hidden."))
     vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
         flash(gettext("This review is not rated yet."), 'error')
@@ -274,6 +288,8 @@ def vote_delete(id):
 @login_required
 def report(id):
     review = Review.query.get_or_404(str(id))
+    if review.is_hidden and not current_user.is_admin():
+        raise NotFound(gettext("Review has been hidden."))
     if review.user == current_user:
         flash(gettext("You cannot report your own review."), 'error')
         return redirect(url_for('.entity', id=id))
