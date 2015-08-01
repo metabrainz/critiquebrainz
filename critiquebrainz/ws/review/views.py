@@ -25,6 +25,8 @@ def review_entity_handler(review_id):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
     return jsonify(review=review.to_dict())
 
 
@@ -39,6 +41,8 @@ def review_revisions_handler(review_id):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
     revisions = []
     for i, r in enumerate(review.revisions):
         revision = r.to_dict()
@@ -58,6 +62,8 @@ def review_revision_entity_handler(review_id, rev):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
 
     count = len(review.revisions)
     if rev > count:
@@ -83,6 +89,8 @@ def review_delete_handler(review_id, user):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
     if review.user_id != user.id:
         raise AccessDenied
     review.delete()
@@ -109,6 +117,8 @@ def review_modify_handler(review_id, user):
         return text
 
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
     if review.user_id != user.id:
         raise AccessDenied
     text = fetch_params()
@@ -228,6 +238,8 @@ def review_vote_entity_handler(review_id, user):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
     vote = Vote.query.filter_by(user=user, revision=review.last_revision).first()
     if not vote:
         raise NotFound("Can't find your vote for this review.")
@@ -258,6 +270,8 @@ def review_vote_put_handler(review_id, user):
         return vote
 
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
     vote = fetch_params()
     if review.user_id == user.id:
         raise InvalidRequest(desc='You cannot rate your own review.')
@@ -282,6 +296,8 @@ def review_vote_delete_handler(review_id, user):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
     vote = Vote.query.filter_by(user=user, revision=review.last_revision).first()
     if not vote:
         raise InvalidRequest(desc='Review is not rated yet.')
@@ -300,6 +316,8 @@ def review_spam_report_handler(review_id, user):
     :resheader Content-Type: *application/json*
     """
     review = Review.query.get_or_404(str(review_id))
+    if review.is_hidden:
+        raise NotFound("Review has been hidden.")
     if review.user_id == user.id:
         raise InvalidRequest('own')
     SpamReport.create(review, user)
