@@ -7,6 +7,7 @@ from flask import redirect, url_for
 from flask_login import LoginManager, current_user
 from flask_babel import gettext
 from critiquebrainz.data.model.user import User
+from critiquebrainz.data.model.mixins import AnonymousUser
 from werkzeug.exceptions import Unauthorized
 from functools import wraps
 
@@ -16,6 +17,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'login.index'
 login_manager.login_message = gettext(u"Please sign in to access this page.")
 login_manager.localize_callback = gettext
+login_manager.anonymous_user = AnonymousUser
 
 
 @login_manager.user_loader
