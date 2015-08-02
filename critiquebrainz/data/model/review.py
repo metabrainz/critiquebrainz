@@ -47,12 +47,13 @@ class Review(db.Model, DeleteMixin):
     revisions = db.relationship('Revision', order_by='Revision.timestamp', backref='review',
                                 cascade='delete')
 
-    __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
+    __table_args__ = (db.UniqueConstraint('entity_id', 'user_id'), )
 
     def to_dict(self, confidential=False):
         return dict(
             id=self.id,
-            release_group=self.release_group,
+            entity_id=self.entity_id,
+            entity_type=self.entity_type,
             user=self.user.to_dict(confidential=confidential),
             text=self.text,
             created=self.revisions[0].timestamp,
@@ -137,7 +138,7 @@ class Review(db.Model, DeleteMixin):
         specific reviews. See argument description below for more info.
 
         Args:
-            release_group: MBID of the release group that is associated with a
+            entity_id: MBID of the entity that is associated with a
                 review.
             user_id: UUID of the author.
             sort: Order of returned reviews. Can be either "rating" (order by
@@ -321,7 +322,7 @@ class Review(db.Model, DeleteMixin):
             # choose the most popular.
             distinct_subquery = db.session.query(Review) \
                 .filter(Review.is_draft == False) \
-                .distinct(Review.release_group).subquery()
+                .distinct(Review.entity_id).subquery()
 
             # Randomizing results to get some variety
             rand_subquery = db.session.query(aliased(Review, distinct_subquery)) \
