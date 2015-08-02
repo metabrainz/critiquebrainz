@@ -252,8 +252,16 @@ class Review(db.Model, DeleteMixin):
 
     @classmethod
     def create(cls, **kwargs):
+        if 'release_group' in kwargs:
+            entity_id = kwargs.pop('release_group')
+            entity_type = 'release_group'
+        else:
+            entity_id = kwargs.pop('entity_id')
+            entity_type = kwargs.pop('entity_type')
+
         review = Review(
-            release_group=kwargs.pop('release_group'),
+            entity_id=entity_id,
+            entity_type=entity_type,
             user=kwargs.pop('user'),
             language=kwargs.pop('language', None),
             is_draft=kwargs.pop('is_draft', False),
