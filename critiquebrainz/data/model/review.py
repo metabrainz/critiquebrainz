@@ -25,13 +25,16 @@ for lang in list(pycountry.languages):
     if 'alpha2' in dir(lang):
         supported_languages.append(lang.alpha2)
 
+ENTITIES = ['event', 'release_group']
+
 
 class Review(db.Model, DeleteMixin):
     __tablename__ = 'review'
     CACHE_NAMESPACE = 'Review'
 
     id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
-    release_group = db.Column(UUID, index=True, nullable=False)
+    entity_id = db.Column(UUID, index=True, nullable=False)
+    entity_type = db.Column(db.Enum(*ENTITIES, name='entity_types'), nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     edits = db.Column(db.Integer, nullable=False, default=0)
     is_draft = db.Column(db.Boolean, nullable=False, default=False)
