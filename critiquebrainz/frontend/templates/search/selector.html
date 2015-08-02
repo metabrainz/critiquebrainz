@@ -1,32 +1,46 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ _('Release group selection') }} - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Entity selection') }} - CritiqueBrainz{% endblock %}
+{% set type = request.args.get('type', default='release-group') %}
 
 {% block content %}
-<h3>{{ _('Release group selection') }}</h3>
+  <div id="content">
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+      <li {% if type=="release-group" %}class="active"{% endif %}>
+        <a href="#release-group" data-toggle="tab">Release Group</a>
+      </li>
+    </ul>
 
-<form method="GET" class="form-horizontal" role="form">
-  <div class="form-group">
-    <label for="input-artist" class="col-sm-2 control-label">{{ _('Artist') }}</label>
-    <div class="col-sm-4">
-      <input id="input-artist" class="form-control" name="artist" type="text"
-             value="{{ request.args.get('artist', default='') }}">
+    <div class="tab-content">
+      <div id="release-group" class="tab-pane {% if type=="release-group" %}active{% endif %}">
+        <h3>{{ _('Release group selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-artist" class="col-sm-2 control-label">{{ _('Artist') }}</label>
+            <div class="col-sm-4">
+              <input id="input-artist" class="form-control" name="artist" type="text"
+                     value="{{ request.args.get('artist', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Release group') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="release_group" type="text"
+                     value="{{ request.args.get('release_group', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="release-group" />
+        </form>
+      </div>
+
     </div>
   </div>
-  <div class="form-group">
-    <label for="input-release-group" class="col-sm-2 control-label">{{ _('Release group') }}</label>
-    <div class="col-sm-4">
-      <input id="input-release-group" class="form-control" name="release_group" type="text"
-             value="{{ request.args.get('release_group', default='') }}">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
-    </div>
-  </div>
-  <input type="hidden" name="next" value="{{ next }}" />
-</form>
 
 {% if request.args.get('artist', default=False) or request.args.get('release_group', default=False) %}
   <hr />
@@ -76,14 +90,14 @@
           url: "{{ url_for('search.selector_more') }}",
           data: { artist: "{{ artist }}", release_group: "{{ release_group }}", page: ++current_page }
         })
-            .done(function(data) {
-              loading_message.hide();
-              $("#results").append(data.results);
-              if (data.more === true) more_button.show();
-            })
-            .fail(function() {
-              alert({{ _('Failed to load more search results!') | tojson }});
-            });
+        .done(function(data) {
+          loading_message.hide();
+          $("#results").append(data.results);
+          if (data.more === true) more_button.show();
+        })
+        .fail(function() {
+          alert({{ _('Failed to load more search results!') | tojson }});
+        });
       }
     </script>
   {% endblock %}
