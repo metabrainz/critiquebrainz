@@ -44,28 +44,36 @@ def more():
 def selector():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')
+    event = request.args.get('event')
+    type = request.args.get('type')
     next = request.args.get('next')
     if not next:
         return redirect(url_for('frontend.index'))
     if artist or release_group:
         count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
                                                            limit=RESULTS_LIMIT)
+    elif event:
+        count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT)
     else:
         count, results = 0, []
-    return render_template('search/selector.html', next=next, artist=artist, release_group=release_group,
-                           results=results, count=count, limit=RESULTS_LIMIT)
+    return render_template('search/selector.html', next=next, type=type, results=results, count=count,
+                           limit=RESULTS_LIMIT, artist=artist, release_group=release_group, event=event)
 
 
 @search_bp.route('/selector/more')
 def selector_more():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')
+    event = request.args.get('event')
+    type = request.args.get('type')
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
     if artist or release_group:
         count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
                                                            limit=RESULTS_LIMIT, offset=offset)
+    elif event:
+        count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT, offset=offset)
     else:
         count, results = 0, []
-    template = render_template('search/selector_results.html', results=results)
+    template = render_template('search/selector_results.html', results=results, type=type)
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
