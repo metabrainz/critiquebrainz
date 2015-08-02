@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 
 
 def create_app(debug=None):
@@ -7,13 +8,16 @@ def create_app(debug=None):
     # Configuration files
     import critiquebrainz.default_config
     app.config.from_object(critiquebrainz.default_config)
-    app.config.from_pyfile('../config.py', silent=True)
+    app.config.from_pyfile(os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "..", "config.py"
+    ), silent=True)
     if debug is not None:
         app.debug = debug
 
     # Error handling
-    import errors
-    errors.init_error_handlers(app)
+    from critiquebrainz.ws.errors import init_error_handlers
+    init_error_handlers(app)
 
     # Logging
     from critiquebrainz import loggers
@@ -35,9 +39,9 @@ def create_app(debug=None):
     app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 
     # Blueprints
-    from oauth.views import oauth_bp
-    from review.views import review_bp
-    from user.views import user_bp
+    from critiquebrainz.ws.oauth.views import oauth_bp
+    from critiquebrainz.ws.review.views import review_bp
+    from critiquebrainz.ws.user.views import user_bp
 
     app.register_blueprint(oauth_bp, url_prefix='/oauth')
     app.register_blueprint(review_bp, url_prefix='/review')

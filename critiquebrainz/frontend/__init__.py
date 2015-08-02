@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_debugtoolbar import DebugToolbarExtension
+import os
 
 
 def create_app(debug=None):
@@ -8,13 +8,16 @@ def create_app(debug=None):
     # Configuration files
     import critiquebrainz.default_config
     app.config.from_object(critiquebrainz.default_config)
-    app.config.from_pyfile('../config.py', silent=True)
+    app.config.from_pyfile(os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "..", "config.py"
+    ), silent=True)
     if debug is not None:
         app.debug = debug
 
     # Error handling
-    import errors
-    errors.init_error_handlers(app)
+    from critiquebrainz.frontend.errors import init_error_handlers
+    init_error_handlers(app)
 
     # Logging
     from critiquebrainz import loggers
@@ -22,6 +25,7 @@ def create_app(debug=None):
 
     if app.debug:
         # Debug toolbar
+        from flask_debugtoolbar import DebugToolbarExtension
         DebugToolbarExtension(app)
         app.config['DEBUG_TB_TEMPLATE_EDITOR_ENABLED'] = True
 
@@ -38,12 +42,12 @@ def create_app(debug=None):
                    app.config['MEMCACHED_NAMESPACE'],
                    debug=1 if app.debug else 0)
 
-    import babel
+    import critiquebrainz.frontend.babel
     babel.init_app(app)
 
-    import login
+    import critiquebrainz.frontend.login
     login.login_manager.init_app(app)
-    from login.provider import MusicBrainzAuthentication
+    from critiquebrainz.frontend.login.provider import MusicBrainzAuthentication
     login.mb_auth = MusicBrainzAuthentication(
         name='musicbrainz',
         client_id=app.config['MUSICBRAINZ_CLIENT_ID'],
@@ -53,9 +57,9 @@ def create_app(debug=None):
         base_url="https://musicbrainz.org/")
 
     # APIs
-    from apis import mbspotify
+    from critiquebrainz.frontend.apis import mbspotify
     mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
-    from apis import musicbrainz
+    from critiquebrainz.frontend.apis import musicbrainz
     musicbrainz.init(app.config['MUSICBRAINZ_USERAGENT'], critiquebrainz.__version__,
                      hostname=app.config['MUSICBRAINZ_HOSTNAME'])
 
@@ -68,19 +72,19 @@ def create_app(debug=None):
     app.jinja_env.filters['release_group_details'] = musicbrainz.get_release_group_by_id
 
     # Blueprints
-    from views import frontend_bp
-    from review.views import review_bp
-    from search.views import search_bp
-    from artist.views import artist_bp
-    from release_group.views import release_group_bp
-    from mapping.views import mapping_bp
-    from user.views import user_bp
-    from profile.views import profile_bp
-    from profile.applications.views import profile_apps_bp
-    from login.views import login_bp
-    from oauth.views import oauth_bp
-    from reports.views import reports_bp
-    from log.views import log_bp
+    from critiquebrainz.frontend.views import frontend_bp
+    from critiquebrainz.frontend.review.views import review_bp
+    from critiquebrainz.frontend.search.views import search_bp
+    from critiquebrainz.frontend.artist.views import artist_bp
+    from critiquebrainz.frontend.release_group.views import release_group_bp
+    from critiquebrainz.frontend.mapping.views import mapping_bp
+    from critiquebrainz.frontend.user.views import user_bp
+    from critiquebrainz.frontend.profile.views import profile_bp
+    from critiquebrainz.frontend.profile.applications.views import profile_apps_bp
+    from critiquebrainz.frontend.login.views import login_bp
+    from critiquebrainz.frontend.oauth.views import oauth_bp
+    from critiquebrainz.frontend.reports.views import reports_bp
+    from critiquebrainz.frontend.log.views import log_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
