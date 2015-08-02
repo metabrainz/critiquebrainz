@@ -1,4 +1,6 @@
 {% for result in results %}
+
+{% if type=="release-group" %}
   <tr>
     <td>{{ result['artist-credit-phrase'] }}</td>
     <td>
@@ -10,4 +12,20 @@
       <input type="radio" name="release_group" value="{{ result['id'] }}">
     </td>
   </tr>
+
+{% elif type=="event" %}
+  <tr>
+    <td>{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</td>
+    <td>
+      {{ result['name'] }}
+      {% if result['disambiguation'] %}
+        <span class="text-muted">({{ result['life-span']['begin'] }} - {{ result['life-span']['end'] }})</span>
+      {% endif %}
+    </td>
+    <td>
+      <input type="radio" name="event" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
+{% endif %}
 {% endfor %}
