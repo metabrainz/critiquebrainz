@@ -1,0 +1,5 @@
+BEGIN;
+
+ALTER TABLE "user" ALTER COLUMN show_gravatar SET DEFAULT False;
+
+COMMIT;
