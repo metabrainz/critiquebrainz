@@ -78,6 +78,7 @@ def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
             license_dir = os.path.join(temp_dir, safe_name)
             create_path(license_dir)
 
+            # TODO(duffer): Make this work with all entity types
             # Finding release groups that have reviews with current license
             query = db.session.query(Review.release_group).group_by(Review.release_group)
             for release_group in query.all():

@@ -160,7 +160,8 @@ def review_list_handler():
 
     else:
         reviews, count = Review.list(
-            release_group=release_group,
+            entity_id=release_group,
+            entity_type='release_group',
             user_id=user_id,
             sort=sort,
             limit=limit,

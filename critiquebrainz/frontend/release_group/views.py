@@ -23,14 +23,14 @@ def entity(id):
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated():
-        my_reviews, my_count = Review.list(release_group=id, user_id=current_user.id)
+        my_reviews, my_count = Review.list(entity_id=id, entity_type='release_group', user_id=current_user.id)
         if my_count != 0:
             my_review = my_reviews[0]
         else:
             my_review = None
     else:
         my_review = None
-    reviews, count = Review.list(release_group=id, sort='rating', limit=limit, offset=offset)
+    reviews, count = Review.list(entity_id=id, entity_type='release_group', sort='rating', limit=limit, offset=offset)
     return render_template('release_group.html', id=id, release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings,
                            limit=limit, offset=offset, count=count)

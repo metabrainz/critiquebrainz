@@ -151,6 +151,8 @@ class Review(db.Model, DeleteMixin):
         Args:
             entity_id: MBID of the entity that is associated with a
                 review.
+            entity_type: One of the supported reviewable entities. 'release_group'
+                or 'event' etc.
             user_id: UUID of the author.
             sort: Order of returned reviews. Can be either "rating" (order by
                 rating), or "created" (order by creation time).
@@ -178,9 +180,13 @@ class Review(db.Model, DeleteMixin):
 
         # FILTERING:
 
-        release_group = kwargs.pop('release_group', None)
-        if release_group is not None:
-            query = query.filter(Review.release_group == release_group)
+        entity_id = kwargs.pop('entity_id', None)
+        if entity_id is not None:
+            query = query.filter(Review.entity_id == entity_id)
+
+        entity_type = kwargs.pop('entity_type', None)
+        if entity_type is not None:
+            query = query.filter(Review.entity_type == entity_type)
 
         language = kwargs.pop('language', None)
         if language is not None:
