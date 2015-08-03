@@ -21,7 +21,7 @@
       </thead>
       <tbody>
       {% for review in reviews %}
-        {% set release_group = review.release_group | release_group_details %}
+        {% set release_group = review.release_group | entity_details %}
         <tr data-review-id="{{ review.id }}">
           {% if current_user.is_authenticated() and current_user == user %}
             <td align="right">

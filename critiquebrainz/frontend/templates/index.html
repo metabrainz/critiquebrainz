@@ -33,7 +33,7 @@
     <div id="popular-list" class="row">
       {% for review in popular_reviews %}
         <div class="col-md-6 review">
-          {% set release_group = review.release_group | release_group_details %}
+          {% set release_group = review.release_group | entity_details %}
           <div class="cover-art-container pull-left">
             <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
             <script>
@@ -67,7 +67,7 @@
     <div id="recent-list" class="row">
       {% for review in recent_reviews %}
         <div class="col-md-4 review">
-          {% set release_group = review.release_group | release_group_details %}
+          {% set release_group = review.release_group | entity_details %}
           <div class="cover-art-container pull-left">
             <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
             <script>

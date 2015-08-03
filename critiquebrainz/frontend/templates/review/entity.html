@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% set release_group = review.release_group | release_group_details %}
+{% set release_group = review.release_group | entity_details %}
 
 {% block title %}
 {% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}

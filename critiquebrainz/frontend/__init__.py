@@ -69,7 +69,7 @@ def create_app(debug=None):
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
-    app.jinja_env.filters['release_group_details'] = musicbrainz.get_release_group_by_id
+    app.jinja_env.filters['entity_details'] = musicbrainz.get_entity_by_id
 
     # Blueprints
     from critiquebrainz.frontend.views import frontend_bp
