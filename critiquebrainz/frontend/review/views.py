@@ -228,7 +228,7 @@ def edit(id):
         return redirect(url_for('.entity', id=review.id))
     else:
         form.text.data = review.text
-    return render_template('review/edit.html', form=form, review=review)
+    return render_template('review/edit.html', form=form, review=review, entity_type=review.entity_type)
 
 
 @review_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'])
