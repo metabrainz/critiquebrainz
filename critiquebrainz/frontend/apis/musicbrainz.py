@@ -160,3 +160,12 @@ def get_event_by_id(id):
                 raise InternalServerError(e.cause.msg)
         cache.set(key=key, val=event, time=DEFAULT_CACHE_EXPIRATION)
     return event
+
+
+def get_entity_by_id(id, type='release_group'):
+    """A wrapper to call the correct get_*_by_id function."""
+    if type == 'release_group':
+        rv = get_release_group_by_id(id)
+    elif type == 'event':
+        rv = get_event_by_id(id)
+    return rv
