@@ -145,6 +145,8 @@ class Review(db.Model, DeleteMixin):
             licence_id: License of returned reviews.
             inc_drafts: True if reviews marked as drafts should be included,
                 False if not.
+            inc_hidden: True if reviews marked as hidden should be included,
+                False if not.
 
         Returns:
             Pair of values: list of reviews that match applied filters and
@@ -155,8 +157,8 @@ class Review(db.Model, DeleteMixin):
         if not inc_drafts:
             query = query.filter(Review.is_draft == False)
 
-        inc_archived = kwargs.pop('inc_archived', None)
-        if not inc_archived:
+        inc_hidden = kwargs.pop('inc_hidden', None)
+        if not inc_hidden:
             query = query.filter(Review.is_hidden == False)
 
         # FILTERING:
