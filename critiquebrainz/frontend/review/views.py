@@ -155,7 +155,7 @@ def create():
     if current_user.is_blocked:
         flash(gettext("You are not allowed to write new reviews because your "
                       "account has been blocked by a moderator."), 'error')
-        return redirect(url_for('log.browse'))
+        return redirect(url_for('user.reviews', user_id=current_user.id))
 
     # Checking if the user already wrote a review for this release group
     review = Review.query.filter_by(user=current_user, release_group=release_group).first()
