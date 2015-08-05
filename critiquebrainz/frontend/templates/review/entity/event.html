@@ -1,0 +1,30 @@
+{% extends 'review/entity/base.html' %}
+
+{% set event = review.entity_id | entity_details(type='event') %}
+
+{% block title %}
+{% set event_title = event.name | default(_('[Unknown event]')) %}
+{{ _('Review of "%(event)s" by %(user)s', event=event_title, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block entity_title %}
+  <h2 id="title">
+    {% if event %}
+      {% set event_name = '<a href="%s">' | safe % url_for('event.entity', id=review.entity_id) ~ event.name ~ '</a>'|safe %}
+    {% else %}
+      {% set event_name =  _('[Unknown event]') %}
+    {% endif %}
+
+    {{ _('%(event)s', event=event_name) }}
+
+    {% if event['life-span'] %}
+      <small>{{ event['life-span']['begin'][:4] }}</small>
+    {% endif %}
+  </h2>
+{% endblock %}
+
+{% block sidebar %}
+  <div id="sidebar" class="col-md-3">
+    <img id="cover-art" class="img-responsive">
+  </div>
+{% endblock %}
