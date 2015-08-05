@@ -1,5 +1,10 @@
 {% extends 'review/entity/base.html' %}
 
+{% block scripts_top %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/leaflet.min.js') }}"></script>
+{% endblock %}
+
 {% set event = review.entity_id | entity_details(type='event') %}
 
 {% block title %}
@@ -23,8 +28,29 @@
   </h2>
 {% endblock %}
 
+{% set place = event['place-relation-list'][0]['place']['name'] %}
+{% set lat = event['place-relation-list'][0]['place']['coordinates']['latitude'] | float %}
+{% set long = event['place-relation-list'][0]['place']['coordinates']['longitude'] | float %}
+
 {% block sidebar %}
   <div id="sidebar" class="col-md-3">
-    <img id="cover-art" class="img-responsive">
+    <div id="map"></div>
+    <script>
+      L.Icon.Default.imagePath = '/static/img/';
+      var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
+
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+          attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        }).addTo(map);
+
+      var popup = L.popup()
+        .setContent("<b>Held At</b><br> " + {{ place | tojson }})
+
+      var marker = L.marker([{{ lat }}, {{ long }}])
+        .addTo(map)
+        .bindPopup(popup)
+        .openPopup();
+    </script>
   </div>
 {% endblock %}
