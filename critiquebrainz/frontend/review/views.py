@@ -60,7 +60,9 @@ def entity(id, rev=None):
         else:
             flash(gettext("Review has been hidden."), 'warning')
 
-    spotify_mappings = mbspotify.mappings(review.release_group)
+    spotify_mappings = None
+    if review.entity_type == 'release_group':
+        spotify_mappings = mbspotify.mappings(review.entity_id)
 
     revisions = Revision.query.filter_by(review=review)
     count = revisions.count()
@@ -77,7 +79,7 @@ def entity(id, rev=None):
     else:  # otherwise set vote to None, its value will not be used
         vote = None
     review.text_html = markdown(revision.text, safe_mode="escape")
-    return render_template('review/entity.html', review=review, spotify_mappings=spotify_mappings, vote=vote)
+    return render_template('review/entity/%s.html' % review.entity_type, review=review, spotify_mappings=spotify_mappings, vote=vote)
 
 
 @review_bp.route('/<uuid:id>/revisions/compare')
