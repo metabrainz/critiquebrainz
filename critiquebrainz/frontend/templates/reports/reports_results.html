@@ -5,9 +5,11 @@
     <td><a href="{{ url_for('user.info', user_id=report.user.id) }}">{{ report.user.display_name }}</a></td>
     <td>{{ report.reason }}</td>
     <td>
-      {{ release_group.title | default(_('[Unknown release group]')) }}
-      by
-      {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
+      <a href="{{ url_for('review.entity', id=report.review.id) }}">
+        {{ release_group.title | default(_('[Unknown release group]')) }}
+        by
+        {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
+      </a>
     </td>
     <td><a href="{{ url_for('user.info', user_id=report.review.user.id) }}">{{ report.review.user.display_name }}</a></td>
     <td>
