@@ -54,8 +54,11 @@ def entity(id, rev=None):
     if review.is_draft and not (current_user.is_authenticated()
                                 and current_user == review.user):
         raise NotFound(gettext("Can't find a review with the specified ID."))
-    if review.is_hidden and not current_user.is_admin():
-        raise NotFound(gettext("Review has been hidden."))
+    if review.is_hidden:
+        if not current_user.is_admin():
+            raise NotFound(gettext("Review has been hidden."))
+        else:
+            flash(gettext("Review has been hidden."), 'warning')
 
     spotify_mappings = mbspotify.mappings(review.release_group)
 
