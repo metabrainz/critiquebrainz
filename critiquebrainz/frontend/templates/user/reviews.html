@@ -9,7 +9,9 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        {% if current_user.is_authenticated() and current_user == user %}<th><!-- State --></th>{% endif %}
+        {% if (current_user.is_authenticated() and current_user == user) or current_user.is_admin() %}
+          <th><!-- State --></th>
+        {% endif %}
         <th>{{ _('Artist') }}</th>
         <th>{{ _('Release group') }}</th>
         <th>{{ _('Created on') }}</th>
@@ -27,6 +29,12 @@
                 <span class="label label-default">{{ _('Draft') }}</span>
               {% else %}
                 <span class="label label-primary">{{ _('Published') }}</span>
+              {% endif %}
+            </td>
+          {% elif current_user.is_admin() %}
+            <td align="right">
+              {% if review.is_hidden %}
+                <span class="label label-primary">{{ _('Hidden') }}</span>
               {% endif %}
             </td>
           {% endif %}
