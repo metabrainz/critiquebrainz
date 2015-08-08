@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-08-01 17:08+0000\n"
+"POT-Creation-Date: 2015-08-08 00:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -273,7 +273,7 @@ msgid "You need to choose a license!"
 msgstr ""
 
 #: critiquebrainz/frontend/review/forms.py:45
-#: critiquebrainz/frontend/templates/base.html:66
+#: critiquebrainz/frontend/templates/base.html:69
 msgid "Language"
 msgstr ""
 
@@ -571,6 +571,10 @@ msgstr ""
 #: critiquebrainz/frontend/templates/log/log.html:3
 #: critiquebrainz/frontend/templates/log/log.html:6
 msgid "Moderation log"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/base.html:64
+msgid "Reports"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index.html:8
@@ -1450,15 +1454,15 @@ msgstr ""
 msgid "Older"
 msgstr ""
 
-#: critiquebrainz/frontend/user/views.py:44
+#: critiquebrainz/frontend/user/views.py:45
 msgid "This account is already blocked."
 msgstr ""
 
-#: critiquebrainz/frontend/user/views.py:52
+#: critiquebrainz/frontend/user/views.py:53
 msgid "This user account has been blocked."
 msgstr ""
 
-#: critiquebrainz/frontend/user/views.py:64
+#: critiquebrainz/frontend/user/views.py:65
 msgid "This user account has been unblocked."
 msgstr ""
 
