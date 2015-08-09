@@ -1,9 +1,6 @@
-
-ALTER TABLE review RENAME COLUMN release_group TO entity_id;
-
 BEGIN;
 
-ALTER TABLE review DROP COLUMN entity_type;
+ALTER TABLE review RENAME COLUMN release_group TO entity_id;
 
 CREATE TYPE entity_types AS enum (
     'event',
