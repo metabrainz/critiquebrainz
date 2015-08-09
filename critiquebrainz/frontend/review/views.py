@@ -8,7 +8,7 @@ from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditFor
 from critiquebrainz.frontend.log.forms import AdminActionForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.frontend.login import admin_view
-from critiquebrainz.data.model.review import Review, ENTITIES
+from critiquebrainz.data.model.review import Review, ENTITY_TYPES
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
 from critiquebrainz.data.model.vote import Vote
@@ -152,7 +152,7 @@ def revisions_more(id):
 @review_bp.route('/write', methods=('GET', 'POST'))
 @login_required
 def create():
-    for entity_type in ENTITIES:
+    for entity_type in ENTITY_TYPES:
         entity_id = request.args.get(entity_type)
         if entity_id:
             break
