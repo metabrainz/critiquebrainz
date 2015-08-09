@@ -19,7 +19,7 @@
     {% endblock %}
 
     {% block scripts_top %}
-      <!-- This needs to be before body because it's used during cover art loading. -->
+      {# This needs to be before body because it's used during cover art loading. #}
       <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
     {% endblock %}
 
