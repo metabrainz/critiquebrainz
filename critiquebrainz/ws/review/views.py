@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from critiquebrainz.data.model.review import Review, supported_languages
+from critiquebrainz.data.model.review import Review, supported_languages, ENTITY_TYPES
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded
@@ -132,7 +132,8 @@ def review_modify_handler(review_id, user):
 def review_list_handler():
     """Get list of reviews.
 
-    :query release_group: UUID of release group **(optional)**
+    :json uuid entity_id: UUID of the release group that is being reviewed
+    :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc. **(optional)**
     :query user_id: user's UUID **(optional)**
     :query sort: ``rating`` or ``created`` **(optional)**
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
@@ -141,7 +142,8 @@ def review_list_handler():
 
     :resheader Content-Type: *application/json*
     """
-    release_group = Parser.uuid('uri', 'release_group', optional=True)
+    entity_id = Parser.uuid('uri', 'entity_id', optional=True)
+    entity_type = Parser.string('uri', 'entity_type', valid_values=ENTITY_TYPES, optional=True)
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     sort = Parser.string('uri', 'sort', valid_values=['rating', 'created'], optional=True)
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
@@ -152,7 +154,7 @@ def review_list_handler():
 
     # TODO(roman): Ideally caching logic should live inside the model. Otherwise it
     # becomes hard to track all this stuff.
-    cache_key = cache.gen_key('list', release_group, user_id, sort, limit, offset, language)
+    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language)
     cached_result = cache.get(cache_key, Review.CACHE_NAMESPACE)
     if cached_result:
         reviews = cached_result['reviews']
@@ -160,8 +162,8 @@ def review_list_handler():
 
     else:
         reviews, count = Review.list(
-            entity_id=release_group,
-            entity_type='release_group',
+            entity_id=entity_id,
+            entity_type=entity_type,
             user_id=user_id,
             sort=sort,
             limit=limit,
