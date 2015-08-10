@@ -74,17 +74,6 @@ class Review(db.Model, DeleteMixin):
         return cls.query.filter_by(**kwargs).first()
 
     @property
-    def release_group(self):
-        """Returns MBID of the associated release_group.
-
-        Added to maintain backwards compatibility.
-        """
-        if self.entity_type == 'release_group':
-            return self.entity_id
-        else:
-            raise AttributeError
-
-    @property
     def last_revision(self):
         """Returns latest revision of this review."""
         return self.revisions[-1]
