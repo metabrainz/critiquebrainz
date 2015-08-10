@@ -8,7 +8,7 @@
 
 <div id="reviews-browse" class="row">
   {% for review in reviews %}
-    {% set rg = release_groups[review.release_group] %}
+    {% set rg = release_groups[review.entity_id] %}
     <div class="col-md-4 review">
       <div class="cover-art-container pull-left">
         <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>

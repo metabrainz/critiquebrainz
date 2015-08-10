@@ -33,13 +33,13 @@
     <div id="popular-list" class="row">
       {% for review in popular_reviews %}
         <div class="col-md-6 review">
-          {% set release_group = review.release_group | entity_details %}
+          {% set release_group = review.entity_id | entity_details %}
           <div class="cover-art-container pull-left">
             <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
             <script>
               $("img").last()
                   .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                  .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+                  .attr("src", "//coverartarchive.org/release-group/{{ review.entity_id }}/front-250");
             </script>
           </div>
           <div class="album">
@@ -67,13 +67,13 @@
     <div id="recent-list" class="row">
       {% for review in recent_reviews %}
         <div class="col-md-4 review">
-          {% set release_group = review.release_group | entity_details %}
+          {% set release_group = review.entity_id | entity_details %}
           <div class="cover-art-container pull-left">
             <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
             <script>
               $("img").last()
                   .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                  .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+                  .attr("src", "//coverartarchive.org/release-group/{{ review.entity_id }}/front-250");
             </script>
           </div>
           <div class="album">

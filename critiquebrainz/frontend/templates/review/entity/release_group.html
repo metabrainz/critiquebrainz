@@ -10,7 +10,7 @@
 {% block entity_title %}
   <h2 id="title">
     {% if release_group %}
-      {% set rg_name = '<a href="%s">'|safe % url_for('release_group.entity', id=review.release_group) ~ release_group.title ~ '</a>'|safe %}
+      {% set rg_name = '<a href="%s">'|safe % url_for('release_group.entity', id=review.entity_id) ~ release_group.title ~ '</a>'|safe %}
     {% else %}
       {% set rg_name =  _('[Unknown release group]') %}
     {% endif %}
@@ -42,7 +42,7 @@
     <script>
       $("img").last()
           .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-          .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
+          .attr("src", "//coverartarchive.org/release-group/{{ review.entity_id }}/front-250");
     </script>
 
     <div id="spotify-play-button">

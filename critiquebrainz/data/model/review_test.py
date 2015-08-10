@@ -33,7 +33,7 @@ class ReviewTestCase(DataTestCase):
         reviews = Review.query.all()
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0].id, review.id)
-        self.assertEqual(reviews[0].release_group, review.release_group)
+        self.assertEqual(reviews[0].entity_id, review.entity_id)
         self.assertEqual(reviews[0].license_id, review.license_id)
 
     def test_created_property(self):

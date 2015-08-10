@@ -39,7 +39,7 @@ def browse():
             raise NotFound(gettext("No reviews to display."))
 
     # Loading info about release groups for reviews
-    rg_mbids = [review.release_group for review in reviews]
+    rg_mbids = [review.entity_id for review in reviews]
     rg_info = musicbrainz.get_multiple_release_groups(rg_mbids)
 
     return render_template('review/browse.html', reviews=reviews, release_groups=rg_info,
