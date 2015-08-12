@@ -26,9 +26,11 @@
   {% endif %}
 </div>
 
-{% set place = event['place-relation-list'][0]['place']['name'] %}
-{% set lat = event['place-relation-list'][0]['place']['coordinates']['latitude'] | float %}
-{% set long = event['place-relation-list'][0]['place']['coordinates']['longitude'] | float %}
+{% set place = event['place-relation-list'][0]['place'] %}
+{% if place['coordinates'] %}
+  {% set lat = place['coordinates']['latitude'] | float %}
+  {% set long = place['coordinates']['longitude'] | float %}
+{% endif %}
 
 <div id="event-details" class="row">
   <div class="col-md-4">
@@ -43,9 +45,9 @@
         }).addTo(map);
 
       var popup = L.popup()
-        .setContent("<b>" + {{ _("Held At") | tojson }} + "</b><br> " + {{ place | tojson }});
+        .setContent("<b>" + {{ _("Held At") | tojson }} + "</b><br> " + {{ place['name'] | tojson }});
 
-      var marker = L.marker([{{ lat }}, {{ long }}])
+      var marker = L.marker([{{ lat | default(0) }}, {{ long | default(0) }}])
         .addTo(map)
         .bindPopup(popup)
         .openPopup();
