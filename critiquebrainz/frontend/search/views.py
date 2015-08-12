@@ -68,10 +68,10 @@ def selector_more():
     type = request.args.get('type')
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
-    if artist or release_group:
+    if type == 'release-group':
         count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
                                                            limit=RESULTS_LIMIT, offset=offset)
-    elif event:
+    elif type == 'event':
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT, offset=offset)
     else:
         count, results = 0, []
