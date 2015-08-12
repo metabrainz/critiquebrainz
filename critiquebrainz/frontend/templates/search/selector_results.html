@@ -24,6 +24,10 @@
     <td>
       {% if result['artist-relation-list'] %}
         {{ result['artist-relation-list'][0]['artist']['name'] or '-' }}
+        {% set count = result['artist-relation-list'] | length %}
+        {% if count > 1 %}
+          + {{ count - 1 }} {{ _("more") }}
+        {% endif %}
       {% else %}
         -
       {% endif %}
