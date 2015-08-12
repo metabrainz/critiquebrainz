@@ -1,0 +1,9 @@
+<a href="{{ url_for('review.entity', id=review.id) }}">
+  {% if review.entity_type == 'release_group' %}
+    {{ _('%(album)s by %(artist)s',
+    album = '<b>'|safe + entity.title | default(_('[Unknown release group]')) + '</b>'|safe,
+    artist = entity['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
+  {% elif review.entity_type == 'event' %}
+    {{ _('%(event)s', event = '<b>'|safe + entity.name | default(_('[Unknown event]')) + '</b>'|safe) }}
+  {% endif %}
+</a>
