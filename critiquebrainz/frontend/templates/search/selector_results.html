@@ -15,11 +15,17 @@
 
 {% elif type=="event" %}
   <tr>
-    <td>{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</td>
     <td>
       {{ result['name'] }}
       {% if result['disambiguation'] %}
         <span class="text-muted">({{ result['life-span']['begin'] }} - {{ result['life-span']['end'] }})</span>
+      {% endif %}
+    </td>
+    <td>
+      {% if result['artist-relation-list'] %}
+        {{ result['artist-relation-list'][0]['artist']['name'] or '-' }}
+      {% else %}
+        -
       {% endif %}
     </td>
     <td>

@@ -27,7 +27,13 @@
         <a href="{{ url_for('event.entity', id=result.id) }}">{{ result['name'] }}</a>
         {% if result['disambiguation'] %}<span class="text-muted">({{ result['life-span']['begin'] }} - {{ result['life-span']['end'] }})</span>{% endif %}
       </td>
-      <td>{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</td>
+      <td>
+        {% if result['artist-relation-list'] %}
+          {{ result['artist-relation-list'][0]['artist']['name'] or '-' }}
+        {% else %}
+          -
+        {% endif %}
+      </td>
     </tr>
 
   {% endif %}
