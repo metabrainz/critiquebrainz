@@ -8,8 +8,8 @@
 {% set event = review.entity_id | entity_details(type='event') %}
 
 {% block title %}
-{% set event_title = event.name | default(_('[Unknown event]')) %}
-{{ _('Review of "%(event)s" by %(user)s', event=event_title, user=review.user.display_name) }} - CritiqueBrainz
+  {% set event_title = event.name | default(_('[Unknown event]')) %}
+  {{ _('Review of "%(event)s" by %(user)s', event=event_title, user=review.user.display_name) }} - CritiqueBrainz
 {% endblock %}
 
 {% block entity_title %}

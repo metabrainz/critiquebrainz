@@ -43,7 +43,7 @@
         }).addTo(map);
 
       var popup = L.popup()
-        .setContent("<b>Held At</b><br> " + {{ place | tojson }})
+        .setContent("<b>" + {{ _("Held At") }} + "</b><br> " + {{ place | tojson }})
 
       var marker = L.marker([{{ lat }}, {{ long }}])
         .addTo(map)

@@ -6,7 +6,9 @@
   {% set entity_title = entity.name %}
 {% endif %}
 
-{% block title %} {{ _('Write review of "%(entity)s"', entity=entity_title) }} - CritiqueBrainz {% endblock %}
+{% block title %}
+  {{ _('Write review of "%(entity)s"', entity=entity_title) }} - CritiqueBrainz
+{% endblock %}
 
 {% block header %}
   <h2>{{ _('Write review') }}</h2>

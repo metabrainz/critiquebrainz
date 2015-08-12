@@ -3,8 +3,8 @@
 {% set release_group = review.entity_id | entity_details %}
 
 {% block title %}
-{% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
-{{ _('Review of "%(rg)s" by %(user)s', rg=release_group_title, user=review.user.display_name) }} - CritiqueBrainz
+  {% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
+  {{ _('Review of "%(rg)s" by %(user)s', rg=release_group_title, user=review.user.display_name) }} - CritiqueBrainz
 {% endblock %}
 
 {% block entity_title %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="review-entity">
-  {% block entity_title %} {% endblock %}
+  {% block entity_title %}{% endblock %}
 
   <div id="review-content" class="row">
     {% block sidebar %} {% endblock %}
@@ -28,16 +28,16 @@
 
       <hr />
 
-      <!-- Legal stuff -->
+      {# Legal stuff #}
       <small class="text-muted">
         {% if review.license.info_url %}
-        {% set license = '<a href="%s">%s</a>'|safe % (review.license.info_url, review.license.id ) %}
+          {% set license = '<a href="%s">%s</a>'|safe % (review.license.info_url, review.license.id ) %}
         {% else %}
-        {% set license = review.license.key %}
+          {% set license = review.license.key %}
         {% endif %}
         {{ _('This review is licensed under a %(name)s license.', name=license) }}
         {% if review.source %}
-        {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>'|safe % (review.source_url, review.source)) }}
+          {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>'|safe % (review.source_url, review.source)) }}
         {% endif %}
       </small>
 
@@ -92,7 +92,7 @@
         {% endif %}
       </div>
 
-      <!-- Sharing -->
+      {# Sharing #}
       {% if not review.is_draft %}
         {% include 'sharing.html' %}
       {% endif %}
