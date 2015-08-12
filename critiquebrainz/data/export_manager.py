@@ -78,18 +78,17 @@ def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
             license_dir = os.path.join(temp_dir, safe_name)
             create_path(license_dir)
 
-            # TODO(duffer): Make this work with all entity types
             # Finding release groups that have reviews with current license
             query = db.session.query(Review.entity_id).group_by(Review.entity_id)
-            for release_group in query.all():
-                release_group = release_group[0]
-                # Creating directory structure for release group and dumping reviews
-                rg_dir_part = os.path.join(release_group[0:1], release_group[0:2])
-                reviews = Review.list(release_group, license_id=license.id)[0]
+            for entity in query.all():
+                entity = entity[0]
+                # Creating directory structure and dumping reviews
+                dir_part = os.path.join(entity[0:1], entity[0:2])
+                reviews = Review.list(entity_id=entity, license_id=license.id)[0]
                 if len(reviews) > 0:
-                    rg_dir = '%s/%s' % (license_dir, rg_dir_part)
+                    rg_dir = '%s/%s' % (license_dir, dir_part)
                     create_path(rg_dir)
-                    f = open('%s/%s.json' % (rg_dir, release_group), 'w+')
+                    f = open('%s/%s.json' % (rg_dir, entity), 'w+')
                     f.write(jsonify(reviews=[r.to_dict() for r in reviews]).data)
                     f.close()
 
