@@ -29,6 +29,13 @@
       {% endif %}
     </td>
     <td>
+      {% if result['place-relation-list'] %}
+        {{ result['place-relation-list'][0]['place']['name'] or '-' }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
       <input type="radio" name="event" value="{{ result['id'] }}">
     </td>
   </tr>

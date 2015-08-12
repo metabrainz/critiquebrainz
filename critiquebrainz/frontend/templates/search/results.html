@@ -34,6 +34,13 @@
           -
         {% endif %}
       </td>
+      <td>
+        {% if result['place-relation-list'] %}
+          {{ result['place-relation-list'][0]['place']['name'] or '-' }}
+        {% else %}
+          -
+        {% endif %}
+      </td>
     </tr>
 
   {% endif %}
