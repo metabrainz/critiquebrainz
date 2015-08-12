@@ -12,6 +12,7 @@
         {% if (current_user.is_authenticated() and current_user == user) or current_user.is_admin() %}
           <th><!-- State --></th>
         {% endif %}
+        <th>{{ _('Type') }}</th>
         <th>{{ _('Entity') }}</th>
         <th>{{ _('Artist') }}</th>
         <th>{{ _('Created on') }}</th>
@@ -37,6 +38,7 @@
               {% endif %}
             </td>
           {% endif %}
+          <td>{{ review.entity_type | replace('_', ' ') | title }}</td>
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <td>
             {% if review.entity_type == 'release_group' %}
