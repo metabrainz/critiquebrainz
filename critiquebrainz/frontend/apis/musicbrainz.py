@@ -112,13 +112,13 @@ def get_release_group_by_id(id):
     return release_group
 
 
-def get_multiple_release_groups(mbids):
+def get_multiple_entities(entities):
     import multiprocessing.dummy as multiprocessing
-    return dict(multiprocessing.Pool(THREAD_POOL_PROCESSES).map(_get_rg, mbids))
+    return dict(multiprocessing.Pool(THREAD_POOL_PROCESSES).map(_get_entity, entities))
 
 
-def _get_rg(mbid):
-    return mbid, get_release_group_by_id(mbid)
+def _get_entity(entity):
+    return entity[0], get_entity_by_id(entity[0], type=entity[1])
 
 
 def get_release_by_id(id):
