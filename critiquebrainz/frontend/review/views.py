@@ -38,11 +38,11 @@ def browse():
         else:
             raise NotFound(gettext("No reviews to display."))
 
-    # Loading info about release groups for reviews
-    rg_mbids = [review.entity_id for review in reviews]
-    rg_info = musicbrainz.get_multiple_release_groups(rg_mbids)
+    # Loading info about entities for reviews
+    entities = [(review.entity_id, review.entity_type) for review in reviews]
+    entities_info = musicbrainz.get_multiple_entities(entities)
 
-    return render_template('review/browse.html', reviews=reviews, release_groups=rg_info,
+    return render_template('review/browse.html', reviews=reviews, entities=entities_info,
                            page=page, limit=limit, count=count)
 
 

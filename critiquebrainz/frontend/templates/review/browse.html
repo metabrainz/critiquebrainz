@@ -8,21 +8,25 @@
 
 <div id="reviews-browse" class="row">
   {% for review in reviews %}
-    {% set rg = release_groups[review.entity_id] %}
+    {% set entity = entities[review.entity_id] %}
     <div class="col-md-4 review">
       <div class="cover-art-container pull-left">
         <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
         <script>
           $("img").last()
               .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-              .attr("src", "//coverartarchive.org/release-group/{{ rg.id }}/front-250");
+              .attr("src", "//coverartarchive.org/release-group/{{ entity.id }}/front-250");
         </script>
       </div>
       <div class="album">
         <a href="{{ url_for('review.entity', id=review.id) }}">
-          {{ _('%(album)s by %(artist)s',
-          album = '<b>'|safe + rg.title | default(_('[Unknown release group]')) + '</b>'|safe,
-          artist = rg['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
+          {% if review.entity_type == 'release_group' %}
+            {{ _('%(album)s by %(artist)s',
+            album = '<b>'|safe + entity.title | default(_('[Unknown release group]')) + '</b>'|safe,
+            artist = entity['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
+          {% elif review.entity_type == 'event' %}
+            {{ _('%(event)s', event = '<b>'|safe + entity.name | default(_('[Unknown event]')) + '</b>'|safe) }}
+          {% endif %}
         </a>
       </div>
       <div class="reviewer">
