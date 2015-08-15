@@ -26,6 +26,7 @@ for lang in list(pycountry.languages):
 
 ENTITY_TYPES = [
     'event',
+    'place',
     'release_group',
 ]
 
