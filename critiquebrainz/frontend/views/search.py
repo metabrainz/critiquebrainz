@@ -12,6 +12,8 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_artists(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "event":
             count, results = musicbrainz.search_events(query, limit=RESULTS_LIMIT, offset=offset)
+        elif type == "place":
+            count, results = musicbrainz.search_places(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "release-group":
             count, results = musicbrainz.search_release_groups(query, limit=RESULTS_LIMIT, offset=offset)
         else:
