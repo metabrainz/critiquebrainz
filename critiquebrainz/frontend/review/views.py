@@ -62,7 +62,7 @@ def entity(id, rev=None):
 
     spotify_mappings = mbspotify.mappings(review.release_group)
 
-    revisions = Revision.query.filter_by(review=review)
+    revisions = Revision.query.filter_by(review=review).order_by(desc(Revision.timestamp))
     count = revisions.count()
     if not rev:
         rev = count
@@ -89,7 +89,7 @@ def compare(id):
     if review.is_hidden and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
 
-    revisions = Revision.query.filter_by(review=review)
+    revisions = Revision.query.filter_by(review=review).order_by(desc(Revision.timestamp))
     count = revisions.count()
     old, new = int(request.args.get('old')), int(request.args.get('new'))
     if old > count or new > count:
