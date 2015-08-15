@@ -91,7 +91,7 @@ def compare(id):
 
     revisions = Revision.query.filter_by(review=review).order_by(desc(Revision.timestamp))
     count = revisions.count()
-    old, new = int(request.args.get('old')), int(request.args.get('new'))
+    old, new = int(request.args.get('old') or count - 1), int(request.args.get('new') or count)
     if old > count or new > count:
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
     if old > new:
