@@ -85,6 +85,7 @@ def create_app(debug=None):
     from critiquebrainz.frontend.views.mapping import mapping_bp
     from critiquebrainz.frontend.views.user import user_bp
     from critiquebrainz.frontend.views.profile import profile_bp
+    from critiquebrainz.frontend.views.place import place_bp
     from critiquebrainz.frontend.views.profile_apps import profile_apps_bp
     from critiquebrainz.frontend.views.login import login_bp
     from critiquebrainz.frontend.views.oauth import oauth_bp
@@ -98,6 +99,7 @@ def create_app(debug=None):
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
     app.register_blueprint(release_bp, url_prefix='/release')
     app.register_blueprint(event_bp, url_prefix='/event')
+    app.register_blueprint(place_bp, url_prefix='/place')
     app.register_blueprint(mapping_bp, url_prefix='/mapping')
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(profile_bp, url_prefix='/profile')
