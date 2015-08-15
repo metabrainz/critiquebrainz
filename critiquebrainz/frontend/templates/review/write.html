@@ -2,7 +2,7 @@
 
 {% if entity_type == 'release_group' %}
   {% set entity_title = entity.title %}
-{% elif entity_type == 'event' %}
+{% elif entity_type in ['event', 'place'] %}
   {% set entity_title = entity.name %}
 {% endif %}
 
