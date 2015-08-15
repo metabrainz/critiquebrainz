@@ -45,6 +45,12 @@ def search_events(query='', limit=None, offset=None):
     return api_resp.get('event-count'), api_resp.get('event-list')
 
 
+def search_places(query='', limit=None, offset=None):
+    """Search for places."""
+    api_resp = musicbrainzngs.search_places(query=query, limit=limit, offset=offset)
+    return api_resp.get('place-count'), api_resp.get('place-list')
+
+
 def browse_release_groups(artist_id=None, release_types=None, limit=None, offset=None):
     """Get all release groups linked to an artist.
     You need to provide artist's MusicBrainz ID.
