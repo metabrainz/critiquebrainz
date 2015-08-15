@@ -168,10 +168,33 @@ def get_event_by_id(id):
     return event
 
 
+def get_place_by_id(id):
+    """Get event with the MusicBrainz ID.
+
+    Returns:
+        Event object with the following includes: artist-rels, place-rels, series-rels, url-rels.
+    """
+    key = cache.gen_key(id)
+    place = cache.get(key)
+    if not place:
+        try:
+            place = musicbrainzngs.get_place_by_id(
+                id, ['artist-rels', 'place-rels', 'release-group-rels', 'url-rels']).get('place')
+        except ResponseError as e:
+            if e.cause.code == 404:
+                return None
+            else:
+                raise InternalServerError(e.cause.msg)
+        cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
+    return place
+
+
 def get_entity_by_id(id, type='release_group'):
     """A wrapper to call the correct get_*_by_id function."""
     if type == 'release_group':
         rv = get_release_group_by_id(id)
     elif type == 'event':
         rv = get_event_by_id(id)
+    elif type == 'place':
+        rv = get_place_by_id(id)
     return rv
