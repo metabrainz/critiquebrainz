@@ -44,5 +44,21 @@
     </td>
   </tr>
 
+{% elif type=="place" %}
+  <tr>
+    <td>
+        {{ result['name'] }}
+    </td>
+    <td>
+      {{ result['type'] or '-' }}
+    </td>
+    <td>
+      {{ result['area']['name'] or '-' }}
+    </td>
+    <td>
+      <input type="radio" name="place" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
 {% endif %}
 {% endfor %}
