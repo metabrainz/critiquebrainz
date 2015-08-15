@@ -25,7 +25,10 @@ for lang in list(pycountry.languages):
     if 'alpha2' in dir(lang):
         supported_languages.append(lang.alpha2)
 
-ENTITY_TYPES = ['event', 'release_group']
+ENTITY_TYPES = [
+    'event',
+    'release_group',
+]
 
 
 class Review(db.Model, DeleteMixin):
