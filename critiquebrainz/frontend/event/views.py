@@ -1,3 +1,5 @@
+from itertools import groupby
+from operator import itemgetter
 from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
@@ -15,6 +17,10 @@ def entity(id):
     event = musicbrainz.get_event_by_id(id)
     if not event:
         raise NotFound(gettext("Sorry, we couldn't find a event with that MusicBrainz ID."))
+
+    if 'artist-relation-list' in event and event['artist-relation-list']:
+        artists_sorted = sorted(event['artist-relation-list'], key=itemgetter('type'))
+        event['artists_grouped'] = groupby(artists_sorted, itemgetter('type'))
 
     if current_user.is_authenticated():
         my_reviews, my_count = Review.list(entity_id=id, entity_type='event', user_id=current_user.id)
