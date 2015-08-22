@@ -7,7 +7,7 @@
   <div id="review-content" class="row">
     {% block sidebar %} {% endblock %}
 
-    <div class="col-md-9">
+    <div class="col-md-{% if lat %}9{% else %}12{% endif %}">
       <h3>{{ _('Review by %(user)s', user = ('<img class="avatar" src="%s&s=24" /> '|safe % review.user.avatar) + ('<a href="%s">'|safe % url_for('user.reviews', user_id=review.user.id)) + review.user.display_name + '</a>'|safe) }}</h3>
 
       {% if review.is_draft %}
