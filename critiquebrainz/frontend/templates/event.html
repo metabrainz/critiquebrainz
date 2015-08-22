@@ -26,35 +26,39 @@
   {% endif %}
 </div>
 
-{% set place = event['place-relation-list'][0]['place'] %}
-{% if place['coordinates'] %}
-  {% set lat = place['coordinates']['latitude'] | float %}
-  {% set long = place['coordinates']['longitude'] | float %}
+{% if event['place-relation-list'] %}
+  {% set place = event['place-relation-list'][0]['place'] %}
+  {% if place['coordinates'] %}
+    {% set lat = place['coordinates']['latitude'] | float %}
+    {% set long = place['coordinates']['longitude'] | float %}
+  {% endif %}
 {% endif %}
 
 <div id="event-details" class="row">
-  <div class="col-md-4">
-    <div id="map"></div>
-    <script>
-      L.Icon.Default.imagePath = '/static/img/';
-      var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
+  {% if lat %}
+    <div class="col-md-4">
+      <div id="map"></div>
+      <script>
+        L.Icon.Default.imagePath = '/static/img/';
+        var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
 
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-          attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        }).addTo(map);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          }).addTo(map);
 
-      var popup = L.popup()
-        .setContent("<b>" + {{ _("Held At") | tojson }} + "</b><br> " + {{ place['name'] | tojson }});
+        var popup = L.popup()
+          .setContent("<b>" + {{ _("Held At") | tojson }} + "</b><br> " + {{ place['name'] | tojson }});
 
-      var marker = L.marker([{{ lat | default(0) }}, {{ long | default(0) }}])
-        .addTo(map)
-        .bindPopup(popup)
-        .openPopup();
-    </script>
-  </div>
+        var marker = L.marker([{{ lat }}, {{ long }}])
+          .addTo(map)
+          .bindPopup(popup)
+          .openPopup();
+      </script>
+    </div>
+  {% endif %}
 
-  <div class="col-md-5">
+  <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
     <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
     {% if not reviews %}
       <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
