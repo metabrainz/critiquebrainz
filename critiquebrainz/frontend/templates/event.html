@@ -111,7 +111,7 @@
 
     {% if 'release_group-relation-list' in event %}
       {% for rg in event['release_group-relation-list'] %}
-          <p><b>{{ rg['type'] | title }} :</b> <a href="{{ url_for('release_group.entity', id=rg['target']) }}">{{ rg['release-group']['title'] }}</a></p>
+          <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['target']) }}">{{ rg['release-group']['title'] }}</a></p>
       {% endfor %}
     {% endif %}
 
