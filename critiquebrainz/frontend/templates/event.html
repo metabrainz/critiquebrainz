@@ -101,14 +101,6 @@
   <div class="col-md-3">
     <h4>{{ _('Event information') }}</h4>
 
-    {% if 'series-relation-list' in event %}
-      {% for series in event['series-relation-list'] %}
-        {% if series['series']['type'] == 'Event' %}
-          <p><b>{{ series['type'] | title }} :</b> <a href="{{ url_for('event.entity', id=series['target']) }}">{{ series['series']['name'] }}</a></p>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-
     {% if 'release_group-relation-list' in event %}
       {% for rg in event['release_group-relation-list'] %}
           <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['target']) }}">{{ rg['release-group']['title'] }}</a></p>
