@@ -1,16 +1,22 @@
 {% extends 'base.html' %}
 
-{% set release_group = review.entity_id | entity_details %}
-{% set rg_title = release_group.title | default(_('[Unknown release group]')) %}
+{% set entity = review.entity_id | entity_details(type=review.entity_type) %}
+{% if review.entity_type == 'release_group' %}
+  {% set entity_title = entity['title'] | default(_('[Unknown release group]')) %}
+{% elif review.entity_type == 'event' %}
+  {% set entity_title = entity['name'] | default(_('[Unknown event]')) %}
+{% endif %}
 
-{% block title %}{{ _('Delete review of %(release_group)s', release_group = rg_title) }} - CritiqueBrainz{% endblock %}
+{% block title %}
+  {{ _('Edit review of "%(entity)s"', entity=entity_title) }} - CritiqueBrainz
+{% endblock %}
 
 {% block content %}
   <h2>{{ _('Deleting review') }}</h2>
   <hr />
   <form method="POST" role="form">
     <div class="form-group">
-      <p class="lead">{{ _('Are you sure you want to delete your review of %(release_group)s?', release_group = rg_title) }}</p>
+      <p class="lead">{{ _('Are you sure you want to delete your review of "%(entity)s"?', entity=entity_title) }}</p>
       <p class="text-warning">{{ _('There is no way to undo this action!') }}</p>
     </div>
     <div class="form-group">
