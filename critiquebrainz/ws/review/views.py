@@ -142,8 +142,15 @@ def review_list_handler():
 
     :resheader Content-Type: *application/json*
     """
-    entity_id = Parser.uuid('uri', 'entity_id', optional=True)
-    entity_type = Parser.string('uri', 'entity_type', valid_values=ENTITY_TYPES, optional=True)
+    # TODO: This checking is added to keep old clients working and needs to be removed.
+    release_group = Parser.uuid('uri', 'release_group', optional=True)
+    if release_group:
+        entity_id = release_group
+        entity_type = 'release_group'
+    else:        
+        entity_id = Parser.uuid('uri', 'entity_id', optional=True)
+        entity_type = Parser.string('uri', 'entity_type', valid_values=ENTITY_TYPES, optional=True)
+
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     sort = Parser.string('uri', 'sort', valid_values=['rating', 'created'], optional=True)
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
