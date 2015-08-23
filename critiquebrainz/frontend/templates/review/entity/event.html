@@ -33,6 +33,7 @@
   {% if place['coordinates'] %}
     {% set lat = place['coordinates']['latitude'] | float %}
     {% set long = place['coordinates']['longitude'] | float %}
+    {% set sidebar_visible = True %}
   {% endif %}
 {% endif %}
 
