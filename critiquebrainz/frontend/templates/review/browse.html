@@ -8,23 +8,17 @@
 
 <div id="reviews-browse" class="row">
   {% for review in reviews %}
-    {% set rg = release_groups[review.release_group] %}
+    {% set entity = entities[review.entity_id] %}
     <div class="col-md-4 review">
       <div class="cover-art-container pull-left">
         <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
         <script>
           $("img").last()
               .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-              .attr("src", "//coverartarchive.org/release-group/{{ rg.id }}/front-250");
+              .attr("src", "//coverartarchive.org/release-group/{{ entity.id }}/front-250");
         </script>
       </div>
-      <div class="album">
-        <a href="{{ url_for('review.entity', id=review.id) }}">
-          {{ _('%(album)s by %(artist)s',
-          album = '<b>'|safe + rg.title | default(_('[Unknown release group]')) + '</b>'|safe,
-          artist = rg['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
-        </a>
-      </div>
+      <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
         <p>
           {{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}

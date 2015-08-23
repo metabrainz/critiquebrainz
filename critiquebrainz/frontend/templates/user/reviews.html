@@ -12,8 +12,9 @@
         {% if (current_user.is_authenticated() and current_user == user) or current_user.is_admin() %}
           <th><!-- State --></th>
         {% endif %}
+        <th>{{ _('Type') }}</th>
+        <th>{{ _('Entity') }}</th>
         <th>{{ _('Artist') }}</th>
-        <th>{{ _('Release group') }}</th>
         <th>{{ _('Created on') }}</th>
         <th>{{ _('Votes (+/-)') }}</th>
         <th></th>
@@ -21,7 +22,6 @@
       </thead>
       <tbody>
       {% for review in reviews %}
-        {% set release_group = review.release_group | release_group_details %}
         <tr data-review-id="{{ review.id }}">
           {% if current_user.is_authenticated() and current_user == user %}
             <td align="right">
@@ -38,11 +38,31 @@
               {% endif %}
             </td>
           {% endif %}
-          <td>{{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</td>
+          <td>{{ review.entity_type | replace('_', ' ') | title }}</td>
+          {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <td>
-            {{ release_group.title | default(_('[Unknown release group]')) }}
-            {% if release_group['first-release-date'] %}
-              <span class="text-muted">({{ release_group['first-release-date'][:4] }})</span>
+            {% if review.entity_type == 'release_group' %}
+              {{ entity.title | default(_('[Unknown release group]')) }}
+              {% if entity['first-release-date'] %}
+                <span class="text-muted">({{ entity['first-release-date'][:4] }})</span>
+              {% endif %}
+            {% elif review.entity_type == 'event' %}
+              {{ entity.name | default(_('[Unknown event]')) }}
+            {% endif %}
+          </td>
+          <td>
+            {% if review.entity_type == 'release_group' %}
+              {{ entity['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
+            {% elif review.entity_type == 'event' %}
+              {% if entity['artist-relation-list'] %}
+                {{ entity['artist-relation-list'][0]['artist']['name'] or '-' }}
+                {% set count = entity['artist-relation-list'] | length %}
+                {% if count > 1 %}
+                  + {{ count - 1 }} {{ _("more") }}
+                {% endif %}
+              {% else %}
+                -
+              {% endif %}
             {% endif %}
           </td>
           <td>{{ review.created | date }}</td>

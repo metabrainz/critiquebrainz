@@ -21,5 +21,31 @@
       <td>{{ result['primary-type'] or '-' }}</td>
     </tr>
 
+  {% elif type=="event" %}
+    <tr>
+      <td>
+        <a href="{{ url_for('event.entity', id=result.id) }}">{{ result['name'] }}</a>
+        {% if result['disambiguation'] %}<span class="text-muted">({{ result['life-span']['begin'] }} - {{ result['life-span']['end'] }})</span>{% endif %}
+      </td>
+      <td>
+        {% if result['artist-relation-list'] %}
+          {{ result['artist-relation-list'][0]['artist']['name'] or '-' }}
+          {% set count = result['artist-relation-list'] | length %}
+          {% if count > 1 %}
+            + {{ count - 1 }} {{ _("more") }}
+          {% endif %}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>
+        {% if result['place-relation-list'] %}
+          {{ result['place-relation-list'][0]['place']['name'] or '-' }}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+    </tr>
+
   {% endif %}
 {% endfor %}

@@ -1,59 +1,13 @@
 {% extends 'base.html' %}
 
-{% set release_group = review.release_group | release_group_details %}
-
-{% block title %}
-{% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
-{{ _('Review of "%(rg)s" by %(user)s', rg=release_group_title, user=review.user.display_name) }} - CritiqueBrainz
-{% endblock %}
-
 {% block content %}
 <div id="review-entity">
-  <h2 id="title">
-    {% if release_group %}
-      {% set rg_name = '<a href="%s">'|safe % url_for('release_group.entity', id=review.release_group) ~ release_group.title ~ '</a>'|safe %}
-    {% else %}
-      {% set rg_name =  _('[Unknown release group]') %}
-    {% endif %}
-
-    {% if release_group['artist-credit'] %}
-      {% set artist = [] %}
-      {% for credit in release_group['artist-credit'] %}
-        {% if credit.artist %}
-          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) + credit.artist.name + '</a>'|safe) %}
-        {% else %}
-          {% do artist.append(credit) %}
-        {% endif %}
-      {% endfor %}
-    {% else %}
-      {% set artist = _('[Unknown artist]') %}
-    {% endif %}
-
-    {{ _('%(album)s by %(artist)s', album = rg_name, artist = artist|join()) }}
-
-    {% if release_group['first-release-date'] %}
-      <small>{{ release_group['first-release-date'][:4] }}</small>
-    {% endif %}
-  </h2>
+  {% block entity_title %}{% endblock %}
 
   <div id="review-content" class="row">
-    <div id="sidebar" class="col-md-3">
-      <img id="cover-art" class="img-responsive">
-      <script>
-        $("img").last()
-            .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-            .attr("src", "//coverartarchive.org/release-group/{{ review.release_group }}/front-250");
-      </script>
+    {% block sidebar %} {% endblock %}
 
-      <div id="spotify-play-button">
-        {% if spotify_mappings %}
-          <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white"
-                width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-        {% endif %}
-      </div>
-    </div>
-
-    <div class="col-md-9">
+    <div class="col-md-{% if lat %}9{% else %}12{% endif %}">
       <h3>{{ _('Review by %(user)s', user = ('<img class="avatar" src="%s&s=24" /> '|safe % review.user.avatar) + ('<a href="%s">'|safe % url_for('user.reviews', user_id=review.user.id)) + review.user.display_name + '</a>'|safe) }}</h3>
 
       {% if review.is_draft %}
@@ -74,16 +28,16 @@
 
       <hr />
 
-      <!-- Legal stuff -->
+      {# Legal stuff #}
       <small class="text-muted">
         {% if review.license.info_url %}
-        {% set license = '<a href="%s">%s</a>'|safe % (review.license.info_url, review.license.id ) %}
+          {% set license = '<a href="%s">%s</a>'|safe % (review.license.info_url, review.license.id ) %}
         {% else %}
-        {% set license = review.license.key %}
+          {% set license = review.license.key %}
         {% endif %}
         {{ _('This review is licensed under a %(name)s license.', name=license) }}
         {% if review.source %}
-        {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>'|safe % (review.source_url, review.source)) }}
+          {{ _('It was imported from %(source)s.', source = '<a href="%s">%s</a>'|safe % (review.source_url, review.source)) }}
         {% endif %}
       </small>
 
@@ -138,7 +92,7 @@
         {% endif %}
       </div>
 
-      <!-- Sharing -->
+      {# Sharing #}
       {% if not review.is_draft %}
         {% include 'sharing.html' %}
       {% endif %}

@@ -25,13 +25,19 @@ for lang in list(pycountry.languages):
     if 'alpha2' in dir(lang):
         supported_languages.append(lang.alpha2)
 
+ENTITY_TYPES = [
+    'event',
+    'release_group',
+]
+
 
 class Review(db.Model, DeleteMixin):
     __tablename__ = 'review'
     CACHE_NAMESPACE = 'Review'
 
     id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
-    release_group = db.Column(UUID, index=True, nullable=False)
+    entity_id = db.Column(UUID, index=True, nullable=False)
+    entity_type = db.Column(db.Enum(*ENTITY_TYPES, name='entity_types'), nullable=False)
     user_id = db.Column(UUID, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     edits = db.Column(db.Integer, nullable=False, default=0)
     is_draft = db.Column(db.Boolean, nullable=False, default=False)
@@ -44,12 +50,13 @@ class Review(db.Model, DeleteMixin):
     revisions = db.relationship('Revision', order_by='Revision.timestamp', backref='review',
                                 cascade='delete')
 
-    __table_args__ = (db.UniqueConstraint('release_group', 'user_id'), )
+    __table_args__ = (db.UniqueConstraint('entity_id', 'user_id'), )
 
     def to_dict(self, confidential=False):
         return dict(
             id=self.id,
-            release_group=self.release_group,
+            entity_id=self.entity_id,
+            entity_type=self.entity_type,
             user=self.user.to_dict(confidential=confidential),
             text=self.text,
             created=self.revisions[0].timestamp,
@@ -134,8 +141,10 @@ class Review(db.Model, DeleteMixin):
         specific reviews. See argument description below for more info.
 
         Args:
-            release_group: MBID of the release group that is associated with a
+            entity_id: MBID of the entity that is associated with a
                 review.
+            entity_type: One of the supported reviewable entities. 'release_group'
+                or 'event' etc.
             user_id: UUID of the author.
             sort: Order of returned reviews. Can be either "rating" (order by
                 rating), or "created" (order by creation time).
@@ -163,9 +172,13 @@ class Review(db.Model, DeleteMixin):
 
         # FILTERING:
 
-        release_group = kwargs.pop('release_group', None)
-        if release_group is not None:
-            query = query.filter(Review.release_group == release_group)
+        entity_id = kwargs.pop('entity_id', None)
+        if entity_id is not None:
+            query = query.filter(Review.entity_id == entity_id)
+
+        entity_type = kwargs.pop('entity_type', None)
+        if entity_type is not None:
+            query = query.filter(Review.entity_type == entity_type)
 
         language = kwargs.pop('language', None)
         if language is not None:
@@ -237,8 +250,16 @@ class Review(db.Model, DeleteMixin):
 
     @classmethod
     def create(cls, **kwargs):
+        if 'release_group' in kwargs:
+            entity_id = kwargs.pop('release_group')
+            entity_type = 'release_group'
+        else:
+            entity_id = kwargs.pop('entity_id')
+            entity_type = kwargs.pop('entity_type')
+
         review = Review(
-            release_group=kwargs.pop('release_group'),
+            entity_id=entity_id,
+            entity_type=entity_type,
             user=kwargs.pop('user'),
             language=kwargs.pop('language', None),
             is_draft=kwargs.pop('is_draft', False),
@@ -318,7 +339,7 @@ class Review(db.Model, DeleteMixin):
             # choose the most popular.
             distinct_subquery = db.session.query(Review) \
                 .filter(Review.is_draft == False) \
-                .distinct(Review.release_group).subquery()
+                .distinct(Review.entity_id).subquery()
 
             # Randomizing results to get some variety
             rand_subquery = db.session.query(aliased(Review, distinct_subquery)) \

@@ -42,7 +42,7 @@ def entity(id):
                                                               limit=limit, offset=offset)
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
-        reviews, review_count = Review.list(release_group=release_group['id'], sort='created', limit=1)
+        reviews, review_count = Review.list(entity_id=release_group['id'], entity_type='release_group', sort='created', limit=1)
         release_group['review_count'] = review_count
     return render_template('artist.html', id=id, artist=artist, release_type=release_type,
                            release_groups=release_groups, page=page, limit=limit, count=count)

@@ -11,6 +11,7 @@ Requirements
 * ``postgresql-server-dev-9.1``
 * virtualenv
 * memcached
+* git
 
 How to start
 ------------

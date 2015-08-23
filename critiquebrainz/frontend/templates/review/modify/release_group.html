@@ -1,0 +1,26 @@
+{% if entity is not defined %}
+  {% set entity = review.entity_id | entity_details(type=entity_type) %}
+{% endif %}
+<div class="col-md-10">
+  <dl class="dl-horizontal">
+    <dt>{{ _('Artist') }}</dt><dd>{{ entity['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</dd>
+    <dt>{{ _('Release group') }}</dt>
+    <dd>
+      {{ entity['title'] | default(_('[Unknown release group]')) }}
+      {% if entity['first-release-date'] %}
+        <span class="text-muted">({{ entity['first-release-date'][:4] }})</span>
+      {% endif %}
+    </dd>
+    {% block more_info %}
+    {# Information like creation date, votes etc. #}
+    {% endblock %}
+  </dl>
+</div>
+<div class="col-md-2">
+  <img id="cover-art" class="img-responsive" style="max-height:120px;max-width:120px;">
+  <script>
+    $("img").last()
+        .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+        .attr("src", "//coverartarchive.org/release-group/{{ entity['id'] }}/front-250");
+  </script>
+</div>

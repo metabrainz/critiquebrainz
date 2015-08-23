@@ -14,7 +14,8 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.hacker = User.get_or_create(u"Hacker!", u"9371e5c7-5995-4471-a5a9-33481f897f9c")
         self.license = License.create(u"CC BY-SA 3.0", u"Created so we can fill the form correctly.")
         self.review = dict(
-            release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
             user=self.user,
             text="Testing! This text should be on the page.",
             is_draft=False,
@@ -65,7 +66,8 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def test_review_post(self):
         review = dict(
-            release_group=self.review['release_group'],
+            entity_id=self.review['entity_id'],
+            entity_type='release_group',
             text=self.review['text'],
             license_choice=self.license.id,
             language='en',

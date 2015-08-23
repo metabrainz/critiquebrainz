@@ -1,6 +1,14 @@
-{% extends 'review/modify.html' %}
+{% extends 'review/modify/base.html' %}
 
-{% block title %}{{ _('Write review of "%(rg)s"', rg=release_group.title) }} - CritiqueBrainz{% endblock %}
+{% if entity_type == 'release_group' %}
+  {% set entity_title = entity.title %}
+{% elif entity_type == 'event' %}
+  {% set entity_title = entity.name %}
+{% endif %}
+
+{% block title %}
+  {{ _('Write review of "%(entity)s"', entity=entity_title) }} - CritiqueBrainz
+{% endblock %}
 
 {% block header %}
   <h2>{{ _('Write review') }}</h2>

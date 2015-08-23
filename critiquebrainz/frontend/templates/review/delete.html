@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% set release_group = review.release_group | release_group_details %}
+{% set release_group = review.entity_id | entity_details %}
 {% set rg_title = release_group.title | default(_('[Unknown release group]')) %}
 
 {% block title %}{{ _('Delete review of %(release_group)s', release_group = rg_title) }} - CritiqueBrainz{% endblock %}

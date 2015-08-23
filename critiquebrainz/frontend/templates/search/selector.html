@@ -1,34 +1,75 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ _('Release group selection') }} - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Entity selection') }} - CritiqueBrainz{% endblock %}
+{% set type = request.args.get('type', default='release-group') %}
 
 {% block content %}
-<h3>{{ _('Release group selection') }}</h3>
+  <div id="content">
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+      <li {% if type=="release-group" %}class="active"{% endif %}>
+        <a href="#release-group" data-toggle="tab">Release Group</a>
+      </li>
+      <li {% if type=="event" %}class="active"{% endif %}>
+        <a href="#event" data-toggle="tab">Event</a>
+      </li>
+    </ul>
 
-<form method="GET" class="form-horizontal" role="form">
-  <div class="form-group">
-    <label for="input-artist" class="col-sm-2 control-label">{{ _('Artist') }}</label>
-    <div class="col-sm-4">
-      <input id="input-artist" class="form-control" name="artist" type="text"
-             value="{{ request.args.get('artist', default='') }}">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="input-release-group" class="col-sm-2 control-label">{{ _('Release group') }}</label>
-    <div class="col-sm-4">
-      <input id="input-release-group" class="form-control" name="release_group" type="text"
-             value="{{ request.args.get('release_group', default='') }}">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
-    </div>
-  </div>
-  <input type="hidden" name="next" value="{{ next }}" />
-</form>
+    <div class="tab-content">
+      <div id="release-group" class="tab-pane {% if type=="release-group" %}active{% endif %}">
+        <h3>{{ _('Release group selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-artist" class="col-sm-2 control-label">{{ _('Artist') }}</label>
+            <div class="col-sm-4">
+              <input id="input-artist" class="form-control" name="artist" type="text"
+                     value="{{ request.args.get('artist', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Release group') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="release_group" type="text"
+                     value="{{ request.args.get('release_group', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="release-group" />
+        </form>
+      </div>
 
-{% if request.args.get('artist', default=False) or request.args.get('release_group', default=False) %}
+      <div id="event" class="tab-pane {% if type=="event" %}active{% endif %}">
+        <h3>{{ _('Event selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Event') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="event" type="text"
+                     value="{{ request.args.get('event', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="event" />
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+{%
+  if request.args.get('artist', default=False)
+  or request.args.get('release_group', default=False)
+  or request.args.get('event', default=False)
+%}
   <hr />
   {% if not results %}
     <p class="lead" style="text-align: center;">{{ _('No results found') }}</p>
@@ -36,12 +77,21 @@
     <form action="{{ next }}" method="GET">
       <table class="table table-hover">
         <thead>
+        {% if type == "release-group" %}
           <tr>
             <th>{{ _('Artist') }}</th>
             <th>{{ _('Release group') }}</th>
             <th>{{ _('Type') }}</th>
             <th></th>
           </tr>
+        {% elif type == "event"  %}
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Artist') }}</th>
+            <th>{{ _('Location') }}</th>
+            <th></th>
+          </tr>
+        {% endif %}
         </thead>
         <tbody id="results">{% include 'search/selector_results.html' %}</tbody>
       </table>
@@ -74,16 +124,22 @@
         loading_message.show();
         $.ajax({
           url: "{{ url_for('search.selector_more') }}",
-          data: { artist: "{{ artist }}", release_group: "{{ release_group }}", page: ++current_page }
+          data: {
+            artist: "{{ artist }}",
+            release_group: "{{ release_group }}",
+            event: "{{ event }}",
+            type: "{{ type }}",
+            page: ++current_page
+          }
         })
-            .done(function(data) {
-              loading_message.hide();
-              $("#results").append(data.results);
-              if (data.more === true) more_button.show();
-            })
-            .fail(function() {
-              alert({{ _('Failed to load more search results!') | tojson }});
-            });
+        .done(function(data) {
+          loading_message.hide();
+          $("#results").append(data.results);
+          if (data.more === true) more_button.show();
+        })
+        .fail(function() {
+          alert({{ _('Failed to load more search results!') | tojson }});
+        });
       }
     </script>
   {% endblock %}

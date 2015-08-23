@@ -8,7 +8,7 @@ from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditFor
 from critiquebrainz.frontend.log.forms import AdminActionForm
 from critiquebrainz.frontend.apis import mbspotify, musicbrainz
 from critiquebrainz.frontend.login import admin_view
-from critiquebrainz.data.model.review import Review
+from critiquebrainz.data.model.review import Review, ENTITY_TYPES
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
 from critiquebrainz.data.model.vote import Vote
@@ -38,11 +38,11 @@ def browse():
         else:
             raise NotFound(gettext("No reviews to display."))
 
-    # Loading info about release groups for reviews
-    rg_mbids = [review.release_group for review in reviews]
-    rg_info = musicbrainz.get_multiple_release_groups(rg_mbids)
+    # Loading info about entities for reviews
+    entities = [(review.entity_id, review.entity_type) for review in reviews]
+    entities_info = musicbrainz.get_multiple_entities(entities)
 
-    return render_template('review/browse.html', reviews=reviews, release_groups=rg_info,
+    return render_template('review/browse.html', reviews=reviews, entities=entities_info,
                            page=page, limit=limit, count=count)
 
 
@@ -60,7 +60,9 @@ def entity(id, rev=None):
         else:
             flash(gettext("Review has been hidden."), 'warning')
 
-    spotify_mappings = mbspotify.mappings(review.release_group)
+    spotify_mappings = None
+    if review.entity_type == 'release_group':
+        spotify_mappings = mbspotify.mappings(review.entity_id)
 
     revisions = Revision.query.filter_by(review=review).order_by(desc(Revision.timestamp))
     count = revisions.count()
@@ -77,7 +79,7 @@ def entity(id, rev=None):
     else:  # otherwise set vote to None, its value will not be used
         vote = None
     review.text_html = markdown(revision.text, safe_mode="escape")
-    return render_template('review/entity.html', review=review, spotify_mappings=spotify_mappings, vote=vote)
+    return render_template('review/entity/%s.html' % review.entity_type, review=review, spotify_mappings=spotify_mappings, vote=vote)
 
 
 @review_bp.route('/<uuid:id>/revisions/compare')
@@ -150,9 +152,13 @@ def revisions_more(id):
 @review_bp.route('/write', methods=('GET', 'POST'))
 @login_required
 def create():
-    release_group = request.args.get('release_group')
-    if not release_group:
-        flash(gettext("Please choose release group that you want to review."))
+    for entity_type in ENTITY_TYPES:
+        entity_id = request.args.get(entity_type)
+        if entity_id:
+            break
+
+    if not entity_id:
+        flash(gettext("Please choose an entity to review."))
         return redirect(url_for('search.selector', next=url_for('.create')))
 
     if current_user.is_blocked:
@@ -160,10 +166,10 @@ def create():
                       "account has been blocked by a moderator."), 'error')
         return redirect(url_for('user.reviews', user_id=current_user.id))
 
-    # Checking if the user already wrote a review for this release group
-    review = Review.query.filter_by(user=current_user, release_group=release_group).first()
+    # Checking if the user already wrote a review for this entity
+    review = Review.query.filter_by(user=current_user, entity_id=entity_id).first()
     if review:
-        flash(gettext("You have already published a review for this album!"), 'error')
+        flash(gettext("You have already published a review for this entity!"), 'error')
         return redirect(url_for('review.entity', id=review.id))
 
     form = ReviewCreateForm(default_language=get_locale())
@@ -174,20 +180,20 @@ def create():
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
         is_draft = form.state.data == 'draft'
-        review = Review.create(user=current_user, release_group=release_group, text=form.text.data,
-                               license_id=form.license_choice.data, language=form.language.data,
-                               is_draft=is_draft)
+        review = Review.create(user=current_user, entity_id=entity_id, entity_type=entity_type,
+                               text=form.text.data, license_id=form.license_choice.data,
+                               language=form.language.data, is_draft=is_draft)
         if is_draft:
             flash(gettext("Review has been saved!"), 'success')
         else:
             flash(gettext("Review has been published!"), 'success')
         return redirect(url_for('.entity', id=review.id))
 
-    release_group_details = musicbrainz.get_release_group_by_id(release_group)
-    if not release_group_details:
-        flash(gettext("You can only write a review for a release group that exists on MusicBrainz!"), 'error')
+    entity = musicbrainz.get_entity_by_id(entity_id, entity_type)
+    if not entity:
+        flash(gettext("You can only write a review for an entity that exists on MusicBrainz!"), 'error')
         return redirect(url_for('search.selector', next=url_for('.create')))
-    return render_template('review/write.html', form=form, release_group=release_group_details)
+    return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity)
 
 
 @review_bp.route('/write/preview', methods=['POST'])
@@ -224,7 +230,7 @@ def edit(id):
         return redirect(url_for('.entity', id=review.id))
     else:
         form.text.data = review.text
-    return render_template('review/edit.html', form=form, review=review)
+    return render_template('review/edit.html', form=form, review=review, entity_type=review.entity_type)
 
 
 @review_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'])

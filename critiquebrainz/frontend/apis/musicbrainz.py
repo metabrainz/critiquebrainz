@@ -39,6 +39,12 @@ def search_artists(query='', limit=None, offset=None):
     return api_resp.get('artist-count'), api_resp.get('artist-list')
 
 
+def search_events(query='', limit=None, offset=None):
+    """Search for events."""
+    api_resp = musicbrainzngs.search_events(query=query, limit=limit, offset=offset)
+    return api_resp.get('event-count'), api_resp.get('event-list')
+
+
 def browse_release_groups(artist_id=None, release_types=None, limit=None, offset=None):
     """Get all release groups linked to an artist.
     You need to provide artist's MusicBrainz ID.
@@ -106,13 +112,13 @@ def get_release_group_by_id(id):
     return release_group
 
 
-def get_multiple_release_groups(mbids):
+def get_multiple_entities(entities):
     import multiprocessing.dummy as multiprocessing
-    return dict(multiprocessing.Pool(THREAD_POOL_PROCESSES).map(_get_rg, mbids))
+    return dict(multiprocessing.Pool(THREAD_POOL_PROCESSES).map(_get_entity, entities))
 
 
-def _get_rg(mbid):
-    return mbid, get_release_group_by_id(mbid)
+def _get_entity(entity):
+    return entity[0], get_entity_by_id(entity[0], type=entity[1])
 
 
 def get_release_by_id(id):
@@ -133,3 +139,33 @@ def get_release_by_id(id):
                 raise InternalServerError(e.cause.msg)
         cache.set(key=key, val=release, time=DEFAULT_CACHE_EXPIRATION)
     return release
+
+
+def get_event_by_id(id):
+    """Get event with the MusicBrainz ID.
+
+    Returns:
+        Event object with the following includes: artist-rels, place-rels, series-rels, url-rels.
+    """
+    key = cache.gen_key(id)
+    event = cache.get(key)
+    if not event:
+        try:
+            event = musicbrainzngs.get_event_by_id(
+                id, ['artist-rels', 'place-rels', 'series-rels', 'release-group-rels', 'url-rels']).get('event')
+        except ResponseError as e:
+            if e.cause.code == 404:
+                return None
+            else:
+                raise InternalServerError(e.cause.msg)
+        cache.set(key=key, val=event, time=DEFAULT_CACHE_EXPIRATION)
+    return event
+
+
+def get_entity_by_id(id, type='release_group'):
+    """A wrapper to call the correct get_*_by_id function."""
+    if type == 'release_group':
+        rv = get_release_group_by_id(id)
+    elif type == 'event':
+        rv = get_event_by_id(id)
+    return rv
