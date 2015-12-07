@@ -268,12 +268,7 @@ def vote_submit(review_id):
         flash(gettext("You are not allowed to rate this review because "
                       "your account has been blocked by a moderator."), 'error')
         return redirect(url_for('.entity', id=review_id))
-    if vote is True and current_user.user_type not in review.review_class.upvote:
-        flash(gettext("You are not allowed to rate this review."), 'error')
-        return redirect(url_for('.entity', id=review_id))
-    if vote is False and current_user.user_type not in review.review_class.downvote:
-        flash(gettext("You are not allowed to rate this review."), 'error')
-        return redirect(url_for('.entity', id=review_id))
+
     Vote.create(current_user, review, vote)  # overwrites an existing vote, if needed
 
     flash(gettext("You have rated this review!"), 'success')

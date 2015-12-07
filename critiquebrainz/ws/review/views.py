@@ -289,10 +289,6 @@ def review_vote_put_handler(review_id, user):
         raise InvalidRequest(desc='You cannot rate your own review.')
     if user.is_vote_limit_exceeded is True and user.has_voted(review) is False:
         raise LimitExceeded('You have exceeded your limit of votes per day.')
-    if vote is True and user.user_type not in review.review_class.upvote:
-        raise InvalidRequest(desc='You are not allowed to upvote this review.')
-    if vote is False and user.user_type not in review.review_class.downvote:
-        raise InvalidRequest(desc='You are not allowed to downvote this review.')
     Vote.create(user, review, vote)  # overwrites an existing vote, if needed
     return jsonify(message='Request processed successfully')
 

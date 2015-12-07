@@ -10,7 +10,6 @@ from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.mixins import DeleteMixin
-from critiquebrainz.data.constants import review_classes
 from critiquebrainz import cache
 from werkzeug.exceptions import BadRequest
 from flask_babel import gettext
@@ -106,18 +105,7 @@ class Review(db.Model, DeleteMixin):
     def votes_negative_count(self):
         return self.last_revision.votes_negative_count
 
-    @property
-    def review_class(self):
-        """Returns class of this review."""
 
-        def get_review_class(review):
-            for c in review_classes:
-                if c.is_instance(review) is True:
-                    return c
-
-        if hasattr(self, '_review_class') is False:
-            self._review_class = get_review_class(self)
-        return self._review_class
 
     @property
     def rating(self):
