@@ -68,7 +68,6 @@ class Review(db.Model, DeleteMixin):
             language=self.language,
             source=self.source,
             source_url=self.source_url,
-            review_class=self.review_class.label
         )
 
     @classmethod
