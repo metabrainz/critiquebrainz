@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 apt-get update
-apt-get install -y build-essential python-pip python-dev memcached curl
+apt-get install -y build-essential python-pip python-dev memcached curl git
 
 # PostgreSQL
 PG_VERSION=9.1
