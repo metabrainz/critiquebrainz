@@ -159,6 +159,12 @@
       <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.ico') }}" /></div>
       <a href="//musicbrainz.org/artist/{{ artist.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
+    <div id="cover-art-annotation">
+      <span class="text-muted">
+      Cover arts provided by
+      <a href="https://coverartarchive.org/">Cover Art Archive</a>
+      </span>
+    </div>
   </div>
 </div>
 {% endblock %}
