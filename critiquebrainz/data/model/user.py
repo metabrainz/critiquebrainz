@@ -19,7 +19,7 @@ class User(db.Model, AdminMixin, DeleteMixin):
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
     show_gravatar = db.Column(db.Boolean, nullable=False, server_default="False")
-    is_blocked = db.Column(db.Boolean, nullable=True, default=False)
+    is_blocked = db.Column(db.Boolean, nullable=False, default=False)
 
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
     clients = db.relationship('OAuthClient', cascade='delete', backref='user')
