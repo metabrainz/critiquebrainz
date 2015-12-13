@@ -11,7 +11,11 @@
       {% endif %}
     </dd>
     <dt>{{ _('Place') }}</dt>
-    <dd>{{ entity['place-relation-list'][0]['place']['name'] or '-' }}</dd>
+    {% if entity['place-relation-list'] is not defined %}
+      <dd>{{ _('Unknown place') }}</dd>
+    {% else %}
+      <dd>{{ entity['place-relation-list'][0]['place']['name']}}</dd>
+    {% endif %}
     {% block more_info %}
     {# Information like creation date, votes etc. #}
     {% endblock %}
