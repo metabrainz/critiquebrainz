@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-15 11:39+0000\n"
+"POT-Creation-Date: 2015-12-15 11:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1058,11 +1058,8 @@ msgid "No thanks"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/delete.html:3
-msgid "Delete account"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/profile/delete.html:6
-msgid "Deleting account"
+msgid "Delete account"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/delete.html:10
@@ -1085,12 +1082,9 @@ msgid "No"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/edit.html:3
+#: critiquebrainz/frontend/templates/profile/edit.html:6
 #: critiquebrainz/frontend/templates/user/base.html:12
 msgid "Edit profile"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/profile/edit.html:6
-msgid "Editing profile"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/edit.html:36
