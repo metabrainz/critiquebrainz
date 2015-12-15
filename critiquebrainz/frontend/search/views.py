@@ -8,23 +8,30 @@ RESULTS_LIMIT = 10
 
 
 def search_wrapper(query, type, offset=None,review_only=False):
-    if query:
+    if query and review_only == False:
         if type == "artist":
             count, results = musicbrainz.search_artists(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "event":
             count, results = musicbrainz.search_events(query, limit=RESULTS_LIMIT, offset=offset)
-        elif type == "release-group" and review_only is False:
+        elif type == "release-group":
             count, results = musicbrainz.search_release_groups(query, limit=RESULTS_LIMIT, offset=offset)
-        elif type == "release-group" and review_only is True:
+        else:
+            count, results = 0, []
+    elif query and review_only == True:
+        if type == "artist":
+            count, results = musicbrainz.search_artists(query)
+        elif type == "event":
+            count, results = musicbrainz.search_events(query)
+        elif type == "release-group":
             count, results = musicbrainz.search_release_groups(query)
         else:
             count, results = 0, []
     else:
         count, results = 0, []
-    if type == "release-group" and review_only is True :
+    if review_only is True and type!="artist" :
         fresults=[]
         for group in results:
-            if(Review.list(entity_id=group['id'],entity_type='release_group')[0]):
+            if(Review.list(entity_id=group['id'])[0]):
                 fresults.append(group)
         return len(fresults),fresults
     return count, results
@@ -39,7 +46,7 @@ def index():
     else:
         review_only=False;
     count, results = search_wrapper(query, type,review_only=review_only)
-    if(review_only == True and type=="release-group"):
+    if(review_only == True):
         return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=count)
     else:
         return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=RESULTS_LIMIT)
