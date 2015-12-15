@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PROJECT project.
 # 
 # Translators:
-# salorock <salo.rock@gmail.com>, 2014
+# salorock <salo.rock@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-03-30 00:20+0000\n"
-"PO-Revision-Date: 2015-03-30 10:06+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2015-11-07 00:55+0000\n"
+"Last-Translator: salorock <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/critiquebrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,7 +89,7 @@ msgstr "Login fallito."
 #: critiquebrainz/frontend/mapping/views.py:43
 #: critiquebrainz/frontend/mapping/views.py:68
 msgid "Only existing release groups can be mapped to Spotify!"
-msgstr ""
+msgstr "Solo i gruppi di pubblicazioni esistenti possono essere associati a Spotify!"
 
 #: critiquebrainz/frontend/mapping/views.py:73
 msgid "You need to select an album from Spotify!"
@@ -114,7 +114,7 @@ msgstr "Impossibile trovare un gruppo di pubblicazioni con quell'ID!"
 
 #: critiquebrainz/frontend/mapping/views.py:115
 msgid "This album is not mapped to Spotify yet!"
-msgstr ""
+msgstr "Questo album non è ancora associato a Spotify!"
 
 #: critiquebrainz/frontend/mapping/views.py:120
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
@@ -289,11 +289,11 @@ msgstr "Puoi scrivere una recensione solo per un gruppo di pubblicazioni esisten
 
 #: critiquebrainz/frontend/review/views.py:100
 msgid "Can't find a review with the specified ID."
-msgstr ""
+msgstr "Impossibile trovare una recensione con l'ID specificato."
 
 #: critiquebrainz/frontend/review/views.py:102
 msgid "Only author can edit this review."
-msgstr ""
+msgstr "Solo l'autore può modificare questa recensione."
 
 #: critiquebrainz/frontend/review/views.py:116
 msgid "Review has been updated."
@@ -301,7 +301,7 @@ msgstr "La recensione è stata aggiornata."
 
 #: critiquebrainz/frontend/review/views.py:128
 msgid "Only the author can delete this review."
-msgstr ""
+msgstr "Solo l'autore può eliminare questa recensione."
 
 #: critiquebrainz/frontend/review/views.py:131
 msgid "Review has been deleted."
@@ -445,7 +445,7 @@ msgstr "Membro da %(date)s"
 #: critiquebrainz/frontend/templates/artist.html:114
 #: critiquebrainz/frontend/templates/artist.html:133
 msgid "View all..."
-msgstr ""
+msgstr "Visualizza tutti..."
 
 #: critiquebrainz/frontend/templates/artist.html:122
 msgid "Former member of"
@@ -552,7 +552,7 @@ msgstr "Recensioni recenti"
 
 #: critiquebrainz/frontend/templates/index.html:93
 msgid "View all reviews..."
-msgstr ""
+msgstr "Visualizza tutte le recensioni..."
 
 #: critiquebrainz/frontend/templates/macros.html:3
 msgid "Error!"
@@ -640,7 +640,7 @@ msgstr "Disconnetti"
 
 #: critiquebrainz/frontend/templates/navbar.html:33
 msgid "Browse reviews"
-msgstr ""
+msgstr "Esplora le recensioni"
 
 #: critiquebrainz/frontend/templates/navbar.html:34
 msgid "Write a review"
@@ -678,11 +678,11 @@ msgstr "Gruppo di pubblicazioni"
 
 #: critiquebrainz/frontend/templates/errors/400.html:2
 msgid "Invalid request"
-msgstr ""
+msgstr "Richiesta non valida"
 
 #: critiquebrainz/frontend/templates/errors/403.html:2
 msgid "Access denied"
-msgstr ""
+msgstr "Accesso negato"
 
 #: critiquebrainz/frontend/templates/errors/404.html:2
 msgid "Page not found"
@@ -690,7 +690,7 @@ msgstr "Pagina non trovata"
 
 #: critiquebrainz/frontend/templates/errors/500.html:2
 msgid "Internal server error"
-msgstr ""
+msgstr "Errore interno del server"
 
 #: critiquebrainz/frontend/templates/errors/503.html:2
 msgid "Service unavailable"
@@ -712,11 +712,11 @@ msgstr "Accedi con MusicBrainz"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:3
 msgid "New Spotify mapping confirmation"
-msgstr ""
+msgstr "Conferma di nuova associazione con Spotify"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:6
 msgid "Spotify album mapping confirmation"
-msgstr ""
+msgstr "Conferma di associazione album con Spotify"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:8
 msgid "Are you sure you want to create a connection?"
@@ -758,7 +758,7 @@ msgstr "Segnala associazione sbagliata"
 #: critiquebrainz/frontend/templates/mapping/spotify.html:3
 #: critiquebrainz/frontend/templates/mapping/spotify.html:6
 msgid "Spotify album mapping"
-msgstr ""
+msgstr "Associazione album con Spotify"
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:14
 #, python-format
@@ -892,7 +892,7 @@ msgstr "Salva"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:41
 msgid "Delete my account"
-msgstr ""
+msgstr "Elimina il mio account"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:3
 #: critiquebrainz/frontend/templates/profile/applications/create.html:6
@@ -966,7 +966,7 @@ msgstr "Revoca accesso"
 
 #: critiquebrainz/frontend/templates/review/browse.html:7
 msgid "Ordered by creation date"
-msgstr ""
+msgstr "Ordinate per data di creazione"
 
 #: critiquebrainz/frontend/templates/review/delete.html:6
 #, python-format
@@ -1104,7 +1104,7 @@ msgid ""
 "            infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
 "            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
 "            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
-msgstr ""
+msgstr "Riconosci e confermi che le recensioni con cui contribuisci a CritiqueBrainz sono licenziate in base ai termini della licenza Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported o della licenza Creative Commons Attribuzione - Non commerciale - Condividi allo stesso modo, come da tua scelta qui sopra.\nConfermi che intendi licenziare il tuo contributo ai termini di questa licenza.\nAffermi e garantisci che possiedi o controlli tutti i diritti su questo contributo, che esso non infrange in nessun modo i diritti di terzi e che hai il permesso di usare e licenziare il contributo ai termini della licenza Creative Commons selezionata.\nInfine, concedi alla MetaBrainz Foundation il permesso di licenziare questo contenuto per usi commerciali al di fuori delle licenze Creative Commons al fine di sostenere le attività dell'organizzazione."
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"

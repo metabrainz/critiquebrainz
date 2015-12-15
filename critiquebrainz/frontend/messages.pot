@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-13 13:25+0530\n"
+"POT-Creation-Date: 2015-12-15 11:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1483,6 +1483,10 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/event.html:13
 msgid "Place"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/modify/event.html:15
+msgid "Unknown place"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/search/index.html:5
