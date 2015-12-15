@@ -28,11 +28,21 @@ def search_wrapper(query, type, offset=None,review_only=False):
             count, results = 0, []
     else:
         count, results = 0, []
-    if review_only is True and type!="artist" :
-        fresults=[]
-        for group in results:
-            if(Review.list(entity_id=group['id'])[0]):
-                fresults.append(group)
+    if review_only is True :
+        if type== "artist":
+             fresults=[]
+             for group in results:
+                 count, release_groups = musicbrainz.browse_release_groups(artist_id=group['id'], release_types=["album"])
+                 for release in release_groups:
+                     if(Review.list(entity_id=release['id'])[0]):
+                         fresults.append(group)
+                         break;    #we want atleast one review so that it qualifies to be in result
+             return len(fresults),fresults
+        if type== "event" or type== "release-group":
+            fresults=[]
+            for group in results:
+                if(Review.list(entity_id=group['id'])[0]):
+                    fresults.append(group)
         return len(fresults),fresults
     return count, results
 
