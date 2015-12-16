@@ -1,33 +1,78 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ _('Reviews') }} - CritiqueBrainz{% endblock %}
-
+{% set type = 'release-group' %}
 {% block content %}
 <h2>{{ _('Reviews') }}</h2>
 <p><em class="text-muted">{{ _('Ordered by creation date') }}</em></p>
 
-<div id="reviews-browse" class="row">
-  {% for review in reviews %}
-    {% set entity = entities[review.entity_id] %}
-    <div class="col-md-4 review">
-      <div class="cover-art-container pull-left">
-        <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
-        <script>
-          $("img").last()
-              .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-              .attr("src", "//coverartarchive.org/release-group/{{ entity.id }}/front-250");
-        </script>
-      </div>
-      <div class="album">{% include 'entity_review.html' %}</div>
-      <div class="reviewer">
-        <p>
-          {{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}
-          <br />{{ review.created | date }}
-        </p>
+<div id="content">
+  <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    {% if count_release_group > (page-1)*limit %}
+    <li {% if type=="release-group" %}class="active"{% endif %}>
+      <a href="#release-group" data-toggle="tab">Release Group</a>
+    </li>
+    {% endif %}
+    {% if count_event > (page-1)*limit %}
+    <li {% if type=="event" %}class="active"{% endif %}>
+      <a href="#event" data-toggle="tab">Event</a>
+    </li>
+    {% endif %}
+  </ul>
+  <div class="tab-content">
+    <div id="release-group" class="tab-pane {% if type=="release-group" %}active{% endif %}">
+      <h3>{{ _('Release groups') }}</h3>
+      <div id="reviews-browse" class="row">
+        {% for review in reviews_release_group %}
+          {% set entity = entities[review.entity_id] %}
+          <div class="col-md-4 review">
+            <div class="cover-art-container pull-left">
+              <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
+              <script>
+                $("img").last()
+                    .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+                    .attr("src", "//coverartarchive.org/release-group/{{ entity.id }}/front-250");
+              </script>
+            </div>
+            <div class="album">{% include 'entity_review.html' %}</div>
+            <div class="reviewer">
+              <p>
+                {{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}
+                <br />{{ review.created | date }}
+              </p>
+            </div>
+          </div>
+        {% endfor %}
       </div>
     </div>
-  {% endfor %}
+    <div id="event" class="tab-pane {% if type=="event" %}active{% endif %}">
+      <h3>{{ _('Events') }}</h3>
+      <div id="reviews-browse" class="row">
+        {% for review in reviews_event %}
+          {% set entity = entities[review.entity_id] %}
+          <div class="col-md-4 review">
+            <div class="cover-art-container pull-left">
+              <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
+              <script>
+                $("img").last()
+                    .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
+                    .attr("src", "//coverartarchive.org/release-group/{{ entity.id }}/front-250");
+              </script>
+            </div>
+            <div class="album">{% include 'entity_review.html' %}</div>
+            <div class="reviewer">
+              <p>
+                {{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}
+                <br />{{ review.created | date }}
+              </p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
 </div>
+
+
 
 {% if count > limit %}
   <div class="col-md-12">

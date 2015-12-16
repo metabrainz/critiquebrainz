@@ -30,20 +30,20 @@ def browse():
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
-    reviews, count = Review.list(sort='created', limit=limit, offset=offset)
-
-    if not reviews:
+    reviews_release_group, count_release_group = Review.list(sort='created', entity_type='release_group', limit=limit, offset=offset)
+    reviews_event, count_event = Review.list(sort='created', entity_type='event', limit=limit, offset=offset)
+    if not reviews_release_group:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count/limit))))
         else:
             raise NotFound(gettext("No reviews to display."))
 
     # Loading info about entities for reviews
-    entities = [(review.entity_id, review.entity_type) for review in reviews]
+    entities = [(review.entity_id, review.entity_type) for review in (reviews_release_group+reviews_event)]
     entities_info = musicbrainz.get_multiple_entities(entities)
 
-    return render_template('review/browse.html', reviews=reviews, entities=entities_info,
-                           page=page, limit=limit, count=count)
+    return render_template('review/browse.html', reviews_release_group=reviews_release_group, reviews_event=reviews_event, entities=entities_info,
+                           page=page, limit=limit, count_release_group=count_release_group, count_event=count_event , count=max(count_event,count_release_group))
 
 
 @review_bp.route('/<uuid:id>/revisions/<int:rev>')
