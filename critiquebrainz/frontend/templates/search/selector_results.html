@@ -23,7 +23,7 @@
     </td>
     <td>
       {% if result['artist-relation-list'] %}
-        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}
+        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
         {% set count = result['artist-relation-list'] | length %}
         {% if count > 1 %}
           + {{ count - 1 }} {{ _("more") }}
