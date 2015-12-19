@@ -2,9 +2,9 @@
 
 {% if type=="release-group" %}
   <tr>
-    <td><a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}">{{ result['artist-credit-phrase'] }}</a></td>
+    <td><a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit-phrase'] }}</a></td>
     <td>
-      <a href="{{ url_for('release_group.entity', id=result.id) }}">{{ result['title'] }}</a>
+      <a href="{{ url_for('release_group.entity', id=result.id) }}" target="_blank">{{ result['title'] }}</a>
       {% if result['disambiguation'] %}<span class="text-muted">({{ result['disambiguation'] }})</span>{% endif %}
     </td>
     <td>{{ result['primary-type'] or '-' }}</td>
@@ -16,14 +16,14 @@
 {% elif type=="event" %}
   <tr>
     <td>
-      <a href="{{ url_for('event.entity', id=result.id) }}">{{ result['name'] }}</a>
+      <a href="{{ url_for('event.entity', id=result.id) }}" target="_blank">{{ result['name'] }}</a>
       {% if result['disambiguation'] %}
         <span class="text-muted">({{ result['life-span']['begin'] }} - {{ result['life-span']['end'] }})</span>
       {% endif %}
     </td>
     <td>
       {% if result['artist-relation-list'] %}
-        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
         {% set count = result['artist-relation-list'] | length %}
         {% if count > 1 %}
           + {{ count - 1 }} {{ _("more") }}
