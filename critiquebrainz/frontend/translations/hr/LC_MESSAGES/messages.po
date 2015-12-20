@@ -1,33 +1,28 @@
-# Croatian translations for .
+# Translations template for PROJECT.
 # Copyright (C) 2015 ORGANIZATION
-# This file is distributed under the same license as the  project.
-#
+# This file is distributed under the same license as the PROJECT project.
+# 
 # Translators:
 # Chris_Kay_083, 2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version:  CritiqueBrainz\n"
+"Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-15 11:43+0000\n"
+"POT-Creation-Date: 2015-03-30 00:20+0000\n"
 "PO-Revision-Date: 2015-07-17 19:33+0000\n"
 "Last-Translator: Chris_Kay_083\n"
-"Language: hr\n"
-"Language-Team: Croatian "
-"(http://www.transifex.com/musicbrainz/critiquebrainz/language/hr/)\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"Language-Team: Croatian (http://www.transifex.com/musicbrainz/critiquebrainz/language/hr/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.1.1\n"
+"Generated-By: Babel 1.3\n"
+"Language: hr\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: critiquebrainz/frontend/apis/mbspotify.py:46
 msgid ""
-"Spotify mapping server is unavailable. You will not see an embedded "
-"player."
-msgstr ""
-"Spotifayev server za mapiranje nije dostupan. Nećete vidjeti ugrađeni "
-"svirač."
+"Spotify mapping server is unavailable. You will not see an embedded player."
+msgstr "Spotifayev server za mapiranje nije dostupan. Nećete vidjeti ugrađeni svirač."
 
 #: critiquebrainz/frontend/apis/relationships/artist.py:32
 #: critiquebrainz/frontend/apis/relationships/release_group.py:19
@@ -83,27 +78,9 @@ msgstr "Glazbeni studio"
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
 msgstr "Oprosti nismo mogli pronaći umjetnika s tim MusicBrainz ID."
 
-#: critiquebrainz/frontend/event/views.py:19
-#, fuzzy
-msgid "Sorry, we couldn't find a event with that MusicBrainz ID."
-msgstr "Oprosti nismo mogli pronaći umjetnika s tim MusicBrainz ID."
-
-#: critiquebrainz/frontend/log/forms.py:8
-#, fuzzy
-msgid "You need to sepicify a reason for taking this action."
-msgstr "Trebaš navesti točan link za ovaj album na Spotifyu!"
-
-#: critiquebrainz/frontend/log/views.py:16
-msgid "No logs to display."
-msgstr ""
-
-#: critiquebrainz/frontend/login/__init__.py:18
+#: critiquebrainz/frontend/login/__init__.py:16
 msgid "Please sign in to access this page."
 msgstr "Molimo Vas da se prijavite kako bi pristupili ovoj stranici"
-
-#: critiquebrainz/frontend/login/__init__.py:42
-msgid "You must be an administrator to view this page."
-msgstr ""
 
 #: critiquebrainz/frontend/login/views.py:32
 msgid "Login failed."
@@ -249,11 +226,6 @@ msgstr "Izbrisali ste aplikaciju."
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
 msgstr "Oprosti, nismo mogli pronaći izdavačku grupu s tim MusicBrainz ID."
 
-#: critiquebrainz/frontend/reports/views.py:43
-#, fuzzy
-msgid "Report has been archived."
-msgstr "Kritički osvrt je spremljen!"
-
 #: critiquebrainz/frontend/review/forms.py:34
 msgid "Text"
 msgstr "Tekst"
@@ -272,28 +244,21 @@ msgid ""
 "Allow commercial use of this review (<a "
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
 "target=\"_blank\">CC BY-SA 3.0 license</a>)"
-msgstr ""
-"Dopusti komercijalnu upotrebu ovog kritičkog osvrta (<a "
-"href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 "
-"license</a>)"
+msgstr "Dopusti komercijalnu upotrebu ovog kritičkog osvrta (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 license</a>)"
 
 #: critiquebrainz/frontend/review/forms.py:42
 msgid ""
-"Do not allow commercial use of this review, unless approved by MetaBrainz"
-" Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
-"sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
-msgstr ""
-"Ne dopusti komercijalnu upotrebu ovog kritičkog osvrta, osim ako nije "
-"odobren od strane zaklade MetaBrainz (<a "
-"href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\">CC BY-NC-SA "
-"3.0 license</a>)"
+"Do not allow commercial use of this review, unless approved by MetaBrainz "
+"Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
+"target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
+msgstr "Ne dopusti komercijalnu upotrebu ovog kritičkog osvrta, osim ako nije odobren od strane zaklade MetaBrainz (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\">CC BY-NC-SA 3.0 license</a>)"
 
 #: critiquebrainz/frontend/review/forms.py:44
 msgid "You need to choose a license!"
 msgstr "Trebate izabrati licencu!"
 
 #: critiquebrainz/frontend/review/forms.py:45
-#: critiquebrainz/frontend/templates/base.html:71
+#: critiquebrainz/frontend/templates/base.html:66
 msgid "Language"
 msgstr "Jezik"
 
@@ -301,158 +266,79 @@ msgstr "Jezik"
 msgid "You need to accept the license agreement!"
 msgstr "Trebate prihvatiti ugovor o licenci!"
 
-#: critiquebrainz/frontend/review/views.py:39
-#, fuzzy
-msgid "No reviews to display."
-msgstr "Nije pronađen nikakav kritički osvrt"
-
-#: critiquebrainz/frontend/review/views.py:56
-#: critiquebrainz/frontend/review/views.py:90
-#: critiquebrainz/frontend/review/views.py:211
-msgid "Can't find a review with the specified ID."
-msgstr "Nismo mogli pronaći kritički osvrt s tom ID oznakom"
-
-#: critiquebrainz/frontend/review/views.py:59
 #: critiquebrainz/frontend/review/views.py:61
-#: critiquebrainz/frontend/review/views.py:92
-#: critiquebrainz/frontend/review/views.py:119
-#: critiquebrainz/frontend/review/views.py:138
-#: critiquebrainz/frontend/review/views.py:215
-#: critiquebrainz/frontend/review/views.py:260
-#: critiquebrainz/frontend/review/views.py:283
-#: critiquebrainz/frontend/review/views.py:298
-#: critiquebrainz/frontend/review/views.py:340
-#, fuzzy
-msgid "Review has been hidden."
-msgstr "Kritički osvrt je ažuriran."
-
-#: critiquebrainz/frontend/review/views.py:72
-msgid "You are viewing an old revision, the review has been updated since then."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:74
-msgid "The revision you are looking for does not exist."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:98
-msgid "The revision(s) you are looking for does not exist."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:161
-#, fuzzy
-msgid "Please choose an entity to review."
-msgstr "Samo autor moze urediti ovaj kritički osvrt."
-
-#: critiquebrainz/frontend/review/views.py:165
-msgid ""
-"You are not allowed to write new reviews because your account has been "
-"blocked by a moderator."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:172
-#, fuzzy
-msgid "You have already published a review for this entity!"
+msgid "You have already published a review for this album!"
 msgstr "Već ste objavili  kritički osvrt za ovaj album!"
 
-#: critiquebrainz/frontend/review/views.py:179
+#: critiquebrainz/frontend/review/views.py:68
 msgid "You have exceeded your limit of reviews per day."
 msgstr "Premašili ste svoju dnevnu količinu kritičkih osvrta."
 
-#: critiquebrainz/frontend/review/views.py:187
+#: critiquebrainz/frontend/review/views.py:76
 msgid "Review has been saved!"
 msgstr "Kritički osvrt je spremljen!"
 
-#: critiquebrainz/frontend/review/views.py:189
+#: critiquebrainz/frontend/review/views.py:78
 msgid "Review has been published!"
 msgstr "Kritički osvrt je objavljen!"
 
-#: critiquebrainz/frontend/review/views.py:194
-#, fuzzy
-msgid "You can only write a review for an entity that exists on MusicBrainz!"
-msgstr ""
-"Možeš jedino pisati kritički osvrt za izdavačku grupu  koja postoji na "
-"MusicBrainz!"
+#: critiquebrainz/frontend/review/views.py:83
+msgid ""
+"You can only write a review for a release group that exists on MusicBrainz!"
+msgstr "Možeš jedino pisati kritički osvrt za izdavačku grupu  koja postoji na MusicBrainz!"
 
-#: critiquebrainz/frontend/review/views.py:213
+#: critiquebrainz/frontend/review/views.py:100
+msgid "Can't find a review with the specified ID."
+msgstr "Nismo mogli pronaći kritički osvrt s tom ID oznakom"
+
+#: critiquebrainz/frontend/review/views.py:102
 msgid "Only author can edit this review."
 msgstr "Samo autor moze urediti ovaj kritički osvrt."
 
-#: critiquebrainz/frontend/review/views.py:229
+#: critiquebrainz/frontend/review/views.py:116
 msgid "Review has been updated."
 msgstr "Kritički osvrt je ažuriran."
 
-#: critiquebrainz/frontend/review/views.py:241
-#, fuzzy
-msgid "Only the author or an admin can delete this review."
+#: critiquebrainz/frontend/review/views.py:128
+msgid "Only the author can delete this review."
 msgstr "Samo autor moze izbrisati ovaj kritički osvrt."
 
-#: critiquebrainz/frontend/review/views.py:244
+#: critiquebrainz/frontend/review/views.py:131
 msgid "Review has been deleted."
 msgstr "Kritički osvrt je izbrisan."
 
-#: critiquebrainz/frontend/review/views.py:262
+#: critiquebrainz/frontend/review/views.py:147
 msgid "You cannot rate your own review."
 msgstr "Ne možeš ocijeniti vlastiti kritički osvrt."
 
-#: critiquebrainz/frontend/review/views.py:265
+#: critiquebrainz/frontend/review/views.py:150
 msgid "You have exceeded your limit of votes per day."
 msgstr "Premašili ste svoju dnevnu količinu glasova."
 
-#: critiquebrainz/frontend/review/views.py:268
-msgid ""
-"You are not allowed to rate this review because your account has been "
-"blocked by a moderator."
-msgstr ""
+#: critiquebrainz/frontend/review/views.py:153
+#: critiquebrainz/frontend/review/views.py:156
+msgid "You are not allowed to rate this review."
+msgstr "Nemate dopuštenje za ocjenjivanje ovog kritičkog osvrta."
 
-#: critiquebrainz/frontend/review/views.py:274
+#: critiquebrainz/frontend/review/views.py:160
 msgid "You have rated this review!"
 msgstr "Ocijenili ste  ovaj kritički osvrt!"
 
-#: critiquebrainz/frontend/review/views.py:286
+#: critiquebrainz/frontend/review/views.py:170
 msgid "This review is not rated yet."
 msgstr "Ovaj kritički osvrt još nije ocjenjen."
 
-#: critiquebrainz/frontend/review/views.py:289
+#: critiquebrainz/frontend/review/views.py:173
 msgid "You have deleted your vote for this review!"
 msgstr "Izbrisali ste svoj glas za ovaj kritički osvrt!"
-
-#: critiquebrainz/frontend/review/views.py:300
-#, fuzzy
-msgid "You cannot report your own review."
-msgstr "Ne možeš ocijeniti vlastiti kritički osvrt."
-
-#: critiquebrainz/frontend/review/views.py:304
-msgid ""
-"You are not allowed to report this review because your account has been "
-"blocked by a moderator."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:311
-#, fuzzy
-msgid "You have already reported this review."
-msgstr "Ocijenili ste  ovaj kritički osvrt!"
-
-#: critiquebrainz/frontend/review/views.py:317
-#, fuzzy
-msgid "Review has been reported."
-msgstr "Kritički osvrt je ažuriran."
-
-#: critiquebrainz/frontend/review/views.py:330
-msgid "Review is already hidden."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:352
-#, fuzzy
-msgid "Review has been unhidden."
-msgstr "Kritički osvrt je ažuriran."
 
 #: critiquebrainz/frontend/templates/about.html:3
 msgid "About CritiqueBrainz"
 msgstr "O programu CritiqueBrainz"
 
 #: critiquebrainz/frontend/templates/about.html:6
-#: critiquebrainz/frontend/templates/base.html:61
-#: critiquebrainz/frontend/templates/navbar.html:38
+#: critiquebrainz/frontend/templates/base.html:60
+#: critiquebrainz/frontend/templates/navbar.html:35
 msgid "About"
 msgstr "O programu"
 
@@ -461,20 +347,11 @@ msgid "What is CritiqueBrainz?"
 msgstr "Što je CritiqueBrainz?"
 
 #: critiquebrainz/frontend/templates/about.html:10
-#, fuzzy
 msgid ""
-"<strong>CritiqueBrainz is a repository for Creative Commons licensed "
-"music reviews.</strong>\n"
-"  Here you can read what others have written about an album or event and "
-"write your own review!\n"
+"<strong>CritiqueBrainz is a repository for Creative Commons licensed music reviews.</strong>\n"
+"  Here you can read what others have written about an album or write your own review!\n"
 "  It is based on data from MusicBrainz - open music encyclopedia."
-msgstr ""
-"<strong> CritiqueBrainz je repozitorij za glazbene kritičke osvrte  koji "
-"su pod Creative Commons licencom</strong>\n"
-"\n"
-"Ovdje možete pročitati što su drugi napisali o albumu ili  možete "
-"napisati vlastiti kritički osvrt!\n"
-"Temelji se na podatcima iz MusicBrainz- otvorene glazbene enciklopedije."
+msgstr "<strong> CritiqueBrainz je repozitorij za glazbene kritičke osvrte  koji su pod Creative Commons licencom</strong>\n\nOvdje možete pročitati što su drugi napisali o albumu ili  možete napisati vlastiti kritički osvrt!\nTemelji se na podatcima iz MusicBrainz- otvorene glazbene enciklopedije."
 
 #: critiquebrainz/frontend/templates/about.html:15
 msgid "What is it for?"
@@ -482,80 +359,54 @@ msgstr "Koja mu je svrha?"
 
 #: critiquebrainz/frontend/templates/about.html:17
 msgid ""
-"Projects like Wikipedia and MusicBrainz are good at aggregating "
-"information about\n"
-"  music, but not suited for expressing opinions about it. That's not "
-"their purpose.\n"
+"Projects like Wikipedia and MusicBrainz are good at aggregating information about\n"
+"  music, but not suited for expressing opinions about it. That's not their purpose.\n"
 "  CritiqueBrainz fills the gap between music critics and raw data."
-msgstr ""
-"Projekti poput Wikipedije i MusicBrainza su dobri za prikupljanje "
-"podataka o\n"
-"glazbi, ali nisu prikladni za izražavanje mišljenja o glazbi. To nije "
-"njihova svrha.\n"
-"CritiqueBrainz popunjava prazninu između glazbenih kritičara i "
-"neobrađenih podataka."
+msgstr "Projekti poput Wikipedije i MusicBrainza su dobri za prikupljanje podataka o\nglazbi, ali nisu prikladni za izražavanje mišljenja o glazbi. To nije njihova svrha.\nCritiqueBrainz popunjava prazninu između glazbenih kritičara i neobrađenih podataka."
 
 #: critiquebrainz/frontend/templates/about.html:22
 msgid ""
-"This is an open platform. That means everyone - including you - can "
-"participate\n"
-"  and contribute. If you are good at writing and want to share your "
-"thoughts about\n"
-"  an album - feel free to write a new review. If that's not your thing "
-"and you just\n"
+"This is an open platform. That means everyone - including you - can participate\n"
+"  and contribute. If you are good at writing and want to share your thoughts about\n"
+"  an album - feel free to write a new review. If that's not your thing and you just\n"
 "  want to read opinions - that's fine too."
-msgstr ""
-"Ovo je otvorena platforma. To znači da svi, uključujući i tebe mogu "
-"sudjelovati\n"
-"i doprinijeti. Ako ti dobro ide pisanje i ako želiš podijeliti  svoje "
-"mišljenje o\n"
-"albumu - slobodno napiši novi kritički osvrt. Ako te to ne zanima i samo\n"
-"želiš čitati mišljenja- i to je uredu."
+msgstr "Ovo je otvorena platforma. To znači da svi, uključujući i tebe mogu sudjelovati\ni doprinijeti. Ako ti dobro ide pisanje i ako želiš podijeliti  svoje mišljenje o\nalbumu - slobodno napiši novi kritički osvrt. Ako te to ne zanima i samo\nželiš čitati mišljenja- i to je uredu."
 
 #: critiquebrainz/frontend/templates/about.html:28
 msgid ""
-"After reading a review you can mark it as useful or not. That will help "
-"other\n"
+"After reading a review you can mark it as useful or not. That will help other\n"
 "  music enthusiasts like you find good reviews."
-msgstr ""
-"Nakon što pročitaš kritički osvrt možeš ga označiti kao korisnog ili ne. "
-"To će pomoći drugim\n"
-"zaljubljenicima u glazbu poput tebe da pronađu dobre kritičke osvrte. "
+msgstr "Nakon što pročitaš kritički osvrt možeš ga označiti kao korisnog ili ne. To će pomoći drugim\nzaljubljenicima u glazbu poput tebe da pronađu dobre kritičke osvrte. "
 
-#: critiquebrainz/frontend/templates/artist.html:9
-#, python-format
-msgid "Member since %(date)s"
-msgstr "Član od %(date)s"
-
-#: critiquebrainz/frontend/templates/artist.html:31
+#: critiquebrainz/frontend/templates/artist.html:15
 msgid "Discography"
 msgstr "Diskografija"
 
-#: critiquebrainz/frontend/templates/artist.html:34
+#: critiquebrainz/frontend/templates/artist.html:18
 msgid "Albums"
 msgstr "Albumi"
 
-#: critiquebrainz/frontend/templates/artist.html:37
+#: critiquebrainz/frontend/templates/artist.html:21
 msgid "Singles"
 msgstr "Glazbeni singlovi"
 
-#: critiquebrainz/frontend/templates/artist.html:40
+#: critiquebrainz/frontend/templates/artist.html:24
 msgid "EPs"
 msgstr "EP-ovi"
 
-#: critiquebrainz/frontend/templates/artist.html:43
+#: critiquebrainz/frontend/templates/artist.html:27
 msgid "Broadcasts"
 msgstr "Emitiranja"
 
-#: critiquebrainz/frontend/templates/artist.html:46
+#: critiquebrainz/frontend/templates/artist.html:30
 msgid "Other releases"
 msgstr "Druga izdanja"
 
-#: critiquebrainz/frontend/templates/artist.html:50
+#: critiquebrainz/frontend/templates/artist.html:34
 msgid "No releases found"
 msgstr "Nisu pronađena nikakva izdanja"
 
-#: critiquebrainz/frontend/templates/artist.html:59
+#: critiquebrainz/frontend/templates/artist.html:43
 #, python-format
 msgid "%(num)d review"
 msgid_plural "%(num)d reviews"
@@ -563,192 +414,79 @@ msgstr[0] "%(num)d kritički osvrt"
 msgstr[1] "%(num)d kritički osvrti"
 msgstr[2] "%(num)d kritički osvrti"
 
-#: critiquebrainz/frontend/templates/artist.html:85
+#: critiquebrainz/frontend/templates/artist.html:69
 #: critiquebrainz/frontend/templates/mapping/spotify.html:45
-#: critiquebrainz/frontend/templates/review/browse.html:36
+#: critiquebrainz/frontend/templates/review/browse.html:42
 msgid "Previous"
 msgstr "prethodni"
 
-#: critiquebrainz/frontend/templates/artist.html:88
+#: critiquebrainz/frontend/templates/artist.html:72
 #: critiquebrainz/frontend/templates/mapping/spotify.html:48
-#: critiquebrainz/frontend/templates/review/browse.html:39
+#: critiquebrainz/frontend/templates/review/browse.html:45
 msgid "Next"
 msgstr "slijedeći  "
 
-#: critiquebrainz/frontend/templates/artist.html:98
+#: critiquebrainz/frontend/templates/artist.html:82
 msgid "Artist information"
 msgstr "Podatci o izvođaču"
 
-#: critiquebrainz/frontend/templates/artist.html:104
+#: critiquebrainz/frontend/templates/artist.html:88
 msgid "Member of"
 msgstr "Član"
 
-#: critiquebrainz/frontend/templates/artist.html:106
+#: critiquebrainz/frontend/templates/artist.html:90
 msgid "Members"
 msgstr "Članovi"
 
-#: critiquebrainz/frontend/templates/artist.html:115
-#: critiquebrainz/frontend/templates/artist.html:134
+#: critiquebrainz/frontend/templates/artist.html:98
+#, python-format
+msgid "Member since %(date)s"
+msgstr "Član od %(date)s"
+
+#: critiquebrainz/frontend/templates/artist.html:114
+#: critiquebrainz/frontend/templates/artist.html:133
 msgid "View all..."
 msgstr "Vidi sve..."
 
-#: critiquebrainz/frontend/templates/artist.html:123
+#: critiquebrainz/frontend/templates/artist.html:122
 msgid "Former member of"
 msgstr "Bivši član"
 
-#: critiquebrainz/frontend/templates/artist.html:125
+#: critiquebrainz/frontend/templates/artist.html:124
 msgid "Former members"
 msgstr "Bivši članovi"
 
-#: critiquebrainz/frontend/templates/artist.html:140
+#: critiquebrainz/frontend/templates/artist.html:139
 msgid "External links"
 msgstr "Vanjske poveznice"
 
-#: critiquebrainz/frontend/templates/artist.html:160
-#: critiquebrainz/frontend/templates/event.html:128
+#: critiquebrainz/frontend/templates/artist.html:159
 msgid "Edit on MusicBrainz"
 msgstr "Uredi na MusicBrainz"
 
-#: critiquebrainz/frontend/templates/base.html:62
+#: critiquebrainz/frontend/templates/base.html:61
 msgid "Blog"
 msgstr "Blog"
 
-#: critiquebrainz/frontend/templates/base.html:63
+#: critiquebrainz/frontend/templates/base.html:62
 msgid "Developers"
 msgstr "Razvojni programeri"
 
-#: critiquebrainz/frontend/templates/base.html:64
-#: critiquebrainz/frontend/templates/log/log.html:3
-#: critiquebrainz/frontend/templates/log/log.html:6
-msgid "Moderation log"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/base.html:66
-msgid "Reports"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:3
-#: critiquebrainz/frontend/templates/mapping/confirm.html:13
-#: critiquebrainz/frontend/templates/mapping/report.html:13
-#, python-format
-msgid "%(album)s by %(artist)s"
-msgstr "%(album)s od %(artist)s"
-
-#: critiquebrainz/frontend/templates/entity_review.html:4
-#: critiquebrainz/frontend/templates/log/action.html:5
-#: critiquebrainz/frontend/templates/reports/reports_results.html:9
-#: critiquebrainz/frontend/templates/review/delete.html:5
-#: critiquebrainz/frontend/templates/review/edit.html:5
-#: critiquebrainz/frontend/templates/review/report.html:4
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:9
-#: critiquebrainz/frontend/templates/user/reviews.html:45
-msgid "[Unknown release group]"
-msgstr "[Nepoznata izdavačka grupa]"
-
-#: critiquebrainz/frontend/templates/entity_review.html:5
-#: critiquebrainz/frontend/templates/reports/reports_results.html:11
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:6
-#: critiquebrainz/frontend/templates/user/reviews.html:55
-msgid "[Unknown artist]"
-msgstr "[Nepoznati umjetnik]"
-
-#: critiquebrainz/frontend/templates/entity_review.html:7
-#: critiquebrainz/frontend/templates/review/entity/event.html:23
-#, python-format
-msgid "%(event)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:7
-#: critiquebrainz/frontend/templates/review/delete.html:7
-#: critiquebrainz/frontend/templates/review/edit.html:7
-#: critiquebrainz/frontend/templates/review/entity/event.html:11
-#: critiquebrainz/frontend/templates/review/entity/event.html:20
-#: critiquebrainz/frontend/templates/review/modify/event.html:8
-#: critiquebrainz/frontend/templates/user/reviews.html:50
-#, fuzzy
-msgid "[Unknown event]"
-msgstr "[Nepoznati umjetnik]"
-
-#: critiquebrainz/frontend/templates/event.html:19
-#: critiquebrainz/frontend/templates/navbar.html:37
-msgid "Write a review"
-msgstr "Napiši kritički osvrt"
-
-#: critiquebrainz/frontend/templates/event.html:24
-#, fuzzy
-msgid "Edit my review"
-msgstr "Napiši kritički osvrt"
-
-#: critiquebrainz/frontend/templates/event.html:51
-#: critiquebrainz/frontend/templates/review/entity/event.html:54
-msgid "Held At"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/event.html:62
-#: critiquebrainz/frontend/templates/macros.html:27
-#: critiquebrainz/frontend/templates/review/browse.html:3
-#: critiquebrainz/frontend/templates/review/browse.html:6
-#: critiquebrainz/frontend/templates/user/base.html:24
-#: critiquebrainz/frontend/templates/user/info.html:36
-#: critiquebrainz/frontend/templates/user/reviews.html:3
-msgid "Reviews"
-msgstr "Kritički osvrti"
-
-#: critiquebrainz/frontend/templates/event.html:64
-#: critiquebrainz/frontend/templates/index.html:31
-#: critiquebrainz/frontend/templates/index.html:59
-#: critiquebrainz/frontend/templates/user/reviews.html:7
-msgid "No reviews found"
-msgstr "Nije pronađen nikakav kritički osvrt"
-
-#: critiquebrainz/frontend/templates/event.html:70
-#, fuzzy
-msgid "Published on"
-msgstr "Objavljeno"
-
-#: critiquebrainz/frontend/templates/event.html:71
-#: critiquebrainz/frontend/templates/review/edit.html:21
-#: critiquebrainz/frontend/templates/review/revisions.html:26
-#: critiquebrainz/frontend/templates/user/reviews.html:19
-msgid "Votes (+/-)"
-msgstr "Glasovi (+/-)"
-
-#: critiquebrainz/frontend/templates/event.html:79
-#, python-format
-msgid "by %(reviewer)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/event.html:106
-#, fuzzy
-msgid "Event information"
-msgstr "Opće informacije"
-
-#: critiquebrainz/frontend/templates/index.html:8
+#: critiquebrainz/frontend/templates/index.html:5
 msgid "Welcome to CritiqueBrainz!"
 msgstr "Dobrodošli u CritiqueBrainz!"
 
 #: critiquebrainz/frontend/templates/index.html:10
-#, fuzzy
 msgid ""
-"CritiqueBrainz is a repository for Creative Commons licensed music "
-"reviews.\n"
-"        Here you can read what other people have written about an album "
-"or event and write your own review!"
-msgstr ""
-"CritiqueBrainz je repozitorij za glazbene kritičke osvrte koji su pod "
-"Creative Commons licencom.\n"
-"Ovdje možete pročitati što su drugi napisali o albumu ili možete napisati"
-" vlastiti kritički osvrt! "
+"CritiqueBrainz is a repository for Creative Commons licensed music reviews.\n"
+"        Here you can read what other people have written about an album or write your own review!"
+msgstr "CritiqueBrainz je repozitorij za glazbene kritičke osvrte koji su pod Creative Commons licencom.\nOvdje možete pročitati što su drugi napisali o albumu ili možete napisati vlastiti kritički osvrt! "
 
 #: critiquebrainz/frontend/templates/index.html:14
 msgid ""
-"CritiqueBrainz is based on data from MusicBrainz - open music "
-"encyclopedia.\n"
+"CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
-msgstr ""
-"CritiqueBrainz se temelji na podatcima iz  MusicBrainz - otvorene "
-"glazbene enciklopedije.\n"
-"<br/> Svi - uključujući i tebe - mogu sudjelovati i doprinijeti"
+msgstr "CritiqueBrainz se temelji na podatcima iz  MusicBrainz - otvorene glazbene enciklopedije.\n<br/> Svi - uključujući i tebe - mogu sudjelovati i doprinijeti"
 
 #: critiquebrainz/frontend/templates/index.html:20
 #: critiquebrainz/frontend/templates/user/info.html:35
@@ -769,19 +507,51 @@ msgstr "Korisnici: %(users_count)s"
 msgid "Popular reviews"
 msgstr "Popularni kritički osvrti"
 
+#: critiquebrainz/frontend/templates/index.html:31
+#: critiquebrainz/frontend/templates/index.html:65
+#: critiquebrainz/frontend/templates/user/reviews.html:7
+msgid "No reviews found"
+msgstr "Nije pronađen nikakav kritički osvrt"
+
 #: critiquebrainz/frontend/templates/index.html:47
-#: critiquebrainz/frontend/templates/index.html:75
+#: critiquebrainz/frontend/templates/index.html:81
+#: critiquebrainz/frontend/templates/mapping/confirm.html:13
+#: critiquebrainz/frontend/templates/mapping/report.html:13
+#: critiquebrainz/frontend/templates/review/browse.html:23
+#, python-format
+msgid "%(album)s by %(artist)s"
+msgstr "%(album)s od %(artist)s"
+
+#: critiquebrainz/frontend/templates/index.html:48
+#: critiquebrainz/frontend/templates/index.html:82
 #: critiquebrainz/frontend/templates/review/browse.html:24
-#: critiquebrainz/frontend/templates/review/entity/base.html:11
+#: critiquebrainz/frontend/templates/review/delete.html:4
+#: critiquebrainz/frontend/templates/review/edit.html:6
+#: critiquebrainz/frontend/templates/review/edit.html:26
+#: critiquebrainz/frontend/templates/user/reviews.html:35
+msgid "[Unknown release group]"
+msgstr "[Nepoznata izdavačka grupa]"
+
+#: critiquebrainz/frontend/templates/index.html:49
+#: critiquebrainz/frontend/templates/index.html:83
+#: critiquebrainz/frontend/templates/review/browse.html:25
+#: critiquebrainz/frontend/templates/review/edit.html:23
+#: critiquebrainz/frontend/templates/user/reviews.html:33
+msgid "[Unknown artist]"
+msgstr "[Nepoznati umjetnik]"
+
+#: critiquebrainz/frontend/templates/index.html:53
+#: critiquebrainz/frontend/templates/index.html:87
+#: critiquebrainz/frontend/templates/review/browse.html:30
 #, python-format
 msgid "Review by %(user)s"
 msgstr "Kritički osvrti od strane %(user)s"
 
-#: critiquebrainz/frontend/templates/index.html:57
+#: critiquebrainz/frontend/templates/index.html:63
 msgid "Recent reviews"
 msgstr "Nedavni kritički osvrti"
 
-#: critiquebrainz/frontend/templates/index.html:81
+#: critiquebrainz/frontend/templates/index.html:93
 msgid "View all reviews..."
 msgstr "Vidi sve kritičke osvrte..."
 
@@ -813,12 +583,21 @@ msgstr "Profilni podatci"
 msgid "Create and modify your reviews."
 msgstr "Stvori i izmjeni svoje kritičke osvrte."
 
+#: critiquebrainz/frontend/templates/macros.html:27
+#: critiquebrainz/frontend/templates/review/browse.html:3
+#: critiquebrainz/frontend/templates/review/browse.html:6
+#: critiquebrainz/frontend/templates/user/base.html:16
+#: critiquebrainz/frontend/templates/user/info.html:36
+#: critiquebrainz/frontend/templates/user/reviews.html:3
+msgid "Reviews"
+msgstr "Kritički osvrti"
+
 #: critiquebrainz/frontend/templates/macros.html:29
 msgid "Modify your applications (create, edit, delete)."
 msgstr "Izmijeni  svoje aplikacije (stvori, uredi, izbriši)."
 
 #: critiquebrainz/frontend/templates/macros.html:29
-#: critiquebrainz/frontend/templates/navbar.html:29
+#: critiquebrainz/frontend/templates/navbar.html:27
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
 msgid "Applications"
@@ -826,12 +605,9 @@ msgstr "Aplikacije"
 
 #: critiquebrainz/frontend/templates/macros.html:32
 msgid ""
-"Manage access to your profile for other apps (can allow complete access "
-"to your profile and remove existing access authorizations)."
-msgstr ""
-"Upravljaj pristup tvom profilu  s drugih aplikacija (može dopustiti "
-"potpuni pristup tvom profilu i ukloniti postojeće autorizacije za "
-"pristup)."
+"Manage access to your profile for other apps (can allow complete access to "
+"your profile and remove existing access authorizations)."
+msgstr "Upravljaj pristup tvom profilu  s drugih aplikacija (može dopustiti potpuni pristup tvom profilu i ukloniti postojeće autorizacije za pristup)."
 
 #: critiquebrainz/frontend/templates/macros.html:32
 msgid "Authorization"
@@ -849,68 +625,61 @@ msgstr "Glasovi za kritički osvrt"
 msgid "Toggle navigation"
 msgstr "Uključi ili isključi navigaciju"
 
-#: critiquebrainz/frontend/templates/navbar.html:21
+#: critiquebrainz/frontend/templates/navbar.html:19
 #: critiquebrainz/frontend/templates/login/login.html:3
 #: critiquebrainz/frontend/templates/login/login.html:6
 msgid "Sign in"
 msgstr "Prijavi se"
 
-#: critiquebrainz/frontend/templates/navbar.html:28
+#: critiquebrainz/frontend/templates/navbar.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: critiquebrainz/frontend/templates/navbar.html:31
+#: critiquebrainz/frontend/templates/navbar.html:29
 msgid "Sign out"
 msgstr "Odjavi se"
 
-#: critiquebrainz/frontend/templates/navbar.html:36
+#: critiquebrainz/frontend/templates/navbar.html:33
 msgid "Browse reviews"
 msgstr "Pregledaj kritičke osvrte"
 
-#: critiquebrainz/frontend/templates/navbar.html:42
+#: critiquebrainz/frontend/templates/navbar.html:34
+msgid "Write a review"
+msgstr "Napiši kritički osvrt"
+
+#: critiquebrainz/frontend/templates/navbar.html:40
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
-#: critiquebrainz/frontend/templates/search/index.html:34
-#: critiquebrainz/frontend/templates/search/selector.html:37
-#: critiquebrainz/frontend/templates/search/selector.html:57
+#: critiquebrainz/frontend/templates/search/index.html:33
+#: critiquebrainz/frontend/templates/search/selector.html:25
 msgid "Search"
 msgstr "Pretraživanje"
 
-#: critiquebrainz/frontend/templates/navbar.html:46
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:6
+#: critiquebrainz/frontend/templates/navbar.html:44
+#: critiquebrainz/frontend/templates/review/edit.html:23
+#: critiquebrainz/frontend/templates/review/write.html:18
 #: critiquebrainz/frontend/templates/search/index.html:26
-#: critiquebrainz/frontend/templates/search/index.html:57
-#: critiquebrainz/frontend/templates/search/index.html:63
-#: critiquebrainz/frontend/templates/search/selector.html:22
-#: critiquebrainz/frontend/templates/search/selector.html:82
-#: critiquebrainz/frontend/templates/search/selector.html:90
-#: critiquebrainz/frontend/templates/user/reviews.html:17
+#: critiquebrainz/frontend/templates/search/index.html:56
+#: critiquebrainz/frontend/templates/search/selector.html:10
+#: critiquebrainz/frontend/templates/search/selector.html:40
+#: critiquebrainz/frontend/templates/user/reviews.html:13
 msgid "Artist"
 msgstr "Izvođač"
 
-#: critiquebrainz/frontend/templates/navbar.html:47
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:7
+#: critiquebrainz/frontend/templates/navbar.html:45
+#: critiquebrainz/frontend/templates/review/edit.html:24
+#: critiquebrainz/frontend/templates/review/write.html:19
 #: critiquebrainz/frontend/templates/search/index.html:27
-#: critiquebrainz/frontend/templates/search/index.html:62
-#: critiquebrainz/frontend/templates/search/selector.html:29
-#: critiquebrainz/frontend/templates/search/selector.html:83
+#: critiquebrainz/frontend/templates/search/index.html:55
+#: critiquebrainz/frontend/templates/search/selector.html:17
+#: critiquebrainz/frontend/templates/search/selector.html:41
+#: critiquebrainz/frontend/templates/user/reviews.html:14
 msgid "Release group"
 msgstr "Distribucijska grupa"
-
-#: critiquebrainz/frontend/templates/navbar.html:48
-#: critiquebrainz/frontend/templates/review/modify/event.html:6
-#: critiquebrainz/frontend/templates/search/index.html:28
-#: critiquebrainz/frontend/templates/search/selector.html:49
-msgid "Event"
-msgstr ""
 
 #: critiquebrainz/frontend/templates/errors/400.html:2
 msgid "Invalid request"
 msgstr "Neispravan zahtjev"
-
-#: critiquebrainz/frontend/templates/errors/401.html:2
-msgid "Unauthorized"
-msgstr ""
 
 #: critiquebrainz/frontend/templates/errors/403.html:2
 msgid "Access denied"
@@ -932,59 +701,11 @@ msgstr "Usluga nije dostupna"
 msgid "Back to home page"
 msgstr "Natrag na početnu stranicu"
 
-#: critiquebrainz/frontend/templates/log/action.html:7
-#, fuzzy, python-format
-msgid "Hide %(user)s's review of \"%(rg)s\""
-msgstr "Uredi kritički osvrt od \"%(rg)s\""
-
-#: critiquebrainz/frontend/templates/log/action.html:10
-#, fuzzy, python-format
-msgid "Block %(user)s"
-msgstr "Kritički osvrti od strane %(user)s"
-
-#: critiquebrainz/frontend/templates/log/action.html:32
-msgid "Please provide a reason for taking this action (required)"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/log/action.html:36
-#: critiquebrainz/frontend/templates/mapping/confirm.html:31
-#: critiquebrainz/frontend/templates/mapping/report.html:31
-#: critiquebrainz/frontend/templates/review/delete.html:24
-#: critiquebrainz/frontend/templates/review/report.html:27
-msgid "Cancel"
-msgstr "Odustani"
-
-#: critiquebrainz/frontend/templates/log/log.html:11
-msgid "Load older logs"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/log/log.html:13
-#, fuzzy
-msgid "Loading older logs..."
-msgstr "Učitavam još rezultata..."
-
-#: critiquebrainz/frontend/templates/log/log.html:38
-#, fuzzy
-msgid "Failed to load older logs!"
-msgstr "Nije uspjelo učitavanje  dodatnih rezultata pretraživanja!"
-
-#: critiquebrainz/frontend/templates/log/log_results.html:18
-#, python-format
-msgid "%(admin)s archived a %(review)s written by %(user)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/log/log_results.html:23
-#, python-format
-msgid "%(admin)s blocked %(user)s"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/login/login.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to"
-" access your profile data."
-msgstr ""
-"Kako bi se prijavili, koristite svoj MusicBrainz račun i dopustite "
-"CritiqueBrainzu pristup vašim profilnim podatcima."
+"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"access your profile data."
+msgstr "Kako bi se prijavili, koristite svoj MusicBrainz račun i dopustite CritiqueBrainzu pristup vašim profilnim podatcima."
 
 #: critiquebrainz/frontend/templates/login/login.html:11
 msgid "Sign in with MusicBrainz"
@@ -1016,6 +737,12 @@ msgstr "URI:"
 msgid "Connect"
 msgstr "Poveži"
 
+#: critiquebrainz/frontend/templates/mapping/confirm.html:31
+#: critiquebrainz/frontend/templates/mapping/report.html:31
+#: critiquebrainz/frontend/templates/review/delete.html:18
+msgid "Cancel"
+msgstr "Odustani"
+
 #: critiquebrainz/frontend/templates/mapping/report.html:3
 #: critiquebrainz/frontend/templates/mapping/report.html:6
 msgid "Incorrect mapping reporting"
@@ -1039,9 +766,7 @@ msgstr "Mapiranje albuma na Spotifyu"
 msgid ""
 "Please select the album %(album)s by %(artist)s, or provide a link to "
 "Spotify below."
-msgstr ""
-"Molimo odaberi album %(album)s od %(artist)s, ili ispod navedi link na "
-"Spotifyu. "
+msgstr "Molimo odaberi album %(album)s od %(artist)s, ili ispod navedi link na Spotifyu. "
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:34
 msgid "Listen on Spotify"
@@ -1053,11 +778,9 @@ msgstr "Nisu pronađeni slični albumi"
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:61
 msgid ""
-"If you can't find the right album in search results, you can paste a "
-"Spotify link there:"
-msgstr ""
-"Ako ne možete pronaći odgovarajući album u rezultatima pretrage, ovdje "
-"možeš zalijepiti link na Spotifyu:"
+"If you can't find the right album in search results, you can paste a Spotify"
+" link there:"
+msgstr "Ako ne možete pronaći odgovarajući album u rezultatima pretrage, ovdje možeš zalijepiti link na Spotifyu:"
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:64
 msgid "Spotify URI or HTTP link"
@@ -1070,24 +793,18 @@ msgstr "Podnesi"
 #: critiquebrainz/frontend/templates/mapping/spotify.html:69
 #, python-format
 msgid "A Spotify link should look like %(uri_example)s or %(link_example)s."
-msgstr ""
-"Spotify link bi trebao izgledati ovako %(uri_example)s ili "
-"%(link_example)s."
+msgstr "Spotify link bi trebao izgledati ovako %(uri_example)s ili %(link_example)s."
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:79
 msgid ""
-"It's fine if you can't find the right album. It might not be available on"
-" Spotify yet."
-msgstr ""
-"Uredu je ako ne možete pronaći odgovarajući album. Možda još nije "
-"dostupan na Spotifyu."
+"It's fine if you can't find the right album. It might not be available on "
+"Spotify yet."
+msgstr "Uredu je ako ne možete pronaći odgovarajući album. Možda još nije dostupan na Spotifyu."
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:80
 #, python-format
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
-msgstr ""
-"Možete <a href=\"%(link)s\"> se vratiti natrag na stranicu distribucijske"
-" grupe </a>."
+msgstr "Možete <a href=\"%(link)s\"> se vratiti natrag na stranicu distribucijske grupe </a>."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
@@ -1105,9 +822,7 @@ msgstr "Možete opozovati odluku u bilo koje doba u postavkama svog profila."
 #: critiquebrainz/frontend/templates/oauth/prompt.html:15
 #: critiquebrainz/frontend/templates/profile/applications/index.html:20
 #: critiquebrainz/frontend/templates/profile/applications/index.html:54
-#: critiquebrainz/frontend/templates/search/index.html:49
-#: critiquebrainz/frontend/templates/search/index.html:56
-#: critiquebrainz/frontend/templates/search/selector.html:89
+#: critiquebrainz/frontend/templates/search/index.html:48
 msgid "Name"
 msgstr "Ime"
 
@@ -1120,8 +835,8 @@ msgstr "web stranica"
 #: critiquebrainz/frontend/templates/oauth/prompt.html:23
 #, python-format
 msgid ""
-"%(client)s is requesting permission to access the following parts of your"
-" profile:"
+"%(client)s is requesting permission to access the following parts of your "
+"profile:"
 msgstr "%(client)s traži odobrenje za pristup slijedećim dijelovima tvog profila:"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:30
@@ -1138,9 +853,12 @@ msgid "No thanks"
 msgstr "Ne hvala"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:3
-#: critiquebrainz/frontend/templates/profile/delete.html:6
 msgid "Delete account"
 msgstr "Izbriši račun"
+
+#: critiquebrainz/frontend/templates/profile/delete.html:6
+msgid "Deleting account"
+msgstr "Brisanje računa"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:10
 msgid "Are you sure you want to delete your account?"
@@ -1150,24 +868,24 @@ msgstr "Jeste li sigurni da želite izbrisati vaš račun?"
 msgid ""
 "All your data (i.e. reviews, votes, reports) will be purged. You "
 "<strong>cannot</strong> undo this action."
-msgstr ""
-"Svi vaši podatci (npr. kritički osvrti, glasovi, izvješća) bit će "
-"izbrisani. Vi <strong>ne možete</strong> poništiti ovaj čin."
+msgstr "Svi vaši podatci (npr. kritički osvrti, glasovi, izvješća) bit će izbrisani. Vi <strong>ne možete</strong> poništiti ovaj čin."
 
 #: critiquebrainz/frontend/templates/profile/delete.html:14
 msgid "Yes, I want to delete my account"
 msgstr "Da, želim izbrisati svoj račun"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:15
-#: critiquebrainz/frontend/templates/review/entity/base.html:55
 msgid "No"
 msgstr "Ne"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:3
-#: critiquebrainz/frontend/templates/profile/edit.html:6
-#: critiquebrainz/frontend/templates/user/base.html:12
+#: critiquebrainz/frontend/templates/user/base.html:10
 msgid "Edit profile"
 msgstr "Uredi profil"
+
+#: critiquebrainz/frontend/templates/profile/edit.html:6
+msgid "Editing profile"
+msgstr "Uređivanje profila"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:36
 msgid "Save"
@@ -1218,7 +936,7 @@ msgid "Modify"
 msgstr "Izmijeni"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:36
-#: critiquebrainz/frontend/templates/user/reviews.html:74
+#: critiquebrainz/frontend/templates/user/reviews.html:46
 msgid "Delete"
 msgstr "Izbriši"
 
@@ -1247,359 +965,147 @@ msgstr "Nema posebnih  uvjeta"
 msgid "Revoke access"
 msgstr "Ukini pristup"
 
-#: critiquebrainz/frontend/templates/reports/reports.html:3
-#: critiquebrainz/frontend/templates/reports/reports.html:6
-#, fuzzy
-msgid "Recent reports"
-msgstr "Nedavni kritički osvrti"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:25
-#, fuzzy
-msgid "Reported on"
-msgstr "Stvoren"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:26
-msgid "Reported by"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/reports/reports.html:27
-#, fuzzy
-msgid "Reason"
-msgstr "Stvoren"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:28
-#, fuzzy
-msgid "Review"
-msgstr "Pretpregled  "
-
-#: critiquebrainz/frontend/templates/reports/reports.html:29
-msgid "Author"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/reports/reports.html:30
-#, fuzzy
-msgid "Actions"
-msgstr "Aplikacije"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:38
-#, fuzzy
-msgid "Load older reports"
-msgstr "učitaj još rezultata "
-
-#: critiquebrainz/frontend/templates/reports/reports.html:40
-#, fuzzy
-msgid "Loading older reports..."
-msgstr "Učitavam još rezultata..."
-
-#: critiquebrainz/frontend/templates/reports/reports.html:65
-#, fuzzy
-msgid "Failed to load older reports!"
-msgstr "Nije uspjelo učitavanje  dodatnih rezultata pretraživanja!"
-
-#: critiquebrainz/frontend/templates/reports/reports_results.html:34
-msgid "Read latest revision"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/review/browse.html:7
 msgid "Ordered by creation date"
 msgstr "Slozeno po datumu nastanka"
 
-#: critiquebrainz/frontend/templates/review/compare.html:3
-msgid "Difference between revisions"
-msgstr ""
+#: critiquebrainz/frontend/templates/review/delete.html:6
+#, python-format
+msgid "Delete review of %(release_group)s"
+msgstr "Izbriši kritički osvrt od %(release_group)s"
 
-#: critiquebrainz/frontend/templates/review/compare.html:9
-#: critiquebrainz/frontend/templates/review/compare.html:16
-#, fuzzy
-msgid "Revision"
-msgstr "prethodni"
-
-#: critiquebrainz/frontend/templates/review/compare.html:10
-#: critiquebrainz/frontend/templates/review/compare.html:17
-msgid "as of"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/delete.html:11
-#: critiquebrainz/frontend/templates/review/edit.html:11
-#, fuzzy, python-format
-msgid "Edit review of \"%(entity)s\""
-msgstr "Uredi kritički osvrt od \"%(rg)s\""
-
-#: critiquebrainz/frontend/templates/review/delete.html:15
+#: critiquebrainz/frontend/templates/review/delete.html:9
 msgid "Deleting review"
 msgstr "Brisanje kritičkog osvrta"
 
-#: critiquebrainz/frontend/templates/review/delete.html:19
-#, fuzzy, python-format
-msgid "Are you sure you want to delete your review of \"%(entity)s\"?"
-msgstr ""
-"Jeste li sigurni da želite izbrisati svoj kritički osvrt "
-"%(release_group)s?"
+#: critiquebrainz/frontend/templates/review/delete.html:13
+#, python-format
+msgid "Are you sure you want to delete your review of %(release_group)s?"
+msgstr "Jeste li sigurni da želite izbrisati svoj kritički osvrt %(release_group)s?"
 
-#: critiquebrainz/frontend/templates/review/delete.html:20
+#: critiquebrainz/frontend/templates/review/delete.html:14
 msgid "There is no way to undo this action!"
 msgstr "Ne postoji način da se poništi ova radnja!"
 
-#: critiquebrainz/frontend/templates/review/delete.html:23
+#: critiquebrainz/frontend/templates/review/delete.html:17
 msgid "Delete review"
 msgstr "Izbriši kritički osvrt"
 
-#: critiquebrainz/frontend/templates/review/edit.html:15
+#: critiquebrainz/frontend/templates/review/edit.html:7
+#, python-format
+msgid "Edit review of \"%(rg)s\""
+msgstr "Uredi kritički osvrt od \"%(rg)s\""
+
+#: critiquebrainz/frontend/templates/review/edit.html:11
 msgid "Editing review"
 msgstr "Uređivanje kritičkog osvrta"
 
-#: critiquebrainz/frontend/templates/review/edit.html:19
-#: critiquebrainz/frontend/templates/review/revisions.html:25
-#: critiquebrainz/frontend/templates/user/reviews.html:18
+#: critiquebrainz/frontend/templates/review/edit.html:31
+#: critiquebrainz/frontend/templates/user/reviews.html:15
 msgid "Created on"
 msgstr "Stvoren"
 
-#: critiquebrainz/frontend/templates/review/edit.html:23
+#: critiquebrainz/frontend/templates/review/edit.html:33
+#: critiquebrainz/frontend/templates/user/reviews.html:16
+msgid "Votes (+/-)"
+msgstr "Glasovi (+/-)"
+
+#: critiquebrainz/frontend/templates/review/edit.html:35
 msgid "Status"
 msgstr "Status"
 
-#: critiquebrainz/frontend/templates/review/edit.html:26
-#: critiquebrainz/frontend/templates/user/reviews.html:29
+#: critiquebrainz/frontend/templates/review/edit.html:38
+#: critiquebrainz/frontend/templates/user/reviews.html:27
 msgid "Draft"
 msgstr "Nacrt"
 
-#: critiquebrainz/frontend/templates/review/edit.html:28
-#: critiquebrainz/frontend/templates/user/reviews.html:31
+#: critiquebrainz/frontend/templates/review/edit.html:40
+#: critiquebrainz/frontend/templates/user/reviews.html:29
 msgid "Published"
 msgstr "Objavljeno"
 
-#: critiquebrainz/frontend/templates/review/edit.html:35
-#: critiquebrainz/frontend/templates/review/write.html:37
-msgid "Publish"
-msgstr "Objavi"
-
-#: critiquebrainz/frontend/templates/review/edit.html:36
-#: critiquebrainz/frontend/templates/review/write.html:38
-msgid "Save draft"
-msgstr "Sačuvaj nacrt"
-
-#: critiquebrainz/frontend/templates/review/edit.html:38
-msgid "Update"
-msgstr "Ažuriranje"
-
-#: critiquebrainz/frontend/templates/review/edit.html:40
-msgid "Discard changes"
-msgstr "Zanemari promjene"
-
-#: critiquebrainz/frontend/templates/review/edit.html:41
-#: critiquebrainz/frontend/templates/review/entity/base.html:77
-#, fuzzy
-msgid "Delete this review"
-msgstr "Izbriši kritički osvrt"
-
-#: critiquebrainz/frontend/templates/review/report.html:6
-#: critiquebrainz/frontend/templates/review/report.html:9
-#, fuzzy, python-format
-msgid "Report %(user)s's review of \"%(rg)s\""
-msgstr "Napiši kritički osvrt o \"%(rg)s\""
-
-#: critiquebrainz/frontend/templates/review/report.html:23
-msgid "Please provide a description of the violation (required)"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/report.html:26
-#, fuzzy
-msgid "Report review"
-msgstr "Napiši kritički osvrt"
-
-#: critiquebrainz/frontend/templates/review/revisions.html:12
-#, python-format
-msgid "Revisions of Review of \"%(entity)s\" by %(user)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/revisions.html:16
-#, fuzzy, python-format
-msgid "Revisions of Review by %(user)s"
-msgstr "Kritički osvrti od strane %(user)s"
-
-#: critiquebrainz/frontend/templates/review/revisions.html:28
-#, fuzzy
-msgid "Compare"
-msgstr "Početna stranica"
-
-#: critiquebrainz/frontend/templates/review/revisions.html:35
-msgid "Load older revisions"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/revisions.html:36
-#, fuzzy
-msgid "Loading older revisions..."
-msgstr "Učitavam još rezultata..."
-
-#: critiquebrainz/frontend/templates/review/revisions.html:53
-msgid "Select two different revisions."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/revisions.html:77
-#, fuzzy
-msgid "Failed to load older revisions!"
-msgstr "Nije uspjelo učitavanje pregleda."
-
-#: critiquebrainz/frontend/templates/review/write.html:10
-#, fuzzy, python-format
-msgid "Write review of \"%(entity)s\""
-msgstr "Napiši kritički osvrt o \"%(rg)s\""
-
-#: critiquebrainz/frontend/templates/review/write.html:14
-msgid "Write review"
-msgstr "Napiši kritički osvrt"
-
-#: critiquebrainz/frontend/templates/review/write.html:23
-#, fuzzy
-msgid ""
-"You acknowledge and agree that your contributed reviews to CritiqueBrainz"
-" are licensed under a\n"
-"          Creative Commons Attribution-ShareAlike 3.0 Unported or "
-"Creative Commons Attribution-ShareAlike-NonCommercial\n"
-"          license as per your choice above. You agree to license your "
-"work under this license.\n"
-"          You represent and warrant that you own or control all rights in"
-" and to the work, that nothing in the work\n"
-"          infringes the rights of any third-party, and that you have the "
-"permission to use and to license the work\n"
-"          under the selected Creative Commons license. Finally, you give "
-"the MetaBrainz Foundation permission to license\n"
-"          this content for commercial use outside of Creative Commons "
-"licenses in order to support the operations of the organization."
-msgstr ""
-"Potvrđujete i slažete se kako su svi vaši kritički osvrti dani  na "
-"CritiqueBrainz licencirani pod \n"
-"Creative Commons Attribution-ShareAlike 3.0 Unported ili Creative Commons"
-" Attribution-ShareAlike-NonCommercial\n"
-"licencom ovisno o vašem izboru ponuđenog. Slažete se da ćete licencirati "
-"vaš rad pod ovom licencom.\n"
-"Vi tvrdite i garantirate da posjedujete ili kontrolirate sva prava vezana"
-" uz vaš rad, da ništa u radu\n"
-"ne krši prava bilo koje treće stranke i da imate dopuštenje za korištenje"
-" i licenciranje rada\n"
-"pod odabranom Creative Commons licencom. Konačno, dajete Zakladi "
-"MetaBrainz dopuštenje da licencira\n"
-"ovaj sadržaj za komercijalnu upotrebu izvan Creative Commons licenci u "
-"svrhu podrške djelovanja organizacije."
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:14
-msgid "<b>This review has not been published yet!</b> Only you can see it."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:16
-#, python-format
-msgid "Published on %(date)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:22
-#, fuzzy
-msgid "This review has not yet been rated"
-msgstr "Ovaj kritički osvrt još nije ocjenjen."
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:38
-#, python-format
-msgid "This review is licensed under a %(name)s license."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:40
-#, python-format
-msgid "It was imported from %(source)s."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:53
-msgid "Did you find this review useful?"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:54
-msgid "Yes"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:58
-msgid "You found this review useful."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:60
-msgid "You didn't find this review useful."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:62
-#, fuzzy
-msgid "Delete your vote"
-msgstr "Podnesi i izbriši svoje glasove."
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:67
-msgid "Report abuse"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:73
-#, fuzzy
-msgid "Edit this review"
-msgstr "Uređivanje kritičkog osvrta"
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:82
-#: critiquebrainz/frontend/templates/review/entity/base.html:89
-msgid "View older revisions"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:86
-#, python-format
-msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/event.html:12
-#, fuzzy, python-format
-msgid "Review of \"%(event)s\" by %(user)s"
-msgstr "Kritički osvrti od strane %(user)s"
-
-#: critiquebrainz/frontend/templates/review/modify/base.html:19
+#: critiquebrainz/frontend/templates/review/edit.html:57
+#: critiquebrainz/frontend/templates/review/write.html:40
 msgid "Write"
 msgstr "Piši"
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:20
+#: critiquebrainz/frontend/templates/review/edit.html:58
+#: critiquebrainz/frontend/templates/review/write.html:41
 msgid "Preview"
 msgstr "Pretpregled  "
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:22
+#: critiquebrainz/frontend/templates/review/edit.html:60
+#: critiquebrainz/frontend/templates/review/write.html:43
 #, python-format
 msgid ""
 "You can use <a href=\"%(url)s\" target=\"_blank\">Markdown</a> syntax to "
 "apply custom formatting."
-msgstr ""
-"Možete koristiti <a href=\"%(url)s\">Markdown</a> sintaksu kako bi "
-"primjenili vlastito oblikovanje."
+msgstr "Možete koristiti <a href=\"%(url)s\">Markdown</a> sintaksu kako bi primjenili vlastito oblikovanje."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:35
-#: critiquebrainz/frontend/templates/review/modify/base.html:109
+#: critiquebrainz/frontend/templates/review/edit.html:72
+#: critiquebrainz/frontend/templates/review/edit.html:135
+#: critiquebrainz/frontend/templates/review/write.html:55
+#: critiquebrainz/frontend/templates/review/write.html:125
 msgid "Loading preview..."
 msgstr "Učitavam pretpregled..."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:40
+#: critiquebrainz/frontend/templates/review/edit.html:77
+#: critiquebrainz/frontend/templates/review/write.html:60
 msgid "Please, specify language of this review:"
 msgstr "Molimo, navedite jezik ovog kritičkog osvrta"
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:52
+#: critiquebrainz/frontend/templates/review/edit.html:89
+#: critiquebrainz/frontend/templates/review/write.html:71
 msgid "You cannot change the license after the review is published."
 msgstr "Ne možete promijeniti licencu nakon objavljavanja kritičkog osvrta."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:59
-msgid "Note: Drafts are not private!"
-msgstr ""
+#: critiquebrainz/frontend/templates/review/edit.html:95
+#: critiquebrainz/frontend/templates/review/write.html:91
+msgid "Publish"
+msgstr "Objavi"
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:98
+#: critiquebrainz/frontend/templates/review/edit.html:96
+#: critiquebrainz/frontend/templates/review/write.html:92
+msgid "Save draft"
+msgstr "Sačuvaj nacrt"
+
+#: critiquebrainz/frontend/templates/review/edit.html:98
+msgid "Update"
+msgstr "Ažuriranje"
+
+#: critiquebrainz/frontend/templates/review/edit.html:100
+msgid "Discard changes"
+msgstr "Zanemari promjene"
+
+#: critiquebrainz/frontend/templates/review/edit.html:124
+#: critiquebrainz/frontend/templates/review/write.html:114
 msgid "Review is empty."
 msgstr "Kritički osvrt nema sadržaj."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:105
+#: critiquebrainz/frontend/templates/review/edit.html:131
+#: critiquebrainz/frontend/templates/review/write.html:121
 msgid "Failed to load preview."
 msgstr "Nije uspjelo učitavanje pregleda."
 
-#: critiquebrainz/frontend/templates/review/modify/event.html:13
-msgid "Place"
-msgstr ""
+#: critiquebrainz/frontend/templates/review/write.html:3
+#, python-format
+msgid "Write review of \"%(rg)s\""
+msgstr "Napiši kritički osvrt o \"%(rg)s\""
 
-#: critiquebrainz/frontend/templates/review/modify/event.html:15
-msgid "Unknown place"
-msgstr ""
+#: critiquebrainz/frontend/templates/review/write.html:6
+msgid "Write review"
+msgstr "Napiši kritički osvrt"
+
+#: critiquebrainz/frontend/templates/review/write.html:79
+msgid ""
+"You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a\n"
+"            Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial\n"
+"            license as per your choice above. You agree to license your work under this license.\n"
+"            You represent and warrant that you own or control all rights in and to the work, that nothing in the work\n"
+"            infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
+"            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
+"            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
+msgstr "Potvrđujete i slažete se kako su svi vaši kritički osvrti dani  na CritiqueBrainz licencirani pod \nCreative Commons Attribution-ShareAlike 3.0 Unported ili Creative Commons Attribution-ShareAlike-NonCommercial\nlicencom ovisno o vašem izboru ponuđenog. Slažete se da ćete licencirati vaš rad pod ovom licencom.\nVi tvrdite i garantirate da posjedujete ili kontrolirate sva prava vezana uz vaš rad, da ništa u radu\nne krši prava bilo koje treće stranke i da imate dopuštenje za korištenje i licenciranje rada\npod odabranom Creative Commons licencom. Konačno, dajete Zakladi MetaBrainz dopuštenje da licencira\novaj sadržaj za komercijalnu upotrebu izvan Creative Commons licenci u svrhu podrške djelovanja organizacije."
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"
@@ -1610,71 +1116,50 @@ msgid "Query"
 msgstr "Upit"
 
 #: critiquebrainz/frontend/templates/search/index.html:23
-#: critiquebrainz/frontend/templates/search/index.html:51
-#: critiquebrainz/frontend/templates/search/index.html:64
-#: critiquebrainz/frontend/templates/search/selector.html:84
-#: critiquebrainz/frontend/templates/user/reviews.html:15
+#: critiquebrainz/frontend/templates/search/index.html:50
+#: critiquebrainz/frontend/templates/search/index.html:57
+#: critiquebrainz/frontend/templates/search/selector.html:42
 msgid "Type"
 msgstr "Tip"
 
-#: critiquebrainz/frontend/templates/search/index.html:42
-#: critiquebrainz/frontend/templates/search/selector.html:75
+#: critiquebrainz/frontend/templates/search/index.html:41
+#: critiquebrainz/frontend/templates/search/selector.html:34
 msgid "No results found"
 msgstr "Nije pronađen niti jedan rezultat"
 
-#: critiquebrainz/frontend/templates/search/index.html:50
+#: critiquebrainz/frontend/templates/search/index.html:49
 msgid "Sort name"
 msgstr "Sortiraj ime"
 
-#: critiquebrainz/frontend/templates/search/index.html:52
+#: critiquebrainz/frontend/templates/search/index.html:51
 msgid "Country"
 msgstr "Država"
 
-#: critiquebrainz/frontend/templates/search/index.html:58
-#: critiquebrainz/frontend/templates/search/selector.html:91
-#, fuzzy
-msgid "Location"
-msgstr "Aplikacije"
-
-#: critiquebrainz/frontend/templates/search/index.html:73
-#: critiquebrainz/frontend/templates/search/selector.html:102
+#: critiquebrainz/frontend/templates/search/index.html:66
+#: critiquebrainz/frontend/templates/search/selector.html:52
 msgid "Load more results"
 msgstr "učitaj još rezultata "
 
-#: critiquebrainz/frontend/templates/search/index.html:74
-#: critiquebrainz/frontend/templates/search/selector.html:103
+#: critiquebrainz/frontend/templates/search/index.html:67
+#: critiquebrainz/frontend/templates/search/selector.html:53
 msgid "Loading more results..."
 msgstr "Učitavam još rezultata..."
 
-#: critiquebrainz/frontend/templates/search/index.html:102
-#: critiquebrainz/frontend/templates/search/selector.html:141
+#: critiquebrainz/frontend/templates/search/index.html:95
+#: critiquebrainz/frontend/templates/search/selector.html:85
 msgid "Failed to load more search results!"
 msgstr "Nije uspjelo učitavanje  dodatnih rezultata pretraživanja!"
 
-#: critiquebrainz/frontend/templates/search/results.html:35
-#: critiquebrainz/frontend/templates/search/selector_results.html:29
-#: critiquebrainz/frontend/templates/user/reviews.html:61
-msgid "more"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/search/selector.html:3
-msgid "Entity selection"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/search/selector.html:19
+#: critiquebrainz/frontend/templates/search/selector.html:6
 msgid "Release group selection"
 msgstr "Odabir distribucijske grupe"
 
-#: critiquebrainz/frontend/templates/search/selector.html:46
-#, fuzzy
-msgid "Event selection"
-msgstr "Odabir distribucijske grupe"
-
-#: critiquebrainz/frontend/templates/search/selector.html:107
+#: critiquebrainz/frontend/templates/search/selector.html:57
 msgid "Continue"
 msgstr "Nastavi"
 
-#: critiquebrainz/frontend/templates/user/base.html:25
+#: critiquebrainz/frontend/templates/user/base.html:17
 #: critiquebrainz/frontend/templates/user/info.html:3
 msgid "Info"
 msgstr "Informacije"
@@ -1726,51 +1211,18 @@ msgstr "Ovaj mjesec"
 msgid "Votes"
 msgstr "Glasovi"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:16
-msgid "Entity"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/user/reviews.html:37
-msgid "Hidden"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/user/reviews.html:71
+#: critiquebrainz/frontend/templates/user/reviews.html:43
 msgid "Read"
 msgstr "Čitaj"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:73
+#: critiquebrainz/frontend/templates/user/reviews.html:45
 msgid "Edit"
 msgstr "Uredi"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:85
+#: critiquebrainz/frontend/templates/user/reviews.html:57
 msgid "Newer"
 msgstr "Novije"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:88
+#: critiquebrainz/frontend/templates/user/reviews.html:60
 msgid "Older"
 msgstr "Starije"
-
-#: critiquebrainz/frontend/user/views.py:45
-msgid "This account is already blocked."
-msgstr ""
-
-#: critiquebrainz/frontend/user/views.py:53
-msgid "This user account has been blocked."
-msgstr ""
-
-#: critiquebrainz/frontend/user/views.py:65
-msgid "This user account has been unblocked."
-msgstr ""
-
-#~ msgid "You are not allowed to rate this review."
-#~ msgstr "Nemate dopuštenje za ocjenjivanje ovog kritičkog osvrta."
-
-#~ msgid "Deleting account"
-#~ msgstr "Brisanje računa"
-
-#~ msgid "Editing profile"
-#~ msgstr "Uređivanje profila"
-
-#~ msgid "Delete review of %(release_group)s"
-#~ msgstr "Izbriši kritički osvrt od %(release_group)s"
-

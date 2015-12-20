@@ -1,32 +1,28 @@
-# Italian translations for .
+# Translations template for PROJECT.
 # Copyright (C) 2015 ORGANIZATION
-# This file is distributed under the same license as the  project.
-#
+# This file is distributed under the same license as the PROJECT project.
+# 
 # Translators:
 # salorock <salo.rock@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version:  CritiqueBrainz\n"
+"Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-15 11:43+0000\n"
+"POT-Creation-Date: 2015-03-30 00:20+0000\n"
 "PO-Revision-Date: 2015-11-07 00:55+0000\n"
 "Last-Translator: salorock <salo.rock@gmail.com>\n"
-"Language: it\n"
-"Language-Team: Italian "
-"(http://www.transifex.com/musicbrainz/critiquebrainz/language/it/)\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language-Team: Italian (http://www.transifex.com/musicbrainz/critiquebrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.1.1\n"
+"Generated-By: Babel 1.3\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: critiquebrainz/frontend/apis/mbspotify.py:46
 msgid ""
-"Spotify mapping server is unavailable. You will not see an embedded "
-"player."
-msgstr ""
-"Il server di mapping di Spotify non è disponibile al momento. Non sarà "
-"possibile visualizzare un riproduttore incorporato."
+"Spotify mapping server is unavailable. You will not see an embedded player."
+msgstr "Il server di mapping di Spotify non è disponibile al momento. Non sarà possibile visualizzare un riproduttore incorporato."
 
 #: critiquebrainz/frontend/apis/relationships/artist.py:32
 #: critiquebrainz/frontend/apis/relationships/release_group.py:19
@@ -80,33 +76,11 @@ msgstr "Studio di registrazione"
 
 #: critiquebrainz/frontend/artist/views.py:19
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
-msgstr ""
-"Spiacenti, non è stato possibile trovare un artista con quell'ID di "
-"MusicBrainz."
+msgstr "Spiacenti, non è stato possibile trovare un artista con quell'ID di MusicBrainz."
 
-#: critiquebrainz/frontend/event/views.py:19
-#, fuzzy
-msgid "Sorry, we couldn't find a event with that MusicBrainz ID."
-msgstr ""
-"Spiacenti, non è stato possibile trovare un artista con quell'ID di "
-"MusicBrainz."
-
-#: critiquebrainz/frontend/log/forms.py:8
-#, fuzzy
-msgid "You need to sepicify a reason for taking this action."
-msgstr "È necessario specificare un indirizzo corretto per quest'album su Spotify!"
-
-#: critiquebrainz/frontend/log/views.py:16
-msgid "No logs to display."
-msgstr ""
-
-#: critiquebrainz/frontend/login/__init__.py:18
+#: critiquebrainz/frontend/login/__init__.py:16
 msgid "Please sign in to access this page."
 msgstr "Accedi per visualizzare questa pagina."
-
-#: critiquebrainz/frontend/login/__init__.py:42
-msgid "You must be an administrator to view this page."
-msgstr ""
 
 #: critiquebrainz/frontend/login/views.py:32
 msgid "Login failed."
@@ -115,9 +89,7 @@ msgstr "Login fallito."
 #: critiquebrainz/frontend/mapping/views.py:43
 #: critiquebrainz/frontend/mapping/views.py:68
 msgid "Only existing release groups can be mapped to Spotify!"
-msgstr ""
-"Solo i gruppi di pubblicazioni esistenti possono essere associati a "
-"Spotify!"
+msgstr "Solo i gruppi di pubblicazioni esistenti possono essere associati a Spotify!"
 
 #: critiquebrainz/frontend/mapping/views.py:73
 msgid "You need to select an album from Spotify!"
@@ -252,14 +224,7 @@ msgstr "Hai eliminato un'applicazione."
 
 #: critiquebrainz/frontend/release_group/views.py:17
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
-msgstr ""
-"Spiacenti, non è stato possibile trovare un gruppo di pubblicazioni con "
-"quell'ID di MusicBrainz."
-
-#: critiquebrainz/frontend/reports/views.py:43
-#, fuzzy
-msgid "Report has been archived."
-msgstr "La recensione è stata salvata!"
+msgstr "Spiacenti, non è stato possibile trovare un gruppo di pubblicazioni con quell'ID di MusicBrainz."
 
 #: critiquebrainz/frontend/review/forms.py:34
 msgid "Text"
@@ -272,37 +237,28 @@ msgstr "La recensione è vuota!"
 #: critiquebrainz/frontend/review/forms.py:37
 #, python-format
 msgid "Review length needs to be between %(min)d and %(max)d characters."
-msgstr ""
-"La lunghezza della recensione deve essere compresa tra %(min)d e %(max)d "
-"caratteri."
+msgstr "La lunghezza della recensione deve essere compresa tra %(min)d e %(max)d caratteri."
 
 #: critiquebrainz/frontend/review/forms.py:41
 msgid ""
 "Allow commercial use of this review (<a "
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
 "target=\"_blank\">CC BY-SA 3.0 license</a>)"
-msgstr ""
-"Permettere l'uso commerciale di questa recensione (<a "
-"href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
-"target=\"_blank\">licenza CC BY-SA 3.0</a>)"
+msgstr "Permettere l'uso commerciale di questa recensione (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">licenza CC BY-SA 3.0</a>)"
 
 #: critiquebrainz/frontend/review/forms.py:42
 msgid ""
-"Do not allow commercial use of this review, unless approved by MetaBrainz"
-" Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
-"sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
-msgstr ""
-"Non permettere l'uso commerciale di questa recensione, tranne se "
-"approvato dalla MetaBrainz Foundation (<a "
-"href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
-"target=\"_blank\">licenza CC BY-NC-SA 3.0</a>)"
+"Do not allow commercial use of this review, unless approved by MetaBrainz "
+"Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
+"target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
+msgstr "Non permettere l'uso commerciale di questa recensione, tranne se approvato dalla MetaBrainz Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" target=\"_blank\">licenza CC BY-NC-SA 3.0</a>)"
 
 #: critiquebrainz/frontend/review/forms.py:44
 msgid "You need to choose a license!"
 msgstr "È necessario scegliere una licenza!"
 
 #: critiquebrainz/frontend/review/forms.py:45
-#: critiquebrainz/frontend/templates/base.html:71
+#: critiquebrainz/frontend/templates/base.html:66
 msgid "Language"
 msgstr "Lingua"
 
@@ -310,158 +266,79 @@ msgstr "Lingua"
 msgid "You need to accept the license agreement!"
 msgstr "È necessario accettare l'accordo di licenza!"
 
-#: critiquebrainz/frontend/review/views.py:39
-#, fuzzy
-msgid "No reviews to display."
-msgstr "Nessuna recensione trovata"
-
-#: critiquebrainz/frontend/review/views.py:56
-#: critiquebrainz/frontend/review/views.py:90
-#: critiquebrainz/frontend/review/views.py:211
-msgid "Can't find a review with the specified ID."
-msgstr "Impossibile trovare una recensione con l'ID specificato."
-
-#: critiquebrainz/frontend/review/views.py:59
 #: critiquebrainz/frontend/review/views.py:61
-#: critiquebrainz/frontend/review/views.py:92
-#: critiquebrainz/frontend/review/views.py:119
-#: critiquebrainz/frontend/review/views.py:138
-#: critiquebrainz/frontend/review/views.py:215
-#: critiquebrainz/frontend/review/views.py:260
-#: critiquebrainz/frontend/review/views.py:283
-#: critiquebrainz/frontend/review/views.py:298
-#: critiquebrainz/frontend/review/views.py:340
-#, fuzzy
-msgid "Review has been hidden."
-msgstr "La recensione è stata aggiornata."
-
-#: critiquebrainz/frontend/review/views.py:72
-msgid "You are viewing an old revision, the review has been updated since then."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:74
-msgid "The revision you are looking for does not exist."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:98
-msgid "The revision(s) you are looking for does not exist."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:161
-#, fuzzy
-msgid "Please choose an entity to review."
-msgstr "Solo l'autore può modificare questa recensione."
-
-#: critiquebrainz/frontend/review/views.py:165
-msgid ""
-"You are not allowed to write new reviews because your account has been "
-"blocked by a moderator."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:172
-#, fuzzy
-msgid "You have already published a review for this entity!"
+msgid "You have already published a review for this album!"
 msgstr "Hai già pubblicato una recensione per quest'album!"
 
-#: critiquebrainz/frontend/review/views.py:179
+#: critiquebrainz/frontend/review/views.py:68
 msgid "You have exceeded your limit of reviews per day."
 msgstr "Hai superato il tuo limite quotidiano di recensioni."
 
-#: critiquebrainz/frontend/review/views.py:187
+#: critiquebrainz/frontend/review/views.py:76
 msgid "Review has been saved!"
 msgstr "La recensione è stata salvata!"
 
-#: critiquebrainz/frontend/review/views.py:189
+#: critiquebrainz/frontend/review/views.py:78
 msgid "Review has been published!"
 msgstr "La recensione è stata pubblicata!"
 
-#: critiquebrainz/frontend/review/views.py:194
-#, fuzzy
-msgid "You can only write a review for an entity that exists on MusicBrainz!"
-msgstr ""
-"Puoi scrivere una recensione solo per un gruppo di pubblicazioni "
-"esistente su MusicBrainz!"
+#: critiquebrainz/frontend/review/views.py:83
+msgid ""
+"You can only write a review for a release group that exists on MusicBrainz!"
+msgstr "Puoi scrivere una recensione solo per un gruppo di pubblicazioni esistente su MusicBrainz!"
 
-#: critiquebrainz/frontend/review/views.py:213
+#: critiquebrainz/frontend/review/views.py:100
+msgid "Can't find a review with the specified ID."
+msgstr "Impossibile trovare una recensione con l'ID specificato."
+
+#: critiquebrainz/frontend/review/views.py:102
 msgid "Only author can edit this review."
 msgstr "Solo l'autore può modificare questa recensione."
 
-#: critiquebrainz/frontend/review/views.py:229
+#: critiquebrainz/frontend/review/views.py:116
 msgid "Review has been updated."
 msgstr "La recensione è stata aggiornata."
 
-#: critiquebrainz/frontend/review/views.py:241
-#, fuzzy
-msgid "Only the author or an admin can delete this review."
+#: critiquebrainz/frontend/review/views.py:128
+msgid "Only the author can delete this review."
 msgstr "Solo l'autore può eliminare questa recensione."
 
-#: critiquebrainz/frontend/review/views.py:244
+#: critiquebrainz/frontend/review/views.py:131
 msgid "Review has been deleted."
 msgstr "La recensione è stata eliminata."
 
-#: critiquebrainz/frontend/review/views.py:262
+#: critiquebrainz/frontend/review/views.py:147
 msgid "You cannot rate your own review."
 msgstr "Non puoi valutare la tua stessa recensione."
 
-#: critiquebrainz/frontend/review/views.py:265
+#: critiquebrainz/frontend/review/views.py:150
 msgid "You have exceeded your limit of votes per day."
 msgstr "Hai superato il tuo limite quotidiano di voti."
 
-#: critiquebrainz/frontend/review/views.py:268
-msgid ""
-"You are not allowed to rate this review because your account has been "
-"blocked by a moderator."
-msgstr ""
+#: critiquebrainz/frontend/review/views.py:153
+#: critiquebrainz/frontend/review/views.py:156
+msgid "You are not allowed to rate this review."
+msgstr "Non ti è consentito valutare questa recensione."
 
-#: critiquebrainz/frontend/review/views.py:274
+#: critiquebrainz/frontend/review/views.py:160
 msgid "You have rated this review!"
 msgstr "Hai valutato questa recensione!"
 
-#: critiquebrainz/frontend/review/views.py:286
+#: critiquebrainz/frontend/review/views.py:170
 msgid "This review is not rated yet."
 msgstr "Questa recensione non è ancora stata valutata."
 
-#: critiquebrainz/frontend/review/views.py:289
+#: critiquebrainz/frontend/review/views.py:173
 msgid "You have deleted your vote for this review!"
 msgstr "Hai eliminato il tuo voto per questa recensione!"
-
-#: critiquebrainz/frontend/review/views.py:300
-#, fuzzy
-msgid "You cannot report your own review."
-msgstr "Non puoi valutare la tua stessa recensione."
-
-#: critiquebrainz/frontend/review/views.py:304
-msgid ""
-"You are not allowed to report this review because your account has been "
-"blocked by a moderator."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:311
-#, fuzzy
-msgid "You have already reported this review."
-msgstr "Hai valutato questa recensione!"
-
-#: critiquebrainz/frontend/review/views.py:317
-#, fuzzy
-msgid "Review has been reported."
-msgstr "La recensione è stata aggiornata."
-
-#: critiquebrainz/frontend/review/views.py:330
-msgid "Review is already hidden."
-msgstr ""
-
-#: critiquebrainz/frontend/review/views.py:352
-#, fuzzy
-msgid "Review has been unhidden."
-msgstr "La recensione è stata aggiornata."
 
 #: critiquebrainz/frontend/templates/about.html:3
 msgid "About CritiqueBrainz"
 msgstr "Info su CritiqueBrainz"
 
 #: critiquebrainz/frontend/templates/about.html:6
-#: critiquebrainz/frontend/templates/base.html:61
-#: critiquebrainz/frontend/templates/navbar.html:38
+#: critiquebrainz/frontend/templates/base.html:60
+#: critiquebrainz/frontend/templates/navbar.html:35
 msgid "About"
 msgstr "Info"
 
@@ -470,19 +347,11 @@ msgid "What is CritiqueBrainz?"
 msgstr "Cos'è CritiqueBrainz?"
 
 #: critiquebrainz/frontend/templates/about.html:10
-#, fuzzy
 msgid ""
-"<strong>CritiqueBrainz is a repository for Creative Commons licensed "
-"music reviews.</strong>\n"
-"  Here you can read what others have written about an album or event and "
-"write your own review!\n"
+"<strong>CritiqueBrainz is a repository for Creative Commons licensed music reviews.</strong>\n"
+"  Here you can read what others have written about an album or write your own review!\n"
 "  It is based on data from MusicBrainz - open music encyclopedia."
-msgstr ""
-"<strong>CritiqueBrainz è un repository di recensioni musicali licenziate "
-"con Creative Commons.</strong>\n"
-"Qui potrai leggere quello che gli altri hanno scritto su un album o anche"
-" scrivere la tua recensione!\n"
-"Si basa su dati di MusicBrainz - l'enciclopedia musicale aperta."
+msgstr "<strong>CritiqueBrainz è un repository di recensioni musicali licenziate con Creative Commons.</strong>\nQui potrai leggere quello che gli altri hanno scritto su un album o anche scrivere la tua recensione!\nSi basa su dati di MusicBrainz - l'enciclopedia musicale aperta."
 
 #: critiquebrainz/frontend/templates/about.html:15
 msgid "What is it for?"
@@ -490,270 +359,133 @@ msgstr "A cosa serve?"
 
 #: critiquebrainz/frontend/templates/about.html:17
 msgid ""
-"Projects like Wikipedia and MusicBrainz are good at aggregating "
-"information about\n"
-"  music, but not suited for expressing opinions about it. That's not "
-"their purpose.\n"
+"Projects like Wikipedia and MusicBrainz are good at aggregating information about\n"
+"  music, but not suited for expressing opinions about it. That's not their purpose.\n"
 "  CritiqueBrainz fills the gap between music critics and raw data."
-msgstr ""
-"Progetti come Wikipedia e MusicBrainz funzionano bene per aggregare "
-"informazioni sulla musica, ma non sono adatti ad esprimere opinioni su "
-"essa. Non è quello il loro scopo.\n"
-"CritiqueBrainz riempie il divario esistente tra i critici musicali e i "
-"dati grezzi."
+msgstr "Progetti come Wikipedia e MusicBrainz funzionano bene per aggregare informazioni sulla musica, ma non sono adatti ad esprimere opinioni su essa. Non è quello il loro scopo.\nCritiqueBrainz riempie il divario esistente tra i critici musicali e i dati grezzi."
 
 #: critiquebrainz/frontend/templates/about.html:22
 msgid ""
-"This is an open platform. That means everyone - including you - can "
-"participate\n"
-"  and contribute. If you are good at writing and want to share your "
-"thoughts about\n"
-"  an album - feel free to write a new review. If that's not your thing "
-"and you just\n"
+"This is an open platform. That means everyone - including you - can participate\n"
+"  and contribute. If you are good at writing and want to share your thoughts about\n"
+"  an album - feel free to write a new review. If that's not your thing and you just\n"
 "  want to read opinions - that's fine too."
-msgstr ""
-"Questa è una piattaforma aperta. Ciò significa che tutti - tu compreso - "
-"possono partecipare e contribuire. Se scrivi bene e vuoi condividere la "
-"tua opinione su un album, scrivi una nuova recensione. Se non te la senti"
-" e preferisci semplicemente leggere le opinioni degli altri, non c'è "
-"problema!"
+msgstr "Questa è una piattaforma aperta. Ciò significa che tutti - tu compreso - possono partecipare e contribuire. Se scrivi bene e vuoi condividere la tua opinione su un album, scrivi una nuova recensione. Se non te la senti e preferisci semplicemente leggere le opinioni degli altri, non c'è problema!"
 
 #: critiquebrainz/frontend/templates/about.html:28
 msgid ""
-"After reading a review you can mark it as useful or not. That will help "
-"other\n"
+"After reading a review you can mark it as useful or not. That will help other\n"
 "  music enthusiasts like you find good reviews."
-msgstr ""
-"Dopo aver letto una recensione, puoi segnalarla come utile oppure poco "
-"utile. Ciò aiuterà gli altri appassionati di musica come te a trovare "
-"buone recensioni."
+msgstr "Dopo aver letto una recensione, puoi segnalarla come utile oppure poco utile. Ciò aiuterà gli altri appassionati di musica come te a trovare buone recensioni."
 
-#: critiquebrainz/frontend/templates/artist.html:9
-#, python-format
-msgid "Member since %(date)s"
-msgstr "Membro da %(date)s"
-
-#: critiquebrainz/frontend/templates/artist.html:31
+#: critiquebrainz/frontend/templates/artist.html:15
 msgid "Discography"
 msgstr "Discografia"
 
-#: critiquebrainz/frontend/templates/artist.html:34
+#: critiquebrainz/frontend/templates/artist.html:18
 msgid "Albums"
 msgstr "Album"
 
-#: critiquebrainz/frontend/templates/artist.html:37
+#: critiquebrainz/frontend/templates/artist.html:21
 msgid "Singles"
 msgstr "Singoli"
 
-#: critiquebrainz/frontend/templates/artist.html:40
+#: critiquebrainz/frontend/templates/artist.html:24
 msgid "EPs"
 msgstr "EP"
 
-#: critiquebrainz/frontend/templates/artist.html:43
+#: critiquebrainz/frontend/templates/artist.html:27
 msgid "Broadcasts"
 msgstr "Trasmissioni"
 
-#: critiquebrainz/frontend/templates/artist.html:46
+#: critiquebrainz/frontend/templates/artist.html:30
 msgid "Other releases"
 msgstr "Altre pubblicazioni"
 
-#: critiquebrainz/frontend/templates/artist.html:50
+#: critiquebrainz/frontend/templates/artist.html:34
 msgid "No releases found"
 msgstr "Nessuna pubblicazione trovata"
 
-#: critiquebrainz/frontend/templates/artist.html:59
+#: critiquebrainz/frontend/templates/artist.html:43
 #, python-format
 msgid "%(num)d review"
 msgid_plural "%(num)d reviews"
 msgstr[0] "%(num)d recensione"
 msgstr[1] "%(num)d recensioni"
 
-#: critiquebrainz/frontend/templates/artist.html:85
+#: critiquebrainz/frontend/templates/artist.html:69
 #: critiquebrainz/frontend/templates/mapping/spotify.html:45
-#: critiquebrainz/frontend/templates/review/browse.html:36
+#: critiquebrainz/frontend/templates/review/browse.html:42
 msgid "Previous"
 msgstr "Precedente"
 
-#: critiquebrainz/frontend/templates/artist.html:88
+#: critiquebrainz/frontend/templates/artist.html:72
 #: critiquebrainz/frontend/templates/mapping/spotify.html:48
-#: critiquebrainz/frontend/templates/review/browse.html:39
+#: critiquebrainz/frontend/templates/review/browse.html:45
 msgid "Next"
 msgstr "Seguente"
 
-#: critiquebrainz/frontend/templates/artist.html:98
+#: critiquebrainz/frontend/templates/artist.html:82
 msgid "Artist information"
 msgstr "Informazioni sull'artista"
 
-#: critiquebrainz/frontend/templates/artist.html:104
+#: critiquebrainz/frontend/templates/artist.html:88
 msgid "Member of"
 msgstr "Membro di"
 
-#: critiquebrainz/frontend/templates/artist.html:106
+#: critiquebrainz/frontend/templates/artist.html:90
 msgid "Members"
 msgstr "Membri"
 
-#: critiquebrainz/frontend/templates/artist.html:115
-#: critiquebrainz/frontend/templates/artist.html:134
+#: critiquebrainz/frontend/templates/artist.html:98
+#, python-format
+msgid "Member since %(date)s"
+msgstr "Membro da %(date)s"
+
+#: critiquebrainz/frontend/templates/artist.html:114
+#: critiquebrainz/frontend/templates/artist.html:133
 msgid "View all..."
 msgstr "Visualizza tutti..."
 
-#: critiquebrainz/frontend/templates/artist.html:123
+#: critiquebrainz/frontend/templates/artist.html:122
 msgid "Former member of"
 msgstr "Ex membro di"
 
-#: critiquebrainz/frontend/templates/artist.html:125
+#: critiquebrainz/frontend/templates/artist.html:124
 msgid "Former members"
 msgstr "Ex membri"
 
-#: critiquebrainz/frontend/templates/artist.html:140
+#: critiquebrainz/frontend/templates/artist.html:139
 msgid "External links"
 msgstr "Collegamenti esterni"
 
-#: critiquebrainz/frontend/templates/artist.html:160
-#: critiquebrainz/frontend/templates/event.html:128
+#: critiquebrainz/frontend/templates/artist.html:159
 msgid "Edit on MusicBrainz"
 msgstr "Modifica su MusicBrainz"
 
-#: critiquebrainz/frontend/templates/base.html:62
+#: critiquebrainz/frontend/templates/base.html:61
 msgid "Blog"
 msgstr "Blog"
 
-#: critiquebrainz/frontend/templates/base.html:63
+#: critiquebrainz/frontend/templates/base.html:62
 msgid "Developers"
 msgstr "Sviluppatori"
 
-#: critiquebrainz/frontend/templates/base.html:64
-#: critiquebrainz/frontend/templates/log/log.html:3
-#: critiquebrainz/frontend/templates/log/log.html:6
-msgid "Moderation log"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/base.html:66
-msgid "Reports"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:3
-#: critiquebrainz/frontend/templates/mapping/confirm.html:13
-#: critiquebrainz/frontend/templates/mapping/report.html:13
-#, python-format
-msgid "%(album)s by %(artist)s"
-msgstr "%(album)s di %(artist)s"
-
-#: critiquebrainz/frontend/templates/entity_review.html:4
-#: critiquebrainz/frontend/templates/log/action.html:5
-#: critiquebrainz/frontend/templates/reports/reports_results.html:9
-#: critiquebrainz/frontend/templates/review/delete.html:5
-#: critiquebrainz/frontend/templates/review/edit.html:5
-#: critiquebrainz/frontend/templates/review/report.html:4
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:9
-#: critiquebrainz/frontend/templates/user/reviews.html:45
-msgid "[Unknown release group]"
-msgstr "[gruppo di pubblicazioni sconosciuto]"
-
-#: critiquebrainz/frontend/templates/entity_review.html:5
-#: critiquebrainz/frontend/templates/reports/reports_results.html:11
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:6
-#: critiquebrainz/frontend/templates/user/reviews.html:55
-msgid "[Unknown artist]"
-msgstr "[artista sconosciuto]"
-
-#: critiquebrainz/frontend/templates/entity_review.html:7
-#: critiquebrainz/frontend/templates/review/entity/event.html:23
-#, python-format
-msgid "%(event)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:7
-#: critiquebrainz/frontend/templates/review/delete.html:7
-#: critiquebrainz/frontend/templates/review/edit.html:7
-#: critiquebrainz/frontend/templates/review/entity/event.html:11
-#: critiquebrainz/frontend/templates/review/entity/event.html:20
-#: critiquebrainz/frontend/templates/review/modify/event.html:8
-#: critiquebrainz/frontend/templates/user/reviews.html:50
-#, fuzzy
-msgid "[Unknown event]"
-msgstr "[artista sconosciuto]"
-
-#: critiquebrainz/frontend/templates/event.html:19
-#: critiquebrainz/frontend/templates/navbar.html:37
-msgid "Write a review"
-msgstr "Scrivi una recensione"
-
-#: critiquebrainz/frontend/templates/event.html:24
-#, fuzzy
-msgid "Edit my review"
-msgstr "Scrivi una recensione"
-
-#: critiquebrainz/frontend/templates/event.html:51
-#: critiquebrainz/frontend/templates/review/entity/event.html:54
-msgid "Held At"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/event.html:62
-#: critiquebrainz/frontend/templates/macros.html:27
-#: critiquebrainz/frontend/templates/review/browse.html:3
-#: critiquebrainz/frontend/templates/review/browse.html:6
-#: critiquebrainz/frontend/templates/user/base.html:24
-#: critiquebrainz/frontend/templates/user/info.html:36
-#: critiquebrainz/frontend/templates/user/reviews.html:3
-msgid "Reviews"
-msgstr "Recensioni"
-
-#: critiquebrainz/frontend/templates/event.html:64
-#: critiquebrainz/frontend/templates/index.html:31
-#: critiquebrainz/frontend/templates/index.html:59
-#: critiquebrainz/frontend/templates/user/reviews.html:7
-msgid "No reviews found"
-msgstr "Nessuna recensione trovata"
-
-#: critiquebrainz/frontend/templates/event.html:70
-#, fuzzy
-msgid "Published on"
-msgstr "Pubblicata"
-
-#: critiquebrainz/frontend/templates/event.html:71
-#: critiquebrainz/frontend/templates/review/edit.html:21
-#: critiquebrainz/frontend/templates/review/revisions.html:26
-#: critiquebrainz/frontend/templates/user/reviews.html:19
-msgid "Votes (+/-)"
-msgstr "Voti (+/-)"
-
-#: critiquebrainz/frontend/templates/event.html:79
-#, python-format
-msgid "by %(reviewer)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/event.html:106
-#, fuzzy
-msgid "Event information"
-msgstr "Informazioni generali"
-
-#: critiquebrainz/frontend/templates/index.html:8
+#: critiquebrainz/frontend/templates/index.html:5
 msgid "Welcome to CritiqueBrainz!"
 msgstr "Benvenuto su CritiqueBrainz!"
 
 #: critiquebrainz/frontend/templates/index.html:10
-#, fuzzy
 msgid ""
-"CritiqueBrainz is a repository for Creative Commons licensed music "
-"reviews.\n"
-"        Here you can read what other people have written about an album "
-"or event and write your own review!"
-msgstr ""
-"CritiqueBrainz è un repository di recensioni musicali licenziate con "
-"Creative Commons.\n"
-"Qui potrai leggere quello che gli altri hanno scritto di un album o anche"
-" scrivere la tua recensione!"
+"CritiqueBrainz is a repository for Creative Commons licensed music reviews.\n"
+"        Here you can read what other people have written about an album or write your own review!"
+msgstr "CritiqueBrainz è un repository di recensioni musicali licenziate con Creative Commons.\nQui potrai leggere quello che gli altri hanno scritto di un album o anche scrivere la tua recensione!"
 
 #: critiquebrainz/frontend/templates/index.html:14
 msgid ""
-"CritiqueBrainz is based on data from MusicBrainz - open music "
-"encyclopedia.\n"
+"CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
-msgstr ""
-"CritiqueBrainz si basa sui dati di MusicBrainz - l'enciclopedia musicale "
-"aperta.\n"
-"<br/>Tutti - tu compreso - possono partecipare e contribuire."
+msgstr "CritiqueBrainz si basa sui dati di MusicBrainz - l'enciclopedia musicale aperta.\n<br/>Tutti - tu compreso - possono partecipare e contribuire."
 
 #: critiquebrainz/frontend/templates/index.html:20
 #: critiquebrainz/frontend/templates/user/info.html:35
@@ -774,19 +506,51 @@ msgstr "Utenti: %(users_count)s"
 msgid "Popular reviews"
 msgstr "Recensioni popolari"
 
+#: critiquebrainz/frontend/templates/index.html:31
+#: critiquebrainz/frontend/templates/index.html:65
+#: critiquebrainz/frontend/templates/user/reviews.html:7
+msgid "No reviews found"
+msgstr "Nessuna recensione trovata"
+
 #: critiquebrainz/frontend/templates/index.html:47
-#: critiquebrainz/frontend/templates/index.html:75
+#: critiquebrainz/frontend/templates/index.html:81
+#: critiquebrainz/frontend/templates/mapping/confirm.html:13
+#: critiquebrainz/frontend/templates/mapping/report.html:13
+#: critiquebrainz/frontend/templates/review/browse.html:23
+#, python-format
+msgid "%(album)s by %(artist)s"
+msgstr "%(album)s di %(artist)s"
+
+#: critiquebrainz/frontend/templates/index.html:48
+#: critiquebrainz/frontend/templates/index.html:82
 #: critiquebrainz/frontend/templates/review/browse.html:24
-#: critiquebrainz/frontend/templates/review/entity/base.html:11
+#: critiquebrainz/frontend/templates/review/delete.html:4
+#: critiquebrainz/frontend/templates/review/edit.html:6
+#: critiquebrainz/frontend/templates/review/edit.html:26
+#: critiquebrainz/frontend/templates/user/reviews.html:35
+msgid "[Unknown release group]"
+msgstr "[gruppo di pubblicazioni sconosciuto]"
+
+#: critiquebrainz/frontend/templates/index.html:49
+#: critiquebrainz/frontend/templates/index.html:83
+#: critiquebrainz/frontend/templates/review/browse.html:25
+#: critiquebrainz/frontend/templates/review/edit.html:23
+#: critiquebrainz/frontend/templates/user/reviews.html:33
+msgid "[Unknown artist]"
+msgstr "[artista sconosciuto]"
+
+#: critiquebrainz/frontend/templates/index.html:53
+#: critiquebrainz/frontend/templates/index.html:87
+#: critiquebrainz/frontend/templates/review/browse.html:30
 #, python-format
 msgid "Review by %(user)s"
 msgstr "Recensione di %(user)s"
 
-#: critiquebrainz/frontend/templates/index.html:57
+#: critiquebrainz/frontend/templates/index.html:63
 msgid "Recent reviews"
 msgstr "Recensioni recenti"
 
-#: critiquebrainz/frontend/templates/index.html:81
+#: critiquebrainz/frontend/templates/index.html:93
 msgid "View all reviews..."
 msgstr "Visualizza tutte le recensioni..."
 
@@ -818,12 +582,21 @@ msgstr "Dati del profilo"
 msgid "Create and modify your reviews."
 msgstr "Crea e modifica le tue recensioni."
 
+#: critiquebrainz/frontend/templates/macros.html:27
+#: critiquebrainz/frontend/templates/review/browse.html:3
+#: critiquebrainz/frontend/templates/review/browse.html:6
+#: critiquebrainz/frontend/templates/user/base.html:16
+#: critiquebrainz/frontend/templates/user/info.html:36
+#: critiquebrainz/frontend/templates/user/reviews.html:3
+msgid "Reviews"
+msgstr "Recensioni"
+
 #: critiquebrainz/frontend/templates/macros.html:29
 msgid "Modify your applications (create, edit, delete)."
 msgstr "Modifica le tue applicazioni (crea, modifica, elimina)."
 
 #: critiquebrainz/frontend/templates/macros.html:29
-#: critiquebrainz/frontend/templates/navbar.html:29
+#: critiquebrainz/frontend/templates/navbar.html:27
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
 msgid "Applications"
@@ -831,12 +604,9 @@ msgstr "Applicazioni"
 
 #: critiquebrainz/frontend/templates/macros.html:32
 msgid ""
-"Manage access to your profile for other apps (can allow complete access "
-"to your profile and remove existing access authorizations)."
-msgstr ""
-"Gestisci l'accesso al tuo profilo per altre applicazioni (puoi permettere"
-" l'accesso completo al tuo profilo e rimuovere le autorizzazioni "
-"all'accesso esistenti)"
+"Manage access to your profile for other apps (can allow complete access to "
+"your profile and remove existing access authorizations)."
+msgstr "Gestisci l'accesso al tuo profilo per altre applicazioni (puoi permettere l'accesso completo al tuo profilo e rimuovere le autorizzazioni all'accesso esistenti)"
 
 #: critiquebrainz/frontend/templates/macros.html:32
 msgid "Authorization"
@@ -854,68 +624,61 @@ msgstr "Rivedi voti"
 msgid "Toggle navigation"
 msgstr "Attiva/disattiva navigazione"
 
-#: critiquebrainz/frontend/templates/navbar.html:21
+#: critiquebrainz/frontend/templates/navbar.html:19
 #: critiquebrainz/frontend/templates/login/login.html:3
 #: critiquebrainz/frontend/templates/login/login.html:6
 msgid "Sign in"
 msgstr "Accedi"
 
-#: critiquebrainz/frontend/templates/navbar.html:28
+#: critiquebrainz/frontend/templates/navbar.html:26
 msgid "Profile"
 msgstr "Profilo"
 
-#: critiquebrainz/frontend/templates/navbar.html:31
+#: critiquebrainz/frontend/templates/navbar.html:29
 msgid "Sign out"
 msgstr "Disconnetti"
 
-#: critiquebrainz/frontend/templates/navbar.html:36
+#: critiquebrainz/frontend/templates/navbar.html:33
 msgid "Browse reviews"
 msgstr "Esplora le recensioni"
 
-#: critiquebrainz/frontend/templates/navbar.html:42
+#: critiquebrainz/frontend/templates/navbar.html:34
+msgid "Write a review"
+msgstr "Scrivi una recensione"
+
+#: critiquebrainz/frontend/templates/navbar.html:40
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
-#: critiquebrainz/frontend/templates/search/index.html:34
-#: critiquebrainz/frontend/templates/search/selector.html:37
-#: critiquebrainz/frontend/templates/search/selector.html:57
+#: critiquebrainz/frontend/templates/search/index.html:33
+#: critiquebrainz/frontend/templates/search/selector.html:25
 msgid "Search"
 msgstr "Cerca"
 
-#: critiquebrainz/frontend/templates/navbar.html:46
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:6
+#: critiquebrainz/frontend/templates/navbar.html:44
+#: critiquebrainz/frontend/templates/review/edit.html:23
+#: critiquebrainz/frontend/templates/review/write.html:18
 #: critiquebrainz/frontend/templates/search/index.html:26
-#: critiquebrainz/frontend/templates/search/index.html:57
-#: critiquebrainz/frontend/templates/search/index.html:63
-#: critiquebrainz/frontend/templates/search/selector.html:22
-#: critiquebrainz/frontend/templates/search/selector.html:82
-#: critiquebrainz/frontend/templates/search/selector.html:90
-#: critiquebrainz/frontend/templates/user/reviews.html:17
+#: critiquebrainz/frontend/templates/search/index.html:56
+#: critiquebrainz/frontend/templates/search/selector.html:10
+#: critiquebrainz/frontend/templates/search/selector.html:40
+#: critiquebrainz/frontend/templates/user/reviews.html:13
 msgid "Artist"
 msgstr "Artista"
 
-#: critiquebrainz/frontend/templates/navbar.html:47
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:7
+#: critiquebrainz/frontend/templates/navbar.html:45
+#: critiquebrainz/frontend/templates/review/edit.html:24
+#: critiquebrainz/frontend/templates/review/write.html:19
 #: critiquebrainz/frontend/templates/search/index.html:27
-#: critiquebrainz/frontend/templates/search/index.html:62
-#: critiquebrainz/frontend/templates/search/selector.html:29
-#: critiquebrainz/frontend/templates/search/selector.html:83
+#: critiquebrainz/frontend/templates/search/index.html:55
+#: critiquebrainz/frontend/templates/search/selector.html:17
+#: critiquebrainz/frontend/templates/search/selector.html:41
+#: critiquebrainz/frontend/templates/user/reviews.html:14
 msgid "Release group"
 msgstr "Gruppo di pubblicazioni"
-
-#: critiquebrainz/frontend/templates/navbar.html:48
-#: critiquebrainz/frontend/templates/review/modify/event.html:6
-#: critiquebrainz/frontend/templates/search/index.html:28
-#: critiquebrainz/frontend/templates/search/selector.html:49
-msgid "Event"
-msgstr ""
 
 #: critiquebrainz/frontend/templates/errors/400.html:2
 msgid "Invalid request"
 msgstr "Richiesta non valida"
-
-#: critiquebrainz/frontend/templates/errors/401.html:2
-msgid "Unauthorized"
-msgstr ""
 
 #: critiquebrainz/frontend/templates/errors/403.html:2
 msgid "Access denied"
@@ -937,59 +700,11 @@ msgstr "Servizio non disponibile"
 msgid "Back to home page"
 msgstr "Torna alla pagina iniziale"
 
-#: critiquebrainz/frontend/templates/log/action.html:7
-#, fuzzy, python-format
-msgid "Hide %(user)s's review of \"%(rg)s\""
-msgstr "Modifica recensione di \"%(rg)s\""
-
-#: critiquebrainz/frontend/templates/log/action.html:10
-#, fuzzy, python-format
-msgid "Block %(user)s"
-msgstr "Recensione di %(user)s"
-
-#: critiquebrainz/frontend/templates/log/action.html:32
-msgid "Please provide a reason for taking this action (required)"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/log/action.html:36
-#: critiquebrainz/frontend/templates/mapping/confirm.html:31
-#: critiquebrainz/frontend/templates/mapping/report.html:31
-#: critiquebrainz/frontend/templates/review/delete.html:24
-#: critiquebrainz/frontend/templates/review/report.html:27
-msgid "Cancel"
-msgstr "Annulla"
-
-#: critiquebrainz/frontend/templates/log/log.html:11
-msgid "Load older logs"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/log/log.html:13
-#, fuzzy
-msgid "Loading older logs..."
-msgstr "Caricamento ulteriori risultati in corso..."
-
-#: critiquebrainz/frontend/templates/log/log.html:38
-#, fuzzy
-msgid "Failed to load older logs!"
-msgstr "Impossibile caricare più risultati!"
-
-#: critiquebrainz/frontend/templates/log/log_results.html:18
-#, python-format
-msgid "%(admin)s archived a %(review)s written by %(user)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/log/log_results.html:23
-#, python-format
-msgid "%(admin)s blocked %(user)s"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/login/login.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to"
-" access your profile data."
-msgstr ""
-"Per effettuare l'accesso, utilizza il tuo account MusicBrainz e autorizza"
-" CritiqueBrainz ad accedere ai dati del tuo profilo."
+"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"access your profile data."
+msgstr "Per effettuare l'accesso, utilizza il tuo account MusicBrainz e autorizza CritiqueBrainz ad accedere ai dati del tuo profilo."
 
 #: critiquebrainz/frontend/templates/login/login.html:11
 msgid "Sign in with MusicBrainz"
@@ -1021,6 +736,12 @@ msgstr "URI:"
 msgid "Connect"
 msgstr "Connetti"
 
+#: critiquebrainz/frontend/templates/mapping/confirm.html:31
+#: critiquebrainz/frontend/templates/mapping/report.html:31
+#: critiquebrainz/frontend/templates/review/delete.html:18
+msgid "Cancel"
+msgstr "Annulla"
+
 #: critiquebrainz/frontend/templates/mapping/report.html:3
 #: critiquebrainz/frontend/templates/mapping/report.html:6
 msgid "Incorrect mapping reporting"
@@ -1044,9 +765,7 @@ msgstr "Associazione album con Spotify"
 msgid ""
 "Please select the album %(album)s by %(artist)s, or provide a link to "
 "Spotify below."
-msgstr ""
-"Seleziona l'album %(album)s di %(artist)s o inserisci un collegamento a "
-"Spotify qui sotto."
+msgstr "Seleziona l'album %(album)s di %(artist)s o inserisci un collegamento a Spotify qui sotto."
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:34
 msgid "Listen on Spotify"
@@ -1058,11 +777,9 @@ msgstr "Nessun album simile trovato"
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:61
 msgid ""
-"If you can't find the right album in search results, you can paste a "
-"Spotify link there:"
-msgstr ""
-"Se non riesci a trovare l'album corretto nei risultati della ricerca, "
-"puoi incollare un collegamento a Spotify qui:"
+"If you can't find the right album in search results, you can paste a Spotify"
+" link there:"
+msgstr "Se non riesci a trovare l'album corretto nei risultati della ricerca, puoi incollare un collegamento a Spotify qui:"
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:64
 msgid "Spotify URI or HTTP link"
@@ -1075,24 +792,18 @@ msgstr "Invia"
 #: critiquebrainz/frontend/templates/mapping/spotify.html:69
 #, python-format
 msgid "A Spotify link should look like %(uri_example)s or %(link_example)s."
-msgstr ""
-"Un collegamento a Spotify dovrebbe essere nel formato %(uri_example)s o "
-"%(link_example)s."
+msgstr "Un collegamento a Spotify dovrebbe essere nel formato %(uri_example)s o %(link_example)s."
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:79
 msgid ""
-"It's fine if you can't find the right album. It might not be available on"
-" Spotify yet."
-msgstr ""
-"Non preoccuparti se non riesci a trovare l'album corretto. Potrebbe non "
-"essere ancora disponibile su Spotify."
+"It's fine if you can't find the right album. It might not be available on "
+"Spotify yet."
+msgstr "Non preoccuparti se non riesci a trovare l'album corretto. Potrebbe non essere ancora disponibile su Spotify."
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:80
 #, python-format
 msgid "You can <a href=\"%(link)s\">go back to the release group page</a>."
-msgstr ""
-"Puoi <a href=\"%(link)s\">tornare alla pagina del gruppo di "
-"pubblicazioni</a>."
+msgstr "Puoi <a href=\"%(link)s\">tornare alla pagina del gruppo di pubblicazioni</a>."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
@@ -1105,16 +816,12 @@ msgstr "Vuoi permettere l'accesso al tuo account a %(name)s?"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:9
 msgid "You can revoke access at any time in your profile settings."
-msgstr ""
-"Puoi revocare l'accesso in qualsiasi momento nelle impostazioni del tuo "
-"profilo."
+msgstr "Puoi revocare l'accesso in qualsiasi momento nelle impostazioni del tuo profilo."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:15
 #: critiquebrainz/frontend/templates/profile/applications/index.html:20
 #: critiquebrainz/frontend/templates/profile/applications/index.html:54
-#: critiquebrainz/frontend/templates/search/index.html:49
-#: critiquebrainz/frontend/templates/search/index.html:56
-#: critiquebrainz/frontend/templates/search/selector.html:89
+#: critiquebrainz/frontend/templates/search/index.html:48
 msgid "Name"
 msgstr "Nome"
 
@@ -1127,11 +834,9 @@ msgstr "Sito web"
 #: critiquebrainz/frontend/templates/oauth/prompt.html:23
 #, python-format
 msgid ""
-"%(client)s is requesting permission to access the following parts of your"
-" profile:"
-msgstr ""
-"%(client)s sta richiedendo il permesso di accedere alle seguenti parti "
-"del tuo profilo:"
+"%(client)s is requesting permission to access the following parts of your "
+"profile:"
+msgstr "%(client)s sta richiedendo il permesso di accedere alle seguenti parti del tuo profilo:"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:30
 #, python-format
@@ -1147,9 +852,12 @@ msgid "No thanks"
 msgstr "No, grazie"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:3
-#: critiquebrainz/frontend/templates/profile/delete.html:6
 msgid "Delete account"
 msgstr "Elimina account"
+
+#: critiquebrainz/frontend/templates/profile/delete.html:6
+msgid "Deleting account"
+msgstr "Eliminazione account"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:10
 msgid "Are you sure you want to delete your account?"
@@ -1159,24 +867,24 @@ msgstr "Sei sicuro di voler eliminare il tuo account?"
 msgid ""
 "All your data (i.e. reviews, votes, reports) will be purged. You "
 "<strong>cannot</strong> undo this action."
-msgstr ""
-"Tutti i tuoi dati (recensioni, voti, report) saranno rimossi. <strong>Non"
-" è possibile</strong> annullare quest'operazione."
+msgstr "Tutti i tuoi dati (recensioni, voti, report) saranno rimossi. <strong>Non è possibile</strong> annullare quest'operazione."
 
 #: critiquebrainz/frontend/templates/profile/delete.html:14
 msgid "Yes, I want to delete my account"
 msgstr "Sì, voglio eliminare il mio account"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:15
-#: critiquebrainz/frontend/templates/review/entity/base.html:55
 msgid "No"
 msgstr "No"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:3
-#: critiquebrainz/frontend/templates/profile/edit.html:6
-#: critiquebrainz/frontend/templates/user/base.html:12
+#: critiquebrainz/frontend/templates/user/base.html:10
 msgid "Edit profile"
 msgstr "Modifica profilo"
+
+#: critiquebrainz/frontend/templates/profile/edit.html:6
+msgid "Editing profile"
+msgstr "Modifica del profilo in corso"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:36
 msgid "Save"
@@ -1227,7 +935,7 @@ msgid "Modify"
 msgstr "Modifica"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:36
-#: critiquebrainz/frontend/templates/user/reviews.html:74
+#: critiquebrainz/frontend/templates/user/reviews.html:46
 msgid "Delete"
 msgstr "Elimina"
 
@@ -1256,358 +964,147 @@ msgstr "Nessun requisito speciale"
 msgid "Revoke access"
 msgstr "Revoca accesso"
 
-#: critiquebrainz/frontend/templates/reports/reports.html:3
-#: critiquebrainz/frontend/templates/reports/reports.html:6
-#, fuzzy
-msgid "Recent reports"
-msgstr "Recensioni recenti"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:25
-#, fuzzy
-msgid "Reported on"
-msgstr "Creata il"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:26
-msgid "Reported by"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/reports/reports.html:27
-#, fuzzy
-msgid "Reason"
-msgstr "Creata il"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:28
-#, fuzzy
-msgid "Review"
-msgstr "Anteprima"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:29
-msgid "Author"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/reports/reports.html:30
-#, fuzzy
-msgid "Actions"
-msgstr "Applicazioni"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:38
-#, fuzzy
-msgid "Load older reports"
-msgstr "Carica più risultati"
-
-#: critiquebrainz/frontend/templates/reports/reports.html:40
-#, fuzzy
-msgid "Loading older reports..."
-msgstr "Caricamento ulteriori risultati in corso..."
-
-#: critiquebrainz/frontend/templates/reports/reports.html:65
-#, fuzzy
-msgid "Failed to load older reports!"
-msgstr "Impossibile caricare più risultati!"
-
-#: critiquebrainz/frontend/templates/reports/reports_results.html:34
-msgid "Read latest revision"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/review/browse.html:7
 msgid "Ordered by creation date"
 msgstr "Ordinate per data di creazione"
 
-#: critiquebrainz/frontend/templates/review/compare.html:3
-msgid "Difference between revisions"
-msgstr ""
+#: critiquebrainz/frontend/templates/review/delete.html:6
+#, python-format
+msgid "Delete review of %(release_group)s"
+msgstr "Elimina recensione di %(release_group)s"
 
-#: critiquebrainz/frontend/templates/review/compare.html:9
-#: critiquebrainz/frontend/templates/review/compare.html:16
-#, fuzzy
-msgid "Revision"
-msgstr "Precedente"
-
-#: critiquebrainz/frontend/templates/review/compare.html:10
-#: critiquebrainz/frontend/templates/review/compare.html:17
-msgid "as of"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/delete.html:11
-#: critiquebrainz/frontend/templates/review/edit.html:11
-#, fuzzy, python-format
-msgid "Edit review of \"%(entity)s\""
-msgstr "Modifica recensione di \"%(rg)s\""
-
-#: critiquebrainz/frontend/templates/review/delete.html:15
+#: critiquebrainz/frontend/templates/review/delete.html:9
 msgid "Deleting review"
 msgstr "Eliminazione recensione in corso"
 
-#: critiquebrainz/frontend/templates/review/delete.html:19
-#, fuzzy, python-format
-msgid "Are you sure you want to delete your review of \"%(entity)s\"?"
+#: critiquebrainz/frontend/templates/review/delete.html:13
+#, python-format
+msgid "Are you sure you want to delete your review of %(release_group)s?"
 msgstr "Sei sicuro di voler eliminare la tua recensione di %(release_group)s?"
 
-#: critiquebrainz/frontend/templates/review/delete.html:20
+#: critiquebrainz/frontend/templates/review/delete.html:14
 msgid "There is no way to undo this action!"
 msgstr "Non sarà possibile annullare quest'operazione!"
 
-#: critiquebrainz/frontend/templates/review/delete.html:23
+#: critiquebrainz/frontend/templates/review/delete.html:17
 msgid "Delete review"
 msgstr "Elimina recensione"
 
-#: critiquebrainz/frontend/templates/review/edit.html:15
+#: critiquebrainz/frontend/templates/review/edit.html:7
+#, python-format
+msgid "Edit review of \"%(rg)s\""
+msgstr "Modifica recensione di \"%(rg)s\""
+
+#: critiquebrainz/frontend/templates/review/edit.html:11
 msgid "Editing review"
 msgstr "Modifica recensione in corso"
 
-#: critiquebrainz/frontend/templates/review/edit.html:19
-#: critiquebrainz/frontend/templates/review/revisions.html:25
-#: critiquebrainz/frontend/templates/user/reviews.html:18
+#: critiquebrainz/frontend/templates/review/edit.html:31
+#: critiquebrainz/frontend/templates/user/reviews.html:15
 msgid "Created on"
 msgstr "Creata il"
 
-#: critiquebrainz/frontend/templates/review/edit.html:23
+#: critiquebrainz/frontend/templates/review/edit.html:33
+#: critiquebrainz/frontend/templates/user/reviews.html:16
+msgid "Votes (+/-)"
+msgstr "Voti (+/-)"
+
+#: critiquebrainz/frontend/templates/review/edit.html:35
 msgid "Status"
 msgstr "Status"
 
-#: critiquebrainz/frontend/templates/review/edit.html:26
-#: critiquebrainz/frontend/templates/user/reviews.html:29
+#: critiquebrainz/frontend/templates/review/edit.html:38
+#: critiquebrainz/frontend/templates/user/reviews.html:27
 msgid "Draft"
 msgstr "Bozza"
 
-#: critiquebrainz/frontend/templates/review/edit.html:28
-#: critiquebrainz/frontend/templates/user/reviews.html:31
+#: critiquebrainz/frontend/templates/review/edit.html:40
+#: critiquebrainz/frontend/templates/user/reviews.html:29
 msgid "Published"
 msgstr "Pubblicata"
 
-#: critiquebrainz/frontend/templates/review/edit.html:35
-#: critiquebrainz/frontend/templates/review/write.html:37
-msgid "Publish"
-msgstr "Pubblica"
-
-#: critiquebrainz/frontend/templates/review/edit.html:36
-#: critiquebrainz/frontend/templates/review/write.html:38
-msgid "Save draft"
-msgstr "Salva bozza"
-
-#: critiquebrainz/frontend/templates/review/edit.html:38
-msgid "Update"
-msgstr "Aggiorna"
-
-#: critiquebrainz/frontend/templates/review/edit.html:40
-msgid "Discard changes"
-msgstr "Annulla cambiamenti"
-
-#: critiquebrainz/frontend/templates/review/edit.html:41
-#: critiquebrainz/frontend/templates/review/entity/base.html:77
-#, fuzzy
-msgid "Delete this review"
-msgstr "Elimina recensione"
-
-#: critiquebrainz/frontend/templates/review/report.html:6
-#: critiquebrainz/frontend/templates/review/report.html:9
-#, fuzzy, python-format
-msgid "Report %(user)s's review of \"%(rg)s\""
-msgstr "Scrivi recensione di \"%(rg)s\""
-
-#: critiquebrainz/frontend/templates/review/report.html:23
-msgid "Please provide a description of the violation (required)"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/report.html:26
-#, fuzzy
-msgid "Report review"
-msgstr "Scrivi recensione"
-
-#: critiquebrainz/frontend/templates/review/revisions.html:12
-#, python-format
-msgid "Revisions of Review of \"%(entity)s\" by %(user)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/revisions.html:16
-#, fuzzy, python-format
-msgid "Revisions of Review by %(user)s"
-msgstr "Recensione di %(user)s"
-
-#: critiquebrainz/frontend/templates/review/revisions.html:28
-#, fuzzy
-msgid "Compare"
-msgstr "Homepage"
-
-#: critiquebrainz/frontend/templates/review/revisions.html:35
-msgid "Load older revisions"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/revisions.html:36
-#, fuzzy
-msgid "Loading older revisions..."
-msgstr "Caricamento ulteriori risultati in corso..."
-
-#: critiquebrainz/frontend/templates/review/revisions.html:53
-msgid "Select two different revisions."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/revisions.html:77
-#, fuzzy
-msgid "Failed to load older revisions!"
-msgstr "Impossibile caricare l'anteprima."
-
-#: critiquebrainz/frontend/templates/review/write.html:10
-#, fuzzy, python-format
-msgid "Write review of \"%(entity)s\""
-msgstr "Scrivi recensione di \"%(rg)s\""
-
-#: critiquebrainz/frontend/templates/review/write.html:14
-msgid "Write review"
-msgstr "Scrivi recensione"
-
-#: critiquebrainz/frontend/templates/review/write.html:23
-#, fuzzy
-msgid ""
-"You acknowledge and agree that your contributed reviews to CritiqueBrainz"
-" are licensed under a\n"
-"          Creative Commons Attribution-ShareAlike 3.0 Unported or "
-"Creative Commons Attribution-ShareAlike-NonCommercial\n"
-"          license as per your choice above. You agree to license your "
-"work under this license.\n"
-"          You represent and warrant that you own or control all rights in"
-" and to the work, that nothing in the work\n"
-"          infringes the rights of any third-party, and that you have the "
-"permission to use and to license the work\n"
-"          under the selected Creative Commons license. Finally, you give "
-"the MetaBrainz Foundation permission to license\n"
-"          this content for commercial use outside of Creative Commons "
-"licenses in order to support the operations of the organization."
-msgstr ""
-"Riconosci e confermi che le recensioni con cui contribuisci a "
-"CritiqueBrainz sono licenziate in base ai termini della licenza Creative "
-"Commons Attribuzione - Condividi allo stesso modo 3.0 Unported o della "
-"licenza Creative Commons Attribuzione - Non commerciale - Condividi allo "
-"stesso modo, come da tua scelta qui sopra.\n"
-"Confermi che intendi licenziare il tuo contributo ai termini di questa "
-"licenza.\n"
-"Affermi e garantisci che possiedi o controlli tutti i diritti su questo "
-"contributo, che esso non infrange in nessun modo i diritti di terzi e che"
-" hai il permesso di usare e licenziare il contributo ai termini della "
-"licenza Creative Commons selezionata.\n"
-"Infine, concedi alla MetaBrainz Foundation il permesso di licenziare "
-"questo contenuto per usi commerciali al di fuori delle licenze Creative "
-"Commons al fine di sostenere le attività dell'organizzazione."
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:14
-msgid "<b>This review has not been published yet!</b> Only you can see it."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:16
-#, python-format
-msgid "Published on %(date)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:22
-#, fuzzy
-msgid "This review has not yet been rated"
-msgstr "Questa recensione non è ancora stata valutata."
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:38
-#, python-format
-msgid "This review is licensed under a %(name)s license."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:40
-#, python-format
-msgid "It was imported from %(source)s."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:53
-msgid "Did you find this review useful?"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:54
-msgid "Yes"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:58
-msgid "You found this review useful."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:60
-msgid "You didn't find this review useful."
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:62
-#, fuzzy
-msgid "Delete your vote"
-msgstr "Invia ed elimina i tuoi voti."
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:67
-msgid "Report abuse"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:73
-#, fuzzy
-msgid "Edit this review"
-msgstr "Modifica recensione in corso"
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:82
-#: critiquebrainz/frontend/templates/review/entity/base.html:89
-msgid "View older revisions"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/base.html:86
-#, python-format
-msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/review/entity/event.html:12
-#, fuzzy, python-format
-msgid "Review of \"%(event)s\" by %(user)s"
-msgstr "Recensione di %(user)s"
-
-#: critiquebrainz/frontend/templates/review/modify/base.html:19
+#: critiquebrainz/frontend/templates/review/edit.html:57
+#: critiquebrainz/frontend/templates/review/write.html:40
 msgid "Write"
 msgstr "Scrivi"
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:20
+#: critiquebrainz/frontend/templates/review/edit.html:58
+#: critiquebrainz/frontend/templates/review/write.html:41
 msgid "Preview"
 msgstr "Anteprima"
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:22
+#: critiquebrainz/frontend/templates/review/edit.html:60
+#: critiquebrainz/frontend/templates/review/write.html:43
 #, python-format
 msgid ""
 "You can use <a href=\"%(url)s\" target=\"_blank\">Markdown</a> syntax to "
 "apply custom formatting."
-msgstr ""
-"Puoi utilizzare la sintassi di <a href=\"%(url)s\" "
-"target=\"_blank\">Markdown</a> per applicare una formattazione "
-"personalizzata."
+msgstr "Puoi utilizzare la sintassi di <a href=\"%(url)s\" target=\"_blank\">Markdown</a> per applicare una formattazione personalizzata."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:35
-#: critiquebrainz/frontend/templates/review/modify/base.html:109
+#: critiquebrainz/frontend/templates/review/edit.html:72
+#: critiquebrainz/frontend/templates/review/edit.html:135
+#: critiquebrainz/frontend/templates/review/write.html:55
+#: critiquebrainz/frontend/templates/review/write.html:125
 msgid "Loading preview..."
 msgstr "Caricamento anteprima in corso..."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:40
+#: critiquebrainz/frontend/templates/review/edit.html:77
+#: critiquebrainz/frontend/templates/review/write.html:60
 msgid "Please, specify language of this review:"
 msgstr "Specifica la lingua di questa recensione:"
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:52
+#: critiquebrainz/frontend/templates/review/edit.html:89
+#: critiquebrainz/frontend/templates/review/write.html:71
 msgid "You cannot change the license after the review is published."
 msgstr "Non potrai modificare la licenza dopo aver pubblicato la recensione."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:59
-msgid "Note: Drafts are not private!"
-msgstr ""
+#: critiquebrainz/frontend/templates/review/edit.html:95
+#: critiquebrainz/frontend/templates/review/write.html:91
+msgid "Publish"
+msgstr "Pubblica"
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:98
+#: critiquebrainz/frontend/templates/review/edit.html:96
+#: critiquebrainz/frontend/templates/review/write.html:92
+msgid "Save draft"
+msgstr "Salva bozza"
+
+#: critiquebrainz/frontend/templates/review/edit.html:98
+msgid "Update"
+msgstr "Aggiorna"
+
+#: critiquebrainz/frontend/templates/review/edit.html:100
+msgid "Discard changes"
+msgstr "Annulla cambiamenti"
+
+#: critiquebrainz/frontend/templates/review/edit.html:124
+#: critiquebrainz/frontend/templates/review/write.html:114
 msgid "Review is empty."
 msgstr "La recensione è vuota."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:105
+#: critiquebrainz/frontend/templates/review/edit.html:131
+#: critiquebrainz/frontend/templates/review/write.html:121
 msgid "Failed to load preview."
 msgstr "Impossibile caricare l'anteprima."
 
-#: critiquebrainz/frontend/templates/review/modify/event.html:13
-msgid "Place"
-msgstr ""
+#: critiquebrainz/frontend/templates/review/write.html:3
+#, python-format
+msgid "Write review of \"%(rg)s\""
+msgstr "Scrivi recensione di \"%(rg)s\""
 
-#: critiquebrainz/frontend/templates/review/modify/event.html:15
-msgid "Unknown place"
-msgstr ""
+#: critiquebrainz/frontend/templates/review/write.html:6
+msgid "Write review"
+msgstr "Scrivi recensione"
+
+#: critiquebrainz/frontend/templates/review/write.html:79
+msgid ""
+"You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a\n"
+"            Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial\n"
+"            license as per your choice above. You agree to license your work under this license.\n"
+"            You represent and warrant that you own or control all rights in and to the work, that nothing in the work\n"
+"            infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
+"            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
+"            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
+msgstr "Riconosci e confermi che le recensioni con cui contribuisci a CritiqueBrainz sono licenziate in base ai termini della licenza Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported o della licenza Creative Commons Attribuzione - Non commerciale - Condividi allo stesso modo, come da tua scelta qui sopra.\nConfermi che intendi licenziare il tuo contributo ai termini di questa licenza.\nAffermi e garantisci che possiedi o controlli tutti i diritti su questo contributo, che esso non infrange in nessun modo i diritti di terzi e che hai il permesso di usare e licenziare il contributo ai termini della licenza Creative Commons selezionata.\nInfine, concedi alla MetaBrainz Foundation il permesso di licenziare questo contenuto per usi commerciali al di fuori delle licenze Creative Commons al fine di sostenere le attività dell'organizzazione."
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"
@@ -1618,71 +1115,50 @@ msgid "Query"
 msgstr "Ricerca"
 
 #: critiquebrainz/frontend/templates/search/index.html:23
-#: critiquebrainz/frontend/templates/search/index.html:51
-#: critiquebrainz/frontend/templates/search/index.html:64
-#: critiquebrainz/frontend/templates/search/selector.html:84
-#: critiquebrainz/frontend/templates/user/reviews.html:15
+#: critiquebrainz/frontend/templates/search/index.html:50
+#: critiquebrainz/frontend/templates/search/index.html:57
+#: critiquebrainz/frontend/templates/search/selector.html:42
 msgid "Type"
 msgstr "Tipo"
 
-#: critiquebrainz/frontend/templates/search/index.html:42
-#: critiquebrainz/frontend/templates/search/selector.html:75
+#: critiquebrainz/frontend/templates/search/index.html:41
+#: critiquebrainz/frontend/templates/search/selector.html:34
 msgid "No results found"
 msgstr "Nessun risultato trovato"
 
-#: critiquebrainz/frontend/templates/search/index.html:50
+#: critiquebrainz/frontend/templates/search/index.html:49
 msgid "Sort name"
 msgstr "Nome di ordinamento"
 
-#: critiquebrainz/frontend/templates/search/index.html:52
+#: critiquebrainz/frontend/templates/search/index.html:51
 msgid "Country"
 msgstr "Paese"
 
-#: critiquebrainz/frontend/templates/search/index.html:58
-#: critiquebrainz/frontend/templates/search/selector.html:91
-#, fuzzy
-msgid "Location"
-msgstr "Applicazioni"
-
-#: critiquebrainz/frontend/templates/search/index.html:73
-#: critiquebrainz/frontend/templates/search/selector.html:102
+#: critiquebrainz/frontend/templates/search/index.html:66
+#: critiquebrainz/frontend/templates/search/selector.html:52
 msgid "Load more results"
 msgstr "Carica più risultati"
 
-#: critiquebrainz/frontend/templates/search/index.html:74
-#: critiquebrainz/frontend/templates/search/selector.html:103
+#: critiquebrainz/frontend/templates/search/index.html:67
+#: critiquebrainz/frontend/templates/search/selector.html:53
 msgid "Loading more results..."
 msgstr "Caricamento ulteriori risultati in corso..."
 
-#: critiquebrainz/frontend/templates/search/index.html:102
-#: critiquebrainz/frontend/templates/search/selector.html:141
+#: critiquebrainz/frontend/templates/search/index.html:95
+#: critiquebrainz/frontend/templates/search/selector.html:85
 msgid "Failed to load more search results!"
 msgstr "Impossibile caricare più risultati!"
 
-#: critiquebrainz/frontend/templates/search/results.html:35
-#: critiquebrainz/frontend/templates/search/selector_results.html:29
-#: critiquebrainz/frontend/templates/user/reviews.html:61
-msgid "more"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/search/selector.html:3
-msgid "Entity selection"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/search/selector.html:19
+#: critiquebrainz/frontend/templates/search/selector.html:6
 msgid "Release group selection"
 msgstr "Selezione gruppo di pubblicazioni"
 
-#: critiquebrainz/frontend/templates/search/selector.html:46
-#, fuzzy
-msgid "Event selection"
-msgstr "Selezione gruppo di pubblicazioni"
-
-#: critiquebrainz/frontend/templates/search/selector.html:107
+#: critiquebrainz/frontend/templates/search/selector.html:57
 msgid "Continue"
 msgstr "Continua"
 
-#: critiquebrainz/frontend/templates/user/base.html:25
+#: critiquebrainz/frontend/templates/user/base.html:17
 #: critiquebrainz/frontend/templates/user/info.html:3
 msgid "Info"
 msgstr "Info"
@@ -1734,51 +1210,18 @@ msgstr "Questo mese"
 msgid "Votes"
 msgstr "Voti"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:16
-msgid "Entity"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/user/reviews.html:37
-msgid "Hidden"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/user/reviews.html:71
+#: critiquebrainz/frontend/templates/user/reviews.html:43
 msgid "Read"
 msgstr "Leggi"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:73
+#: critiquebrainz/frontend/templates/user/reviews.html:45
 msgid "Edit"
 msgstr "Modifica"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:85
+#: critiquebrainz/frontend/templates/user/reviews.html:57
 msgid "Newer"
 msgstr "Più recente"
 
-#: critiquebrainz/frontend/templates/user/reviews.html:88
+#: critiquebrainz/frontend/templates/user/reviews.html:60
 msgid "Older"
 msgstr "Più vecchio"
-
-#: critiquebrainz/frontend/user/views.py:45
-msgid "This account is already blocked."
-msgstr ""
-
-#: critiquebrainz/frontend/user/views.py:53
-msgid "This user account has been blocked."
-msgstr ""
-
-#: critiquebrainz/frontend/user/views.py:65
-msgid "This user account has been unblocked."
-msgstr ""
-
-#~ msgid "You are not allowed to rate this review."
-#~ msgstr "Non ti è consentito valutare questa recensione."
-
-#~ msgid "Deleting account"
-#~ msgstr "Eliminazione account"
-
-#~ msgid "Editing profile"
-#~ msgstr "Modifica del profilo in corso"
-
-#~ msgid "Delete review of %(release_group)s"
-#~ msgstr "Elimina recensione di %(release_group)s"
-
