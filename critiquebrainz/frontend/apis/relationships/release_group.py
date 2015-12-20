@@ -2,7 +2,7 @@
 Relationship processor for release group entity.
 """
 from urlparse import urlparse
-from flask_babel import gettext
+from flask_babel import lazy_gettext
 import urllib
 
 
@@ -16,11 +16,11 @@ def process(release_group):
 def _url(list):
     """Processor for Release Group-URL relationship."""
     basic_types = {
-        'wikidata': {'name': gettext('Wikidata'), 'icon': 'wikidata-16.png', },
-        'discogs': {'name': gettext('Discogs'), 'icon': 'discogs-16.png', },
-        'allmusic': {'name': gettext('Allmusic'), 'icon': 'allmusic-16.png', },
-        'official homepage': {'name': gettext('Official homepage'), 'icon': 'home-16.png', },
-        'recording studio': {'name': gettext('Recording studio'), },
+        'wikidata': {'name': lazy_gettext('Wikidata'), 'icon': 'wikidata-16.png', },
+        'discogs': {'name': lazy_gettext('Discogs'), 'icon': 'discogs-16.png', },
+        'allmusic': {'name': lazy_gettext('Allmusic'), 'icon': 'allmusic-16.png', },
+        'official homepage': {'name': lazy_gettext('Official homepage'), 'icon': 'home-16.png', },
+        'recording studio': {'name': lazy_gettext('Recording studio'), },
     }
     external_urls = []
     for relation in list:
@@ -32,13 +32,13 @@ def _url(list):
                 if relation['type'] == 'lyrics':
                     external_urls.append(dict(
                         relation.items() + {
-                            'name': gettext('Lyrics'),
+                            'name': lazy_gettext('Lyrics'),
                             'disambiguation': target.netloc
                         }.items()))
                 elif relation['type'] == 'wikipedia':
                     external_urls.append(dict(
                         relation.items() + {
-                            'name': gettext('Wikipedia'),
+                            'name': lazy_gettext('Wikipedia'),
                             'disambiguation': target.netloc.split('.')[0] + ':' +
                                               urllib.unquote(target.path.split('/')[2]).decode('utf8').replace("_", " "),
                             'icon': 'wikipedia-16.png',
