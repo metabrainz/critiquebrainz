@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-15 11:43+0000\n"
+"POT-Creation-Date: 2015-12-21 13:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -277,10 +277,6 @@ msgid "You need to choose a license!"
 msgstr ""
 
 #: critiquebrainz/frontend/review/forms.py:45
-#: critiquebrainz/frontend/templates/base.html:71
-msgid "Language"
-msgstr ""
-
 #: critiquebrainz/frontend/review/forms.py:54
 msgid "You need to accept the license agreement!"
 msgstr ""
@@ -574,6 +570,10 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/base.html:66
 msgid "Reports"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/base.html:71
+msgid "Language"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
@@ -1355,17 +1355,17 @@ msgstr ""
 msgid ""
 "You acknowledge and agree that your contributed reviews to CritiqueBrainz"
 " are licensed under a\n"
-"          Creative Commons Attribution-ShareAlike 3.0 Unported or "
+"            Creative Commons Attribution-ShareAlike 3.0 Unported or "
 "Creative Commons Attribution-ShareAlike-NonCommercial\n"
-"          license as per your choice above. You agree to license your "
+"            license as per your choice above. You agree to license your "
 "work under this license.\n"
-"          You represent and warrant that you own or control all rights in"
-" and to the work, that nothing in the work\n"
-"          infringes the rights of any third-party, and that you have the "
-"permission to use and to license the work\n"
-"          under the selected Creative Commons license. Finally, you give "
-"the MetaBrainz Foundation permission to license\n"
-"          this content for commercial use outside of Creative Commons "
+"            You represent and warrant that you own or control all rights "
+"in and to the work, that nothing in the work\n"
+"            infringes the rights of any third-party, and that you have "
+"the permission to use and to license the work\n"
+"            under the selected Creative Commons license. Finally, you "
+"give the MetaBrainz Foundation permission to license\n"
+"            this content for commercial use outside of Creative Commons "
 "licenses in order to support the operations of the organization."
 msgstr ""
 
