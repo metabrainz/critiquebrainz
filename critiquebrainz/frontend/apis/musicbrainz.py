@@ -131,7 +131,7 @@ def get_release_by_id(id):
     release = cache.get(key)
     if not release:
         try:
-            release = musicbrainzngs.get_release_by_id(id, ['recordings', 'media']).get('release')
+            release = musicbrainzngs.get_release_by_id(id, ['recordings', 'media', 'release-groups']).get('release')
         except ResponseError as e:
             if e.cause.code == 404:
                 return None
