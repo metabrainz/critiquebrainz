@@ -160,6 +160,10 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
     # REVIEWS
     # Archiving review tables (review, revision)
 
+    # Creating query object common to COMBINED and SEPARATE dumps to filter out draft revisions
+    # (Using a string for the filter clause instead of ORM methods because neither casting not .params() worked)
+    revision_query_object = db.session.query(model.Revision).join(model.Review).filter("review.is_draft = false")
+
     # 1. COMBINED
     # Archiving all reviews (any license)
     with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-all.tar.bz2"), "w:bz2") as tar:
@@ -169,7 +173,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
         with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
             cursor.copy_to(f, 'review', columns=get_columns(model.Review))
         with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
-            cursor.copy_to(f, 'revision', columns=get_columns(model.Revision))
+            cursor.copy_to(f, '(%s)' % revision_query_object)
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -192,8 +196,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
                 cursor.copy_to(f, "(SELECT (%s) FROM review WHERE license_id = '%s')" %
                                (', '.join(get_columns(model.Review)), license.id))
             with open(os.path.join(tables_dir, 'revision'), 'w') as f:
-                cursor.copy_to(f, "(SELECT (revision.%s) FROM revision JOIN review ON revision.review_id = review.id WHERE review.license_id = '%s')" %
-                               (', revision.'.join(get_columns(model.Revision)), license.id))
+                cursor.copy_to(f, '(%s)' % (revision_query_object.filter("review.license_id = '%s'" % (license.id))))
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
