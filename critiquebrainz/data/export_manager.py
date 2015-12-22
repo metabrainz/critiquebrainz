@@ -171,7 +171,8 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
         reviews_combined_tables_dir = os.path.join(temp_dir, 'cbdump-reviews-all')
         create_path(reviews_combined_tables_dir)
         with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
-            cursor.copy_to(f, 'review', columns=get_columns(model.Review))
+            cursor.copy_to(f, "(SELECT %s FROM review WHERE is_draft = false)" %
+                           (', '.join(get_columns(model.Review))))
         with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
             cursor.copy_to(f, '(%s)' % revision_query_object)
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
@@ -193,7 +194,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
             tables_dir = os.path.join(temp_dir, safe_name)
             create_path(tables_dir)
             with open(os.path.join(tables_dir, 'review'), 'w') as f:
-                cursor.copy_to(f, "(SELECT (%s) FROM review WHERE license_id = '%s')" %
+                cursor.copy_to(f, "(SELECT %s FROM review WHERE is_draft = false AND license_id = '%s')" %
                                (', '.join(get_columns(model.Review)), license.id))
             with open(os.path.join(tables_dir, 'revision'), 'w') as f:
                 cursor.copy_to(f, '(%s)' % (revision_query_object.filter("review.license_id = '%s'" % (license.id))))
