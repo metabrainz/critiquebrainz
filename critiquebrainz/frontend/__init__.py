@@ -1,4 +1,6 @@
 from flask import Flask
+from Babel import Locale
+
 import os
 
 
@@ -70,6 +72,7 @@ def create_app(debug=None):
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
     app.jinja_env.filters['entity_details'] = musicbrainz.get_entity_by_id
+    app.jinja_env.filters['language_name'] = lambda language_code: Locale(language_code).language_name
 
     # Blueprints
     from critiquebrainz.frontend.views import frontend_bp
