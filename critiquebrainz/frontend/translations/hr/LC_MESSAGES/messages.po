@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-15 11:43+0000\n"
-"PO-Revision-Date: 2015-12-16 09:51+0000\n"
+"POT-Creation-Date: 2015-12-21 13:25+0000\n"
+"PO-Revision-Date: 2015-12-22 10:39+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Croatian (http://www.transifex.com/musicbrainz/critiquebrainz/language/hr/)\n"
 "MIME-Version: 1.0\n"
@@ -278,10 +278,6 @@ msgid "You need to choose a license!"
 msgstr "Trebate izabrati licencu!"
 
 #: critiquebrainz/frontend/review/forms.py:45
-#: critiquebrainz/frontend/templates/base.html:71
-msgid "Language"
-msgstr "Jezik"
-
 #: critiquebrainz/frontend/review/forms.py:54
 msgid "You need to accept the license agreement!"
 msgstr "Trebate prihvatiti ugovor o licenci!"
@@ -570,6 +566,10 @@ msgstr ""
 #: critiquebrainz/frontend/templates/base.html:66
 msgid "Reports"
 msgstr ""
+
+#: critiquebrainz/frontend/templates/base.html:71
+msgid "Language"
+msgstr "Jezik"
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/mapping/confirm.html:13
@@ -1346,12 +1346,12 @@ msgstr "Napiši kritički osvrt"
 #: critiquebrainz/frontend/templates/review/write.html:23
 msgid ""
 "You acknowledge and agree that your contributed reviews to CritiqueBrainz are licensed under a\n"
-"          Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial\n"
-"          license as per your choice above. You agree to license your work under this license.\n"
-"          You represent and warrant that you own or control all rights in and to the work, that nothing in the work\n"
-"          infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
-"          under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
-"          this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
+"            Creative Commons Attribution-ShareAlike 3.0 Unported or Creative Commons Attribution-ShareAlike-NonCommercial\n"
+"            license as per your choice above. You agree to license your work under this license.\n"
+"            You represent and warrant that you own or control all rights in and to the work, that nothing in the work\n"
+"            infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
+"            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
+"            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:14
