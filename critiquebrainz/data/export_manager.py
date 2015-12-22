@@ -160,14 +160,15 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
     # 1. COMBINED
     # Archiving all reviews (any license)
     REVISION_COMBINED_SQL = "SELECT %s FROM revision JOIN review " \
-                            "ON review.id = revision.review_id WHERE review.is_draft = false" \
+                            "ON review.id = revision.review_id " \
+                            "WHERE review.is_hidden = false AND review.is_draft = false" \
                             % ', '.join(['revision.' + col for col in get_columns(model.Revision)])
     with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-all.tar.bz2"), "w:bz2") as tar:
         # Dumping tables
         reviews_combined_tables_dir = os.path.join(temp_dir, 'cbdump-reviews-all')
         create_path(reviews_combined_tables_dir)
         with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
-            cursor.copy_to(f, "(SELECT %s FROM review WHERE is_draft = false)" %
+            cursor.copy_to(f, "(SELECT %s FROM review WHERE is_hidden = false AND is_draft = false)" %
                            (', '.join(get_columns(model.Review))))
         with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
             cursor.copy_to(f, "(%s)" % REVISION_COMBINED_SQL)
@@ -191,8 +192,8 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
             tables_dir = os.path.join(temp_dir, safe_name)
             create_path(tables_dir)
             with open(os.path.join(tables_dir, 'review'), 'w') as f:
-                cursor.copy_to(f, "(SELECT %s FROM review WHERE is_draft = false AND license_id = '%s')" %
-                               (', '.join(get_columns(model.Review)), license.id))
+                cursor.copy_to(f, "(SELECT %s FROM review WHERE is_hidden = false AND is_draft = false " \
+                                  "AND license_id = '%s')" % (', '.join(get_columns(model.Review)), license.id))
             with open(os.path.join(tables_dir, 'revision'), 'w') as f:
                 cursor.copy_to(f, "(%s)" % (REVISION_SEPARATE_SQL % license.id))
             tar.add(tables_dir, arcname='cbdump')
