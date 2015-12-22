@@ -160,12 +160,11 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
     # REVIEWS
     # Archiving review tables (review, revision)
 
-    # Creating query object common to COMBINED and SEPARATE dumps to filter out draft revisions
-    # (Using a string for the filter clause instead of ORM methods because neither casting not .params() worked)
-    revision_query_object = db.session.query(model.Revision).join(model.Review).filter("review.is_draft = false")
-
     # 1. COMBINED
     # Archiving all reviews (any license)
+    REVISION_COMBINED_SQL = "SELECT %s FROM revision JOIN review " \
+                            "ON review.id = revision.review_id WHERE review.is_draft = false" \
+                            % ', '.join(['revision.' + col for col in get_columns(model.Revision)])
     with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-all.tar.bz2"), "w:bz2") as tar:
         # Dumping tables
         reviews_combined_tables_dir = os.path.join(temp_dir, 'cbdump-reviews-all')
@@ -174,7 +173,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
             cursor.copy_to(f, "(SELECT %s FROM review WHERE is_draft = false)" %
                            (', '.join(get_columns(model.Review))))
         with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
-            cursor.copy_to(f, '(%s)' % revision_query_object)
+            cursor.copy_to(f, "(%s)" % REVISION_COMBINED_SQL)
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -187,6 +186,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
 
     # 2. SEPARATE
     # Creating separate archives for each license
+    REVISION_SEPARATE_SQL = REVISION_COMBINED_SQL + " AND review.license_id ='%s'"
     for license in License.query.all():
         safe_name = slugify(license.id)
         with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-%s.tar.bz2" % safe_name), "w:bz2") as tar:
@@ -197,7 +197,7 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
                 cursor.copy_to(f, "(SELECT %s FROM review WHERE is_draft = false AND license_id = '%s')" %
                                (', '.join(get_columns(model.Review)), license.id))
             with open(os.path.join(tables_dir, 'revision'), 'w') as f:
-                cursor.copy_to(f, '(%s)' % (revision_query_object.filter("review.license_id = '%s'" % (license.id))))
+                cursor.copy_to( f, "(%s)" % (REVISION_SEPARATE_SQL % license.id))
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
