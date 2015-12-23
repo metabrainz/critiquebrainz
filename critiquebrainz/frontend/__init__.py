@@ -1,5 +1,5 @@
 from flask import Flask
-from Babel import Locale
+from flask_babel import Locale
 
 import os
 
