@@ -38,14 +38,8 @@
 
 {% macro entity_image_setter(id, is_event) %}
   <script>
-  $("img").last().on("error", function () {
-    $(this).attr(
-      "src",
-      {% if is_event %}
-       "/static/img/event-placeholder.png"
-        {% else %}
-        "/static/img/missing-art.png"
-      {% endif %});
-  }).attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
-</script>
+    $("img").last().on("error", function () {
+      $(this).attr("src", "{{ '/static/img/event-placeholder.png' if is_event else '/static/img/missing-art.png' }}");
+    }).attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
+  </script>
 {% endmacro %}
