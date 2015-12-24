@@ -51,3 +51,11 @@
     </script>
   {% endif %}
 {% endmacro %}
+
+{% macro review_byline(review) %}
+{{ _(
+  'Review of %(entitytype)s by %(user)s',
+  user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name),
+  entitytype = _(review.entity_type)
+) }}
+{% endmacro %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import coverart %}
+{% from 'macros.html' import coverart, review_byline %}
 
 {% block content %}
 <div id="homepage">
@@ -43,7 +43,7 @@
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <div class="album">{% include 'entity_review.html' %}</div>
           <div class="reviewer">
-            <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}</p>
+            <p>{{ review_byline(review) }}</p>
           </div>
           <div class="preview">{{ review.preview[:250] }}{% if review.preview|length > 250 %}...{% endif %}</div>
         </div>
@@ -68,7 +68,7 @@
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <div class="album">{% include 'entity_review.html' %}</div>
           <div class="reviewer">
-            <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}</p>
+            <p>{{ review_byline(review) }}</p>
           </div>
         </div>
       {% endfor %}
