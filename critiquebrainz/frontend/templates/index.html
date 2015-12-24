@@ -39,7 +39,11 @@
               $("img").last()
                   .on("error", function () { $(this).attr(
                     "src",
-                    "{{ loop.cycle("/static/img/missing-art.png", "/static/img/event-placeholder.png") }}"
+                    {% if review.is_of_event %}
+                        "/static/img/event-placeholder.png"
+                    {% else %}
+                        "/static/img/missing-art.png"
+                    {% endif %}
                   ); })
                   .attr("src", "//coverartarchive.org/release-group/{{ review.entity_id }}/front-250");
             </script>
