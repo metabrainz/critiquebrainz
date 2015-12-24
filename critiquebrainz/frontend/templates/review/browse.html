@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import entity_image_setter %}
 
 {% block title %}{{ _('Reviews') }} - CritiqueBrainz{% endblock %}
 
@@ -12,11 +13,7 @@
     <div class="col-md-4 review">
       <div class="cover-art-container pull-left">
         <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
-        <script>
-          $("img").last()
-              .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-              .attr("src", "//coverartarchive.org/release-group/{{ entity.id }}/front-250");
-        </script>
+        {{ entity_image_setter(entity.id, review.is_of_event) }}
       </div>
       <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
