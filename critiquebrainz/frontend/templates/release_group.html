@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import coverart %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -39,12 +40,7 @@
 
 <div id="release-group-details" class="row">
   <div class="col-md-3">
-    <img id="cover-art" class="img-responsive">
-    <script>
-      $("img").last()
-          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-          .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
-    </script>
+    {{ coverart(id, 'release_group', 'id=cover-art class=img-responsive') }}
     <div id="cover-art-annotation">
       <span class="text-muted">
         Cover art provided by

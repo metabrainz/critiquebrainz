@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import coverart %}
 
 {% block title %}{{ artist.name }} - CritiqueBrainz{% endblock %}
 
@@ -60,12 +61,9 @@
                 </div>
               {% endif %}
               <div class="cover-art-container">
-                <a href="{{ url_for('release_group.entity', id=release_group.id) }}"><img class="img-responsive"></a>
-                <script>
-                  $("img").last()
-                      .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                      .attr("src", "//coverartarchive.org/release-group/{{ release_group.id }}/front-250");
-                </script>
+                <a href="{{ url_for('release_group.entity', id=release_group.id) }}">
+                  {{ coverart(release_group.id, 'release_group', 'class=img-responsive') }}
+                </a>
               </div>
               <div class="caption">
                 <div class="release-group-title">

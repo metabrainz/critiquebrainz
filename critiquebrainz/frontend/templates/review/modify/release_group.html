@@ -1,3 +1,5 @@
+{% from 'macros.html' import coverart %}
+
 {% if entity is not defined %}
   {% set entity = review.entity_id | entity_details(type=entity_type) %}
 {% endif %}
@@ -17,10 +19,5 @@
   </dl>
 </div>
 <div class="col-md-2">
-  <img id="cover-art" class="img-responsive" style="max-height:120px;max-width:120px;">
-  <script>
-    $("img").last()
-        .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-        .attr("src", "//coverartarchive.org/release-group/{{ entity['id'] }}/front-250");
-  </script>
+  {{ coverart(entity['id'], 'release_group', 'id=cover-art class=img-responsive style=max-height:120px;max-width:120px;') }}
 </div>
