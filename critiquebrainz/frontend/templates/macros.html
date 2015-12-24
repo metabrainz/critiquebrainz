@@ -36,10 +36,18 @@
   {% endif %}
 {% endmacro %}
 
-{% macro entity_image_setter(id, is_event) %}
-  <script>
-    $("img").last().on("error", function () {
-      $(this).attr("src", "{{ '/static/img/event-placeholder.png' if is_event else '/static/img/missing-art.png' }}");
-    }).attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
-  </script>
+{% macro coverart(entity_id, entity_type, attributes='') %}
+  {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
+  {% if entity_type == 'event' %}
+    <img src="/static/img/event-placeholder.png" {{ attributes }} />
+  {% else %}
+    <img {{ attributes }} />
+    <script>
+      $("img").last()
+          .on("error", function () {
+            $(this).attr("src", "/static/img/missing-art.png");
+          })
+          .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
+    </script>
+  {% endif %}
 {% endmacro %}

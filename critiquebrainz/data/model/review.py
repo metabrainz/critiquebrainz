@@ -56,7 +56,6 @@ class Review(db.Model, DeleteMixin):
             id=self.id,
             entity_id=self.entity_id,
             entity_type=self.entity_type,
-            is_of_event=self.is_of_event,
             user=self.user.to_dict(confidential=confidential),
             text=self.text,
             created=self.revisions[0].timestamp,
@@ -84,11 +83,6 @@ class Review(db.Model, DeleteMixin):
     def text(self):
         """Returns text of the latest revision."""
         return self.last_revision.text  # latest revision
-
-    @property
-    def is_of_event(self):
-        """Returns whether the review's entity is an event"""
-        return self.entity_type == 'event'
 
     @hybrid_property
     def created(self):

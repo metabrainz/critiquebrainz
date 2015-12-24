@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import entity_image_setter %}
+{% from 'macros.html' import coverart %}
 
 {% block content %}
 <div id="homepage">
@@ -36,8 +36,9 @@
       {% for review in popular_reviews %}
         <div class="col-md-6 review">
           <div class="cover-art-container pull-left">
-            <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
-            {{ entity_image_setter(review.entity_id, review.is_of_event) }}
+            <a href="{{ url_for('review.entity', id=review.id) }}">
+              {{ coverart(review.entity_id, review.entity_type) }}
+            </a>
           </div>
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <div class="album">{% include 'entity_review.html' %}</div>
@@ -60,8 +61,9 @@
       {% for review in recent_reviews %}
         <div class="col-md-4 review">
           <div class="cover-art-container pull-left">
-            <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
-            {{ entity_image_setter(review.entity_id, review.is_of_event) }}
+            <a href="{{ url_for('review.entity', id=review.id) }}">
+              {{ coverart(review.entity_id, review.entity_type) }}
+            </a>
           </div>
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <div class="album">{% include 'entity_review.html' %}</div>

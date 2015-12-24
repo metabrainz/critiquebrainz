@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import entity_image_setter %}
+{% from 'macros.html' import coverart %}
 
 {% block title %}{{ _('Reviews') }} - CritiqueBrainz{% endblock %}
 
@@ -12,8 +12,9 @@
     {% set entity = entities[review.entity_id] %}
     <div class="col-md-4 review">
       <div class="cover-art-container pull-left">
-        <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
-        {{ entity_image_setter(entity.id, review.is_of_event) }}
+        <a href="{{ url_for('review.entity', id=review.id) }}">
+          {{ coverart(entity.id, review.entity_type) }}
+        </a>
       </div>
       <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
