@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-21 13:25+0000\n"
-"PO-Revision-Date: 2015-12-22 10:39+0000\n"
+"POT-Creation-Date: 2015-12-22 19:26+0000\n"
+"PO-Revision-Date: 2015-12-23 09:57+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: English (http://www.transifex.com/musicbrainz/critiquebrainz/language/en/)\n"
 "MIME-Version: 1.0\n"
@@ -82,8 +82,8 @@ msgid "Sorry, we couldn't find a event with that MusicBrainz ID."
 msgstr "Sorry, we couldn't find a event with that MusicBrainz ID."
 
 #: critiquebrainz/frontend/log/forms.py:8
-msgid "You need to sepicify a reason for taking this action."
-msgstr "You need to sepicify a reason for taking this action."
+msgid "You need to specify a reason for taking this action."
+msgstr "You need to specify a reason for taking this action."
 
 #: critiquebrainz/frontend/log/views.py:16
 msgid "No logs to display."
@@ -824,6 +824,7 @@ msgstr "Release group"
 #: critiquebrainz/frontend/templates/navbar.html:48
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
+#: critiquebrainz/frontend/templates/search/selector.html:13
 #: critiquebrainz/frontend/templates/search/selector.html:49
 msgid "Event"
 msgstr "Event"
@@ -890,6 +891,10 @@ msgstr "Loading older logs..."
 msgid "Failed to load older logs!"
 msgstr "Failed to load older logs!"
 
+#: critiquebrainz/frontend/templates/log/log_results.html:6
+msgid "review"
+msgstr "review"
+
 #: critiquebrainz/frontend/templates/log/log_results.html:18
 #, python-format
 msgid "%(admin)s archived a %(review)s written by %(user)s"
@@ -899,6 +904,10 @@ msgstr "%(admin)s archived a %(review)s written by %(user)s"
 #, python-format
 msgid "%(admin)s blocked %(user)s"
 msgstr "%(admin)s blocked %(user)s"
+
+#: critiquebrainz/frontend/templates/log/log_results.html:27
+msgid "Reason:"
+msgstr "Reason:"
 
 #: critiquebrainz/frontend/templates/login/login.html:7
 msgid ""
@@ -1524,6 +1533,10 @@ msgstr "more"
 #: critiquebrainz/frontend/templates/search/selector.html:3
 msgid "Entity selection"
 msgstr "Entity selection"
+
+#: critiquebrainz/frontend/templates/search/selector.html:10
+msgid "Release Group"
+msgstr "Release Group"
 
 #: critiquebrainz/frontend/templates/search/selector.html:19
 msgid "Release group selection"
