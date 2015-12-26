@@ -30,7 +30,7 @@ systems::
 
 Then run::
 
-   $ scripts/virtualenv.sh
+   $ scripts/admin.sh
 
 It will create a symbolic link ``env`` to virtualenv's entry point in your
 ``critiquebrainz/`` directory. To enter newly created virtualenv, type in::
