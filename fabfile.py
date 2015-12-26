@@ -56,8 +56,13 @@ def clear_memcached():
     print(green("Flushed everything from memcached.", bold=True))
 
 
+def git_pull():
+    local("git pull origin")
+    print(green("Updated local code.", bold=True))
+
+
 def deploy():
-    """Compile translations and styling, clear memcached."""
+    git_pull()
     compile_translations()
     compile_styling()
     clear_memcached()
