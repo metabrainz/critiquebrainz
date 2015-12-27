@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-22 19:26+0000\n"
-"PO-Revision-Date: 2015-12-26 14:56+0000\n"
+"POT-Creation-Date: 2015-12-26 22:04+0000\n"
+"PO-Revision-Date: 2015-12-27 13:23+0000\n"
 "Last-Translator: Debeat <krystian4842@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/musicbrainz/critiquebrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -237,6 +237,10 @@ msgstr "Zaktualizowałeś aplikację!"
 #: critiquebrainz/frontend/profile/applications/views.py:63
 msgid "You have deleted an application."
 msgstr "Usunąłeś aplikację!"
+
+#: critiquebrainz/frontend/release/views.py:17
+msgid "Sorry, we couldn't find a release with that MusicBrainz ID."
+msgstr "Przepraszamy, nie mogliśmy znaleźć wydania o takim identyfikatorze MusicBrainz."
 
 #: critiquebrainz/frontend/release_group/views.py:17
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
@@ -1078,7 +1082,7 @@ msgid "Yes, I want to delete my account"
 msgstr "Tak, chcę usunąć swoje konto"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:15
-#: critiquebrainz/frontend/templates/review/entity/base.html:55
+#: critiquebrainz/frontend/templates/review/entity/base.html:56
 msgid "No"
 msgstr "Nie"
 
@@ -1295,7 +1299,7 @@ msgid "Discard changes"
 msgstr "Odrzuć zmiany"
 
 #: critiquebrainz/frontend/templates/review/edit.html:41
-#: critiquebrainz/frontend/templates/review/entity/base.html:77
+#: critiquebrainz/frontend/templates/review/entity/base.html:78
 msgid "Delete this review"
 msgstr "Usuń tę recenzję"
 
@@ -1372,54 +1376,59 @@ msgstr "<b>Ta recenzja nie została jeszcze opublikowana!</b> Tylko ty możesz j
 msgid "Published on %(date)s"
 msgstr "Opublikowana %(date)s"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:22
+#: critiquebrainz/frontend/templates/review/entity/base.html:17
+#, python-format
+msgid "Written in %(language)s"
+msgstr "W języku: %(language)s"
+
+#: critiquebrainz/frontend/templates/review/entity/base.html:23
 msgid "This review has not yet been rated"
 msgstr "Ta recenzja nie została jeszcze oceniona"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:38
+#: critiquebrainz/frontend/templates/review/entity/base.html:39
 #, python-format
 msgid "This review is licensed under a %(name)s license."
 msgstr "Ta recenzja jest na licencji %(name)s."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:40
+#: critiquebrainz/frontend/templates/review/entity/base.html:41
 #, python-format
 msgid "It was imported from %(source)s."
 msgstr "Zaimportowane z %(source)s."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:53
+#: critiquebrainz/frontend/templates/review/entity/base.html:54
 msgid "Did you find this review useful?"
 msgstr "Czy ta recenzja była przydatna?"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:54
+#: critiquebrainz/frontend/templates/review/entity/base.html:55
 msgid "Yes"
 msgstr "Tak"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:58
+#: critiquebrainz/frontend/templates/review/entity/base.html:59
 msgid "You found this review useful."
 msgstr "Ta recenzja była przydatna."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:60
+#: critiquebrainz/frontend/templates/review/entity/base.html:61
 msgid "You didn't find this review useful."
 msgstr "Ta recenzja nie była przydatna."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:62
+#: critiquebrainz/frontend/templates/review/entity/base.html:63
 msgid "Delete your vote"
 msgstr "Usuń swój głos"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:67
+#: critiquebrainz/frontend/templates/review/entity/base.html:68
 msgid "Report abuse"
 msgstr "Zgłoś nadużycie"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:73
+#: critiquebrainz/frontend/templates/review/entity/base.html:74
 msgid "Edit this review"
 msgstr "Edytuj tę recenzję"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:82
-#: critiquebrainz/frontend/templates/review/entity/base.html:89
+#: critiquebrainz/frontend/templates/review/entity/base.html:83
+#: critiquebrainz/frontend/templates/review/entity/base.html:90
 msgid "View older revisions"
 msgstr "Pokaż starsze wersje"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:86
+#: critiquebrainz/frontend/templates/review/entity/base.html:87
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
 msgstr "<a href=\"%(link)s\">Zaloguj się</a>, żeby ocenić tę recenzję"
@@ -1445,7 +1454,7 @@ msgid ""
 msgstr "Możesz użyć języka <a href=\"%(url)s\" target=\"_blank\">Markdown</a> w celu uzyskania specjalnego formatowania."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:35
-#: critiquebrainz/frontend/templates/review/modify/base.html:109
+#: critiquebrainz/frontend/templates/review/modify/base.html:108
 msgid "Loading preview..."
 msgstr "Wczytywanie recenzji..."
 
@@ -1457,15 +1466,11 @@ msgstr "Wprowadź język tej recenzji:"
 msgid "You cannot change the license after the review is published."
 msgstr "Nie możesz zmienić licencji po opublikowaniu recenzji."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:59
-msgid "Note: Drafts are not private!"
-msgstr "Uwaga: Szkice nie są prywatne!"
-
-#: critiquebrainz/frontend/templates/review/modify/base.html:98
+#: critiquebrainz/frontend/templates/review/modify/base.html:97
 msgid "Review is empty."
 msgstr "Recenzja jest pusta."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:105
+#: critiquebrainz/frontend/templates/review/modify/base.html:104
 msgid "Failed to load preview."
 msgstr "Nie udało się wczytać podglądu."
 
