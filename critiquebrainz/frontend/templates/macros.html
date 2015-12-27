@@ -35,3 +35,19 @@
     <abbr title="{{ _('Submit and delete your votes.') }}">{{ _('Review votes') }}</abbr>
   {% endif %}
 {% endmacro %}
+
+{% macro cover_art(entity_id, entity_type, attributes='') %}
+  {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
+  {% if entity_type == 'event' %}
+    <img src="/static/img/event-placeholder.svg" {{ attributes }} />
+  {% else %}
+    <img {{ attributes }} />
+    <script>
+      $("img").last()
+          .on("error", function () {
+            $(this).attr("src", "/static/img/missing-art.png");
+          })
+          .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
+    </script>
+  {% endif %}
+{% endmacro %}

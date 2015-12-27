@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import cover_art %}
 
 {% block title %}{{ _('Incorrect mapping reporting') }} - CritiqueBrainz{% endblock %}
 
@@ -11,12 +12,7 @@
     <div class="col-md-6">
       <h4>CritiqueBrainz</h4>
       <p>{{ _('%(album)s by %(artist)s', album=release_group.title, artist=release_group['artist-credit-phrase']) }}</p>
-      <img id="cover-art">
-      <script>
-        $("img").last()
-            .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-            .attr("src", "//coverartarchive.org/release-group/{{ release_group.id }}/front-250");
-      </script>
+      {{ cover_art(release_group.id, 'release_group', 'id=cover-art') }}
     </div>
     <div class="col-md-6">
       <h4>{{ _('Spotify') }}</h4>
