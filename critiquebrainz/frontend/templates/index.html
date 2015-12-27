@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import coverart, review_byline %}
+{% from 'macros.html' import coverart, review_credit %}
 
 {% block content %}
 <div id="homepage">
@@ -43,7 +43,7 @@
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <div class="album">{% include 'entity_review.html' %}</div>
           <div class="reviewer">
-            <p>{{ review_byline(review) }}</p>
+            <p>{{ review_credit(review) }}</p>
           </div>
           <div class="preview">{{ review.preview[:250] }}{% if review.preview|length > 250 %}...{% endif %}</div>
         </div>
@@ -68,7 +68,7 @@
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <div class="album">{% include 'entity_review.html' %}</div>
           <div class="reviewer">
-            <p>{{ review_byline(review) }}</p>
+            <p>{{ review_credit(review) }}</p>
           </div>
         </div>
       {% endfor %}

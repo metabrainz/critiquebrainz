@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import coverart, review_byline %}
+{% from 'macros.html' import coverart, review_credit %}
 
 {% block title %}{{ _('Reviews') }} - CritiqueBrainz{% endblock %}
 
@@ -19,7 +19,7 @@
       <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
         <p>
-          {{ review_byline(review) }}
+          {{ review_credit(review) }}
           <br />{{ review.created | date }}
         </p>
       </div>

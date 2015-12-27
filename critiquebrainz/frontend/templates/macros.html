@@ -52,10 +52,10 @@
   {% endif %}
 {% endmacro %}
 
-{% macro review_byline(review) %}
+{% macro review_credit(review) %}
 {{ _(
-  '%(entitytype)s review by %(user)s',
+  'Event review by %(user)s' if review.entity_type == 'event' else 'Music review by %(user)s' if review.entity_type == 'release_group' else 'Review by %(user)s',
   user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name),
-  entitytype = _('Event') if review.entity_type == 'event' else _('Music') if review.entity_type == 'release_group' else _('an entity')
+  entitytype = _('Event')
 ) }}
 {% endmacro %}
