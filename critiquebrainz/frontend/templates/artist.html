@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import coverart %}
+{% from 'macros.html' import cover_art %}
 
 {% block title %}{{ artist.name }} - CritiqueBrainz{% endblock %}
 
@@ -62,7 +62,7 @@
               {% endif %}
               <div class="cover-art-container">
                 <a href="{{ url_for('release_group.entity', id=release_group.id) }}">
-                  {{ coverart(release_group.id, 'release_group', 'class=img-responsive') }}
+                  {{ cover_art(release_group.id, 'release_group', 'class=img-responsive') }}
                 </a>
               </div>
               <div class="caption">

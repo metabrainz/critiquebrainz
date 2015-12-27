@@ -36,7 +36,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro coverart(entity_id, entity_type, attributes='') %}
+{% macro cover_art(entity_id, entity_type, attributes='') %}
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
   {% if entity_type == 'event' %}
     <img src="/static/img/event-placeholder.svg" {{ attributes }} />

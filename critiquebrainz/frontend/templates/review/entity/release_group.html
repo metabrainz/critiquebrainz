@@ -1,5 +1,5 @@
 {% extends 'review/entity/base.html' %}
-{% from 'macros.html' import coverart %}
+{% from 'macros.html' import cover_art %}
 
 {% set release_group = review.entity_id | entity_details %}
 
@@ -40,7 +40,7 @@
 {% set sidebar_visible = True %}
 {% block sidebar %}
   <div id="sidebar" class="col-md-3">
-    {{ coverart(review.entity_id, 'release_group', 'id=cover-art class=img-responsive') }}
+    {{ cover_art(review.entity_id, 'release_group', 'id=cover-art class=img-responsive') }}
 
     <div id="spotify-play-button">
       {% if spotify_mappings %}

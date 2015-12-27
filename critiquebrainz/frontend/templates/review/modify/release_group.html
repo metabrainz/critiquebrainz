@@ -1,4 +1,4 @@
-{% from 'macros.html' import coverart %}
+{% from 'macros.html' import cover_art %}
 
 {% if entity is not defined %}
   {% set entity = review.entity_id | entity_details(type=entity_type) %}
@@ -19,5 +19,5 @@
   </dl>
 </div>
 <div class="col-md-2">
-  {{ coverart(entity['id'], 'release_group', 'id=cover-art class=img-responsive style=max-height:120px;max-width:120px;') }}
+  {{acover_art(entity['id'], 'release_group', 'id=cover-art class=img-responsive style=max-height:120px;max-width:120px;') }}
 </div>
