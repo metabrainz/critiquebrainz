@@ -52,16 +52,6 @@
   {% endif %}
 {% endmacro %}
 
-{% macro entity_type(review) %}
-  {% if review.entity_type == 'event' %}
-    {{ _('Event review by %(user)s', user=user_string) }}
-  {% elif review.entity_type == 'release_group' %}
-    {{ _('Release Group review by %(user)s', user=user_string) }}
-  {% else %}
-    {{ _('Review by %(user)s', user=user_string) }}
-  {% endif %}
-{% endmacro %}
-
 {% macro review_credit(review, user_picture_size=16, include_entity_type=True) %}
   {% if include_entity_type %}
     {% set entity_type = review.entity_type %}
