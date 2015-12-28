@@ -19,7 +19,7 @@
       <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
         <p>
-          {{ review_credit(review, user_picture_size=16, include_entity_type=None) }}
+          {{ review_credit(review, user_picture_size=16, include_entity_type=False) }}
           <br/>
           {% if review.entity_type == 'event' %}
             {{ review.created | date }} — {{ _('Event') }}
