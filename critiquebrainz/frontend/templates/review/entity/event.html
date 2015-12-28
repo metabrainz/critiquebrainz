@@ -1,10 +1,5 @@
 {% extends 'review/entity/base.html' %}
 
-{% block scripts_top %}
-  {{ super() }}
-  <script src="{{ url_for('static', filename='js/leaflet.min.js') }}"></script>
-{% endblock %}
-
 {% set event = review.entity_id | entity_details(type='event') %}
 
 {% block title %}
