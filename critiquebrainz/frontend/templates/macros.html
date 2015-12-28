@@ -53,15 +53,13 @@
 {% endmacro %}
 
 {% macro review_credit(review) %}
+  {% set user_string = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar
+              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
   {% if review.entity_type == 'event' %}
-    {% set credit_string = 'Event review by %(user)s' %}
+    {{ _('Event review by %(user)s', user=user_string) }}
   {% elif review.entity_type == 'release_group' %}
-    {% set credit_string = 'Music review by %(user)s' %}
+    {{ _('Music review by %(user)s', user=user_string) }}
   {% else %}
-    {% set credit_string = 'Review by %(user)s' %}
+    {{ _('Review by %(user)s', user=user_string) }}
   {% endif %}
-  {{ _(credit_string,
-       user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar
-              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)
-   ) }}
 {% endmacro %}
