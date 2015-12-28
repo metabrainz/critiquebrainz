@@ -62,13 +62,13 @@
   {% endif %}
 {% endmacro %}
 
-{% macro review_credit(review, include_entity_type=True) %}
+{% macro review_credit(review, user_picture_size=16, include_entity_type=True) %}
   {% if include_entity_type %}
     {% set entity_type = review.entity_type %}
   {% else %}
     {% set entity_type = '' %}
   {% endif %}
-  {% set user_string = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar
+  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (review.user.avatar, user_picture_size)
               + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
   {% if entity_type == 'event' %}
     {{ _('Event review by %(user)s', user=user_string) }}
