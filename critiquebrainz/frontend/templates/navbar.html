@@ -35,7 +35,7 @@
         {% endif %}
         <li><a href="{{ url_for('review.browse') }}">{{ _('Browse reviews') }}</a></li>
         <li><a href="{{ url_for('review.create') }}">{{ _('Write a review') }}</a></li>
-        <li id="language-selector" class="dropdown hidden-md">
+        <li class="language-selector dropdown hidden-md">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
           </a>

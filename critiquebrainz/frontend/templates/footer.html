@@ -33,6 +33,19 @@
         <li><a href="{{ url_for('log.browse') }}">{{ _('Moderation log') }}</a></li>
       </ul>
     </div>
+    {# Last block should fill up the rest of this row. #}
+    <div class="col-sm-6">
+      <div id="language-selector" class="btn-group dropup pull-right hidden-lg">
+        <button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          {% for language in config.LANGUAGES|dictsort(false, 'value') %}
+            <li><a href="?l={{ language[0] }}">{{ language[1]|capitalize }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="meb-credit">
     {{ _('Project of the %(metabrainz_fdn)s',
