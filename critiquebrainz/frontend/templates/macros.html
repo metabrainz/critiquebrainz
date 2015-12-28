@@ -52,7 +52,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro review_credit(review, user_picture_size=16, include_entity_type=True) %}
+{% macro review_credit(review, user_picture_size, include_entity_type=True) %}
   {% if include_entity_type %}
     {% set entity_type = review.entity_type %}
   {% else %}
