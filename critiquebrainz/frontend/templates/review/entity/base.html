@@ -29,6 +29,10 @@
 
       <hr />
 
+      {% if not review.is_draft %}
+        {% include 'sharing.html' %}
+      {% endif %}
+
       {# Legal stuff #}
       <small class="text-muted">
         {% if review.license.info_url %}
@@ -92,11 +96,6 @@
           </div>
         {% endif %}
       </div>
-
-      {# Sharing #}
-      {% if not review.is_draft %}
-        {% include 'sharing.html' %}
-      {% endif %}
     </div>
   </div>
 </div>
