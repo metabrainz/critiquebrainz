@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from flask_login import login_required, current_user
 from flask_babel import gettext
+from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
+
 from critiquebrainz.data.model.oauth_client import OAuthClient
 from critiquebrainz.data.model.oauth_token import OAuthToken
-from critiquebrainz.frontend.profile.applications.forms import ApplicationForm
-
+from critiquebrainz.frontend.forms.profile_apps import ApplicationForm
 
 profile_apps_bp = Blueprint('profile_applications', __name__)
 

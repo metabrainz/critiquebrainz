@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect
-from critiquebrainz.frontend.apis import musicbrainz
+from critiquebrainz.frontend.external import musicbrainz
 from werkzeug.exceptions import NotFound
 
 release_bp = Blueprint('release', __name__)

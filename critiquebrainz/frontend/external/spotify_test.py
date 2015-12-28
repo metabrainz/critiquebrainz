@@ -1,5 +1,5 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
-from critiquebrainz.frontend.apis import spotify
+from critiquebrainz.frontend.external import spotify
 
 
 class FakeSpotifyResponse():

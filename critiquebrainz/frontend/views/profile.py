@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import login_required, current_user
 from flask_babel import gettext
-from critiquebrainz.frontend.profile.forms import ProfileEditForm
+from flask_login import login_required, current_user
 
+from critiquebrainz.frontend.forms.profile import ProfileEditForm
 
 profile_bp = Blueprint('profile_details', __name__)
 
