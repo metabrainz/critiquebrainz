@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-27 18:02+0000\n"
+"POT-Creation-Date: 2015-12-28 05:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -419,13 +419,9 @@ msgid "Review has been unhidden."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/about.html:3
-msgid "About CritiqueBrainz"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/about.html:6
-#: critiquebrainz/frontend/templates/base.html:61
-#: critiquebrainz/frontend/templates/navbar.html:38
-msgid "About"
+#: critiquebrainz/frontend/templates/footer.html:30
+msgid "About the project"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/about.html:8
@@ -558,28 +554,6 @@ msgstr ""
 msgid "Edit on MusicBrainz"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/base.html:62
-msgid "Blog"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/base.html:63
-msgid "Developers"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/base.html:64
-#: critiquebrainz/frontend/templates/log/log.html:3
-#: critiquebrainz/frontend/templates/log/log.html:6
-msgid "Moderation log"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/base.html:66
-msgid "Reports"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/base.html:71
-msgid "Language"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/mapping/confirm.html:14
 #: critiquebrainz/frontend/templates/mapping/report.html:14
@@ -622,6 +596,7 @@ msgid "[Unknown event]"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/event.html:19
+#: critiquebrainz/frontend/templates/footer.html:18
 #: critiquebrainz/frontend/templates/navbar.html:37
 msgid "Write a review"
 msgstr ""
@@ -636,6 +611,7 @@ msgid "Held At"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/event.html:62
+#: critiquebrainz/frontend/templates/footer.html:16
 #: critiquebrainz/frontend/templates/macros.html:27
 #: critiquebrainz/frontend/templates/review/browse.html:4
 #: critiquebrainz/frontend/templates/review/browse.html:7
@@ -670,6 +646,50 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/event.html:106
 msgid "Event information"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:5
+msgid "Admin zone:"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:6
+msgid "Reports"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:7
+#: critiquebrainz/frontend/templates/footer.html:33
+#: critiquebrainz/frontend/templates/log/log.html:3
+#: critiquebrainz/frontend/templates/log/log.html:6
+msgid "Moderation log"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:22
+msgid "Developers"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:24
+msgid "Web API"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:25
+msgid "Source code"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:26
+msgid "Data dumps"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:32
+msgid "Blog"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:40
+msgid "Language"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:51
+#, python-format
+msgid "Project of the %(metabrainz_fdn)s"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index.html:10
@@ -803,6 +823,10 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/navbar.html:36
 msgid "Browse reviews"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/navbar.html:38
+msgid "About"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/navbar.html:42
