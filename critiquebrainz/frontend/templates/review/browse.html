@@ -19,8 +19,15 @@
       <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
         <p>
-          {{ review_credit(review) }}
-          <br />{{ review.created | date }}
+          {{ review_credit(review, include_entity_type=None) }}
+          <br/>
+          {% if review.entity_type == 'event' %}
+            {{ review.created | date }} — {{ _('Event') }}
+          {% elif review.entity_type == 'release_group' %}
+            {{ review.created | date }} — {{ _('Release Group') }}
+          {% else %}
+            {{ review.created | date }}
+          {% endif %}
         </p>
       </div>
     </div>

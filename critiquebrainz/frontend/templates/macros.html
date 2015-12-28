@@ -52,12 +52,27 @@
   {% endif %}
 {% endmacro %}
 
-{% macro review_credit(review) %}
-  {% set user_string = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar
-              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
+{% macro entity_type(review) %}
   {% if review.entity_type == 'event' %}
     {{ _('Event review by %(user)s', user=user_string) }}
   {% elif review.entity_type == 'release_group' %}
+    {{ _('Release Group review by %(user)s', user=user_string) }}
+  {% else %}
+    {{ _('Review by %(user)s', user=user_string) }}
+  {% endif %}
+{% endmacro %}
+
+{% macro review_credit(review, include_entity_type=True) %}
+  {% if include_entity_type %}
+    {% set entity_type = review.entity_type %}
+  {% else %}
+    {% set entity_type = '' %}
+  {% endif %}
+  {% set user_string = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar
+              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
+  {% if entity_type == 'event' %}
+    {{ _('Event review by %(user)s', user=user_string) }}
+  {% elif entity_type == 'release_group' %}
     {{ _('Release Group review by %(user)s', user=user_string) }}
   {% else %}
     {{ _('Review by %(user)s', user=user_string) }}
