@@ -54,19 +54,8 @@
   {% endif %}
 {% endmacro %}
 
-{% macro review_credit(review, user_picture_size, include_entity_type=True) %}
-  {% if include_entity_type %}
-    {% set entity_type = review.entity_type %}
-  {% else %}
-    {% set entity_type = '' %}
-  {% endif %}
+{% macro review_credit(review, user_picture_size) %}
   {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (review.user.avatar, user_picture_size)
               + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
-  {% if entity_type == 'event' %}
-    {{ _('Event review by %(user)s', user=user_string) }}
-  {% elif entity_type == 'release_group' %}
-    {{ _('Release Group review by %(user)s', user=user_string) }}
-  {% else %}
-    {{ _('Review by %(user)s', user=user_string) }}
-  {% endif %}
+  {{ _('Review by %(user)s', user=user_string) }}
 {% endmacro %}
