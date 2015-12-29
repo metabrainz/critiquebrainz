@@ -41,7 +41,6 @@
 {% block sidebar %}
   <div id="sidebar" class="col-md-3">
     {{ cover_art(review.entity_id, 'release_group', 'id=cover-art class=img-responsive') }}
-
     <div id="spotify-play-button">
       {% if spotify_mappings %}
         <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white"

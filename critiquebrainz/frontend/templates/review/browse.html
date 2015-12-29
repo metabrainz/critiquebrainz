@@ -13,7 +13,7 @@
     <div class="col-md-4 review">
       <div class="cover-art-container pull-left">
         <a href="{{ url_for('review.entity', id=review.id) }}">
-          {{ cover_art(entity.id, review.entity_type) }}
+          {{ cover_art(entity.id, review.entity_type, overlay_type=True) }}
         </a>
       </div>
       <div class="album">{% include 'entity_review.html' %}</div>
@@ -21,13 +21,7 @@
         <p>
           {{ review_credit(review, user_picture_size=16) }}
           <br/>
-          {% if review.entity_type == 'event' %}
-            {{ review.created | date }} — {{ _('Event') }}
-          {% elif review.entity_type == 'release_group' %}
-            {{ review.created | date }} — {{ _('Release Group') }}
-          {% else %}
-            {{ review.created | date }}
-          {% endif %}
+          {{ review.created | date }}
         </p>
       </div>
     </div>

@@ -36,22 +36,32 @@
   {% endif %}
 {% endmacro %}
 
-{% macro cover_art(entity_id, entity_type, attributes='') %}
+{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False) %}
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
-  {% if entity_type == 'event' %}
-    <img src="/static/img/event-placeholder.svg" {{ attributes }} />
-    <span>{{ _('Event') }}</span>
-  {% else %}
-    <img {{ attributes }} />
-    <span>{{ _('Release Group') }}</span>
-    <script>
-      $("img").last()
-          .on("error", function () {
-            $(this).attr("src", "/static/img/missing-art.png");
-          })
-          .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
-    </script>
-  {% endif %}
+  <div class="cover-container">
+    {% if entity_type == 'event' %}
+      <img src="/static/img/event-placeholder.svg" {{ attributes }} />
+      {% if overlay_type %}
+        <span class="entity-type event">
+          {{ _('Event') }}
+        </span>
+      {% endif %}
+    {% else %} {# release-group #}
+      <img {{ attributes }} />
+      <script>
+        $("img").last()
+            .on("error", function () {
+              $(this).attr("src", "/static/img/missing-art.png");
+            })
+            .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
+      </script>
+      {% if overlay_type %}
+        <span class="entity-type release-group">
+          {{ _('Release Group') }}
+        </span>
+      {% endif %}
+    {% endif %}
+  </div>
 {% endmacro %}
 
 {% macro review_credit(review, user_picture_size) %}

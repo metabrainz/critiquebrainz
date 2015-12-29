@@ -8,6 +8,10 @@
 
 @pager-border-radius: @border-radius-base;
 
+// Entity colors
+@rg-color: @blue;
+@event-color: @green;
+
 body {
   padding-bottom: 25px;
 }
@@ -84,20 +88,22 @@ ul.sharing {
 .cover-art-container {
   position: relative;
 
-  span {
-    transform: translate(-50%, 0);
+  span.entity-type {
     position: absolute;
     top: 0;
-    left: 50%;
-    width: 100%;
+    padding-left: 4px;
+    padding-right: 4px;
 
-    color: white;
-    background: rgb(0, 0, 0); // fallback
-    background: rgba(0, 0, 0, 0.5);
+    color: @white;
+    font-size: 0.9em;
+    font-family: Tahoma;
 
-    letter-spacing: -1px;
-    text-align: center;
-    white-space: nowrap;
+    &.release-group {
+      background-color: fade(@rg-color, 70%);
+    }
+    &.event {
+      background-color: fade(@event-color, 70%);
+    }
   }
 
 }
