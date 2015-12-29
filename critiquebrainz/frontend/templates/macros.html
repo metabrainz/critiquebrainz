@@ -40,8 +40,10 @@
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
   {% if entity_type == 'event' %}
     <img src="/static/img/event-placeholder.svg" {{ attributes }} />
+    <span>{{ _('Event') }}</span>
   {% else %}
     <img {{ attributes }} />
+    <span>{{ _('Release Group') }}</span>
     <script>
       $("img").last()
           .on("error", function () {

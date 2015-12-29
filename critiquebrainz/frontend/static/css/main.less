@@ -80,6 +80,27 @@ ul.sharing {
   }
 }
 
+// Review listings
+.cover-art-container {
+  position: relative;
+
+  span {
+    transform: translate(-50%, 0);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+
+    color: white;
+    background: rgb(0, 0, 0); // fallback
+    background: rgba(0, 0, 0, 0.5);
+
+    letter-spacing: -1px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+}
 
 // Home page
 #homepage{
@@ -147,6 +168,9 @@ ul.sharing {
         width: @recent-review-height;
         height: @recent-review-height;
         margin-right: 10px;
+        span {
+          font-size: @recent-review-height/5;
+        }
         img {
           max-width: @recent-review-height;
           max-height: @recent-review-height;
