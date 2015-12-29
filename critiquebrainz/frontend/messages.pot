@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-28 07:27+0000\n"
+"POT-Creation-Date: 2015-12-29 18:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -473,6 +473,7 @@ msgid "Blog"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/footer.html:40
+#: critiquebrainz/frontend/templates/navbar.html:40
 msgid "Language"
 msgstr ""
 
@@ -614,11 +615,7 @@ msgstr ""
 msgid "Browse reviews"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/navbar.html:38
-msgid "About"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/navbar.html:42
+#: critiquebrainz/frontend/templates/navbar.html:51
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
 #: critiquebrainz/frontend/templates/search/index.html:34
@@ -627,7 +624,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/navbar.html:46
+#: critiquebrainz/frontend/templates/navbar.html:55
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:8
 #: critiquebrainz/frontend/templates/search/index.html:26
 #: critiquebrainz/frontend/templates/search/index.html:57
@@ -639,7 +636,7 @@ msgstr ""
 msgid "Artist"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/navbar.html:47
+#: critiquebrainz/frontend/templates/navbar.html:56
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:9
 #: critiquebrainz/frontend/templates/search/index.html:27
 #: critiquebrainz/frontend/templates/search/index.html:62
@@ -648,7 +645,7 @@ msgstr ""
 msgid "Release group"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/navbar.html:48
+#: critiquebrainz/frontend/templates/navbar.html:57
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
 #: critiquebrainz/frontend/templates/search/selector.html:13
@@ -1136,6 +1133,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/report.html:26
 msgid "Report review"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/revision_results.html:3
+#, python-format
+msgid "Revision %(number)s"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/revisions.html:12
