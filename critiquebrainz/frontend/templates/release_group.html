@@ -163,9 +163,9 @@
           <li class="clearfix">
             <div class="favicon-container">
               {% if url.icon %}
-                <img src="{{ url_for('static', filename='favicons/'+url.icon) }}" />
+                <img src="{{ 'favicons/'+url.icon|make_static_path }}" />
               {% else %}
-                <img src="{{ url_for('static', filename='favicons/external-16.png') }}" />
+                <img src="{ 'favicons/external-16.png'|make_static_path }}" />
               {% endif %}
             </div>
             <a href="{{ url.target }}">{{ url.name }}</a>
@@ -176,7 +176,7 @@
     {% endif %}
 
     <div class="external-links">
-      <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.svg') }}" /></div>
+      <div class="favicon-container"><img src="{ 'favicon/musicbrainz-16.svg'|make_static_path }}" /></div>
       <a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
       <div class="text-muted">Cover art provided by <a href="https://coverartarchive.org/">Cover Art Archive</a></div>
     </div>

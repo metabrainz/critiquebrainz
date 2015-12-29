@@ -8,7 +8,7 @@
     <title>{% block title %}CritiqueBrainz{% endblock %}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/x-icon"/>
+    <link rel="icon" href="{ 'img/favicon.png'|make_static_path }}" type="image/x-icon"/>
     <link href="{{ 'main.css'|make_static_path }}" rel="stylesheet" media="screen" />
     {% endblock %}
 

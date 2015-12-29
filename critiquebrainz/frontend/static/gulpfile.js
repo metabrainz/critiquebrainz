@@ -121,9 +121,6 @@ function buildScripts() {
     b.external(commonBundle);
   });
 
-
-
-
   return Q.all([
     writeScript(commonBundle, 'common.js'),
     writeScript(leafletBundle, 'leaflet.js'),
