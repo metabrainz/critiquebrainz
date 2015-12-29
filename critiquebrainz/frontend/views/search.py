@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, jsonify, url_for
-from critiquebrainz.frontend.apis import musicbrainz
+from critiquebrainz.frontend.external import musicbrainz
 
 search_bp = Blueprint('search', __name__)
 

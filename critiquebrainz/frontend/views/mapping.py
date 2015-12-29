@@ -1,9 +1,17 @@
+"""
+Package mapping is basically an interface for mbspotify project.
+
+It allows users to create mappings between release groups and albums on
+Spotify. These mappings are then used to show embedded Spotify player on some
+pages. See https://github.com/metabrainz/mbspotify for more info about this
+project.
+"""
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask_login import login_required, current_user
 from flask_babel import gettext
 from werkzeug.exceptions import NotFound
-import critiquebrainz.frontend.apis.spotify as spotify_api
-from critiquebrainz.frontend.apis import musicbrainz, mbspotify
+import critiquebrainz.frontend.external.spotify as spotify_api
+from critiquebrainz.frontend.external import musicbrainz, mbspotify
 from urlparse import urlparse
 import os.path
 import string

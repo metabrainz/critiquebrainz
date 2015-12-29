@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-21 13:25+0000\n"
-"PO-Revision-Date: 2015-12-22 10:39+0000\n"
+"POT-Creation-Date: 2015-12-26 22:04+0000\n"
+"PO-Revision-Date: 2015-12-27 10:16+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/critiquebrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -83,8 +83,8 @@ msgid "Sorry, we couldn't find a event with that MusicBrainz ID."
 msgstr "We konden helaas geen evenement met die MusicBrainz-ID vinden."
 
 #: critiquebrainz/frontend/log/forms.py:8
-msgid "You need to sepicify a reason for taking this action."
-msgstr "Je moet een specifieke reden opgeven voor deze handeling."
+msgid "You need to specify a reason for taking this action."
+msgstr "Je moet een reden opgeven voor deze handeling."
 
 #: critiquebrainz/frontend/log/views.py:16
 msgid "No logs to display."
@@ -238,6 +238,10 @@ msgstr "Je hebt een applicatie bijgewerkt!"
 msgid "You have deleted an application."
 msgstr "Je hebt een applicatie verwijderd."
 
+#: critiquebrainz/frontend/release/views.py:17
+msgid "Sorry, we couldn't find a release with that MusicBrainz ID."
+msgstr ""
+
 #: critiquebrainz/frontend/release_group/views.py:17
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
 msgstr "Excuus, we konden geen uitgavegroep vinden met die MusicBrainz-ID."
@@ -330,7 +334,7 @@ msgstr "Je mag geen nieuwe recensies schrijven omdat je account door een moderat
 
 #: critiquebrainz/frontend/review/views.py:172
 msgid "You have already published a review for this entity!"
-msgstr "Je hebt al een recensie van dit object gerecenseerd!"
+msgstr "Je hebt al een recensie over dit object gerecenseerd!"
 
 #: critiquebrainz/frontend/review/views.py:179
 msgid "You have exceeded your limit of reviews per day."
@@ -346,7 +350,7 @@ msgstr "De recensie is gepubliceerd!"
 
 #: critiquebrainz/frontend/review/views.py:194
 msgid "You can only write a review for an entity that exists on MusicBrainz!"
-msgstr "Je kan alleen een recensie schrijven van iets dat op MusicBrainz bestaat!"
+msgstr "Je kan alleen een recensie schrijven over iets dat op MusicBrainz bestaat!"
 
 #: critiquebrainz/frontend/review/views.py:213
 msgid "Only author can edit this review."
@@ -825,6 +829,7 @@ msgstr "Uitgavegroep"
 #: critiquebrainz/frontend/templates/navbar.html:48
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
+#: critiquebrainz/frontend/templates/search/selector.html:13
 #: critiquebrainz/frontend/templates/search/selector.html:49
 msgid "Event"
 msgstr "Evenement"
@@ -860,7 +865,7 @@ msgstr "Terug naar de beginpagina"
 #: critiquebrainz/frontend/templates/log/action.html:7
 #, python-format
 msgid "Hide %(user)s's review of \"%(rg)s\""
-msgstr "Recensie van “%(rg)s” door %(user)s verbergen"
+msgstr "Recensie over “%(rg)s” door %(user)s verbergen"
 
 #: critiquebrainz/frontend/templates/log/action.html:10
 #, python-format
@@ -891,15 +896,23 @@ msgstr "Oudere logboeken aan het laden …"
 msgid "Failed to load older logs!"
 msgstr "Het laden van oudere logboeken is mislukt!"
 
+#: critiquebrainz/frontend/templates/log/log_results.html:6
+msgid "review"
+msgstr "recensie"
+
 #: critiquebrainz/frontend/templates/log/log_results.html:18
 #, python-format
 msgid "%(admin)s archived a %(review)s written by %(user)s"
-msgstr ""
+msgstr "%(admin)s archiveerde %(review)s die werd geschreven door %(user)s."
 
 #: critiquebrainz/frontend/templates/log/log_results.html:23
 #, python-format
 msgid "%(admin)s blocked %(user)s"
 msgstr "%(admin)s heeft %(user)s geblokkeerd"
+
+#: critiquebrainz/frontend/templates/log/log_results.html:27
+msgid "Reason:"
+msgstr "Reden:"
 
 #: critiquebrainz/frontend/templates/login/login.html:7
 msgid ""
@@ -1068,7 +1081,7 @@ msgid "Yes, I want to delete my account"
 msgstr "Ja, ik wil mijn account verwijderen."
 
 #: critiquebrainz/frontend/templates/profile/delete.html:15
-#: critiquebrainz/frontend/templates/review/entity/base.html:55
+#: critiquebrainz/frontend/templates/review/entity/base.html:56
 msgid "No"
 msgstr "Nee"
 
@@ -1223,7 +1236,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/edit.html:11
 #, python-format
 msgid "Edit review of \"%(entity)s\""
-msgstr "Recensie van “%(entity)s” bewerken"
+msgstr "Recensie over “%(entity)s” bewerken"
 
 #: critiquebrainz/frontend/templates/review/delete.html:15
 msgid "Deleting review"
@@ -1232,7 +1245,7 @@ msgstr "Recensie aan het verwijderen"
 #: critiquebrainz/frontend/templates/review/delete.html:19
 #, python-format
 msgid "Are you sure you want to delete your review of \"%(entity)s\"?"
-msgstr "Weet je zeker dat je je recensie van %(entity)s wilt verwijderen?"
+msgstr "Weet je zeker dat je je recensie over “%(entity)s” wilt verwijderen?"
 
 #: critiquebrainz/frontend/templates/review/delete.html:20
 msgid "There is no way to undo this action!"
@@ -1285,7 +1298,7 @@ msgid "Discard changes"
 msgstr "Veranderingen verwerpen"
 
 #: critiquebrainz/frontend/templates/review/edit.html:41
-#: critiquebrainz/frontend/templates/review/entity/base.html:77
+#: critiquebrainz/frontend/templates/review/entity/base.html:78
 msgid "Delete this review"
 msgstr "Deze recensie verwijderen"
 
@@ -1293,7 +1306,7 @@ msgstr "Deze recensie verwijderen"
 #: critiquebrainz/frontend/templates/review/report.html:9
 #, python-format
 msgid "Report %(user)s's review of \"%(rg)s\""
-msgstr "De recensie van “%(rg)s” door %(user)s rapporteren"
+msgstr "De recensie over “%(rg)s” door %(user)s rapporteren"
 
 #: critiquebrainz/frontend/templates/review/report.html:23
 msgid "Please provide a description of the violation (required)"
@@ -1306,12 +1319,12 @@ msgstr "Recensie rapporteren"
 #: critiquebrainz/frontend/templates/review/revisions.html:12
 #, python-format
 msgid "Revisions of Review of \"%(entity)s\" by %(user)s"
-msgstr ""
+msgstr "Versies van de recensie over “%(entity)s” door %(user)s"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:16
 #, python-format
 msgid "Revisions of Review by %(user)s"
-msgstr ""
+msgstr "Versies van de recensie door %(user)s."
 
 #: critiquebrainz/frontend/templates/review/revisions.html:28
 msgid "Compare"
@@ -1336,7 +1349,7 @@ msgstr "Het laden van oudere versies is mislukt!"
 #: critiquebrainz/frontend/templates/review/write.html:10
 #, python-format
 msgid "Write review of \"%(entity)s\""
-msgstr ""
+msgstr "Schrijf een recensie over “%(entity)s”"
 
 #: critiquebrainz/frontend/templates/review/write.html:14
 msgid "Write review"
@@ -1351,7 +1364,7 @@ msgid ""
 "            infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
 "            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
 "            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
-msgstr ""
+msgstr "U erkent en staat toe dat uw aan CritiqueBrainz bijgedragen recensies onder een Creative Commons Attribution-ShareAlike 3.0 Unported of Creative Commons Attribution-ShareAlike-NonCommercial licentie (afhankelijk van uw bovenstaande keuze) in licentie worden gegeven. U staat toe om uw werk onder deze licentie te verlenen.\nU verklaart en garandeert dat u alle rechten in het werk bezit, dat niets in het werk inbreuk maakt op de rechten van een derde partij, en dat u permissie heeft om het werk te gebruiken en in licentie te geven onder de geselecteerde Creative Commons licentie.\nTenslotte geeft u de MetaBrainz Foundation permissie om deze inhoud voor commercieel gebruik buiten de Creative Commons licentie in licentie te geven om het werk van de organisatie te ondersteunen."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:14
 msgid "<b>This review has not been published yet!</b> Only you can see it."
@@ -1362,62 +1375,67 @@ msgstr "<b>Deze recensie is nog niet gepubliceerd!</b>. Alleen jij kan haar zien
 msgid "Published on %(date)s"
 msgstr "Gepubliceerd op %(date)s"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:22
+#: critiquebrainz/frontend/templates/review/entity/base.html:17
+#, python-format
+msgid "Written in %(language)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/entity/base.html:23
 msgid "This review has not yet been rated"
 msgstr "Deze recensie heeft nog geen beoordeling."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:38
+#: critiquebrainz/frontend/templates/review/entity/base.html:39
 #, python-format
 msgid "This review is licensed under a %(name)s license."
 msgstr "Deze recensie heeft een %(name)s licentie."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:40
+#: critiquebrainz/frontend/templates/review/entity/base.html:41
 #, python-format
 msgid "It was imported from %(source)s."
-msgstr ""
+msgstr "De recensie werd geïmporteerd vanuit %(source)s."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:53
+#: critiquebrainz/frontend/templates/review/entity/base.html:54
 msgid "Did you find this review useful?"
 msgstr "Vond je deze recensie nuttig?"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:54
+#: critiquebrainz/frontend/templates/review/entity/base.html:55
 msgid "Yes"
 msgstr "Ja"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:58
+#: critiquebrainz/frontend/templates/review/entity/base.html:59
 msgid "You found this review useful."
 msgstr "Je vond deze recensie nuttig."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:60
+#: critiquebrainz/frontend/templates/review/entity/base.html:61
 msgid "You didn't find this review useful."
 msgstr "Je vond deze recensie niet nuttig."
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:62
+#: critiquebrainz/frontend/templates/review/entity/base.html:63
 msgid "Delete your vote"
 msgstr "Je stem verwijderen"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:67
+#: critiquebrainz/frontend/templates/review/entity/base.html:68
 msgid "Report abuse"
 msgstr "Misbruik rapporteren"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:73
+#: critiquebrainz/frontend/templates/review/entity/base.html:74
 msgid "Edit this review"
 msgstr "Deze recensie bewerken"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:82
-#: critiquebrainz/frontend/templates/review/entity/base.html:89
+#: critiquebrainz/frontend/templates/review/entity/base.html:83
+#: critiquebrainz/frontend/templates/review/entity/base.html:90
 msgid "View older revisions"
 msgstr "Oudere versies bekijken"
 
-#: critiquebrainz/frontend/templates/review/entity/base.html:86
+#: critiquebrainz/frontend/templates/review/entity/base.html:87
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
-msgstr ""
+msgstr "<a href=\"%(link)s\">Meld je aan</a> om deze recensie te beoordelen."
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:12
 #, python-format
 msgid "Review of \"%(event)s\" by %(user)s"
-msgstr ""
+msgstr "Recensie over “%(event)s” door %(user)s"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:19
 msgid "Write"
@@ -1435,7 +1453,7 @@ msgid ""
 msgstr "Je kan <a href=\"%(url)s\" target=\"_blank\">Markdown</a>-syntaxis gebruiken om de opmaak aan te passen."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:35
-#: critiquebrainz/frontend/templates/review/modify/base.html:109
+#: critiquebrainz/frontend/templates/review/modify/base.html:108
 msgid "Loading preview..."
 msgstr "Voorvertoning aan het laden …"
 
@@ -1447,15 +1465,11 @@ msgstr "Geef een taal voor deze recensie op:"
 msgid "You cannot change the license after the review is published."
 msgstr "Je kan de licentie van een recensie na publicatie niet wijzigen."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:59
-msgid "Note: Drafts are not private!"
-msgstr "Let op: concepten zijn niet privé!"
-
-#: critiquebrainz/frontend/templates/review/modify/base.html:98
+#: critiquebrainz/frontend/templates/review/modify/base.html:97
 msgid "Review is empty."
 msgstr "De recensie is leeg."
 
-#: critiquebrainz/frontend/templates/review/modify/base.html:105
+#: critiquebrainz/frontend/templates/review/modify/base.html:104
 msgid "Failed to load preview."
 msgstr "Het laden van de voorvertoning is mislukt."
 
@@ -1526,6 +1540,10 @@ msgstr "meer"
 msgid "Entity selection"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/search/selector.html:10
+msgid "Release Group"
+msgstr "Uitgavegroep"
+
 #: critiquebrainz/frontend/templates/search/selector.html:19
 msgid "Release group selection"
 msgstr "Uitgavegroep selecteren"
@@ -1592,7 +1610,7 @@ msgstr "Stemmen"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:16
 msgid "Entity"
-msgstr ""
+msgstr "Object"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:37
 msgid "Hidden"

@@ -1,22 +1,25 @@
 from __future__ import division
+
 from itertools import izip
 from math import ceil
+
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from flask_login import login_required, current_user
 from flask_babel import gettext, get_locale
-from critiquebrainz.frontend.review.forms import ReviewCreateForm, ReviewEditForm, ReviewReportForm
-from critiquebrainz.frontend.log.forms import AdminActionForm
-from critiquebrainz.frontend.apis import mbspotify, musicbrainz
-from critiquebrainz.frontend.login import admin_view
-from critiquebrainz.data.model.review import Review, ENTITY_TYPES
-from critiquebrainz.data.model.revision import Revision
-from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
-from critiquebrainz.data.model.vote import Vote
-from critiquebrainz.data.model.spam_report import SpamReport
-from critiquebrainz.utils import side_by_side_diff
-from werkzeug.exceptions import Unauthorized, NotFound
+from flask_login import login_required, current_user
 from markdown import markdown
 from sqlalchemy import desc
+from werkzeug.exceptions import Unauthorized, NotFound
+
+from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
+from critiquebrainz.data.model.review import Review, ENTITY_TYPES
+from critiquebrainz.data.model.revision import Revision
+from critiquebrainz.data.model.spam_report import SpamReport
+from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.frontend.external import mbspotify, musicbrainz
+from critiquebrainz.frontend.forms.log import AdminActionForm
+from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
+from critiquebrainz.frontend.login import admin_view
+from critiquebrainz.utils import side_by_side_diff
 
 review_bp = Blueprint('review', __name__)
 
