@@ -50,23 +50,7 @@
     {% endif %}
   {% else %} {# release-group #}
     <img {{ attributes }} />
-    <script>
-      $("img").last()
-          .on("error", function () {
-            $(this).attr("src", "{{ url_for('static', filename='img/placeholder_disc.svg') }}");
-          })
-          .attr("src", "https://coverartarchive.org/release-group/{{ entity_id }}/front-{{ size * 2 }}");
-    </script>
-    {% if overlay_type %}
-      <span class="entity-type release-group">
-        {{ _('Release Group') }}
-      </span>
-    {% endif %}
-  {% endif %}
-  {% if source_credit %}
-    <div class="caa-credit">
-      Cover art from <a href="https://coverartarchive.org/">Cover Art Archive</a>
-    </div>
+    <script src="{{ 'macros.js'|make_static_path }}"></script>
   {% endif %}
 {% endmacro %}
 

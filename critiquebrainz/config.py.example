@@ -66,9 +66,6 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 
 #GOOGLE_ANALYTICS_TRACKING_ID = ""
 
-# Compile styling in browser if set to True
-#COMPILE_LESS = True
-
 # List of administrators (MusicBrainz usernames)
 ADMINS = [
     "ruaok",

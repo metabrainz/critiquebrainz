@@ -92,7 +92,7 @@
 
 {% block scripts %}
     {{ super() }}
-    <script>$('.match-link').tooltip()</script>
+    <script src="{{ 'spotify.js'|make_static_path }}"></script>
 {% endblock %}
 
 {% macro artists(album) -%}

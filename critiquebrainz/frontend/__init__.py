@@ -21,6 +21,10 @@ def create_app(debug=None):
     from critiquebrainz.frontend.error_handlers import init_error_handlers
     init_error_handlers(app)
 
+    # Static files
+    import static_manager
+    static_manager.read_manifest()
+
     # Logging
     from critiquebrainz import loggers
     loggers.init_loggers(app)
@@ -74,6 +78,7 @@ def create_app(debug=None):
     app.jinja_env.filters['parameterize'] = parameterize
     app.jinja_env.filters['entity_details'] = musicbrainz.get_entity_by_id
     app.jinja_env.filters['language_name'] = lambda language_code: Locale(language_code).get_language_name(get_locale())
+    app.jinja_env.filters['make_static_path'] = static_manager.get_file_path
 
     # Blueprints
     from critiquebrainz.frontend.views.index import frontend_bp
