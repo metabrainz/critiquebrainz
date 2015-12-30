@@ -26,3 +26,9 @@ nosetests.xml
 .vagrant
 
 .transifexrc
+
+# Node
+/node_modules/
+
+# Build
+/critiquebrainz/frontend/static/build/

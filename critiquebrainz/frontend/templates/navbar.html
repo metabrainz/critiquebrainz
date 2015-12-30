@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand logo" href="{{ url_for('frontend.index') }}">
-        <img src="{{ url_for('static', filename='img/navbar_logo.svg') }}" alt="CritiqueBrainz" />
+        <img src="{{ 'img/navbar_logo.svg'|make_static_path }}" alt="CritiqueBrainz" />
       </a>
     </div>
 

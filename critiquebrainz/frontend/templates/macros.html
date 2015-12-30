@@ -42,12 +42,6 @@
     <img src="/static/img/event-placeholder.svg" {{ attributes }} />
   {% else %}
     <img {{ attributes }} />
-    <script>
-      $("img").last()
-          .on("error", function () {
-            $(this).attr("src", "/static/img/missing-art.png");
-          })
-          .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
-    </script>
+    <script src="{{ 'macros.js'|make_static_path }}"></script>
   {% endif %}
 {% endmacro %}

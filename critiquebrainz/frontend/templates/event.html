@@ -4,7 +4,7 @@
 
 {% block scripts_top %}
   {{ super() }}
-  <script src="{{ url_for('static', filename='js/leaflet.min.js') }}"></script>
+  <script src="{{ 'leaflet.js'|make_static_path }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -38,23 +38,7 @@
   {% if lat %}
     <div class="col-md-4">
       <div id="map"></div>
-      <script>
-        L.Icon.Default.imagePath = '/static/img/';
-        var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
-
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          {
-            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-          }).addTo(map);
-
-        var popup = L.popup()
-          .setContent("<b>" + {{ _("Held At") | tojson }} + "</b><br> " + {{ place['name'] | tojson }});
-
-        var marker = L.marker([{{ lat }}, {{ long }}])
-          .addTo(map)
-          .bindPopup(popup)
-          .openPopup();
-      </script>
+      <script src="{{ 'edit.js'|make_static_path }}"></script>
     </div>
   {% endif %}
 
@@ -124,7 +108,7 @@
 
     <div class="external-links">
       <hr>
-      <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.svg') }}" /></div>
+      <div class="favicon-container"><img src="{ 'favicon/musicbrainz-16.svg'|make_static_path }}" /></div>
       <a href="//musicbrainz.org/event/{{ event.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
   </div>

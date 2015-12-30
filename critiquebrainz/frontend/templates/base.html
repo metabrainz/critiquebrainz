@@ -8,19 +8,13 @@
     <title>{% block title %}CritiqueBrainz{% endblock %}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/x-icon"/>
-
-    {% if config.COMPILE_LESS %}
-      <link href="{{ url_for('static', filename='css/main.less') }}" rel="stylesheet/less" type="text/css" />
-      <script src="{{ url_for('static', filename='js/less.min.js') }}"></script>
-    {% else %}
-      <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" media="screen">
-    {% endif %}
+    <link rel="icon" href="{ 'img/favicon.png'|make_static_path }}" type="image/x-icon"/>
+    <link href="{{ 'main.css'|make_static_path }}" rel="stylesheet" media="screen" />
     {% endblock %}
 
     {% block scripts_top %}
       {# This needs to be before body because it's used during cover art loading. #}
-      <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
+      <script src="{{ 'common.js'|make_static_path }}"></script>
     {% endblock %}
 
     {% if config.GOOGLE_ANALYTICS_TRACKING_ID %}
@@ -58,10 +52,6 @@
       {% include 'footer.html' %}
 
     </div>
-
-    {% block scripts %}
-      <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    {% endblock %}
 
   </body>
 </html>

@@ -6,7 +6,7 @@
 
   <div id="header" class="row">
     <div class="col-md-8 clearfix">
-      <img src="{{ url_for('static', filename='img/logo_big.svg') }}" id="big-logo" />
+      <img src="{{ 'img/logo_big.svg'|make_static_path }}" id="big-logo" />
       <h2>{{ _('Welcome to CritiqueBrainz!') }}</h2>
       <p>
         {{ _('CritiqueBrainz is a repository for Creative Commons licensed music reviews.
