@@ -116,7 +116,6 @@ function buildScripts() {
   var searchSelectorBundle = runYarb('searchSelector.js', function (b) {
     b.external(commonBundle);
   });
-  var sharingBundle = runYarb('sharing.js');
   var spotifyBundle = runYarb('spotify.js', function (b) {
     b.external(commonBundle);
   });
@@ -132,7 +131,6 @@ function buildScripts() {
     writeScript(revisionBundle, 'revision.js'),
     writeScript(searchIndexBundle, 'searchIndex.js'),
     writeScript(searchSelectorBundle, 'searchSelector.js'),
-    writeScript(sharingBundle, 'sharing.js'),
     writeScript(spotifyBundle, 'spotify.js')
   ]).then(writeManifest);
 }
