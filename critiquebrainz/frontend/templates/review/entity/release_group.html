@@ -1,5 +1,6 @@
 {% extends 'review/entity/base.html' %}
 {% from 'macros.html' import cover_art %}
+{% from 'macros.html' import spotify_player %}
 
 {% set release_group = review.entity_id | entity_details %}
 
@@ -43,10 +44,7 @@
     {{ cover_art(review.entity_id, 'release_group', 'id=cover-art class=img-responsive') }}
 
     <div id="spotify-play-button">
-      {% if spotify_mappings %}
-        <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white"
-              width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-      {% endif %}
+      {{ spotify_player(spotify_mappings) }}
     </div>
   </div>
 {% endblock %}
