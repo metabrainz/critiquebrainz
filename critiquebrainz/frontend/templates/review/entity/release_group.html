@@ -44,7 +44,7 @@
     {{ cover_art(review.entity_id, 'release_group', 'id=cover-art class=img-responsive') }}
 
     <div id="spotify-play-button">
-      {{ spotify_player(spotify_mappings) }}
+      {{ spotify_player(spotify_mappings, False) }}
     </div>
   </div>
 {% endblock %}
