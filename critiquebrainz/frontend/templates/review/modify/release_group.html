@@ -20,9 +20,8 @@
   </dl>
 </div>
 <div class="col-md-2">
-  {{ cover_art(entity['id'], 'release_group', 'id=cover-art class=img-responsive style=max-height:120px;max-width:120px;') }}
-  
   <div id="spotify-play-button">
-	 {{ spotify_player(spotify_mappings) }}
+    {{ spotify_player(spotify_mappings, False) }}
   </div>
+  {{ cover_art(entity['id'], 'release_group', 'id=cover-art class=img-responsive style=max-height:120px;max-width:120px;') }}
 </div>
