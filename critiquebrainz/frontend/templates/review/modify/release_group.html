@@ -1,4 +1,5 @@
 {% from 'macros.html' import cover_art %}
+{% from 'macros.html' import spotify_player %}
 
 {% if entity is not defined %}
   {% set entity = review.entity_id | entity_details(type=entity_type) %}
@@ -20,4 +21,8 @@
 </div>
 <div class="col-md-2">
   {{ cover_art(entity['id'], 'release_group', 'id=cover-art class=img-responsive style=max-height:120px;max-width:120px;') }}
+  
+  <div id="spotify-play-button">
+	 {{ spotify_player(spotify_mappings) }}
+  </div>
 </div>
