@@ -196,8 +196,11 @@ def create():
     if not entity:
         flash(gettext("You can only write a review for an entity that exists on MusicBrainz!"), 'error')
         return redirect(url_for('search.selector', next=url_for('.create')))
-    return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity)
 
+    if entity_type == 'release_group':
+        spotify_mappings = mbspotify.mappings(entity_id)
+        return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings = spotify_mappings)
+    return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity)
 
 @review_bp.route('/write/preview', methods=['POST'])
 @login_required
@@ -233,6 +236,9 @@ def edit(id):
         return redirect(url_for('.entity', id=review.id))
     else:
         form.text.data = review.text
+    if review.entity_type == 'release_group':
+        spotify_mappings = mbspotify.mappings(review.entity_id)
+        return render_template('review/edit.html', form=form, review=review, entity_type=review.entity_type, entity=entity, spotify_mappings = spotify_mappings)
     return render_template('review/edit.html', form=form, review=review, entity_type=review.entity_type)
 
 
