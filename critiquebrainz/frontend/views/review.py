@@ -199,7 +199,7 @@ def create():
     return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity)
 
     if review.entity_type == 'release_group':
-        spotify_mappings=mbspotify.mappings(id)
+        spotify_mappings=mbspotify.mappings(entity_id)
         return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings = spotify_mappings)
     return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity)
 
