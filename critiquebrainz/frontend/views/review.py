@@ -198,8 +198,8 @@ def create():
         return redirect(url_for('search.selector', next=url_for('.create')))
     return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity)
 
-    if review.entity_type == 'release_group':
-        spotify_mappings=mbspotify.mappings(entity_id)
+    if entity_type == 'release_group':
+        spotify_mappings = mbspotify.mappings(entity_id)
         return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings = spotify_mappings)
     return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity)
 
@@ -235,6 +235,9 @@ def edit(id):
                       license_id=license_choice, language=form.language.data)
         flash(gettext("Review has been updated."), 'success')
         return redirect(url_for('.entity', id=review.id))
+    if review.entity_type == 'release_group':
+        spotify_mappings = mbspotify.mappings(review.entity_id)
+        return render_template('review/edit.html', form=form, review=review, entity_type=review.entity_type, entity=entity, spotify_mappings = spotify_mappings)
     else:
         form.text.data = review.text
     return render_template('review/edit.html', form=form, review=review, entity_type=review.entity_type)
