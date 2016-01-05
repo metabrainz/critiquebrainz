@@ -53,13 +53,15 @@
 {% endmacro %}
 
 {% macro spotify_player(spotify_mappings, show_add_message) -%}
-  {% if spotify_mappings %}
-    <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-    <em><small><a class="text-muted" href="{{ url_for('mapping.spotify_list', release_group_id=id) }}">{{ _('View Spotify mapping information') }}</a></small></em>
-  {% elif show_add_message %}
-    <span class="text-muted">
-      {{ _('We don\'t have a mapping between this release group and Spotify. Please help us find the right album.') }}
-    </span>
-    <div style="text-align:center;font-weight:bold;"><a style="font-size:16px;" href="{{ url_for('mapping.spotify', release_group_id=id) }}" rel="nofollow">{{ _('Match this!') }}</a></div>
-  {% endif %}
+  <div class="spotify-player">
+    {% if spotify_mappings %}
+      <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
+      <em><small><a class="text-muted" href="{{ url_for('mapping.spotify_list', release_group_id=id) }}">{{ _('View Spotify mapping information') }}</a></small></em>
+    {% elif show_add_message %}
+      <span class="text-muted">
+        {{ _('We don\'t have a mapping between this release group and Spotify. Please help us find the right album.') }}
+      </span>
+      <div style="text-align:center;font-weight:bold;"><a style="font-size:16px;" href="{{ url_for('mapping.spotify', release_group_id=id) }}" rel="nofollow">{{ _('Match this!') }}</a></div>
+    {% endif %}
+  </div>
 {%- endmacro %}
