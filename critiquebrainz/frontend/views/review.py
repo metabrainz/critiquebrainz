@@ -8,7 +8,7 @@ from flask_babel import gettext, get_locale
 from flask_login import login_required, current_user
 from markdown import markdown
 from sqlalchemy import desc
-from werkzeug.exceptions import Unauthorized, NotFound
+from werkzeug.exceptions import Unauthorized, NotFound, Forbidden
 
 from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
 from critiquebrainz.data.model.review import Review, ENTITY_TYPES
@@ -59,7 +59,8 @@ def entity(id, rev=None):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.is_hidden:
         if not current_user.is_admin():
-            raise NotFound(gettext("Review has been hidden."))
+            raise Forbidden(gettext("Review has been hidden. "
+                                    "You need to be an administrator to view it."))
         else:
             flash(gettext("Review has been hidden."), 'warning')
 
