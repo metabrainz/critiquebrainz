@@ -40,7 +40,7 @@
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
   <div class="cover-container">
     {% if entity_type == 'event' %}
-      <img src="/static/img/event-placeholder.svg" {{ attributes }} />
+      <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
       {% if overlay_type %}
         <span class="entity-type event">
           {{ _('Event') }}
@@ -51,7 +51,7 @@
       <script>
         $("img").last()
             .on("error", function () {
-              $(this).attr("src", "/static/img/missing-art.svg");
+              $(this).attr("src", "{{ url_for('static', filename='img/placeholder_disc.svg') }}");
             })
             .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
       </script>

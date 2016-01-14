@@ -24,7 +24,7 @@
             {% if item.images %}
               <img class="img-responsive" src="{{ item.images[0].url }}" />
             {% else %}
-              <img class="img-responsive" src="/static/img/missing-art.svg" />
+              <img class="img-responsive" src="{{ url_for('static', filename='img/placeholder_disc.svg') }}" />
             {% endif %}
           </a>
         </div>
