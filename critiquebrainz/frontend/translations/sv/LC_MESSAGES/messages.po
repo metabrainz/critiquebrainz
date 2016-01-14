@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PROJECT project.
 # 
 # Translators:
+# Henrik Mattsson-Mårn <h@reglage.net>, 2016
 # Staffan, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-28 07:27+0000\n"
-"PO-Revision-Date: 2015-12-28 09:54+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"POT-Creation-Date: 2015-12-29 18:56+0000\n"
+"PO-Revision-Date: 2016-01-03 15:43+0000\n"
+"Last-Translator: Henrik Mattsson-Mårn <h@reglage.net>\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/critiquebrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,7 +85,7 @@ msgstr "Visningsnamn"
 
 #: critiquebrainz/frontend/forms/profile.py:9
 msgid "Display name field is empty."
-msgstr ""
+msgstr "Visningsnamnsfältet är tomt."
 
 #: critiquebrainz/frontend/forms/profile.py:10
 msgid "Display name needs to be at least 3 characters long."
@@ -381,11 +382,11 @@ msgstr ""
 #: critiquebrainz/frontend/templates/footer.html:18
 #: critiquebrainz/frontend/templates/navbar.html:37
 msgid "Write a review"
-msgstr ""
+msgstr "Skriv en recension"
 
 #: critiquebrainz/frontend/templates/event.html:24
 msgid "Edit my review"
-msgstr ""
+msgstr "Redigera min recension"
 
 #: critiquebrainz/frontend/templates/event.html:51
 #: critiquebrainz/frontend/templates/review/entity/event.html:54
@@ -408,11 +409,11 @@ msgstr "Recensioner"
 #: critiquebrainz/frontend/templates/index.html:58
 #: critiquebrainz/frontend/templates/user/reviews.html:7
 msgid "No reviews found"
-msgstr ""
+msgstr "Inga recensioner hittade"
 
 #: critiquebrainz/frontend/templates/event.html:70
 msgid "Published on"
-msgstr ""
+msgstr "Publicerad den"
 
 #: critiquebrainz/frontend/templates/event.html:71
 #: critiquebrainz/frontend/templates/review/edit.html:21
@@ -432,7 +433,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/footer.html:5
 msgid "Admin zone:"
-msgstr ""
+msgstr "Adminzon:"
 
 #: critiquebrainz/frontend/templates/footer.html:6
 msgid "Reports"
@@ -451,21 +452,22 @@ msgstr "Utvecklare"
 
 #: critiquebrainz/frontend/templates/footer.html:24
 msgid "Web API"
-msgstr ""
+msgstr "Web-API"
 
 #: critiquebrainz/frontend/templates/footer.html:25
 msgid "Source code"
-msgstr ""
+msgstr "Källkod"
 
 #: critiquebrainz/frontend/templates/footer.html:26
 msgid "Data dumps"
-msgstr ""
+msgstr "Datadumpar"
 
 #: critiquebrainz/frontend/templates/footer.html:32
 msgid "Blog"
 msgstr "Blogg"
 
 #: critiquebrainz/frontend/templates/footer.html:40
+#: critiquebrainz/frontend/templates/navbar.html:40
 msgid "Language"
 msgstr "Språk"
 
@@ -507,7 +509,7 @@ msgstr "Användare: %(users_count)s"
 
 #: critiquebrainz/frontend/templates/index.html:31
 msgid "Popular reviews"
-msgstr ""
+msgstr "Populära recensioner"
 
 #: critiquebrainz/frontend/templates/index.html:46
 #: critiquebrainz/frontend/templates/index.html:71
@@ -519,11 +521,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index.html:56
 msgid "Recent reviews"
-msgstr ""
+msgstr "Senaste recensioner"
 
 #: critiquebrainz/frontend/templates/index.html:77
 msgid "View all reviews..."
-msgstr ""
+msgstr "Visa alla recensioner..."
 
 #: critiquebrainz/frontend/templates/macros.html:3
 msgid "Error!"
@@ -547,7 +549,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:24
 msgid "Profile data"
-msgstr ""
+msgstr "Profildata"
 
 #: critiquebrainz/frontend/templates/macros.html:27
 msgid "Create and modify your reviews."
@@ -584,13 +586,13 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/navbar.html:6
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Växla navigering"
 
 #: critiquebrainz/frontend/templates/navbar.html:21
 #: critiquebrainz/frontend/templates/login/login.html:3
 #: critiquebrainz/frontend/templates/login/login.html:6
 msgid "Sign in"
-msgstr ""
+msgstr "Logga in"
 
 #: critiquebrainz/frontend/templates/navbar.html:28
 msgid "Profile"
@@ -598,26 +600,22 @@ msgstr "Profil"
 
 #: critiquebrainz/frontend/templates/navbar.html:31
 msgid "Sign out"
-msgstr ""
+msgstr "Logga ut"
 
 #: critiquebrainz/frontend/templates/navbar.html:36
 msgid "Browse reviews"
-msgstr ""
+msgstr "Bläddra recensioner"
 
-#: critiquebrainz/frontend/templates/navbar.html:38
-msgid "About"
-msgstr "Om"
-
-#: critiquebrainz/frontend/templates/navbar.html:42
+#: critiquebrainz/frontend/templates/navbar.html:51
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
 #: critiquebrainz/frontend/templates/search/index.html:34
 #: critiquebrainz/frontend/templates/search/selector.html:37
 #: critiquebrainz/frontend/templates/search/selector.html:57
 msgid "Search"
-msgstr ""
+msgstr "Sök"
 
-#: critiquebrainz/frontend/templates/navbar.html:46
+#: critiquebrainz/frontend/templates/navbar.html:55
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:8
 #: critiquebrainz/frontend/templates/search/index.html:26
 #: critiquebrainz/frontend/templates/search/index.html:57
@@ -629,7 +627,7 @@ msgstr ""
 msgid "Artist"
 msgstr "Artist"
 
-#: critiquebrainz/frontend/templates/navbar.html:47
+#: critiquebrainz/frontend/templates/navbar.html:56
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:9
 #: critiquebrainz/frontend/templates/search/index.html:27
 #: critiquebrainz/frontend/templates/search/index.html:62
@@ -638,7 +636,7 @@ msgstr "Artist"
 msgid "Release group"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/navbar.html:48
+#: critiquebrainz/frontend/templates/navbar.html:57
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
 #: critiquebrainz/frontend/templates/search/selector.html:13
@@ -648,7 +646,7 @@ msgstr "Händelse"
 
 #: critiquebrainz/frontend/templates/errors/400.html:2
 msgid "Invalid request"
-msgstr ""
+msgstr "Ogiltig förfrågan"
 
 #: critiquebrainz/frontend/templates/errors/401.html:2
 msgid "Unauthorized"
@@ -656,23 +654,23 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/errors/403.html:2
 msgid "Access denied"
-msgstr ""
+msgstr "Åtkomst nekad"
 
 #: critiquebrainz/frontend/templates/errors/404.html:2
 msgid "Page not found"
-msgstr ""
+msgstr "Sida ej funnen"
 
 #: critiquebrainz/frontend/templates/errors/500.html:2
 msgid "Internal server error"
-msgstr ""
+msgstr "Internt serverfel"
 
 #: critiquebrainz/frontend/templates/errors/503.html:2
 msgid "Service unavailable"
-msgstr ""
+msgstr "Tjänst otillgänglig"
 
 #: critiquebrainz/frontend/templates/errors/base.html:9
 msgid "Back to home page"
-msgstr ""
+msgstr "Tillbaka till hemsidan"
 
 #: critiquebrainz/frontend/templates/log/action.html:7
 #, python-format
@@ -698,19 +696,19 @@ msgstr "Avbryt"
 
 #: critiquebrainz/frontend/templates/log/log.html:11
 msgid "Load older logs"
-msgstr ""
+msgstr "Ladda äldre loggar"
 
 #: critiquebrainz/frontend/templates/log/log.html:13
 msgid "Loading older logs..."
-msgstr ""
+msgstr "Laddar äldre loggar..."
 
 #: critiquebrainz/frontend/templates/log/log.html:38
 msgid "Failed to load older logs!"
-msgstr ""
+msgstr "Kunde inte ladda äldre loggar!"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:6
 msgid "review"
-msgstr ""
+msgstr "recension"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:18
 #, python-format
@@ -724,7 +722,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/log/log_results.html:27
 msgid "Reason:"
-msgstr ""
+msgstr "Orsak:"
 
 #: critiquebrainz/frontend/templates/login/login.html:7
 msgid ""
@@ -734,7 +732,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/login/login.html:11
 msgid "Sign in with MusicBrainz"
-msgstr ""
+msgstr "Logga in med MusicBrainz"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"
@@ -807,7 +805,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:66
 msgid "Submit"
-msgstr ""
+msgstr "Skicka"
 
 #: critiquebrainz/frontend/templates/mapping/spotify.html:69
 #, python-format
@@ -890,7 +888,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/delete.html:14
 msgid "Yes, I want to delete my account"
-msgstr ""
+msgstr "Ja, jag vill ta bort mitt konto"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:15
 #: critiquebrainz/frontend/templates/review/entity/base.html:60
@@ -915,11 +913,11 @@ msgstr "Radera mitt konto"
 #: critiquebrainz/frontend/templates/profile/applications/create.html:6
 #: critiquebrainz/frontend/templates/profile/applications/index.html:11
 msgid "Create new application"
-msgstr ""
+msgstr "Skapa ny applikation"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:37
 msgid "Create application"
-msgstr ""
+msgstr "Skapa applikation"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:3
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:6
@@ -929,23 +927,23 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:37
 msgid "Save changes"
-msgstr ""
+msgstr "Spara ändringar"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:9
 msgid "Your applications"
-msgstr ""
+msgstr "Dina applikationer"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:15
 msgid "No applications found"
-msgstr ""
+msgstr "Inga applikationer funna"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:22
 msgid "Client ID"
-msgstr ""
+msgstr "Klient-ID"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:23
 msgid "Client secret"
-msgstr ""
+msgstr "Klient-hemlighet"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:35
 msgid "Modify"
@@ -971,11 +969,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:56
 msgid "Access"
-msgstr ""
+msgstr "Åtkomst"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:75
 msgid "No special requirements"
-msgstr ""
+msgstr "Inga speciella krav"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:79
 msgid "Revoke access"
@@ -984,11 +982,11 @@ msgstr ""
 #: critiquebrainz/frontend/templates/reports/reports.html:3
 #: critiquebrainz/frontend/templates/reports/reports.html:6
 msgid "Recent reports"
-msgstr ""
+msgstr "Senaste rapporter"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:25
 msgid "Reported on"
-msgstr ""
+msgstr "Rapporterad den"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:26
 msgid "Reported by"
@@ -1008,36 +1006,36 @@ msgstr "Författare"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:30
 msgid "Actions"
-msgstr ""
+msgstr "Åtgärder"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:38
 msgid "Load older reports"
-msgstr ""
+msgstr "Ladda äldre rapporter"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:40
 msgid "Loading older reports..."
-msgstr ""
+msgstr "Laddar äldre rapporter..."
 
 #: critiquebrainz/frontend/templates/reports/reports.html:65
 msgid "Failed to load older reports!"
-msgstr ""
+msgstr "Kunde inte ladda äldre rapporter!"
 
 #: critiquebrainz/frontend/templates/reports/reports_results.html:34
 msgid "Read latest revision"
-msgstr ""
+msgstr "Läs senaste revision"
 
 #: critiquebrainz/frontend/templates/review/browse.html:8
 msgid "Ordered by creation date"
-msgstr ""
+msgstr "Sorterade efter skapelsedatum"
 
 #: critiquebrainz/frontend/templates/review/compare.html:3
 msgid "Difference between revisions"
-msgstr ""
+msgstr "Skillnader mellan revisioner"
 
 #: critiquebrainz/frontend/templates/review/compare.html:9
 #: critiquebrainz/frontend/templates/review/compare.html:16
 msgid "Revision"
-msgstr ""
+msgstr "Revision"
 
 #: critiquebrainz/frontend/templates/review/compare.html:10
 #: critiquebrainz/frontend/templates/review/compare.html:17
@@ -1052,7 +1050,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/delete.html:15
 msgid "Deleting review"
-msgstr ""
+msgstr "Tar bort recension"
 
 #: critiquebrainz/frontend/templates/review/delete.html:19
 #, python-format
@@ -1065,17 +1063,17 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/delete.html:23
 msgid "Delete review"
-msgstr ""
+msgstr "Ta bort recension"
 
 #: critiquebrainz/frontend/templates/review/edit.html:15
 msgid "Editing review"
-msgstr ""
+msgstr "Redigerar recension"
 
 #: critiquebrainz/frontend/templates/review/edit.html:19
 #: critiquebrainz/frontend/templates/review/revisions.html:25
 #: critiquebrainz/frontend/templates/user/reviews.html:18
 msgid "Created on"
-msgstr ""
+msgstr "Skapad den"
 
 #: critiquebrainz/frontend/templates/review/edit.html:23
 msgid "Status"
@@ -1112,7 +1110,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/edit.html:41
 #: critiquebrainz/frontend/templates/review/entity/base.html:82
 msgid "Delete this review"
-msgstr ""
+msgstr "Ta bort denna recension"
 
 #: critiquebrainz/frontend/templates/review/report.html:6
 #: critiquebrainz/frontend/templates/review/report.html:9
@@ -1126,7 +1124,12 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/report.html:26
 msgid "Report review"
-msgstr ""
+msgstr "Rapportera recension"
+
+#: critiquebrainz/frontend/templates/review/revision_results.html:3
+#, python-format
+msgid "Revision %(number)s"
+msgstr "Revision %(number)s"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:12
 #, python-format
@@ -1144,19 +1147,19 @@ msgstr "Jämför"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:35
 msgid "Load older revisions"
-msgstr ""
+msgstr "Ladda äldre revisioner"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:36
 msgid "Loading older revisions..."
-msgstr ""
+msgstr "Laddar äldre revisioner..."
 
 #: critiquebrainz/frontend/templates/review/revisions.html:53
 msgid "Select two different revisions."
-msgstr ""
+msgstr "Välj två olika revisioner."
 
 #: critiquebrainz/frontend/templates/review/revisions.html:77
 msgid "Failed to load older revisions!"
-msgstr ""
+msgstr "Kunde inte ladda äldre revisioner!"
 
 #: critiquebrainz/frontend/templates/review/write.html:10
 #, python-format
@@ -1190,11 +1193,11 @@ msgstr "Publicerades %(date)s"
 #: critiquebrainz/frontend/templates/review/entity/base.html:17
 #, python-format
 msgid "Written in %(language)s"
-msgstr ""
+msgstr "Skrivet på %(language)s"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:23
 msgid "This review has not yet been rated"
-msgstr ""
+msgstr "Denna recension har inte betygsatts än"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:43
 #, python-format
@@ -1224,7 +1227,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:67
 msgid "Delete your vote"
-msgstr ""
+msgstr "Ta bort din röst"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:72
 msgid "Report abuse"
@@ -1232,12 +1235,12 @@ msgstr "Rapportera missbruk"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:78
 msgid "Edit this review"
-msgstr ""
+msgstr "Redigera denna recension"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:87
 #: critiquebrainz/frontend/templates/review/entity/base.html:94
 msgid "View older revisions"
-msgstr ""
+msgstr "Visa äldre revisioner"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:91
 #, python-format
@@ -1279,23 +1282,23 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:97
 msgid "Review is empty."
-msgstr ""
+msgstr "Recensionen är tom."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:104
 msgid "Failed to load preview."
-msgstr ""
+msgstr "Kunde inte ladda förhandsgranskning."
 
 #: critiquebrainz/frontend/templates/review/modify/event.html:13
 msgid "Place"
-msgstr ""
+msgstr "Plats"
 
 #: critiquebrainz/frontend/templates/review/modify/event.html:15
 msgid "Unknown place"
-msgstr ""
+msgstr "Okänd plats"
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"
-msgstr ""
+msgstr "Sökresultat"
 
 #: critiquebrainz/frontend/templates/search/index.html:17
 msgid "Query"
@@ -1312,7 +1315,7 @@ msgstr "Typ"
 #: critiquebrainz/frontend/templates/search/index.html:42
 #: critiquebrainz/frontend/templates/search/selector.html:75
 msgid "No results found"
-msgstr ""
+msgstr "Inga resultat hittade"
 
 #: critiquebrainz/frontend/templates/search/index.html:50
 msgid "Sort name"
@@ -1330,17 +1333,17 @@ msgstr "Plats"
 #: critiquebrainz/frontend/templates/search/index.html:73
 #: critiquebrainz/frontend/templates/search/selector.html:102
 msgid "Load more results"
-msgstr ""
+msgstr "Ladda fler resultat"
 
 #: critiquebrainz/frontend/templates/search/index.html:74
 #: critiquebrainz/frontend/templates/search/selector.html:103
 msgid "Loading more results..."
-msgstr ""
+msgstr "Laddar fler resultat..."
 
 #: critiquebrainz/frontend/templates/search/index.html:102
 #: critiquebrainz/frontend/templates/search/selector.html:141
 msgid "Failed to load more search results!"
-msgstr ""
+msgstr "Kunde inte ladda fler resultat!"
 
 #: critiquebrainz/frontend/templates/search/results.html:35
 #: critiquebrainz/frontend/templates/search/selector_results.html:29
@@ -1371,19 +1374,19 @@ msgstr "Fortsätt"
 #: critiquebrainz/frontend/templates/user/base.html:25
 #: critiquebrainz/frontend/templates/user/info.html:3
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: critiquebrainz/frontend/templates/user/info.html:16
 msgid "General information"
-msgstr ""
+msgstr "Allmän information"
 
 #: critiquebrainz/frontend/templates/user/info.html:18
 msgid "Member since"
-msgstr ""
+msgstr "Medlem sedan"
 
 #: critiquebrainz/frontend/templates/user/info.html:19
 msgid "User type"
-msgstr ""
+msgstr "Användartyp"
 
 #: critiquebrainz/frontend/templates/user/info.html:20
 msgid "Karma"
@@ -1391,15 +1394,15 @@ msgstr "Karma"
 
 #: critiquebrainz/frontend/templates/user/info.html:26
 msgid "Limits"
-msgstr ""
+msgstr "Begränsningar"
 
 #: critiquebrainz/frontend/templates/user/info.html:28
 msgid "Reviews/day"
-msgstr ""
+msgstr "Recensioner/dag"
 
 #: critiquebrainz/frontend/templates/user/info.html:29
 msgid "Votes/day"
-msgstr ""
+msgstr "Röster/dag"
 
 #: critiquebrainz/frontend/templates/user/info.html:38
 #: critiquebrainz/frontend/templates/user/info.html:44
@@ -1409,16 +1412,16 @@ msgstr "Idag"
 #: critiquebrainz/frontend/templates/user/info.html:39
 #: critiquebrainz/frontend/templates/user/info.html:45
 msgid "Last 7 days"
-msgstr ""
+msgstr "Senaste 7 dagarna"
 
 #: critiquebrainz/frontend/templates/user/info.html:40
 #: critiquebrainz/frontend/templates/user/info.html:46
 msgid "This month"
-msgstr ""
+msgstr "Denna månad"
 
 #: critiquebrainz/frontend/templates/user/info.html:42
 msgid "Votes"
-msgstr ""
+msgstr "Röster"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:16
 msgid "Entity"
@@ -1426,7 +1429,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/user/reviews.html:37
 msgid "Hidden"
-msgstr ""
+msgstr "Dold"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:71
 msgid "Read"
@@ -1434,15 +1437,15 @@ msgstr "Läs"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:73
 msgid "Edit"
-msgstr ""
+msgstr "Redigera"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:85
 msgid "Newer"
-msgstr ""
+msgstr "Nyare"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:88
 msgid "Older"
-msgstr ""
+msgstr "Äldre"
 
 #: critiquebrainz/frontend/views/artist.py:19
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
@@ -1520,11 +1523,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/views/reports.py:43
 msgid "Report has been archived."
-msgstr ""
+msgstr "Rapporten har arkiverats."
 
 #: critiquebrainz/frontend/views/review.py:42
 msgid "No reviews to display."
-msgstr ""
+msgstr "Inga recensioner att visa."
 
 #: critiquebrainz/frontend/views/review.py:59
 #: critiquebrainz/frontend/views/review.py:93
@@ -1628,11 +1631,11 @@ msgstr "Den här recensionen är inte betygsatt ännu."
 
 #: critiquebrainz/frontend/views/review.py:292
 msgid "You have deleted your vote for this review!"
-msgstr ""
+msgstr "Du har tagit bort din röst för denna recension!"
 
 #: critiquebrainz/frontend/views/review.py:303
 msgid "You cannot report your own review."
-msgstr ""
+msgstr "Du kan inte rapportera din egen recension."
 
 #: critiquebrainz/frontend/views/review.py:307
 msgid ""
@@ -1642,15 +1645,15 @@ msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:314
 msgid "You have already reported this review."
-msgstr ""
+msgstr "Du har redan rapporterat denna recension."
 
 #: critiquebrainz/frontend/views/review.py:320
 msgid "Review has been reported."
-msgstr ""
+msgstr "Recensionen har rapporterats."
 
 #: critiquebrainz/frontend/views/review.py:333
 msgid "Review is already hidden."
-msgstr ""
+msgstr "Recensionen är redan dold."
 
 #: critiquebrainz/frontend/views/review.py:355
 msgid "Review has been unhidden."
@@ -1658,11 +1661,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/views/user.py:45
 msgid "This account is already blocked."
-msgstr ""
+msgstr "Detta konto är redan blockerat."
 
 #: critiquebrainz/frontend/views/user.py:53
 msgid "This user account has been blocked."
-msgstr ""
+msgstr "Detta användarkonto har blivit blockerat."
 
 #: critiquebrainz/frontend/views/user.py:65
 msgid "This user account has been unblocked."

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-28 07:27+0000\n"
-"PO-Revision-Date: 2015-12-28 09:54+0000\n"
+"POT-Creation-Date: 2015-12-29 18:56+0000\n"
+"PO-Revision-Date: 2015-12-30 10:13+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/critiquebrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -467,6 +467,7 @@ msgid "Blog"
 msgstr "Blogue"
 
 #: critiquebrainz/frontend/templates/footer.html:40
+#: critiquebrainz/frontend/templates/navbar.html:40
 msgid "Language"
 msgstr "Langue"
 
@@ -605,11 +606,7 @@ msgstr "Déconnexion"
 msgid "Browse reviews"
 msgstr "Parcourir les critiques"
 
-#: critiquebrainz/frontend/templates/navbar.html:38
-msgid "About"
-msgstr "À propos"
-
-#: critiquebrainz/frontend/templates/navbar.html:42
+#: critiquebrainz/frontend/templates/navbar.html:51
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
 #: critiquebrainz/frontend/templates/search/index.html:34
@@ -618,7 +615,7 @@ msgstr "À propos"
 msgid "Search"
 msgstr "Recherche"
 
-#: critiquebrainz/frontend/templates/navbar.html:46
+#: critiquebrainz/frontend/templates/navbar.html:55
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:8
 #: critiquebrainz/frontend/templates/search/index.html:26
 #: critiquebrainz/frontend/templates/search/index.html:57
@@ -630,7 +627,7 @@ msgstr "Recherche"
 msgid "Artist"
 msgstr "Artiste"
 
-#: critiquebrainz/frontend/templates/navbar.html:47
+#: critiquebrainz/frontend/templates/navbar.html:56
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:9
 #: critiquebrainz/frontend/templates/search/index.html:27
 #: critiquebrainz/frontend/templates/search/index.html:62
@@ -639,7 +636,7 @@ msgstr "Artiste"
 msgid "Release group"
 msgstr "Groupe de parution"
 
-#: critiquebrainz/frontend/templates/navbar.html:48
+#: critiquebrainz/frontend/templates/navbar.html:57
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
 #: critiquebrainz/frontend/templates/search/selector.html:13
@@ -1127,6 +1124,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/report.html:26
 msgid "Report review"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/revision_results.html:3
+#, python-format
+msgid "Revision %(number)s"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/revisions.html:12

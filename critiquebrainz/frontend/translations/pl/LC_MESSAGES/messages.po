@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-28 07:27+0000\n"
-"PO-Revision-Date: 2015-12-28 13:42+0000\n"
+"POT-Creation-Date: 2015-12-29 18:56+0000\n"
+"PO-Revision-Date: 2015-12-30 16:03+0000\n"
 "Last-Translator: Debeat <krystian4842@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/musicbrainz/critiquebrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -467,6 +467,7 @@ msgid "Blog"
 msgstr "Blog"
 
 #: critiquebrainz/frontend/templates/footer.html:40
+#: critiquebrainz/frontend/templates/navbar.html:40
 msgid "Language"
 msgstr "Język"
 
@@ -605,11 +606,7 @@ msgstr "Wyloguj się"
 msgid "Browse reviews"
 msgstr "Przeglądaj recenzje"
 
-#: critiquebrainz/frontend/templates/navbar.html:38
-msgid "About"
-msgstr "Informacje"
-
-#: critiquebrainz/frontend/templates/navbar.html:42
+#: critiquebrainz/frontend/templates/navbar.html:51
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
 #: critiquebrainz/frontend/templates/search/index.html:34
@@ -618,7 +615,7 @@ msgstr "Informacje"
 msgid "Search"
 msgstr "Szukaj"
 
-#: critiquebrainz/frontend/templates/navbar.html:46
+#: critiquebrainz/frontend/templates/navbar.html:55
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:8
 #: critiquebrainz/frontend/templates/search/index.html:26
 #: critiquebrainz/frontend/templates/search/index.html:57
@@ -630,7 +627,7 @@ msgstr "Szukaj"
 msgid "Artist"
 msgstr "Artysta"
 
-#: critiquebrainz/frontend/templates/navbar.html:47
+#: critiquebrainz/frontend/templates/navbar.html:56
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:9
 #: critiquebrainz/frontend/templates/search/index.html:27
 #: critiquebrainz/frontend/templates/search/index.html:62
@@ -639,7 +636,7 @@ msgstr "Artysta"
 msgid "Release group"
 msgstr "Grupa wydań"
 
-#: critiquebrainz/frontend/templates/navbar.html:48
+#: critiquebrainz/frontend/templates/navbar.html:57
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
 #: critiquebrainz/frontend/templates/search/selector.html:13
@@ -1128,6 +1125,11 @@ msgstr "Podaj opis naruszenia (wymagane)"
 #: critiquebrainz/frontend/templates/review/report.html:26
 msgid "Report review"
 msgstr "Zgłoś recenzję"
+
+#: critiquebrainz/frontend/templates/review/revision_results.html:3
+#, python-format
+msgid "Revision %(number)s"
+msgstr "Wersja %(number)s"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:12
 #, python-format
