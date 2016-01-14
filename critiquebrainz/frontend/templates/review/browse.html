@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art %}
+{% from 'macros.html' import cover_art, review_credit %}
 
 {% block title %}{{ _('Reviews') }} - CritiqueBrainz{% endblock %}
 
@@ -13,14 +13,15 @@
     <div class="col-md-4 review">
       <div class="cover-art-container pull-left">
         <a href="{{ url_for('review.entity', id=review.id) }}">
-          {{ cover_art(entity.id, review.entity_type) }}
+          {{ cover_art(entity.id, review.entity_type, overlay_type=True) }}
         </a>
       </div>
       <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
         <p>
-          {{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}
-          <br />{{ review.created | date }}
+          {{ review_credit(review, user_picture_size=16) }}
+          <br/>
+          {{ review.created | date }}
         </p>
       </div>
     </div>
