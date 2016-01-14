@@ -67,10 +67,11 @@ def get_multiple_albums(spotify_ids):
 
         received_albums = {}
         for album in resp:
-            received_albums[album['id']] = album
+            if album is not None:
+                received_albums[album['id']] = album
 
         cache.set_multi(received_albums, namespace=namespace, time=DEFAULT_CACHE_EXPIRATION)
 
-        albums = dict(albums.items() + received_albums.items())
+        albums.update(received_albums)
 
     return albums
