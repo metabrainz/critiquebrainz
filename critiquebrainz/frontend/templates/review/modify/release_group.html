@@ -20,7 +20,7 @@
   </dl>
 </div>
 <div class="col-md-3 hidden-xs">
-  {{ spotify_player(spotify_mappings) }}
+  {{ spotify_player(review.entity_id, spotify_mappings) }}
 </div>
 <div class="col-md-4 text-right">
   {{ cover_art(entity['id'], 'release_group', 'id=cover-art style=max-height:120px;max-width:120px;') }}
