@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
-from critiquebrainz.frontend.apis import musicbrainz
+from critiquebrainz.frontend.external import musicbrainz
 from critiquebrainz.data.model.review import Review
 from werkzeug.exceptions import NotFound
 
