@@ -29,9 +29,15 @@
           </a>
         </div>
         <div class="caption">
-          <div class="title">{{ item.name }}</div>
-          <span class="text-muted">{{ item.album_type }}</span><br />
-          <em><a href="{{ item.external_urls.spotify }}">{{ _('Listen on Spotify') }}</a></em><br />
+            <div class="title">
+                {{ item.name }}
+                <br>
+                <span style="font-weight:normal">by </span>
+                {{ artists(item) }}
+                {{ release_date_string(item) }}
+            </div>
+            <span class="text-muted">{{ item.album_type }}</span><br />
+            <em><a href="{{ item.external_urls.spotify }}">{{ _('Listen on Spotify') }}</a></em><br />
         </div>
       </div>
     </div>
@@ -45,7 +51,7 @@
             <li class="previous"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
           {% endif %}
           {% if page-1 < count//limit %}
-            <li class="next"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
+            <li class="next"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page + 1) }}">{{ _('Next') }} &rarr;</a></li>
           {% endif %}
         </ul>
       </div>
@@ -86,3 +92,29 @@
     {{ super() }}
     <script>$('.match-link').tooltip()</script>
 {% endblock %}
+
+{% macro artists(album) -%}
+    {% if album.artists|length == 0 or album.artists[0].name != 'Various Artists' %}
+        {%- for artist in album.artists[:3] %}
+            {{  artist.name }}
+            {% if not loop.last %}
+                {{ ', ' }}
+            {% endif %}
+        {%- endfor %}
+    {% else %}
+        {% set first_track = album.tracks['items'][0] %}
+        {% if first_track.artists|length > 0 and first_track.artists[0].name != 'Various Artists' %}
+            {{ first_track.artists[0].name + ' and others'}}
+        {% else %}
+            {{ 'Various Artists' }}
+        {% endif %}
+
+    {% endif %}
+{%- endmacro %}
+
+{% macro release_date_string(album) -%}
+    {% if album.release_date %}
+        ({{ album.release_date.split('-')[0] }})
+    {% endif %}
+
+{%- endmacro %}
