@@ -1,4 +1,6 @@
 {% extends 'review/entity/base.html' %}
+{% from 'macros.html' import cover_art %}
+{% from 'macros.html' import spotify_player %}
 
 {% set release_group = review.entity_id | entity_details %}
 
@@ -39,18 +41,7 @@
 {% set sidebar_visible = True %}
 {% block sidebar %}
   <div id="sidebar" class="col-md-3">
-    <img id="cover-art" class="img-responsive">
-    <script>
-      $("img").last()
-          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-          .attr("src", "//coverartarchive.org/release-group/{{ review.entity_id }}/front-250");
-    </script>
-
-    <div id="spotify-play-button">
-      {% if spotify_mappings %}
-        <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white"
-              width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-      {% endif %}
-    </div>
+    {{ cover_art(review.entity_id, 'release_group', 'id=cover-art class=img-responsive') }}
+    {{ spotify_player(release_group.id, spotify_mappings) }}
   </div>
 {% endblock %}

@@ -35,7 +35,16 @@
         {% endif %}
         <li><a href="{{ url_for('review.browse') }}">{{ _('Browse reviews') }}</a></li>
         <li><a href="{{ url_for('review.create') }}">{{ _('Write a review') }}</a></li>
-        <li class="hidden-md"><a href="{{ url_for('frontend.about') }}">{{ _('About') }}</a></li>
+        <li class="language-selector dropdown hidden-md">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            {% for language in config.LANGUAGES|dictsort(false, 'value') %}
+              <li><a href="?l={{ language[0] }}">{{ language[1]|capitalize }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
       </ul>
       <form class="navbar-form navbar-right" role="search" method="GET" action="{{ url_for('search.index') }}">
         <div class="form-group">

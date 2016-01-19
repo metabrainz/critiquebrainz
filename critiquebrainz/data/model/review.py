@@ -12,7 +12,7 @@ from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.mixins import DeleteMixin
 from critiquebrainz import cache
 from werkzeug.exceptions import BadRequest
-from flask_babel import gettext
+from flask_babel import lazy_gettext
 from datetime import datetime, timedelta
 from random import shuffle
 import pycountry
@@ -276,7 +276,7 @@ class Review(db.Model, DeleteMixin):
         license_id = kwargs.pop('license_id', None)
         if license_id is not None:
             if not self.is_draft:  # If trying to convert published review into draft.
-                raise BadRequest(gettext("Changing license of a published review is not allowed."))
+                raise BadRequest(lazy_gettext("Changing license of a published review is not allowed."))
             self.license_id = license_id
 
         language = kwargs.pop('language', None)
@@ -286,7 +286,7 @@ class Review(db.Model, DeleteMixin):
         is_draft = kwargs.pop('is_draft', None)
         if is_draft is not None:  # This should be done after all changes that depend on review being a draft.
             if not self.is_draft and is_draft:  # If trying to convert published review into draft.
-                raise BadRequest(gettext("Converting published reviews back to drafts is not allowed."))
+                raise BadRequest(lazy_gettext("Converting published reviews back to drafts is not allowed."))
             self.is_draft = is_draft
 
         new_revision = Revision.create(self.id, kwargs.pop('text'))
