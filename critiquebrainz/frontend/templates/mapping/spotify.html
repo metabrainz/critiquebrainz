@@ -29,7 +29,14 @@
           </a>
         </div>
         <div class="caption">
-          <div class="title">{{ item.name }}</div>
+          <div class="title">
+            {{ item.name }}
+            <br />
+            <span style="font-weight:normal">by </span>
+            {{ artists(item) }}
+            <br />
+          </div>
+          <b>{{ release_date_string(item) }}</b>
           <span class="text-muted">{{ item.album_type }}</span><br />
           <em><a href="{{ item.external_urls.spotify }}">{{ _('Listen on Spotify') }}</a></em><br />
         </div>
@@ -45,7 +52,7 @@
             <li class="previous"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
           {% endif %}
           {% if page-1 < count//limit %}
-            <li class="next"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
+            <li class="next"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page + 1) }}">{{ _('Next') }} &rarr;</a></li>
           {% endif %}
         </ul>
       </div>
@@ -86,3 +93,36 @@
     {{ super() }}
     <script>$('.match-link').tooltip()</script>
 {% endblock %}
+
+{% macro artists(album) -%}
+  {% if album.artists|length == 0 or album.artists[0].name != 'Various Artists' %}
+    {%- for artist in album.artists %}
+      {{  artist.name }}
+      {% if not loop.last %}
+        {{ ', ' }}
+      {% endif %}
+    {%- endfor %}
+  {% else %}
+    {% set added_artists=[] %}
+    {% for track in album.tracks['items'] %}
+      {% for artist in track.artists %}
+        {% if artist.name not in added_artists and artist.name != 'Various Artists'%}
+          {% do added_artists.append(artist.name)%}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    {% for artist_name in added_artists %}
+      {{ artist_name }}
+      {% if not loop.last %}
+        {{ ', ' }}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{%- endmacro %}
+
+{% macro release_date_string(album) -%}
+  {% if album.release_date %}
+    {{ album.release_date.split('-')[0] }}
+  {% endif %}
+
+{%- endmacro %}
