@@ -35,3 +35,61 @@
     <abbr title="{{ _('Submit and delete your votes.') }}">{{ _('Review votes') }}</abbr>
   {% endif %}
 {% endmacro %}
+
+{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False) %}
+  {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
+  <div class="cover-container">
+    {% if entity_type == 'event' %}
+      <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
+      {% if overlay_type %}
+        <span class="entity-type event">
+          {{ _('Event') }}
+        </span>
+      {% endif %}
+    {% else %} {# release-group #}
+      <img {{ attributes }} />
+      <script>
+        $("img").last()
+            .on("error", function () {
+              $(this).attr("src", "{{ url_for('static', filename='img/placeholder_disc.svg') }}");
+            })
+            .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
+      </script>
+      {% if overlay_type %}
+        <span class="entity-type release-group">
+          {{ _('Release Group') }}
+        </span>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro review_credit(review, user_picture_size) %}
+  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (review.user.avatar, user_picture_size)
+              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
+  {{ _('Review by %(user)s', user=user_string) }}
+{% endmacro %}
+
+{% macro spotify_player(release_group_id, spotify_mappings, show_add_message=False) -%}
+  <div class="spotify-player">
+    {% if spotify_mappings %}
+      <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
+      <em>
+        <small>
+          <a class="text-muted" href="{{ url_for('mapping.spotify_list', release_group_id=release_group_id) }}">
+            {{ _('View Spotify mapping information') }}
+          </a>
+        </small>
+      </em>
+    {% elif show_add_message %}
+      <span class="text-muted">
+        {{ _('We don\'t have a mapping between this release group and Spotify. Please help us find the right album.') }}
+      </span>
+      <div style="text-align:center;font-weight:bold;">
+        <a style="font-size:16px;" href="{{ url_for('mapping.spotify', release_group_id=id) }}" rel="nofollow">
+          {{ _('Match this!') }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+{%- endmacro %}

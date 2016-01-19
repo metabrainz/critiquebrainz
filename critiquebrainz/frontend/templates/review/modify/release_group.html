@@ -1,7 +1,10 @@
+{% from 'macros.html' import cover_art %}
+{% from 'macros.html' import spotify_player %}
+
 {% if entity is not defined %}
   {% set entity = review.entity_id | entity_details(type=entity_type) %}
 {% endif %}
-<div class="col-md-10">
+<div class="col-md-5">
   <dl class="dl-horizontal">
     <dt>{{ _('Artist') }}</dt><dd>{{ entity['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</dd>
     <dt>{{ _('Release group') }}</dt>
@@ -16,11 +19,9 @@
     {% endblock %}
   </dl>
 </div>
-<div class="col-md-2">
-  <img id="cover-art" class="img-responsive" style="max-height:120px;max-width:120px;">
-  <script>
-    $("img").last()
-        .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-        .attr("src", "//coverartarchive.org/release-group/{{ entity['id'] }}/front-250");
-  </script>
+<div class="col-md-3 hidden-xs">
+  {{ spotify_player(entity['id'], spotify_mappings) }}
+</div>
+<div class="col-md-4 text-right">
+  {{ cover_art(entity['id'], 'release_group', 'id=cover-art style=max-height:120px;max-width:120px;') }}
 </div>

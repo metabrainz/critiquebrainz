@@ -3,7 +3,7 @@
 {% endmacro %}
 
 {% macro link_review(review) %}
-  <a href="{{ url_for('review.entity', id=review.id) }}">review</a>
+  <a href="{{ url_for('review.entity', id=review.id) }}">{{ _('review') }}</a>
 {% endmacro %}
 
 {% for date, logs in results %}
@@ -24,7 +24,7 @@
             admin=link_user(log.admin), user=link_user(log.user))
           }}
         {% endif %}
-        <p class="small">Reason: {{ log.reason }}</p>
+        <p class="small">{{ _('Reason:') }} {{ log.reason }}</p>
       </li>
       {% endfor %}
     </ul>

@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import cover_art, review_credit %}
+
 {% block content %}
 <div id="homepage">
 
@@ -34,17 +36,14 @@
       {% for review in popular_reviews %}
         <div class="col-md-6 review">
           <div class="cover-art-container pull-left">
-            <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
-            <script>
-              $("img").last()
-                  .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                  .attr("src", "//coverartarchive.org/release-group/{{ review.entity_id }}/front-250");
-            </script>
+            <a href="{{ url_for('review.entity', id=review.id) }}">
+              {{ cover_art(review.entity_id, review.entity_type, overlay_type=True) }}
+            </a>
           </div>
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <div class="album">{% include 'entity_review.html' %}</div>
           <div class="reviewer">
-            <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}</p>
+            <p>{{ review_credit(review, user_picture_size=16) }}</p>
           </div>
           <div class="preview">{{ review.preview[:250] }}{% if review.preview|length > 250 %}...{% endif %}</div>
         </div>
@@ -62,17 +61,14 @@
       {% for review in recent_reviews %}
         <div class="col-md-4 review">
           <div class="cover-art-container pull-left">
-            <a href="{{ url_for('review.entity', id=review.id) }}"><img /></a>
-            <script>
-              $("img").last()
-                  .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-                  .attr("src", "//coverartarchive.org/release-group/{{ review.entity_id }}/front-250");
-            </script>
+            <a href="{{ url_for('review.entity', id=review.id) }}">
+              {{ cover_art(review.entity_id, review.entity_type, overlay_type=True) }}
+            </a>
           </div>
           {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
           <div class="album">{% include 'entity_review.html' %}</div>
           <div class="reviewer">
-            <p>{{ _('Review by %(user)s', user = '<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name)) }}</p>
+            <p>{{ review_credit(review, user_picture_size=16) }}</p>
           </div>
         </div>
       {% endfor %}

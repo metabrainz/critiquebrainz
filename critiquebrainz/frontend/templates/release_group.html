@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import cover_art %}
+{% from 'macros.html' import spotify_player %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -39,25 +41,14 @@
 
 <div id="release-group-details" class="row">
   <div class="col-md-3">
-    <img id="cover-art" class="img-responsive">
-    <script>
-      $("img").last()
-          .on("error", function () { $(this).attr("src", "/static/img/missing-art.png"); })
-          .attr("src", "//coverartarchive.org/release-group/{{ id }}/front-250");
-    </script>
-    <div id="spotify-play-button">
-      {% if spotify_mappings %}
-        <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white"
-                width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-        <em><small><a class="text-muted" href="{{ url_for('mapping.spotify_list', release_group_id=id) }}">{{ _('View Spotify mapping information') }}</a></small></em>
-      {% else %}
-        <span class="text-muted">
-          {{ _('We don\'t have a mapping between this release group and Spotify.
-          Please help us find the right album.') }}
-        </span>
-        <div style="text-align:center;font-weight:bold;"><a style="font-size:16px;" href="{{ url_for('mapping.spotify', release_group_id=id) }}" rel="nofollow">{{ _('Match this!') }}</a></div>
-      {% endif %}
+    {{ cover_art(id, 'release_group', 'id=cover-art') }}
+    <div id="cover-art-annotation">
+      <span class="text-muted">
+        Cover art provided by
+        <a href="https://coverartarchive.org/">Cover Art Archive</a>
+      </span>
     </div>
+    {{ spotify_player(id, spotify_mappings, show_add_message=True) }}
   </div>
   <div class="col-md-6">
     <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
@@ -174,8 +165,9 @@
     {% endif %}
 
     <div class="external-links">
-      <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.ico') }}" /></div>
+      <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.svg') }}" /></div>
       <a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      <div class="text-muted">Cover art provided by <a href="https://coverartarchive.org/">Cover Art Archive</a></div>
     </div>
   </div>
 </div>

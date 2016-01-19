@@ -1,5 +1,7 @@
-from flask import Flask
 import os
+
+from flask import Flask
+from flask_babel import Locale, get_locale
 
 
 def create_app(debug=None):
@@ -16,7 +18,7 @@ def create_app(debug=None):
         app.debug = debug
 
     # Error handling
-    from critiquebrainz.frontend.errors import init_error_handlers
+    from critiquebrainz.frontend.error_handlers import init_error_handlers
     init_error_handlers(app)
 
     # Logging
@@ -57,9 +59,9 @@ def create_app(debug=None):
         base_url="https://musicbrainz.org/")
 
     # APIs
-    from critiquebrainz.frontend.apis import mbspotify
+    from critiquebrainz.frontend.external import mbspotify
     mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
-    from critiquebrainz.frontend.apis import musicbrainz
+    from critiquebrainz.frontend.external import musicbrainz
     musicbrainz.init(app.config['MUSICBRAINZ_USERAGENT'], critiquebrainz.__version__,
                      hostname=app.config['MUSICBRAINZ_HOSTNAME'])
 
@@ -70,28 +72,31 @@ def create_app(debug=None):
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
     app.jinja_env.filters['entity_details'] = musicbrainz.get_entity_by_id
+    app.jinja_env.filters['language_name'] = lambda language_code: Locale(language_code).get_language_name(get_locale())
 
     # Blueprints
-    from critiquebrainz.frontend.views import frontend_bp
-    from critiquebrainz.frontend.review.views import review_bp
-    from critiquebrainz.frontend.search.views import search_bp
-    from critiquebrainz.frontend.artist.views import artist_bp
-    from critiquebrainz.frontend.release_group.views import release_group_bp
-    from critiquebrainz.frontend.event.views import event_bp
-    from critiquebrainz.frontend.mapping.views import mapping_bp
-    from critiquebrainz.frontend.user.views import user_bp
-    from critiquebrainz.frontend.profile.views import profile_bp
-    from critiquebrainz.frontend.profile.applications.views import profile_apps_bp
-    from critiquebrainz.frontend.login.views import login_bp
-    from critiquebrainz.frontend.oauth.views import oauth_bp
-    from critiquebrainz.frontend.reports.views import reports_bp
-    from critiquebrainz.frontend.log.views import log_bp
+    from critiquebrainz.frontend.views.index import frontend_bp
+    from critiquebrainz.frontend.views.review import review_bp
+    from critiquebrainz.frontend.views.search import search_bp
+    from critiquebrainz.frontend.views.artist import artist_bp
+    from critiquebrainz.frontend.views.release_group import release_group_bp
+    from critiquebrainz.frontend.views.release import release_bp
+    from critiquebrainz.frontend.views.event import event_bp
+    from critiquebrainz.frontend.views.mapping import mapping_bp
+    from critiquebrainz.frontend.views.user import user_bp
+    from critiquebrainz.frontend.views.profile import profile_bp
+    from critiquebrainz.frontend.views.profile_apps import profile_apps_bp
+    from critiquebrainz.frontend.views.login import login_bp
+    from critiquebrainz.frontend.views.oauth import oauth_bp
+    from critiquebrainz.frontend.views.reports import reports_bp
+    from critiquebrainz.frontend.views.log import log_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
     app.register_blueprint(search_bp, url_prefix='/search')
     app.register_blueprint(artist_bp, url_prefix='/artist')
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
+    app.register_blueprint(release_bp, url_prefix='/release')
     app.register_blueprint(event_bp, url_prefix='/event')
     app.register_blueprint(mapping_bp, url_prefix='/mapping')
     app.register_blueprint(user_bp, url_prefix='/user')

@@ -1,6 +1,6 @@
 {% for result in results %}
   <tr>
-    <td><a href="{{ url_for('review.entity', id=review.id, rev=result[0]+1) }}">Revision {{ result[0] + 1 }}</a></td>
+    <td><a href="{{ url_for('review.entity', id=review.id, rev=result[0]+1) }}">{{ _('Revision %(number)s', number=result[0]+1) }}</a></td>
     <td>{{ result[1].timestamp | date }}</td>
     <td>{{ result[1].votes_positive_count }}/{{ result[1].votes_negative_count }}</td>
     {% if count > 1 %}

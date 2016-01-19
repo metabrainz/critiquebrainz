@@ -5,7 +5,7 @@ It is based on OAuth2 protocol. MusicBrainz is the only supported provider.
 """
 from flask import redirect, url_for
 from flask_login import LoginManager, current_user
-from flask_babel import gettext
+from flask_babel import lazy_gettext, gettext
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.mixins import AnonymousUser
 from werkzeug.exceptions import Unauthorized
@@ -39,7 +39,7 @@ def admin_view(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if not current_user.is_admin():
-            raise Unauthorized(gettext('You must be an administrator to view this page.'))
+            raise Unauthorized(lazy_gettext('You must be an administrator to view this page.'))
         return f(*args, **kwargs)
 
     return decorated

@@ -1,0 +1,54 @@
+{% if current_user.is_admin() %}
+  <hr />
+  <div class="admin-panel clearfix">
+    <ul class="list-inline pull-left">
+      <li><span class="text-danger">{{ _('Admin zone:') }}</span></li>
+      <li><a href="{{ url_for('reports.index') }}">{{ _('Reports') }}</a></li>
+      <li><a href="{{ url_for('log.browse') }}">{{ _('Moderation log') }}</a></li>
+    </ul>
+  </div>
+{% endif %}
+
+<hr />
+<div class="footer">
+  <div class="row">
+    <div class="col-sm-2">
+      <div class="title"><a href="{{ url_for('review.browse') }}">{{ _('Reviews') }}</a></div>
+      <ul>
+        <li><a href="{{ url_for('review.create') }}">{{ _('Write a review') }}</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-2">
+      <div class="title"><a href="https://critiquebrainz.readthedocs.org">{{ _('Developers') }}</a></div>
+      <ul>
+        <li><a href="https://critiquebrainz.readthedocs.org/dev/api.html">{{ _('Web API') }}</a></li>
+        <li><a href="https://github.com/metabrainz/critiquebrainz">{{ _('Source code') }}</a></li>
+        <li><a href="ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/">{{ _('Data dumps') }}</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-2">
+      <div class="title"><a href="{{ url_for('frontend.about') }}">{{ _('About the project') }}</a></div>
+      <ul>
+        <li><a href="http://blog.musicbrainz.org/tag/critiquebrainz/">{{ _('Blog') }}</a></li>
+        <li><a href="{{ url_for('log.browse') }}">{{ _('Moderation log') }}</a></li>
+      </ul>
+    </div>
+    {# Last block should fill up the rest of this row. #}
+    <div class="col-sm-6">
+      <div id="language-selector" class="btn-group dropup pull-right">
+        <button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          {% for language in config.LANGUAGES|dictsort(false, 'value') %}
+            <li><a href="?l={{ language[0] }}">{{ language[1]|capitalize }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="meb-credit">
+    {{ _('Project of the %(metabrainz_fdn)s',
+         metabrainz_fdn='<a href="https://metabrainz.org">MetaBrainz Foundation</a>'|safe) }}
+  </div>
+</div>
