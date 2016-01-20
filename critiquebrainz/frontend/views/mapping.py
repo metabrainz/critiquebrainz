@@ -68,7 +68,7 @@ def spotify():
 
     return render_template(
             'mapping/spotify.html', release_group=release_group,
-            search_results=[full_response[x] for x in albums_ids],
+            search_results=[full_response[id] for id in albums_ids if id in full_response],
             page=page, limit=limit, count=response.get('total'))
 
 
