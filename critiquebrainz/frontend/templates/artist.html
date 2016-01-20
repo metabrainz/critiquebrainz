@@ -10,10 +10,26 @@
          {% if member.begin %}title="{{ _('Member since %(date)s', date=member.begin) }}"{% endif %}>
         {{ member.artist.name }}
       </a>
-      {% if member.end %}
-        <span class="text-muted">({{ member.begin }} - {{ member.end }})</span>
-      {% elif member.artist.disambiguation %}
-        <span class="text-muted">({{ member.artist.disambiguation }})</span>
+      {% if member.periods -%}
+        <span class="text-muted">(
+        {%- for period in member.periods -%}
+            {{ period[0] + '-' + period[1] }}
+            {%- if not loop.last -%}
+              {{ ', ' }}
+            {%- endif -%}
+        {%- endfor -%}
+        )</span>
+      {% endif %}
+      {% if member['attribute-list'] and not member.ended %}
+        <br />
+        <span class="text-muted">
+          {% for attr in member['attribute-list']%}
+            {{ attr }}
+            {% if not loop.last %}
+              {{ ', ' }}
+            {% endif %}
+          {% endfor %}
+        </span>
       {% endif %}
     </li>
   {% endfor %}

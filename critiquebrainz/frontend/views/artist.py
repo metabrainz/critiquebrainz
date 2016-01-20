@@ -28,6 +28,8 @@ def entity(id):
             else:
                 artist['current_members'].append(member)
 
+        artist['former_members'] = squash_members_attributes(artist['former_members'])
+        artist['current_members'] = squash_members_attributes(artist['current_members'])
 
     release_type = request.args.get('release_type', default='album')
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
@@ -46,3 +48,50 @@ def entity(id):
         release_group['review_count'] = review_count
     return render_template('artist.html', id=id, artist=artist, release_type=release_type,
                            release_groups=release_groups, page=page, limit=limit, count=count)
+
+
+def squash_members_attributes(members):
+    members = [member.copy() for member in members]
+    ids_order = dict([(member['target'], index) for index, member in enumerate(members)])
+    
+    members.sort(key=lambda x: x['target'])
+    result_members = []
+
+    for i in range(0, len(members)):
+        if i == 0 or members[i]['target'] != members[i-1]['target']:
+            if not members[i].get('attribute-list', None):
+                members[i]['attribute-list'] = []
+            members[i]['periods'] = []
+            period = get_period(members[i])
+            if period:
+                members[i]['periods'].append(period)
+            j = i+1
+            while j < len(members) and members[j]['target'] == members[i]['target']:
+                members[i]['attribute-list'].extend(members[j].get('attribute-list', []))
+                period = get_period(members[i])
+                if(period):
+                    members[i]['periods'].append(period)
+                j += 1
+            result_members.append(members[i])
+            members[i]['periods'].sort(key=lambda x: x[1], reverse=True)
+
+    result_members.sort(key=lambda x: ids_order[x['target']])
+    return result_members
+
+
+def get_period(member):
+    begin_date = member.get('begin', None)
+    end_date = member.get('end', None)
+    begin_date, end_date = get_year_from_date(begin_date), get_year_from_date(end_date)
+
+    if begin_date or end_date:
+        return (begin_date, end_date)
+    else:
+        return None
+
+
+def get_year_from_date(date):
+    if date:
+        return date.split('-')[0]
+    else:
+        return ''
