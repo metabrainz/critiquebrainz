@@ -71,7 +71,7 @@ def _squash_duplicated_members(members):
                 'attributes': member.get('attribute-list', []),
                 'disambiguation': member.get('disambiguation', ''),
                 'artist_id': member.get('artist', {}).get('id', None),
-                'ended': member.get('ended', False)
+                'ended': member.get('ended')
             }
         period = _get_period(member)
         if period:
