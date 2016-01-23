@@ -3,6 +3,7 @@ from flask_babel import gettext
 from werkzeug.exceptions import BadRequest, NotFound
 from critiquebrainz.frontend.external import musicbrainz
 from critiquebrainz.data.model.review import Review
+from collections import OrderedDict
 
 artist_bp = Blueprint('artist', __name__)
 
@@ -18,18 +19,8 @@ def entity(id):
     if not artist:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
-    # Preparing artist-rels
-    if 'band-members' in artist:
-        artist['current_members'] = []
-        artist['former_members'] = []
-        for member in artist['band-members']:
-            if 'ended' in member and member['ended'] == 'true':
-                artist['former_members'].append(member)
-            else:
-                artist['current_members'].append(member)
-
-        squash_duplicated_members(artist['former_members'])
-        squash_duplicated_members(artist['current_members'])
+    # Note that some artists might not have a list of members because they are not a band
+    artist.update(_get_band_members(artist))
 
     release_type = request.args.get('release_type', default='album')
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
@@ -50,39 +41,39 @@ def entity(id):
                            release_groups=release_groups, page=page, limit=limit, count=count)
 
 
-def squash_duplicated_members(members):
-    target_order = []
+def _get_band_members(artist):
+    band_members = artist.get('band-members', [])
+
+    former_members = [member for member in band_members if member.get('ended', 'false') == 'true']
+    current_members = [member for member in band_members if member.get('ended', 'false') == 'false']
+
+    return {
+        'former_members': _squash_duplicated_members(former_members),
+        'current_members': _squash_duplicated_members(current_members)
+    }
+
+
+def _squash_duplicated_members(members):
+    members_by_artist_id = OrderedDict()
+
     for member in members:
-        if member['target'] not in target_order:
-            target_order.append(member['target'])
+        artist_id = member.get('artist', {}).get('id', None)
 
-    members_by_target = {}
-
-    for member in members:
-        target = member['target']
-        if target in members_by_target:
-            target_member = members_by_target[target]
-            target_member['attribute-list'].extend(member.get('attribute-list', []))
-
-            period = _get_period(member)
-            if period:
-                target_member['periods'].append(period)
+        if artist_id in members_by_artist_id:
+            members_by_artist_id[artist_id]['attributes'].extend(member.get('attribute-list', []))
         else:
-            members_by_target[target] = member
-
-            if not member.get('attribute-list', None):
-                member['attribute-list'] = []
-
-            member['periods'] = []
-            period = _get_period(member)
-            if period:
-                member['periods'].append(period)
-
-    for target in members_by_target:
-        members_by_target[target]['periods'].sort(key=lambda x: x[1])
-
-    del members[:]
-    members.extend([members_by_target[target] for target in target_order])
+            members_by_artist_id[artist_id] = {
+                'name': member.get('artist', {}).get('name', ''),
+                'periods': [],
+                'attributes': member.get('attribute-list', []),
+                'disambiguation': member.get('disambiguation', ''),
+                'artist_id': member.get('artist', {}).get('id', None),
+                'ended': member.get('ended', False)
+            }
+        period = _get_period(member)
+        if period:
+            members_by_artist_id[artist_id]['periods'].append(period)
+    return members_by_artist_id.values()
 
 
 def _get_period(member):
@@ -96,7 +87,6 @@ def _get_period(member):
             return ''
 
     begin_date, end_date = get_year_from_date(begin_date), get_year_from_date(end_date)
-
     if begin_date or end_date:
         return begin_date, end_date
     else:

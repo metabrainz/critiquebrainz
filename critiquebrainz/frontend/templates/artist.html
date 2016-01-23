@@ -6,9 +6,8 @@
 {% macro print_members(members) %}
   {% for member in members %}
     <li>
-      <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
-         {% if member.begin %}title="{{ _('Member since %(date)s', date=member.begin) }}"{% endif %}>
-        {{ member.artist.name }}
+      <a href="{{ url_for('artist.entity', id=member.artist_id) }}">
+        {{ member.name }}
       </a>
       {% if member.periods %}
         {% if not member.ended and member.periods and member.periods[0][0] %}
@@ -23,13 +22,17 @@
           </span>
         {%- endif %}
       {% endif %}
-      {% if member['attribute-list'] and not member.ended %}
+      {% if member.attributes and not member.ended %}
         <br />
         <span class="text-muted">
-          {% for attr in member['attribute-list'] -%}
+          {% for attr in member.attributes -%}
             {{ attr + ', ' * (not loop.last) }}
           {% endfor %}
         </span>
+      {% endif %}
+      {% if member.disambiguation %}
+        <br />
+        <span class="text-muted">({{ member.disambiguation }})</span>
       {% endif %}
     </li>
   {% endfor %}
