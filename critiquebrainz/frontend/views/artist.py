@@ -20,7 +20,7 @@ def entity(id):
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
     # Note that some artists might not have a list of members because they are not a band
-    artist.update(_get_band_members(artist))
+    band_members = _get_band_members(artist)
 
     release_type = request.args.get('release_type', default='album')
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
@@ -37,8 +37,11 @@ def entity(id):
         # TODO(roman): Count reviews instead of fetching them.
         reviews, review_count = Review.list(entity_id=release_group['id'], entity_type='release_group', sort='created', limit=1)
         release_group['review_count'] = review_count
-    return render_template('artist.html', id=id, artist=artist, release_type=release_type,
-                           release_groups=release_groups, page=page, limit=limit, count=count)
+
+    return render_template(
+            'artist.html', id=id, artist=artist, release_type=release_type, release_groups=release_groups,
+            page=page, limit=limit, count=count, band_members=band_members
+    )
 
 
 def _get_band_members(artist):
