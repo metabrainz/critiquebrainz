@@ -6,14 +6,33 @@
 {% macro print_members(members) %}
   {% for member in members %}
     <li>
-      <a href="{{ url_for('artist.entity', id=member.artist.id) }}"
-         {% if member.begin %}title="{{ _('Member since %(date)s', date=member.begin) }}"{% endif %}>
-        {{ member.artist.name }}
+      <a href="{{ url_for('artist.entity', id=member.artist_id) }}">
+        {{ member.name }}
       </a>
-      {% if member.end %}
-        <span class="text-muted">({{ member.begin }} - {{ member.end }})</span>
-      {% elif member.artist.disambiguation %}
-        <span class="text-muted">({{ member.artist.disambiguation }})</span>
+      {% if member.periods %}
+        {% if not member.ended and member.periods and member.periods[0][0] %}
+          <span class="text-muted">
+            ({{ 'since ' + member.periods[0][0] }})
+          </span>
+        {% else %}
+          <span class="text-muted">
+          ({% for period in member.periods -%}
+            {{ period[0] + '-' + period[1] + ', ' * (not loop.last) }}
+          {%- endfor %})
+          </span>
+        {%- endif %}
+      {% endif %}
+      {% if member.attributes and not member.ended %}
+        <br />
+        <span class="text-muted">
+          {% for attr in member.attributes -%}
+            {{ attr + ', ' * (not loop.last) }}
+          {% endfor %}
+        </span>
+      {% endif %}
+      {% if member.disambiguation %}
+        <br />
+        <span class="text-muted">({{ member.disambiguation }})</span>
       {% endif %}
     </li>
   {% endfor %}
@@ -96,7 +115,7 @@
     <h4>{{ _('Artist information') }}</h4>
     {% if artist.type %}<p class="text-muted">{{ artist.type }}</p>{% endif %}
 
-    {% if artist.current_members %}
+    {% if band_members.current_members %}
       <b>
         {% if artist.type and artist.type == 'Person' %}
           {{ _('Member of') }}
@@ -105,17 +124,17 @@
         {% endif %}
       </b>
       <ul class="list-unstyled">
-        {{ print_members(artist.current_members[:15]) }}
-        {% if artist.current_members | length > 15 %}
+        {{ print_members(band_members.current_members[:15]) }}
+        {% if band_members.current_members | length > 15 %}
           <div id="more-members" class="collapse">
-            {{ print_members(artist.current_members[15:]) }}
+            {{ print_members(band_members.current_members[15:]) }}
           </div>
           <a data-toggle="collapse" data-target="#more-members" style="cursor: pointer;"><strong>{{ _('View all...') }}</strong></a>
         {% endif %}
       </ul>
     {% endif %}
 
-    {% if artist.former_members %}
+    {% if band_members.former_members %}
       <b>
         {% if artist.type and artist.type == 'Person' %}
           {{ _('Former member of') }}
@@ -124,10 +143,10 @@
         {% endif %}
       </b>
       <ul class="list-unstyled">
-        {{ print_members(artist.former_members[:15]) }}
-        {% if artist.former_members | length > 15 %}
+        {{ print_members(band_members.former_members[:15]) }}
+        {% if band_members.former_members | length > 15 %}
           <div id="more-former-members" class="collapse">
-            {{ print_members(artist.former_members[15:]) }}
+            {{ print_members(band_members.former_members[15:]) }}
           </div>
           <a data-toggle="collapse" data-target="#more-former-members" style="cursor: pointer;"><strong>{{ _('View all...') }}</strong></a>
         {% endif %}
