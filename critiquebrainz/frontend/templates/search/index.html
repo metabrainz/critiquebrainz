@@ -26,6 +26,7 @@
         <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>{{ _('Artist') }}</option>
         <option value="release-group" {% if type=="release-group" %}selected="selected"{% endif %}>{{ _('Release group') }}</option>
         <option value="event" {% if type=="event" %}selected="selected"{% endif %}>{{ _('Event') }}</option>
+        <option value="user" {% if type=="user" %}selected="selected"{% endif %}>{{ _('User') }}</option>
       </select>
     </div>
   </div>
@@ -62,6 +63,12 @@
           <th>{{ _('Release group') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Type') }}</th>
+        </tr>
+      {% elif type=="user" %}
+        <tr>
+          <th>{{ _('User') }}</th>
+          <th>{{ _('MusicBrainz profile') }}</th>
+          <th>{{ _('Member since') }}</th>
         </tr>
       {% endif %}
       </thead>
