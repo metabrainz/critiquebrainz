@@ -1,4 +1,5 @@
 from critiquebrainz.data import db
+from sqlalchemy import desc
 from sqlalchemy.orm import backref
 from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.review import Review
@@ -46,15 +47,33 @@ class User(db.Model, AdminMixin, DeleteMixin):
         return user
 
     @classmethod
-    def list(cls, limit=None, offset=None):
+    def list(cls, **kwargs):
         query = User.query
+
+        is_blocked = kwargs.pop('is_blocked', None)
+        if is_blocked is not None:
+            query = query.filter(User.is_blocked == is_blocked)
+
         count = query.count()
+
+        sort = kwargs.pop('sort', None)
+        if sort == 'created':
+            query = query.order_by(desc(User.created))
+        elif sort == 'name':
+            query = query.order_by(User.display_name)
+
+        limit = kwargs.pop('limit', None)
         if limit is not None:
             query = query.limit(limit)
+
+        offset = kwargs.pop('offset', None)
         if offset is not None:
             query = query.offset(offset)
-        users = query.all()
-        return users, count
+
+        if kwargs:
+            raise TypeError('Unexpected **kwargs: %r' % kwargs)
+
+        return query.all(), count
 
     def has_voted(self, review):
         if self._votes.filter_by(revision=review.last_revision).count() > 0:
