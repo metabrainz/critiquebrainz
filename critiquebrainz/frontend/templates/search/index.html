@@ -93,14 +93,14 @@
           url: "{{ url_for('search.more') }}",
           data: { query: "{{ query }}", type: "{{ type }}", page: ++current_page }
         })
-            .done(function(data) {
-              loading_message.hide();
-              $("#results").append(data.results);
-              if (data.more === true) more_button.show();
-            })
-            .fail(function() {
-              alert({{ _('Failed to load more search results!') | tojson }});
-            });
+        .done(function(data) {
+          loading_message.hide();
+          $("#results").append(data.results);
+          if (data.more === true) more_button.show();
+        })
+        .fail(function() {
+          alert({{ _('Failed to load more search results!') | tojson }});
+        });
       }
     </script>
   {% endblock %}
