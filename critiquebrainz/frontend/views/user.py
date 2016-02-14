@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_babel import gettext
 from flask_login import login_required, current_user
 
+from werkzeug.exceptions import NotFound
 from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_BLOCK_USER
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.user import User
@@ -9,6 +10,14 @@ from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
 
 user_bp = Blueprint('user', __name__)
+
+
+@user_bp.route('/name/<string:username>')
+def name(username):
+    user = User.get(display_name=username)
+    if not user:
+        raise NotFound()
+    return redirect(url_for('user.reviews', user_id=user.id))
 
 
 @user_bp.route('/<uuid:user_id>')
