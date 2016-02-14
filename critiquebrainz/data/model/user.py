@@ -54,6 +54,10 @@ class User(db.Model, AdminMixin, DeleteMixin):
         if is_blocked is not None:
             query = query.filter(User.is_blocked == is_blocked)
 
+        display_name = kwargs.pop('display_name', None)
+        if display_name is not None:
+            query = query.filter(User.display_name.ilike('%'+display_name+'%'))
+
         count = query.count()
 
         sort = kwargs.pop('sort', None)
