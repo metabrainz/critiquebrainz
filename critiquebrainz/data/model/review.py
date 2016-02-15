@@ -222,6 +222,9 @@ class Review(db.Model, DeleteMixin):
             # Joining and sorting by publication time
             query = query.outerjoin(pub_times).order_by(desc('pub_times.published_on'))
 
+        elif sort == 'random':
+            query = query.order_by(func.random())
+
         limit = kwargs.pop('limit', None)
         if limit is not None:
             query = query.limit(limit)
