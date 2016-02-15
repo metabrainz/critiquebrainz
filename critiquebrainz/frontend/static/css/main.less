@@ -163,36 +163,36 @@ ul.sharing {
       }
     }
   }
-  #recent-list {
-    margin-top: 25px;
-    @recent-review-height: 50px;
-    .review {
+}
+
+#recent-list {
+  margin-top: 25px;
+  @recent-review-height: 50px;
+  .review {
+    height: @recent-review-height;
+    margin-bottom: 10px;
+    color: @text-color;
+    text-decoration: none;
+    .cover-art-container {
+      width: @recent-review-height;
       height: @recent-review-height;
-      margin-bottom: 10px;
-      color: @text-color;
-      text-decoration: none;
-      .cover-art-container {
-        width: @recent-review-height;
-        height: @recent-review-height;
-        margin-right: 10px;
-        span {
-          font-size: @recent-review-height/5;
-        }
-        img {
-          max-width: @recent-review-height;
-          max-height: @recent-review-height;
-        }
+      margin-right: 10px;
+      span {
+        font-size: @recent-review-height/5;
       }
-      .album { padding-top: 4px; }
-      .album, .reviewer {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      img {
+        max-width: @recent-review-height;
+        max-height: @recent-review-height;
       }
+    }
+    .album { padding-top: 4px; }
+    .album, .reviewer {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }
-
 
 // Artist page
 #release-groups {
