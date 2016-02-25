@@ -12,6 +12,8 @@ Requirements
 * virtualenv
 * memcached
 * git
+* nodejs & npm
+* lessc
 
 How to start
 ------------
@@ -129,6 +131,26 @@ If you don't want to do that yet, here's a list of blueprints that should be kep
 
 More information about importance of keeping transport layer secure is available at
 https://www.owasp.org/index.php/Top_10_2010-A9-Insufficient_Transport_Layer_Protection.
+
+Compiling Stylesheets
+^^^^^^^^^^^^^^^^^^^^^
+
+CritiqueBrainz stylesheets are written in *less*. To compile them to *css* you need to
+have nodejs installed::
+
+   $ curl -sL https://deb.nodesource.com/setup | sudo bash -
+   $ sudo apt-get install -y nodejs
+
+Once node is installed, you can install the less compiler::
+
+   $ npm install -g less less-plugin-clean-css
+
+Now, to actually compile the stylesheets::
+
+   $ fab compile_styling
+
+You can also compile the stylesheets directly in your browser by setting the ``COMPILE_LESS``
+field to ``True`` in your ``config.py``.
 
 Running the server
 ------------------
