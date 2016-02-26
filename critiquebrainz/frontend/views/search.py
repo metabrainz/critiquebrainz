@@ -1,21 +1,27 @@
 from flask import Blueprint, request, render_template, redirect, jsonify, url_for
 from critiquebrainz.frontend.external import musicbrainz
+from critiquebrainz.data.model.user import User
 
 search_bp = Blueprint('search', __name__)
 
 RESULTS_LIMIT = 10
 
 
+def search_users(query, limit=None, offset=None):
+    users, count = User.list(display_name=query, limit=limit, offset=offset,
+                             sort='name', is_blocked=False)
+    return count, users
+
+
 def search_wrapper(query, type, offset=None):
-    if query:
-        if type == "artist":
-            count, results = musicbrainz.search_artists(query, limit=RESULTS_LIMIT, offset=offset)
-        elif type == "event":
-            count, results = musicbrainz.search_events(query, limit=RESULTS_LIMIT, offset=offset)
-        elif type == "release-group":
-            count, results = musicbrainz.search_release_groups(query, limit=RESULTS_LIMIT, offset=offset)
-        else:
-            count, results = 0, []
+    search_types = {
+        "artist": musicbrainz.search_artists,
+        "event": musicbrainz.search_events,
+        "release-group": musicbrainz.search_release_groups,
+        "user": search_users,
+    }
+    if query and type in search_types:
+        count, results = search_types[type](query, limit=RESULTS_LIMIT, offset=offset)
     else:
         count, results = 0, []
     return count, results

@@ -47,5 +47,20 @@
       </td>
     </tr>
 
+    {% elif type=="user" %}
+    <tr>
+      <td>
+        <a href="{{ url_for('user.reviews', user_id=result.id) }}">{{ result.display_name }}</a>
+      </td>
+      <td>
+        {% if result.musicbrainz_id %}
+          <a href="https://musicbrainz.org/user/{{ result.musicbrainz_id }}">{{ result.display_name }}</a>
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>{{ result.created | date }}</td>
+    </tr>
+
   {% endif %}
 {% endfor %}
