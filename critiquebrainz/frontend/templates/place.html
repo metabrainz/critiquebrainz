@@ -44,13 +44,7 @@
             attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
           }).addTo(map);
 
-        var popup = L.popup()
-          .setContent("<b>" + {{ _("Held At") | tojson }} + "</b><br> " + {{ place['name'] | tojson }});
-
-        var marker = L.marker([{{ lat | default(0) }}, {{ long | default(0) }}])
-          .addTo(map)
-          .bindPopup(popup)
-          .openPopup();
+        var marker = L.marker([{{ lat | default(0) }}, {{ long | default(0) }}]).addTo(map);
       </script>
     </div>
   {% endif %}
