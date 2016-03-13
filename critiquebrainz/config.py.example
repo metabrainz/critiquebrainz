@@ -12,7 +12,7 @@ SECRET_KEY = "CHANGE_THIS"
 
 # Primary database
 # Example:
-# SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
+#SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 SQLALCHEMY_DATABASE_URI = "postgresql://cb:cb@localhost:5432/critiquebrainz"
 
 # Database for testing
