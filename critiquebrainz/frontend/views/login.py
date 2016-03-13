@@ -9,7 +9,7 @@ login_bp = Blueprint('login', __name__)
 @login_bp.route('/')
 @login_forbidden
 def index():
-    return render_template('login/login.html')
+    return render_template('login/index.html')
 
 
 @login_bp.route('/musicbrainz')

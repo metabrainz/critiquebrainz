@@ -35,5 +35,5 @@ def entity(id):
     offset = int(request.args.get('offset', default=0))
     reviews, count = Review.list(entity_id=id, entity_type='event', sort='rating', limit=limit, offset=offset)
 
-    return render_template('event.html', id=id, event=event, reviews=reviews,
+    return render_template('event/entity.html', id=id, event=event, reviews=reviews,
                            my_review=my_review, limit=limit, offset=offset, count=count)

@@ -39,7 +39,7 @@ def entity(id):
         release_group['review_count'] = review_count
 
     return render_template(
-            'artist.html', id=id, artist=artist, release_type=release_type, release_groups=release_groups,
+        'artist/entity.html', id=id, artist=artist, release_type=release_type, release_groups=release_groups,
             page=page, limit=limit, count=count, band_members=band_members
     )
 
