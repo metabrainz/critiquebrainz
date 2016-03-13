@@ -55,7 +55,7 @@
               {{ review.entity_type | replace('_', ' ') | title }}
             </span>
           </td>
-          {% if current_user.is_authenticated() and current_user == user %}
+          {% if (current_user.is_authenticated() and current_user == user) or current_user.is_admin() %}
             <td>
               {% if review.is_draft %}
                 <span class="label label-default">{{ _('Draft') }}</span>
