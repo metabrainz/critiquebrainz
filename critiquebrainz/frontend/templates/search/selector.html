@@ -12,6 +12,9 @@
       <li {% if type=="event" %}class="active"{% endif %}>
         <a href="#event" data-toggle="tab">{{ _('Event') }}</a>
       </li>
+      <li {% if type=="place" %}class="active"{% endif %}>
+        <a href="#place" data-toggle="tab">Place</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -62,6 +65,26 @@
         </form>
       </div>
 
+      <div id="place" class="tab-pane {% if type=="place" %}active{% endif %}">
+        <h3>{{ _('Place selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Place') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="place" type="text"
+                     value="{{ request.args.get('place', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="place" />
+        </form>
+      </div>
+
     </div>
   </div>
 
@@ -69,6 +92,7 @@
   if request.args.get('artist', default=False)
   or request.args.get('release_group', default=False)
   or request.args.get('event', default=False)
+  or request.args.get('place', default=False)
 %}
   <hr />
   {% if not results %}
@@ -88,6 +112,13 @@
           <tr>
             <th>{{ _('Name') }}</th>
             <th>{{ _('Artist') }}</th>
+            <th>{{ _('Location') }}</th>
+            <th></th>
+          </tr>
+        {% elif type == "place"  %}
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Type') }}</th>
             <th>{{ _('Location') }}</th>
             <th></th>
           </tr>
@@ -128,6 +159,7 @@
             artist: "{{ artist }}",
             release_group: "{{ release_group }}",
             event: "{{ event }}",
+            place: "{{ place }}",
             type: "{{ type }}",
             page: ++current_page
           }

@@ -12,6 +12,8 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_artists(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "event":
             count, results = musicbrainz.search_events(query, limit=RESULTS_LIMIT, offset=offset)
+        elif type == "place":
+            count, results = musicbrainz.search_places(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "release-group":
             count, results = musicbrainz.search_release_groups(query, limit=RESULTS_LIMIT, offset=offset)
         else:
@@ -45,6 +47,7 @@ def selector():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')
     event = request.args.get('event')
+    place = request.args.get('place')
     type = request.args.get('type')
     next = request.args.get('next')
     if not next:
@@ -54,10 +57,14 @@ def selector():
                                                            limit=RESULTS_LIMIT)
     elif event:
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT)
+    elif place:
+        count, results = musicbrainz.search_places(place, limit=RESULTS_LIMIT)
     else:
         count, results = 0, []
-    return render_template('search/selector.html', next=next, type=type, results=results, count=count,
-                           limit=RESULTS_LIMIT, artist=artist, release_group=release_group, event=event)
+    return render_template('search/selector.html', next=next, type=type,
+                           results=results, count=count, limit=RESULTS_LIMIT,
+                           artist=artist, release_group=release_group, event=event,
+                           place=place)
 
 
 @search_bp.route('/selector/more')
@@ -65,6 +72,7 @@ def selector_more():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')
     event = request.args.get('event')
+    place = request.args.get('place')
     type = request.args.get('type')
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
@@ -73,6 +81,8 @@ def selector_more():
                                                            limit=RESULTS_LIMIT, offset=offset)
     elif type == 'event':
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT, offset=offset)
+    elif type == 'place':
+        count, results = musicbrainz.search_places(place, limit=RESULTS_LIMIT, offset=offset)
     else:
         count, results = 0, []
     template = render_template('search/selector_results.html', results=results, type=type)

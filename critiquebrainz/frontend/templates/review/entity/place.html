@@ -1,0 +1,54 @@
+{% extends 'review/entity/base.html' %}
+
+{% block scripts_top %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/leaflet.min.js') }}"></script>
+{% endblock %}
+
+{% set place = review.entity_id | entity_details(type='place') %}
+
+{% block title %}
+  {% set place_title = place.name | default(_('[Unknown place]')) %}
+  {{ _('Review of "%(place)s" by %(user)s', place=place_title, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block entity_title %}
+  <h2 id="title">
+    {% if place %}
+      {% set event_name = '<a href="%s">' | safe % url_for('place.entity', id=review.entity_id) ~ place.name ~ '</a>'|safe %}
+    {% else %}
+      {% set event_name =  _('[Unknown place]') %}
+    {% endif %}
+
+    {{ _('%(place)s', place=event_name) }}
+
+    {% if place['life-span'] %}
+      <small>{{ place['life-span']['begin'][:4] }}</small>
+    {% endif %}
+  </h2>
+{% endblock %}
+
+{% if place['coordinates'] %}
+  {% set lat = place['coordinates']['latitude'] | float %}
+  {% set long = place['coordinates']['longitude'] | float %}
+  {% set sidebar_visible = True %}
+{% endif %}
+
+{% block sidebar %}
+  {% if lat %}
+    <div id="sidebar" class="col-md-3">
+      <div id="map"></div>
+      <script>
+        L.Icon.Default.imagePath = '/static/img/';
+        var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          }).addTo(map);
+
+        var marker = L.marker([{{ lat }}, {{ long }}]).addTo(map);
+      </script>
+    </div>
+  {% endif %}
+{% endblock %}

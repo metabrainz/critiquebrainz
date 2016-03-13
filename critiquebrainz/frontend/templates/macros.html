@@ -42,6 +42,13 @@
           {{ _('Event') }}
         </span>
       {% endif %}
+    {% elif entity_type == 'place'  %}
+      <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
+      {% if overlay_type %}
+        <span class="entity-type place">
+          {{ _('Place') }}
+        </span>
+      {% endif %}
     {% else %} {# release-group #}
       <img {{ attributes }} />
       <script>

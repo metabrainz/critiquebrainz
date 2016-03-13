@@ -1,0 +1,19 @@
+{% if entity is not defined %}
+  {% set entity = review.entity_id | entity_details(type=entity_type) %}
+{% endif %}
+<div class="col-md-12">
+  <dl class="dl-horizontal">
+    <dt>{{ _('Place') }}</dt>
+    <dd>
+      {{ entity['name'] | default(_('[Unknown place]')) }}
+      {% if entity['life-span'] %}
+        <span class="text-muted">({{ entity['life-span']['begin'] }} - {{ entity['life-span']['end'] }})</span>
+      {% endif %}
+    </dd>
+    <dt>{{ _('Location') }}</dt>
+    <dd>{{ entity['area']['name'] or '-' }}</dd>
+    {% block more_info %}
+    {# Information like creation date, votes etc. #}
+    {% endblock %}
+  </dl>
+</div>

@@ -45,6 +45,12 @@ def search_events(query='', limit=None, offset=None):
     return api_resp.get('event-count'), api_resp.get('event-list')
 
 
+def search_places(query='', limit=None, offset=None):
+    """Search for places."""
+    api_resp = musicbrainzngs.search_places(query=query, limit=limit, offset=offset)
+    return api_resp.get('place-count'), api_resp.get('place-list')
+
+
 def browse_release_groups(artist_id=None, release_types=None, limit=None, offset=None):
     """Get all release groups linked to an artist.
     You need to provide artist's MusicBrainz ID.
@@ -162,10 +168,33 @@ def get_event_by_id(id):
     return event
 
 
+def get_place_by_id(id):
+    """Get event with the MusicBrainz ID.
+
+    Returns:
+        Event object with the following includes: artist-rels, place-rels, series-rels, url-rels.
+    """
+    key = cache.gen_key(id)
+    place = cache.get(key)
+    if not place:
+        try:
+            place = musicbrainzngs.get_place_by_id(
+                id, ['artist-rels', 'place-rels', 'release-group-rels', 'url-rels']).get('place')
+        except ResponseError as e:
+            if e.cause.code == 404:
+                return None
+            else:
+                raise InternalServerError(e.cause.msg)
+        cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
+    return place
+
+
 def get_entity_by_id(id, type='release_group'):
     """A wrapper to call the correct get_*_by_id function."""
     if type == 'release_group':
         rv = get_release_group_by_id(id)
     elif type == 'event':
         rv = get_event_by_id(id)
+    elif type == 'place':
+        rv = get_place_by_id(id)
     return rv

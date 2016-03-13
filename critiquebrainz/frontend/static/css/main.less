@@ -11,6 +11,7 @@
 // Entity colors
 @rg-color: @blue;
 @event-color: @green;
+@place-color: @yellow;
 
 body {
   padding-bottom: 25px;
@@ -104,6 +105,9 @@ ul.sharing {
     }
     &.event {
       background-color: fade(@event-color, 70%);
+    }
+    &.place {
+      background-color: fade(@place-color, 70%);
     }
   }
 
@@ -402,7 +406,32 @@ a#edit-review { margin-top: 20px; }
 
 
 // User profile
-#profile-navigation { margin-top: 16px; margin-bottom: 22px; }
+#user-profile {
+  #profile-navigation {
+    margin-top: 16px;
+    margin-bottom: 22px;
+  }
+  table#reviews {
+    td {
+      vertical-align: middle;
+      &.title {
+        span.label {
+          .label-default;
+
+          &.release-group {
+            background-color: fade(@rg-color, 70%);
+          }
+          &.event {
+            background-color: fade(@event-color, 70%);
+          }
+          &.place {
+            background-color: fade(@place-color, 70%);
+          }
+        }
+      }
+    }
+  }
+}
 
 // Revisions Compare
 #diff {
