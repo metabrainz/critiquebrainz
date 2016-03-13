@@ -56,7 +56,11 @@
         {{ result['type'] or '-' }}
       </td>
       <td>
-        {{ result['area']['name'] or '-' }}
+        {% if 'area' in result %}
+          {{ result['area']['name'] }}
+        {% else %}
+          -
+        {% endif %}
       </td>
     </tr>
 
