@@ -5,7 +5,7 @@ apt-get install -y build-essential python-pip python-dev memcached curl git \
     libffi-dev libssl-dev libxml2-dev libxslt1-dev libffi-dev libssl-dev
 
 # PostgreSQL
-PG_VERSION=9.1
+PG_VERSION=9.3
 apt-get -y install "postgresql-$PG_VERSION" "postgresql-contrib-$PG_VERSION" "postgresql-server-dev-$PG_VERSION"
 PG_CONF="/etc/postgresql/$PG_VERSION/main/postgresql.conf"
 PG_HBA="/etc/postgresql/$PG_VERSION/main/pg_hba.conf"
