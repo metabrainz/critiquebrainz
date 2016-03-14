@@ -44,7 +44,7 @@ TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@localhost:5432/cb_t
 # EXTERNAL SERVICES
 
 # MusicBrainz
-#MUSICBRAINZ_HOSTNAME = "localhost:5000"
+#MUSICBRAINZ_HOSTNAME = "localhost:8080"
 MUSICBRAINZ_USERAGENT = "CritiqueBrainz Custom"
 MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
