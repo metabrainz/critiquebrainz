@@ -41,7 +41,7 @@
 {% set sidebar_visible = True %}
 {% block sidebar %}
   <div id="sidebar" class="col-md-3">
-    {{ cover_art(review.entity_id, 'release_group', 'id=cover-art class=img-responsive') }}
+    {{ cover_art(review.entity_id, 'release_group', attributes='id=cover-art class=img-responsive') }}
     {{ spotify_player(release_group.id, spotify_mappings) }}
   </div>
 {% endblock %}

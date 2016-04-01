@@ -12,7 +12,7 @@
     <div class="col-md-6">
       <h4>CritiqueBrainz</h4>
       <p>{{ _('%(album)s by %(artist)s', album=release_group.title, artist=release_group['artist-credit-phrase']) }}</p>
-      {{ cover_art(release_group.id, 'release_group', 'id=cover-art') }}
+      {{ cover_art(release_group.id, 'release_group', attributes='id=cover-art') }}
     </div>
     <div class="col-md-6">
       <h4>{{ _('Spotify') }}</h4>

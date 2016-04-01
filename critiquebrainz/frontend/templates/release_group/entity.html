@@ -41,13 +41,7 @@
 
 <div id="release-group-details" class="row">
   <div class="col-md-3">
-    {{ cover_art(id, 'release_group', 'id=cover-art') }}
-    <div id="cover-art-annotation">
-      <span class="text-muted">
-        Cover art provided by
-        <a href="https://coverartarchive.org/">Cover Art Archive</a>
-      </span>
-    </div>
+    {{ cover_art(id, 'release_group', attributes='id=cover-art', source_credit=True) }}
     {{ spotify_player(id, spotify_mappings, show_add_message=True) }}
   </div>
   <div class="col-md-6">
@@ -167,7 +161,6 @@
     <div class="external-links">
       <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.svg') }}" /></div>
       <a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
-      <div class="text-muted">Cover art provided by <a href="https://coverartarchive.org/">Cover Art Archive</a></div>
     </div>
   </div>
 </div>

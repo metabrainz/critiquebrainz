@@ -32,39 +32,42 @@
   {% endif %}
 {% endmacro %}
 
-{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False) %}
+{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False, source_credit=False) %}
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
-  <div class="cover-container">
-    {% if entity_type == 'event' %}
-      <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
-      {% if overlay_type %}
-        <span class="entity-type event">
-          {{ _('Event') }}
-        </span>
-      {% endif %}
-    {% elif entity_type == 'place'  %}
-      <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
-      {% if overlay_type %}
-        <span class="entity-type place">
-          {{ _('Place') }}
-        </span>
-      {% endif %}
-    {% else %} {# release-group #}
-      <img {{ attributes }} />
-      <script>
-        $("img").last()
-            .on("error", function () {
-              $(this).attr("src", "{{ url_for('static', filename='img/placeholder_disc.svg') }}");
-            })
-            .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
-      </script>
-      {% if overlay_type %}
-        <span class="entity-type release-group">
-          {{ _('Release Group') }}
-        </span>
-      {% endif %}
+  {% if entity_type == 'event' %}
+    <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type event">
+        {{ _('Event') }}
+      </span>
     {% endif %}
-  </div>
+  {% elif entity_type == 'place'  %}
+    <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type place">
+        {{ _('Place') }}
+      </span>
+    {% endif %}
+  {% else %} {# release-group #}
+    <img {{ attributes }} />
+    <script>
+      $("img").last()
+          .on("error", function () {
+            $(this).attr("src", "{{ url_for('static', filename='img/placeholder_disc.svg') }}");
+          })
+          .attr("src", "https://coverartarchive.org/release-group/{{ entity_id }}/front-250");
+    </script>
+    {% if overlay_type %}
+      <span class="entity-type release-group">
+        {{ _('Release Group') }}
+      </span>
+    {% endif %}
+  {% endif %}
+  {% if source_credit %}
+    <div class="caa-credit">
+      Cover art from <a href="https://coverartarchive.org/">Cover Art Archive</a>
+    </div>
+  {% endif %}
 {% endmacro %}
 
 {% macro review_credit(review, user_picture_size) %}
