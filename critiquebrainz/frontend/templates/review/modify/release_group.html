@@ -1,5 +1,4 @@
-{% from 'macros.html' import cover_art %}
-{% from 'macros.html' import spotify_player %}
+{% from 'macros.html' import cover_art, spotify_player with context %}
 
 {% if entity is not defined %}
   {% set entity = review.entity_id | entity_details(type=entity_type) %}

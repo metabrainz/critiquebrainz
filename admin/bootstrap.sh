@@ -22,7 +22,7 @@ pip install -r requirements.txt
 python manage.py init_db
 
 # Less compiler
-curl -sL https://deb.nodesource.com/setup | sudo bash -
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 apt-get install -y nodejs
 npm install -g less
 npm install -g less-plugin-clean-css

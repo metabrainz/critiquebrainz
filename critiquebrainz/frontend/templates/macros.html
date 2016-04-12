@@ -35,14 +35,14 @@
 {% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False, source_credit=False, size=250) %}
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
   {% if entity_type == 'event' %}
-    <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
+    <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
     {% if overlay_type %}
       <span class="entity-type event">
         {{ _('Event') }}
       </span>
     {% endif %}
   {% elif entity_type == 'place'  %}
-    <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
+    <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
     {% if overlay_type %}
       <span class="entity-type place">
         {{ _('Place') }}
@@ -50,7 +50,13 @@
     {% endif %}
   {% else %} {# release-group #}
     <img {{ attributes }} />
-    <script src="{{ 'macros.js'|make_static_path }}"></script>
+    <script>
+      $('img').last()
+          .on('error', function () {
+            $(this).attr('src', {{ get_static_path('images/placeholder_disc.svg') }});
+          })
+          .attr('src', 'https://coverartarchive.org/release-group/{{ entity_id }}/front-250');
+    </script>
   {% endif %}
 {% endmacro %}
 

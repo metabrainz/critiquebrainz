@@ -1,6 +1,5 @@
 {% extends 'review/entity/base.html' %}
-{% from 'macros.html' import cover_art %}
-{% from 'macros.html' import spotify_player %}
+{% from 'macros.html' import cover_art, spotify_player with context %}
 
 {% set release_group = review.entity_id | entity_details %}
 

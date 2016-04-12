@@ -50,6 +50,10 @@ def compile_styling():
     print(green("Style sheets have been compiled successfully.", bold=True))
 
 
+def build_static():
+    local("./node_modules/.bin/gulp")
+
+
 def clear_memcached():
     with create_app().app_context():
         cache.flush_all()

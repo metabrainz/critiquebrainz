@@ -5,7 +5,7 @@
 {% block profile_content %}
   {% if user.musicbrainz_id %}
     <div>
-      <img src="{ 'favicons/musicbrainz-16.svg'|make_static_path }}" />
+      <img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" />
       <b><a href="https://musicbrainz.org/user/{{ user.musicbrainz_id }}">See profile on MusicBrainz</a></b>
     </div>
   {% endif %}

@@ -15,6 +15,10 @@ application = DispatcherMiddleware(frontend.create_app(), {
     "/ws/1": ws.create_app()
 })
 
+OBSERVE_FILES = [
+    "critiquebrainz/frontend/static/build/rev-manifest.json",
+]
+
 
 @cli.command()
 @click.option("--host", "-h", default="0.0.0.0", show_default=True)
@@ -23,7 +27,8 @@ application = DispatcherMiddleware(frontend.create_app(), {
               help="Turns debugging mode on or off. If specified, overrides "
                    "'DEBUG' value in the config file.")
 def runserver(host, port, debug=False):
-    run_simple(host, port, application, use_debugger=debug)
+    run_simple(host, port, application, use_debugger=debug,
+               extra_files=OBSERVE_FILES)
 
 
 @cli.command()

@@ -24,7 +24,7 @@
             {% if item.images %}
               <img class="img-responsive" src="{{ item.images[0].url }}" />
             {% else %}
-              <img class="img-responsive" src="{{ url_for('static', filename='img/placeholder_disc.svg') }}" />
+              <img class="img-responsive" src="{{ get_static_path('images/placeholder_disc.svg') }}" />
             {% endif %}
           </a>
         </div>
@@ -92,7 +92,7 @@
 
 {% block scripts %}
     {{ super() }}
-    <script src="{{ 'spotify.js'|make_static_path }}"></script>
+    <script src="{{ get_static_path('spotify.js') }}"></script>
 {% endblock %}
 
 {% macro artists(album) -%}

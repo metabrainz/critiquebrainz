@@ -1,7 +1,5 @@
-import os
-
 from flask import Flask
-from flask_babel import Locale, get_locale
+import os
 
 
 def create_app(debug=None):
@@ -48,10 +46,10 @@ def create_app(debug=None):
                    app.config['MEMCACHED_NAMESPACE'],
                    debug=1 if app.debug else 0)
 
-    import critiquebrainz.frontend.babel
+    from critiquebrainz.frontend import babel
     babel.init_app(app)
 
-    import critiquebrainz.frontend.login
+    from critiquebrainz.frontend import login
     login.login_manager.init_app(app)
     from critiquebrainz.frontend.login.provider import MusicBrainzAuthentication
     login.mb_auth = MusicBrainzAuthentication(
@@ -77,8 +75,9 @@ def create_app(debug=None):
     app.jinja_env.filters['track_length'] = track_length
     app.jinja_env.filters['parameterize'] = parameterize
     app.jinja_env.filters['entity_details'] = musicbrainz.get_entity_by_id
+    from flask_babel import Locale, get_locale
     app.jinja_env.filters['language_name'] = lambda language_code: Locale(language_code).get_language_name(get_locale())
-    app.jinja_env.filters['make_static_path'] = static_manager.get_file_path
+    app.context_processor(lambda: dict(get_static_path=static_manager.get_static_path))
 
     # Blueprints
     from critiquebrainz.frontend.views.index import frontend_bp

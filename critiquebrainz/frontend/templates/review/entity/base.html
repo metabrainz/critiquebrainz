@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import review_credit %}
+{% from 'macros.html' import review_credit with context %}
 
 {% block content %}
 <div id="review-entity">
   {% block entity_title %}{% endblock %}
 
   <div id="review-content" class="row">
-    {% block sidebar %} {% endblock %}
+    {% block sidebar %}{% endblock %}
 
     <div class="col-md-{% if sidebar_visible %}9{% else %}12{% endif %}">
       <h3>{{ review_credit(review, user_picture_size=24) }}</h3>

@@ -7,6 +7,9 @@ env
 venv
 /build
 
+# Node
+/node_modules
+
 # Logs
 *.log
 pip-log.txt
@@ -26,9 +29,3 @@ nosetests.xml
 .vagrant
 
 .transifexrc
-
-# Node
-/node_modules/
-
-# Build
-/critiquebrainz/frontend/static/build/

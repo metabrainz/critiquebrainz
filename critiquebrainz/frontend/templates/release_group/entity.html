@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art %}
-{% from 'macros.html' import spotify_player %}
+{% from 'macros.html' import cover_art, spotify_player with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -146,9 +145,9 @@
           <li class="clearfix">
             <div class="favicon-container">
               {% if url.icon %}
-                <img src="{{ 'favicons/'+url.icon|make_static_path }}" />
+                <img src="{{ get_static_path('favicons/'+url.icon) }}" />
               {% else %}
-                <img src="{ 'favicons/external-16.png'|make_static_path }}" />
+                <img src="{{ get_static_path('favicons/external-16.png') }}" />
               {% endif %}
             </div>
             <a href="{{ url.target }}">{{ url.name }}</a>
@@ -159,8 +158,8 @@
     {% endif %}
 
     <div class="external-links">
-      <div class="favicon-container"><img src="{ 'favicon/musicbrainz-16.svg'|make_static_path }}" /></div>
-      <a href="//musicbrainz.org/release-group/{{ release_group.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
+      <a href="https://musicbrainz.org/release-group/{{ release_group.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
   </div>
 </div>
