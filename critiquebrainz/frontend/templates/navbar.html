@@ -41,7 +41,7 @@
           </a>
           <ul class="dropdown-menu" role="menu">
             {% for language in config.LANGUAGES|dictsort(false, 'value') %}
-              <li><a href="?l={{ language[0] }}">{{ language[1]|capitalize }}</a></li>
+              <li><a href="{{ language[0] | parameterize('l') }}">{{ language[1]|capitalize }}</a></li>
             {% endfor %}
           </ul>
         </li>
