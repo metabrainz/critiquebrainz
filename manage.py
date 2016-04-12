@@ -10,6 +10,10 @@ import click
 
 cli = click.Group()
 
+application = DispatcherMiddleware(frontend.create_app(), {
+    "/ws/1": frontend.create_app()
+})
+
 
 @cli.command()
 @click.option("--host", "-h", default="0.0.0.0", show_default=True)
@@ -18,9 +22,6 @@ cli = click.Group()
               help="Turns debugging mode on or off. If specified, overrides "
                    "'DEBUG' value in the config file.")
 def runserver(host, port, debug=False):
-    application = DispatcherMiddleware(frontend.create_app(), {
-        "/ws/1": frontend.create_app()
-    })
     run_simple(host, port, application, use_debugger=debug)
 
 
