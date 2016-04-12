@@ -21,8 +21,8 @@ DEFAULT_LICENSE_ID = u"CC BY-SA 3.0"
 
 supported_languages = []
 for lang in list(pycountry.languages):
-    if 'alpha2' in dir(lang):
-        supported_languages.append(lang.alpha2)
+    if 'iso639_1_code' in dir(lang):
+        supported_languages.append(lang.iso639_1_code)
 
 ENTITY_TYPES = [
     'event',
