@@ -1,6 +1,7 @@
 ﻿from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
 from critiquebrainz import frontend
+from critiquebrainz import ws
 from critiquebrainz.data import dump_manager
 import critiquebrainz.data.utils as data_utils
 import critiquebrainz.data.fixtures as _fixtures
@@ -11,7 +12,7 @@ import click
 cli = click.Group()
 
 application = DispatcherMiddleware(frontend.create_app(), {
-    "/ws/1": frontend.create_app()
+    "/ws/1": ws.create_app()
 })
 
 
