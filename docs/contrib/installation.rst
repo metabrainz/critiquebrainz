@@ -6,9 +6,9 @@ Requirements
 
 * Python (tested on 2.7.4)
 * ``python-dev``
-* PostgreSQL (tested on 9.1.9)
+* PostgreSQL (tested on 9.3)
 * ``postgresql-contrib``
-* ``postgresql-server-dev-9.1``
+* ``postgresql-server-dev-9.3``
 * virtualenv
 * memcached
 * git
@@ -21,34 +21,26 @@ How to start
 Creating virtualenv (optional)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This step is not required, but highly recommended for development instances.
-You may find it useful to keep libraries needed by CritiqueBrainz seperated
-from your global python libraries. To achieve this, you will need a
-``virtualenv`` package. You may install it with ``pip`` or ``apt-get`` on Debian/Ubuntu
-systems::
+This step is not required, but highly recommended! You may find it useful
+to keep libraries needed by CritiqueBrainz separated from your global Python
+libraries. To achieve this, you will need a ``virtualenv`` package. You may
+install it with ``pip`` or ``apt-get`` on Debian/Ubuntu systems::
 
-   $ sudo pip install virtualenv (or)
+   $ sudo pip install virtualenv
+
+or
+
    $ sudo apt-get install python-virtualenv
 
-Then run::
+Then run to create a virtual environment::
 
-   $ scripts/admin.sh
+   $ virtualenv venv
 
-It will create a symbolic link ``env`` to virtualenv's entry point in your
-``critiquebrainz/`` directory. To enter newly created virtualenv, type in::
+To enter newly created virtualenv, type in::
 
-   $ source ./env
+   $ . venv/bin/activate
 
 You should do this before executing any other file from CritiqueBrainz package.
-
-Installing dependencies
-^^^^^^^^^^^^^^^^^^^^^^^
-
-If you're in your desired python environment, simply run::
-
-   $ pip install -r requirements.txt
-
-to install all required dependencies.
 
 Configuration
 ^^^^^^^^^^^^^
@@ -57,26 +49,53 @@ First, you need to create custom configuration file. Copy the skeleton configura
 
    $ cp critiquebrainz/config.py.example critiquebrainz/config.py
 
-Then, open ``critiquebrainz/config.py`` in your favourite text editor, uncomment
-``SQLALCHEMY_DATABASE_URI`` variable, and fill in the fields in angle brackets.
+Then, open ``critiquebrainz/config.py`` in your favourite text editor and update
+any variables, as needed.
+
+Configuring MusicBrainz login
+"""""""""""""""""""""""""""""
+
+Before you begin using authentication with MusicBrainz accounts,
+you need to set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET`` in
+``critiquebrainz/config.py``. To obtain these keys, you need to register your
+instance of CrituqeBrainz on MusicBrainz.
+
+**Note** ``<your domain>`` field in the urls listed below should probably be set
+to ``127.0.0.1:8080``, if you plan to run your CritiqueBrainz instance locally
+in development mode.
+
+You need MusicBrainz account to register your application. Then head to
+https://musicbrainz.org/account/applications/register and follow the instructions.
+In ``Callback URL`` field type::
+
+   http://<your domain>/login/musicbrainz/post
+
+Finally, save the obtained ``OAuth Client ID`` and ``OAuth Client Secret`` fields
+in your ``config.py`` fields ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
+respectively.
+
+Installing dependencies
+^^^^^^^^^^^^^^^^^^^^^^^
+
+If you're in your desired Python environment, simply run::
+
+   $ pip install -r requirements.txt
+
+to install all required dependencies.
 
 Database initialization
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 Now, you need to create and configure the database with::
 
-   $ python manage.py create_db
+   $ python manage.py init_db
 
 This command will
 
 * create new PostgreSQL role, if needed
 * create new PostgreSQL database, if needed
 * register ``uuid-ossp`` PostgreSQL extension, if needed
-
-You also need to add initial data for models (predefined licenses). To do this
-use ``fixtures`` command::
-
-   $ python manage.py fixtures
+* add fixtures
 
 Importing data
 """"""""""""""
@@ -88,35 +107,10 @@ own installation, download archives from ftp://ftp.musicbrainz.org/pub/musicbrai
 and use ``python manage.py export importer`` command. First you need to import
 base archive and then one that contains reviews. For example::
 
-   $ python manage.py export importer cbdump.tar.bz2
-   $ python manage.py export importer cbdump-reviews-all.tar.bz2
+   $ python manage.py dump import cbdump.tar.bz2
+   $ python manage.py dump import cbdump-reviews-all.tar.bz2
 
 Keep in mind that CritiqueBrainz only supports importing into an empty database.
-
-Preparing login
-^^^^^^^^^^^^^^^
-
-Before you begin using authentication with MusicBrainz accounts,
-you need to set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET`` in
-``critiquebrainz/config.py``. To obtain these keys, you need to register your
-instance of CrituqeBrainz on MusicBrainz.
-
-**Note** ``<your domain>`` field in the urls listed below should probably be set
-to ``127.0.0.1:8080``, if you plan to run your CritiqueBrainz instance locally
-in development mode.
-
-MusicBrainz
-"""""""""""
-
-You need MusicBrainz account to register your application. Then head to
-https://musicbrainz.org/account/applications/register and follow the instructions.
-In ``Callback URL`` field type::
-
-   http://<your domain>/login/musicbrainz/post
-
-Finally, save the obtained ``OAuth Client ID`` and ``OAuth Client Secret`` fields
-in your ``config.py`` fields ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
-respectively.
 
 Security
 ^^^^^^^^
@@ -155,6 +149,6 @@ field to ``True`` in your ``config.py``.
 Running the server
 ------------------
 
-To run the server you can use ``run.py`` script::
+To run the server you can use ``manage.py`` script::
 
-   $ python run.py
+   $ python manage.py runserver -d

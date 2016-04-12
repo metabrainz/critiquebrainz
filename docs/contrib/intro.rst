@@ -30,7 +30,7 @@ After that you can start a VM and connect to it::
 After VM is created and running, you can start the application::
 
     $ cd /vagrant
-    $ python run.py
+    $ python manage.py runserver -d
 
 Web server should be accessible at http://localhost:8080/.
 

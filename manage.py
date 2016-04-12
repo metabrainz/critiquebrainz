@@ -1,31 +1,52 @@
-﻿from flask_script import Manager
-from flask import current_app
-from critiquebrainz.frontend import create_app
-from critiquebrainz.data.utils import create_tables, explode_db_uri
-from critiquebrainz.data.export_manager import manager as export_manager
+﻿from werkzeug.serving import run_simple
+from werkzeug.wsgi import DispatcherMiddleware
+from critiquebrainz import frontend
+from critiquebrainz.data import dump_manager
+import critiquebrainz.data.utils as data_utils
 import critiquebrainz.data.fixtures as _fixtures
 import subprocess
-
-manager = Manager(create_app)
-
-manager.add_command('export', export_manager)
+import click
 
 
-@manager.command
-def create_db():
-    """Create and configure the database."""
-    init_postgres(current_app.config['SQLALCHEMY_DATABASE_URI'])
+cli = click.Group()
 
 
-@manager.command
-def tables():
-    create_tables(current_app)
+@cli.command()
+@click.option("--host", "-h", default="0.0.0.0", show_default=True)
+@click.option("--port", "-p", default=8080, show_default=True)
+@click.option("--debug", "-d", is_flag=True,
+              help="Turns debugging mode on or off. If specified, overrides "
+                   "'DEBUG' value in the config file.")
+def runserver(host, port, debug=False):
+    application = DispatcherMiddleware(frontend.create_app(), {
+        "/ws/1": frontend.create_app()
+    })
+    run_simple(host, port, application, use_debugger=debug)
 
 
-@manager.command
-def fixtures():
-    """Update the newly created database with default schema and testing data."""
-    _fixtures.install(current_app, *_fixtures.all_data)
+@cli.command()
+def init_db():
+    """Initialize the database.
+
+    * Creates the database.
+    * Creates all tables.
+    * Adds fixtures required to run the app.
+    """
+    click.echo("Initializing the database...")
+
+    init_postgres(frontend.create_app().config['SQLALCHEMY_DATABASE_URI'])
+
+    click.echo("Creating tables... ", nl=False)
+    data_utils.create_tables(frontend.create_app())
+    click.echo("Done!")
+
+    click.echo("Adding fixtures... ")
+    app = frontend.create_app()
+    with app.app_context():
+        _fixtures.install(app, *_fixtures.all_data)
+    click.echo("Done!")
+
+    click.echo("Initialization has been completed!")
 
 
 def init_postgres(db_uri):
@@ -33,7 +54,7 @@ def init_postgres(db_uri):
 
     New user and database will be created, if needed. It also creates uuid-ossp extension.
     """
-    hostname, db, username, password = explode_db_uri(db_uri)
+    hostname, db, username, password = data_utils.explode_db_uri(db_uri)
     if hostname not in ['localhost', '127.0.0.1']:
         raise Exception('Cannot configure a remote database')
 
@@ -57,5 +78,8 @@ def init_postgres(db_uri):
         raise Exception('Failed to create PostgreSQL extension!')
 
 
+cli.add_command(dump_manager.cli, name="dump")
+
+
 if __name__ == '__main__':
-    manager.run()
+    cli()
