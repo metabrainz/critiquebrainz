@@ -53,7 +53,7 @@
     <script>
       $('img').last()
           .on('error', function () {
-            $(this).attr('src', {{ get_static_path('images/placeholder_disc.svg') }});
+            $(this).attr('src', '{{ get_static_path('images/placeholder_disc.svg') }}');
           })
           .attr('src', 'https://coverartarchive.org/release-group/{{ entity_id }}/front-250');
     </script>
