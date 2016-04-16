@@ -21,11 +21,11 @@ cd /vagrant
 pip install -r requirements.txt
 python manage.py init_db
 
-# Less compiler
+# Node
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 apt-get install -y nodejs
-npm install -g less
-npm install -g less-plugin-clean-css
+
+fab build_static
 
 # Installing requirements for documentation
 cd /vagrant/docs
