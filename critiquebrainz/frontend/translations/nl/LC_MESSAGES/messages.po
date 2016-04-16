@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-13 02:10+0000\n"
+"POT-Creation-Date: 2016-04-12 09:20+0000\n"
 "PO-Revision-Date: 2016-03-13 09:48+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/critiquebrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.2.0\n"
+"Generated-By: Babel 2.3.2\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -220,8 +220,8 @@ msgstr "%(album)s van %(artist)s"
 #: critiquebrainz/frontend/templates/reports/reports_results.html:9
 #: critiquebrainz/frontend/templates/review/delete.html:5
 #: critiquebrainz/frontend/templates/review/edit.html:5
-#: critiquebrainz/frontend/templates/review/report.html:4
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:12
+#: critiquebrainz/frontend/templates/review/report.html:4
 #: critiquebrainz/frontend/templates/user/reviews.html:31
 msgid "[Unknown release group]"
 msgstr "[Onbekende uitgavegroep]"
@@ -279,9 +279,9 @@ msgstr "Rapporten"
 msgid "Moderation log"
 msgstr "Moderatielogboek"
 
+#: critiquebrainz/frontend/templates/event/entity.html:62
 #: critiquebrainz/frontend/templates/footer.html:16
 #: critiquebrainz/frontend/templates/macros.html:23
-#: critiquebrainz/frontend/templates/event/entity.html:62
 #: critiquebrainz/frontend/templates/place/entity.html:53
 #: critiquebrainz/frontend/templates/review/browse.html:4
 #: critiquebrainz/frontend/templates/review/browse.html:7
@@ -291,9 +291,9 @@ msgstr "Moderatielogboek"
 msgid "Reviews"
 msgstr "Recensies"
 
+#: critiquebrainz/frontend/templates/event/entity.html:19
 #: critiquebrainz/frontend/templates/footer.html:18
 #: critiquebrainz/frontend/templates/navbar.html:37
-#: critiquebrainz/frontend/templates/event/entity.html:19
 #: critiquebrainz/frontend/templates/place/entity.html:19
 msgid "Write a review"
 msgstr "Recensie schrijven"
@@ -375,7 +375,7 @@ msgstr "Indienen en je stemmen verwijderen."
 msgid "Review votes"
 msgstr "Stemmen op recensies"
 
-#: critiquebrainz/frontend/templates/macros.html:42
+#: critiquebrainz/frontend/templates/macros.html:41
 #: critiquebrainz/frontend/templates/navbar.html:57
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
@@ -384,7 +384,7 @@ msgstr "Stemmen op recensies"
 msgid "Event"
 msgstr "Evenement"
 
-#: critiquebrainz/frontend/templates/macros.html:49
+#: critiquebrainz/frontend/templates/macros.html:48
 #: critiquebrainz/frontend/templates/navbar.html:58
 #: critiquebrainz/frontend/templates/review/modify/event.html:13
 #: critiquebrainz/frontend/templates/review/modify/place.html:6
@@ -393,27 +393,27 @@ msgstr "Evenement"
 msgid "Place"
 msgstr "Plaats"
 
-#: critiquebrainz/frontend/templates/macros.html:63
+#: critiquebrainz/frontend/templates/macros.html:62
 #: critiquebrainz/frontend/templates/search/selector.html:10
 msgid "Release Group"
 msgstr "Uitgavegroep"
 
-#: critiquebrainz/frontend/templates/macros.html:73
+#: critiquebrainz/frontend/templates/macros.html:76
 #, python-format
 msgid "Review by %(user)s"
 msgstr "Recensie door %(user)s"
 
-#: critiquebrainz/frontend/templates/macros.html:83
+#: critiquebrainz/frontend/templates/macros.html:86
 msgid "View Spotify mapping information"
 msgstr "Koppelingsinformatie voor Spotify bekijken"
 
-#: critiquebrainz/frontend/templates/macros.html:89
+#: critiquebrainz/frontend/templates/macros.html:92
 msgid ""
 "We don't have a mapping between this release group and Spotify. Please help "
 "us find the right album."
 msgstr "We hebben geen koppeling naar Spotify voor deze uitgavegroep. Help ons om het goede album op Spotify te vinden."
 
-#: critiquebrainz/frontend/templates/macros.html:93
+#: critiquebrainz/frontend/templates/macros.html:96
 msgid "Match this!"
 msgstr ""
 
@@ -421,9 +421,9 @@ msgstr ""
 msgid "Toggle navigation"
 msgstr "Navigatie omschakelen"
 
-#: critiquebrainz/frontend/templates/navbar.html:21
 #: critiquebrainz/frontend/templates/login/index.html:3
 #: critiquebrainz/frontend/templates/login/index.html:6
+#: critiquebrainz/frontend/templates/navbar.html:21
 msgid "Sign in"
 msgstr "Aanmelden"
 
@@ -1514,7 +1514,7 @@ msgstr "Geen recensies om weer te geven."
 
 #: critiquebrainz/frontend/views/review.py:59
 #: critiquebrainz/frontend/views/review.py:94
-#: critiquebrainz/frontend/views/review.py:218
+#: critiquebrainz/frontend/views/review.py:219
 msgid "Can't find a review with the specified ID."
 msgstr "Kan geen recensie vinden met de opgegeven ID."
 
@@ -1526,11 +1526,11 @@ msgstr "De recensie is verborgen. Je moet een beheerder zijn om haar te bekijken
 #: critiquebrainz/frontend/views/review.py:96
 #: critiquebrainz/frontend/views/review.py:123
 #: critiquebrainz/frontend/views/review.py:142
-#: critiquebrainz/frontend/views/review.py:222
-#: critiquebrainz/frontend/views/review.py:270
-#: critiquebrainz/frontend/views/review.py:293
-#: critiquebrainz/frontend/views/review.py:308
-#: critiquebrainz/frontend/views/review.py:350
+#: critiquebrainz/frontend/views/review.py:223
+#: critiquebrainz/frontend/views/review.py:271
+#: critiquebrainz/frontend/views/review.py:294
+#: critiquebrainz/frontend/views/review.py:309
+#: critiquebrainz/frontend/views/review.py:351
 msgid "Review has been hidden."
 msgstr "De recensie is verborgen."
 
@@ -1577,71 +1577,71 @@ msgstr "De recensie is gepubliceerd!"
 msgid "You can only write a review for an entity that exists on MusicBrainz!"
 msgstr "Je kan alleen een recensie schrijven over iets dat op MusicBrainz bestaat!"
 
-#: critiquebrainz/frontend/views/review.py:220
+#: critiquebrainz/frontend/views/review.py:221
 msgid "Only author can edit this review."
 msgstr "Alleen de auteur kan deze recensie bewerken."
 
-#: critiquebrainz/frontend/views/review.py:236
+#: critiquebrainz/frontend/views/review.py:237
 msgid "Review has been updated."
 msgstr "De recensie is bijgewerkt."
 
-#: critiquebrainz/frontend/views/review.py:251
+#: critiquebrainz/frontend/views/review.py:252
 msgid "Only the author or an admin can delete this review."
 msgstr "Alleen de auteur of een beheerder kan deze recensie verwijderen."
 
-#: critiquebrainz/frontend/views/review.py:254
+#: critiquebrainz/frontend/views/review.py:255
 msgid "Review has been deleted."
 msgstr "De recensie is verwijderd."
 
-#: critiquebrainz/frontend/views/review.py:272
+#: critiquebrainz/frontend/views/review.py:273
 msgid "You cannot rate your own review."
 msgstr "Je kan je eigen recensie niet beoordelen."
 
-#: critiquebrainz/frontend/views/review.py:275
+#: critiquebrainz/frontend/views/review.py:276
 msgid "You have exceeded your limit of votes per day."
 msgstr "Je hebt het maximaal aantal stemmen per dag overschreden."
 
-#: critiquebrainz/frontend/views/review.py:278
+#: critiquebrainz/frontend/views/review.py:279
 msgid ""
 "You are not allowed to rate this review because your account has been "
 "blocked by a moderator."
 msgstr "Je mag deze recensie niet beoordelen omdat je account door een moderator is geblokkeerd."
 
-#: critiquebrainz/frontend/views/review.py:284
+#: critiquebrainz/frontend/views/review.py:285
 msgid "You have rated this review!"
 msgstr "Je hebt deze recensie beoordeeld!"
 
-#: critiquebrainz/frontend/views/review.py:296
+#: critiquebrainz/frontend/views/review.py:297
 msgid "This review is not rated yet."
 msgstr "Deze recensie heeft nog geen beoordeling."
 
-#: critiquebrainz/frontend/views/review.py:299
+#: critiquebrainz/frontend/views/review.py:300
 msgid "You have deleted your vote for this review!"
 msgstr "Je hebt je beoordeling van deze recensie verwijderd!"
 
-#: critiquebrainz/frontend/views/review.py:310
+#: critiquebrainz/frontend/views/review.py:311
 msgid "You cannot report your own review."
 msgstr "Je kan je eigen recensie niet rapporteren."
 
-#: critiquebrainz/frontend/views/review.py:314
+#: critiquebrainz/frontend/views/review.py:315
 msgid ""
 "You are not allowed to report this review because your account has been "
 "blocked by a moderator."
 msgstr "Je mag deze recensie niet rapporteren omdat je account door een moderator is geblokkeerd."
 
-#: critiquebrainz/frontend/views/review.py:321
+#: critiquebrainz/frontend/views/review.py:322
 msgid "You have already reported this review."
 msgstr "Je hebt deze recensie al gerapporteerd."
 
-#: critiquebrainz/frontend/views/review.py:327
+#: critiquebrainz/frontend/views/review.py:328
 msgid "Review has been reported."
 msgstr "De recensie is gerapporteerd."
 
-#: critiquebrainz/frontend/views/review.py:340
+#: critiquebrainz/frontend/views/review.py:341
 msgid "Review is already hidden."
 msgstr "De recensie is al verborgen."
 
-#: critiquebrainz/frontend/views/review.py:362
+#: critiquebrainz/frontend/views/review.py:363
 msgid "Review has been unhidden."
 msgstr "De recensie is weer zichtbaar gemaakt."
 
