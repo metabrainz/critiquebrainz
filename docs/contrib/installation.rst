@@ -28,7 +28,7 @@ install it with ``pip`` or ``apt-get`` on Debian/Ubuntu systems::
 
    $ sudo pip install virtualenv
 
-or
+or::
 
    $ sudo apt-get install python-virtualenv
 
