@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand logo" href="{{ url_for('frontend.index') }}">
-        <img src="{{ url_for('static', filename='img/navbar_logo.svg') }}" alt="CritiqueBrainz" />
+        <img src="{{ get_static_path('images/navbar_logo.svg') }}" alt="CritiqueBrainz" />
       </a>
     </div>
 
@@ -18,7 +18,7 @@
       <ul class="nav navbar-nav">
         {% if not error %} {# Not showing this stuff on error pages. If attempt to load user info fails there, page will not render. #}
           {% if not current_user or current_user.is_anonymous() %}
-            <li><a href="{{ url_for('login.index') }}">{{ _('Sign in') }}</a></li>
+            <li><a href="{{ url_for('login.index', next=request.url) }}">{{ _('Sign in') }}</a></li>
           {% else %}
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -28,7 +28,7 @@
                 <li><a href="{{ url_for('user.reviews', user_id=current_user.id) }}">{{ _('Profile') }}</a></li>
                 <li><a href="{{ url_for('profile_applications.index') }}">{{ _('Applications') }}</a></li>
                 <li class="divider"></li>
-                <li><a href="{{ url_for('login.logout') }}">{{ _('Sign out') }}</a></li>
+                <li><a href="{{ url_for('login.logout', next=request.url) }}">{{ _('Sign out') }}</a></li>
               </ul>
             </li>
           {% endif %}
@@ -41,7 +41,7 @@
           </a>
           <ul class="dropdown-menu" role="menu">
             {% for language in config.LANGUAGES|dictsort(false, 'value') %}
-              <li><a href="?l={{ language[0] }}">{{ language[1]|capitalize }}</a></li>
+              <li><a href="{{ language[0] | parameterize('l') }}">{{ language[1]|capitalize }}</a></li>
             {% endfor %}
           </ul>
         </li>
@@ -55,6 +55,7 @@
             <option value="artist">{{ _('Artist') }}</option>
             <option value="release-group">{{ _('Release group') }}</option>
             <option value="event">{{ _('Event') }}</option>
+            <option value="place">{{ _('Place') }}</option>
           </select>
         </div>
         <button type="submit" class="btn btn-default input-sm"><span class="glyphicon glyphicon-search"></span></button>

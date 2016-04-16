@@ -200,8 +200,8 @@ def create():
 
     if entity_type == 'release_group':
         spotify_mappings = mbspotify.mappings(entity_id)
-        return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings = spotify_mappings)
-    return render_template('review/write.html', form=form, entity_type=entity_type, entity=entity)
+        return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings = spotify_mappings)
+    return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
 
 @review_bp.route('/write/preview', methods=['POST'])
 @login_required
@@ -239,8 +239,8 @@ def edit(id):
         form.text.data = review.text
     if review.entity_type == 'release_group':
         spotify_mappings = mbspotify.mappings(review.entity_id)
-        return render_template('review/edit.html', form=form, review=review, entity_type=review.entity_type, entity=entity, spotify_mappings = spotify_mappings)
-    return render_template('review/edit.html', form=form, review=review, entity_type=review.entity_type)
+        return render_template('review/modify/edit.html', form=form, review=review, entity_type=review.entity_type, entity=entity, spotify_mappings = spotify_mappings)
+    return render_template('review/modify/edit.html', form=form, review=review, entity_type=review.entity_type)
 
 
 @review_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'])

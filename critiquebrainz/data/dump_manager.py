@@ -1,25 +1,40 @@
 from __future__ import print_function
-from flask_script import Manager
 from flask import current_app, jsonify
 from flask.json import JSONEncoder
 from critiquebrainz.data.utils import create_path, remove_old_archives, get_columns, slugify, explode_db_uri
-from critiquebrainz.data import db
 from critiquebrainz.data import model
-from datetime import datetime
+from critiquebrainz import frontend
+from critiquebrainz.data import db
 from time import gmtime, strftime
+from datetime import datetime
+from functools import wraps
 import subprocess
 import tempfile
 import tarfile
 import shutil
+import click
 import errno
 import sys
 import os
 
-manager = Manager()
+
+cli = click.Group()
 
 
-@manager.command
-def full_db(location=os.path.join(os.getcwd(), 'export', 'full'), rotate=False):
+def with_app_context(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        with frontend.create_app().app_context():
+            return f(*args, **kwargs)
+    return decorated
+
+
+@cli.command()
+@click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'full'), show_default=True,
+              help="Directory where dumps need to be created")
+@click.option("--rotate", "-r", is_flag=True)
+@with_app_context
+def full_db(location, rotate=False):
     """Create complete dump of PostgreSQL database.
 
     This command creates database dump using pg_dump and puts it into specified directory
@@ -55,8 +70,12 @@ def full_db(location=os.path.join(os.getcwd(), 'export', 'full'), rotate=False):
     print("Done!")
 
 
-@manager.command
-def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
+@cli.command()
+@click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'json'), show_default=True,
+              help="Directory where dumps need to be created")
+@click.option("--rotate", "-r", is_flag=True)
+@with_app_context
+def json(location, rotate=False):
     """Create JSON dumps with all reviews.
 
     This command will create an archive for each license available on CB.
@@ -106,8 +125,12 @@ def json(location=os.path.join(os.getcwd(), 'export', 'json'), rotate=False):
     print("Done!")
 
 
-@manager.command
-def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False):
+@cli.command()
+@click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'public'), show_default=True,
+              help="Directory where dumps need to be created")
+@click.option("--rotate", "-r", is_flag=True)
+@with_app_context
+def public(location, rotate=False):
     """Creates a set of archives with public data.
 
     1. Base archive with license-independent data (users, licenses).
@@ -214,8 +237,9 @@ def public(location=os.path.join(os.getcwd(), 'export', 'public'), rotate=False)
     print("Done!")
 
 
-# TODO(roman): Improve name of this command ("export importer" sounds kind of strange):
-@manager.command
+@cli.command(name="import")
+@click.argument("archive", type=click.Path(exists=True), required=True)
+@with_app_context
 def importer(archive):
     """Imports database dump (archive) produced by export command.
 
@@ -239,7 +263,8 @@ def importer(archive):
             with open(os.path.join(temp_dir, 'SCHEMA_SEQUENCE')) as f:
                 archive_version = f.readline()
                 if archive_version != str(model.__version__):
-                    sys.exit("Incorrect schema version! Expected: %d, got: %c. Please, get the latest version of the dump."
+                    sys.exit("Incorrect schema version! Expected: %d, got: %c."
+                             "Please, get the latest version of the dump."
                              % (model.__version__, archive_version))
         except IOError as exception:
             if exception.errno == errno.ENOENT:

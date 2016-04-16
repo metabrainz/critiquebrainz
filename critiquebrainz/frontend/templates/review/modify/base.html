@@ -13,7 +13,6 @@
   <div class="row">
     {% include ('review/modify/%s.html' % entity_type) %}
   </div>
-
   <div class="clearfix">
     <ul class="nav nav-tabs" style="margin-bottom:-1px;">
       <li class="active"><a href="#write" data-toggle="tab">{{ _('Write') }}</a></li>
@@ -53,9 +52,9 @@
         </div>
       </div>
     {% endif %}
-    {% block license_agreement_input %} {% endblock %}
+    {% block license_agreement_input %}{% endblock %}
   </form>
-  {% block buttons %} {% endblock %}
+  {% block buttons %}{% endblock %}
 {% endblock %}
 
 {% block scripts %}
@@ -79,15 +78,13 @@
         $("#state").attr('value', 'publish');
         $("#review-editor").submit();
       });
-
-      {% if not review or review.is_draft %}
+      if ('{{not review or review.is_draft}}'){
         $("#btn-draft").click(function(){
           beingSaved = true;
           $("#state").attr('value', 'draft');
           $("#review-editor").submit();
         });
-      {% endif %}
-
+      }
       // Preview tab functionality
       $(function() {
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

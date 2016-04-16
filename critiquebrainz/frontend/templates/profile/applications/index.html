@@ -66,7 +66,7 @@
               {% if token.scopes %}
                 <ul>
                   {% set scopes = token.scopes.split() %}
-                  {% from 'macros.html' import scope_desc %}
+                  {% from 'macros.html' import scope_desc with context %}
                   {% for scope in scopes %}
                     <li>{{ scope_desc(scope) }}</li>
                   {% endfor %}

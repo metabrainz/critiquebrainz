@@ -9,7 +9,7 @@ project.
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask_login import login_required, current_user
 from flask_babel import gettext
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend.external import musicbrainz, mbspotify
 from urlparse import urlparse
@@ -62,8 +62,14 @@ def spotify():
     query = unicode(release_group['title']).translate(punctuation_map)
     # Searching...
     response = spotify_api.search(query, 'album', limit, offset).get('albums')
-    return render_template('mapping/spotify.html', release_group=release_group, search_results=response.get('items'),
-                           page=page, limit=limit, count=response.get('total'))
+
+    albums_ids = [x['id'] for x in response['items']]
+    full_response = spotify_api.get_multiple_albums(albums_ids)
+
+    return render_template(
+            'mapping/spotify.html', release_group=release_group,
+            search_results=[full_response[id] for id in albums_ids if id in full_response],
+            page=page, limit=limit, count=response.get('total'))
 
 
 @mapping_bp.route('/spotify/confirm', methods=['GET', 'POST'])
@@ -71,6 +77,8 @@ def spotify():
 def spotify_confirm():
     """Confirmation page for adding new Spotify mapping."""
     release_group_id = request.args.get('release_group_id')
+    if not release_group_id:
+        raise BadRequest("Didn't provide `release_group_id`!")
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
         flash(gettext("Only existing release groups can be mapped to Spotify!"), 'error')

@@ -6,25 +6,57 @@
   {% if not reviews %}
     <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
   {% else %}
-    <table class="table table-hover">
+    <table id="reviews" class="table table-hover">
       <thead>
       <tr>
+        <th><!-- Title --></th>
         {% if (current_user.is_authenticated() and current_user == user) or current_user.is_admin() %}
-          <th><!-- State --></th>
+          <th>{{ _('Status') }}</th>
         {% endif %}
-        <th>{{ _('Type') }}</th>
-        <th>{{ _('Entity') }}</th>
-        <th>{{ _('Artist') }}</th>
         <th>{{ _('Created on') }}</th>
         <th>{{ _('Votes (+/-)') }}</th>
-        <th></th>
+        {% if current_user.is_authenticated() and current_user == user %}
+          <th><!-- Buttons --></th>
+        {% endif %}
       </tr>
       </thead>
       <tbody>
       {% for review in reviews %}
+        {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
         <tr data-review-id="{{ review.id }}">
-          {% if current_user.is_authenticated() and current_user == user %}
-            <td align="right">
+          <td class="title">
+            <a href="{{ url_for('review.entity', id=review.id) }}">
+
+              {%- if review.entity_type == 'release_group' -%}
+                <strong>{{ entity.title | default(_('[Unknown release group]')) }}</strong>
+                {% if entity['first-release-date'] %}
+                  <span class="text-muted">({{ entity['first-release-date'][:4] }})</span>
+                {% endif %}
+                - {{ entity['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
+
+              {%- elif review.entity_type == 'event' -%}
+                <strong>{{ entity.name | default(_('[Unknown event]')) }}</strong>
+                {% if entity['artist-relation-list'] %}
+                  (
+                  {{ entity['artist-relation-list'][0]['artist']['name'] }}
+                  {% set count = entity['artist-relation-list'] | length %}
+                  {% if count > 1 %}
+                    + {{ count - 1 }} {{ _("more") }}
+                  {% endif %}
+                  )
+                {% endif %}
+              {%- elif review.entity_type == 'place' -%}
+                <strong>{{ entity.name | default(_('[Unknown place]')) }}</strong>
+              {%- endif -%}
+
+            </a>
+            <br />
+            <span class="label {{ review.entity_type | replace('_', '-') }}">
+              {{ review.entity_type | replace('_', ' ') | title }}
+            </span>
+          </td>
+          {% if (current_user.is_authenticated() and current_user == user) or current_user.is_admin() %}
+            <td>
               {% if review.is_draft %}
                 <span class="label label-default">{{ _('Draft') }}</span>
               {% else %}
@@ -38,42 +70,14 @@
               {% endif %}
             </td>
           {% endif %}
-          <td>{{ review.entity_type | replace('_', ' ') | title }}</td>
-          {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
-          <td>
-            {% if review.entity_type == 'release_group' %}
-              {{ entity.title | default(_('[Unknown release group]')) }}
-              {% if entity['first-release-date'] %}
-                <span class="text-muted">({{ entity['first-release-date'][:4] }})</span>
-              {% endif %}
-            {% elif review.entity_type == 'event' %}
-              {{ entity.name | default(_('[Unknown event]')) }}
-            {% endif %}
-          </td>
-          <td>
-            {% if review.entity_type == 'release_group' %}
-              {{ entity['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
-            {% elif review.entity_type == 'event' %}
-              {% if entity['artist-relation-list'] %}
-                {{ entity['artist-relation-list'][0]['artist']['name'] or '-' }}
-                {% set count = entity['artist-relation-list'] | length %}
-                {% if count > 1 %}
-                  + {{ count - 1 }} {{ _("more") }}
-                {% endif %}
-              {% else %}
-                -
-              {% endif %}
-            {% endif %}
-          </td>
           <td>{{ review.created | date }}</td>
           <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
-          <td>
-            <a class="btn btn-success btn-xs" href="{{ url_for('review.entity', id=review.id) }}">{{ _('Read') }}</a>
-            {% if current_user.is_authenticated() and current_user == user %}
+          {% if current_user.is_authenticated() and current_user == user %}
+            <td>
               <a class="btn btn-primary btn-xs" href="{{ url_for('review.edit', id=review.id) }}">{{ _('Edit') }}</a>
               <a class="btn btn-danger btn-xs" href="{{ url_for('review.delete', id=review.id) }}">{{ _('Delete') }}</a>
-            {% endif %}
-          </td>
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
       </tbody>

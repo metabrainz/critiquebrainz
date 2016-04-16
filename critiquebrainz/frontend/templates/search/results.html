@@ -47,5 +47,22 @@
       </td>
     </tr>
 
+  {% elif type=="place" %}
+    <tr>
+      <td>
+        <a href="{{ url_for('place.entity', id=result.id) }}">{{ result['name'] }}</a>
+      </td>
+      <td>
+        {{ result['type'] or '-' }}
+      </td>
+      <td>
+        {% if 'area' in result %}
+          {{ result['area']['name'] }}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+    </tr>
+
   {% endif %}
 {% endfor %}

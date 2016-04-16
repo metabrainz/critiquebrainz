@@ -5,6 +5,8 @@ SECRET_KEY = "secret"
 # Database for testing
 TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@localhost:5432/cb_test"
 
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 # CritiqueBrainz OAuth configuration
 OAUTH_TOKEN_LENGTH = 40
 OAUTH_GRANT_EXPIRE = 60

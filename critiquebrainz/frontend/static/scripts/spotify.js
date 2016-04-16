@@ -1,0 +1,1 @@
+$('.match-link').tooltip();

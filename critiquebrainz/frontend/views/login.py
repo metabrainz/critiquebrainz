@@ -9,7 +9,7 @@ login_bp = Blueprint('login', __name__)
 @login_bp.route('/')
 @login_forbidden
 def index():
-    return render_template('login/login.html')
+    return render_template('login/index.html')
 
 
 @login_bp.route('/musicbrainz')
@@ -38,4 +38,7 @@ def musicbrainz_post():
 def logout():
     logout_user()
     session.clear()
+    next = request.args.get('next')
+    if next:
+        return redirect(next)
     return redirect(url_for('frontend.index'))

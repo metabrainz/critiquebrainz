@@ -1,3 +1,4 @@
+from flask import request
 from flask_uuid import UUID_RE
 from flask_babel import format_datetime, format_date
 import difflib
@@ -51,6 +52,21 @@ def track_length(value):
     seconds = int(value) / 1000
     minutes, seconds = divmod(seconds, 60)
     return '%i:%02i' % (minutes, seconds)
+
+
+def parameterize(value, key):
+    """
+    Add a new parameter to the current url.
+
+    Taken from: http://stackoverflow.com/a/2506477
+    """
+    url_parts = list(urlparse.urlparse(request.url))
+
+    query = urlparse.parse_qs(url_parts[4])
+    query[key] = value
+    url_parts[4] = urllib.urlencode(query, doseq=True)
+
+    return urlparse.urlunparse(url_parts)
 
 
 def side_by_side_diff(old, new):

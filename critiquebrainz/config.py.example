@@ -12,7 +12,7 @@ SECRET_KEY = "CHANGE_THIS"
 
 # Primary database
 # Example:
-# SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
+#SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
 SQLALCHEMY_DATABASE_URI = "postgresql://cb:cb@localhost:5432/critiquebrainz"
 
 # Database for testing
@@ -44,7 +44,7 @@ TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@localhost:5432/cb_t
 # EXTERNAL SERVICES
 
 # MusicBrainz
-#MUSICBRAINZ_HOSTNAME = "localhost:5000"
+#MUSICBRAINZ_HOSTNAME = "localhost:8080"
 MUSICBRAINZ_USERAGENT = "CritiqueBrainz Custom"
 MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
@@ -65,9 +65,6 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 #DEBUG_TB_TEMPLATE_EDITOR_ENABLED = True
 
 #GOOGLE_ANALYTICS_TRACKING_ID = ""
-
-# Compile styling in browser if set to True
-#COMPILE_LESS = True
 
 # List of administrators (MusicBrainz usernames)
 ADMINS = [

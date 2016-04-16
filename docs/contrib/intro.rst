@@ -30,9 +30,9 @@ After that you can start a VM and connect to it::
 After VM is created and running, you can start the application::
 
     $ cd /vagrant
-    $ python run.py
+    $ python manage.py runserver -d
 
-Web server should be accessible at http://localhost:5000/.
+Web server should be accessible at http://localhost:8080/.
 
 PostgreSQL will also be available on port *15432* with `trust`_ authentication method.
 
