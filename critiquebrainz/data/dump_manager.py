@@ -283,6 +283,12 @@ def importer(archive):
         print("Done!")
 
 
+@cli.command(name="import-web")
+def importer_web():
+    """Imports database dump from FTP server that hosts them."""
+    raise NotImplementedError
+
+
 def import_data(file_name, model, columns=None):
     db_connection = db.session.connection().connection
     cursor = db_connection.cursor()
