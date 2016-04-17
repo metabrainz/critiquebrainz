@@ -36,7 +36,7 @@ def browse():
     reviews_release_group, count_release_group = Review.list(sort='created', entity_type='release_group', limit=limit, offset=offset)
     reviews_event, count_event = Review.list(sort='created', entity_type='event', limit=limit, offset=offset)
     if not reviews_release_group:
-        if page - 1 > count / limit:
+        if page - 1 > count_release_group / limit:
             return redirect(url_for('review.browse', page=int(ceil(count/limit))))
         else:
             raise NotFound(gettext("No reviews to display."))
