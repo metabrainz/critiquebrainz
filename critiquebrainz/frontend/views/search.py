@@ -1,5 +1,4 @@
 from flask import Blueprint, request, render_template, redirect, jsonify, url_for
-from critiquebrainz.frontend.apis import musicbrainz
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.frontend.external import musicbrainz
 
@@ -8,7 +7,7 @@ search_bp = Blueprint('search', __name__)
 RESULTS_LIMIT = 10
 
 
-def search_wrapper(query, type, offset=None,review_only=False):
+def search_wrapper(query, type, offset=None, review_only=False):
     if query and review_only == False:
         if type == "artist":
             count, results = musicbrainz.search_artists(query, limit=RESULTS_LIMIT, offset=offset)
@@ -25,26 +24,27 @@ def search_wrapper(query, type, offset=None,review_only=False):
             count, results = musicbrainz.search_artists(query)
         elif type == "event":
             count, results = musicbrainz.search_events(query)
+        elif type == "place":
+            count, results = musicbrainz.search_places(query)
         elif type == "release-group":
             count, results = musicbrainz.search_release_groups(query)
         else:
             count, results = 0, []
     else:
         count, results = 0, []
-    if review_only is True :
-        if type== "artist":
-             fresults=[]
+    if review_only is True:
+        fresults = []
+        if type == "artist":
              for group in results:
                  count, release_groups = musicbrainz.browse_release_groups(artist_id=group['id'], release_types=["album"])
                  for release in release_groups:
                      if(Review.list(entity_id=release['id'])[0]):
                          fresults.append(group)
                          break;    #we want atleast one review so that it qualifies to be in result
-             return len(fresults),fresults
-        if type== "event" or type== "release-group":
-            fresults=[]
+             return len(fresults), fresults
+        if type == "event" or type == "release-group" or type == "place":
             for group in results:
-                if(Review.list(entity_id=group['id'])[0]):
+                if Review.list(entity_id=group['id'])[0] :
                     fresults.append(group)
         return len(fresults),fresults
     return count, results
