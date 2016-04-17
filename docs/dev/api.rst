@@ -14,7 +14,7 @@ Below you will find description of all available endpoints.
 Reviews
 ^^^^^^^
 
-.. autoflask:: critiquebrainz.ws:create_app()
+.. autoflask:: critiquebrainz.ws:create_app_sphinx()
    :blueprints: ws_review
    :include-empty-docstring:
    :undoc-static:
@@ -22,7 +22,7 @@ Reviews
 Users
 ^^^^^
 
-.. autoflask:: critiquebrainz.ws:create_app()
+.. autoflask:: critiquebrainz.ws:create_app_sphinx()
    :blueprints: ws_user
    :include-empty-docstring:
    :undoc-static:
@@ -30,7 +30,7 @@ Users
 OAuth
 ^^^^^
 
-.. autoflask:: critiquebrainz.ws:create_app()
+.. autoflask:: critiquebrainz.ws:create_app_sphinx()
    :blueprints: ws_oauth
    :include-empty-docstring:
    :undoc-static:

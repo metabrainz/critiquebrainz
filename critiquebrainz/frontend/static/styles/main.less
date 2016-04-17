@@ -11,6 +11,7 @@
 // Entity colors
 @rg-color: @blue;
 @event-color: @green;
+@place-color: @yellow;
 
 body {
   padding-bottom: 25px;
@@ -84,6 +85,14 @@ ul.sharing {
   }
 }
 
+.caa-credit {
+  .text-muted;
+  .small;
+  font-style: italic;
+  text-align: center;
+  margin-top: 4px;
+}
+
 // Review listings
 .cover-art-container {
   position: relative;
@@ -104,6 +113,9 @@ ul.sharing {
     }
     &.event {
       background-color: fade(@event-color, 70%);
+    }
+    &.place {
+      background-color: fade(@place-color, 70%);
     }
   }
 
@@ -272,8 +284,9 @@ ul.sharing {
 a#write-review { margin-top: 20px; }
 a#edit-review { margin-top: 20px; }
 #release-group-details {
-  .spotify-player, #cover-art {
+  .spotify-player, .cover-art {
     margin-top: 10px;
+    max-width: 250px;
     @media (max-width: @screen-xs-max) {
       display: flex;
       flex-direction: row;
@@ -402,7 +415,32 @@ a#edit-review { margin-top: 20px; }
 
 
 // User profile
-#profile-navigation { margin-top: 16px; margin-bottom: 22px; }
+#user-profile {
+  #profile-navigation {
+    margin-top: 16px;
+    margin-bottom: 22px;
+  }
+  table#reviews {
+    td {
+      vertical-align: middle;
+      &.title {
+        span.label {
+          .label-default;
+
+          &.release-group {
+            background-color: fade(@rg-color, 70%);
+          }
+          &.event {
+            background-color: fade(@event-color, 70%);
+          }
+          &.place {
+            background-color: fade(@place-color, 70%);
+          }
+        }
+      }
+    }
+  }
+}
 
 // Revisions Compare
 #diff {

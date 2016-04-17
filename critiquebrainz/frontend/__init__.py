@@ -1,7 +1,5 @@
-import os
-
 from flask import Flask
-from flask_babel import Locale, get_locale
+import os
 
 
 def create_app(debug=None):
@@ -20,6 +18,10 @@ def create_app(debug=None):
     # Error handling
     from critiquebrainz.frontend.error_handlers import init_error_handlers
     init_error_handlers(app)
+
+    # Static files
+    import static_manager
+    static_manager.read_manifest()
 
     # Logging
     from critiquebrainz import loggers
@@ -44,10 +46,10 @@ def create_app(debug=None):
                    app.config['MEMCACHED_NAMESPACE'],
                    debug=1 if app.debug else 0)
 
-    import critiquebrainz.frontend.babel
+    from critiquebrainz.frontend import babel
     babel.init_app(app)
 
-    import critiquebrainz.frontend.login
+    from critiquebrainz.frontend import login
     login.login_manager.init_app(app)
     from critiquebrainz.frontend.login.provider import MusicBrainzAuthentication
     login.mb_auth = MusicBrainzAuthentication(
@@ -67,12 +69,15 @@ def create_app(debug=None):
 
     # Template utilities
     app.jinja_env.add_extension('jinja2.ext.do')
-    from critiquebrainz.utils import reformat_date, reformat_datetime, track_length
+    from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, parameterize
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
+    app.jinja_env.filters['parameterize'] = parameterize
     app.jinja_env.filters['entity_details'] = musicbrainz.get_entity_by_id
+    from flask_babel import Locale, get_locale
     app.jinja_env.filters['language_name'] = lambda language_code: Locale(language_code).get_language_name(get_locale())
+    app.context_processor(lambda: dict(get_static_path=static_manager.get_static_path))
 
     # Blueprints
     from critiquebrainz.frontend.views.index import frontend_bp
@@ -85,6 +90,7 @@ def create_app(debug=None):
     from critiquebrainz.frontend.views.mapping import mapping_bp
     from critiquebrainz.frontend.views.user import user_bp
     from critiquebrainz.frontend.views.profile import profile_bp
+    from critiquebrainz.frontend.views.place import place_bp
     from critiquebrainz.frontend.views.profile_apps import profile_apps_bp
     from critiquebrainz.frontend.views.login import login_bp
     from critiquebrainz.frontend.views.oauth import oauth_bp
@@ -98,6 +104,7 @@ def create_app(debug=None):
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
     app.register_blueprint(release_bp, url_prefix='/release')
     app.register_blueprint(event_bp, url_prefix='/event')
+    app.register_blueprint(place_bp, url_prefix='/place')
     app.register_blueprint(mapping_bp, url_prefix='/mapping')
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(profile_bp, url_prefix='/profile')

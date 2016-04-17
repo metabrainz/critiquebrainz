@@ -26,7 +26,7 @@ for language_code in supported_languages:
     try:
         languages.append((language_code, Locale(language_code).language_name))
     except UnknownLocaleError:
-        languages.append((language_code, pycountry.languages.get(alpha2=language_code).name))
+        languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
 
 
 class ReviewEditForm(Form):

@@ -17,7 +17,7 @@ def browse():
 
     results = groupby(results, lambda log: log.timestamp.strftime('%d %b, %G'))
 
-    return render_template('log/log.html', count=count, results=results, limit=RESULTS_LIMIT)
+    return render_template('log/browse.html', count=count, results=results, limit=RESULTS_LIMIT)
 
 
 @log_bp.route('/more')

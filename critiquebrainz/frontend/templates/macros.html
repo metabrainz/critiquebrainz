@@ -1,15 +1,11 @@
 {% macro print_error(message, category) -%}
   {% if category == "error" %}
-    {% set head = _("Error!") %}
     {% set alert_class="alert-danger" %}
   {% elif category == "warning" %}
-    {% set head = _("Warning!") %}
     {% set alert_class="alert-warning" %}
   {% elif category == "success" %}
-    {% set head = _("Success!") %}
     {% set alert_class="alert-success" %}
   {% else %}
-    {% set head = _("Notice!") %}
     {% set alert_class="alert-info" %}
   {% endif %}
 <div class="alert {{ alert_class }}">
@@ -36,32 +32,37 @@
   {% endif %}
 {% endmacro %}
 
-{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False) %}
+{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False, source_credit=False, size=250) %}
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
-  <div class="cover-container">
-    {% if entity_type == 'event' %}
-      <img src="{{ url_for('static', filename='img/placeholder_event.svg') }}" {{ attributes }} />
-      {% if overlay_type %}
-        <span class="entity-type event">
-          {{ _('Event') }}
-        </span>
-      {% endif %}
-    {% else %} {# release-group #}
-      <img {{ attributes }} />
-      <script>
-        $("img").last()
-            .on("error", function () {
-              $(this).attr("src", "{{ url_for('static', filename='img/placeholder_disc.svg') }}");
-            })
-            .attr("src", "//coverartarchive.org/release-group/{{ entity_id }}/front-250");
-      </script>
-      {% if overlay_type %}
-        <span class="entity-type release-group">
-          {{ _('Release Group') }}
-        </span>
-      {% endif %}
+  {% if entity_type == 'event' %}
+    <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type event">
+        {{ _('Event') }}
+      </span>
     {% endif %}
-  </div>
+  {% elif entity_type == 'place'  %}
+    <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type place">
+        {{ _('Place') }}
+      </span>
+    {% endif %}
+  {% else %} {# release-group #}
+    <img {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type release-group">
+        {{ _('Release Group') }}
+      </span>
+    {% endif %}
+    <script>
+      $('img').last()
+          .on('error', function () {
+            $(this).attr('src', '{{ get_static_path('images/placeholder_disc.svg') }}');
+          })
+          .attr('src', 'https://coverartarchive.org/release-group/{{ entity_id }}/front-{{ size * 2 }}');
+    </script>
+  {% endif %}
 {% endmacro %}
 
 {% macro review_credit(review, user_picture_size) %}
@@ -86,7 +87,7 @@
         {{ _('We don\'t have a mapping between this release group and Spotify. Please help us find the right album.') }}
       </span>
       <div style="text-align:center;font-weight:bold;">
-        <a style="font-size:16px;" href="{{ url_for('mapping.spotify', release_group_id=id) }}" rel="nofollow">
+        <a style="font-size:16px;" href="{{ url_for('mapping.spotify', release_group_id=release_group_id) }}" rel="nofollow">
           {{ _('Match this!') }}
         </a>
       </div>

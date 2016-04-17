@@ -4,7 +4,7 @@
 
 {% block scripts_top %}
   {{ super() }}
-  <script src="{{ url_for('static', filename='js/leaflet.min.js') }}"></script>
+  <script src="{{ get_static_path('leaflet.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -38,22 +38,19 @@
   {% if lat %}
     <div class="col-md-4">
       <div id="map"></div>
+      <script src="{{ get_static_path('leaflet.js') }}"></script>
       <script>
-        L.Icon.Default.imagePath = '/static/img/';
-        var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
-
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          {
-            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-          }).addTo(map);
-
+        var map = L.map('map').setView(['{{ lat }}', '{{ long }}'], 14);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://openstreetmap.org">OSM</a>, ' +
+                       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        }).addTo(map);
         var popup = L.popup()
-          .setContent("<b>" + {{ _("Held At") | tojson }} + "</b><br> " + {{ place['name'] | tojson }});
-
-        var marker = L.marker([{{ lat }}, {{ long }}])
-          .addTo(map)
-          .bindPopup(popup)
-          .openPopup();
+            .setContent("<b>" + {{ _("Held at") | tojson }} + "</b><br> " + {{ place["name"] | tojson }});
+        var marker = L.marker(['{{ lat }}', '{{ long }}'])
+            .addTo(map)
+            .bindPopup(popup)
+            .openPopup();
       </script>
     </div>
   {% endif %}
@@ -124,8 +121,8 @@
 
     <div class="external-links">
       <hr>
-      <div class="favicon-container"><img src="{{ url_for('static', filename='favicons/musicbrainz-16.svg') }}" /></div>
-      <a href="//musicbrainz.org/event/{{ event.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
+      <a href="https://musicbrainz.org/event/{{ event.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
   </div>
 </div>

@@ -1,5 +1,4 @@
-{% from 'macros.html' import cover_art %}
-{% from 'macros.html' import spotify_player %}
+{% from 'macros.html' import cover_art, spotify_player with context %}
 
 {% if entity is not defined %}
   {% set entity = review.entity_id | entity_details(type=entity_type) %}
@@ -23,5 +22,5 @@
   {{ spotify_player(entity['id'], spotify_mappings) }}
 </div>
 <div class="col-md-4 text-right">
-  {{ cover_art(entity['id'], 'release_group', 'id=cover-art style=max-height:120px;max-width:120px;') }}
+  {{ cover_art(entity['id'], 'release_group', attributes='id=cover-art style=max-height:120px;max-width:120px;') }}
 </div>

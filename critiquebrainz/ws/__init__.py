@@ -38,13 +38,21 @@ def create_app(debug=None):
 
     app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 
-    # Blueprints
+    _register_blueprints(app)
+
+    return app
+
+
+def create_app_sphinx():
+    app = Flask(__name__)
+    _register_blueprints(app)
+    return app
+
+
+def _register_blueprints(app):
     from critiquebrainz.ws.oauth.views import oauth_bp
     from critiquebrainz.ws.review.views import review_bp
     from critiquebrainz.ws.user.views import user_bp
-
     app.register_blueprint(oauth_bp, url_prefix='/oauth')
     app.register_blueprint(review_bp, url_prefix='/review')
     app.register_blueprint(user_bp, url_prefix='/user')
-
-    return app

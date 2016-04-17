@@ -12,14 +12,14 @@ Below you can find commands that can be used to create backups of different form
 
 Complete database dump *(for PostgreSQL)*::
 
-   $ python manage.py export full_db
+   $ python manage.py dump full_db
 
 MusicBrainz-style dump public *(no private info)*::
 
-   $ python manage.py export public
+   $ python manage.py dump public
 
 JSON dump with all reviews *(no private info)*::
 
-   $ python manage.py export json
+   $ python manage.py dump json
 
 All commands have rotation feature which can be enabled by passing `-r` argument.

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ place.name }} - CritiqueBrainz{% endblock %}
+
+{% block scripts_top %}
+  {{ super() }}
+  <script src="{{ get_static_path('leaflet.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">
+    {{ place.name }}
+  </h2>
+
+  {% if not my_review %}
+    <a id="write-review" href="{{ url_for('review.create', place=id) }}"
+       role="button" class="btn btn-success pull-right">
+      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
+    </a>
+  {% else %}
+    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
+       role="button" class="btn btn-primary pull-right">
+      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
+    </a>
+  {% endif %}
+</div>
+
+{% if place['coordinates'] %}
+  {% set lat = place['coordinates']['latitude'] | float %}
+  {% set long = place['coordinates']['longitude'] | float %}
+{% endif %}
+
+<div id="place-details" class="row">
+  {% if lat %}
+    <div class="col-md-4">
+      <div id="map"></div>
+      <script>
+        var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://openstreetmap.org">OSM</a>,' +
+                       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        }).addTo(map);
+        var marker = L.marker([{{ lat | default(0) }}, {{ long | default(0) }}]).addTo(map);
+      </script>
+    </div>
+  {% endif %}
+
+  <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
+    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+    {% if not reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ _('Published on') }}</th>
+            <th>{{ _('Votes (+/-)') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for review in reviews %}
+            <tr data-review-id="{{ review.id }}">
+              <td>
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                </a>
+              </td>
+              <td>{{ review.created | date }}</td>
+              <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <ul class="pagination">
+        {% set pages = count//limit %}
+        {% if count%limit %}
+          {% set pages = pages+1 %}
+        {% endif %}
+        {% if pages>1 %}
+          {% for p in range(pages) %}
+            {% set p_offset = p*limit %}
+            <li {% if offset == p_offset %}class="active"{% endif %}>
+              <a href="{{ url_for('place.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <div class="col-md-3">
+    <h4>{{ _('Place information') }}</h4>
+    <div class="external-links">
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
+      <a href="https://musicbrainz.org/place/{{ place.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+    </div>
+  </div>
+</div>
+{% endblock %}

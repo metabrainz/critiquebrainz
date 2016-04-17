@@ -27,10 +27,10 @@ def index():
     review_count = format_number(Review.query.filter(Review.is_draft == False).count())
     user_count = format_number(User.query.count())
 
-    return render_template('index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
+    return render_template('index/index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
                            reviews_total=review_count, users_total=user_count)
 
 
 @frontend_bp.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('index/about.html')

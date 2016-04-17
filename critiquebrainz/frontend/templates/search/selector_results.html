@@ -44,5 +44,25 @@
     </td>
   </tr>
 
+{% elif type=="place" %}
+  <tr>
+    <td>
+      <a href="{{ url_for('place.entity', id=result.id) }}" target="_blank">{{ result['name'] }}</a>
+    </td>
+    <td>
+      {{ result['type'] or '-' }}
+    </td>
+    <td>
+      {% if result['area'] %}
+        {{ result['area']['name'] or '-' }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      <input type="radio" name="place" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
 {% endif %}
 {% endfor %}

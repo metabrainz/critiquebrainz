@@ -39,15 +39,8 @@ def compile_translations():
     print(green("Translated strings have been compiled and ready to be used.", bold=True))
 
 
-def compile_styling():
-    """Compile styles.less into styles.css.
-
-    This command requires Less (CSS pre-processor). More information about it can be
-    found at http://lesscss.org/.
-    """
-    style_path = "critiquebrainz/frontend/static/css/"
-    local("lessc --clean-css %smain.less > %smain.css" % (style_path, style_path))
-    print(green("Style sheets have been compiled successfully.", bold=True))
+def build_static():
+    local("./node_modules/.bin/gulp")
 
 
 def clear_memcached():
@@ -64,7 +57,7 @@ def git_pull():
 def deploy():
     git_pull()
     compile_translations()
-    compile_styling()
+    build_static()
     clear_memcached()
 
 

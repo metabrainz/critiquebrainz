@@ -1,8 +1,8 @@
 Development
 ===========
 
-This part of CritqueBrainz documentation will help you find information about
-our web service.
+This part of CritqueBrainz documentation provides information about
+our web service (Web API).
 
 .. toctree::
    :maxdepth: 2

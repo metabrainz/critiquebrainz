@@ -1,0 +1,33 @@
+{
+  "name": "critiquebrainz",
+  "version": "0.0.0",
+  "description": "package.json for keeping track of nodejs dependencies for critiquebrainz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/metabrainz/critiquebrainz.git"
+  },
+  "dependencies": {
+    "babel-core": "6.3.26",
+    "babel-preset-es2015": "6.3.13",
+    "babel-preset-stage-2": "6.3.13",
+    "babelify": "7.2.0",
+    "bootstrap": "3.3.6",
+    "envify": "^3.4.0",
+    "fs": "0.0.2",
+    "gulp": "3.9.0",
+    "gulp-less": "3.0.5",
+    "gulp-rev": "6.0.1",
+    "gulp-streamify": "^1.0.2",
+    "jquery": "2.1.4",
+    "leaflet": "0.7.7",
+    "less": "2.5.3",
+    "less-plugin-clean-css": "1.5.1",
+    "lodash": "3.10.1",
+    "path": "0.12.7",
+    "q": "1.4.1",
+    "through2": "2.0.0",
+    "vinyl-source-stream": "1.1.0",
+    "yarb": "0.6.1"
+  },
+  "private": true
+}
