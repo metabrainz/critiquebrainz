@@ -21,10 +21,10 @@ import os
 cli = click.Group()
 
 
-def with_app_context(f):
+def with_request_context(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        with frontend.create_app().app_context():
+        with frontend.create_app().test_request_context():
             return f(*args, **kwargs)
     return decorated
 
@@ -33,7 +33,7 @@ def with_app_context(f):
 @click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'full'), show_default=True,
               help="Directory where dumps need to be created")
 @click.option("--rotate", "-r", is_flag=True)
-@with_app_context
+@with_request_context
 def full_db(location, rotate=False):
     """Create complete dump of PostgreSQL database.
 
@@ -74,7 +74,7 @@ def full_db(location, rotate=False):
 @click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'json'), show_default=True,
               help="Directory where dumps need to be created")
 @click.option("--rotate", "-r", is_flag=True)
-@with_app_context
+@with_request_context
 def json(location, rotate=False):
     """Create JSON dumps with all reviews.
 
@@ -129,7 +129,7 @@ def json(location, rotate=False):
 @click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'public'), show_default=True,
               help="Directory where dumps need to be created")
 @click.option("--rotate", "-r", is_flag=True)
-@with_app_context
+@with_request_context
 def public(location, rotate=False):
     """Creates a set of archives with public data.
 
@@ -239,7 +239,7 @@ def public(location, rotate=False):
 
 @cli.command(name="import")
 @click.argument("archive", type=click.Path(exists=True), required=True)
-@with_app_context
+@with_request_context
 def importer(archive):
     """Imports database dump (archive) produced by export command.
 
