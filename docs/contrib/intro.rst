@@ -27,10 +27,16 @@ After that you can start a VM and connect to it::
    $ vagrant up
    $ vagrant ssh
 
-After VM is created and running, you can start the application::
+After VM is created and running you can build static files (this needs to be done if you make changes
+to JavaScript or Less files)::
 
-    $ cd /vagrant
-    $ python manage.py runserver -d
+   $ cd /vagrant
+   $ fab build_static
+
+Then you can start the application::
+
+   $ cd /vagrant
+   $ python manage.py runserver -d
 
 Web server should be accessible at http://localhost:8080/.
 
