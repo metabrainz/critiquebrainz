@@ -44,9 +44,9 @@ def search_wrapper(query, type, offset=None, review_only=False):
              return len(fresults), fresults
         if type == "event" or type == "release-group" or type == "place":
             for group in results:
-                if Review.list(entity_id=group['id'])[0] :
+                if Review.list(entity_id=group['id'])[0]:
                     fresults.append(group)
-        return len(fresults),fresults
+        return len(fresults), fresults
     return count, results
 
 
@@ -54,12 +54,12 @@ def search_wrapper(query, type, offset=None, review_only=False):
 def index():
     query = request.args.get('query')
     type = request.args.get('type')
-    if(request.args.get('review-only')=="on"):
-        review_only=True;
+    if request.args.get('review-only')=="on":
+        review_only=True
     else:
-        review_only=False;
-    count, results = search_wrapper(query, type,review_only=review_only)
-    if(review_only == True):
+        review_only=False
+    count, results = search_wrapper(query, type, review_only=review_only)
+    if review_only == True:
         return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=count)
     else:
         return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=RESULTS_LIMIT)
