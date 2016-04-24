@@ -10,9 +10,9 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def setUp(self):
         super(ReviewViewsTestCase, self).setUp()
-        self.user = User.get_or_create(u"Tester", u"aef06569-098f-4218-a577-b413944d9493")
-        self.hacker = User.get_or_create(u"Hacker!", u"9371e5c7-5995-4471-a5a9-33481f897f9c")
-        self.license = License.create(u"CC BY-SA 3.0", u"Created so we can fill the form correctly.")
+        self.user = User.get_or_create("Tester", "aef06569-098f-4218-a577-b413944d9493")
+        self.hacker = User.get_or_create("Hacker!", "9371e5c7-5995-4471-a5a9-33481f897f9c")
+        self.license = License.create("CC BY-SA 3.0", "Created so we can fill the form correctly.")
         self.review = dict(
             entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
             entity_type='release_group',

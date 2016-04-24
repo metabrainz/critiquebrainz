@@ -57,10 +57,13 @@ class MusicBrainzAuthentication(BaseAuthentication):
         return self._service.get_authorize_url(**params)
 
     def get_user(self):
-        data = dict(code=self.fetch_data('code'),
+        data = dict(code=str(self.fetch_data('code')),
                     grant_type='authorization_code',
                     redirect_uri=url_for('login.musicbrainz_post', _external=True))
-        s = self._service.get_auth_session(data=data, decoder=json.loads)
+        s = self._service.get_auth_session(
+            data=data,
+            decoder=lambda content: json.loads(content.decode("utf-8")),
+        )
         data = s.get('oauth2/userinfo').json()
         return User.get_or_create(data.get('sub'), musicbrainz_id=data.get('sub'))
 

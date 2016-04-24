@@ -20,7 +20,7 @@ def create_app(debug=None):
     init_error_handlers(app)
 
     # Static files
-    import static_manager
+    from critiquebrainz.frontend import static_manager
     static_manager.read_manifest()
 
     # Logging
@@ -43,8 +43,7 @@ def create_app(debug=None):
     if 'MEMCACHED_SERVERS' in app.config:
         from critiquebrainz import cache
         cache.init(app.config['MEMCACHED_SERVERS'],
-                   app.config['MEMCACHED_NAMESPACE'],
-                   debug=1 if app.debug else 0)
+                   app.config['MEMCACHED_NAMESPACE'])
 
     from critiquebrainz.frontend import babel
     babel.init_app(app)
@@ -58,7 +57,8 @@ def create_app(debug=None):
         client_secret=app.config['MUSICBRAINZ_CLIENT_SECRET'],
         authorize_url="https://musicbrainz.org/oauth2/authorize",
         access_token_url="https://musicbrainz.org/oauth2/token",
-        base_url="https://musicbrainz.org/")
+        base_url="https://musicbrainz.org/",
+    )
 
     # APIs
     from critiquebrainz.frontend.external import mbspotify

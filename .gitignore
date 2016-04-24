@@ -19,10 +19,7 @@ pip-delete-this-directory.txt
 /export/
 
 # Test results
-/cover/
-nosetests.xml
-.tox/
-.cache
+htmlcov
 .coverage
 
 # Vagrant
