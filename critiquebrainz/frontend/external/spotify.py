@@ -4,7 +4,7 @@ This module provides access to Spotify Web API.
 More information about it is available at https://developer.spotify.com/web-api/.
 """
 import requests
-import urllib
+import urllib.parse
 from critiquebrainz import cache
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
@@ -23,7 +23,7 @@ def search(query, type, limit=20, offset=0):
     result = cache.get(key, namespace)
     if not result:
         result = requests.get("%s/search?q=%s&type=%s&limit=%s&offset=%s" %
-                              (BASE_URL, urllib.quote(query.encode('utf8')),
+                              (BASE_URL, urllib.parse.quote(query.encode('utf8')),
                                type, str(limit), str(offset))).json()
         cache.set(key=key, namespace=namespace, val=result,
                   time=DEFAULT_CACHE_EXPIRATION)
@@ -55,7 +55,7 @@ def get_multiple_albums(spotify_ids):
         is available at https://developer.spotify.com/web-api/object-model/#album-object.
     """
     namespace = "spotify_album"
-    albums = cache.get_multi(spotify_ids, namespace)
+    albums = cache.get_many(spotify_ids, namespace)
 
     # Checking which albums weren't in cache
     for album_id in albums.keys():
@@ -70,7 +70,7 @@ def get_multiple_albums(spotify_ids):
             if album is not None:
                 received_albums[album['id']] = album
 
-        cache.set_multi(received_albums, namespace=namespace, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set_many(received_albums, namespace=namespace, time=DEFAULT_CACHE_EXPIRATION)
 
         albums.update(received_albums)
 

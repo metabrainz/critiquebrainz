@@ -1,5 +1,4 @@
 from flask import request
-from exceptions import *
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -8,7 +7,7 @@ from critiquebrainz.data.model.oauth_client import OAuthClient
 from critiquebrainz.data.model.oauth_grant import OAuthGrant
 from critiquebrainz.data.model.oauth_token import OAuthToken
 from critiquebrainz.ws.constants import available_scopes
-from critiquebrainz.ws.exceptions import NotAuthorized
+from critiquebrainz.ws.exceptions import *
 from critiquebrainz.utils import generate_string
 
 
@@ -21,7 +20,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
     @staticmethod
     def validate_authorization_header(value):
-        if not value or isinstance(value, unicode) is False:
+        if not value or isinstance(value, str) is False:
             return False
 
         authorization = value.split()
@@ -51,7 +50,7 @@ class CritiqueBrainzAuthorizationProvider(object):
     def validate_client_redirect_uri(client_id, redirect_uri):
         client = OAuthClient.query.get(client_id)
 
-        if client is None or isinstance(redirect_uri, unicode) is False:
+        if client is None or isinstance(redirect_uri, str) is False:
             return False
         else:
             return client.redirect_uri == redirect_uri.split('?')[0]
@@ -83,7 +82,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
     @staticmethod
     def validate_scope(scope, valid_scopes=available_scopes):
-        if not scope or isinstance(scope, unicode) is False:
+        if not scope or isinstance(scope, str) is False:
             return False
 
         scopes = scope.split()

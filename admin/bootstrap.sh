@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 apt-get update
-apt-get install -y build-essential python-pip python-dev memcached curl git \
+apt-get install -y build-essential python3-pip python3-dev memcached curl git \
     libffi-dev libssl-dev libxml2-dev libxslt1-dev libffi-dev libssl-dev
 
 # PostgreSQL
@@ -18,15 +18,15 @@ service postgresql restart
 
 # Setting up server
 cd /vagrant
-pip install -r requirements.txt
-python manage.py init_db
+pip3 install -r requirements.txt
+python3 manage.py init_db
 
 # Node
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 apt-get install -y nodejs
 
-fab build_static
+python3 manage.py build_static
 
 # Installing requirements for documentation
 cd /vagrant/docs
-pip install -r requirements.txt
+pip3 install -r requirements.txt

@@ -2,8 +2,7 @@ from flask import request
 from flask_uuid import UUID_RE
 from flask_babel import format_datetime, format_date
 import difflib
-import urllib
-import urlparse
+import urllib.parse
 import string
 import random
 
@@ -11,16 +10,16 @@ tags = {'+': ('<ins>', '</ins>'), '-': ('<del>', '</del>'), ' ': (' ', '')}
 
 
 def build_url(base, additional_params=None):
-    url = urlparse.urlparse(base)
+    url = urllib.parse.urlparse(base)
     query_params = {}
-    query_params.update(urlparse.parse_qsl(url.query, True))
+    query_params.update(urllib.parse.parse_qsl(url.query, True))
     if additional_params is not None:
         query_params.update(additional_params)
         for key, val in additional_params.iteritems():
             if val is None:
                 query_params.pop(key)
 
-    return urlparse.urlunparse(
+    return urllib.parse.urlunparse(
         (url.scheme, url.netloc, url.path, url.params,
          urllib.urlencode(query_params), url.fragment))
 
@@ -32,9 +31,8 @@ def validate_uuid(string):
 
 def generate_string(length):
     """Generates random string with a specified length."""
-    return ''.join([random.choice(string.ascii_letters.decode('ascii')
-                                  + string.digits.decode('ascii'))
-                    for _ in xrange(length)])
+    return ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits)
+                   for _ in range(length))
 
 
 def reformat_date(value, format=None):
@@ -60,13 +58,13 @@ def parameterize(value, key):
 
     Taken from: http://stackoverflow.com/a/2506477
     """
-    url_parts = list(urlparse.urlparse(request.url))
+    url_parts = list(urllib.parse.urlparse(request.url))
 
-    query = urlparse.parse_qs(url_parts[4])
+    query = urllib.parse.parse_qs(url_parts[4])
     query[key] = value
-    url_parts[4] = urllib.urlencode(query, doseq=True)
+    url_parts[4] = urllib.parse.urlencode(query, doseq=True)
 
-    return urlparse.urlunparse(url_parts)
+    return urllib.parse.urlunparse(url_parts)
 
 
 def side_by_side_diff(old, new):

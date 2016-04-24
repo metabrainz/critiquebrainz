@@ -31,7 +31,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         review = self.create_dummy_review()
         response = self.client.get("/review/%s" % review.id)
         self.assert200(response)
-        self.assertIn(self.review_text, response.data)
+        self.assertIn(self.review_text, str(response.data))
 
     def test_draft_review(self):
         review = self.create_dummy_review(is_draft=True)
@@ -56,7 +56,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.post('/review/write', data=data,
                                     query_string=data, follow_redirects=True)
         self.assert200(response)
-        self.assertIn(self.review_text, response.data)
+        self.assertIn(self.review_text, str(response.data))
 
     def test_edit(self):
         updated_text = "The text has now been updated"
@@ -75,7 +75,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.post('/review/%s/edit' % review.id, data=data,
                                     query_string=data, follow_redirects=True)
         self.assert200(response)
-        self.assertIn(updated_text, response.data)
+        self.assertIn(updated_text, str(response.data))
 
     def test_delete(self):
         review = self.create_dummy_review()
@@ -93,15 +93,15 @@ class ReviewViewsTestCase(FrontendTestCase):
 
         self.temporary_login(self.user)
         response = self.client.post("/review/%s/vote" % review.id, follow_redirects=True)
-        self.assertIn("You cannot rate your own review.", response.data)
+        self.assertIn("You cannot rate your own review.", str(response.data))
 
         self.temporary_login(self.hacker)
         response = self.client.post("/review/%s/vote" % review.id, data=dict(yes=True),
                                     follow_redirects=True)
-        self.assertIn("You have rated this review!", response.data)
+        self.assertIn("You have rated this review!", str(response.data))
 
         response = self.client.get("/review/%s/vote/delete" % review.id, follow_redirects=True)
-        self.assertIn("You have deleted your vote for this review!", response.data)
+        self.assertIn("You have deleted your vote for this review!", str(response.data))
 
     def test_report(self):
         review = self.create_dummy_review()
@@ -110,9 +110,9 @@ class ReviewViewsTestCase(FrontendTestCase):
 
         self.temporary_login(self.user)
         response = self.client.post("/review/%s/report" % review.id, follow_redirects=True)
-        self.assertIn("You cannot report your own review.", response.data)
+        self.assertIn("You cannot report your own review.", str(response.data))
 
         self.temporary_login(self.hacker)
         response = self.client.post("/review/%s/report" % review.id, data=data,
                                     query_string=data, follow_redirects=True)
-        self.assertIn("Review has been reported.", response.data)
+        self.assertIn("Review has been reported.", str(response.data))

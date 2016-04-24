@@ -1,9 +1,8 @@
 """
 Relationship processor for release group entity.
 """
-from urlparse import urlparse
 from flask_babel import lazy_gettext
-import urllib
+import urllib.parse
 
 
 def process(release_group):
@@ -13,7 +12,7 @@ def process(release_group):
     return release_group
 
 
-def _url(list):
+def _url(url_list):
     """Processor for Release Group-URL relationship."""
     basic_types = {
         'wikidata': {'name': lazy_gettext('Wikidata'), 'icon': 'wikidata-16.png', },
@@ -23,12 +22,12 @@ def _url(list):
         'recording studio': {'name': lazy_gettext('Recording studio'), },
     }
     external_urls = []
-    for relation in list:
+    for relation in url_list:
         if relation['type'] in basic_types:
-            external_urls.append(dict(relation.items() + basic_types[relation['type']].items()))
+            external_urls.append(dict(list(relation.items()) + list(basic_types[relation['type']].items())))
         else:
             try:
-                target = urlparse(relation['target'])
+                target = urllib.parse.urlparse(relation['target'])
                 if relation['type'] == 'lyrics':
                     external_urls.append(dict(
                         relation.items() + {
@@ -49,5 +48,5 @@ def _url(list):
             except Exception as e:  # FIXME(roman): Too broad exception clause.
                 # TODO(roman): Log error.
                 pass
-    external_urls.sort()
-    return external_urls
+
+    return sorted(external_urls, key=lambda k: k['name'])

@@ -1,6 +1,6 @@
 from critiquebrainz.data import db
 from sqlalchemy import create_engine
-from urlparse import urlsplit
+import urllib.parse
 import unicodedata
 import shutil
 import errno
@@ -20,7 +20,7 @@ def explode_db_uri(uri):
 
     Returns hostname, database name, username and password.
     """
-    uri = urlsplit(uri)
+    uri = urllib.parse.urlsplit(uri)
     return uri.hostname, uri.path[1:], uri.username, uri.password
 
 
