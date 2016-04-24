@@ -89,9 +89,8 @@ def get_artist_by_id(id):
                 return None
             else:
                 raise InternalServerError(e.cause.msg)
-        artist = artist_rel.process(artist)
         cache.set(key=key, val=artist, time=DEFAULT_CACHE_EXPIRATION)
-    return artist
+    return artist_rel.process(artist)
 
 
 def get_release_group_by_id(id):
@@ -113,9 +112,8 @@ def get_release_group_by_id(id):
                 return None
             else:
                 raise InternalServerError(e.cause.msg)
-        release_group = release_group_rel.process(release_group)
         cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
-    return release_group
+    return release_group_rel.process(release_group)
 
 
 def get_multiple_entities(entities):

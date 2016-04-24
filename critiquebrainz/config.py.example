@@ -24,7 +24,9 @@ TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@localhost:5432/cb_t
 
 # CACHE
 
-#MEMCACHED_SERVERS = ["127.0.0.1:11211"]
+#MEMCACHED_SERVERS = [
+#    ("127.0.0.1", 11211),
+#]
 #MEMCACHED_NAMESPACE = "CB"
 
 

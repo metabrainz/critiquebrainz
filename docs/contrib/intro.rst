@@ -31,12 +31,12 @@ After VM is created and running you can build static files (this needs to be don
 to JavaScript or Less files)::
 
    $ cd /vagrant
-   $ fab build_static
+   $ ./admin/compile_resources.sh
 
 Then you can start the application::
 
    $ cd /vagrant
-   $ python manage.py runserver -d
+   $ python3 manage.py runserver -d
 
 Web server should be accessible at http://localhost:8080/.
 
@@ -49,7 +49,7 @@ Testing
 
 To run all tests use::
 
-   $ fab test
+   $ py.test  critiquebrainz/
 
 This command run all tests and, if successful, produce a test coverage report.
 
@@ -61,6 +61,6 @@ to users, then you need to wrap them in one of two functions: ``gettext()`` or `
 
 Before committing changes don't forget to extract all strings into ``messages.pot``:
 
-   $ fab update_strings
+   $ python3 manage.py update_strings
 
 For more info see :doc:`translation`.

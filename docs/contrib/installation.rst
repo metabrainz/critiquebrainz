@@ -4,8 +4,8 @@ Installation
 Requirements
 ------------
 
-* Python (tested on 2.7.4)
-* ``python-dev``
+* Python 3.4
+* ``python3-dev``
 * PostgreSQL (tested on 9.3)
 * ``postgresql-contrib``
 * ``postgresql-server-dev-9.3``
@@ -25,11 +25,11 @@ to keep libraries needed by CritiqueBrainz separated from your global Python
 libraries. To achieve this, you will need a ``virtualenv`` package. You may
 install it with ``pip`` or ``apt-get`` on Debian/Ubuntu systems::
 
-   $ sudo pip install virtualenv
+   $ sudo pip3 install virtualenv
 
 or::
 
-   $ sudo apt-get install python-virtualenv
+   $ sudo apt-get install python3-virtualenv
 
 Then run to create a virtual environment::
 
@@ -78,7 +78,7 @@ Installing dependencies
 
 If you're in your desired Python environment, simply run::
 
-   $ pip install -r requirements.txt
+   $ pip3 install -r requirements.txt
 
 to install all required dependencies.
 
@@ -87,7 +87,7 @@ Database initialization
 
 Now, you need to create and configure the database with::
 
-   $ python manage.py init_db
+   $ python3 manage.py init_db
 
 This command will
 
@@ -103,11 +103,11 @@ We provide daily data dumps from https://critiquebrainz.org that include reviews
 and most of the data associated with them. If you want to import that into your
 own installation, download archives from ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
 (you'll need to get the base archive ``cbdump.tar.bz2`` and one with reviews)
-and use ``python manage.py export importer`` command. First you need to import
+and use ``python3 manage.py export importer`` command. First you need to import
 base archive and then one that contains reviews. For example::
 
-   $ python manage.py dump import cbdump.tar.bz2
-   $ python manage.py dump import cbdump-reviews-all.tar.bz2
+   $ python3 manage.py dump import cbdump.tar.bz2
+   $ python3 manage.py dump import cbdump-reviews-all.tar.bz2
 
 Keep in mind that CritiqueBrainz only supports importing into an empty database.
 
@@ -140,11 +140,11 @@ Once node is installed, you can install all the dependencies::
 
 Now, to actually run the build do::
 
-   $ fab build_static
+   $ ./admin/compile_resources.sh
 
 Running the server
 ------------------
 
 To run the server you can use ``manage.py`` script::
 
-   $ python manage.py runserver -d
+   $ python3 manage.py runserver -d

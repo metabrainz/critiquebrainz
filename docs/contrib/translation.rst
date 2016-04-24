@@ -21,7 +21,7 @@ Extracting strings
 
 To extract strings into a Portable Object Template file (*messages.pot*) use command::
 
-   $ fab extract_strings
+   $ python3 manage.py extract_strings
 
 Adding support for a new language
 ---------------------------------
@@ -30,7 +30,7 @@ To add support for new language add its Transifex code into ``SUPPORTED_LANGUAGE
 list in default configuration file: ``default_config.py``. After that you can pull
 translations from Transifex::
 
-   $ fab pull_translations
+   $ python3 manage.py  pull_translations
 
 You will need to create *.transifexrc* file that will look like::
 

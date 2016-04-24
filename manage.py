@@ -2,6 +2,7 @@
 from werkzeug.wsgi import DispatcherMiddleware
 from critiquebrainz import frontend
 from critiquebrainz import ws
+from critiquebrainz import cache
 from critiquebrainz.data import dump_manager
 import critiquebrainz.data.utils as data_utils
 import critiquebrainz.data.fixtures as _fixtures
@@ -32,6 +33,50 @@ def runserver(host, port, debug=False):
 
 
 @cli.command()
+def extract_strings():
+    """Extract all strings into messages.pot.
+
+    This command should be run after any translatable strings are updated.
+    Otherwise updates are not going to be available on Transifex.
+    """
+    _run_command("pybabel extract -F critiquebrainz/frontend/babel.cfg -k lazy_gettext "
+                 "-o critiquebrainz/frontend/messages.pot critiquebrainz/frontend")
+    click.echo("Strings have been successfully extracted into messages.pot file.")
+
+
+@cli.command()
+def pull_translations():
+    """Pull translations for languages defined in config from Transifex and compile them.
+
+    Before using this command make sure that you properly configured Transifex client.
+    More info about that is available at http://docs.transifex.com/developer/client/setup#configuration.
+    """
+    languages = ','.join(frontend.create_app().config['SUPPORTED_LANGUAGES'])
+    _run_command("tx pull -f -r critiquebrainz.critiquebrainz -l %s" % languages)
+
+
+@cli.command()
+def update_strings():
+    """Extract strings and pull translations from Transifex."""
+    extract_strings()
+    pull_translations()
+
+
+@cli.command()
+def compile_translations():
+    """Compile translations for use."""
+    _run_command("pybabel compile -d critiquebrainz/frontend/translations")
+    click.echo("Translated strings have been compiled and ready to be used.")
+
+
+@cli.command()
+def clear_memcached():
+    with frontend.create_app().app_context():
+        cache.flush_all()
+    click.echo("Flushed everything from memcached.")
+
+
+@cli.command()
 def init_db():
     """Initialize the database.
 
@@ -56,12 +101,25 @@ def init_db():
     click.echo("Initialization has been completed!")
 
 
+@cli.command()
+def init_test_db():
+    """Initialize the database.
+
+    * Creates the database.
+    * Creates all tables.
+    * Adds fixtures required to run the app.
+    """
+    click.echo("Initializing the database for testing...")
+    init_postgres(frontend.create_app().config['TEST_SQLALCHEMY_DATABASE_URI'])
+    click.echo("Initialization has been completed!")
+
+
 def init_postgres(db_uri):
     """Initializes PostgreSQL database from provided URI.
 
     New user and database will be created, if needed. It also creates uuid-ossp extension.
     """
-    hostname, db, username, password = data_utils.explode_db_uri(db_uri)
+    hostname, port, db, username, password = data_utils.explode_db_uri(db_uri)
     if hostname not in ['localhost', '127.0.0.1']:
         raise Exception('Cannot configure a remote database')
 
@@ -83,6 +141,10 @@ def init_postgres(db_uri):
     exit_code = subprocess.call('sudo -u postgres psql -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' % ('uuid-ossp', db), shell=True)
     if exit_code != 0:
         raise Exception('Failed to create PostgreSQL extension!')
+
+
+def _run_command(command):
+    return subprocess.check_call(command, shell=True)
 
 
 cli.add_command(dump_manager.cli, name="dump")

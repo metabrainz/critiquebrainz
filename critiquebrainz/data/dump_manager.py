@@ -1,4 +1,3 @@
-from __future__ import print_function
 from flask import current_app, jsonify
 from flask.json import JSONEncoder
 from critiquebrainz.data.utils import create_path, remove_old_archives, get_columns, slugify, explode_db_uri
@@ -46,7 +45,7 @@ def full_db(location, rotate=False):
     create_path(location)
 
     FILE_PREFIX = "cb-backup-"
-    db_hostname, db_name, db_username, db_password = explode_db_uri(current_app.config['SQLALCHEMY_DATABASE_URI'])
+    db_hostname, db_port, db_name, db_username, db_password = explode_db_uri(current_app.config['SQLALCHEMY_DATABASE_URI'])
 
     print('Creating database dump in "%s"...' % location)
 

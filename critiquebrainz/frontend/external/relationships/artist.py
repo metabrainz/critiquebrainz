@@ -1,9 +1,8 @@
 """
 Relationship processor for artist entity.
 """
-from urlparse import urlparse
 from flask_babel import lazy_gettext
-import urllib
+import urllib.parse
 
 
 def process(artist):
@@ -26,7 +25,7 @@ def _artist(list):
     return band_members
 
 
-def _url(list):
+def _url(url_list):
     """Processor for Artist-URL relationship."""
     basic_types = {
         'wikidata': {'name': lazy_gettext('Wikidata'), 'icon': 'wikidata-16.png', },
@@ -37,12 +36,12 @@ def _url(list):
         'BBC Music page': {'name': lazy_gettext('BBC Music'), },
     }
     external_urls = []
-    for relation in list:
+    for relation in url_list:
         if relation['type'] in basic_types:
-            external_urls.append(dict(relation.items() + basic_types[relation['type']].items()))
+            external_urls.append(dict(list(relation.items()) + list(basic_types[relation['type']].items())))
         else:
             try:
-                target = urlparse(relation['target'])
+                target = urllib.parse.urlparse(relation['target'])
                 if relation['type'] == 'lyrics':
                     external_urls.append(dict(
                         relation.items() + {
@@ -54,7 +53,7 @@ def _url(list):
                         relation.items() + {
                             'name': lazy_gettext('Wikipedia'),
                             'disambiguation': target.netloc.split('.')[0] + ':' +
-                                              urllib.unquote(target.path.split('/')[2]).decode('utf8').replace("_", " "),
+                                              urllib.parse.unquote(target.path.split('/')[2]).decode('utf8').replace("_", " "),
                             'icon': 'wikipedia-16.png',
                         }.items()))
                 elif relation['type'] == 'youtube':
@@ -83,5 +82,5 @@ def _url(list):
             except Exception as e:  # FIXME(roman): Too broad exception clause.
                 # TODO(roman): Log error.
                 pass
-    external_urls.sort()
-    return external_urls
+
+    return sorted(external_urls, key=lambda k: k['name'])

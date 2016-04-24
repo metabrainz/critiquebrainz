@@ -1,7 +1,7 @@
 from flask import request
 from critiquebrainz.utils import validate_uuid
 from critiquebrainz.ws.exceptions import MissingDataError, ParserError
-from urlparse import urlparse
+import urllib.parse
 import re
 
 
@@ -89,7 +89,7 @@ class Parser(object):
                 return None
             else:
                 raise MissingDataError(key)
-        d = urlparse(_u)
+        d = urllib.parse.urlparse(_u)
         if d.scheme not in ['http', 'https'] or not d.netloc:
             raise ParserError(key, 'not valid URI')
         return _u

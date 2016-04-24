@@ -1,6 +1,3 @@
-from __future__ import division
-
-from itertools import izip
 from math import ceil
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
@@ -125,7 +122,7 @@ def revisions(id):
     revisions = Revision.query.filter_by(review=review)
     count = revisions.count()
     revisions = revisions.order_by(desc(Revision.timestamp)).limit(RESULTS_LIMIT)
-    results = list(izip(reversed(range(count-RESULTS_LIMIT, count)), revisions))
+    results = list(zip(reversed(range(count-RESULTS_LIMIT, count)), revisions))
 
     return render_template('review/revisions.html', review=review, results=results, count=count, limit=RESULTS_LIMIT)
 
@@ -147,7 +144,7 @@ def revisions_more(id):
     revisions = Revision.query.filter_by(review=review)
     count = revisions.count()
     revisions = revisions.order_by(desc(Revision.timestamp)).offset(offset).limit(RESULTS_LIMIT)
-    results = list(izip(reversed(range(count-offset-RESULTS_LIMIT, count-offset)), revisions))
+    results = list(zip(reversed(range(count-offset-RESULTS_LIMIT, count-offset)), revisions))
 
     template = render_template('review/revision_results.html', review=review, results=results)
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
@@ -202,6 +199,7 @@ def create():
         spotify_mappings = mbspotify.mappings(entity_id)
         return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings = spotify_mappings)
     return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
+
 
 @review_bp.route('/write/preview', methods=['POST'])
 @login_required
