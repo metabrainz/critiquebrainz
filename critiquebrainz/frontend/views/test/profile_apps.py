@@ -23,14 +23,14 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
         self.temporary_login(self.user)
         response = self.client.get('/profile/applications', follow_redirects=True)
         self.assert200(response)
-        self.assertIn("No applications found", response.data)
+        self.assertIn("No applications found", str(response.data))
 
     def test_create(self):
         self.temporary_login(self.user)
         response = self.client.post('/profile/applications/create', data=self.application,
                                     query_string=self.application, follow_redirects=True)
         self.assert200(response)
-        self.assertIn(self.application['name'], response.data)
+        self.assertIn(self.application['name'], str(response.data))
 
     def test_edit(self):
         app = self.create_dummy_application()
@@ -42,7 +42,7 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
                                     data=self.application, query_string=self.application,
                                     follow_redirects=True)
         self.assert200(response)
-        self.assertIn(self.application['name'], response.data)
+        self.assertIn(self.application['name'], str(response.data))
 
     def test_delete(self):
         app = self.create_dummy_application()
@@ -56,7 +56,7 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
         response = self.client.get('/profile/applications/%s/delete' % app.client_id,
                                    follow_redirects=True)
         self.assert200(response)
-        self.assertIn("You have deleted an application.", response.data)
+        self.assertIn("You have deleted an application.", str(response.data))
 
     def test_token_delete(self):
         app = self.create_dummy_application()

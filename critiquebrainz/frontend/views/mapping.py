@@ -12,7 +12,7 @@ from flask_babel import gettext
 from werkzeug.exceptions import NotFound, BadRequest
 import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend.external import musicbrainz, mbspotify
-from urlparse import urlparse
+import urllib.parse
 import os.path
 import string
 
@@ -161,6 +161,6 @@ def parse_spotify_id(spotify_ref):
     if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
         if spotify_ref.endswith('/'):
             spotify_ref = spotify_ref[:-1]
-        return os.path.split(urlparse(spotify_ref).path)[-1]
+        return os.path.split(urllib.parse.urlparse(spotify_ref).path)[-1]
 
     # TODO(roman): Raise exception if failed to parse!

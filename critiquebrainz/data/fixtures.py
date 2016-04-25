@@ -27,13 +27,13 @@ class LicenseData(object):
     views, and other stuff that depends on that.
     """
     cc_by_sa_3 = License(
-        id=u"CC BY-SA 3.0",
-        full_name=u"Creative Commons Attribution-ShareAlike 3.0 Unported",
-        info_url=u"https://creativecommons.org/licenses/by-sa/3.0/")
+        id="CC BY-SA 3.0",
+        full_name="Creative Commons Attribution-ShareAlike 3.0 Unported",
+        info_url="https://creativecommons.org/licenses/by-sa/3.0/")
     cc_by_nc_sa_3 = License(
-        id=u"CC BY-NC-SA 3.0",
-        full_name=u"Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
-        info_url=u"https://creativecommons.org/licenses/by-nc-sa/3.0/")
+        id="CC BY-NC-SA 3.0",
+        full_name="Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
+        info_url="https://creativecommons.org/licenses/by-nc-sa/3.0/")
 
 
 # Include all objects into this tuple.

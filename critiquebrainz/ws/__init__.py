@@ -33,8 +33,7 @@ def create_app(debug=None):
     if 'MEMCACHED_SERVERS' in app.config:
         from critiquebrainz import cache
         cache.init(app.config['MEMCACHED_SERVERS'],
-                   app.config['MEMCACHED_NAMESPACE'],
-                   debug=1 if app.debug else 0)
+                   app.config['MEMCACHED_NAMESPACE'])
 
     app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 
