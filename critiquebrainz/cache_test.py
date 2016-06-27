@@ -8,7 +8,7 @@ class CacheTestCase(unittest.TestCase):
     """Testing our custom wrapper for memcached."""
 
     def setUp(self):
-        self.servers = [("127.0.0.1", 11211)]
+        self.servers = [("memcached", 11211)]
         self.namespace = "CB_TEST"
         cache.init(
             servers=self.servers,
@@ -99,7 +99,7 @@ class CacheBaseTestCase(unittest.TestCase):
     """Testing underlying library."""
 
     def setUp(self):
-        self.servers = [("127.0.0.1", 11211)]
+        self.servers = [("memcached", 11211)]
         self.client = HashClient(self.servers)
 
         # Making sure there are no items in cache before we run each test

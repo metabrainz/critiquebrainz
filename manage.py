@@ -76,8 +76,10 @@ def clear_memcached():
     click.echo("Flushed everything from memcached.")
 
 
+@click.option("--skip-create-db", "-s", is_flag=True,
+              help="Skip database creation step.")
 @cli.command()
-def init_db():
+def init_db(skip_create_db=False):
     """Initialize the database.
 
     * Creates the database.
@@ -86,7 +88,10 @@ def init_db():
     """
     click.echo("Initializing the database...")
 
-    init_postgres(frontend.create_app().config['SQLALCHEMY_DATABASE_URI'])
+    db_uri = frontend.create_app().config['SQLALCHEMY_DATABASE_URI']
+    if not skip_create_db:
+        init_postgres(db_uri)
+        create_extension(db_uri)
 
     click.echo("Creating tables... ", nl=False)
     data_utils.create_tables(frontend.create_app())
@@ -137,8 +142,11 @@ def init_postgres(db_uri):
         if exit_code != 0:
             raise Exception('Failed to create PostgreSQL database!')
 
-    # Creating database extension
-    exit_code = subprocess.call('sudo -u postgres psql -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' % ('uuid-ossp', db), shell=True)
+
+def create_extension(db_uri):
+    host, port, db, username, password = data_utils.explode_db_uri(db_uri)
+    psql_cmd = "psql -h %s -p %s -U %s -W %s %s" % (host, port, username, password, db)
+    exit_code = subprocess.call('%s  -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' % (psql_cmd, 'uuid-ossp', db), shell=True)
     if exit_code != 0:
         raise Exception('Failed to create PostgreSQL extension!')
 

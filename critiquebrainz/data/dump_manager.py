@@ -29,7 +29,7 @@ def with_request_context(f):
 
 
 @cli.command()
-@click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'full'), show_default=True,
+@click.option("--location", "-l", default=os.path.join("/", "data", "export", "full"), show_default=True,
               help="Directory where dumps need to be created")
 @click.option("--rotate", "-r", is_flag=True)
 @with_request_context
@@ -52,11 +52,19 @@ def full_db(location, rotate=False):
     # Executing pg_dump command
     # More info about it is available at http://www.postgresql.org/docs/9.3/static/app-pgdump.html
     dump_file = os.path.join(location, FILE_PREFIX + strftime("%Y%m%d-%H%M%S", gmtime()))
-    if subprocess.call('pg_dump -Ft "%s" > "%s.tar"' % (db_name, dump_file), shell=True) != 0:
+    print('pg_dump -h "%s" -p "%s" -U "%s" -d "%s" -Ft > "%s.tar"' %
+          (db_hostname, db_port, db_username, db_name, dump_file),)
+    result = subprocess.call(
+        'pg_dump -h "%s" -p "%s" -U "%s" -d "%s" -Ft > "%s.tar"' %
+        (db_hostname, db_port, db_username, db_name, dump_file),
+        shell=True,
+    )
+    if result != 0:
         raise Exception("Failed to create database dump!")
 
     # Compressing created dump
-    if subprocess.call('bzip2 "%s.tar"' % dump_file, shell=True) != 0:
+    result = subprocess.call('bzip2 "%s.tar"' % dump_file, shell=True)
+    if result != 0:
         raise Exception("Failed to create database dump!")
 
     print('Created %s.tar.bz2' % dump_file)
@@ -70,7 +78,7 @@ def full_db(location, rotate=False):
 
 
 @cli.command()
-@click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'json'), show_default=True,
+@click.option("--location", "-l", default=os.path.join("/", "data", "export", "json"), show_default=True,
               help="Directory where dumps need to be created")
 @click.option("--rotate", "-r", is_flag=True)
 @with_request_context
@@ -104,7 +112,7 @@ def json(location, rotate=False):
                     rg_dir = '%s/%s' % (license_dir, dir_part)
                     create_path(rg_dir)
                     f = open('%s/%s.json' % (rg_dir, entity), 'w+')
-                    f.write(jsonify(reviews=[r.to_dict() for r in reviews]).data)
+                    f.write(jsonify(reviews=[r.to_dict() for r in reviews]).data.decode("utf-8"))
                     f.close()
 
             tar.add(license_dir, arcname='reviews')
@@ -125,7 +133,7 @@ def json(location, rotate=False):
 
 
 @cli.command()
-@click.option("--location", "-l", default=os.path.join(os.getcwd(), 'export', 'public'), show_default=True,
+@click.option("--location", "-l", default=os.path.join("/", "data", "export", "public"), show_default=True,
               help="Directory where dumps need to be created")
 @click.option("--rotate", "-r", is_flag=True)
 @with_request_context
