@@ -1,3 +1,5 @@
+.git
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -8,7 +10,7 @@ venv
 /build
 
 # Node
-/node_modules
+node_modules
 
 # Logs
 *.log
@@ -20,6 +22,9 @@ pip-delete-this-directory.txt
 
 # Backups and dumps
 /export/
+
+# Static builds
+/critiquebrainz/frontend/static/build
 
 # Test results
 htmlcov

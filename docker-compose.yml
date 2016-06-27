@@ -1,0 +1,37 @@
+version: '2'
+services:
+
+  db:
+    build:
+      context: ./docker/pg_custom/
+      dockerfile: Dockerfile
+    volumes:
+      - ./data/pgdata:/var/lib/postgresql/data/pgdata
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: critiquebrainz
+      POSTGRES_PASSWORD: critiquebrainz
+      POSTGRES_DB: critiquebrainz
+
+  memcached:
+    image: memcached
+
+  web:
+    build: .
+    volumes:
+      - ./data/app:/data
+    ports:
+      - "3031:3031"
+    depends_on:
+      - db
+      - memcached
+
+  nginx:
+    restart: always
+    build:
+      context: ./docker/nginx_custom/
+      dockerfile: Dockerfile
+    links:
+      - web:web
+    ports:
+      - "80:80"
