@@ -44,14 +44,42 @@ PostgreSQL will also be available on port *15432* with `trust`_ authentication m
 
 .. _trust: http://www.postgresql.org/docs/9.1/static/auth-methods.html#AUTH-TRUST
 
+Using Docker
+^^^^^^^^^^^^
+
+Instead of Vagrant you can also use Docker container that comes with CritiqueBrainz. It requires minimum amount of
+configuration.
+
+First, copy configuration file on your workstation and make all the necessary modifications::
+
+   $ cd critiquebrainz
+   $ cp config.py.example config.py
+
+Then you can start all the services::
+
+   $ docker-compose up -d
+
+The first time you do that, database initialization is also required::
+
+   $ docker-compose run web python3 manage.py init_db --skip-create-db
+
 Testing
 ^^^^^^^
 
 To run all tests use::
 
-   $ py.test  critiquebrainz/
+   $ py.test critiquebrainz/
 
 This command run all tests and, if successful, produce a test coverage report.
+
+Testing with Docker
+^^^^^^^^^^^^^^^^^^
+
+Alternative way to test the web server is to use a Docker container::
+
+   $ docker-compose -f docker-compose.test.yml build
+   $ docker-compose -f docker-compose.test.yml up -d
+   $ docker logs -f critiquebrainz_web_test_1
 
 Modifying strings
 ^^^^^^^^^^^^^^^^^

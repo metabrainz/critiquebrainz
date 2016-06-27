@@ -1,0 +1,24 @@
+version: '2'
+services:
+
+  db:
+    build:
+      context: ./docker/pg_custom/
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: cb_test
+      POSTGRES_PASSWORD: cb_test
+      POSTGRES_DB: cb_test
+
+  memcached:
+    image: memcached
+
+  web_test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - memcached

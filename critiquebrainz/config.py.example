@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# CRITIQUEBRAINZ
 # CUSTOM CONFIGURATION FILE
 # Optional variables are commented out.
 
@@ -13,21 +11,13 @@ SECRET_KEY = "CHANGE_THIS"
 # Primary database
 # Example:
 #SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
-SQLALCHEMY_DATABASE_URI = "postgresql://cb:cb@localhost:5432/critiquebrainz"
+#SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@db:5432/critiquebrainz"
 
 # Database for testing
 # You shouldn't specify this value yourself, unless you have custom database
 # for testing purpose.
 #TEST_SQLALCHEMY_DATABASE_URI = "postgresql://<test_user>:<test_pass>@<host>:<port>/<test_db>"
-TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@localhost:5432/cb_test"
-
-
-# CACHE
-
-#MEMCACHED_SERVERS = [
-#    ("127.0.0.1", 11211),
-#]
-#MEMCACHED_NAMESPACE = "CB"
+#TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@db:5432/cb_test"
 
 
 # LOGGING
@@ -46,29 +36,29 @@ TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@localhost:5432/cb_t
 # EXTERNAL SERVICES
 
 # MusicBrainz
-#MUSICBRAINZ_HOSTNAME = "localhost:8080"
-MUSICBRAINZ_USERAGENT = "CritiqueBrainz Custom"
+#MUSICBRAINZ_HOSTNAME = "localhost:5000"
+#MUSICBRAINZ_USERAGENT = "CritiqueBrainz Custom"
 MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
 
 # Server with Spotify mappings
 # https://github.com/metabrainz/mbspotify
-#MBSPOTIFY_BASE_URI = "http://mbspotify.mbsandbox.org/"
+#MBSPOTIFY_BASE_URI = "http://mbspotify.musicbrainz.org/"
 #MBSPOTIFY_ACCESS_KEY = ""
 
 
 # OTHER STUFF
 
+# List of administrators (MusicBrainz usernames as strings)
+ADMINS = []
+
 # Mail server
-#MAIL_SERVER = "localhost"
+#MAIL_SERVER = 'localhost'
 #MAIL_PORT = 25
-#MAIL_FROM_HOST = "critiquebrainz.org"
+#MAIL_USERNAME = None
+#MAIL_PASSWORD = None
+#MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
 
 #DEBUG_TB_TEMPLATE_EDITOR_ENABLED = True
 
 #GOOGLE_ANALYTICS_TRACKING_ID = ""
-
-# List of administrators (MusicBrainz usernames)
-ADMINS = [
-    "ruaok",
-]

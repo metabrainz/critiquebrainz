@@ -14,7 +14,7 @@
     "bootstrap": "3.3.6",
     "envify": "^3.4.0",
     "fs": "0.0.2",
-    "gulp": "3.9.0",
+    "gulp": "3.9.1",
     "gulp-less": "3.0.5",
     "gulp-rev": "6.0.1",
     "gulp-streamify": "^1.0.2",
