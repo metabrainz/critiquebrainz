@@ -9,7 +9,7 @@ from requests.exceptions import RequestException
 from requests.adapters import HTTPAdapter
 from flask import flash
 from flask_babel import lazy_gettext
-from critiquebrainz import cache
+from brainzutils import cache
 
 _base_url = ""
 _key = ""

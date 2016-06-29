@@ -1,9 +1,13 @@
-from flask import Flask
+from brainzutils.flask import CustomFlask
 import os
 
 
 def create_app(debug=None):
-    app = Flask(__name__)
+    app = CustomFlask(
+        import_name=__name__,
+        use_flask_uuid=True,
+        use_debug_toolbar=True,
+    )
 
     # Configuration files
     import critiquebrainz.default_config
@@ -23,25 +27,18 @@ def create_app(debug=None):
     from critiquebrainz.frontend import static_manager
     static_manager.read_manifest()
 
-    # Logging
-    from critiquebrainz import loggers
-    loggers.init_loggers(app)
-
-    if app.debug:
-        # Debug toolbar
-        from flask_debugtoolbar import DebugToolbarExtension
-        DebugToolbarExtension(app)
-        app.config['DEBUG_TB_TEMPLATE_EDITOR_ENABLED'] = True
-
-    from flask_uuid import FlaskUUID
-    FlaskUUID(app)
+    app.init_loggers(
+        file_config=app.config.get("LOG_FILE"),
+        email_config=app.config.get("LOG_EMAIL"),
+        sentry_config=app.config.get("LOG_SENTRY"),
+    )
 
     from critiquebrainz.data import db
     db.init_app(app)
 
     # Memcached
     if 'MEMCACHED_SERVERS' in app.config:
-        from critiquebrainz import cache
+        from brainzutils import cache
         cache.init(app.config['MEMCACHED_SERVERS'],
                    app.config['MEMCACHED_NAMESPACE'])
 

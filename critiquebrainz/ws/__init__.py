@@ -1,9 +1,12 @@
-from flask import Flask
+from brainzutils.flask import CustomFlask
 import os
 
 
 def create_app(debug=None):
-    app = Flask(__name__)
+    app = CustomFlask(
+        import_name=__name__,
+        use_flask_uuid=True,
+    )
 
     # Configuration files
     import critiquebrainz.default_config
@@ -19,23 +22,24 @@ def create_app(debug=None):
     from critiquebrainz.ws.errors import init_error_handlers
     init_error_handlers(app)
 
-    # Logging
-    from critiquebrainz import loggers
-    loggers.init_loggers(app)
-
-    from flask_uuid import FlaskUUID
-    FlaskUUID(app)
+    app.init_loggers(
+        file_config=app.config.get("LOG_FILE"),
+        email_config=app.config.get("LOG_EMAIL"),
+        sentry_config=app.config.get("LOG_SENTRY"),
+    )
 
     from critiquebrainz.data import db
     db.init_app(app)
 
     # Memcached
-    if 'MEMCACHED_SERVERS' in app.config:
-        from critiquebrainz import cache
-        cache.init(app.config['MEMCACHED_SERVERS'],
-                   app.config['MEMCACHED_NAMESPACE'])
+    if "MEMCACHED_SERVERS" in app.config:
+        from brainzutils import cache
+        cache.init(
+            servers=app.config["MEMCACHED_SERVERS"],
+            namespace=app.config["MEMCACHED_NAMESPACE"],
+        )
 
-    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+    app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
     _register_blueprints(app)
 
@@ -43,7 +47,7 @@ def create_app(debug=None):
 
 
 def create_app_sphinx():
-    app = Flask(__name__)
+    app = CustomFlask(__name__)
     _register_blueprints(app)
     return app
 
@@ -52,6 +56,6 @@ def _register_blueprints(app):
     from critiquebrainz.ws.oauth.views import oauth_bp
     from critiquebrainz.ws.review.views import review_bp
     from critiquebrainz.ws.user.views import user_bp
-    app.register_blueprint(oauth_bp, url_prefix='/oauth')
-    app.register_blueprint(review_bp, url_prefix='/review')
-    app.register_blueprint(user_bp, url_prefix='/user')
+    app.register_blueprint(oauth_bp, url_prefix="/oauth")
+    app.register_blueprint(review_bp, url_prefix="/review")
+    app.register_blueprint(user_bp, url_prefix="/user")

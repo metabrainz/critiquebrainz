@@ -10,7 +10,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.mixins import DeleteMixin
-from critiquebrainz import cache
+from brainzutils import cache
 from werkzeug.exceptions import BadRequest
 from flask_babel import lazy_gettext
 from datetime import datetime, timedelta
