@@ -35,6 +35,12 @@
 
     <div class="container">
 
+      <div class="alert alert-warning">
+        <strong>This is a beta version!</strong>
+        Your reviews and other changes will not be preserved. This version is not connected to
+        <a href="https://critiquebrainz.org">critiquebrainz.org</a>.
+      </div>
+
       {% block wrapper %}
         {% with messages = get_flashed_messages(with_categories=true)  %}
           {% if messages %}
