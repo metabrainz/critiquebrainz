@@ -18,11 +18,11 @@
         <dt>{{ _('Member since') }}</dt><dd>{{ user.created | date }}</dd>
         <dt>{{ _('User type') }}</dt><dd>{{ user.user_type.label }}</dd>
         <dt>{{ _('Karma') }}</dt><dd>{{ user.karma }}</dd>
-        {% if current_user.is_authenticated() and current_user == user %}
+        {% if current_user.is_authenticated and current_user == user %}
           <dt>{{ _('Email') }}</dt><dd>{{ current_user.email }}</dd>
         {% endif %}
       </dl>
-      {% if current_user.is_authenticated() and current_user == user %}
+      {% if current_user.is_authenticated and current_user == user %}
         <h4>{{ _('Limits') }}</h4>
         <dl class="dl-horizontal">
           <dt>{{ _('Reviews/day') }}</dt><dd>{{ current_user.user_type.reviews_per_day }}</dd>

@@ -51,7 +51,7 @@ def browse():
 def entity(id, rev=None):
     review = Review.query.get_or_404(str(id))
     # Not showing review if it isn't published yet and not viewed by author.
-    if review.is_draft and not (current_user.is_authenticated()
+    if review.is_draft and not (current_user.is_authenticated
                                 and current_user == review.user):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.is_hidden:
@@ -75,7 +75,7 @@ def entity(id, rev=None):
         raise NotFound(gettext("The revision you are looking for does not exist."))
 
     revision = revisions.offset(count-rev).first()
-    if not review.is_draft and current_user.is_authenticated():  # if user is logged in, get his vote for this review
+    if not review.is_draft and current_user.is_authenticated:  # if user is logged in, get his vote for this review
         vote = Vote.query.filter_by(user=current_user, revision=revision).first()
     else:  # otherwise set vote to None, its value will not be used
         vote = None
@@ -86,7 +86,7 @@ def entity(id, rev=None):
 @review_bp.route('/<uuid:id>/revisions/compare')
 def compare(id):
     review = Review.query.get_or_404(str(id))
-    if review.is_draft and not (current_user.is_authenticated()
+    if review.is_draft and not (current_user.is_authenticated
                                 and current_user == review.user):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.is_hidden and not current_user.is_admin():
@@ -113,7 +113,7 @@ def revisions(id):
     review = Review.query.get_or_404(str(id))
 
     # Not showing review if it isn't published yet and not viewed by author.
-    if review.is_draft and not (current_user.is_authenticated()
+    if review.is_draft and not (current_user.is_authenticated
                                 and current_user == review.user):
         raise NotFound("Can't find a review with the specified ID.")
     if review.is_hidden and not current_user.is_admin():
@@ -132,7 +132,7 @@ def revisions_more(id):
     review = Review.query.get_or_404(str(id))
 
     # Not showing review if it isn't published yet and not viewed by author.
-    if review.is_draft and not (current_user.is_authenticated()
+    if review.is_draft and not (current_user.is_authenticated
                                 and current_user == review.user):
         raise NotFound("Can't find a review with the specified ID.")
     if review.is_hidden and not current_user.is_admin():

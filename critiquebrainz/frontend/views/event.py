@@ -22,7 +22,7 @@ def entity(id):
         artists_sorted = sorted(event['artist-relation-list'], key=itemgetter('type'))
         event['artists_grouped'] = groupby(artists_sorted, itemgetter('type'))
 
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         my_reviews, my_count = Review.list(entity_id=id, entity_type='event', user_id=current_user.id)
         if my_count != 0:
             my_review = my_reviews[0]
