@@ -31,13 +31,13 @@ def create_app(debug=None):
     from critiquebrainz.data import db
     db.init_app(app)
 
-    # Memcached
-    if "MEMCACHED_SERVERS" in app.config:
-        from brainzutils import cache
-        cache.init(
-            servers=app.config["MEMCACHED_SERVERS"],
-            namespace=app.config["MEMCACHED_NAMESPACE"],
-        )
+    # Redis (cache)
+    from brainzutils import cache
+    cache.init(
+        host=app.config["REDIS_HOST"],
+        port=app.config["REDIS_PORT"],
+        namespace=app.config["REDIS_NAMESPACE"],
+    )
 
     app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 

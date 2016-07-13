@@ -10,8 +10,8 @@ services:
       POSTGRES_PASSWORD: cb_test
       POSTGRES_DB: cb_test
 
-  memcached:
-    image: memcached
+  redis:
+    image: redis:3.2.1
 
   web_test:
     build:
@@ -21,4 +21,4 @@ services:
       - .:/code
     depends_on:
       - db
-      - memcached
+      - redis

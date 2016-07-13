@@ -13,8 +13,8 @@ services:
       POSTGRES_PASSWORD: critiquebrainz
       POSTGRES_DB: critiquebrainz
 
-  memcached:
-    image: memcached
+  redis:
+    image: redis:3.2.1
 
   web:
     build: .
@@ -24,7 +24,7 @@ services:
       - "3031:3031"
     depends_on:
       - db
-      - memcached
+      - redis
 
   nginx:
     restart: always
