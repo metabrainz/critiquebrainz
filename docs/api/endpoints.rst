@@ -1,13 +1,10 @@
-Server Web API
-==============
+Endpoint reference
+==================
 
 CritiqueBrainz provides various endpoints that can be used to interact with the
 data. Web API uses JSON format.
 
 **Root URL**: ``https://critiquebrainz.org/ws/1``
-
-Reference
----------
 
 Below you will find description of all available endpoints.
 
@@ -29,6 +26,8 @@ Users
 
 OAuth
 ^^^^^
+
+See :doc:`OAuth documentation <oauth2>` for more info.
 
 .. autoflask:: critiquebrainz.ws:create_app_sphinx()
    :blueprints: ws_oauth
