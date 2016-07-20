@@ -20,17 +20,11 @@ pip-delete-this-directory.txt
 # Application data
 /data
 
-# Backups and dumps
-/export/
-
 # Static builds
 /critiquebrainz/frontend/static/build
 
 # Test results
 htmlcov
 .coverage
-
-# Vagrant
-.vagrant
 
 .transifexrc

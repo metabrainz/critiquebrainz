@@ -18,14 +18,8 @@ pip-delete-this-directory.txt
 # Application data
 /data
 
-# Backups and dumps
-/export/
-
 # Test results
 htmlcov
 .coverage
-
-# Vagrant
-.vagrant
 
 .transifexrc
