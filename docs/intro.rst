@@ -72,8 +72,7 @@ Testing
 
 Alternative way to test the web server is to use a Docker container::
 
-   $ docker-compose -f docker-compose.test.yml build
-   $ docker-compose -f docker-compose.test.yml up -d
+   $ docker-compose -f docker-compose.test.yml up -d --build
    $ docker logs -f critiquebrainz_web_test_1
 
 Modifying strings
