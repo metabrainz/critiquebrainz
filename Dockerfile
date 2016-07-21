@@ -1,7 +1,11 @@
 FROM python:3.5.1
 
-RUN apt-get update && apt-get install -y build-essential libffi-dev \
-    libssl-dev libxml2-dev libxslt1-dev libffi-dev libssl-dev
+RUN apt-get update \
+    && apt-get install -y build-essential \
+                          libxml2-dev \
+                          libxslt1-dev \
+                          libffi-dev \
+                          libssl-dev
 
 # PostgreSQL client
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
