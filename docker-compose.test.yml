@@ -17,8 +17,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
-    volumes:
-      - .:/code
     depends_on:
       - db
       - redis
