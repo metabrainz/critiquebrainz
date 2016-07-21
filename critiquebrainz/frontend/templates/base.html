@@ -1,4 +1,4 @@
-{% from 'macros.html' import print_error with context %}
+{% from 'macros.html' import print_message with context %}
 <!DOCTYPE html>
 <html>
 
@@ -45,7 +45,7 @@
         {% with messages = get_flashed_messages(with_categories=true)  %}
           {% if messages %}
             {% for category, message in messages %}
-              {{ print_error(message, category) }}
+              {{ print_message(message, category) }}
             {% endfor %}
           {% endif %}
         {% endwith %}

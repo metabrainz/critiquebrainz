@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from flask_login import login_required, current_user
 
@@ -7,6 +7,7 @@ from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.user import User
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
+from critiquebrainz.frontend import flash
 
 user_bp = Blueprint('user', __name__)
 
@@ -42,7 +43,7 @@ def block(user_id):
     user = User.query.get_or_404(str(user_id))
 
     if user.is_blocked:
-        flash(gettext("This account is already blocked."), 'info')
+        flash.info(gettext("This account is already blocked."))
         return redirect(url_for('user.reviews', user_id=user.id))
 
     form = AdminActionForm()
@@ -50,7 +51,7 @@ def block(user_id):
         user.block()
         ModerationLog.create(admin_id=current_user.id, action=ACTION_BLOCK_USER,
                              reason=form.reason.data, user_id=user.id)
-        flash(gettext("This user account has been blocked."), 'success')
+        flash.success(gettext("This user account has been blocked."))
         return redirect(url_for('user.reviews', user_id=user.id))
 
     return render_template('log/action.html', user=user, form=form, action=ACTION_BLOCK_USER)
@@ -62,5 +63,5 @@ def block(user_id):
 def unblock(user_id):
     user = User.query.get_or_404(str(user_id))
     user.unblock()
-    flash(gettext("This user account has been unblocked."), 'success')
+    flash.success(gettext("This user account has been unblocked."))
     return redirect(url_for('user.reviews', user_id=user.id))

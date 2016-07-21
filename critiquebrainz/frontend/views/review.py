@@ -12,6 +12,7 @@ from critiquebrainz.data.model.review import Review, ENTITY_TYPES
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, musicbrainz
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
@@ -59,7 +60,7 @@ def entity(id, rev=None):
             raise Forbidden(gettext("Review has been hidden. "
                                     "You need to be an administrator to view it."))
         else:
-            flash(gettext("Review has been hidden."), 'warning')
+            flash.warn(gettext("Review has been hidden."))
 
     spotify_mappings = None
     if review.entity_type == 'release_group':
@@ -70,7 +71,7 @@ def entity(id, rev=None):
     if not rev:
         rev = count
     if rev < count:
-        flash(gettext('You are viewing an old revision, the review has been updated since then.'))
+        flash.info(gettext('You are viewing an old revision, the review has been updated since then.'))
     elif rev > count:
         raise NotFound(gettext("The revision you are looking for does not exist."))
 
@@ -159,25 +160,25 @@ def create():
             break
 
     if not entity_id:
-        flash(gettext("Please choose an entity to review."))
+        flash.info(gettext("Please choose an entity to review."))
         return redirect(url_for('search.selector', next=url_for('.create')))
 
     if current_user.is_blocked:
-        flash(gettext("You are not allowed to write new reviews because your "
-                      "account has been blocked by a moderator."), 'error')
+        flash.error(gettext("You are not allowed to write new reviews because your "
+                            "account has been blocked by a moderator."))
         return redirect(url_for('user.reviews', user_id=current_user.id))
 
     # Checking if the user already wrote a review for this entity
     review = Review.query.filter_by(user=current_user, entity_id=entity_id).first()
     if review:
-        flash(gettext("You have already published a review for this entity!"), 'error')
+        flash.error(gettext("You have already published a review for this entity!"))
         return redirect(url_for('review.entity', id=review.id))
 
     form = ReviewCreateForm(default_language=get_locale())
 
     if form.validate_on_submit():
         if current_user.is_review_limit_exceeded:
-            flash(gettext("You have exceeded your limit of reviews per day."), 'error')
+            flash.error(gettext("You have exceeded your limit of reviews per day."))
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
         is_draft = form.state.data == 'draft'
@@ -185,14 +186,14 @@ def create():
                                text=form.text.data, license_id=form.license_choice.data,
                                language=form.language.data, is_draft=is_draft)
         if is_draft:
-            flash(gettext("Review has been saved!"), 'success')
+            flash.success(gettext("Review has been saved!"))
         else:
-            flash(gettext("Review has been published!"), 'success')
+            flash.success(gettext("Review has been published!"))
         return redirect(url_for('.entity', id=review.id))
 
     entity = musicbrainz.get_entity_by_id(entity_id, entity_type)
     if not entity:
-        flash(gettext("You can only write a review for an entity that exists on MusicBrainz!"), 'error')
+        flash.error(gettext("You can only write a review for an entity that exists on MusicBrainz!"))
         return redirect(url_for('search.selector', next=url_for('.create')))
 
     if entity_type == 'release_group':
@@ -231,7 +232,7 @@ def edit(id):
             license_choice = None
         review.update(text=form.text.data, is_draft=(form.state.data == 'draft'),
                       license_id=license_choice, language=form.language.data)
-        flash(gettext("Review has been updated."), 'success')
+        flash.success(gettext("Review has been updated."))
         return redirect(url_for('.entity', id=review.id))
     else:
         form.text.data = review.text
@@ -249,7 +250,7 @@ def delete(id):
         raise Unauthorized(gettext("Only the author or an admin can delete this review."))
     if request.method == 'POST':
         review.delete()
-        flash(gettext("Review has been deleted."), 'success')
+        flash.success(gettext("Review has been deleted."))
         return redirect(url_for('user.reviews', user_id=current_user.id))
     return render_template('review/delete.html', review=review)
 
@@ -267,19 +268,19 @@ def vote_submit(review_id):
     if review.is_hidden and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
     if review.user == current_user:
-        flash(gettext("You cannot rate your own review."), 'error')
+        flash.error(gettext("You cannot rate your own review."))
         return redirect(url_for('.entity', id=review_id))
     if current_user.is_vote_limit_exceeded is True and current_user.has_voted(review) is False:
-        flash(gettext("You have exceeded your limit of votes per day."), 'error')
+        flash.error(gettext("You have exceeded your limit of votes per day."))
         return redirect(url_for('.entity', id=review_id))
     if current_user.is_blocked:
-        flash(gettext("You are not allowed to rate this review because "
-                      "your account has been blocked by a moderator."), 'error')
+        flash.error(gettext("You are not allowed to rate this review because "
+                            "your account has been blocked by a moderator."))
         return redirect(url_for('.entity', id=review_id))
 
     Vote.create(current_user, review, vote)  # overwrites an existing vote, if needed
 
-    flash(gettext("You have rated this review!"), 'success')
+    flash.success(gettext("You have rated this review!"))
     return redirect(url_for('.entity', id=review_id))
 
 
@@ -291,10 +292,10 @@ def vote_delete(id):
         raise NotFound(gettext("Review has been hidden."))
     vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
     if not vote:
-        flash(gettext("This review is not rated yet."), 'error')
+        flash.error(gettext("This review is not rated yet."))
     else:
         vote.delete()
-        flash(gettext("You have deleted your vote for this review!"), 'success')
+        flash.success(gettext("You have deleted your vote for this review!"))
     return redirect(url_for('.entity', id=id))
 
 
@@ -305,24 +306,24 @@ def report(id):
     if review.is_hidden and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
     if review.user == current_user:
-        flash(gettext("You cannot report your own review."), 'error')
+        flash.error(gettext("You cannot report your own review."))
         return redirect(url_for('.entity', id=id))
 
     if current_user.is_blocked:
-        flash(gettext("You are not allowed to report this review because "
-                      "your account has been blocked by a moderator."), 'error')
+        flash.error(gettext("You are not allowed to report this review because "
+                            "your account has been blocked by a moderator."))
         return redirect(url_for('.entity', id=id))
 
     last_revision_id = review.last_revision.id
     count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
     if count > 0:
-        flash(gettext("You have already reported this review."), 'error')
+        flash.error(gettext("You have already reported this review."))
         return redirect(url_for('.entity', id=id))
 
     form = ReviewReportForm()
     if form.validate_on_submit():
         SpamReport.create(last_revision_id, current_user, form.reason.data)
-        flash(gettext("Review has been reported."), 'success')
+        flash.success(gettext("Review has been reported."))
         return redirect(url_for('.entity', id=id))
 
     return render_template('review/report.html', review=review, form=form)
@@ -335,7 +336,7 @@ def hide(id):
     review = Review.query.get_or_404(str(id))
 
     if review.is_hidden:
-        flash(gettext("Review is already hidden."), 'info')
+        flash.info(gettext("Review is already hidden."))
         return redirect(url_for('.entity', id=review.id))
 
     form = AdminActionForm()
@@ -345,7 +346,7 @@ def hide(id):
                              reason=form.reason.data, review_id=review.id)
         for report in SpamReport.list(review_id=review.id)[0]:
             report.archive()
-        flash(gettext("Review has been hidden."), 'success')
+        flash.success(gettext("Review has been hidden."))
         return redirect(url_for('.entity', id=review.id))
 
     return render_template('log/action.html', review=review, form=form, action=ACTION_HIDE_REVIEW)
@@ -357,5 +358,5 @@ def hide(id):
 def unhide(id):
     review = Review.query.get_or_404(str(id))
     review.unhide()
-    flash(gettext("Review has been unhidden."), 'success')
+    flash.success(gettext("Review is not hidden anymore."))
     return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))

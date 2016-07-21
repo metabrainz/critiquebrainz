@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from flask_login import login_required, current_user
 
+from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.profile import ProfileEditForm
 
 profile_bp = Blueprint('profile_details', __name__)
@@ -15,7 +16,7 @@ def edit():
         current_user.update(display_name=form.display_name.data,
                             email=form.email.data,
                             show_gravatar=form.show_gravatar.data)
-        flash(gettext("Profile updated."), 'success')
+        flash.success(gettext("Profile updated."))
         return redirect(url_for('user.reviews', user_id=current_user.id))
     else:
         form.display_name.data = current_user.display_name

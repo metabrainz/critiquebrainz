@@ -6,12 +6,13 @@ Spotify. These mappings are then used to show embedded Spotify player on some
 pages. See https://github.com/metabrainz/mbspotify for more info about this
 project.
 """
-from flask import Blueprint, render_template, request, url_for, redirect, flash
+from flask import Blueprint, render_template, request, url_for, redirect
 from flask_login import login_required, current_user
 from flask_babel import gettext
 from werkzeug.exceptions import NotFound, BadRequest
 import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend.external import musicbrainz, mbspotify
+from critiquebrainz.frontend import flash
 import urllib.parse
 import os.path
 import string
@@ -48,7 +49,7 @@ def spotify():
 
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
-        flash(gettext("Only existing release groups can be mapped to Spotify!"), 'error')
+        flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
 
     page = int(request.args.get('page', default=1))
@@ -81,28 +82,28 @@ def spotify_confirm():
         raise BadRequest("Didn't provide `release_group_id`!")
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
-        flash(gettext("Only existing release groups can be mapped to Spotify!"), 'error')
+        flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
 
     spotify_ref = request.args.get('spotify_ref', default=None)
     if not spotify_ref:
-        flash(gettext("You need to select an album from Spotify!"), 'error')
+        flash.error(gettext("You need to select an album from Spotify!"))
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
     spotify_id = parse_spotify_id(spotify_ref)
     if not spotify_id:
-        flash(gettext("You need to specify a correct link to this album on Spotify!"), 'error')
+        flash.error(gettext("You need to specify a correct link to this album on Spotify!"))
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
     album = spotify_api.get_album(spotify_id)
     if not album or album.get('error'):
-        flash(gettext("You need to specify existing album from Spotify!"), 'error')
+        flash.error(gettext("You need to specify existing album from Spotify!"))
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
     if request.method == 'POST':
         # TODO(roman): Check values that are returned by add_mapping (also take a look at related JS).
         mbspotify.add_mapping(release_group_id, 'spotify:album:%s' % spotify_id, current_user.id)
-        flash(gettext("Spotify mapping has been added!"), 'success')
+        flash.success(gettext("Spotify mapping has been added!"))
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     return render_template('mapping/confirm.html', release_group=release_group, spotify_album=album)
@@ -122,24 +123,24 @@ def spotify_report():
     # Checking if release group exists
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
     if not release_group:
-        flash(gettext("Can't find release group with that ID!"), 'error')
+        flash.error(gettext("Can't find release group with that ID!"))
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     # Checking if release group is mapped to Spotify
     spotify_mappings = mbspotify.mappings(str(release_group_id))
     if not (spotify_uri in spotify_mappings):
-        flash(gettext("This album is not mapped to Spotify yet!"), 'error')
+        flash.error(gettext("This album is not mapped to Spotify yet!"))
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     if request.method == 'POST':
         mbspotify.vote(release_group_id, spotify_uri, current_user.id)
-        flash(gettext("Incorrect Spotify mapping has been reported. Thank you!"), 'success')
+        flash.success(gettext("Incorrect Spotify mapping has been reported. Thank you!"))
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     else:
         album = spotify_api.get_album(spotify_id)
         if not album or album.get('error'):
-            flash(gettext("You need to specify existing album from Spotify!"), 'error')
+            flash.error(gettext("You need to specify existing album from Spotify!"))
             return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
         return render_template('mapping/report.html', release_group=release_group, spotify_album=album)
