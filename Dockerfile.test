@@ -9,9 +9,15 @@ RUN apt-get update \
                           libssl-dev \
                           libxml2-dev \
                           libxslt1-dev \
+                          wget
+
+ENV DOCKERIZE_VERSION v0.2.0
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 
 COPY . /code/
 
-CMD ["py.test"]
+CMD dockerize -wait tcp://db:5432 -timeout 25s py.test
