@@ -20,9 +20,6 @@ pip-delete-this-directory.txt
 # Application data
 /data
 
-# Static builds
-/critiquebrainz/frontend/static/build
-
 # Test results
 htmlcov
 .coverage

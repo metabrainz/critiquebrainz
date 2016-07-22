@@ -28,8 +28,14 @@ OBSERVE_FILES = [
               help="Turns debugging mode on or off. If specified, overrides "
                    "'DEBUG' value in the config file.")
 def runserver(host, port, debug=False):
-    run_simple(host, port, application, use_debugger=debug,
-               extra_files=OBSERVE_FILES)
+    run_simple(
+        hostname=host,
+        port=port,
+        application=application,
+        use_debugger=debug,
+        extra_files=OBSERVE_FILES,
+        use_reloader=debug,
+    )
 
 
 @cli.command()

@@ -18,10 +18,6 @@ RUN apt-get update \
 # Specifying password so that client doesn't ask scripts for it...
 ENV PGPASSWORD "critiquebrainz"
 
-# Node
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs
-
 RUN mkdir /code
 WORKDIR /code
 
@@ -29,12 +25,6 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 
-# Node dependencies
-COPY package.json /code/
-COPY npm-shrinkwrap.json /code/
-RUN npm install
-
 COPY . /code/
-RUN ./node_modules/.bin/gulp
 
 CMD python3 manage.py runserver -h 0.0.0.0 -p 80 -d
