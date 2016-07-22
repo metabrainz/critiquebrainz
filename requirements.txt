@@ -10,7 +10,7 @@ Flask-WTF==0.12
 Markdown==2.6.6
 musicbrainzngs==0.6
 pytest==2.9.2
-pytest-cov==2.2.1
+pytest-cov==2.3.0
 psycopg2==2.6.1
 pycountry==1.20
 python-dateutil==2.5.3

@@ -4,7 +4,6 @@ DEBUG = False
 SECRET_KEY = "CHANGE_THIS"
 
 SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@db:5432/critiquebrainz"
-TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@db:5432/cb_test"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # CritiqueBrainz OAuth configuration

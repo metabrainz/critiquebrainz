@@ -11,7 +11,6 @@ class WebServiceTestCase(TestCase):
     def create_app(self):
         app = create_app(debug=False)
         app.config['TESTING'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = app.config['TEST_SQLALCHEMY_DATABASE_URI']
         app.config['OAUTH_TOKEN_LENGTH'] = 40
         app.config['OAUTH_GRANT_EXPIRE'] = 60
         app.config['OAUTH_TOKEN_EXPIRE'] = 3600

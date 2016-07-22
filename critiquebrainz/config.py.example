@@ -6,20 +6,6 @@ DEBUG = True  # set to False in production mode
 SECRET_KEY = "CHANGE_THIS"
 
 
-# DATABASE
-
-# Primary database
-# Example:
-#SQLALCHEMY_DATABASE_URI = "postgresql://<user>:<pass>@<host>:<port>/<db>"
-#SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@db:5432/critiquebrainz"
-
-# Database for testing
-# You shouldn't specify this value yourself, unless you have custom database
-# for testing purpose.
-#TEST_SQLALCHEMY_DATABASE_URI = "postgresql://<test_user>:<test_pass>@<host>:<port>/<test_db>"
-#TEST_SQLALCHEMY_DATABASE_URI = "postgresql://cb_test:cb_test@db:5432/cb_test"
-
-
 # LOGGING
 
 #LOG_FILE = {

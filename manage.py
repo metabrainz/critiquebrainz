@@ -106,19 +106,6 @@ def init_db(skip_create_db=False):
     click.echo("Initialization has been completed!")
 
 
-@cli.command()
-def init_test_db():
-    """Initialize the database.
-
-    * Creates the database.
-    * Creates all tables.
-    * Adds fixtures required to run the app.
-    """
-    click.echo("Initializing the database for testing...")
-    init_postgres(frontend.create_app().config['TEST_SQLALCHEMY_DATABASE_URI'])
-    click.echo("Initialization has been completed!")
-
-
 def init_postgres(db_uri):
     """Initializes PostgreSQL database from provided URI.
 

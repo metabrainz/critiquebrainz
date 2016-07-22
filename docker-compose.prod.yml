@@ -1,4 +1,4 @@
-# Docker Compose file for development
+# Docker Compose file for production
 version: "2"
 services:
 
@@ -15,12 +15,22 @@ services:
     image: redis:3.2.1
 
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     volumes:
-      - .:/code
       - ./data/app:/data
     ports:
-      - "80:80"
+      - "3031:3031"
     depends_on:
       - db
       - redis
+
+  nginx:
+    extends:
+      file: ./docker/common.yml
+      service: nginx
+    links:
+      - web:web
+    ports:
+      - "80:80"

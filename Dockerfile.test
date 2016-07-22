@@ -1,7 +1,4 @@
-FROM python:3.5.1
-
-RUN mkdir /code
-WORKDIR /code
+FROM python:3.5.2
 
 RUN apt-get update \
     && apt-get install -y build-essential \
@@ -15,9 +12,13 @@ ENV DOCKERIZE_VERSION v0.2.0
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
+RUN mkdir /code
+WORKDIR /code
+
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 
 COPY . /code/
 
-CMD dockerize -wait tcp://db:5432 -timeout 25s py.test
+CMD dockerize -wait tcp://db:5432 -timeout 25s \
+    py.test --junitxml=/data/test_report.xml  --cov-report html:/data/coverage
