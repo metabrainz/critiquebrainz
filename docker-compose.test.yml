@@ -14,8 +14,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
-    volumes:
-      - ./data/test_output:/data
     depends_on:
       - db
       - redis
