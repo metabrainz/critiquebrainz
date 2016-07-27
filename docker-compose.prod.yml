@@ -10,9 +10,11 @@ services:
       - ./data/pgdata:/var/lib/postgresql/data/pgdata
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
 
   redis:
     image: redis:3.2.1
+    restart: always
 
   web:
     build:
@@ -25,6 +27,7 @@ services:
     depends_on:
       - db
       - redis
+    restart: always
 
   nginx:
     extends:
@@ -34,3 +37,4 @@ services:
       - web:web
     ports:
       - "80:80"
+    restart: always

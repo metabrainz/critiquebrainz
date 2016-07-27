@@ -13,7 +13,6 @@ services:
       POSTGRES_DB: critiquebrainz
 
   nginx:
-    restart: always
     build:
       context: ./nginx_custom/
       dockerfile: Dockerfile
