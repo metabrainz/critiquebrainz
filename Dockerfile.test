@@ -21,4 +21,6 @@ RUN pip install -r requirements.txt
 COPY . /code/
 
 CMD dockerize -wait tcp://db:5432 -timeout 25s \
-    py.test --junitxml=/data/test_report.xml  --cov-report html:/data/coverage
+    py.test --junitxml=/data/test_report.xml \
+            --cov-report xml:/data/coverage.xml \
+            --cov-report html:/data/coverage-html
