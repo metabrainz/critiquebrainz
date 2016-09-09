@@ -69,7 +69,7 @@ def create_app(debug=None):
     from critiquebrainz.frontend.external import mbspotify
     mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
     from critiquebrainz.frontend.external import musicbrainz
-    musicbrainz.init(app.config['MUSICBRAINZ_USERAGENT'], critiquebrainz.__version__,
+    musicbrainz.init(app.config['MUSICBRAINZ_USERAGENT'], "1.0",
                      hostname=app.config['MUSICBRAINZ_HOSTNAME'])
 
     # Template utilities
