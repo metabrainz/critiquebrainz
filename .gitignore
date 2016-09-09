@@ -23,3 +23,7 @@ htmlcov
 .coverage
 
 .transifexrc
+
+# Configuration
+/consul_config.py
+/custom_config.py

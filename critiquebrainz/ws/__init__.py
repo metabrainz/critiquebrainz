@@ -9,11 +9,17 @@ def create_app(debug=None):
     )
 
     # Configuration files
-    import critiquebrainz.default_config
-    app.config.from_object(critiquebrainz.default_config)
     app.config.from_pyfile(os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
-        "..", "config.py"
+        '..', '..', 'default_config.py'
+    ))
+    app.config.from_pyfile(os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        '..', '..', 'consul_config.py'
+    ), silent=True)
+    app.config.from_pyfile(os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        '..', '..', 'custom_config.py'
     ), silent=True)
     if debug is not None:
         app.debug = debug

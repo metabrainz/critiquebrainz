@@ -1,0 +1,17 @@
+SECRET_KEY = '''{{key "CB/secret_key"}}'''
+
+LOG_SENTRY = {
+    'dsn': '''{{key "CB/sentry_dsn"}}''',
+}
+
+MUSICBRAINZ_HOSTNAME = '''{{key_or_default "CB/musicbrainz/hostname" "musicbrainz.org"}}'''
+MUSICBRAINZ_USERAGENT = '''{{key_or_default "CB/musicbrainz/useragent" "CritiqueBrainz Custom"}}'''
+MUSICBRAINZ_CLIENT_ID = '''{{key "CB/musicbrainz/client_id"}}'''
+MUSICBRAINZ_CLIENT_SECRET = '''{{key "CB/musicbrainz/client_secret"}}'''
+
+{{if service "mbspotify"}}
+MBSPOTIFY_BASE_URI = '''{{(index (service "mbspotify") 1).Address}}:{{(index (service "mbspotify") 1).Port}}'''
+MBSPOTIFY_ACCESS_KEY = '''{{key_or_default "CB/musicbrainz/useragent" "CritiqueBrainz"}}'''
+{{end}}
+
+GOOGLE_ANALYTICS_TRACKING_ID = '''{{key "CB/ga_tracking_id"}}'''
