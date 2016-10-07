@@ -67,6 +67,8 @@ def remove_old_archives(location, pattern, is_dir=False, sort_key=None):
     else:
         entries = filter(os.path.isfile, entries)
 
+    entries = list(entries)
+
     if sort_key is None:
         entries.sort()
     else:

@@ -3,7 +3,7 @@ import logging
 import os
 
 
-def create_app(debug=None):
+def create_app(debug=None, config_path=None):
     app = CustomFlask(
         import_name=__name__,
         use_flask_uuid=True,
@@ -23,6 +23,8 @@ def create_app(debug=None):
         os.path.dirname(os.path.realpath(__file__)),
         '..', '..', 'custom_config.py'
     ), silent=True)
+    if config_path:
+        app.config.from_pyfile(config_path)
     if debug is not None:
         app.debug = debug
 

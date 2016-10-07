@@ -1,0 +1,19 @@
+# Docker Compose file for testing
+version: "2"
+services:
+
+  db:
+    extends:
+      file: ./common.yml
+      service: db
+
+  critiquebrainz-redis:
+    image: redis:3.2.1
+
+  critiquebrainz-test:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile.test
+    depends_on:
+      - db
+      - critiquebrainz-redis

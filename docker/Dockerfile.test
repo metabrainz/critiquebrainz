@@ -1,0 +1,26 @@
+FROM python:3.5.2
+
+ENV DOCKERIZE_VERSION v0.2.0
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
+RUN mkdir /code
+WORKDIR /code
+
+# Python dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+                    build-essential \
+                    libffi-dev \
+                    libssl-dev \
+                    libxml2-dev \
+                    libxslt1-dev && \
+    rm -rf /var/lib/apt/lists/*
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+
+COPY . /code/
+
+CMD dockerize -wait tcp://db:5432 -timeout 60s \
+    py.test --junitxml=/data/test_report.xml \
+            --cov-report xml:/data/coverage.xml

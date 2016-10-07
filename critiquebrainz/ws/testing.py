@@ -1,20 +1,18 @@
 from flask_testing import TestCase
 from critiquebrainz.ws import create_app
 from critiquebrainz.data import db
-
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.data.model.oauth_client import OAuthClient
+import os
 
 
 class WebServiceTestCase(TestCase):
 
     def create_app(self):
-        app = create_app(debug=False)
-        app.config['TESTING'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = app.config['TEST_SQLALCHEMY_DATABASE_URI']
-        app.config['OAUTH_TOKEN_LENGTH'] = 40
-        app.config['OAUTH_GRANT_EXPIRE'] = 60
-        app.config['OAUTH_TOKEN_EXPIRE'] = 3600
+        app = create_app(config_path=os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            '..', 'test_config.py'
+        ))
         oauth.init_app(app)
         return app
 
