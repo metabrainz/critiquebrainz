@@ -22,9 +22,6 @@ pip-delete-this-directory.txt
 htmlcov
 .coverage
 
-# Vagrant
-.vagrant
-
 .transifexrc
 
 # Configuration
