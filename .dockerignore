@@ -1,3 +1,8 @@
+.git
+
+# Docker configuration
+/docker
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -8,7 +13,7 @@ venv
 /build
 
 # Node
-/node_modules
+node_modules
 
 # Logs
 *.log
@@ -18,15 +23,11 @@ pip-delete-this-directory.txt
 # Application data
 /data
 
+# Configuration generated from Consul's KV storage
+/consul_config.py
+
 # Test results
 htmlcov
 .coverage
 
-# Vagrant
-.vagrant
-
 .transifexrc
-
-# Configuration
-/consul_config.py
-/custom_config.py

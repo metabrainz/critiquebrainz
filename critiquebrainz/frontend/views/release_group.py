@@ -22,7 +22,7 @@ def entity(id):
     spotify_mappings = mbspotify.mappings(id)
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         my_reviews, my_count = Review.list(entity_id=id, entity_type='release_group', user_id=current_user.id)
         if my_count != 0:
             my_review = my_reviews[0]

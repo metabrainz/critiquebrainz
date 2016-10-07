@@ -15,7 +15,7 @@ def entity(id):
     if not place:
         raise NotFound(gettext("Sorry, we couldn't find a place with that MusicBrainz ID."))
 
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         my_reviews, my_count = Review.list(entity_id=id, entity_type='place', user_id=current_user.id)
         if my_count != 0:
             my_review = my_reviews[0]

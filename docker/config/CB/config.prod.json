@@ -1,0 +1,13 @@
+{
+  "secret_key": "CHANGE ME PLEASE",
+  "sentry_dsn_private": "",
+  "admins": "[\"example1\", \"example2\"]",
+  "musicbrainz": {
+    "hostname": "musicbrainz.org",
+    "useragent": "CritiqueBrainz Custom",
+    "client_id": "",
+    "client_secret": ""
+  },
+  "mbspotify_key": "",
+  "ga_tracking_id": ""
+}

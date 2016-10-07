@@ -5,7 +5,7 @@ More information about it is available at https://developer.spotify.com/web-api/
 """
 import requests
 import urllib.parse
-from critiquebrainz import cache
+from brainzutils import cache
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 

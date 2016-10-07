@@ -1,0 +1,47 @@
+{{- define "KEY" -}}
+    {{ key (printf "docker-server-configs/CB/config.%s.json/%s" (env "DEPLOY_ENV") .) }}
+{{- end -}}
+{{- define "KEY_ARRAY" -}}
+    {{- range $index, $element := (key (printf "docker-server-configs/MeB/config.%s.json/%s" (env "DEPLOY_ENV") .) | parseJSON) -}}
+        "{{.}}",
+    {{- end -}}
+{{- end -}}
+
+SECRET_KEY = '''{{template "KEY" "secret_key"}}'''
+
+LOG_SENTRY = {
+    'dsn': '''{{template "KEY" "sentry_dsn_private"}}''',
+}
+
+MUSICBRAINZ_HOSTNAME = '''{{template "KEY" "musicbrainz/hostname"}}'''
+MUSICBRAINZ_USERAGENT = '''{{template "KEY" "musicbrainz/useragent"}}'''
+MUSICBRAINZ_CLIENT_ID = '''{{template "KEY" "musicbrainz/client_id"}}'''
+MUSICBRAINZ_CLIENT_SECRET = '''{{template "KEY" "musicbrainz/client_secret"}}'''
+
+{{if service "postgres-master"}}
+{{with index (service "postgres-master") 0}}
+SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@{{.Address}}:{{.Port}}/critiquebrainz_db"
+{{end}}
+{{end}}
+
+{{if service "critiquebrainz-redis"}}
+{{with index (service "critiquebrainz-redis") 0}}
+REDIS_HOST = "{{.Address}}"
+REDIS_PORT = {{.Port}}
+{{end}}
+{{end}}
+
+{{if service "mbspotify-nginx"}}
+{{with index (service "mbspotify-nginx") 0}}
+MBSPOTIFY_BASE_URI = '''https://{{.Address}}:{{.Port}}/'''
+MBSPOTIFY_ACCESS_KEY = '''{{template "KEY" "mbspotify_key"}}'''
+{{end}}
+{{end}}
+
+# List of MusicBrainz usernames of people that are allowed to access
+# admin section of the website. Usernames are case-sensetive!
+ADMINS = [
+    {{template "KEY_ARRAY" "admins"}}
+]
+
+GOOGLE_ANALYTICS_TRACKING_ID = '''{{template "KEY" "ga_tracking_id"}}'''

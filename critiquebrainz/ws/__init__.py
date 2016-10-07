@@ -1,16 +1,26 @@
-from flask import Flask
+from brainzutils.flask import CustomFlask
+import logging
 import os
 
 
 def create_app(debug=None):
-    app = Flask(__name__)
+    app = CustomFlask(
+        import_name=__name__,
+        use_flask_uuid=True,
+    )
 
     # Configuration files
-    import critiquebrainz.default_config
-    app.config.from_object(critiquebrainz.default_config)
     app.config.from_pyfile(os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
-        "..", "config.py"
+        '..', '..', 'default_config.py'
+    ))
+    app.config.from_pyfile(os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        '..', '..', 'consul_config.py'
+    ), silent=True)
+    app.config.from_pyfile(os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        '..', '..', 'custom_config.py'
     ), silent=True)
     if debug is not None:
         app.debug = debug
@@ -19,23 +29,29 @@ def create_app(debug=None):
     from critiquebrainz.ws.errors import init_error_handlers
     init_error_handlers(app)
 
-    # Logging
-    from critiquebrainz import loggers
-    loggers.init_loggers(app)
-
-    from flask_uuid import FlaskUUID
-    FlaskUUID(app)
+    app.init_loggers(
+        file_config=app.config.get("LOG_FILE"),
+        email_config=app.config.get("LOG_EMAIL"),
+        sentry_config=app.config.get("LOG_SENTRY"),
+    )
 
     from critiquebrainz.data import db
     db.init_app(app)
 
-    # Memcached
-    if 'MEMCACHED_SERVERS' in app.config:
-        from critiquebrainz import cache
-        cache.init(app.config['MEMCACHED_SERVERS'],
-                   app.config['MEMCACHED_NAMESPACE'])
+    # Redis (cache)
+    from brainzutils import cache
+    if "REDIS_HOST" in app.config and \
+       "REDIS_PORT" in app.config and \
+       "REDIS_NAMESPACE" in app.config:
+        cache.init(
+            host=app.config["REDIS_HOST"],
+            port=app.config["REDIS_PORT"],
+            namespace=app.config["REDIS_NAMESPACE"],
+        )
+    else:
+        logging.warning("Redis is not defined in config file. Skipping initialization.")
 
-    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+    app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
     _register_blueprints(app)
 
@@ -43,7 +59,7 @@ def create_app(debug=None):
 
 
 def create_app_sphinx():
-    app = Flask(__name__)
+    app = CustomFlask(__name__)
     _register_blueprints(app)
     return app
 
@@ -52,6 +68,6 @@ def _register_blueprints(app):
     from critiquebrainz.ws.oauth.views import oauth_bp
     from critiquebrainz.ws.review.views import review_bp
     from critiquebrainz.ws.user.views import user_bp
-    app.register_blueprint(oauth_bp, url_prefix='/oauth')
-    app.register_blueprint(review_bp, url_prefix='/review')
-    app.register_blueprint(user_bp, url_prefix='/user')
+    app.register_blueprint(oauth_bp, url_prefix="/oauth")
+    app.register_blueprint(review_bp, url_prefix="/review")
+    app.register_blueprint(user_bp, url_prefix="/user")

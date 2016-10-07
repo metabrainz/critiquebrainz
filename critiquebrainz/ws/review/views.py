@@ -6,7 +6,7 @@ from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest,
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
 from critiquebrainz.decorators import crossdomain
-from critiquebrainz import cache
+from brainzutils import cache
 
 review_bp = Blueprint('ws_review', __name__)
 

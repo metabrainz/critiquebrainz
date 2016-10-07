@@ -2,7 +2,7 @@
 from werkzeug.wsgi import DispatcherMiddleware
 from critiquebrainz import frontend
 from critiquebrainz import ws
-from critiquebrainz import cache
+from brainzutils import cache
 from critiquebrainz.data import dump_manager
 import critiquebrainz.data.utils as data_utils
 import critiquebrainz.data.fixtures as _fixtures
@@ -16,6 +16,8 @@ application = DispatcherMiddleware(frontend.create_app(), {
     "/ws/1": ws.create_app()
 })
 
+# Files listed here will be monitored for changes in debug mode and will
+# force a reload when modified.
 OBSERVE_FILES = [
     "critiquebrainz/frontend/static/build/rev-manifest.json",
 ]
@@ -28,8 +30,14 @@ OBSERVE_FILES = [
               help="Turns debugging mode on or off. If specified, overrides "
                    "'DEBUG' value in the config file.")
 def runserver(host, port, debug=False):
-    run_simple(host, port, application, use_debugger=debug,
-               extra_files=OBSERVE_FILES)
+    run_simple(
+        hostname=host,
+        port=port,
+        application=application,
+        use_debugger=debug,
+        extra_files=OBSERVE_FILES,
+        use_reloader=debug,
+    )
 
 
 @cli.command()
@@ -76,8 +84,10 @@ def clear_memcached():
     click.echo("Flushed everything from memcached.")
 
 
+@click.option("--skip-create-db", "-s", is_flag=True,
+              help="Skip database creation step.")
 @cli.command()
-def init_db():
+def init_db(skip_create_db=False):
     """Initialize the database.
 
     * Creates the database.
@@ -86,7 +96,10 @@ def init_db():
     """
     click.echo("Initializing the database...")
 
-    init_postgres(frontend.create_app().config['SQLALCHEMY_DATABASE_URI'])
+    db_uri = frontend.create_app().config['SQLALCHEMY_DATABASE_URI']
+    if not skip_create_db:
+        init_postgres(db_uri)
+        create_extension(db_uri)
 
     click.echo("Creating tables... ", nl=False)
     data_utils.create_tables(frontend.create_app())
@@ -98,19 +111,6 @@ def init_db():
         _fixtures.install(app, *_fixtures.all_data)
     click.echo("Done!")
 
-    click.echo("Initialization has been completed!")
-
-
-@cli.command()
-def init_test_db():
-    """Initialize the database.
-
-    * Creates the database.
-    * Creates all tables.
-    * Adds fixtures required to run the app.
-    """
-    click.echo("Initializing the database for testing...")
-    init_postgres(frontend.create_app().config['TEST_SQLALCHEMY_DATABASE_URI'])
     click.echo("Initialization has been completed!")
 
 
@@ -137,8 +137,11 @@ def init_postgres(db_uri):
         if exit_code != 0:
             raise Exception('Failed to create PostgreSQL database!')
 
-    # Creating database extension
-    exit_code = subprocess.call('sudo -u postgres psql -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' % ('uuid-ossp', db), shell=True)
+
+def create_extension(db_uri):
+    host, port, db, username, password = data_utils.explode_db_uri(db_uri)
+    psql_cmd = "psql -h %s -p %s -U %s -W %s %s" % (host, port, username, password, db)
+    exit_code = subprocess.call('%s  -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' % (psql_cmd, 'uuid-ossp', db), shell=True)
     if exit_code != 0:
         raise Exception('Failed to create PostgreSQL extension!')
 

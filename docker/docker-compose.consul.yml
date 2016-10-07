@@ -1,0 +1,41 @@
+version: "2"
+services:
+
+  consul:
+    command: -server -bootstrap
+    image: progrium/consul
+    network_mode: "host"
+    ports:
+      - "8500:8500"
+
+  git2consul:
+    command: --endpoint 127.0.0.1 --port 8500 --config-file /etc/git2consul.d/config.json
+    image: cimpress/git2consul
+    restart: always
+    depends_on:
+      - consul
+    network_mode: "host"
+    volumes:
+      - ../:/tmp/critiquebrainz.git
+      - ./git2consul:/etc/git2consul.d
+
+  critiquebrainz:
+    build:
+        context: ..
+        dockerfile: ./Dockerfile
+    network_mode: "host"
+    environment:
+      DEPLOY_ENV: prod
+    volumes:
+      - ../:/code
+      - ../data/app:/data
+
+  critiquebrainz-nginx:
+    build:
+        context: ./nginx_custom
+        dockerfile: ./Dockerfile
+    network_mode: "host"
+    depends_on:
+      - critiquebrainz
+
+
