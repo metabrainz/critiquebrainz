@@ -1,4 +1,4 @@
-{% macro print_error(message, category) -%}
+{% macro print_message(message, category) %}
   {% if category == "error" %}
     {% set alert_class="alert-danger" %}
   {% elif category == "warning" %}
@@ -8,10 +8,8 @@
   {% else %}
     {% set alert_class="alert-info" %}
   {% endif %}
-<div class="alert {{ alert_class }}">
-  <strong>{{ head }}</strong>
-  {{ message }}
-</div>
+
+  <div class="alert {{ alert_class }}">{{ message }}</div>
 {% endmacro %}
 
 {% macro scope_desc(scope) %}

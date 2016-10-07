@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for
 from flask_babel import gettext
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
@@ -6,6 +6,7 @@ from werkzeug.exceptions import NotFound
 from critiquebrainz.data.model.oauth_client import OAuthClient
 from critiquebrainz.data.model.oauth_token import OAuthToken
 from critiquebrainz.frontend.forms.profile_apps import ApplicationForm
+from critiquebrainz.frontend import flash
 
 profile_apps_bp = Blueprint('profile_applications', __name__)
 
@@ -27,7 +28,7 @@ def create():
         OAuthClient.create(user=current_user, name=form.name.data,
                            desc=form.desc.data, website=form.website.data,
                            redirect_uri=form.redirect_uri.data)
-        flash(gettext('You have created an application!'), 'success')
+        flash.success(gettext('You have created an application!'))
         return redirect(url_for('.index'))
     return render_template('profile/applications/create.html', form=form)
 
@@ -42,7 +43,7 @@ def edit(client_id):
     if form.validate_on_submit():
         application.update(name=form.name.data, desc=form.desc.data,
                            website=form.website.data, redirect_uri=form.redirect_uri.data)
-        flash(gettext("You have updated an application!"), 'success')
+        flash.success(gettext("You have updated an application!"))
         return redirect(url_for('.index'))
     else:
         form.name.data = application.name
@@ -60,7 +61,7 @@ def delete(client_id):
         raise NotFound()
     client.delete()
 
-    flash(gettext('You have deleted an application.'), 'success')
+    flash.success(gettext('You have deleted an application.'))
     return redirect(url_for('.index'))
 
 

@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect, render_template, url_for, sessio
 from flask_login import login_user, logout_user, login_required
 from flask_babel import gettext
 from critiquebrainz.frontend.login import mb_auth, login_forbidden
+from critiquebrainz.frontend import flash
 
 login_bp = Blueprint('login', __name__)
 
@@ -29,7 +30,7 @@ def musicbrainz_post():
         if next:
             return redirect(next)
     else:
-        flash(gettext("Login failed."), 'error')
+        flash.error(gettext("Login failed."))
     return redirect(url_for('frontend.index'))
 
 

@@ -7,7 +7,7 @@ import json
 import requests
 from requests.exceptions import RequestException
 from requests.adapters import HTTPAdapter
-from flask import flash
+from critiquebrainz.frontend import flash
 from flask_babel import lazy_gettext
 from brainzutils import cache
 
@@ -31,7 +31,7 @@ def mappings(mbid=None):
         List containing Spotify URIs that are mapped to specified MBID.
     """
     if _base_url is None:
-        flash(lazy_gettext(_UNAVAILABLE_MSG), "warning")
+        flash.warn(lazy_gettext(_UNAVAILABLE_MSG))
         return []
 
     resp = cache.get(mbid, _CACHE_NAMESPACE)
@@ -43,7 +43,7 @@ def mappings(mbid=None):
                                 headers={'Content-Type': 'application/json'},
                                 data=json.dumps({'mbid': mbid})).json().get('mappings')
         except RequestException:
-            flash(lazy_gettext("Spotify mapping server is unavailable. You will not see an embedded player."), "warning")
+            flash.warn(lazy_gettext("Spotify mapping server is unavailable. You will not see an embedded player."))
             return []
         cache.set(key=mbid, namespace=_CACHE_NAMESPACE, val=resp)
     return resp

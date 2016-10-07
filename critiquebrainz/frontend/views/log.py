@@ -1,7 +1,8 @@
 from itertools import groupby
-from flask import Blueprint, render_template, flash, request, jsonify
+from flask import Blueprint, render_template, request, jsonify
 from flask_babel import gettext
 from critiquebrainz.data.model.moderation_log import ModerationLog
+from critiquebrainz.frontend import flash
 
 log_bp = Blueprint('log', __name__)
 
@@ -13,7 +14,7 @@ def browse():
     results, count = ModerationLog.list(limit=RESULTS_LIMIT)
 
     if not results:
-        flash(gettext("No logs to display."), "warning")
+        flash.warn(gettext("No logs to display."))
 
     results = groupby(results, lambda log: log.timestamp.strftime('%d %b, %G'))
 
