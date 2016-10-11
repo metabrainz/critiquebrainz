@@ -30,7 +30,7 @@ To add support for new language add its Transifex code into ``SUPPORTED_LANGUAGE
 list in default configuration file: ``default_config.py``. After that you can pull
 translations from Transifex::
 
-   $ python3 manage.py  pull_translations
+   $ python3 manage.py pull_translations
 
 You will need to create *.transifexrc* file that will look like::
 
