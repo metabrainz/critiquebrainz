@@ -60,7 +60,7 @@ def spotify():
 
     # Removing punctuation from the string
     punctuation_map = dict((ord(char), None) for char in string.punctuation)
-    query = unicode(release_group['title']).translate(punctuation_map)
+    query = release_group['title'].translate(punctuation_map)
     # Searching...
     response = spotify_api.search(query, 'album', limit, offset).get('albums')
 
