@@ -33,7 +33,7 @@ REDIS_PORT = {{.Port}}
 
 {{if service "mbspotify-nginx"}}
 {{with index (service "mbspotify-nginx") 0}}
-MBSPOTIFY_BASE_URI = '''https://{{.Address}}:{{.Port}}/'''
+MBSPOTIFY_BASE_URI = '''http://{{.Address}}:{{.Port}}/'''
 MBSPOTIFY_ACCESS_KEY = '''{{template "KEY" "mbspotify_key"}}'''
 {{end}}
 {{end}}
