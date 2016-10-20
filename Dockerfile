@@ -16,6 +16,16 @@ RUN chmod 755 /usr/local/bin/install_consul_template.sh /usr/local/bin/install_r
 # CritiqueBrainz #
 ##################
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+                    build-essential \
+                    cron \
+                    libffi-dev \
+                    libssl-dev \
+                    libxml2-dev \
+                    libxslt1-dev && \
+    rm -rf /var/lib/apt/lists/*
+
 # PostgreSQL client
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 ENV PG_MAJOR 9.5
@@ -36,14 +46,6 @@ RUN mkdir /code
 WORKDIR /code
 
 # Python dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-                    build-essential \
-                    libffi-dev \
-                    libssl-dev \
-                    libxml2-dev \
-                    libxslt1-dev && \
-    rm -rf /var/lib/apt/lists/*
 COPY ./requirements.txt /code/
 RUN pip install -r requirements.txt
 
@@ -62,12 +64,20 @@ RUN ./node_modules/.bin/gulp
 ############
 
 # Consul-template is already installed with install_consul_template.sh
-COPY ./docker/prod/uwsgi.service /etc/sv/uwsgi/run
+COPY ./docker/prod/uwsgi/uwsgi.service /etc/sv/uwsgi/run
 RUN chmod 755 /etc/sv/uwsgi/run && \
     ln -sf /etc/sv/uwsgi /etc/service/
+COPY ./docker/prod/cron/service.sh /etc/sv/cron/run
+RUN chmod 755 /etc/sv/cron/run && \
+    ln -sf /etc/sv/cron /etc/service/
+
+# cron jobs
+ADD ./docker/prod/cron/jobs /tmp/crontab
+RUN crontab /tmp/crontab
+RUN rm /tmp/crontab
 
 # Configuration
-COPY ./docker/prod/uwsgi.ini /etc/uwsgi/uwsgi.ini
+COPY ./docker/prod/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
 COPY ./docker/prod/consul-template.conf /etc/consul-template.conf
 
 EXPOSE 13032

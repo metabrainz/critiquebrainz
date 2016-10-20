@@ -1,0 +1,12 @@
+# Database backup creation
+10 00 * * * cd /code/ && python3 manage.py dump full_db -l /data/backups -r
+
+# Public MB-style dump creation
+15 00 * * * cd /code/ && python3 manage.py dump public -l /data/dumps/tsv -r
+
+# JSON dump creation
+20 00 * * * cd /code/ && python3 manage.py dump json -l /data/dumps/json -r
+
+# Copy everything over...
+# TODO: Fix this
+#45 00 * * * rsync -av --delete-after -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" /data/dumps/ ftp-misc@taz.mb:/media/ftp/root/pub/musicbrainz/critiquebrainz
