@@ -31,12 +31,8 @@ REDIS_PORT = {{.Port}}
 {{end}}
 {{end}}
 
-{{if service "mbspotify-nginx"}}
-{{with index (service "mbspotify-nginx") 0}}
-MBSPOTIFY_BASE_URI = '''http://{{.Address}}:{{.Port}}/'''
+MBSPOTIFY_BASE_URI = '''{{template "KEY" "mbspotify_url"}}'''
 MBSPOTIFY_ACCESS_KEY = '''{{template "KEY" "mbspotify_key"}}'''
-{{end}}
-{{end}}
 
 # List of MusicBrainz usernames of people that are allowed to access
 # admin section of the website. Usernames are case-sensetive!
