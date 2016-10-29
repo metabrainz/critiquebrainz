@@ -12,6 +12,7 @@ SECRET_KEY = '''{{template "KEY" "secret_key"}}'''
 LOG_SENTRY = {
     'dsn': '''{{template "KEY" "sentry_dsn_private"}}''',
 }
+SENTRY_DSN_PUBLIC = '''{{template "KEY" "sentry_dsn_public"}}'''
 
 MUSICBRAINZ_HOSTNAME = '''{{template "KEY" "musicbrainz/hostname"}}'''
 MUSICBRAINZ_USERAGENT = '''{{template "KEY" "musicbrainz/useragent"}}'''

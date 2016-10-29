@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, g
 
 
 def init_error_handlers(app):
@@ -21,8 +21,8 @@ def init_error_handlers(app):
 
     @app.errorhandler(500)
     def internal_server_error(error):
-        return render_template('errors/500.html', error=error), 500
+        return render_template('errors/500.html', error=error, event_id=g.sentry_event_id), 500
 
     @app.errorhandler(503)
     def service_unavailable(error):
-        return render_template('errors/503.html', error=error), 503
+        return render_template('errors/503.html', error=error, event_id=g.sentry_event_id), 503

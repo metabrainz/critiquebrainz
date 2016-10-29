@@ -1,6 +1,7 @@
 {
   "secret_key": "CHANGE ME PLEASE",
   "sentry_dsn_private": "",
+  "sentry_dsn_public": "",
   "admins": "[\"example1\", \"example2\"]",
   "musicbrainz": {
     "hostname": "musicbrainz.org",
