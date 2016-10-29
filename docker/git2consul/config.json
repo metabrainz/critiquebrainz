@@ -4,7 +4,7 @@
     {
       "name": "docker-server-configs",
       "url": "/tmp/critiquebrainz.git",
-      "branches": ["beta"],
+      "branches": ["master"],
       "source_root": "docker/config/",
       "expand_keys": true,
       "hooks": [
