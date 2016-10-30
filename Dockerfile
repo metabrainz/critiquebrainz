@@ -19,6 +19,7 @@ RUN chmod 755 /usr/local/bin/install_consul_template.sh /usr/local/bin/install_r
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
                     build-essential \
+                    ca-certificates \
                     cron \
                     libffi-dev \
                     libssl-dev \
