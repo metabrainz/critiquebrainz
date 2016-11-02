@@ -12,7 +12,7 @@ Configuration
 
 First, you need to create custom configuration file. Copy the skeleton configuration::
 
-   $ cp config.py.example config.py
+   $ cp custom_config.py.example custom_config.py
 
 Then, open ``critiquebrainz/config.py`` in your favourite text editor and update
 any variables, as needed.
