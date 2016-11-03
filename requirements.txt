@@ -1,4 +1,4 @@
-git+https://github.com/metabrainz/python-brainzutils.git@6f4b9c4e1f0b2e2227b9c9c9c9ead8b50cfd7e3c
+git+https://github.com/metabrainz/brainzutils-python.git@v1.0.0
 beautifulsoup4==4.4.1
 coverage==4.1
 click==6.6
