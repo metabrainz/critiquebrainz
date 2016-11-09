@@ -15,7 +15,7 @@ def build_url(base, additional_params=None):
     query_params.update(urllib.parse.parse_qsl(url.query, True))
     if additional_params is not None:
         query_params.update(additional_params)
-        for key, val in additional_params.iteritems():
+        for key, val in additional_params.items():
             if val is None:
                 query_params.pop(key)
 
