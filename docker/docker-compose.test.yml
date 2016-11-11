@@ -14,6 +14,7 @@ services:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile.test
+    dns: 8.8.8.8
     depends_on:
       - db
       - critiquebrainz-redis
