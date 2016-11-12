@@ -6,14 +6,17 @@ services:
     extends:
       file: ./common.yml
       service: db
+    network_mode: bridge
 
   critiquebrainz-redis:
     image: redis:3.2.1
+    network_mode: bridge
 
   critiquebrainz-test:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile.test
-    depends_on:
+    links:
       - db
       - critiquebrainz-redis
+    network_mode: bridge
