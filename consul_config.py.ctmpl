@@ -19,8 +19,8 @@ MUSICBRAINZ_USERAGENT = '''{{template "KEY" "musicbrainz/useragent"}}'''
 MUSICBRAINZ_CLIENT_ID = '''{{template "KEY" "musicbrainz/client_id"}}'''
 MUSICBRAINZ_CLIENT_SECRET = '''{{template "KEY" "musicbrainz/client_secret"}}'''
 
-{{if service "postgres-master"}}
-{{with index (service "postgres-master") 0}}
+{{if service "pgbouncer-master"}}
+{{with index (service "pgbouncer-master") 0}}
 SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@{{.Address}}:{{.Port}}/critiquebrainz_db"
 {{end}}
 {{end}}
