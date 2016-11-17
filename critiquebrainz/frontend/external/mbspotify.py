@@ -34,19 +34,23 @@ def mappings(mbid=None):
         flash.warn(lazy_gettext(_UNAVAILABLE_MSG))
         return []
 
-    resp = cache.get(mbid, _CACHE_NAMESPACE)
-    if not resp:
+    data = cache.get(mbid, _CACHE_NAMESPACE)
+    if not data:
         try:
             session = requests.Session()
             session.mount(_base_url, HTTPAdapter(max_retries=2))
-            resp = session.post(_base_url + 'mapping',
-                                headers={'Content-Type': 'application/json'},
-                                data=json.dumps({'mbid': mbid})).json().get('mappings')
+            resp = session.post(
+                url=_base_url + 'mapping',
+                headers={'Content-Type': 'application/json'},
+                data=json.dumps({'mbid': mbid}),
+            )
+            resp.raise_for_status()
+            data = resp.json().get('mappings')
         except RequestException:
             flash.warn(lazy_gettext("Spotify mapping server is unavailable. You will not see an embedded player."))
             return []
-        cache.set(key=mbid, namespace=_CACHE_NAMESPACE, val=resp)
-    return resp
+        cache.set(key=mbid, namespace=_CACHE_NAMESPACE, val=data)
+    return data
 
 
 def add_mapping(mbid, spotify_uri, user_id):
