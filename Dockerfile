@@ -60,6 +60,9 @@ COPY . /code/
 # Build static files
 RUN ./node_modules/.bin/gulp
 
+# Compile translations
+RUN pybabel compile -d critiquebrainz/frontend/translations
+
 ############
 # Services #
 ############
