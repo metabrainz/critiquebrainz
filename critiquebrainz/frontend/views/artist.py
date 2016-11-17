@@ -39,8 +39,15 @@ def entity(id):
         release_group['review_count'] = review_count
 
     return render_template(
-        'artist/entity.html', id=id, artist=artist, release_type=release_type, release_groups=release_groups,
-            page=page, limit=limit, count=count, band_members=band_members
+        'artist/entity.html',
+        id=id,
+        artist=artist,
+        release_type=release_type,
+        release_groups=release_groups,
+        page=page,
+        limit=limit,
+        count=count,
+        band_members=band_members,
     )
 
 
@@ -76,7 +83,7 @@ def _squash_duplicated_members(members):
         period = _get_period(member)
         if period:
             members_by_artist_id[artist_id]['periods'].append(period)
-    return members_by_artist_id.values()
+    return list(members_by_artist_id.values())
 
 
 def _get_period(member):

@@ -124,18 +124,17 @@
         {% endif %}
       </b>
       <ul class="list-unstyled">
-        {% set current_members = band_members['current_members'] | list %}
-        {{ print_members(current_members[:15]) }}
-        {% if current_members | length > 15 %}
+        {{ print_members(band_members['current_members'][:15]) }}
+        {% if band_members['current_members'] | length > 15 %}
           <div id="more-members" class="collapse">
-            {{ print_members(current_members[15:]) }}
+            {{ print_members(band_members['current_members'][15:]) }}
           </div>
           <a data-toggle="collapse" data-target="#more-members" style="cursor: pointer;"><strong>{{ _('View all...') }}</strong></a>
         {% endif %}
       </ul>
     {% endif %}
 
-    {% if band_members.former_members %}
+    {% if band_members['former_members'] %}
       <b>
         {% if artist.type and artist.type == 'Person' %}
           {{ _('Former member of') }}
@@ -144,12 +143,14 @@
         {% endif %}
       </b>
       <ul class="list-unstyled">
-        {{ print_members(band_members.former_members[:15]) }}
-        {% if band_members.former_members | length > 15 %}
+        {{ print_members(band_members['former_members'][:15]) }}
+        {% if band_members['former_members'] | length > 15 %}
           <div id="more-former-members" class="collapse">
-            {{ print_members(band_members.former_members[15:]) }}
+            {{ print_members(band_members['former_members'][15:]) }}
           </div>
-          <a data-toggle="collapse" data-target="#more-former-members" style="cursor: pointer;"><strong>{{ _('View all...') }}</strong></a>
+          <a data-toggle="collapse" data-target="#more-former-members" style="cursor: pointer;">
+            <strong>{{ _('View all...') }}</strong>
+          </a>
         {% endif %}
       </ul>
     {% endif %}
