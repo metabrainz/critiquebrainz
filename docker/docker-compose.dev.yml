@@ -3,9 +3,13 @@ version: "2"
 services:
 
   db:
-    extends:
-      file: ./common.yml
-      service: db
+    build:
+      context: ./pg_custom/
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: critiquebrainz
+      POSTGRES_PASSWORD: critiquebrainz
+      POSTGRES_DB: critiquebrainz
     volumes:
       - ./data/pgdata:/var/lib/postgresql/data/pgdata
     environment:
