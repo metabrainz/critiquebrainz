@@ -1,31 +1,17 @@
-FROM python:3.5.2
+FROM metabrainz/python:3.5
 
-COPY ./docker/prod/environment /etc/consul_template_env.sh
-
-COPY ./docker/prod/docker-helpers/install_consul_template.sh \
-     ./docker/prod/docker-helpers/install_runit.sh \
-     /usr/local/bin/
-RUN chmod 755 /usr/local/bin/install_consul_template.sh /usr/local/bin/install_runit.sh && \
-    sync && \
-    install_consul_template.sh && \
-    rm -f \
-        /usr/local/bin/install_consul_template.sh \
-        /usr/local/bin/install_runit.sh
-
-##################
-# CritiqueBrainz #
-##################
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-                    build-essential \
-                    ca-certificates \
-                    cron \
-                    libffi-dev \
-                    libssl-dev \
-                    libxml2-dev \
-                    libxslt1-dev && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+     && apt-get install -y --no-install-recommends \
+                        build-essential \
+                        ca-certificates \
+                        cron \
+                        git \
+                        libpq-dev \
+                        libffi-dev \
+                        libssl-dev \
+                        libxml2-dev \
+                        libxslt1-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # PostgreSQL client
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
@@ -67,22 +53,17 @@ RUN pybabel compile -d critiquebrainz/frontend/translations
 # Services #
 ############
 
-# Consul-template is already installed with install_consul_template.sh
-COPY ./docker/prod/uwsgi/uwsgi.service /etc/sv/uwsgi/run
-RUN chmod 755 /etc/sv/uwsgi/run && \
-    ln -sf /etc/sv/uwsgi /etc/service/
-COPY ./docker/prod/cron/service.sh /etc/sv/cron/run
-RUN chmod 755 /etc/sv/cron/run && \
-    ln -sf /etc/sv/cron /etc/service/
+# Consul Template service is already set up with the base image.
+# Just need to copy the configuration.
+COPY ./docker/prod/consul-template.conf /etc/consul-template.conf
+
+COPY ./docker/prod/uwsgi/uwsgi.service /etc/service/uwsgi/run
+RUN chmod 755 /etc/service/uwsgi/run
+COPY ./docker/prod/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
 
 # cron jobs
 ADD ./docker/prod/cron/jobs /tmp/crontab
 RUN crontab /tmp/crontab
 RUN rm /tmp/crontab
 
-# Configuration
-COPY ./docker/prod/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
-COPY ./docker/prod/consul-template.conf /etc/consul-template.conf
-
 EXPOSE 13032
-ENTRYPOINT ["/usr/local/bin/runsvinit"]
