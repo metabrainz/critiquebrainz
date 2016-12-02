@@ -92,3 +92,19 @@
     {% endif %}
   </div>
 {%- endmacro %}
+
+{% macro soundcloud_player(soundcloud_url) %}
+  <div class=soundcloud-player">
+    {% if soundcloud_url %}
+      <iframe style="margin-top: 10px;margin-left: -5px;" width="100%" height="120" allowtransparency="true" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url={{soundcloud_url}}&auto_play=false"></iframe>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro show_embedded_player(soundcloud_url, spotify_release_group_id, spotify_mappings, spotify_show_add_message=False) %}
+  {% if soundcloud_url %}
+      {{ soundcloud_player(soundcloud_url) }}
+  {% else %}
+      {{ spotify_player(spotify_release_group_id, spotify_mappings, spotify_show_add_message) }}
+  {% endif %}
+{% endmacro %}
