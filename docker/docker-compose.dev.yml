@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: critiquebrainz
       POSTGRES_DB: critiquebrainz
     volumes:
-      - ./data/pgdata:/var/lib/postgresql/data/pgdata
+      - ../data/pgdata:/var/lib/postgresql/data/pgdata
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
 
