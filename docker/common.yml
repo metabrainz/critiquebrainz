@@ -1,0 +1,20 @@
+# Docker Compose file with common services
+# See https://docs.docker.com/compose/extends/#extending-services
+version: "2"
+services:
+
+  db:
+    build:
+      context: ./pg_custom/
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: critiquebrainz
+      POSTGRES_PASSWORD: critiquebrainz
+      POSTGRES_DB: critiquebrainz
+
+  nginx:
+    build:
+      context: ./nginx_custom/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"

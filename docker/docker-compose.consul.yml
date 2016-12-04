@@ -26,23 +26,16 @@ services:
     network_mode: "host"
     environment:
       DEPLOY_ENV: prod
-    depends_on:
-      - db
     volumes:
       - ../:/code
       - ../data/app:/data
 
-  db:
+  critiquebrainz-nginx:
     build:
-      context: ./pg_custom/
-      dockerfile: Dockerfile
-    environment:
-      POSTGRES_USER: critiquebrainz
-      POSTGRES_PASSWORD: critiquebrainz
-      POSTGRES_DB: critiquebrainz
-    volumes:
-      - ../data/pgdata:/var/lib/postgresql/data/pgdata
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
+        context: ./nginx_custom
+        dockerfile: ./Dockerfile
+    network_mode: "host"
+    depends_on:
+      - critiquebrainz
 
 
