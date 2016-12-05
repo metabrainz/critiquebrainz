@@ -42,7 +42,7 @@
   <div class="col-md-3">
     {{ cover_art(id, 'release_group', attributes='class=cover-art', source_credit=True) }}
     {{ spotify_player(id, spotify_mappings, show_add_message=True) }}
-    {{ soundcloud_player(id, soundcloud_mapping) }}
+    {{ soundcloud_player(soundcloud_url) }}
   </div>
   <div class="col-md-6">
     <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
