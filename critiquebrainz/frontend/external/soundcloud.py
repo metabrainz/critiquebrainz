@@ -1,5 +1,5 @@
 from critiquebrainz.frontend.external import musicbrainz
-from urllib.parse import urlencode
+#from urllib.parse import urlencode
 import re
 
 
@@ -9,5 +9,5 @@ def get_url(mbid):
     for url_rel in all_url_rels:
         if url_rel['type-id'] == '08445ccf-7b99-4438-9f9a-fb9ac18099ee':  # Type-id for streaming music
             if re.match(r'^(http|https)://soundcloud.com', url_rel['target']):
-                return urlencode(url_rel['target'])
+                return url_rel['target']
     return None

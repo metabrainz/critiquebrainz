@@ -224,7 +224,7 @@ def get_url_rels_from_releases(releases):
     Typical usage with browse_releases()
     """
     all_url_rels = []
-    for release in releases['release-list']:
+    for release in releases:
         if 'url-relation-list' in release:  # Not all releases have url-rels
             all_url_rels.extend([url_rel for url_rel in release['url-relation-list']])
     return all_url_rels

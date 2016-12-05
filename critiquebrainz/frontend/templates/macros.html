@@ -96,7 +96,7 @@
 {% macro soundcloud_player(soundcloud_url) %}
   <div class="soundcloud-player">
     {% if soundcloud_url %}
-      <iframe allowtransparency="true" scrolling="no" frameborder="no" src="https://w.soundcloud.com/icon/?url={{ soundcloud_url }} &color=orange_white&size=32" style="width: 32px; height: 32px;"></iframe>
+      <iframe allowtransparency="true" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url={{soundcloud_url}}&auto_play=false&show_artwork=true"></iframe>
     {% endif %}
   </div>
 {% endmacro %}
