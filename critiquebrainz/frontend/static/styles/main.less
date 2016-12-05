@@ -288,7 +288,7 @@ ul.sharing {
 a#write-review { margin-top: 20px; }
 a#edit-review { margin-top: 20px; }
 #release-group-details {
-  .spotify-player, .cover-art {
+  .spotify-player, .soundcloud-player, .cover-art {
     margin-top: 10px;
     max-width: 250px;
     @media (max-width: @screen-xs-max) {
@@ -305,7 +305,6 @@ a#edit-review { margin-top: 20px; }
     }
   }
   .soundcloud-player {
-    max-width: 250px;
     height: 500px;
   }
   #tracklist {
@@ -355,11 +354,11 @@ a#edit-review { margin-top: 20px; }
     img { max-width: 100%; }
     #sidebar {
       .cover-art { margin-top: 20px; }
-      .spotify-player {
+      .spotify-player, .soundcloud-player {
         margin-top: 10px;
         max-width: 250px;
       }
-      .spotify-player, .cover-art {
+      .spotify-player, .soundcloud-player, .cover-art {
         @media (max-width: @screen-xs-max) {
           display: flex;
           flex-direction: row;
