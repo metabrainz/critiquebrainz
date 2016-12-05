@@ -73,6 +73,27 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
     return release_groups
 
 
+def browse_releases(artist_id=None, release_types=None, limit=None, offset=None, release_group=None):
+    """Get all the releases by a certain artist.
+    You need to provide an artist's MusicBrainz ID or the Release Group's MusicBrainz ID
+    """
+    if release_types is None:
+        release_types = []
+    key = cache.gen_key(artist_id, limit, offset, *release_types)
+    releases = cache.get(key)
+    if not releases:
+        try:
+            api_resp = musicbrainzngs.browse_releases(artist=artist_id, release_type=release_types, limit=limit,
+                                                      offset=offset, release_group=release_group)
+            releases = api_resp.get('release-list')
+        except ResponseError as e:
+            if e.cause.code == 404:
+                return None
+            else:
+                raise InternalServerError(e.cause.msg)
+        cache.set(key=key, val=releases, time=DEFAULT_CACHE_EXPIRATION)
+    return releases
+
 def get_artist_by_id(id):
     """Get artist with the MusicBrainz ID.
 
