@@ -20,7 +20,7 @@
 </div>
 <div class="col-md-3 hidden-xs">
   {{ spotify_player(entity['id'], spotify_mappings) }}
-  {{ soundcloud_player(entity['id'], soundcloud_mapping) }}
+  {{ soundcloud_player(soundcloud_url) }}
 </div>
 <div class="col-md-4 text-right">
   {{ cover_art(entity['id'], 'release_group', attributes='class=cover-art style=max-height:120px;max-width:120px;') }}

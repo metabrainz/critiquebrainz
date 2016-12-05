@@ -20,7 +20,9 @@ def entity(id):
     else:
         release = None
     spotify_mappings = mbspotify.mappings(id)
-    soundcloud_mapping = soundcloud.mapping(id)
+    soundcloud_url = soundcloud.get_url(id)
+    if soundcloud_url:
+        spotify_mappings = None
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated:
@@ -34,4 +36,4 @@ def entity(id):
     reviews, count = Review.list(entity_id=id, entity_type='release_group', sort='rating', limit=limit, offset=offset)
     return render_template('release_group/entity.html', id=id, release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings,
-                           soundcloud_mapping=soundcloud_mapping, limit=limit, offset=offset, count=count)
+                           soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count)

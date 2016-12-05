@@ -42,6 +42,6 @@
   <div id="sidebar" class="col-md-3">
     {{ cover_art(review.entity_id, 'release_group', attributes='class=cover-art class=img-responsive') }}
     {{ spotify_player(release_group.id, spotify_mappings) }}
-    {{ soundcloud_player(release_group.id, soundcloud_mapping) }}
+    {{ soundcloud_player(soundcloud_url) }}
   </div>
 {% endblock %}
