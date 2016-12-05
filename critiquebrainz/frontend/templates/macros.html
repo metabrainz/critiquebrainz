@@ -93,10 +93,10 @@
   </div>
 {%- endmacro %}
 
-{% macro soundcloud_player(release_group_id, soundcloud_mapping) %}
-  <div class="souncloud-player">
-    {% if soundcloud_mapping %}
-      <iframe allowtransparency="true" scrolling="no" frameborder="no" src="https://w.soundcloud.com/icon/?url={{ soundcloud_mapping }} &color=orange_white&size=32" style="width: 32px; height: 32px;"></iframe>
+{% macro soundcloud_player(soundcloud_url) %}
+  <div class="soundcloud-player">
+    {% if soundcloud_url %}
+      <iframe allowtransparency="true" scrolling="no" frameborder="no" src="https://w.soundcloud.com/icon/?url={{ soundcloud_url }} &color=orange_white&size=32" style="width: 32px; height: 32px;"></iframe>
     {% endif %}
   </div>
 {% endmacro %}
