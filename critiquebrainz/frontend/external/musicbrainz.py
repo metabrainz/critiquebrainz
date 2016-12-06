@@ -73,13 +73,13 @@ def browse_release_groups(artist_id=None, release_types=None, limit=None, offset
     return release_groups
 
 
-def browse_releases(artist_id=None, release_types=None, limit=None, offset=None, release_group=None, includes=None):
-    """Get all the releases by a certain artist.
+def browse_releases(artist_id=None, release_group=None, release_types=None, limit=None, offset=None, includes=None):
+    """Get all the releases by a certain artist and/or a release group.
     You need to provide an artist's MusicBrainz ID or the Release Group's MusicBrainz ID
     """
     if release_types is None:
         release_types = []
-    key = cache.gen_key(artist_id, limit, offset, *release_types)
+    key = cache.gen_key(artist_id, release_group, limit, offset, *release_types, *includes)
     releases = cache.get(key)
     if not releases:
         try:
