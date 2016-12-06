@@ -1,5 +1,4 @@
 from critiquebrainz.frontend.external import musicbrainz
-#from urllib.parse import urlencode
 import re
 
 
