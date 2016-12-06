@@ -19,10 +19,11 @@ def entity(id):
         release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'])
     else:
         release = None
-    spotify_mappings = mbspotify.mappings(id)
     soundcloud_url = soundcloud.get_url(id)
     if soundcloud_url:
         spotify_mappings = None
+    else:
+        spotify_mappings = mbspotify.mappings(id)
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated:
