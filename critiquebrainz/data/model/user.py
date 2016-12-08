@@ -95,9 +95,9 @@ class User(db.Model, AdminMixin, DeleteMixin):
     def avatar(self):
         """Link to user's avatar image."""
         if self.show_gravatar and self.email:
-            return "https://gravatar.com/avatar/" + hashlib.md5(self.email.encode("ascii")).hexdigest() + "?d=mm&r=pg"
+            return "https://gravatar.com/avatar/" + hashlib.md5(self.email.encode("ascii")).hexdigest() + "?d=identicon&r=pg"
         else:
-            return "https://gravatar.com/avatar/placeholder?d=mm"
+            return "https://gravatar.com/avatar/placeholder?d=identicon"
 
     @property
     def stats(self):
