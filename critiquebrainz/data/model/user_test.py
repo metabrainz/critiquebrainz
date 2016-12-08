@@ -148,14 +148,14 @@ class UserTestCase(DataTestCase):
         self.assertEqual(len(user.reviews), 0)
 
     def test_avatar_property(self):
-        user = User(display_name=u'Tester', email=u"example@example.org")
+        user = User(display_name=u'Tester', email=u"example@example.org", id=u"ei1g2ht3-fo4r-f4ur-fou4-t5w6e7l8v9e0")
         db.session.add(user)
         db.session.commit()
 
         # By default show_gravatar attribute should be set to False
         self.assertFalse(user.show_gravatar)
         # so avatar property returns generic avatar
-        self.assertEqual(user.avatar, "https://gravatar.com/avatar/placeholder?d=identicon")
+        self.assertEqual(user.avatar, "https://gravatar.com/avatar/fda0ed39802d9faea09d8517c2d3e98e?d=identicon")
 
         # Let's allow to show avatar of this user.
         user.show_gravatar = True
