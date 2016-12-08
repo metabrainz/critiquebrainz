@@ -4,6 +4,7 @@ from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.license import License
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.vote import Vote
+import hashlib
 
 
 class UserTestCase(DataTestCase):
@@ -155,14 +156,14 @@ class UserTestCase(DataTestCase):
         # By default show_gravatar attribute should be set to False
         self.assertFalse(user.show_gravatar)
         # so avatar property returns generic avatar
-        self.assertEqual(user.avatar, "https://gravatar.com/avatar/placeholder?d=mm")
+        self.assertEqual(user.avatar, "https://gravatar.com/avatar/{}?d=identicon".format(hashlib.md5(user.id.encode('utf-8')).hexdigest()))
 
         # Let's allow to show avatar of this user.
         user.show_gravatar = True
         db.session.commit()
 
         self.assertTrue(user.show_gravatar)
-        self.assertEqual(user.avatar, "https://gravatar.com/avatar/f72c502e0d657f363b5f2dc79dd8ceea?d=mm&r=pg")
+        self.assertEqual(user.avatar, "https://gravatar.com/avatar/{}?d=identicon&r=pg".format(hashlib.md5(user.email.encode('utf-8')).hexdigest()))
 
     def test_votes(self):
         user = User(display_name=u'Tester')
