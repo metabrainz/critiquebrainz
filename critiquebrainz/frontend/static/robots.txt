@@ -6,3 +6,4 @@ Disallow: /log
 Disallow: /reports
 Disallow: /review
 Disallow: /mapping
+Disallow: /oauth
