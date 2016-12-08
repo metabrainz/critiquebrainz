@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, send_from_directory
 from flask_babel import format_number
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.review import Review
@@ -7,7 +7,7 @@ from markdown import markdown
 
 DEFAULT_CACHE_EXPIRATION = 10 * 60  # seconds
 
-frontend_bp = Blueprint('frontend', __name__)
+frontend_bp = Blueprint('frontend', __name__, static_folder="../static/")
 
 
 @frontend_bp.route('/')
@@ -34,3 +34,8 @@ def index():
 @frontend_bp.route('/about')
 def about():
     return render_template('index/about.html')
+
+
+@frontend_bp.route('/robots.txt')
+def robots_txt():
+    return send_from_directory(frontend_bp.static_folder, 'robots.txt')

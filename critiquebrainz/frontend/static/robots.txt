@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin
+Disallow: /login
+Disallow: /profile/applications
+Disallow: /user
+Disallow: /ws
+Disallow: /log
