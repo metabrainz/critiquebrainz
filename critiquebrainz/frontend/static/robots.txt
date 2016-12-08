@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /login
+Disallow: /profile
+Disallow: /ws
+Disallow: /log
+Disallow: /reports
+Disallow: /review
+Disallow: /mapping
+Disallow: /oauth
