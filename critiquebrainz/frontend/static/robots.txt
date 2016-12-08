@@ -1,7 +1,8 @@
 User-agent: *
-Disallow: /admin
 Disallow: /login
-Disallow: /profile/applications
-Disallow: /user
+Disallow: /profile
 Disallow: /ws
 Disallow: /log
+Disallow: /reports
+Disallow: /review
+Disallow: /mapping
