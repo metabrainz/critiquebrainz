@@ -97,7 +97,7 @@ class User(db.Model, AdminMixin, DeleteMixin):
         if self.show_gravatar and self.email:
             return "https://gravatar.com/avatar/" + hashlib.md5(self.email.encode("ascii")).hexdigest() + "?d=identicon&r=pg"
         else:
-            return "https://gravatar.com/avatar/" + hashlib.md5(self.id.replace("-", "").encode("ascii")).hexdigest() + "?d=identicon"
+            return "https://gravatar.com/avatar/" + hashlib.md5(self.id.encode("ascii")).hexdigest() + "?d=identicon"
 
     @property
     def stats(self):
