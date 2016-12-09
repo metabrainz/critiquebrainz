@@ -7,7 +7,7 @@ from markdown import markdown
 
 DEFAULT_CACHE_EXPIRATION = 10 * 60  # seconds
 
-frontend_bp = Blueprint('frontend', __name__, static_folder="../static/")
+frontend_bp = Blueprint('frontend', __name__)
 
 
 @frontend_bp.route('/')
