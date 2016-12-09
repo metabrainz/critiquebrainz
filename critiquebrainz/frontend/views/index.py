@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, send_from_directory
+from flask import Blueprint, render_template
 from flask_babel import format_number
 from critiquebrainz.data.model.user import User
 from critiquebrainz.data.model.review import Review
@@ -34,8 +34,3 @@ def index():
 @frontend_bp.route('/about')
 def about():
     return render_template('index/about.html')
-
-
-@frontend_bp.route('/robots.txt')
-def robots_txt():
-    return send_from_directory(frontend_bp.static_folder, 'robots.txt')

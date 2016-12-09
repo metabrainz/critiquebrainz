@@ -1,6 +1,7 @@
 from brainzutils.flask import CustomFlask
 import logging
 import os
+from flask import send_from_directory
 
 
 def create_app(debug=None, config_path=None):
@@ -44,6 +45,8 @@ def create_app(debug=None, config_path=None):
 
     from critiquebrainz.data import db
     db.init_app(app)
+
+    add_robots(app)
 
     # Redis (cache)
     from brainzutils import cache
@@ -131,3 +134,9 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(log_bp, url_prefix='/log')
 
     return app
+
+
+def add_robots(app):
+    @app.route('/robots.txt')
+    def robots_txt():
+        return send_from_directory(app.static_folder, 'robots.txt')
