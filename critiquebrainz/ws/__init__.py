@@ -37,6 +37,10 @@ def create_app(debug=None, config_path=None):
         sentry_config=app.config.get("LOG_SENTRY"),
     )
 
+    # Database
+    from critiquebrainz.db import init_db_engine
+    init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
+    # TODO(roman): Remove these after ORM is gone:
     from critiquebrainz.data import db
     db.init_app(app)
 
