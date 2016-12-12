@@ -5,13 +5,14 @@ from flask_babel import gettext, get_locale
 from flask_login import login_required, current_user
 from markdown import markdown
 from sqlalchemy import desc
-from werkzeug.exceptions import Unauthorized, NotFound, Forbidden
+from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
 
 from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
 from critiquebrainz.data.model.review import Review, ENTITY_TYPES
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.data.model.vote import Vote
+from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, musicbrainz, soundcloud
 from critiquebrainz.frontend.forms.log import AdminActionForm
@@ -78,8 +79,11 @@ def entity(id, rev=None):
         raise NotFound(gettext("The revision you are looking for does not exist."))
 
     revision = revisions.offset(count-rev).first()
-    if not review.is_draft and current_user.is_authenticated:  # if user is logged in, get his vote for this review
-        vote = Vote.query.filter_by(user=current_user, revision=revision).first()
+    if not review.is_draft and current_user.is_authenticated:  # if user is logged in, get their vote for this review
+        try:
+            vote = db_vote.get(user_id=current_user.id, revision_id=revision.id)
+        except db_exceptions.NoDataFoundException:
+            vote = None
     else:  # otherwise set vote to None, its value will not be used
         vote = None
     review.text_html = markdown(revision.text, safe_mode="escape")
@@ -267,6 +271,8 @@ def vote_submit(review_id):
         vote = True
     elif 'no' in request.form:
         vote = False
+    else:
+        vote = None
 
     review = Review.query.get_or_404(review_id)
     if review.is_hidden and not current_user.is_admin():
@@ -282,7 +288,11 @@ def vote_submit(review_id):
                             "your account has been blocked by a moderator."))
         return redirect(url_for('.entity', id=review_id))
 
-    Vote.create(current_user, review, vote)  # overwrites an existing vote, if needed
+    db_vote.submit(
+        user_id=current_user.id,
+        revision_id=review.last_revision.id,
+        vote=vote,  # overwrites an existing vote, if needed
+    )
 
     flash.success(gettext("You have rated this review!"))
     return redirect(url_for('.entity', id=review_id))
@@ -294,12 +304,12 @@ def vote_delete(id):
     review = Review.query.get_or_404(str(id))
     if review.is_hidden and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
-    vote = Vote.query.filter_by(user=current_user, revision=review.last_revision).first()
-    if not vote:
-        flash.error(gettext("This review is not rated yet."))
-    else:
-        vote.delete()
+    try:
+        vote = db_vote.get(user_id=current_user.id, revision_id=review.last_revision.id)
         flash.success(gettext("You have deleted your vote for this review!"))
+        db_vote.delete(user_id=vote["user_id"], revision_id=vote["revision_id"])
+    except db_exceptions.NoDataFoundException:
+        flash.error(gettext("This review is not rated yet."))
     return redirect(url_for('.entity', id=id))
 
 

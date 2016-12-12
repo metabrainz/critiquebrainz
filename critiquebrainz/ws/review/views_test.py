@@ -11,7 +11,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
     def setUp(self):
         super(ReviewViewsTestCase, self).setUp()
         self.user = User.get_or_create("Tester", "aef06569-098f-4218-a577-b413944d9493")
-        self.hacker = User.get_or_create("Hacker!", "9371e5c7-5995-4471-a5a9-33481f897f9c")
+        self.another_user = User.get_or_create("Hacker!", "9371e5c7-5995-4471-a5a9-33481f897f9c")
         self.license = License.create("CC BY-SA 3.0", "Created so we can fill the form correctly.")
         self.review = dict(
             entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
@@ -49,7 +49,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
     def test_review_modify(self):
         review = self.create_dummy_review()
 
-        resp = self.client.post('/review/%s' % review.id, headers=self.header(self.hacker))
+        resp = self.client.post('/review/%s' % review.id, headers=self.header(self.another_user))
         self.assert403(resp, "Shouldn't be able to edit someone else's review.")
 
         data = dict(text="Some updated text with length more than twenty five.")
@@ -85,20 +85,34 @@ class ReviewViewsTestCase(WebServiceTestCase):
     def test_review_vote_put(self):
         review = self.create_dummy_review()
 
-        vote = dict(vote=True)
-        resp = self.client.put('/review/%s/vote' % review.id, headers=self.header(self.user), data=json.dumps(vote))
+        resp = self.client.put(
+            '/review/%s/vote' % review.id,
+            headers=self.header(self.user),
+            data=json.dumps({"vote": True})
+        )
         self.assertEqual(resp.json['description'], 'You cannot rate your own review.')
 
-        resp = self.client.put('/review/%s/vote' % review.id, headers=self.header(self.hacker), data=json.dumps(vote))
+        resp = self.client.put(
+            '/review/%s/vote' % review.id,
+            headers=self.header(self.another_user),
+            data=json.dumps({"vote": True})
+        )
+        self.assert200(resp)
+
+        resp = self.client.put(
+            '/review/%s/vote' % review.id,
+            headers=self.header(self.another_user),
+            data=json.dumps({"vote": False})
+        )
         self.assert200(resp)
 
     def test_review_vote_delete(self):
         review = self.create_dummy_review()
 
-        resp = self.client.delete('/review/%s/vote' % review.id, headers=self.header(self.hacker))
+        resp = self.client.delete('/review/%s/vote' % review.id, headers=self.header(self.another_user))
         self.assert400(resp)
 
         vote = dict(vote=True)
-        self.client.put('/review/%s/vote' % review.id, headers=self.header(self.hacker), data=json.dumps(vote))
-        resp = self.client.delete('/review/%s/vote' % review.id, headers=self.header(self.hacker))
+        self.client.put('/review/%s/vote' % review.id, headers=self.header(self.another_user), data=json.dumps(vote))
+        resp = self.client.delete('/review/%s/vote' % review.id, headers=self.header(self.another_user))
         self.assert200(resp)

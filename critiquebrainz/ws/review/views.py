@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify
 from critiquebrainz.data.model.review import Review, supported_languages, ENTITY_TYPES
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.data.model.spam_report import SpamReport
+from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions
 from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
@@ -252,11 +253,11 @@ def review_vote_entity_handler(review_id, user):
     review = Review.query.get_or_404(str(review_id))
     if review.is_hidden:
         raise NotFound("Review has been hidden.")
-    vote = Vote.query.filter_by(user=user, revision=review.last_revision).first()
-    if not vote:
+    try:
+        vote = db_vote.get(user_id=user.id, revision_id=review.last_revision.id)
+    except db_exceptions.NoDataFoundException:
         raise NotFound("Can't find your vote for this review.")
-    else:
-        return jsonify(vote=vote.to_dict())
+    return jsonify(vote)
 
 
 @review_bp.route('/<uuid:review_id>/vote', methods=['PUT'])
@@ -289,7 +290,13 @@ def review_vote_put_handler(review_id, user):
         raise InvalidRequest(desc='You cannot rate your own review.')
     if user.is_vote_limit_exceeded is True and user.has_voted(review) is False:
         raise LimitExceeded('You have exceeded your limit of votes per day.')
-    Vote.create(user, review, vote)  # overwrites an existing vote, if needed
+
+    db_vote.submit(
+        user_id=user.id,
+        revision_id=review.last_revision.id,
+        vote=vote,  # overwrites an existing vote, if needed
+    )
+
     return jsonify(message='Request processed successfully')
 
 
@@ -306,11 +313,12 @@ def review_vote_delete_handler(review_id, user):
     review = Review.query.get_or_404(str(review_id))
     if review.is_hidden:
         raise NotFound("Review has been hidden.")
-    vote = Vote.query.filter_by(user=user, revision=review.last_revision).first()
-    if not vote:
-        raise InvalidRequest(desc='Review is not rated yet.')
-    vote.delete()
-    return jsonify(message='Request processed successfully')
+    try:
+        vote = db_vote.get(user_id=user.id, revision_id=review.last_revision.id)
+    except db_exceptions.NoDataFoundException:
+        raise InvalidRequest("Review is not rated yet.")
+    db_vote.delete(user_id=vote["user_id"], revision_id=vote["revision_id"])
+    return jsonify(message="Request processed successfully")
 
 
 @review_bp.route('/<uuid:review_id>/report', methods=['POST'])
