@@ -12,15 +12,15 @@ services:
       POSTGRES_DB: critiquebrainz
     network_mode: bridge
 
-  critiquebrainz-redis:
+  critiquebrainz_redis:
     image: redis:3.2.1
     network_mode: bridge
 
-  critiquebrainz-test:
+  critiquebrainz_test:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile.test
     links:
-      - critiquebrainz-redis
       - db_test
+      - critiquebrainz_redis
     network_mode: bridge

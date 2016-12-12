@@ -31,8 +31,8 @@ services:
       - "80:80"
     depends_on:
       - db
-      - critiquebrainz-redis
       - db_test
+      - critiquebrainz_redis
 
-  critiquebrainz-redis:
+  critiquebrainz_redis:
     image: redis:3.2.1
