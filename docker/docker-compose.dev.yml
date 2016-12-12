@@ -11,6 +11,15 @@ services:
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
 
+  db_test:
+    build:
+      context: ./pg_custom/
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: critiquebrainz
+      POSTGRES_PASSWORD: critiquebrainz
+      POSTGRES_DB: critiquebrainz
+
   critiquebrainz:
     build:
       context: ..
@@ -23,6 +32,7 @@ services:
     depends_on:
       - db
       - critiquebrainz-redis
+      - db_test
 
   critiquebrainz-redis:
     image: redis:3.2.1

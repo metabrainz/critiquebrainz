@@ -2,10 +2,14 @@
 version: "2"
 services:
 
-  db:
-    extends:
-      file: ./common.yml
-      service: db
+  db_test:
+    build:
+      context: ./pg_custom/
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: critiquebrainz
+      POSTGRES_PASSWORD: critiquebrainz
+      POSTGRES_DB: critiquebrainz
     network_mode: bridge
 
   critiquebrainz-redis:
@@ -17,6 +21,6 @@ services:
       context: ..
       dockerfile: ./docker/Dockerfile.test
     links:
-      - db
       - critiquebrainz-redis
+      - db_test
     network_mode: bridge

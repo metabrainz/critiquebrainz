@@ -28,6 +28,6 @@ COPY . /code/
 # Compile translations
 RUN pybabel compile -d critiquebrainz/frontend/translations
 
-CMD dockerize -wait tcp://db:5432 -timeout 60s \
+CMD dockerize -wait tcp://db_test:5432 -timeout 60s \
     py.test --junitxml=/data/test_report.xml \
             --cov-report xml:/data/coverage.xml

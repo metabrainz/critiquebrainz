@@ -3,6 +3,8 @@ TESTING = True
 SECRET_KEY = "test"
 WTF_CSRF_ENABLED = False
 
+SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@db_test:5432/critiquebrainz"
+
 # Logging
 LOG_FILE = None
 LOG_EMAIL = None
