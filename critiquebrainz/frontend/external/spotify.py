@@ -54,12 +54,12 @@ def get_multiple_albums(spotify_ids):
         List of album objects from Spotify. More info about this type of objects
         is available at https://developer.spotify.com/web-api/object-model/#album-object.
     """
-    namespace = "spotify_album"
+    namespace = "spotify_albums"
     albums = cache.get_many(spotify_ids, namespace)
 
     # Checking which albums weren't in cache
-    for album_id in albums.keys():
-        if album_id in spotify_ids:
+    for album_id, data in albums.items():
+        if data is not None and album_id in spotify_ids:
             spotify_ids.remove(album_id)
 
     if len(spotify_ids) > 0:
