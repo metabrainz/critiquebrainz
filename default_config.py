@@ -58,5 +58,5 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 
 # mbspotify
 # https://github.com/metabrainz/mbspotify
-MBSPOTIFY_BASE_URI = "http://mbspotify.musicbrainz.org/"
+MBSPOTIFY_BASE_URI = "https://mbspotify.musicbrainz.org/"
 MBSPOTIFY_ACCESS_KEY = None
