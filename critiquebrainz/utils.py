@@ -21,7 +21,7 @@ def build_url(base, additional_params=None):
 
     return urllib.parse.urlunparse(
         (url.scheme, url.netloc, url.path, url.params,
-         urllib.urlencode(query_params), url.fragment))
+         urllib.parse.urlencode(query_params), url.fragment))
 
 
 def validate_uuid(string):
