@@ -101,6 +101,15 @@ def user_entity_handler(user_id):
     """Get profile of a user with a specified UUID.
 
     :resheader Content-Type: *application/json*
+
+    .. code-block:: bash
+
+        curl -X GET https://critiquebrainz.org/ws/1/user/ae5a003f-292c-497e-afbd-8076e9626f2e
+
+    .. code-block:: json
+
+    {"user":{"created":"Wed, 07 May 2014 14:47:03 GMT","display_name":"Ben Myers","id":"ae5a003f-292c-497e-afbd-8076e9626f2e","karma":0,"user_type":"Noob"}}
+
     """
     user = User.query.get_or_404(str(user_id))
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
@@ -116,6 +125,15 @@ def review_list_handler():
     :query offset: result offset, default is 0 **(optional)**
 
     :resheader Content-Type: *application/json*
+
+    .. code-block:: bash
+
+        curl -X GET "https://critiquebrainz.org/ws/1/user/?offset=10&limit=5"
+
+    .. code-block:: json
+
+        {"count":925,"limit":5,"offset":10,"users":[{"created":"Wed, 07 May 2014 14:46:58 GMT","display_name":"Graham Rogers","id":"b291a99b-7bb0-4531-ba45-f6cfb4d944de","karma":0,"user_type":"Noob"},{"created":"Wed, 07 May 2014 14:46:59 GMT","display_name":"John Eyles","id":"a52e1629-a516-43c2-855f-bb195aeb2a33","karma":3,"user_type":"Noob"},{"created":"Wed, 07 May 2014 14:47:00 GMT","display_name":"Matthew Horton","id":"1fb36917-d4d3-411b-82c4-901d949e17b8","karma":0,"user_type":"Noob"},{"created":"Wed, 07 May 2014 14:47:01 GMT","display_name":"Christina Lee","id":"a67ec3ec-ce12-419f-b633-c12975ca7cf2","karma":0,"user_type":"Noob"},{"created":"Wed, 07 May 2014 14:47:03 GMT","display_name":"Ben Myers","id":"ae5a003f-292c-497e-afbd-8076e9626f2e","karma":0,"user_type":"Noob"}]}
+
     """
     def fetch_params():
         limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
