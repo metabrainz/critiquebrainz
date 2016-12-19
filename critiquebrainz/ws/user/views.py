@@ -104,7 +104,7 @@ def user_entity_handler(user_id):
 
     .. code-block:: bash
 
-        curl -X GET https://critiquebrainz.org/ws/1/user/ae5a003f-292c-497e-afbd-8076e9626f2e
+        $ curl -X GET https://critiquebrainz.org/ws/1/user/ae5a003f-292c-497e-afbd-8076e9626f2e
 
     .. code-block:: json
 
@@ -128,7 +128,7 @@ def review_list_handler():
 
     .. code-block:: bash
 
-        curl -X GET "https://critiquebrainz.org/ws/1/user/?offset=10&limit=5"
+        $ curl -X GET "https://critiquebrainz.org/ws/1/user/?offset=10&limit=5"
 
     .. code-block:: json
 
