@@ -20,6 +20,47 @@ REVIEW_MIN_LENGTH = 25
 def review_entity_handler(review_id):
     """Get review with a specified UUID.
 
+     **Request Example:**
+
+    .. code-block:: bash
+
+       $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de \
+              -X GET
+
+    **Response Example:**
+
+    .. code-block:: json
+
+        {
+          "review": {
+            "created": "Tue, 10 Aug 2010 00:00:00 GMT",
+            "edits": 0,
+            "entity_id": "03e0a99c-3530-4e64-8f50-6592325c2082",
+            "entity_type": "release_group",
+            "id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
+            "language": "en",
+            "last_updated": "Tue, 10 Aug 2010 00:00:00 GMT",
+            "license": {
+              "full_name": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
+              "id": "CC BY-NC-SA 3.0",
+              "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
+            },
+            "rating": 0,
+            "source": "BBC",
+            "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
+            "text": "REVIEW GOES HERE",
+            "user": {
+              "created": "Wed, 07 May 2014 14:55:23 GMT",
+              "display_name": "Paul Clarke",
+              "id": "f5857a65-1eb1-4574-8843-ae6195de16fa",
+              "karma": 0,
+              "user_type": "Noob"
+            },
+            "votes_negative": 0,
+            "votes_positive": 0
+          }
+        }
+
     :statuscode 200: no error
     :statuscode 404: review not found
 
@@ -35,6 +76,30 @@ def review_entity_handler(review_id):
 @crossdomain()
 def review_revisions_handler(review_id):
     """Get revisions of review with a specified UUID.
+
+    **Request Example:**
+
+    .. code-block:: bash
+
+        $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de/revisions \
+               -X GET
+
+    **Response Example:**
+
+    .. code-block:: json
+
+        {
+          "revisions": [
+            {
+              "id": 1,
+              "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
+              "text": "REVIEW TEXT GOES HERE",
+              "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
+              "votes_negative": 0,
+              "votes_positive": 0
+            }
+          ]
+        }
 
     :statuscode 200: no error
     :statuscode 404: review not found
@@ -56,6 +121,28 @@ def review_revisions_handler(review_id):
 @crossdomain()
 def review_revision_entity_handler(review_id, rev):
     """Get a particular revisions of review with a specified UUID.
+
+    **Request Example:**
+
+    .. code-block:: bash
+
+        $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de/revisions/1 \
+               -X GET
+
+    **Response Example:**
+
+    .. code-block:: json
+
+        {
+          "revision": {
+            "id": 1,
+            "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
+            "text": "REVIEW TEXT GOES HERE",
+            "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
+            "votes_negative": 0,
+            "votes_positive": 0
+          }
+        }
 
     :statuscode 200: no error
     :statuscode 404: review not found
@@ -82,6 +169,22 @@ def review_delete_handler(review_id, user):
     """Delete review with a specified UUID.
 
     **OAuth scope:** review
+
+    **Request Example:**
+
+    .. code-block:: bash
+
+        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd" \
+               -X DELETE \
+               -H "Authorization: Bearer <access token>"
+
+    **Response Example:**
+
+    .. code-block:: json
+
+        {
+          "message": "Request processed successfully"
+        }
 
     :statuscode 200: success
     :statuscode 403: access denied
@@ -132,6 +235,52 @@ def review_modify_handler(review_id, user):
 @crossdomain()
 def review_list_handler():
     """Get list of reviews.
+
+    **Request Example:**
+
+    .. code-block:: bash
+
+        $ curl "https://critiquebrainz.org/ws/1/review/?limit=1&offset=50" \
+                -X GET
+
+    **Response Example:**
+
+    .. code-block:: json
+
+        {
+          "count": 9197,
+          "limit": 1,
+          "offset": 50,
+          "reviews": [
+            {
+              "created": "Fri, 16 May 2008 00:00:00 GMT",
+              "edits": 0,
+              "entity_id": "09259937-6477-3959-8b10-af1cbaea8e6e",
+              "entity_type": "release_group",
+              "id": "c807d0b4-0dd0-43fe-a7c4-d29bb61f389e",
+              "language": "en",
+              "last_updated": "Fri, 16 May 2008 00:00:00 GMT",
+              "license": {
+                "full_name": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
+                "id": "CC BY-NC-SA 3.0",
+                "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
+              },
+              "rating": 0,
+              "source": "BBC",
+              "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
+              "text": "REVIEW TEXT GOES HERE",
+              "user": {
+                "created": "Wed, 07 May 2014 16:20:47 GMT",
+                "display_name": "Jenny Nelson",
+                "id": "3bf3fe0c-6db2-4746-bcf1-f39912113852",
+                "karma": 0,
+                "user_type": "Noob"
+              },
+              "votes_negative": 0,
+              "votes_positive": 0
+            }
+          ]
+        }
 
     :json uuid entity_id: UUID of the release group that is being reviewed
     :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc. **(optional)**
@@ -197,7 +346,7 @@ def review_post_handler(user):
 
     :reqheader Content-Type: *application/json*
 
-    :json uuid entity_id: UUID of the release group that is being reviewed
+    :json uuid entity_id: UUID of the entity that is being reviewed
     :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc.
     :json string text: review contents, min length is 25, max is 5000
     :json string license_choice: license ID
@@ -235,6 +384,30 @@ def review_post_handler(user):
 def languages_list_handler():
     """Get list of supported review languages (language codes from ISO 639-1).
 
+    **Example Request:**
+
+    .. code-block:: bash
+
+        $ curl https://critiquebrainz.org/ws/1/review/languages \
+               -X GET
+
+    **Example Response:**
+
+    .. code-block:: json
+
+        {
+          "languages": [
+            "aa",
+            "ab",
+            "af",
+            "ak",
+            "yo",
+            "za",
+            "zh",
+            "zu"
+          ]
+        }
+
     :resheader Content-Type: *application/json*
     """
     return jsonify(languages=supported_languages)
@@ -245,6 +418,25 @@ def languages_list_handler():
 @crossdomain()
 def review_vote_entity_handler(review_id, user):
     """Get your vote for a specified review.
+
+    **Request Example:**
+
+    .. code-block:: bash
+
+        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \
+               -X GET \
+               -H "Authorization: Bearer <access token>"
+
+    **Response Example:**
+
+    .. code-block:: json
+
+            {
+              "vote": {
+                "vote": true,
+                "voted_at": "Thu, 22 Dec 2016 11:49:56 GMT"
+              }
+            }
 
     **OAuth scope:** vote
 
@@ -267,6 +459,24 @@ def review_vote_put_handler(review_id, user):
     """Set your vote for a specified review.
 
     **OAuth scope:** vote
+
+    **Request Example:**
+
+    .. code-block:: bash
+
+        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \
+               -X PUT \
+               -H "Content-type: application/json" \
+               -H "Authorization: Bearer <access token>" \
+               -d '{"vote":true}'
+
+    **Response Example:**
+
+    .. code-block:: json
+
+        {
+          "message": "Request processed successfully"
+        }
 
     :json boolean vote: ``true`` if upvote, ``false`` if downvote
 
@@ -307,6 +517,22 @@ def review_vote_delete_handler(review_id, user):
     """Delete your vote for a specified review.
 
     **OAuth scope:** vote
+
+    **Request Example:**
+
+    .. code-block:: bash
+
+        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \
+               -X DELETE \
+               -H "Authorization: Bearer <access token>"
+
+    **Response Example:**
+
+    .. code-block:: json
+
+        {
+          "message": "Request processed successfully"
+        }
 
     :resheader Content-Type: *application/json*
     """
