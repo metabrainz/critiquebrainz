@@ -53,6 +53,10 @@ def create_app(debug=None, config_path=None):
     else:
         logging.warning("Redis is not defined in config file. Skipping initialization.")
 
+    # OAuth
+    from critiquebrainz.ws.oauth import oauth
+    oauth.init_app(app)
+
     app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
     _register_blueprints(app)
