@@ -1,14 +1,15 @@
 .btn {
-  border: 0;
   border-radius: 0;
   transition: all 0.2s;
   margin: 0.15em;
-  .button-size(@padding-small-vertical; @padding-small-horizontal * 2; @font-size-small; @line-height-small; 0px);
+  .button-size(@padding-small-vertical; @padding-small-horizontal * 2; @font-size-small; @line-height-small; .25rem);
 }
 
 .button-variant(@color; @background:transparent; @border:@background) {
-  color: @color;
+  color: @background;
   background: @background;
+  border-color: @background;
+  background-color: transparent;
   &:hover, &:focus, &:active, &.active, .open .dropdown-toggle& {
     background: lighten(@background, 7%);
   }
@@ -27,12 +28,12 @@
 
 .btn-lg {
   // line-height: ensure even-numbered height of button next to large input
-  .button-size(@padding-large-vertical; @padding-large-horizontal * 3; @font-size-large; @line-height-large; 0px);
+  .button-size(@padding-large-vertical; @padding-large-horizontal * 3; @font-size-large; @line-height-large; .25rem);
 }
 
 .btn-sm, .btn-xs {
   // line-height: ensure proper height of button next to small input
-  .button-size(@padding-small-vertical; @padding-small-horizontal * 1.5; @font-size-small; @line-height-small; 0px);
+  .button-size(@padding-small-vertical; @padding-small-horizontal * 1.5; @font-size-small; @line-height-small; .25rem);
 }
 
 .btn-xs {
