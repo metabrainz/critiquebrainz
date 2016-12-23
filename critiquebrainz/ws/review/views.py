@@ -20,11 +20,11 @@ REVIEW_MIN_LENGTH = 25
 def review_entity_handler(review_id):
     """Get review with a specified UUID.
 
-     **Request Example:**
+    **Request Example:**
 
     .. code-block:: bash
 
-       $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de \
+       $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de \\
               -X GET
 
     **Response Example:**
@@ -81,7 +81,7 @@ def review_revisions_handler(review_id):
 
     .. code-block:: bash
 
-        $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de/revisions \
+        $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de/revisions \\
                -X GET
 
     **Response Example:**
@@ -126,7 +126,7 @@ def review_revision_entity_handler(review_id, rev):
 
     .. code-block:: bash
 
-        $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de/revisions/1 \
+        $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de/revisions/1 \\
                -X GET
 
     **Response Example:**
@@ -174,8 +174,8 @@ def review_delete_handler(review_id, user):
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd" \
-               -X DELETE \
+        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd" \\
+               -X DELETE \\
                -H "Authorization: Bearer <access token>"
 
     **Response Example:**
@@ -240,7 +240,7 @@ def review_list_handler():
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/review/?limit=1&offset=50" \
+        $ curl "https://critiquebrainz.org/ws/1/review/?limit=1&offset=50" \\
                 -X GET
 
     **Response Example:**
@@ -388,7 +388,7 @@ def languages_list_handler():
 
     .. code-block:: bash
 
-        $ curl https://critiquebrainz.org/ws/1/review/languages \
+        $ curl https://critiquebrainz.org/ws/1/review/languages \\
                -X GET
 
     **Example Response:**
@@ -423,8 +423,8 @@ def review_vote_entity_handler(review_id, user):
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \
-               -X GET \
+        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \\
+               -X GET \\
                -H "Authorization: Bearer <access token>"
 
     **Response Example:**
@@ -464,10 +464,10 @@ def review_vote_put_handler(review_id, user):
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \
-               -X PUT \
-               -H "Content-type: application/json" \
-               -H "Authorization: Bearer <access token>" \
+        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \\
+               -X PUT \\
+               -H "Content-type: application/json" \\
+               -H "Authorization: Bearer <access token>" \\
                -d '{"vote":true}'
 
     **Response Example:**
@@ -522,8 +522,8 @@ def review_vote_delete_handler(review_id, user):
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \
-               -X DELETE \
+        $ curl "https://critiquebrainz.org/ws/1/review/9cb11424-d070-4ac1-8771-a8703ae5cccd/vote" \\
+               -X DELETE \\
                -H "Authorization: Bearer <access token>"
 
     **Response Example:**
