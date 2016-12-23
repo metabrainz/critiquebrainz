@@ -6,7 +6,7 @@
 {% macro print_members(members) %}
   {% for member in members %}
     <li>
-      <a href="{{ url_for('artist.entity', id=member.artist_id) }}">
+      <a href="{{ url_for('artist.entity', mbid=member.artist_id) }}">
         {{ member.name }}
       </a>
       {% if member.periods %}
@@ -51,19 +51,19 @@
     <h4>{{ _('Discography') }}</h4>
     <ul class="nav nav-tabs">
       <li {% if release_type=='album' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=album">{{ _('Albums') }}</a>
+        <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=album">{{ _('Albums') }}</a>
       </li>
       <li {% if release_type=='single' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=single">{{ _('Singles') }}</a>
+        <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=single">{{ _('Singles') }}</a>
       </li>
       <li {% if release_type=='ep' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=ep">{{ _('EPs') }}</a>
+        <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=ep">{{ _('EPs') }}</a>
       </li>
       <li {% if release_type=='broadcast' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=broadcast">{{ _('Broadcasts') }}</a>
+        <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=broadcast">{{ _('Broadcasts') }}</a>
       </li>
       <li {% if release_type=='other' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=other">{{ _('Other releases') }}</a>
+        <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=other">{{ _('Other releases') }}</a>
       </li>
     </ul>
     {% if count==0 %}
@@ -99,10 +99,10 @@
           <div class="col-md-12">
             <ul class="pager">
               {% if page > 1 %}
-                <li class="previous"><a href="{{ url_for('artist.entity', id=id, release_type=release_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
+                <li class="previous"><a href="{{ url_for('artist.entity', mbid=id, release_type=release_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
               {% endif %}
               {% if page-1 < count//limit %}
-                <li class="next"><a href="{{ url_for('artist.entity', id=id, release_type=release_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
+                <li class="next"><a href="{{ url_for('artist.entity', mbid=id, release_type=release_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
               {% endif %}
             </ul>
           </div>

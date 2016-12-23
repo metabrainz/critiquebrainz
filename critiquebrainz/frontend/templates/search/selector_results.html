@@ -2,7 +2,7 @@
 
 {% if type=="release-group" %}
   <tr>
-    <td><a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit-phrase'] }}</a></td>
+    <td><a href="{{ url_for('artist.entity', mbid=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit-phrase'] }}</a></td>
     <td>
       <a href="{{ url_for('release_group.entity', id=result.id) }}" target="_blank">{{ result['title'] }}</a>
       {% if result['disambiguation'] %}<span class="text-muted">({{ result['disambiguation'] }})</span>{% endif %}
@@ -23,7 +23,7 @@
     </td>
     <td>
       {% if result['artist-relation-list'] %}
-        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+        <a href="{{ url_for('artist.entity', mbid=result['artist-relation-list'][0].artist.id) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
         {% set count = result['artist-relation-list'] | length %}
         {% if count > 1 %}
           + {{ count - 1 }} {{ _("more") }}

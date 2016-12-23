@@ -113,7 +113,7 @@
         <b>{{ type | title }}</b>
         <ul class="list-unstyled">
           {% for artist in artists %}
-            <li><a href="{{ url_for('artist.entity', id=artist['target']) }}">{{ artist['artist']['name'] }}</a></li>
+            <li><a href="{{ url_for('artist.entity', mbid=artist['target']) }}">{{ artist['artist']['name'] }}</a></li>
           {% endfor %}
         </ul>
       {% endfor %}

@@ -8,14 +8,14 @@ from collections import OrderedDict
 artist_bp = Blueprint('artist', __name__)
 
 
-@artist_bp.route('/<uuid:id>')
-def entity(id):
+@artist_bp.route('/<uuid:mbid>')
+def entity(mbid):
     """Artist page.
 
     Displays release groups (split up into several sections depending on their
     type), artist information (type, members/member of, external links).
     """
-    artist = musicbrainz.get_artist_by_id(id)
+    artist = musicbrainz.get_artist_by_id(mbid)
     if not artist:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
@@ -31,7 +31,7 @@ def entity(id):
         return redirect(url_for('.reviews'))
     limit = 20
     offset = (page - 1) * limit
-    count, release_groups = musicbrainz.browse_release_groups(artist_id=id, release_types=[release_type],
+    count, release_groups = musicbrainz.browse_release_groups(artist_id=mbid, release_types=[release_type],
                                                               limit=limit, offset=offset)
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
@@ -40,7 +40,7 @@ def entity(id):
 
     return render_template(
         'artist/entity.html',
-        id=id,
+        id=mbid,
         artist=artist,
         release_type=release_type,
         release_groups=release_groups,

@@ -20,7 +20,7 @@
       {% set artist = [] %}
       {% for credit in release_group['artist-credit'] %}
         {% if credit.artist %}
-          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) + credit.artist.name + '</a>'|safe) %}
+          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', mbid=credit.artist.id) + credit.artist.name + '</a>'|safe) %}
         {% else %}
           {% do artist.append(credit) %}
         {% endif %}
