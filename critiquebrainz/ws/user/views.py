@@ -17,8 +17,8 @@ def user_me_handler(user):
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/user/me" \
-               -X GET \
+        $ curl "https://critiquebrainz.org/ws/1/user/me" \\
+               -X GET \\
                -H "Authorization: Bearer <access token>"
 
     **Response Example:**
@@ -68,8 +68,8 @@ def user_applications_handler(user):
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/user/me/applications" \
-                -X GET \
+        $ curl "https://critiquebrainz.org/ws/1/user/me/applications" \\
+                -X GET \\
                 -H "Authorization: Bearer <access token>"
 
     **Response Example:**
@@ -105,8 +105,8 @@ def user_tokens_handler(user):
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/user/me/tokens" \
-                -X GET \
+        $ curl "https://critiquebrainz.org/ws/1/user/me/tokens" \\
+                -X GET \\
                 -H "Authorization: Bearer <access token>"
 
     **Response Example:**
@@ -175,8 +175,8 @@ def user_delete_handler(user):
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/user/me" /
-               -X DELETE /
+        $ curl "https://critiquebrainz.org/ws/1/user/me" \\
+               -X DELETE \\
                -H "Authorization: Bearer <access token>"
 
     **Response Example:**
@@ -202,7 +202,7 @@ def user_entity_handler(user_id):
 
     .. code-block:: bash
 
-        $ curl https://critiquebrainz.org/ws/1/user/ae5a003f-292c-497e-afbd-8076e9626f2e \
+        $ curl https://critiquebrainz.org/ws/1/user/ae5a003f-292c-497e-afbd-8076e9626f2e \\
                -X GET
 
     **Response Example:**
@@ -235,7 +235,7 @@ def review_list_handler():
 
     .. code-block:: bash
 
-        $ curl "https://critiquebrainz.org/ws/1/user/?offset=10&limit=3" \
+        $ curl "https://critiquebrainz.org/ws/1/user/?offset=10&limit=3" \\
                -X GET
 
     **Response Example:**
