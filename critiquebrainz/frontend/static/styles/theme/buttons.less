@@ -1,5 +1,4 @@
 .btn {
-  border: 0;
   border-radius: 0;
   transition: all 0.2s;
   margin: 0.15em;
@@ -7,8 +6,10 @@
 }
 
 .button-variant(@color; @background:transparent; @border:@background) {
-  color: @color;
+  color: @background;
   background: @background;
+  border-color: @background;
+  background-color: transparent;
   &:hover, &:focus, &:active, &.active, .open .dropdown-toggle& {
     background: lighten(@background, 7%);
   }
