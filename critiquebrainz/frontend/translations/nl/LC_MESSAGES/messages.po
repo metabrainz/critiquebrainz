@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-16 11:45+0000\n"
-"PO-Revision-Date: 2016-07-17 09:58+0000\n"
+"POT-Creation-Date: 2016-11-08 11:16+0100\n"
+"PO-Revision-Date: 2016-11-19 11:03+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/critiquebrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.3\n"
+"Generated-By: Babel 2.3.4\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -24,53 +24,53 @@ msgid ""
 "Spotify mapping server is unavailable. You will not see an embedded player."
 msgstr "De server voor Spotify-koppelingen is niet beschikbaar. Je ziet daarom geen ingebedde speler."
 
-#: critiquebrainz/frontend/external/relationships/artist.py:32
-#: critiquebrainz/frontend/external/relationships/release_group.py:19
+#: critiquebrainz/frontend/external/relationships/artist.py:31
+#: critiquebrainz/frontend/external/relationships/release_group.py:18
 msgid "Wikidata"
 msgstr "Wikidata"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:33
-#: critiquebrainz/frontend/external/relationships/release_group.py:20
+#: critiquebrainz/frontend/external/relationships/artist.py:32
+#: critiquebrainz/frontend/external/relationships/release_group.py:19
 msgid "Discogs"
 msgstr "Discogs"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:34
-#: critiquebrainz/frontend/external/relationships/release_group.py:21
+#: critiquebrainz/frontend/external/relationships/artist.py:33
+#: critiquebrainz/frontend/external/relationships/release_group.py:20
 msgid "Allmusic"
 msgstr "Allmusic"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:35
+#: critiquebrainz/frontend/external/relationships/artist.py:34
 msgid "Bandcamp"
 msgstr "Bandcamp"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:36
-#: critiquebrainz/frontend/external/relationships/release_group.py:22
+#: critiquebrainz/frontend/external/relationships/artist.py:35
+#: critiquebrainz/frontend/external/relationships/release_group.py:21
 msgid "Official homepage"
 msgstr "Officiële thuispagina"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:37
+#: critiquebrainz/frontend/external/relationships/artist.py:36
 msgid "BBC Music"
 msgstr "BBC Music"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:49
-#: critiquebrainz/frontend/external/relationships/release_group.py:35
+#: critiquebrainz/frontend/external/relationships/artist.py:48
+#: critiquebrainz/frontend/external/relationships/release_group.py:34
 msgid "Lyrics"
 msgstr "Teksten"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:55
-#: critiquebrainz/frontend/external/relationships/release_group.py:41
+#: critiquebrainz/frontend/external/relationships/artist.py:54
+#: critiquebrainz/frontend/external/relationships/release_group.py:40
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:68
+#: critiquebrainz/frontend/external/relationships/artist.py:67
 msgid "YouTube"
 msgstr "YouTube"
 
-#: critiquebrainz/frontend/external/relationships/artist.py:76
+#: critiquebrainz/frontend/external/relationships/artist.py:75
 msgid "Twitter"
 msgstr "Twitter"
 
-#: critiquebrainz/frontend/external/relationships/release_group.py:23
+#: critiquebrainz/frontend/external/relationships/release_group.py:22
 msgid "Recording studio"
 msgstr "Opnamestudio"
 
@@ -281,7 +281,7 @@ msgstr "Moderatielogboek"
 
 #: critiquebrainz/frontend/templates/event/entity.html:59
 #: critiquebrainz/frontend/templates/footer.html:16
-#: critiquebrainz/frontend/templates/macros.html:23
+#: critiquebrainz/frontend/templates/macros.html:21
 #: critiquebrainz/frontend/templates/place/entity.html:50
 #: critiquebrainz/frontend/templates/review/browse.html:4
 #: critiquebrainz/frontend/templates/review/browse.html:7
@@ -334,48 +334,48 @@ msgstr "Taal"
 msgid "Project of the %(metabrainz_fdn)s"
 msgstr "Een project van de %(metabrainz_fdn)s"
 
-#: critiquebrainz/frontend/templates/macros.html:20
+#: critiquebrainz/frontend/templates/macros.html:18
 msgid "Modify profile info and delete your profile."
 msgstr "Profielinformatie bewerken en je profiel verwijderen."
 
-#: critiquebrainz/frontend/templates/macros.html:20
+#: critiquebrainz/frontend/templates/macros.html:18
 msgid "Profile data"
 msgstr "Profielgegevens"
 
-#: critiquebrainz/frontend/templates/macros.html:23
+#: critiquebrainz/frontend/templates/macros.html:21
 msgid "Create and modify your reviews."
 msgstr "Je recensies aanmaken en bewerken."
 
-#: critiquebrainz/frontend/templates/macros.html:25
+#: critiquebrainz/frontend/templates/macros.html:23
 msgid "Modify your applications (create, edit, delete)."
 msgstr "Je applicaties bewerken (aanmaken, bewerken, verwijderen)."
 
-#: critiquebrainz/frontend/templates/macros.html:25
+#: critiquebrainz/frontend/templates/macros.html:23
 #: critiquebrainz/frontend/templates/navbar.html:29
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
 msgid "Applications"
 msgstr "Applicaties"
 
-#: critiquebrainz/frontend/templates/macros.html:28
+#: critiquebrainz/frontend/templates/macros.html:26
 msgid ""
 "Manage access to your profile for other apps (can allow complete access to "
 "your profile and remove existing access authorizations)."
 msgstr "Beheer de toegang tot je profiel voor andere applicaties (je kan complete toegang tot je profiel toestaan en bestaande autorisaties intrekken)."
 
-#: critiquebrainz/frontend/templates/macros.html:28
+#: critiquebrainz/frontend/templates/macros.html:26
 msgid "Authorization"
 msgstr "Autorisatie"
 
-#: critiquebrainz/frontend/templates/macros.html:31
+#: critiquebrainz/frontend/templates/macros.html:29
 msgid "Submit and delete your votes."
 msgstr "Indienen en je stemmen verwijderen."
 
-#: critiquebrainz/frontend/templates/macros.html:31
+#: critiquebrainz/frontend/templates/macros.html:29
 msgid "Review votes"
 msgstr "Stemmen op recensies"
 
-#: critiquebrainz/frontend/templates/macros.html:41
+#: critiquebrainz/frontend/templates/macros.html:39
 #: critiquebrainz/frontend/templates/navbar.html:57
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
@@ -384,7 +384,7 @@ msgstr "Stemmen op recensies"
 msgid "Event"
 msgstr "Evenement"
 
-#: critiquebrainz/frontend/templates/macros.html:48
+#: critiquebrainz/frontend/templates/macros.html:46
 #: critiquebrainz/frontend/templates/navbar.html:58
 #: critiquebrainz/frontend/templates/review/modify/event.html:13
 #: critiquebrainz/frontend/templates/review/modify/place.html:6
@@ -393,27 +393,27 @@ msgstr "Evenement"
 msgid "Place"
 msgstr "Plaats"
 
-#: critiquebrainz/frontend/templates/macros.html:55
+#: critiquebrainz/frontend/templates/macros.html:53
 #: critiquebrainz/frontend/templates/search/selector.html:10
 msgid "Release Group"
 msgstr "Uitgavegroep"
 
-#: critiquebrainz/frontend/templates/macros.html:71
+#: critiquebrainz/frontend/templates/macros.html:69
 #, python-format
 msgid "Review by %(user)s"
 msgstr "Recensie door %(user)s"
 
-#: critiquebrainz/frontend/templates/macros.html:81
+#: critiquebrainz/frontend/templates/macros.html:79
 msgid "View Spotify mapping information"
 msgstr "Koppelingsinformatie voor Spotify bekijken"
 
-#: critiquebrainz/frontend/templates/macros.html:87
+#: critiquebrainz/frontend/templates/macros.html:85
 msgid ""
 "We don't have a mapping between this release group and Spotify. Please help "
 "us find the right album."
 msgstr "We hebben geen koppeling naar Spotify voor deze uitgavegroep. Help ons om het goede album op Spotify te vinden."
 
-#: critiquebrainz/frontend/templates/macros.html:91
+#: critiquebrainz/frontend/templates/macros.html:89
 msgid "Match this!"
 msgstr "Koppel het!"
 
@@ -526,24 +526,24 @@ msgstr "Lid van"
 msgid "Members"
 msgstr "Leden"
 
-#: critiquebrainz/frontend/templates/artist/entity.html:132
-#: critiquebrainz/frontend/templates/artist/entity.html:151
+#: critiquebrainz/frontend/templates/artist/entity.html:133
+#: critiquebrainz/frontend/templates/artist/entity.html:152
 msgid "View all..."
 msgstr "Bekijk alles …"
 
-#: critiquebrainz/frontend/templates/artist/entity.html:140
+#: critiquebrainz/frontend/templates/artist/entity.html:141
 msgid "Former member of"
 msgstr "Voormalig lid van"
 
-#: critiquebrainz/frontend/templates/artist/entity.html:142
+#: critiquebrainz/frontend/templates/artist/entity.html:143
 msgid "Former members"
 msgstr "Voormalige leden"
 
-#: critiquebrainz/frontend/templates/artist/entity.html:157
+#: critiquebrainz/frontend/templates/artist/entity.html:158
 msgid "External links"
 msgstr "Externe koppelingen"
 
-#: critiquebrainz/frontend/templates/artist/entity.html:177
+#: critiquebrainz/frontend/templates/artist/entity.html:178
 #: critiquebrainz/frontend/templates/event/entity.html:125
 #: critiquebrainz/frontend/templates/place/entity.html:97
 msgid "Edit on MusicBrainz"
@@ -768,8 +768,8 @@ msgid "Spotify album mapping confirmation"
 msgstr "Bevestiging van de Spotify-koppeling."
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:9
-msgid "Are you sure you want to create a connection?"
-msgstr "Weet je zeker dat je een verbinding wilt maken?"
+msgid "Are you sure you want to create this mapping?"
+msgstr "Weet je zeker dat je deze koppeling wilt maken?"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:18
 #: critiquebrainz/frontend/templates/mapping/report.html:18
@@ -782,8 +782,8 @@ msgid "URI:"
 msgstr "URI:"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:26
-msgid "Connect"
-msgstr "Verbinden"
+msgid "Create"
+msgstr "Koppelen"
 
 #: critiquebrainz/frontend/templates/mapping/report.html:4
 #: critiquebrainz/frontend/templates/mapping/report.html:7
@@ -1434,45 +1434,45 @@ msgstr "Excuus, we konden geen artiest met die MusicBrainz-ID vinden."
 msgid "Sorry, we couldn't find a event with that MusicBrainz ID."
 msgstr "We konden helaas geen evenement met die MusicBrainz-ID vinden."
 
-#: critiquebrainz/frontend/views/log.py:16
+#: critiquebrainz/frontend/views/log.py:17
 msgid "No logs to display."
 msgstr "Geen logboek om weer te geven."
 
-#: critiquebrainz/frontend/views/login.py:32
+#: critiquebrainz/frontend/views/login.py:33
 msgid "Login failed."
 msgstr "Aanmelden mislukt."
 
-#: critiquebrainz/frontend/views/mapping.py:51
-#: critiquebrainz/frontend/views/mapping.py:84
+#: critiquebrainz/frontend/views/mapping.py:52
+#: critiquebrainz/frontend/views/mapping.py:85
 msgid "Only existing release groups can be mapped to Spotify!"
 msgstr "Alleen bestaande uitgavegroepen kunnen aan Spotify gekoppeld worden!"
 
-#: critiquebrainz/frontend/views/mapping.py:89
+#: critiquebrainz/frontend/views/mapping.py:90
 msgid "You need to select an album from Spotify!"
 msgstr "Je moet een album van Spotify selecteren!"
 
-#: critiquebrainz/frontend/views/mapping.py:94
+#: critiquebrainz/frontend/views/mapping.py:95
 msgid "You need to specify a correct link to this album on Spotify!"
 msgstr "Je moet een correcte koppeling naar dit album op Spotify opgeven!"
 
-#: critiquebrainz/frontend/views/mapping.py:99
-#: critiquebrainz/frontend/views/mapping.py:142
+#: critiquebrainz/frontend/views/mapping.py:100
+#: critiquebrainz/frontend/views/mapping.py:143
 msgid "You need to specify existing album from Spotify!"
 msgstr "Je moet een op Spotify bestaand album opgeven!"
 
-#: critiquebrainz/frontend/views/mapping.py:105
+#: critiquebrainz/frontend/views/mapping.py:106
 msgid "Spotify mapping has been added!"
 msgstr "De koppeling met Spotify is toegevoegd!"
 
-#: critiquebrainz/frontend/views/mapping.py:125
+#: critiquebrainz/frontend/views/mapping.py:126
 msgid "Can't find release group with that ID!"
 msgstr "Geen uitgavegroep met die ID gevonden!"
 
-#: critiquebrainz/frontend/views/mapping.py:131
+#: critiquebrainz/frontend/views/mapping.py:132
 msgid "This album is not mapped to Spotify yet!"
 msgstr "Dit album is nog niet aan Spotify gekoppeld!"
 
-#: critiquebrainz/frontend/views/mapping.py:136
+#: critiquebrainz/frontend/views/mapping.py:137
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr "De onjuiste koppeling met Spotify is gerapporteerd. Bedankt!"
 
@@ -1480,19 +1480,19 @@ msgstr "De onjuiste koppeling met Spotify is gerapporteerd. Bedankt!"
 msgid "Sorry, we couldn't find a place with that MusicBrainz ID."
 msgstr "We konden helaas geen plaats met die MusicBrainz-ID vinden."
 
-#: critiquebrainz/frontend/views/profile.py:18
+#: critiquebrainz/frontend/views/profile.py:19
 msgid "Profile updated."
 msgstr "Profiel bijgewerkt."
 
-#: critiquebrainz/frontend/views/profile_apps.py:30
+#: critiquebrainz/frontend/views/profile_apps.py:31
 msgid "You have created an application!"
 msgstr "Je hebt een applicatie aangemaakt!"
 
-#: critiquebrainz/frontend/views/profile_apps.py:45
+#: critiquebrainz/frontend/views/profile_apps.py:46
 msgid "You have updated an application!"
 msgstr "Je hebt een applicatie bijgewerkt!"
 
-#: critiquebrainz/frontend/views/profile_apps.py:63
+#: critiquebrainz/frontend/views/profile_apps.py:64
 msgid "You have deleted an application."
 msgstr "Je hebt een applicatie verwijderd."
 
@@ -1508,151 +1508,151 @@ msgstr "Excuus, we konden geen uitgavegroep met die MusicBrainz-ID vinden."
 msgid "Report has been archived."
 msgstr "Het rapport is gearchiveerd."
 
-#: critiquebrainz/frontend/views/review.py:42
+#: critiquebrainz/frontend/views/review.py:40
 msgid "No reviews to display."
 msgstr "Geen recensies om weer te geven."
 
-#: critiquebrainz/frontend/views/review.py:59
-#: critiquebrainz/frontend/views/review.py:94
-#: critiquebrainz/frontend/views/review.py:218
+#: critiquebrainz/frontend/views/review.py:57
+#: critiquebrainz/frontend/views/review.py:92
+#: critiquebrainz/frontend/views/review.py:217
 msgid "Can't find a review with the specified ID."
 msgstr "Kan geen recensie vinden met de opgegeven ID."
 
-#: critiquebrainz/frontend/views/review.py:62
+#: critiquebrainz/frontend/views/review.py:60
 msgid "Review has been hidden. You need to be an administrator to view it."
 msgstr "De recensie is verborgen. Je moet een beheerder zijn om haar te bekijken."
 
-#: critiquebrainz/frontend/views/review.py:65
-#: critiquebrainz/frontend/views/review.py:96
-#: critiquebrainz/frontend/views/review.py:123
-#: critiquebrainz/frontend/views/review.py:142
-#: critiquebrainz/frontend/views/review.py:222
-#: critiquebrainz/frontend/views/review.py:270
-#: critiquebrainz/frontend/views/review.py:293
-#: critiquebrainz/frontend/views/review.py:308
-#: critiquebrainz/frontend/views/review.py:350
+#: critiquebrainz/frontend/views/review.py:63
+#: critiquebrainz/frontend/views/review.py:94
+#: critiquebrainz/frontend/views/review.py:121
+#: critiquebrainz/frontend/views/review.py:140
+#: critiquebrainz/frontend/views/review.py:221
+#: critiquebrainz/frontend/views/review.py:269
+#: critiquebrainz/frontend/views/review.py:292
+#: critiquebrainz/frontend/views/review.py:307
+#: critiquebrainz/frontend/views/review.py:349
 msgid "Review has been hidden."
 msgstr "De recensie is verborgen."
 
-#: critiquebrainz/frontend/views/review.py:76
+#: critiquebrainz/frontend/views/review.py:74
 msgid ""
 "You are viewing an old revision, the review has been updated since then."
 msgstr "Je bekijkt een oude versie, de recensie is sindsdien aangepast."
 
-#: critiquebrainz/frontend/views/review.py:78
+#: critiquebrainz/frontend/views/review.py:76
 msgid "The revision you are looking for does not exist."
 msgstr "De versie die je zoekt, bestaat niet."
 
-#: critiquebrainz/frontend/views/review.py:102
+#: critiquebrainz/frontend/views/review.py:100
 msgid "The revision(s) you are looking for does not exist."
 msgstr "De versie(s) die je zoekt, bestaat of bestaan niet."
 
-#: critiquebrainz/frontend/views/review.py:165
+#: critiquebrainz/frontend/views/review.py:163
 msgid "Please choose an entity to review."
 msgstr "Kies een object om te recenseren."
 
-#: critiquebrainz/frontend/views/review.py:169
+#: critiquebrainz/frontend/views/review.py:167
 msgid ""
 "You are not allowed to write new reviews because your account has been "
 "blocked by a moderator."
 msgstr "Je mag geen nieuwe recensies schrijven omdat je account door een moderator is geblokkeerd."
 
-#: critiquebrainz/frontend/views/review.py:176
+#: critiquebrainz/frontend/views/review.py:174
 msgid "You have already published a review for this entity!"
 msgstr "Je hebt al een recensie over dit object gepubliceerd!"
 
-#: critiquebrainz/frontend/views/review.py:183
+#: critiquebrainz/frontend/views/review.py:181
 msgid "You have exceeded your limit of reviews per day."
 msgstr "Je hebt het maximaal aantal recensies per dag overschreden."
 
-#: critiquebrainz/frontend/views/review.py:191
+#: critiquebrainz/frontend/views/review.py:189
 msgid "Review has been saved!"
 msgstr "De recensie is opgeslagen!"
 
-#: critiquebrainz/frontend/views/review.py:193
+#: critiquebrainz/frontend/views/review.py:191
 msgid "Review has been published!"
 msgstr "De recensie is gepubliceerd!"
 
-#: critiquebrainz/frontend/views/review.py:198
+#: critiquebrainz/frontend/views/review.py:196
 msgid "You can only write a review for an entity that exists on MusicBrainz!"
 msgstr "Je kan alleen een recensie schrijven over iets dat op MusicBrainz bestaat!"
 
-#: critiquebrainz/frontend/views/review.py:220
+#: critiquebrainz/frontend/views/review.py:219
 msgid "Only author can edit this review."
 msgstr "Alleen de auteur kan deze recensie bewerken."
 
-#: critiquebrainz/frontend/views/review.py:236
+#: critiquebrainz/frontend/views/review.py:235
 msgid "Review has been updated."
 msgstr "De recensie is bijgewerkt."
 
-#: critiquebrainz/frontend/views/review.py:251
+#: critiquebrainz/frontend/views/review.py:250
 msgid "Only the author or an admin can delete this review."
 msgstr "Alleen de auteur of een beheerder kan deze recensie verwijderen."
 
-#: critiquebrainz/frontend/views/review.py:254
+#: critiquebrainz/frontend/views/review.py:253
 msgid "Review has been deleted."
 msgstr "De recensie is verwijderd."
 
-#: critiquebrainz/frontend/views/review.py:272
+#: critiquebrainz/frontend/views/review.py:271
 msgid "You cannot rate your own review."
 msgstr "Je kan je eigen recensie niet beoordelen."
 
-#: critiquebrainz/frontend/views/review.py:275
+#: critiquebrainz/frontend/views/review.py:274
 msgid "You have exceeded your limit of votes per day."
 msgstr "Je hebt het maximaal aantal stemmen per dag overschreden."
 
-#: critiquebrainz/frontend/views/review.py:278
+#: critiquebrainz/frontend/views/review.py:277
 msgid ""
 "You are not allowed to rate this review because your account has been "
 "blocked by a moderator."
 msgstr "Je mag deze recensie niet beoordelen omdat je account door een moderator is geblokkeerd."
 
-#: critiquebrainz/frontend/views/review.py:284
+#: critiquebrainz/frontend/views/review.py:283
 msgid "You have rated this review!"
 msgstr "Je hebt deze recensie beoordeeld!"
 
-#: critiquebrainz/frontend/views/review.py:296
+#: critiquebrainz/frontend/views/review.py:295
 msgid "This review is not rated yet."
 msgstr "Deze recensie heeft nog geen beoordeling."
 
-#: critiquebrainz/frontend/views/review.py:299
+#: critiquebrainz/frontend/views/review.py:298
 msgid "You have deleted your vote for this review!"
 msgstr "Je hebt je beoordeling van deze recensie verwijderd!"
 
-#: critiquebrainz/frontend/views/review.py:310
+#: critiquebrainz/frontend/views/review.py:309
 msgid "You cannot report your own review."
 msgstr "Je kan je eigen recensie niet rapporteren."
 
-#: critiquebrainz/frontend/views/review.py:314
+#: critiquebrainz/frontend/views/review.py:313
 msgid ""
 "You are not allowed to report this review because your account has been "
 "blocked by a moderator."
 msgstr "Je mag deze recensie niet rapporteren omdat je account door een moderator is geblokkeerd."
 
-#: critiquebrainz/frontend/views/review.py:321
+#: critiquebrainz/frontend/views/review.py:320
 msgid "You have already reported this review."
 msgstr "Je hebt deze recensie al gerapporteerd."
 
-#: critiquebrainz/frontend/views/review.py:327
+#: critiquebrainz/frontend/views/review.py:326
 msgid "Review has been reported."
 msgstr "De recensie is gerapporteerd."
 
-#: critiquebrainz/frontend/views/review.py:340
+#: critiquebrainz/frontend/views/review.py:339
 msgid "Review is already hidden."
 msgstr "De recensie is al verborgen."
 
-#: critiquebrainz/frontend/views/review.py:362
-msgid "Review has been unhidden."
-msgstr "De recensie is weer zichtbaar gemaakt."
+#: critiquebrainz/frontend/views/review.py:361
+msgid "Review is not hidden anymore."
+msgstr "De recensie is niet langer verborgen."
 
-#: critiquebrainz/frontend/views/user.py:45
+#: critiquebrainz/frontend/views/user.py:46
 msgid "This account is already blocked."
 msgstr "Deze gebruiker is al geblokkeerd."
 
-#: critiquebrainz/frontend/views/user.py:53
+#: critiquebrainz/frontend/views/user.py:54
 msgid "This user account has been blocked."
 msgstr "Deze gebruiker is geblokkeerd."
 
-#: critiquebrainz/frontend/views/user.py:65
+#: critiquebrainz/frontend/views/user.py:66
 msgid "This user account has been unblocked."
 msgstr "Deze gebruiker is niet meer geblokkeerd."
