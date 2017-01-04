@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ _('Moderators') }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<div>
+    {% for item in users %}
+        <a href="{{ url_for('user', user_id=item.musicbrainz_id) }}">{{ item.display_name }}</a>
+    {% endfor %}
+</div>
+{% endblock %}
