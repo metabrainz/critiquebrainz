@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ _('Moderators') }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<div class="moderators">
+  <h1>{{ _('Moderators') }}</h1>
+  <div id="moderators-list">
+    {% for moderator in moderators %}
+      <img src="{{ moderator.avatar_url }}" class="avatar">
+      {% if moderator.id %}
+        <a href="{{ url_for('user.info', user_id=moderator.id) }}">{{ moderator.musicbrainz_id }}</a>
+      {% else %}
+        <p>{{ moderator.musicbrainz_id }}</p>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
