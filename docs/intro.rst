@@ -49,6 +49,22 @@ The first time you do that, database initialization is also required::
 
    $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz python3 manage.py init_db --skip-create-db
 
+Building static files
+'''''''''''''''''''''
+
+Current Docker setup for development has one caveat: installation of Node.js dependencies
+and static file builds need to be done manually. This is caused by the volume setup.
+
+After you started development versions of containers with Compose, connect to the main
+container::
+
+   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz /bin/bash
+
+then install dependencies (it's enough to do this once, unless you modify ``package.json``)
+and build static files (needs to be done after any changes to JS or Less)::
+
+   root@<container_id>:/code# npm install
+   root@<container_id>:/code# ./node_modules/.bin/gulp
 
 Importing data dump
 '''''''''''''''''''
