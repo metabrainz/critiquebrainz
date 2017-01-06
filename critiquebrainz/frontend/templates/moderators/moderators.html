@@ -3,9 +3,16 @@
 {% block title %}{{ _('Moderators') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<div>
-    {% for item in users %}
-        <a href="{{ url_for('user', user_id=item.musicbrainz_id) }}">{{ item.display_name }}</a>
+<div class="container">
+  <h1>CritiqueBrainz Moderators</h1>
+  <div id="list">
+    {% for item in db_admins %}
+      {% if item.id %}
+        <a href="{{ url_for('user.info', user_id=item.id) }}">{{ item.display_name }}</a>
+      {% else %}
+        <p style="display:inline-block">{{ item.display_name }} </p>
+      {% endif %}
     {% endfor %}
+  </div>
 </div>
 {% endblock %}
