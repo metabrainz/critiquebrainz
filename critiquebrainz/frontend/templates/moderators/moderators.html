@@ -4,13 +4,15 @@
 
 {% block content %}
 <div class="container">
-  <h1>CritiqueBrainz Moderators</h1>
+  <h1>Moderators</h1>
   <div id="list">
     {% for item in db_admins %}
       {% if item.id %}
-        <a href="{{ url_for('user.info', user_id=item.id) }}">{{ item.display_name }}</a>
+        <img src="{{ item.avatar_url }}" width="25px" height="25px">
+        <a href="{{ url_for('user.info', user_id=item.id) }}" style="margin-right: 3px"> {{ item.display_name }} </a>
       {% else %}
-        <p style="display:inline-block">{{ item.display_name }} </p>
+        <img src="{{ item.avatar_url }}" width="25px" height="25px">
+        <p style="display:inline-block; margin-right: 3px"> {{ item.display_name }} </p>
       {% endif %}
     {% endfor %}
   </div>
