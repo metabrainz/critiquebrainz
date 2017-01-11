@@ -1,8 +1,6 @@
-from sqlalchemy.exc import DatabaseError
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data.model.user import User
-from critiquebrainz.db import users
-from critiquebrainz.db.users import _avatar
+from critiquebrainz.db.users import avatar, get_many_by_mb_username
 from hashlib import md5
 
 
@@ -13,18 +11,22 @@ class UserTestCase(DataTestCase):
         self.user2 = User.get_or_create("test1", musicbrainz_id='1')
 
     def test_get_many_by_mb_username(self):
-        self.users = [self.user1.display_name, self.user2.display_name]
-        self.assertEqual(type(users.get_many_by_mb_username(self.users)), list)
-        self.assertRaises(DatabaseError, users.get_many_by_mb_username, [])
+        users = [(self.user1.display_name, self.user1.musicbrainz_id),
+                 (self.user2.display_name, self.user2.musicbrainz_id)]
+        dbresults = get_many_by_mb_username([self.user1.display_name,
+                                             self.user2.display_name])
+        dbresults = [(user['display_name'], user['musicbrainz_id']) for user in dbresults]
+        self.assertEqual(users, dbresults)
+        self.assertEqual(get_many_by_mb_username([]), [])
 
     def test_avatar(self):
-        user3 = {'display_name': 'test2',
-                 'id': '3',
-                 'email': None,
-                 'show_gravatar:': False,
-                 }
+        user = {'display_name': 'test2',
+                'id': '3',
+                'email': None,
+                'show_gravatar:': False,
+                }
         gravatar_url = "https://gravatar.com/avatar/{0}{1}"
-        test_link = gravatar_url.format(md5(user3['id'].encode('utf-8'))
+        test_link = gravatar_url.format(md5(user['id'].encode('utf-8'))
                                         .hexdigest(), "?d=identicon")
-        link = _avatar(user3)
+        link = avatar(user)
         self.assertEqual(test_link, link)
