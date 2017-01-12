@@ -4,6 +4,11 @@ from critiquebrainz import db
 
 
 def avatar(user):
+    """Args:
+        user: user object from db (dict) or username string
+    Returns:
+        URL to gravatar image
+    """
     url = "https://gravatar.com/avatar/{0}{1}"
     if type(user) is dict:
         if user['email'] and user['show_gravatar']:
@@ -26,19 +31,22 @@ def get_many_by_mb_username(usernames):
     """
 
     with db.engine.connect() as connection:
-        if usernames:
-            result = connection.execute(sqlalchemy.text("""
-              SELECT id,
-                      display_name,
-                      email,
-                      created,
-                      musicbrainz_id,
-                      show_gravatar
+        if not usernames:
+            return []
+        result = connection.execute(sqlalchemy.text("""
+            SELECT id,
+                   display_name,
+                   email,
+                   created,
+                   musicbrainz_id,
+                   show_gravatar
               FROM "user"
-              WHERE display_name IN :users"""), {'users': tuple(usernames)})
-            row = result.fetchall()
-            users = [dict(r) for r in row]
-            for user in users:
-                user["avatar_url"] = avatar(user)
-            return users
-        return usernames
+             WHERE musicbrainz_id IN :musicbrainz_usernames
+        """), {
+            'musicbrainz_usernames': tuple(usernames),
+        })
+        row = result.fetchall()
+        users = [dict(r) for r in row]
+        for user in users:
+            user["avatar_url"] = avatar(user)
+        return users
