@@ -76,8 +76,8 @@ own installation, download archives from ftp://ftp.musicbrainz.org/pub/musicbrai
 and use ``python3 manage.py export importer`` command. First you need to import
 base archive and then one that contains reviews. For example::
 
-   $ docker-compose run web python3 manage.py dump import cbdump.tar.bz2
-   $ docker-compose run web python3 manage.py dump import cbdump-reviews-all.tar.bz2
+   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz python3 manage.py dump import cbdump.tar.bz2
+   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz python3 manage.py dump import cbdump-reviews-all.tar.bz2
 
 Keep in mind that CritiqueBrainz only supports importing into an empty database.
 This should work if you just ran ``init_db`` command.
