@@ -126,7 +126,7 @@ def get_release_group_by_id(id):
     if not release_group:
         try:
             release_group = musicbrainzngs.get_release_group_by_id(
-                id, ['artists', 'releases', 'release-group-rels', 'url-rels', 'work-rels']
+                id, ['artists', 'releases', 'release-group-rels', 'url-rels', 'work-rels', 'tags']
             ).get('release-group')
         except ResponseError as e:
             if e.cause.code == 404:
