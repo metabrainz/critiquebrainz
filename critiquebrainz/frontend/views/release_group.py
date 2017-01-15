@@ -15,6 +15,9 @@ def entity(id):
     release_group = musicbrainz.get_release_group_by_id(id)
     if not release_group:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
+    tags = None
+    if release_group.get('tag-list'):
+        tags = release_group['tag-list']
     if len(release_group['release-list']) > 0:
         release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'])
     else:
@@ -36,5 +39,5 @@ def entity(id):
         my_review = None
     reviews, count = Review.list(entity_id=id, entity_type='release_group', sort='rating', limit=limit, offset=offset)
     return render_template('release_group/entity.html', id=id, release_group=release_group, reviews=reviews,
-                           release=release, my_review=my_review, spotify_mappings=spotify_mappings,
+                           release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
                            soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count)
