@@ -5,14 +5,14 @@
 {% block content %}
 <div class="container">
   <h1>{{ _('Moderators') }}</h1>
-  <div id="list" style="margin-top: 30px">
+  <div id="list">
     {% for moderator in moderators %}
       {% if moderator.id %}
-        <img src="{{ moderator.avatar_url }}" width="25px" height="25px">
-        <a href="{{ url_for('user.info', user_id=moderator.id) }}" style="margin-right: 3px">{{ moderator.display_name }}</a>
+        <img src="{{ moderator.avatar_url }}">
+        <a href="{{ url_for('user.info', user_id=moderator.id) }}">{{ moderator.display_name }}</a>
       {% else %}
-        <img src="{{ moderator.avatar_url }}" width="25px" height="25px">
-        <p style="display:inline-block; margin-right: 3px">{{ moderator.musicbrainz_id }}</p>
+        <img src="{{ moderator.avatar_url }}">
+        <p>{{ moderator.musicbrainz_id }}</p>
       {% endif %}
     {% endfor %}
   </div>

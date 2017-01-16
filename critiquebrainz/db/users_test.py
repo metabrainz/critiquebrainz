@@ -1,7 +1,6 @@
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data.model.user import User
 from critiquebrainz.db.users import avatar, get_many_by_mb_username
-from hashlib import md5
 
 
 class UserTestCase(DataTestCase):
@@ -23,8 +22,6 @@ class UserTestCase(DataTestCase):
                 'email': None,
                 'show_gravatar:': False,
                 }
-        gravatar_url = "https://gravatar.com/avatar/{0}{1}"
-        test_link = gravatar_url.format(md5(user['id'].encode('utf-8'))
-                                        .hexdigest(), "?d=identicon")
+        gravatar_url = "https://gravatar.com/avatar/eccbc87e4b5ce2fe28308fd9f2a7baf3?d=identicon"
         link = avatar(user)
-        self.assertEqual(test_link, link)
+        self.assertEqual(gravatar_url, link)

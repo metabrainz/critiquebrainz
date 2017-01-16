@@ -5,19 +5,19 @@ from critiquebrainz import db
 
 def avatar(user):
     """Args:
-        user: user object from db (dict) or username string
+        user: user data (dict or str)
     Returns:
         URL to gravatar image
     """
     url = "https://gravatar.com/avatar/{0}{1}"
+    link = (user, "?d=identicon")
     if type(user) is dict:
         if user['email'] and user['show_gravatar']:
-            return url.format(md5(user['email'].encode('utf-8')).hexdigest(),
-                              "?d=identicon&r=pg")
+            link = (user['email'], "?d=identicon&r=pg")
         else:
-            return url.format(md5(str(user['id']).encode('utf-8')).hexdigest(),
-                              "?d=identicon")
-    return url.format(md5(user.encode('utf-8')).hexdigest(), "?d=identicon")
+            link = (str(user['id']), "?d=identicon")
+        return url.format(md5(link[0].encode('utf-8')).hexdigest(), link[1])
+    return url.format(link[0], link[1])
 
 
 def get_many_by_mb_username(usernames):
@@ -29,10 +29,10 @@ def get_many_by_mb_username(usernames):
         and avatar_url (Gravatar url).
         If the 'usernames' variable is an empty list function returns it back.
     """
+    if not usernames:
+        return []
 
     with db.engine.connect() as connection:
-        if not usernames:
-            return []
         result = connection.execute(sqlalchemy.text("""
             SELECT id,
                    display_name,

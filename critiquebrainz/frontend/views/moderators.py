@@ -15,8 +15,7 @@ def moderators():
     missing_users = list(set(admins) - set(usernames))
     if missing_users:
         for user in missing_users:  # Add them to the main list of admins
-            moderators.append({'display_name': None,
-                               'musicbrainz_id': user,
+            moderators.append({'musicbrainz_id': user,
                                'avatar_url': avatar(user),
                                })
     return render_template('moderators/moderators.html', moderators=moderators)
