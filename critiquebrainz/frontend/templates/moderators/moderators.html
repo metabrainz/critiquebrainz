@@ -3,15 +3,14 @@
 {% block title %}{{ _('Moderators') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="moderators">
   <h1>{{ _('Moderators') }}</h1>
-  <div id="list">
+  <div id="moderators-list">
     {% for moderator in moderators %}
+      <img src="{{ moderator.avatar_url }}" class="avatar">
       {% if moderator.id %}
-        <img src="{{ moderator.avatar_url }}">
-        <a href="{{ url_for('user.info', user_id=moderator.id) }}">{{ moderator.display_name }}</a>
+        <a href="{{ url_for('user.info', user_id=moderator.id) }}">{{ moderator.musicbrainz_id }}</a>
       {% else %}
-        <img src="{{ moderator.avatar_url }}">
         <p>{{ moderator.musicbrainz_id }}</p>
       {% endif %}
     {% endfor %}

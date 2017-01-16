@@ -9,15 +9,14 @@ def avatar(user):
     Returns:
         URL to gravatar image
     """
-    url = "https://gravatar.com/avatar/{0}{1}"
-    link = (user, "?d=identicon")
+    url = "https://gravatar.com/avatar/{0}?d=identicon&r=pg"
+    link = user
     if type(user) is dict:
         if user['email'] and user['show_gravatar']:
-            link = (user['email'], "?d=identicon&r=pg")
+            link = user['email']
         else:
-            link = (str(user['id']), "?d=identicon")
-        return url.format(md5(link[0].encode('utf-8')).hexdigest(), link[1])
-    return url.format(link[0], link[1])
+            link = str(user['id'])
+    return url.format(md5(link.encode('utf-8')).hexdigest())
 
 
 def get_many_by_mb_username(usernames):

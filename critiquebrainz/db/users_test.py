@@ -22,6 +22,5 @@ class UserTestCase(DataTestCase):
                 'email': None,
                 'show_gravatar:': False,
                 }
-        gravatar_url = "https://gravatar.com/avatar/eccbc87e4b5ce2fe28308fd9f2a7baf3?d=identicon"
-        link = avatar(user)
-        self.assertEqual(gravatar_url, link)
+        self.assertEqual(avatar(user),
+                         "https://gravatar.com/avatar/eccbc87e4b5ce2fe28308fd9f2a7baf3?d=identicon")
