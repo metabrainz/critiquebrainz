@@ -56,6 +56,10 @@ class User(db.Model, AdminMixin, DeleteMixin):
         users = query.all()
         return users, count
 
+    @classmethod
+    def get_count(cls):
+        return cls.query.count()
+
     def has_voted(self, review):
         if self._votes.filter_by(revision=review.last_revision).count() > 0:
             return True
