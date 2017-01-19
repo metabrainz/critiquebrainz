@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect
+from flask_babel import gettext
 from critiquebrainz.frontend.external import musicbrainz
 from werkzeug.exceptions import NotFound
 
