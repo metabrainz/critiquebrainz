@@ -237,6 +237,19 @@ class Review(db.Model, DeleteMixin):
         return query.all(), count
 
     @classmethod
+    def get_count(cls, **kwargs):
+        review_count = 0
+        if('is_draft' in kwargs):
+            is_drafted = kwargs.pop('is_draft', False)
+            review_count += cls.query.filter(cls.is_draft == is_drafted).count()
+        if('is_hidden' in kwargs):
+            is_hidden = kwargs.pop('is_hidden', False)
+            review_count += cls.query.filter(cls.is_hidden == is_hidden).count()
+        if(kwargs):
+            raise TypeError('Unexpected **kwargs: %r' % kwargs)
+        return review_count
+
+    @classmethod
     def create(cls, **kwargs):
         if 'release_group' in kwargs:
             entity_id = kwargs.pop('release_group')
