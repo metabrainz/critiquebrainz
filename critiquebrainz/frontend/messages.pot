@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-02 14:14+0000\n"
+"POT-Creation-Date: 2017-01-25 19:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -272,7 +272,7 @@ msgid "Reports"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/footer.html:7
-#: critiquebrainz/frontend/templates/footer.html:33
+#: critiquebrainz/frontend/templates/footer.html:34
 #: critiquebrainz/frontend/templates/log/browse.html:3
 #: critiquebrainz/frontend/templates/log/browse.html:6
 msgid "Moderation log"
@@ -323,12 +323,18 @@ msgstr ""
 msgid "Blog"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/footer.html:40
+#: critiquebrainz/frontend/templates/footer.html:33
+#: critiquebrainz/frontend/templates/moderators/moderators.html:3
+#: critiquebrainz/frontend/templates/moderators/moderators.html:7
+msgid "Moderators"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/footer.html:41
 #: critiquebrainz/frontend/templates/navbar.html:40
 msgid "Language"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/footer.html:51
+#: critiquebrainz/frontend/templates/footer.html:52
 #, python-format
 msgid "Project of the %(metabrainz_fdn)s"
 msgstr ""
@@ -806,6 +812,10 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/mapping/report.html:26
 msgid "Report incorrect mapping"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/moderators/moderators.html:8
+msgid "These users respond to reports and make sure that spammers don't spam."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
@@ -1513,7 +1523,7 @@ msgstr ""
 msgid "You have deleted an application."
 msgstr ""
 
-#: critiquebrainz/frontend/views/release.py:17
+#: critiquebrainz/frontend/views/release.py:18
 msgid "Sorry, we couldn't find a release with that MusicBrainz ID."
 msgstr ""
 
