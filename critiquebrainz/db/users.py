@@ -66,7 +66,7 @@ def get_many_by_mb_username(usernames):
         for user in users:
             default_gravatar_src = "%s@cb" % user["id"]
             if user["show_gravatar"]:
-                user["avatar_url"] = gravatar_url(user.get("email"), default_gravatar_src)
+                user["avatar_url"] = gravatar_url(user.get("email") or default_gravatar_src)
             else:
                 user["avatar_url"] = gravatar_url(default_gravatar_src)
         return users
