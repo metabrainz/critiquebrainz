@@ -32,7 +32,7 @@
         <tbody id="results">{% include 'review/revision_results.html' %}</tbody>
       </table>
       {% if count > limit %}
-        <button id="more-button" type="button" class="btn btn-primary" onclick="load_more();" >{{ _('Load older revisions') }}</button>
+        <button id="more-button" type="button" class="btn btn-primary" onclick="load_more()">{{ _('Load older revisions') }}</button>
         <span id="loading-message" class="text-muted" style="display:none;">{{ _('Loading older revisions...') }}</span>
       {% endif %}
     </form>
@@ -42,6 +42,28 @@
 {% block scripts %}
   {{ super() }}
   <script>
+    {% if count > limit %}
+      var current_page = 0;
+      function load_more() {
+        var more_button = $("#more-button");
+        var loading_message = $("#loading-message");
+        more_button.hide();
+        loading_message.show();
+        $.ajax({
+              url: "{{ url_for('review.revisions_more', id=review.id) }}",
+              data: {page: ++current_page}
+            })
+            .done(function (data) {
+              loading_message.hide();
+              $("#results").append(data.results);
+              if (data.more === true) more_button.show();
+            })
+            .fail(function () {
+              alert({{ _('Failed to load older revisions!') | tojson }});
+            });
+      }
+    {% endif %}
+
     $(document).ready(function () {
       $("input[name=new]:nth(0)").attr('checked', true);
       $("input[name=old]:nth(1)").attr('checked', true);
@@ -56,28 +78,6 @@
           $("#review-compare").submit();
         }
       });
-
-      {% if count > limit %}
-        var current_page = 0;
-        function load_more() {
-          var more_button = $("#more-button");
-          var loading_message = $("#loading-message");
-          more_button.hide();
-          loading_message.show();
-          $.ajax({
-                url: "{{ url_for('review.revisions_more', id=review.id) }}",
-                data: {page: ++current_page}
-              })
-              .done(function (data) {
-                loading_message.hide();
-                $("#results").append(data.results);
-                if (data.more === true) more_button.show();
-              })
-              .fail(function () {
-                alert({{ _('Failed to load older revisions!') | tojson }});
-              });
-        }
-      {% endif %}
     });
   </script>
 {% endblock %}

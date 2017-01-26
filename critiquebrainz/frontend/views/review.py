@@ -153,7 +153,7 @@ def revisions_more(id):
     revisions = revisions.order_by(desc(Revision.timestamp)).offset(offset).limit(RESULTS_LIMIT)
     results = list(zip(reversed(range(count-offset-RESULTS_LIMIT, count-offset)), revisions))
 
-    template = render_template('review/revision_results.html', review=review, results=results)
+    template = render_template('review/revision_results.html', review=review, results=results, count=count)
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
 
 
