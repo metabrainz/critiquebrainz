@@ -6,17 +6,17 @@
   <div id="diff" class="row">
     <div class="col-md-6">
       <div class="diff-header">
-        <h3>{{ _('Revision') }} {{ left.number }}</h3>
-        <p class="small">{{ _('as of') }} {{ left.timestamp | datetime }}</p>
+        <h3>{{ _('Revision') }} {{ left['number'] }}</h3>
+        <p class="small">{{ _('as of') }} {{ left['timestamp'] | datetime }}</p>
       </div>
-      <div class="diff-content">{{ left.text | safe }}</div>
+      <div class="diff-content">{{ left['text'] | safe }}</div>
     </div>
     <div class="col-md-6">
       <div class="diff-header">
-        <h3>{{ _('Revision') }} {{ right.number }}</h3>
-        <p class="small">{{ _('as of') }} {{ right.timestamp | datetime }}</p>
+        <h3>{{ _('Revision') }} {{ right['number'] }}</h3>
+        <p class="small">{{ _('as of') }} {{ right['timestamp'] | datetime }}</p>
       </div>
-      <div class="diff-content">{{ right.text | safe }}</div>
+      <div class="diff-content">{{ right['text'] | safe }}</div>
     </div>
   </div>
 {% endblock %}
