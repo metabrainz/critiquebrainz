@@ -2,9 +2,7 @@ from flask import Blueprint, render_template, flash, url_for, redirect, request,
 from flask_login import login_required
 from flask_babel import gettext
 from werkzeug.exceptions import NotFound
-import critiquebrainz.db.revision as db_revision
 import critiquebrainz.db.spam_report as db_spam_report
-import critiquebrainz.db.users as db_users
 from critiquebrainz.frontend.login import admin_view
 
 reports_bp = Blueprint('reports', __name__)
@@ -17,11 +15,6 @@ RESULTS_LIMIT = 20
 @admin_view
 def index():
     results, count = db_spam_report.list_reports(limit=RESULTS_LIMIT, inc_archived=False)
-    if results:
-        for report in results:
-            report["user"] = db_users.get_by_id(report["user_id"])
-            report["review"] = db_revision.get_review(report["revision_id"])
-            report["review"]["user"] = db_users.get_by_id(report["review"]["user_id"])
     return render_template('reports/reports.html', count=count, results=results, limit=RESULTS_LIMIT)
 
 
@@ -33,12 +26,6 @@ def more():
     offset = page * RESULTS_LIMIT
 
     results, count = db_spam_report.list_reports(offset=offset, limit=RESULTS_LIMIT, inc_archived=False)
-    if results:
-        for report in results:
-            report["user"] = db_users.get_by_id(report["user_id"])
-            report["review"] = db_revision.get_review(report["revision_id"])
-            report["review"]["user"] = db_users.get_by_id(report["review"]["user_id"])
-
     template = render_template('reports/reports_results.html', results=results)
     return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
 

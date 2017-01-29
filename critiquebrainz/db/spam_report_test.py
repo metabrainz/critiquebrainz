@@ -5,7 +5,6 @@ import critiquebrainz.db.spam_report as db_spam_report
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.license import License
 import critiquebrainz.db.users as db_users
-import sqlalchemy
 
 
 class SpamReportTestCase(DataTestCase):
@@ -24,11 +23,13 @@ class SpamReportTestCase(DataTestCase):
         license = License(id='Test', full_name='Test License')
         db.session.add(license)
         db.session.commit()
-        self.review = Review.create(release_group='e7aad618-fa86-3983-9e77-405e21796eca',
-                               text="Testing!",
-                               user_id=author.id,
-                               is_draft=False,
-                               license_id=license.id)
+        self.review = Review.create(
+                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
+                text="Testing!",
+                user_id=author.id,
+                is_draft=False,
+                license_id=license.id,
+        )
         self.revision_id = self.review.last_revision.id
         self.report = db_spam_report.create(self.revision_id, self.user1.id, "To test is this report")
         self.report_time = self.report["reported_at"]

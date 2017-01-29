@@ -67,11 +67,3 @@ class RevisionTestCase(DataTestCase):
             "positive":1,
             "negative":1
         })
-
-    def test_get_review(self):
-        """Test to get the review of the specified revision"""
-
-        revision_id = self.review.last_revision.id
-        review = revision.get_review(revision_id)
-        self.assertEqual(str(review["user_id"]), self.author.id)
-        self.assertEqual(str(review["entity_id"]), "e7aad618-fa86-3983-9e77-405e21796eca")
