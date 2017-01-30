@@ -15,9 +15,10 @@ def entity(id):
     release_group = musicbrainz.get_release_group_by_id(id)
     if not release_group:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
-    tags = None
-    if release_group.get('tag-list'):
+    if 'tag-list' in release_group:
         tags = release_group['tag-list']
+    else:
+        tags = None
     if len(release_group['release-list']) > 0:
         release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'])
     else:
