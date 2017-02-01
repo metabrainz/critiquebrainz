@@ -3,45 +3,38 @@ from critiquebrainz.db import exceptions as db_exceptions
 import sqlalchemy
 
 
-def get(review_id, order_desc=False):
-    """Get revisions on a review optionally ordered by the timestamp
+def get(review_id):
+    """Get revisions on a review ordered by the timestamp
 
     Args:
         review_id (uuid): ID of review
-        order_desc: Order revisions by timestamp (latest first)
 
     Returns:
-        List of RowProxy items which are the revisions of the review
-        with the following attributes:
-
-        revision id (int),
-        text (string),
-        timestamp (datetime)
+        List of dictionaries of revisions of the review
+        with the following structure:
+        {
+            "id": (int),
+            "review_id": (uuid),
+            "timestamp": (datetime),
+            "text": (string)
+        }
 
         and the number(count) of reviews
     """
     with db.engine.connect() as connection:
-        if order_desc == True:
-            result = connection.execute(sqlalchemy.text("""
-                SELECT id, text, timestamp
-                  FROM revision
-                 WHERE review_id = :review_id
-              ORDER BY timestamp DESC;
-            """), {
-                "review_id": review_id,
-            })
-        else:
-            result = connection.execute(sqlalchemy.text("""
-                SELECT id, timestamp, text
-                  FROM revision
-                 WHERE review_id = :review_id
-            """), {
-                "review_id": review_id,
-            })
+        result = connection.execute(sqlalchemy.text("""
+            SELECT id, review_id, timestamp, text
+              FROM revision
+             WHERE review_id = :review_id
+          ORDER BY timestamp DESC
+        """), {
+            "review_id": review_id,
+        })
 
         rows = result.fetchall()
         if not rows:
             raise db_exceptions.NoDataFoundException("Cannot find specified review.")
+        rows = [dict(row) for row in rows]
         count = len(rows)
     return rows, count
 
@@ -66,18 +59,18 @@ def get_votes(review_id):
                   LEFT JOIN vote
                          ON vote.revision_id = revision.id
                       WHERE review_id = :review_id
-                   ORDER BY timestamp DESC;
+                   ORDER BY timestamp DESC
         """),{
             "review_id": review_id,
         })
 
         rows = result.fetchall()
         if not rows:
-            raise db_exceptions.NoDataFoundException("Cannot find votes for the review")
+            raise db_exceptions.NoDataFoundException("Cannot find votes for review(ID: {})".format(review_id))
         votes = dict()
         for row in rows:
             revision = row.id
-            if not votes.get(revision):
+            if revision not in votes:
                 votes[revision] = {'positive':0, 'negative':0}
             if row.vote == False:
                 votes[revision]['negative'] += 1
