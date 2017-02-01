@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, show_embedded_player with context %}
+{% from 'macros.html' import cover_art, show_embedded_player, show_tags with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -156,6 +156,11 @@
         {% endfor %}
       </ul>
     {% endif %}
+
+    <b>{{ _('Tags') }}</b>
+    <div class="tags">
+      {{ show_tags(tags) }}
+    </div>
 
     <div class="external-links">
       <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>

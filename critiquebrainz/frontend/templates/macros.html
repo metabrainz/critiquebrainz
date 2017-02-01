@@ -93,6 +93,19 @@
   </div>
 {%- endmacro %}
 
+{% macro show_tags(tags) %}
+  {% if tags %}
+    {% for tag in tags %}
+      <a href="{{ 'https://musicbrainz.org/tag/%s'|format(tag['name']) }}">{{ tag['name'] }}</a>
+      {%- if not loop.last -%}
+        ,
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <p class="text-muted">{{ _('(none)') }}</p>
+  {% endif %}
+{% endmacro %}
+
 {% macro soundcloud_player(soundcloud_url) %}
   <div class=soundcloud-player">
     {% if soundcloud_url %}
