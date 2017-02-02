@@ -68,7 +68,7 @@ def entity(id, rev=None):
     if review.entity_type == 'release_group':
         spotify_mappings = mbspotify.mappings(review.entity_id)
         soundcloud_url = soundcloud.get_url(review.entity_id)
-    revisions, count = db_revision.get(id)
+    count = db_revision.get_count(id)
     if not rev:
         rev = count
     if rev < count:
@@ -76,7 +76,7 @@ def entity(id, rev=None):
     elif rev > count:
         raise NotFound(gettext("The revision you are looking for does not exist."))
 
-    revision = revisions[count-rev]
+    revision = db_revision.get(id, offset=count-rev)[0]
     if not review.is_draft and current_user.is_authenticated:  # if user is logged in, get their vote for this review
         try:
             vote = db_vote.get(user_id=current_user.id, revision_id=revision['id'])
@@ -96,14 +96,14 @@ def compare(id):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review.is_hidden and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
-    revisions, count = db_revision.get(id)
+    count = db_revision.get_count(id)
     old, new = int(request.args.get('old') or count - 1), int(request.args.get('new') or count)
     if old > count or new > count:
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
     if old > new:
         return redirect(url_for('.compare', id=id, old=new, new=old))
-    left = revisions[count-old]
-    right = revisions[count-new]
+    left = db_revision.get(id, offset=count-old)[0]
+    right = db_revision.get(id, offset=count-new)[0]
     left['number'], right['number'] = old, new
     left['text'], right['text'] = side_by_side_diff(left['text'], right['text'])
     return render_template('review/compare.html', review=review, left=left, right=right)
@@ -120,11 +120,11 @@ def revisions(id):
     if review.is_hidden and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
     try:
-        revisions, count = db_revision.get(id)
+        count = db_revision.get_count(id)
+        revisions = db_revision.get(id, limit=RESULTS_LIMIT)
     except db_exceptions.NoDataFoundException:
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
     votes = db_revision.get_votes(id)
-    revisions = revisions[:RESULTS_LIMIT]
     results = list(zip(reversed(range(count-RESULTS_LIMIT, count)), revisions))
     return render_template('review/revisions.html', review=review, results=results, count=count, limit=RESULTS_LIMIT, votes=votes)
 
@@ -143,10 +143,10 @@ def revisions_more(id):
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
     try:
-        revisions, count = db_revision.get(id)
+        count = db_revision.get_count(id)
+        revisions = db_revision.get(id, limit=RESULTS_LIMIT, offset=offset)
     except db_exceptions.NoDataFoundException:
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
-    revisions = revisions[offset:offset+RESULTS_LIMIT]
     votes = db_revision.get_votes(id)
     results = list(zip(reversed(range(count-offset-RESULTS_LIMIT, count-offset)), revisions))
 

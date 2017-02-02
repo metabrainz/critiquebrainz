@@ -3,11 +3,13 @@ from critiquebrainz.db import exceptions as db_exceptions
 import sqlalchemy
 
 
-def get(review_id):
+def get(review_id, limit=1, offset=0):
     """Get revisions on a review ordered by the timestamp
 
     Args:
         review_id (uuid): ID of review
+        limit (int): The number of revisions to return(default=1)
+        offset (int): The number of revisions to skip from top(default=0)
 
     Returns:
         List of dictionaries of revisions of the review
@@ -18,8 +20,6 @@ def get(review_id):
             "timestamp": (datetime),
             "text": (string)
         }
-
-        and the number(count) of reviews
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
@@ -27,16 +27,40 @@ def get(review_id):
               FROM revision
              WHERE review_id = :review_id
           ORDER BY timestamp DESC
+            OFFSET :offset
+             LIMIT :limit
         """), {
             "review_id": review_id,
+            "offset": offset,
+            "limit": limit
         })
 
         rows = result.fetchall()
         if not rows:
             raise db_exceptions.NoDataFoundException("Cannot find specified review.")
         rows = [dict(row) for row in rows]
-        count = len(rows)
-    return rows, count
+    return rows
+
+
+def get_count(review_id):
+    """Get total number of revisions of a review
+
+    Args:
+        review_id (uuid): ID of a review
+
+    Returns:
+        count (int): Total number of revisions of a review
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT count(*)
+              FROM revision
+             WHERE review_id = :review_id
+        """),{
+            "review_id": review_id
+        })
+        count = result.fetchone()[0]
+    return count
 
 
 def get_votes(review_id):

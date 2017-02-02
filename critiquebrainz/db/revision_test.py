@@ -25,30 +25,40 @@ class RevisionTestCase(DataTestCase):
                                     is_draft=False,
                                     license_id=self.license.id)
 
-    def test_get(self):
-        """Test the get function that gets revisions for the test review ordered by the timestamp"""
+    def test_get_and_count(self):
+        """Test the get function that gets revisions for the test review ordered by the timestamp
+        and the count function that returns the total number of revisions of a review"""
 
         review_id = self.review.id
-        revisions, count = revision.get(review_id)
-        first_revision = revisions[0]
+        count = revision.get_count(review_id)
+        first_revision = revision.get(review_id)[0]
+        self.assertEqual(count, 1)
         self.assertEqual(first_revision['text'], "Testing!")
         self.assertEqual(type(first_revision['timestamp']), datetime)
         self.assertEqual(type(first_revision['id']), int)
 
         self.review.update(text="Testing Again!")
-        revisions, count = revision.get(review_id)
-        second_revision = revisions[0]
+        second_revision = revision.get(review_id)[0]
+        count = revision.get_count(review_id)
+        self.assertEqual(count, 2)
         self.assertEqual(second_revision['text'], "Testing Again!")
         self.assertEqual(type(second_revision['timestamp']), datetime)
         self.assertEqual(type(second_revision['id']), int)
 
+        self.review.update(text="Testing Once Again!")
+        # Testing offset and limit
+        first_two_revisions = revision.get(review_id, limit=2, offset=1)
+        count = revision.get_count(review_id)
+        self.assertEqual(count, 3)
+        self.assertEqual(first_two_revisions[1]['text'], "Testing!")
+        self.assertEqual(first_two_revisions[0]['text'], "Testing Again!")
 
     def test_get_votes(self):
         """Test to get the number of votes on revisions of a review"""
 
         review_id = self.review.id
-        revisions, count = revision.get(review_id)
-        first_revision = revisions[0]
+        count = revision.get_count(review_id)
+        first_revision = revision.get(review_id)[0]
         vote.submit(self.user_1.id, first_revision['id'], True)
         vote.submit(self.user_2.id, first_revision['id'], False)
         votes = revision.get_votes(review_id)
