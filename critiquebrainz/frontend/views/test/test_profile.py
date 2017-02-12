@@ -1,12 +1,13 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
-from critiquebrainz.data.model.user import User
+from critiquebrainz.db.user import User
+import critiquebrainz.db.users as db_users
 
 
 class ProfileViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(ProfileViewsTestCase, self).setUp()
-        self.user = User.get_or_create("Tester", "aef06569-098f-4218-a577-b413944d9493")
+        self.user = User(db_users.get_or_create("Tester", "aef06569-098f-4218-a577-b413944d9493"))
 
     def test_edit(self):
         data = dict(

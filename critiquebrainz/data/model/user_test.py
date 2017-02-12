@@ -110,7 +110,7 @@ class UserTestCase(DataTestCase):
         db.session.add(license)
         db.session.commit()
 
-        review = Review.create(user=user_1,
+        review = Review.create(user_id=user_1.id,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
                                is_draft=False,
@@ -136,7 +136,7 @@ class UserTestCase(DataTestCase):
         license = License(id=u"Test", full_name=u'Test License')
         db.session.add(license)
         db.session.flush()
-        review = Review.create(user=user,
+        review = Review.create(user_id=user.id,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
                                is_draft=False,

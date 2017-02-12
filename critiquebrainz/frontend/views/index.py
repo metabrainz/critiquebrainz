@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask_babel import format_number
-from critiquebrainz.data.model.user import User
+import critiquebrainz.db.users as db_users
 from critiquebrainz.data.model.review import Review
 from bs4 import BeautifulSoup
 from markdown import markdown
@@ -24,7 +24,7 @@ def index():
 
     # Statistics
     review_count = format_number(Review.get_count(is_draft = False))
-    user_count = format_number(User.get_count())
+    user_count = format_number(db_users.get_count())
 
     return render_template('index/index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
                            reviews_total=review_count, users_total=user_count)

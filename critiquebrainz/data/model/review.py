@@ -261,7 +261,7 @@ class Review(db.Model, DeleteMixin):
         review = Review(
             entity_id=entity_id,
             entity_type=entity_type,
-            user=kwargs.pop('user'),
+            user_id=kwargs.pop('user_id'),
             language=kwargs.pop('language', None),
             is_draft=kwargs.pop('is_draft', False),
             license_id=kwargs.pop('license_id', DEFAULT_LICENSE_ID),

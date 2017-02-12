@@ -1,14 +1,15 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
-from critiquebrainz.data.model.user import User
+from critiquebrainz.db.user import User
 from critiquebrainz.data.model.oauth_client import OAuthClient
+import critiquebrainz.db.users as db_users
 
 
 class ProfileApplicationsViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(ProfileApplicationsViewsTestCase, self).setUp()
-        self.user = User.get_or_create(u"Tester", u"aef06569-098f-4218-a577-b413944d9493")
-        self.hacker = User.get_or_create(u"Hacker!", u"9371e5c7-5995-4471-a5a9-33481f897f9c")
+        self.user = User(db_users.get_or_create(u"Tester", u"aef06569-098f-4218-a577-b413944d9493"))
+        self.hacker = User(db_users.get_or_create(u"Hacker!", u"9371e5c7-5995-4471-a5a9-33481f897f9c"))
         self.application = dict(
             name="Some Application",
             desc="Created for some purpose",

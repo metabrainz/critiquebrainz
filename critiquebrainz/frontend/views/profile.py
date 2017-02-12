@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from flask_login import login_required, current_user
+import critiquebrainz.db.users as db_users
 
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.profile import ProfileEditForm
@@ -13,7 +14,7 @@ profile_bp = Blueprint('profile_details', __name__)
 def edit():
     form = ProfileEditForm()
     if form.validate_on_submit():
-        current_user.update(display_name=form.display_name.data,
+        db_users.update(current_user, display_name=form.display_name.data,
                             email=form.email.data,
                             show_gravatar=form.show_gravatar.data)
         flash.success(gettext("Profile updated."))
@@ -29,7 +30,7 @@ def edit():
 @login_required
 def delete():
     if request.method == 'POST':
-        current_user.delete()
+        db_users.delete(current_user.id)
         return redirect(url_for('frontend.index'))
     return render_template('profile/delete.html')
 

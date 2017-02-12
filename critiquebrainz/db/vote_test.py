@@ -22,7 +22,7 @@ class VoteTestCase(DataTestCase):
         db.session.commit()
         self.review = Review.create(release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text="Testing!",
-                               user=author,
+                               user_id=author.id,
                                is_draft=False,
                                license_id=license.id)
 

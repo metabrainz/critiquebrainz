@@ -16,7 +16,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.review = dict(
             entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
             entity_type='release_group',
-            user=self.user,
+            user_id=self.user.id,
             text="Testing! This text should be on the page.",
             is_draft=False,
             license_id=self.license.id,
