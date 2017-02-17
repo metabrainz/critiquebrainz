@@ -85,7 +85,12 @@ def entity(id, rev=None):
     else:  # otherwise set vote to None, its value will not be used
         vote = None
     review.text_html = markdown(revision['text'], safe_mode="escape")
-    return render_template('review/entity/%s.html' % review.entity_type, review=review, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url, vote=vote)
+
+    user_all_reviews, review_count = Review.list(user_id=review.user_id, sort="random")
+    if review_count > 0:
+        user_all_reviews.remove(review)
+    other_reviews = user_all_reviews[:3]
+    return render_template('review/entity/%s.html' % review.entity_type, review=review, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url, vote=vote, other_reviews=other_reviews)
 
 
 @review_bp.route('/<uuid:id>/revisions/compare')
