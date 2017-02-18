@@ -8,8 +8,12 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(ProfileApplicationsViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create(u"Tester", u"aef06569-098f-4218-a577-b413944d9493"))
-        self.hacker = User(db_users.get_or_create(u"Hacker!", u"9371e5c7-5995-4471-a5a9-33481f897f9c"))
+        self.user = User(db_users.get_or_create(u"aef06569-098f-4218-a577-b413944d9493", new_user_data={
+            "display_name": u"Tester",
+        }))
+        self.hacker = User(db_users.get_or_create(u"9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
+            "display_name": u"Hacker!",
+        }))
         self.application = dict(
             name="Some Application",
             desc="Created for some purpose",

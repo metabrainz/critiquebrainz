@@ -24,7 +24,7 @@ def index():
 
     # Statistics
     review_count = format_number(Review.get_count(is_draft = False))
-    user_count = format_number(db_users.get_count())
+    user_count = format_number(db_users.total_count())
 
     return render_template('index/index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,
                            reviews_total=review_count, users_total=user_count)

@@ -66,7 +66,9 @@ class MusicBrainzAuthentication(BaseAuthentication):
             decoder=lambda content: json.loads(content.decode("utf-8")),
         )
         data = s.get('oauth2/userinfo').json()
-        return User(db_users.get_or_create(data.get('sub'), musicbrainz_id=data.get('sub')))
+        return User(db_users.get_or_create(data.get('sub'), new_user_data={
+            "display_name": data.get('sub'),
+        }))
 
     def validate_post_login(self):
         if request.args.get('error'):

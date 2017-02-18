@@ -22,13 +22,13 @@ class VoteTestCase(DataTestCase):
                                is_draft=False,
                                license_id=license.id)
 
-        vote_u1_positive = Vote.create(user_1, review, True)
+        vote_u1_positive = Vote.create(user_1.id, review, True)
 
         votes = db.session.query(Vote).all()
         self.assertEqual(len(votes), 1)
         self.assertIn(vote_u1_positive, votes)
 
-        vote_u2_negative = Vote.create(user_2, review, False)
+        vote_u2_negative = Vote.create(user_2.id, review, False)
 
         votes = db.session.query(Vote).all()
         self.assertEqual(len(votes), 2)

@@ -13,12 +13,12 @@ def mods_list():
     mods = []
     for mod_data in mods_data:
         # Removing from `mod_usernames` to figure out which mods don't have a CB account afterwards
-        if mod_data["musicbrainz_id"].lower() in mod_usernames:
-            mod_usernames.remove(mod_data["musicbrainz_id"].lower())
+        if mod_data["musicbrainz_username"].lower() in mod_usernames:
+            mod_usernames.remove(mod_data["musicbrainz_username"].lower())
         mods.append({
             'critiquebrainz_id': mod_data["id"],
-            'musicbrainz_username': mod_data["musicbrainz_id"],
-            'avatar_url': gravatar_url(mod_data["musicbrainz_id"]),
+            'musicbrainz_username': mod_data["musicbrainz_username"],
+            'avatar_url': gravatar_url(mod_data["musicbrainz_username"]),
         })
     for mod_username in mod_usernames:  # The rest
         mods.append({

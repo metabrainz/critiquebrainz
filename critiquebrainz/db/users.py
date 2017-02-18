@@ -68,6 +68,7 @@ def get_many_by_mb_username(usernames):
         users = [dict(r) for r in row]
         for user in users:
             default_gravatar_src = "%s@cb" % user["id"]
+            user["musicbrainz_username"] = user.pop("musicbrainz_id")
             if user["show_gravatar"]:
                 user["avatar_url"] = gravatar_url(user.get("email") or default_gravatar_src)
             else:
@@ -76,64 +77,71 @@ def get_many_by_mb_username(usernames):
 
 
 def get_by_id(user_id):
-    """Get user from user_id
+    """Get user from user_id (UUID).
 
     Args:
-        user_id(uuid): ID of the user
+        user_id(uuid): ID of the user.
 
     Returns:
         Dictionary with the following structure:
         {
-            "id": (uuid)
-            "display_name": (str)
-            "email": (str)
-            "created": (datetime)
-            "musicbrainz_id": (str)
-            "show_gravatar": (bool)
+            "id": (uuid),
+            "display_name": (str),
+            "email": (str),
+            "created": (datetime),
+            "musicbrainz_username": (str),
+            "show_gravatar": (bool),
             "is_blocked": (bool)
         }
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT id, display_name, email, created,
-                   musicbrainz_id, show_gravatar, is_blocked
+            SELECT id,
+                   display_name,
+                   email,
+                   created,
+                   musicbrainz_id,
+                   show_gravatar,
+                   is_blocked
               FROM "user"
              WHERE id = :user_id
         """), {
             "user_id": user_id
         })
         row = result.fetchone()
-    return dict(row) if row else None
+        if row:
+            row = dict(row)
+            row['musicbrainz_username'] = row.pop('musicbrainz_id')
+    return row if row else None
 
 
 def create(display_name, **kwargs):
-    """Create user using the given details
+    """Create user using the given details.
 
     Args:
-        display_name(str): display_name of the user,
-        musicbrainz_id(str, optional): musicbrainz_id of user,
-        email(str, optional): email of the user,
-        show_gravatar(bool, optional): whether to show gravatar(default: false)
-        is_blocked(bool, optional): whether user is blocked(default: false)
+        display_name(str): display_name of the user.
+        musicbrainz_username(str, optional): musicbrainz username of user.
+        email(str, optional): email of the user.
+        show_gravatar(bool, optional): whether to show gravatar(default: false).
+        is_blocked(bool, optional): whether user is blocked(default: false).
 
     Returns:
         Dictionary with the following structure:
         {
-            "id": (uuid)
-            "display_name": (str)
-            "email": (str)
-            "created": (datetime)
-            "musicbrainz_id": (str)
-            "show_gravatar": (bool)
+            "id": (uuid),
+            "display_name": (str),
+            "email": (str),
+            "created": (datetime),
+            "musicbrainz_username": (str),
+            "show_gravatar": (bool),
             "is_blocked": (bool)
         }
     """
-    id = str(uuid.uuid4())
-    musicbrainz_id = kwargs.pop('musicbrainz_id', None)
+    musicbrainz_username = kwargs.pop('musicbrainz_username', None)
     email = kwargs.pop('email', None)
     show_gravatar = kwargs.pop('show_gravatar', False)
     is_blocked = kwargs.pop('is_blocked', False)
-    if(kwargs):
+    if kwargs:
         raise TypeError('Unexpected **kwargs: %r' % kwargs)
 
     with db.engine.connect() as connection:
@@ -142,80 +150,93 @@ def create(display_name, **kwargs):
                  VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar, :is_blocked)
               RETURNING id
             """), {
-                "id": id,
+                "id": str(uuid.uuid4()),
                 "display_name": display_name,
                 "email": email,
                 "created": datetime.now(),
-                "musicbrainz_id": musicbrainz_id,
+                "musicbrainz_id": musicbrainz_username,
                 "show_gravatar": show_gravatar,
-                "is_blocked": is_blocked
+                "is_blocked": is_blocked,
             })
         new_id = result.fetchone()[0]
         user = get_by_id(new_id)
     return user
 
 
-def get_by_mbid(musicbrainz_id):
-    """Get user by musicbrainz_id
+def get_by_mbid(musicbrainz_username):
+    """Get user by musicbrainz username.
 
     Args:
-        musicbrainz_id(str): Musicbrainz ID of the User
+        musicbrainz_username(str): MusicBrainz username of the User.
 
     Returns:
         Dictionary with the following structure:
         {
-            "id": (uuid)
-            "display_name": (str)
-            "email": (str)
-            "created": (datetime)
-            "musicbrainz_id": (str)
-            "show_gravatar": (bool)
+            "id": (uuid),
+            "display_name": (str),
+            "email": (str),
+            "created": (datetime),
+            "musicbrainz_username": (str),
+            "show_gravatar": (bool),
             "is_blocked": (bool)
         }
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT id, display_name, email, created,
-                   musicbrainz_id, show_gravatar, is_blocked
+            SELECT id,
+                   display_name,
+                   email,
+                   created,
+                   musicbrainz_id,
+                   show_gravatar,
+                   is_blocked
             FROM "user"
-            WHERE musicbrainz_id = :musicbrainz_id
+            WHERE musicbrainz_id = :musicbrainz_username
         """), {
-            "musicbrainz_id": musicbrainz_id
+            "musicbrainz_username": musicbrainz_username
         })
         row = result.fetchone()
-    return dict(row) if row else None
+        if row:
+            row = dict(row)
+            row['musicbrainz_username'] = row.pop('musicbrainz_id')
+    return row if row else None
 
 
-def get_or_create(display_name, musicbrainz_id, **kwargs):
-    """Get user from display_name and musicbrainz_id
+def get_or_create(musicbrainz_username, new_user_data):
+    """Get user from display_name and musicbrainz_username.
 
     Args:
-        display_name(str): display_name of the user
-        musicbrainz_id(str): Musicbrainz ID of the user
-        email(str, optional): email of the user,
-        show_gravatar(bool, optional): whether to show gravatar(default: false)
-        is_blocked(bool, optional): whether user is blocked(default: false)
+        musicbrainz_username(str): MusicBrainz username of the user.
+        new_user_data(dict): Dictionary containing the user data which may
+                             contain the following keys:
+        {
+            "display_name": Display name of the user.
+            "email": email of the user(optional).
+            "show_gravatar": whether to show gravatar(default: false, optional).
+            "is_blocked": whether user is blocked(default: false, optional).
+        }
 
     Returns:
         Dictionary with the following structure:
         {
-            "id": (uuid)
-            "display_name": (str)
-            "email": (str)
-            "created": (datetime)
-            "musicbrainz_id": (str)
-            "show_gravatar": (bool)
+            "id": (uuid),
+            "display_name": (str),
+            "email": (str),
+            "created": (datetime),
+            "musicbrainz_username": (str),
+            "show_gravatar": (bool),
             "is_blocked": (bool)
         }
     """
-    user = get_by_mbid(musicbrainz_id)
+    user = get_by_mbid(musicbrainz_username)
     if not user:
-        user = create(display_name, musicbrainz_id=musicbrainz_id, **kwargs)
+        display_name = new_user_data.pop("display_name")
+        user = create(display_name, musicbrainz_username=musicbrainz_username, **new_user_data)
     return user
 
 
-def get_count():
-    """Returns the total number of users
+def total_count():
+    """Returns the total number of users of CritiqueBrainz.
 
     Returns:
         count: (int)
@@ -229,29 +250,34 @@ def get_count():
     return count
 
 
-def list(limit=None, offset=0):
-    """Returns the list of users of critiquebrainz
+def list_users(limit=None, offset=0):
+    """Returns the list of users of CritiqueBrainz.
 
     Args:
-        limit(int, optional): Number of users to be returned
-        offset(int, optional): Number of initial users to skip
+        limit(int, optional): Number of users to be returned.
+        offset(int, optional): Number of initial users to skip.
 
     Returns:
         List of dictionaries of users with the following structure:
         {
-            "id": (uuid)
-            "display_name": (str)
-            "email": (str)
-            "created": (datetime)
-            "musicbrainz_id": (str)
-            "show_gravatar": (bool)
+            "id": (uuid),
+            "display_name": (str),
+            "email": (str),
+            "created": (datetime),
+            "musicbrainz_username": (str),
+            "show_gravatar": (bool),
             "is_blocked": (bool)
         }
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT id, display_name, email, created,
-                   musicbrainz_id, show_gravatar, is_blocked
+            SELECT id,
+                   display_name,
+                   email,
+                   created,
+                   musicbrainz_id,
+                   show_gravatar,
+                   is_blocked
               FROM "user"
              LIMIT :limit
             OFFSET :offset
@@ -261,14 +287,16 @@ def list(limit=None, offset=0):
         })
         rows = result.fetchall()
         rows = [dict(row) for row in rows]
+        for row in rows:
+            row['musicbrainz_username'] = row.pop('musicbrainz_id')
     return rows
 
 
 def unblock(user_id):
-    """Unblock user (admin only)
+    """Unblock user (admin only).
 
     Args:
-        user_id(uuid): ID of user to be unblocked
+        user_id(uuid): ID of user to be unblocked.
     """
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
@@ -281,10 +309,10 @@ def unblock(user_id):
 
 
 def block(user_id):
-    """Block user (admin only)
+    """Block user (admin only).
 
     Args:
-        user_id(uuid): ID of user to be blocked
+        user_id(uuid): ID of user to be blocked.
     """
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
@@ -297,14 +325,14 @@ def block(user_id):
 
 
 def has_voted(user_id, review_id):
-    """Check if a user has already voted a review
+    """Check if a user has already voted a review.
 
     Args:
-        user_id(uuid): ID of the user
-        review_id(uuid): ID of the review
+        user_id(uuid): ID of the user.
+        review_id(uuid): ID of the review.
 
     Returns:
-        (bool): True if has voted else False
+        (bool): True if has voted else False.
     """
     last_revision = db_revision.get(review_id, limit=1)[0]
     with db.engine.connect() as connection:
@@ -322,22 +350,22 @@ def has_voted(user_id, review_id):
 
 
 def karma(user_id):
-    """Get the karma of a user
+    """Get the karma of a user.
 
     Args:
-        user_id(uuid): ID of the user
+        user_id(uuid): ID of the user.
 
     Returns:
-        karma(int): the karma of the user
+        karma(int): the karma of the user.
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
             SELECT review.user_id, vote
               FROM ((vote
-         LEFT JOIN revision
-                ON revision.id = revision_id)
-         LEFT JOIN review
-                ON review.id = review_id)
+                     LEFT JOIN revision
+                            ON revision.id = revision_id)
+                     LEFT JOIN review
+                            ON review.id = review_id)
          LEFT JOIN "user"
                 ON "user".id = review.user_id
              WHERE "user".id = :user_id
@@ -356,15 +384,15 @@ def karma(user_id):
 
 
 def reviews(user_id):
-    """Get list of reviews written by a user
+    """Get list of reviews written by a user.
 
     Args:
-        user_id(uuid): ID of the user
+        user_id(uuid): ID of the user.
 
     Returns:
         List of reviews written by the user with the structure:
         {
-            "id": (uuid)
+            "id": (uuid),
             "entity_id": (uuid),
             "entity_type": event or place or release_group,
             "user_id": (uuid),
@@ -378,8 +406,16 @@ def reviews(user_id):
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT id, entity_id, entity_type, user_id, edits,
-                   is_draft, license_id, language, source, source_url
+            SELECT id,
+                   entity_id,
+                   entity_type,
+                   user_id,
+                   edits,
+                   is_draft,
+                   license_id,
+                   language,
+                   source,
+                   source_url
               FROM review
              WHERE user_id = :user_id
         """), {
@@ -392,12 +428,12 @@ def reviews(user_id):
     return rows
 
 
-def get_votes(user_id, date='1-1-1970'):
-    """Get votes by a user from a specified time
+def get_votes_since(user_id, date='1-1-1970'):
+    """Get votes by a user from a specified time.
 
     Args:
-        user_id(uuid): ID of the user
-        date(datetime): Date from which votes submitted(default: UTC)
+        user_id(uuid): ID of the user.
+        date(datetime): Date from which votes submitted(default: UTC).
 
     Returns:
         List of votes submitted by the user from the time specified
@@ -408,7 +444,8 @@ def get_votes(user_id, date='1-1-1970'):
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT vote, rated_at
+            SELECT vote,
+                   rated_at
               FROM vote
              WHERE user_id = :user_id
                AND rated_at >= :date
@@ -423,17 +460,17 @@ def get_votes(user_id, date='1-1-1970'):
     return rows
 
 
-def get_reviews(user_id, date='1-1-1970'):
-    """Get reviews by a user from a specified time
+def get_reviews_since(user_id, date='1-1-1970'):
+    """Get reviews by a user from a specified time.
 
     Args:
-        user_id(uuid): ID of the user,
-        date(datetime): Date from which reviews submitted(default: UTC)
+        user_id(uuid): ID of the user.
+        date(datetime): Date from which reviews submitted(default: UTC).
 
     Returns:
         List of reviews by the user from the time specified
         {
-            "id": (uuid)
+            "id": (uuid),
             "entity_id": (uuid),
             "entity_type": event or place or release_group,
             "user_id": (uuid),
@@ -447,18 +484,26 @@ def get_reviews(user_id, date='1-1-1970'):
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-           SELECT *
-           FROM review
-      LEFT JOIN
-        (SELECT review_id
-              , min(timestamp)
-             AS creation_time
-           FROM revision
-       GROUP BY review_id)
-             AS review_create
-             ON review.id = review_id
-          WHERE user_id = :user_id
-            AND creation_time > :date
+            SELECT id,
+                   entity_id,
+                   entity_type,
+                   user_id,
+                   edits,
+                   is_draft,
+                   is_hidden,
+                   license_id,
+                   language,
+                   source,
+                   source_url,
+                   creation_time
+              FROM review
+         LEFT JOIN (SELECT review_id,
+                           min(timestamp) AS creation_time
+                      FROM revision
+                  GROUP BY review_id) AS review_create
+                ON review.id = review_id
+             WHERE user_id = :user_id
+               AND creation_time > :date
         """), {
             "user_id": user_id,
             "date": date
@@ -471,13 +516,13 @@ def get_reviews(user_id, date='1-1-1970'):
 
 
 def update(user, display_name=None, email=None, show_gravatar=None):
-    """Update info of a user
+    """Update info of a user.
 
     Args:
-        user: User object whose info is to be updated,
-        display_name(str): Display name of user,
-        email(str): Email of the user,
-        show_gravatar(bool): whether to show gravatar
+        user: User object whose info is to be updated.
+        display_name(str): Display name of user.
+        email(str): Email of the user.
+        show_gravatar(bool): whether to show gravatar.
     """
     if display_name is None:
         display_name = user.display_name
@@ -502,12 +547,11 @@ def update(user, display_name=None, email=None, show_gravatar=None):
 
 
 def delete(user_id):
-    """Delete a user
-    Deletes user, votes, reviews, revisions and spam reports
-    by it
+    """
+    This function deletes user and all of the information associated with them.
 
     Args:
-        user_id(uuid): ID of the user to be deleted
+        user_id(uuid): ID of the user to be deleted.
     """
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
@@ -517,44 +561,13 @@ def delete(user_id):
         """), {
             "user_id": user_id
         })
-        connection.execute(sqlalchemy.text("""
-            DELETE
-              FROM "vote"
-             WHERE user_id = :user_id
-        """), {
-            "user_id": user_id
-        })
-        connection.execute(sqlalchemy.text("""
-            DELETE
-              FROM "spam_report"
-             WHERE user_id = :user_id
-        """), {
-            "user_id": user_id
-        })
-    user_reviews = reviews(user_id)
-    with db.engine.connect() as connection:
-        for review in user_reviews:
-            connection.execute(sqlalchemy.text("""
-                DELETE
-                  FROM review
-                 WHERE id = :review_id
-            """), {
-                "review_id": review['id']
-            })
-            connection.execute(sqlalchemy.text("""
-                DELETE
-                  FROM revision
-                 WHERE review_id = :review_id
-            """), {
-                "review_id": review['id']
-            })
 
 
 def clients(user_id):
-    """Get list of oauth clients registered by user
+    """Get list of oauth clients registered by user.
 
     Args:
-        user_id(uuid): ID of the user,
+        user_id(uuid): ID of the user.
 
     Returns:
         List of dictionaries of oauth clients of the user
@@ -570,8 +583,13 @@ def clients(user_id):
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT client_id, client_secret, redirect_uri,
-                   user_id, name, oauth_client.desc, website
+            SELECT client_id,
+                   client_secret,
+                   redirect_uri,
+                   user_id,
+                   name,
+                   oauth_client.desc,
+                   website
               FROM oauth_client
              WHERE user_id = :user_id
         """), {
@@ -584,10 +602,10 @@ def clients(user_id):
 
 
 def tokens(user_id):
-    """Get the oauth_tokens from a user_id
+    """Get the oauth_tokens from a user_id.
 
     Args:
-        user_id(uuid): ID of the user
+        user_id(uuid): ID of the user.
 
     Returns:
         List of dictionaries of client tokens of the user
@@ -602,8 +620,12 @@ def tokens(user_id):
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT id, client_id, access_token,
-                   refresh_token, expires, scopes
+            SELECT id,
+                   client_id,
+                   access_token,
+                   refresh_token,
+                   expires,
+                   scopes
               FROM oauth_token
              WHERE user_id = :user_id
         """), {

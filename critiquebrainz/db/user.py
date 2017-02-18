@@ -12,10 +12,9 @@ class User(AdminMixin, DeleteMixin):
         self.display_name = user.get('display_name')
         self.email = user.get('email')
         self.created = user.get('created')
-        self.musicbrainz_id = user.get('musicbrainz_id')
+        self.musicbrainz_username = user.get('musicbrainz_username')
         self.show_gravatar = user.get('show_gravatar', False)
         self.is_blocked = user.get('is_blocked', False)
-        allowed_includes = ('user_type', 'stats')
 
     @property
     def avatar(self):
@@ -51,25 +50,25 @@ class User(AdminMixin, DeleteMixin):
 
     @property
     def votes(self):
-        return db_users.get_votes(self.id)
+        return db_users.get_votes_since(self.id)
 
     def votes_since(self, date):
-        return db_users.get_votes(self.id, date=date)
+        return db_users.get_votes_since(self.id, date=date)
 
     def votes_since_count(self, date):
-        return len(db_users.get_votes(self.id, date=date))
+        return len(db_users.get_votes_since(self.id, date=date))
 
     def votes_today(self):
-        return db_users.get_votes(self.id, date.today())
+        return db_users.get_votes_since(self.id, date.today())
 
     def votes_today_count(self):
-        return len(db_users.get_votes(self.id, date.today()))
+        return len(db_users.get_votes_since(self.id, date.today()))
 
     def reviews_since(self, date):
-        return db_users.get_reviews(self.id)
+        return db_users.get_reviews_since(self.id, date=date)
 
     def reviews_since_count(self, date):
-        return len(db_users.get_reviews(self.id))
+        return len(db_users.get_reviews_since(self.id, date=date))
 
     def reviews_today(self):
         return self.reviews_since(date.today())
@@ -96,28 +95,34 @@ class User(AdminMixin, DeleteMixin):
             reviews_this_month=self.reviews_since_count(date(today.year, today.month, 1)),
             votes_today=self.votes_today_count(),
             votes_last_7_days=self.votes_since_count(today-timedelta(days=7)),
-            votes_this_month=self.votes_since_count(date(today.year, today.month, 1)))
+            votes_this_month=self.votes_since_count(date(today.year, today.month, 1)),
+        )
 
     def to_dict(self, includes=None, confidential=False):
         if includes is None:
             includes = []
-        response = dict(id=self.id,
-                        display_name=self.display_name,
-                        created=self.created,
-                        karma=self.karma,
-                        user_type=self.user_type.label)
+        response = dict(
+                    id=self.id,
+                    display_name=self.display_name,
+                    created=self.created,
+                    karma=self.karma,
+                    user_type=self.user_type.label,
+                )
 
         if confidential is True:
-            response.update(dict(email=self.email,
-                                 avatar=self.avatar,
-                                 show_gravatar=self.show_gravatar,
-                                 musicbrainz_id=self.musicbrainz_id))
+            response.update(dict(
+                email=self.email,
+                avatar=self.avatar,
+                show_gravatar=self.show_gravatar,
+                musicbrainz_username=self.musicbrainz_username,
+            ))
 
         if 'user_type' in includes:
             response['user_type'] = dict(
                 label=self.user_type.label,
                 reviews_per_day=self.user_type.reviews_per_day,
-                votes_per_day=self.user_type.votes_per_day)
+                votes_per_day=self.user_type.votes_per_day,
+            )
 
         if 'stats' in includes:
             today = date.today()
@@ -127,6 +132,7 @@ class User(AdminMixin, DeleteMixin):
                 reviews_this_month=self.reviews_since_count(date(today.year, today.month, 1)),
                 votes_today=self.votes_today_count(),
                 votes_last_7_days=self.votes_since_count(today - timedelta(days=7)),
-                votes_this_month=self.votes_since_count(date(today.year, today.month, 1)))
+                votes_this_month=self.votes_since_count(date(today.year, today.month, 1)),
+            )
 
         return response

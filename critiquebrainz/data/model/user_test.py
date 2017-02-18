@@ -123,7 +123,7 @@ class UserTestCase(DataTestCase):
         db.session.commit()
 
         self.assertFalse(user_2.has_voted(review))
-        Vote.create(user_2, review, True)
+        Vote.create(user_2.id, review, True)
         self.assertTrue(user_2.has_voted(review))
 
     def test_reviews_property(self):

@@ -7,7 +7,9 @@ class ProfileViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(ProfileViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create("Tester", "aef06569-098f-4218-a577-b413944d9493"))
+        self.user = User(db_users.get_or_create("aef06569-098f-4218-a577-b413944d9493", new_user_data={
+            "display_name": "Tester",
+        }))
 
     def test_edit(self):
         data = dict(
