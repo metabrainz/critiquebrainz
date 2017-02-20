@@ -144,6 +144,7 @@ class Review(db.Model, DeleteMixin):
                 False if not.
             inc_hidden: True if reviews marked as hidden should be included,
                 False if not.
+            exclude: List of id of reviews to exclude.
 
         Returns:
             Pair of values: list of reviews that match applied filters and
@@ -179,6 +180,11 @@ class Review(db.Model, DeleteMixin):
         user_id = kwargs.pop('user_id', None)
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
+
+        exclude = kwargs.pop('exclude', None)
+        if exclude is not None:
+            for review_id in exclude:
+                query = query.filter(Review.id != review_id)
 
         count = query.count()  # Total count should be calculated before limits and sorting
 
