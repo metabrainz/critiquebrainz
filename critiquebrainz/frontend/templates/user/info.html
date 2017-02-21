@@ -3,10 +3,10 @@
 {% block title %}{{ user.display_name }} - {{ _('Info') }} - CritiqueBrainz{% endblock %}
 
 {% block profile_content %}
-  {% if user.musicbrainz_id %}
+  {% if user.musicbrainz_username %}
     <div>
       <img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" />
-      <b><a href="https://musicbrainz.org/user/{{ user.musicbrainz_id }}">See profile on MusicBrainz</a></b>
+      <b><a href="https://musicbrainz.org/user/{{ user.musicbrainz_username }}">See profile on MusicBrainz</a></b>
     </div>
   {% endif %}
 

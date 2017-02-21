@@ -24,7 +24,7 @@ class ReviewTestCase(DataTestCase):
     def test_review_creation(self):
         self.assertEqual(Review.query.count(), 0)
 
-        review = Review.create(user=self.user,
+        review = Review.create(user_id=self.user.id,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
                                is_draft=False,
@@ -37,7 +37,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(reviews[0].license_id, review.license_id)
 
     def test_created_property(self):
-        review = Review.create(user=self.user,
+        review = Review.create(user_id=self.user.id,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
                                is_draft=False,
@@ -45,7 +45,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(review.created, review.revisions[0].timestamp)
 
     def test_review_deletion(self):
-        review = Review.create(user=self.user,
+        review = Review.create(user_id=self.user.id,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
                                is_draft=False,
@@ -56,13 +56,13 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(Review.query.count(), 0)
 
     def test_languages(self):
-        review_en = Review.create(user=self.user,
+        review_en = Review.create(user_id=self.user.id,
                                   release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                   text=u"Testing!",
                                   is_draft=False,
                                   license_id=self.license.id,
                                   language='en')
-        review_de = Review.create(user=self.user,
+        review_de = Review.create(user_id=self.user.id,
                                   release_group='e7aad618-fa86-3983-9e77-405e21796ece',
                                   text=u"Testing!",
                                   is_draft=False,
@@ -78,7 +78,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(count, 0)
 
     def test_update(self):
-        review = Review.create(user=self.user,
+        review = Review.create(user_id=self.user.id,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Awesome!",
                                is_draft=True,
@@ -108,7 +108,7 @@ class ReviewTestCase(DataTestCase):
             review.update(text=u"Sucks!", is_draft=True)
 
     def test_revisions(self):
-        review = Review.create(user=self.user,
+        review = Review.create(user_id=self.user.id,
                                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Awesome!",
                                is_draft=False,
@@ -127,7 +127,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(len(reviews), 0)
 
         review = Review.create(
-            user=self.user,
+            user_id=self.user.id,
             release_group='e7aad618-fa86-3983-9e77-405e21796eca',
             text=u"Awesome!",
             is_draft=False,
@@ -159,7 +159,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(len(reviews), 0)
 
         new_review = Review.create(
-            user=self.user,
+            user_id=self.user.id,
             release_group='e7aad618-fa86-3983-9e77-405e21796eca',
             text=u"Testing!",
             is_draft=False,

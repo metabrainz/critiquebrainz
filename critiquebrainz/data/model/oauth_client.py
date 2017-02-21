@@ -38,7 +38,7 @@ class OAuthClient(db.Model, DeleteMixin):
         client_id = generate_string(20)
         client_secret = generate_string(40)
         client = cls(client_id=client_id, client_secret=client_secret,
-                     user=user, name=name, desc=desc, website=website,
+                     user_id=user.id, name=name, desc=desc, website=website,
                      redirect_uri=redirect_uri)
         db.session.add(client)
         db.session.commit()

@@ -172,7 +172,7 @@ def create():
         return redirect(url_for('user.reviews', user_id=current_user.id))
 
     # Checking if the user already wrote a review for this entity
-    review = Review.query.filter_by(user=current_user, entity_id=entity_id).first()
+    review = Review.query.filter_by(user_id=current_user.id, entity_id=entity_id).first()
     if review:
         flash.error(gettext("You have already published a review for this entity!"))
         return redirect(url_for('review.entity', id=review.id))
@@ -185,7 +185,7 @@ def create():
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
         is_draft = form.state.data == 'draft'
-        review = Review.create(user=current_user, entity_id=entity_id, entity_type=entity_type,
+        review = Review.create(user_id=current_user.id, entity_id=entity_id, entity_type=entity_type,
                                text=form.text.data, license_id=form.license_choice.data,
                                language=form.language.data, is_draft=is_draft)
         if is_draft:
@@ -326,14 +326,14 @@ def report(id):
         return redirect(url_for('.entity', id=id))
 
     last_revision_id = review.last_revision.id
-    count = SpamReport.query.filter_by(user=current_user, revision_id=last_revision_id).count()
+    count = SpamReport.query.filter_by(user_id=current_user.id, revision_id=last_revision_id).count()
     if count > 0:
         flash.error(gettext("You have already reported this review."))
         return redirect(url_for('.entity', id=id))
 
     form = ReviewReportForm()
     if form.validate_on_submit():
-        SpamReport.create(last_revision_id, current_user, form.reason.data)
+        SpamReport.create(last_revision_id, current_user.id, form.reason.data)
         flash.success(gettext("Review has been reported."))
         return redirect(url_for('.entity', id=id))
 
