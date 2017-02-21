@@ -14,9 +14,11 @@ profile_bp = Blueprint('profile_details', __name__)
 def edit():
     form = ProfileEditForm()
     if form.validate_on_submit():
-        db_users.update(current_user, display_name=form.display_name.data,
-                            email=form.email.data,
-                            show_gravatar=form.show_gravatar.data)
+        db_users.update(current_user.id, user_new_info={
+            "display_name":form.display_name.data,
+            "email":form.email.data,
+            "show_gravatar":form.show_gravatar.data,
+        })
         flash.success(gettext("Profile updated."))
         return redirect(url_for('user.reviews', user_id=current_user.id))
     else:

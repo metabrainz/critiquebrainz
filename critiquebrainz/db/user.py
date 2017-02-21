@@ -20,9 +20,9 @@ class User(AdminMixin, DeleteMixin):
     def avatar(self):
         """Link to user's avatar image."""
         if self.show_gravatar and self.email:
-            return "https://gravatar.com/avatar/" + hashlib.md5(self.mail.encode("utf-8")).hexdigest() + "?d=identicon&r=pg"
+            return db_users.gravatar_url(self.email)
         else:
-            return "https://gravatar.com/avatar/" + hashlib.md5(self.id.encode("utf-8")).hexdigest() + "?d=identicon"
+            return db_users.gravatar_url(self.id)
 
     @property
     def is_vote_limit_exceeded(self):
@@ -50,25 +50,25 @@ class User(AdminMixin, DeleteMixin):
 
     @property
     def votes(self):
-        return db_users.get_votes_since(self.id)
+        return db_users.get_votes(self.id)
 
     def votes_since(self, date):
-        return db_users.get_votes_since(self.id, date=date)
+        return db_users.get_votes(self.id, from_date=date)
 
     def votes_since_count(self, date):
-        return len(db_users.get_votes_since(self.id, date=date))
+        return len(db_users.get_votes(self.id, from_date=date))
 
     def votes_today(self):
-        return db_users.get_votes_since(self.id, date.today())
+        return self.votes_since(date.today())
 
     def votes_today_count(self):
-        return len(db_users.get_votes_since(self.id, date.today()))
+        return self.votes_since_count(date.today())
 
     def reviews_since(self, date):
-        return db_users.get_reviews_since(self.id, date=date)
+        return db_users.get_reviews(self.id, from_date=date)
 
     def reviews_since_count(self, date):
-        return len(db_users.get_reviews_since(self.id, date=date))
+        return len(db_users.get_reviews(self.id, from_date=date))
 
     def reviews_today(self):
         return self.reviews_since(date.today())
