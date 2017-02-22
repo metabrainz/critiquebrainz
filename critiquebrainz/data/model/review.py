@@ -183,8 +183,7 @@ class Review(db.Model, DeleteMixin):
 
         exclude = kwargs.pop('exclude', None)
         if exclude is not None:
-            for review_id in exclude:
-                query = query.filter(Review.id != review_id)
+            query = query.filter(Review.id.notin_(exclude))
 
         count = query.count()  # Total count should be calculated before limits and sorting
 
