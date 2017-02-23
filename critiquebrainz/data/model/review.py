@@ -135,7 +135,7 @@ class Review(db.Model, DeleteMixin):
                 or 'event' etc.
             user_id: UUID of the author.
             sort: Order of returned reviews. Can be either "rating" (order by
-                rating), or "created" (order by creation time).
+                rating), or "created" (order by creation time), or "random" (order randomly)
             limit: Maximum number of reviews returned by this method.
             offset: Offset that can be used in conjunction with the limit.
             language: Language (code) of returned reviews.
@@ -144,6 +144,7 @@ class Review(db.Model, DeleteMixin):
                 False if not.
             inc_hidden: True if reviews marked as hidden should be included,
                 False if not.
+            exclude: List of id of reviews to exclude.
 
         Returns:
             Pair of values: list of reviews that match applied filters and
@@ -179,6 +180,10 @@ class Review(db.Model, DeleteMixin):
         user_id = kwargs.pop('user_id', None)
         if user_id is not None:
             query = query.filter(Review.user_id == user_id)
+
+        exclude = kwargs.pop('exclude', None)
+        if exclude is not None:
+            query = query.filter(Review.id.notin_(exclude))
 
         count = query.count()  # Total count should be calculated before limits and sorting
 
@@ -222,6 +227,9 @@ class Review(db.Model, DeleteMixin):
 
             # Joining and sorting by publication time
             query = query.outerjoin(pub_times).order_by(desc('pub_times.published_on'))
+
+        elif sort == 'random':  # order randomly
+            query = query.order_by(func.random())
 
         limit = kwargs.pop('limit', None)
         if limit is not None:
