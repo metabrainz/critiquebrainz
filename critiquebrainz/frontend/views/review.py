@@ -10,7 +10,6 @@ from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
 from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
 from critiquebrainz.data.model.review import Review, ENTITY_TYPES
 from critiquebrainz.data.model.revision import Revision
-from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
 from critiquebrainz.frontend import flash
@@ -19,6 +18,7 @@ from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.utils import side_by_side_diff
+import critiquebrainz.db.spam_report as db_spam_report
 
 review_bp = Blueprint('review', __name__)
 
@@ -329,14 +329,14 @@ def report(id):
         return redirect(url_for('.entity', id=id))
 
     last_revision_id = review.last_revision.id
-    count = SpamReport.query.filter_by(user_id=current_user.id, revision_id=last_revision_id).count()
-    if count > 0:
+    report = db_spam_report.get(current_user.id, last_revision_id)
+    if report:
         flash.error(gettext("You have already reported this review."))
         return redirect(url_for('.entity', id=id))
 
     form = ReviewReportForm()
     if form.validate_on_submit():
-        SpamReport.create(last_revision_id, current_user.id, form.reason.data)
+        db_spam_report.create(last_revision_id, current_user.id, form.reason.data)
         flash.success(gettext("Review has been reported."))
         return redirect(url_for('.entity', id=id))
 
@@ -358,8 +358,8 @@ def hide(id):
         review.hide()
         ModerationLog.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
                              reason=form.reason.data, review_id=review.id)
-        for report in SpamReport.list(review_id=review.id)[0]:
-            report.archive()
+        for report in db_spam_report.list_reports(review_id=review.id):
+            db_spam_report.archive(report["user_id"], report["revision_id"])
         flash.success(gettext("Review has been hidden."))
         return redirect(url_for('.entity', id=review.id))
 
