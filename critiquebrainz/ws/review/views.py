@@ -1,13 +1,13 @@
 from flask import Blueprint, jsonify
 from critiquebrainz.data.model.review import Review, supported_languages, ENTITY_TYPES
 from critiquebrainz.data.model.vote import Vote
-from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions
 from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
 from critiquebrainz.decorators import crossdomain
 from brainzutils import cache
+import critiquebrainz.db.spam_report as db_spam_report
 
 review_bp = Blueprint('ws_review', __name__)
 
@@ -562,5 +562,5 @@ def review_spam_report_handler(review_id, user):
         raise NotFound("Review has been hidden.")
     if review.user_id == user.id:
         raise InvalidRequest('own')
-    SpamReport.create(review, user)
+    db_spam_report.create(review.last_revision.id, user.id, "Spam")
     return jsonify(message="Spam report created successfully")
