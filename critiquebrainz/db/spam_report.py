@@ -188,7 +188,7 @@ def list_reports(**kwargs):
                     },
                     "id": spam_report["review_uuid"],
                     "entity_id": spam_report.pop("entity_id"),
-                    "last_revision": db_revision.get(spam_report.pop("review_uuid")),
+                    "last_revision": db_revision.get(spam_report.pop("review_uuid"))[0],
                 }
 
                 spam_report["user"] = {

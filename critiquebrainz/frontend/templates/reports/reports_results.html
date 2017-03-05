@@ -13,17 +13,8 @@
     </td>
     <td><a href="{{ url_for('user.info', user_id=report.review.user.id) }}">{{ report.review.user.display_name }}</a></td>
     <td>
-      {#
-        TODO: Link the read revision buttons, needs the revisions-ui branch gets merged.
-
-        We'll need a method to convert revision ids like 8092 to a id that can be passed
-        to the review.revision view.
-
-        We could even add a new view /revision/{revision_id} that redirects to
-        /review/revision/{revision_number}
-      #}
       <div class="btn-group">
-        <a href="{{ url_for('review.entity', id=report.review.id) }}"
+        <a href="{{ url_for('review.redirect_to_entity', id=report.review.id, rev_id=report.revision_id) }}"
            class="btn btn-xs btn-info">Read</a>
         <a class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
           <span class="caret"></span>
@@ -31,7 +22,7 @@
         </a>
         <ul class="dropdown-menu" role="menu">
           {% if report.revision_id != report.review.last_revision.id %}
-            <li><a href="{{ report.review.last_revision.id }}">{{ _('Read latest revision') }}</a>
+            <li><a href="{{ url_for('review.entity', id=report.review.id) }}">{{ _('Read latest revision') }}</a>
             <li class="divider"></li>
           {% endif %}
           <li>

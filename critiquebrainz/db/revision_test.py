@@ -67,3 +67,11 @@ class RevisionTestCase(DataTestCase):
             "positive":1,
             "negative":1
         })
+
+    def test_get_revision_number(self):
+        """Test to get the revision number of a revision of a specified review."""
+        rev_num = revision.get_revision_number(self.review.id, self.review.last_revision.id)
+        self.assertEqual(rev_num, 1)
+        self.review.update(text="Updated this review")
+        rev_num = revision.get_revision_number(self.review.id, self.review.last_revision.id)
+        self.assertEqual(rev_num, 2)
