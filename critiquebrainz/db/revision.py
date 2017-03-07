@@ -115,12 +115,12 @@ def get_revision_number(review_id, revision_id):
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
             SELECT row_number
-              FROM
-                   (SELECT row_number() over(order by timestamp),
-                           id
-                      FROM revision
-                     WHERE review_id = :review_id)
-                        AS indexedrevisions
+              FROM (
+                 SELECT row_number() over(order by timestamp),
+                        id
+                   FROM revision
+                  WHERE review_id = :review_id
+             ) AS indexed_revisions
              WHERE id = :revision_id
         """), {
             "review_id": review_id,

@@ -14,7 +14,7 @@
     <td><a href="{{ url_for('user.info', user_id=report.review.user.id) }}">{{ report.review.user.display_name }}</a></td>
     <td>
       <div class="btn-group">
-        <a href="{{ url_for('review.redirect_to_entity', id=report.review.id, rev_id=report.revision_id) }}"
+        <a href="{{ url_for('review.redirect_to_entity', review_id=report.review.id, revision_id=report.revision_id) }}"
            class="btn btn-xs btn-info">Read</a>
         <a class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
           <span class="caret"></span>
