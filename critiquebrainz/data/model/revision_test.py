@@ -19,7 +19,7 @@ class RevisionTestCase(DataTestCase):
         db.session.add(self.license)
         db.session.commit()
 
-        self.review = Review.create(user=self.user,
+        self.review = Review.create(user_id=self.user.id,
                                     release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                     text=u"Testing!",
                                     is_draft=False,

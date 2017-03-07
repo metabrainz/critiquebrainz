@@ -1,13 +1,13 @@
 from flask import Blueprint, jsonify
 from critiquebrainz.data.model.review import Review, supported_languages, ENTITY_TYPES
 from critiquebrainz.data.model.vote import Vote
-from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions
 from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
 from critiquebrainz.decorators import crossdomain
 from brainzutils import cache
+import critiquebrainz.db.spam_report as db_spam_report
 
 review_bp = Blueprint('ws_review', __name__)
 
@@ -297,7 +297,7 @@ def review_list_handler():
     if release_group:
         entity_id = release_group
         entity_type = 'release_group'
-    else:        
+    else:
         entity_id = Parser.uuid('uri', 'entity_id', optional=True)
         entity_type = Parser.string('uri', 'entity_type', valid_values=ENTITY_TYPES, optional=True)
 
@@ -374,7 +374,7 @@ def review_post_handler(user):
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
     entity_id, entity_type, text, license_choice, language, is_draft = fetch_params()
-    review = Review.create(user=user, entity_id=entity_id, entity_type=entity_type, text=text,
+    review = Review.create(user_id=user.id, entity_id=entity_id, entity_type=entity_type, text=text,
                            license_id=license_choice, language=language, is_draft=is_draft)
     return jsonify(message='Request processed successfully', id=review.id)
 
@@ -562,5 +562,5 @@ def review_spam_report_handler(review_id, user):
         raise NotFound("Review has been hidden.")
     if review.user_id == user.id:
         raise InvalidRequest('own')
-    SpamReport.create(review, user)
+    db_spam_report.create(review.last_revision.id, user.id, "Spam")
     return jsonify(message="Spam report created successfully")

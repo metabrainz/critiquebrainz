@@ -12,14 +12,14 @@ class RevisionTestCase(DataTestCase):
 
     def setUp(self):
         super(RevisionTestCase, self).setUp()
-        author = User.get_or_create('Author', musicbrainz_id='0')
+        self.author = User.get_or_create('Author', musicbrainz_id='0')
         self.user_1 = User.get_or_create('Tester #1', musicbrainz_id='1')
         self.user_2 = User.get_or_create('Tester #2', musicbrainz_id='2')
         self.license = License(id=u'TEST', full_name=u"Test License")
         db.session.add(self.license)
         db.session.commit()
 
-        self.review = Review.create(user=author,
+        self.review = Review.create(user_id=self.author.id,
                                     release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                     text=u"Testing!",
                                     is_draft=False,

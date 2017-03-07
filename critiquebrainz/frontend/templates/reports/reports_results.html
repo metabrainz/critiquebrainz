@@ -30,7 +30,7 @@
           <span class="sr-only">Toggle Dropdown</span>
         </a>
         <ul class="dropdown-menu" role="menu">
-          {% if report.revision != report.review.last_revision %}
+          {% if report.revision_id != report.review.last_revision.id %}
             <li><a href="{{ report.review.last_revision.id }}">{{ _('Read latest revision') }}</a>
             <li class="divider"></li>
           {% endif %}

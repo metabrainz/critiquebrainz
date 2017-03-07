@@ -18,17 +18,17 @@ class VoteTestCase(DataTestCase):
         db.session.commit()
         review = Review.create(release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text=u"Testing!",
-                               user=author,
+                               user_id=author.id,
                                is_draft=False,
                                license_id=license.id)
 
-        vote_u1_positive = Vote.create(user_1, review, True)
+        vote_u1_positive = Vote.create(user_1.id, review, True)
 
         votes = db.session.query(Vote).all()
         self.assertEqual(len(votes), 1)
         self.assertIn(vote_u1_positive, votes)
 
-        vote_u2_negative = Vote.create(user_2, review, False)
+        vote_u2_negative = Vote.create(user_2.id, review, False)
 
         votes = db.session.query(Vote).all()
         self.assertEqual(len(votes), 2)

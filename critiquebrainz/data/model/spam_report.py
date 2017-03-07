@@ -29,8 +29,8 @@ class SpamReport(db.Model, DeleteMixin):
         return Review.get(id=self.revision.review_id)
 
     @classmethod
-    def create(cls, revision_id, user, reason):
-        report = cls(user=user, revision_id=revision_id, reason=reason)
+    def create(cls, revision_id, user_id, reason):
+        report = cls(user_id=user_id, revision_id=revision_id, reason=reason)
         db.session.add(report)
         db.session.commit()
         return report

@@ -7,6 +7,7 @@ from critiquebrainz.data.model.oauth_client import OAuthClient
 from critiquebrainz.data.model.oauth_token import OAuthToken
 from critiquebrainz.frontend.forms.profile_apps import ApplicationForm
 from critiquebrainz.frontend import flash
+import critiquebrainz.db.users as db_users
 
 profile_apps_bp = Blueprint('profile_applications', __name__)
 
@@ -15,8 +16,8 @@ profile_apps_bp = Blueprint('profile_applications', __name__)
 @login_required
 def index():
     return render_template('profile/applications/index.html',
-                           applications=[c.to_dict() for c in current_user.clients],
-                           tokens=[t.to_dict() for t in current_user.tokens])
+                           applications=db_users.clients(current_user.id),
+                           tokens=db_users.tokens(current_user.id))
 
 
 @profile_apps_bp.route('/create', methods=['GET', 'POST'])

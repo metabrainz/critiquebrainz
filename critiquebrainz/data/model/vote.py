@@ -16,12 +16,12 @@ class Vote(db.Model, DeleteMixin):
     rated_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     @classmethod
-    def create(cls, user, review, vote):
+    def create(cls, user_id, review, vote):
         """Create new vote for the latest revision of a specified review."""
         # Deleting the vote from the last revision if it exists
-        user.display_name, cls.query.filter_by(user=user, revision=review.last_revision).delete()
+        cls.query.filter_by(user_id=user_id, revision=review.last_revision).delete()
         # Creating a new vote for the last revision
-        vote_obj = cls(user=user, revision=review.last_revision, vote=vote)
+        vote_obj = cls(user_id=user_id, revision=review.last_revision, vote=vote)
         db.session.add(vote_obj)
         db.session.commit()
         return vote_obj

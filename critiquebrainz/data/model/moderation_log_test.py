@@ -27,7 +27,7 @@ class ModerationLogCase(DataTestCase):
         db.session.add(self.license)
         db.session.flush()
 
-        self.review = Review.create(user=self.user, release_group='e7aad618-fa86-3983-9e77-405e21796eca',
+        self.review = Review.create(user_id=self.user.id, release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                     text=u"It's... beautiful!", is_draft=False, license_id=self.license.id,
                                     language='en')
 
