@@ -101,3 +101,32 @@ def get_votes(review_id):
             elif row.vote == True:
                 votes[revision]['positive'] += 1
     return votes
+
+def get_revision_number(review_id, revision_id):
+    """Get revision number of the review from the revision_id.
+
+    Args:
+        review_id (uuid): ID of the review.
+        revision_id (int): ID of the revision whose number is to be fetched.
+
+    Returns:
+        rev_num(int): revision number of the revision.
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT row_number
+              FROM (
+                 SELECT row_number() over(order by timestamp),
+                        id
+                   FROM revision
+                  WHERE review_id = :review_id
+             ) AS indexed_revisions
+             WHERE id = :revision_id
+        """), {
+            "review_id": review_id,
+            "revision_id": revision_id,
+        })
+        rev_num = result.fetchone()[0]
+        if not rev_num:
+            raise db_exceptions.NoDataFoundException("Can't find the revision with id={} for specified review.".format(revision_id))
+    return rev_num

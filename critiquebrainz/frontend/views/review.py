@@ -90,6 +90,13 @@ def entity(id, rev=None):
     other_reviews = user_all_reviews[:3]
     return render_template('review/entity/%s.html' % review.entity_type, review=review, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url, vote=vote, other_reviews=other_reviews)
 
+@review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')
+def redirect_to_entity(review_id, revision_id):
+    try:
+        revision_number = db_revision.get_revision_number(review_id, revision_id)
+    except db_exceptions.NoDataFoundException:
+        raise NotFound(gettext("The revision you are looking for does not exist."))
+    return redirect(url_for('.entity', id=review_id, rev=revision_number))
 
 @review_bp.route('/<uuid:id>/revisions/compare')
 def compare(id):
