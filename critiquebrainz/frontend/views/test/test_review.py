@@ -121,3 +121,31 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.post("/review/%s/report" % review.id, data=data,
                                     query_string=data, follow_redirects=True)
         self.assertIn("Review has been reported.", str(response.data))
+
+    def test_event_review_pages(self):
+        review = Review.create(
+            entity_id="b4e75ef8-3454-4fdc-8af1-61038c856abc",
+            entity_type="event",
+            user_id=self.user.id,
+            text="A great event, enjoyed it.",
+            is_draft=False,
+            license_id=self.license.id,
+        )
+
+        response = self.client.get("/review/%s" % review.id)
+        self.assert200(response)
+        self.assertIn("A great event, enjoyed it.", str(response.data))
+
+    def test_place_review_pages(self):
+        review = Review.create(
+            entity_id="c5c9c210-b7a0-4f6e-937e-02a586c8e14c",
+            entity_type="place",
+            user_id=self.user.id,
+            text="A great place.",
+            is_draft=False,
+            license_id=self.license.id,
+        )
+
+        response = self.client.get("/review/%s" % review.id)
+        self.assert200(response)
+        self.assertIn("A great place.", str(response.data))
