@@ -21,9 +21,10 @@
     {% endif %}
 
     {{ _('%(place)s', place=event_name) }}
-
     {% if place['life-span'] %}
-      <small>{{ place['life-span']['begin'][:4] }}</small>
+      {% if place['life-span']['begin'] %}
+        <small>{{ place['life-span']['begin'][:4] }}</small>
+      {% endif %}
     {% endif %}
   </h2>
 {% endblock %}
