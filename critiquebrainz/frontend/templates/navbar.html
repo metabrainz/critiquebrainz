@@ -52,7 +52,9 @@
         </div>
         <div class="form-group">
           <select id="type-selector" name="type" class="form-control input-sm">
+<<<<<<< HEAD
             <option value="" selected disabled>{{ _('Select search type') }}</option>
+=======
             <option value="artist">{{ _('Artist') }}</option>
             <option value="release-group">{{ _('Release group') }}</option>
             <option value="event">{{ _('Event') }}</option>
@@ -65,6 +67,7 @@
   </div>
 </nav>
 
+<<<<<<< HEAD
 
 <script type="text/javascript">
  
@@ -74,6 +77,7 @@ function driverFunction(mediaQuery) {
     searchBox.style.display = 'none';
     searchBox.setAttribute("onblur", "focusOut()");
     typeSelect.setAttribute("onchange", "selectOption()");
+=======
   }
   else {
     searchBox.style.display = 'inline-block';
@@ -82,13 +86,16 @@ function driverFunction(mediaQuery) {
   }
 }
 
+<<<<<<< HEAD
 // On selecting one of the search options, type-selector disappears
 // And searchBox appears with relevant placeholder
 function selectOption() {
+=======
   var optionValue = typeSelect.value;
   typeSelect.style.display = 'none';
   searchBox.style.display = 'inline-block';
   searchBox.focus();
+<<<<<<< HEAD
    
   switch(optionValue){
    case 'artist': 
@@ -123,4 +130,6 @@ driverFunction(mediaQuery);
 // Attach listener function on state changes                        
 mediaQuery.addListener(driverFunction);             
  
+=======
+
 </script>
