@@ -29,7 +29,7 @@ class ReviewTestCase(DataTestCase):
            is_draft=False,
            license_id=self.license.id,
         )
-        reviews, count = db_review.list()
+        reviews, count = db_review.list_reviews()
         self.assertEqual(count, 1)
         self.assertEqual(reviews[0]["id"], review["id"])
         self.assertEqual(reviews[0]["entity_id"], review["entity_id"])
@@ -43,9 +43,9 @@ class ReviewTestCase(DataTestCase):
             is_draft=False,
             license_id=self.license.id,
         )
-        self.assertEqual(db_review.list()[1], 1)
+        self.assertEqual(db_review.list_reviews()[1], 1)
         db_review.delete(review["id"])
-        self.assertEqual(db_review.list()[1], 0)
+        self.assertEqual(db_review.list_reviews()[1], 0)
 
     def test_languages(self):
         review_en = db_review.create(
@@ -65,11 +65,11 @@ class ReviewTestCase(DataTestCase):
             license_id=self.license.id,
             language='de',
         )
-        reviews, count = db_review.list(language='de')
+        reviews, count = db_review.list_reviews(language='de')
         self.assertEqual(len(reviews), 1)
         self.assertEqual(count, 1)
 
-        reviews, count = db_review.list(language='ru')
+        reviews, count = db_review.list_reviews(language='ru')
         self.assertEqual(count, 0)
 
     def test_update(self):
@@ -92,7 +92,7 @@ class ReviewTestCase(DataTestCase):
             language='es',
         )
         # Checking if contents are updated
-        retrieved_review = db_review.list()[0][0]
+        retrieved_review = db_review.list_reviews()[0][0]
         self.assertEqual(retrieved_review["text"], "Bad update")
         self.assertFalse(retrieved_review["is_draft"])
         self.assertEqual(retrieved_review["license_id"], another_license.id)
@@ -120,8 +120,8 @@ class ReviewTestCase(DataTestCase):
                 is_draft=True,
             )
 
-    def test_list(self):
-        reviews, count = db_review.list()
+    def test_list_reviews(self):
+        reviews, count = db_review.list_reviews()
         self.assertEqual(count, 0)
         self.assertEqual(len(reviews), 0)
 
@@ -132,7 +132,7 @@ class ReviewTestCase(DataTestCase):
             is_draft=False,
             license_id=self.license.id,
         )
-        reviews, count = db_review.list()
+        reviews, count = db_review.list_reviews()
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0]["text"], "Awesome")
@@ -142,20 +142,20 @@ class ReviewTestCase(DataTestCase):
             review["is_draft"],
             text="Beautiful!",
         )
-        reviews, count = db_review.list()
+        reviews, count = db_review.list_reviews()
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0]["text"], "Beautiful!")
 
-        reviews, count = db_review.list(sort='rating')
+        reviews, count = db_review.list_reviews(sort='rating')
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
-        reviews, count = db_review.list(sort='created')
+        reviews, count = db_review.list_reviews(sort='created')
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
-        reviews, count = db_review.list(sort='random')
+        reviews, count = db_review.list_reviews(sort='random')
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 

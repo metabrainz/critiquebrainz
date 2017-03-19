@@ -293,7 +293,7 @@ def create(**kwargs):
     return get_by_id(review_id)
 
 
-def list(**kwargs):
+def list_reviews(**kwargs):
     """Get a list of reviews.
 
     This method provides several filters that can be used to select

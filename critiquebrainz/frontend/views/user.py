@@ -3,12 +3,12 @@ from flask_babel import gettext
 from flask_login import login_required, current_user
 
 from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_BLOCK_USER
-from critiquebrainz.data.model.review import Review
 from critiquebrainz.db.user import User
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.frontend import flash
 import critiquebrainz.db.users as db_users
+import critiquebrainz.db.review as db_review
 
 user_bp = Blueprint('user', __name__)
 
@@ -28,7 +28,7 @@ def reviews(user_id):
         return redirect(url_for('.reviews'))
     limit = 12
     offset = (page - 1) * limit
-    reviews, count = Review.list(user_id=user_id, sort='created', limit=limit, offset=offset,
+    reviews, count = db_review.list_reviews(user_id=user_id, sort='created', limit=limit, offset=offset,
                                  inc_hidden=current_user.is_admin(),
                                  inc_drafts=current_user.is_authenticated and current_user.id == user_id)
     return render_template('user/reviews.html', section='reviews', user=user,

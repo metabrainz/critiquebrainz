@@ -1,5 +1,5 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
-from critiquebrainz.data.model.review import Review
+import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
 from critiquebrainz.data.model.license import License
 import critiquebrainz.db.users as db_users
@@ -19,7 +19,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.review_text = "Testing! This text should be on the page."
 
     def create_dummy_review(self, is_draft=False):
-        review = Review.create(
+        review = db_review.create(
             release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
             user_id=self.user.id,
             text=self.review_text,
@@ -34,13 +34,13 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def test_entity(self):
         review = self.create_dummy_review()
-        response = self.client.get("/review/%s" % review.id)
+        response = self.client.get("/review/%s" % review["id"])
         self.assert200(response)
         self.assertIn(self.review_text, str(response.data))
 
     def test_draft_review(self):
         review = self.create_dummy_review(is_draft=True)
-        response = self.client.get("/review/%s" % review.id)
+        response = self.client.get("/review/%s" % review["id"])
         self.assert404(response, "Drafts shouldn't be publicly visible.")
 
     def test_missing_review(self):
@@ -77,7 +77,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         review = self.create_dummy_review()
 
         self.temporary_login(self.user)
-        response = self.client.post('/review/%s/edit' % review.id, data=data,
+        response = self.client.post('/review/%s/edit' % review["id"], data=data,
                                     query_string=data, follow_redirects=True)
         self.assert200(response)
         self.assertIn(updated_text, str(response.data))
@@ -86,26 +86,26 @@ class ReviewViewsTestCase(FrontendTestCase):
         review = self.create_dummy_review()
 
         self.temporary_login(self.hacker)
-        response = self.client.post("/review/%s/delete" % review.id, follow_redirects=True)
+        response = self.client.post("/review/%s/delete" % review["id"], follow_redirects=True)
         self.assert401(response, "Only the author can delete this review.")
 
         self.temporary_login(self.user)
-        response = self.client.post("/review/%s/delete" % review.id, follow_redirects=True)
+        response = self.client.post("/review/%s/delete" % review["id"], follow_redirects=True)
         self.assert200(response)
 
     def test_vote_submit_delete(self):
         review = self.create_dummy_review()
 
         self.temporary_login(self.user)
-        response = self.client.post("/review/%s/vote" % review.id, follow_redirects=True)
+        response = self.client.post("/review/%s/vote" % review["id"], follow_redirects=True)
         self.assertIn("You cannot rate your own review.", str(response.data))
 
         self.temporary_login(self.hacker)
-        response = self.client.post("/review/%s/vote" % review.id, data=dict(yes=True),
+        response = self.client.post("/review/%s/vote" % review["id"], data=dict(yes=True),
                                     follow_redirects=True)
         self.assertIn("You have rated this review!", str(response.data))
 
-        response = self.client.get("/review/%s/vote/delete" % review.id, follow_redirects=True)
+        response = self.client.get("/review/%s/vote/delete" % review["id"], follow_redirects=True)
         self.assertIn("You have deleted your vote for this review!", str(response.data))
 
     def test_report(self):
@@ -114,16 +114,16 @@ class ReviewViewsTestCase(FrontendTestCase):
         data = dict(reason="Testing reason.")
 
         self.temporary_login(self.user)
-        response = self.client.post("/review/%s/report" % review.id, follow_redirects=True)
+        response = self.client.post("/review/%s/report" % review["id"], follow_redirects=True)
         self.assertIn("You cannot report your own review.", str(response.data))
 
         self.temporary_login(self.hacker)
-        response = self.client.post("/review/%s/report" % review.id, data=data,
+        response = self.client.post("/review/%s/report" % review["id"], data=data,
                                     query_string=data, follow_redirects=True)
         self.assertIn("Review has been reported.", str(response.data))
 
     def test_event_review_pages(self):
-        review = Review.create(
+        review = db_review.create(
             entity_id="b4e75ef8-3454-4fdc-8af1-61038c856abc",
             entity_type="event",
             user_id=self.user.id,
@@ -132,12 +132,12 @@ class ReviewViewsTestCase(FrontendTestCase):
             license_id=self.license.id,
         )
 
-        response = self.client.get("/review/%s" % review.id)
+        response = self.client.get("/review/%s" % review["id"])
         self.assert200(response)
         self.assertIn("A great event, enjoyed it.", str(response.data))
 
     def test_place_review_pages(self):
-        review = Review.create(
+        review = db_review.create(
             entity_id="c5c9c210-b7a0-4f6e-937e-02a586c8e14c",
             entity_type="place",
             user_id=self.user.id,
@@ -146,6 +146,6 @@ class ReviewViewsTestCase(FrontendTestCase):
             license_id=self.license.id,
         )
 
-        response = self.client.get("/review/%s" % review.id)
+        response = self.client.get("/review/%s" % review["id"])
         self.assert200(response)
         self.assertIn("A great place.", str(response.data))
