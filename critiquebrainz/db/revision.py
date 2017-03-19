@@ -1,6 +1,7 @@
 from critiquebrainz import db
 from critiquebrainz.db import exceptions as db_exceptions
 import sqlalchemy
+from datetime import datetime
 
 
 def get(review_id, limit=1, offset=0):
@@ -63,7 +64,7 @@ def get_count(review_id):
     return count
 
 
-def get_votes(review_id):
+def get_all_votes(review_id):
     """Get vote count for the all revisions of a review
 
     Args:
@@ -130,3 +131,53 @@ def get_revision_number(review_id, revision_id):
         if not rev_num:
             raise db_exceptions.NoDataFoundException("Can't find the revision with id={} for specified review.".format(revision_id))
     return rev_num
+
+
+def create(review_id, text):
+    """Creates a new revision for the given review.
+
+    Args:
+        review_id (uuid): ID of the review.
+        text (str): Updated/New text of the review.
+    """
+    with db.engine.connect() as connection:
+        connection.execute(sqlalchemy.text("""
+            INSERT INTO revision(review_id, timestamp, text)
+                 VALUES (:review_id, :timestamp, :text)
+        """), {
+            "review_id": review_id,
+            "timestamp": datetime.now(),
+            "text": text,
+        })
+
+def votes(revision_id):
+    """Get votes of a particular revision.
+
+    Args:
+        revision_id (int): ID of a revision.
+    Returns:
+        Dict with the following structure:
+        {
+            "positive": int,
+            "negative: int,
+        }
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT vote
+              FROM revision
+              JOIN vote
+                ON vote.revision_id = revision.id
+             WHERE revision.id = :revision_id
+        """), {
+            "revision_id": revision_id,
+        })
+
+        votes = result.fetchall()
+        revision_votes = {"positive": 0, "negative": 0}
+        for vote in votes:
+            if vote.vote == True:
+                revision_votes["positive"] += 1
+            elif vote.vote == False:
+                revision_votes["negative"] += 1
+    return revision_votes
