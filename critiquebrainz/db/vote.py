@@ -56,6 +56,7 @@ def submit(user_id, revision_id, vote):
             "vote": vote,
             "rated_at": datetime.utcnow(),
         })
+        return get(user_id, revision_id)
 
 
 def delete(user_id, revision_id):

@@ -3,7 +3,7 @@ from critiquebrainz.db.user import User
 from critiquebrainz.data import db
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.users import gravatar_url, get_many_by_mb_username
-from critiquebrainz.data.model.review import Review
+import critiquebrainz.db.review as db_review
 from critiquebrainz.data.model.spam_report import SpamReport
 from critiquebrainz.data.model.license import License
 import critiquebrainz.db.vote as db_vote
@@ -25,17 +25,17 @@ class UserTestCase(DataTestCase):
         license = License(id='Test', full_name='Test License')
         db.session.add(license)
         db.session.commit()
-        self.review = Review.create(
+        self.review = db_review.create(
                 release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                 text="Testing!",
                 user_id=self.author.id,
                 is_draft=False,
                 license_id=license.id,
         )
-        vote = db_vote.submit(self.user1.id, self.review.last_revision.id, True)
-        self.review_created = self.review.last_revision.timestamp
-        self.review_id = self.review.id
-        self.revision_id = self.review.last_revision.id
+        vote = db_vote.submit(self.user1.id, self.review["last_revision"]["id"], True)
+        self.review_created = self.review["last_revision"]["timestamp"]
+        self.review_id = self.review["id"]
+        self.revision_id = self.review["last_revision"]["id"]
         self.report = SpamReport.create(self.revision_id, self.user1.id, "Testing Reason Report")
 
     def test_get_many_by_mb_username(self):
@@ -91,9 +91,9 @@ class UserTestCase(DataTestCase):
         self.assertEqual(user['is_blocked'], False)
 
     def test_vote(self):
-        voted = db_users.has_voted(self.user1.id, self.review.id)
+        voted = db_users.has_voted(self.user1.id, self.review["id"])
         self.assertEqual(voted, True)
-        voted = db_users.has_voted(self.user2.id, self.review.id)
+        voted = db_users.has_voted(self.user2.id, self.review["id"])
         self.assertEqual(voted, False)
 
     def test_karma(self):

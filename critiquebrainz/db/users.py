@@ -477,7 +477,7 @@ def get_reviews(user_id, from_date='1-1-1970'):
             "license_id": (str),
             "language": (str),
             "source": (str),
-            "source_url" (str)
+            "source_url":(str),
         }
     """
     with db.engine.connect() as connection:

@@ -3,7 +3,7 @@ from critiquebrainz.data import db
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
-from critiquebrainz.data.model.review import Review
+import critiquebrainz.db.review as db_review
 from critiquebrainz.data.model.license import License
 from critiquebrainz.db import exceptions
 from critiquebrainz.db import vote
@@ -27,7 +27,7 @@ class VoteTestCase(DataTestCase):
         license = License(id='Test', full_name='Test License')
         db.session.add(license)
         db.session.commit()
-        self.review = Review.create(release_group='e7aad618-fa86-3983-9e77-405e21796eca',
+        self.review = db_review.create(release_group='e7aad618-fa86-3983-9e77-405e21796eca',
                                text="Testing!",
                                user_id=author.id,
                                is_draft=False,
@@ -35,26 +35,26 @@ class VoteTestCase(DataTestCase):
 
     def test_get_missing(self):
         with self.assertRaises(exceptions.NoDataFoundException):
-            vote.get(self.user_1.id, self.review.last_revision.id)
+            vote.get(self.user_1.id, self.review["last_revision"]["id"])
 
     def test_get(self):
-        vote_1 = Vote.create(self.user_1.id, self.review, True)
-        vote_1_data = vote.get(self.user_1.id, self.review.last_revision.id)
+        vote_1 = vote.submit(self.user_1.id, self.review["last_revision"]["id"], True)
+        vote_1_data = vote.get(self.user_1.id, self.review["last_revision"]["id"])
         self.assertDictEqual(vote_1_data, {
-                "user_id": UUID(vote_1.user_id),
-                "revision_id": vote_1.revision_id,
+                "user_id": vote_1["user_id"],
+                "revision_id": vote_1["revision_id"],
                 "vote": True,
-                "rated_at": vote_1.rated_at
+                "rated_at": vote_1["rated_at"],
             })
         self.assertEqual(type(vote_1_data["user_id"]), UUID)
         self.assertEqual(type(vote_1_data["revision_id"]), int)
         self.assertEqual(type(vote_1_data["rated_at"]), datetime)
 
-        vote_2 = Vote.create(self.user_2.id, self.review, False)
-        vote_2_data = vote.get(self.user_2.id, self.review.last_revision.id)
+        vote_2 = vote.submit(self.user_2.id, self.review["last_revision"]["id"], False)
+        vote_2_data = vote.get(self.user_2.id, self.review["last_revision"]["id"])
         self.assertDictEqual(vote_2_data, {
-            "user_id": UUID(vote_2.user_id),
-            "revision_id": vote_2.revision_id,
+            "user_id": vote_2["user_id"],
+            "revision_id": vote_2["revision_id"],
             "vote": False,
-            "rated_at": vote_2.rated_at
+            "rated_at": vote_2["rated_at"]
         })
