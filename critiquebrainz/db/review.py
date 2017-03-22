@@ -1,6 +1,7 @@
 import sqlalchemy
 from critiquebrainz import db
 from critiquebrainz.db import exceptions as db_exceptions
+from flask import abort
 from brainzutils import cache
 from werkzeug.exceptions import BadRequest
 from random import shuffle
@@ -10,15 +11,24 @@ from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
 import uuid
+from datetime import datetime, timedelta
 
 REVIEW_CACHE_NAMESPACE = "Review"
 DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
 DEFAULT_LANG = "en"
 ENTITY_TYPES = [
-    'event',
-    'place',
-    'release_group',
+    "event",
+    "place",
+    "release_group",
 ]
+
+def get_or_404(review_id):
+    """Get a review using review ID or abort with error 404."""
+    try:
+        review = get_by_id(review_id)
+    except db_exceptions.NoDataFoundException:
+        abort(404)
+    return review
 
 
 def to_dict(review, confidential=False):
@@ -27,7 +37,7 @@ def to_dict(review, confidential=False):
     review["id"] = str(review["id"])
     review["entity_id"] = str(review["entity_id"])
     review["last_updated"] = review["last_revision"]["timestamp"]
-    review['last_revision']['review_id'] = str(review['last_revision']['review_id'])
+    review["last_revision"]["review_id"] = str(review["last_revision"]["review_id"])
     return review
 
 
@@ -41,7 +51,7 @@ def get_by_id(review_id):
         {
             "id": uuid,
             "entity_id": uuid,
-            "entity_type": 'release_group', 'event', 'place',
+            "entity_type": str("release group", "event", "place"),
             "user_id": uuid,
             "user": dict,
             "edits": int,
@@ -54,48 +64,45 @@ def get_by_id(review_id):
             "last_revision: dict,
             "votes": dict,
             "rating": int,
-            "text": str, "created": datetime,
+            "text": str,
+            "created": datetime,
             "license": dict,
         }
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
             SELECT review.id AS id,
-                   entity_id,
-                   entity_type,
-                   user_id,
-                   edits,
-                   is_draft,
-                   is_hidden,
-                   license_id,
-                   language,
-                   source,
-                   source_url,
+                   review.entity_id,
+                   review.entity_type,
+                   review.user_id,
+                   review.edits,
+                   review.is_draft,
+                   review.is_hidden,
+                   review.license_id,
+                   review.language,
+                   review.source,
+                   review.source_url,
                    revision.id AS last_revision_id,
-                   timestamp,
-                   text,
-                   email,
+                   revision.timestamp,
+                   revision.text,
+                   "user".email,
                    "user".created as user_created,
-                   display_name,
-                   show_gravatar,
-                   musicbrainz_id,
-                   is_blocked,
+                   "user".display_name,
+                   "user".show_gravatar,
+                   "user".musicbrainz_id,
+                   "user".is_blocked,
                    created_time.created,
                    license.full_name,
                    license.info_url
               FROM review
-              JOIN revision
-                ON revision.review_id = review.id
-              JOIN "user"
-                ON "user".id = review.user_id
-              JOIN license
-                ON license.id = license_id
+              JOIN revision ON revision.review_id = review.id
+              JOIN "user" ON "user".id = review.user_id
+              JOIN license ON license.id = license_id
               JOIN (
                     SELECT review.id,
                            timestamp AS created
                       FROM review
-                      JOIN revision
-                        ON review.id = revision.review_id
+                      JOIN revision ON review.id = revision.review_id
                      WHERE review.id = :review_id
                   ORDER BY revision.timestamp ASC
                      LIMIT 1
@@ -108,7 +115,7 @@ def get_by_id(review_id):
 
         review = result.fetchone()
         if not review:
-            raise db_exceptions.NoDataFoundException("No review found with review ID: {}".format(review_id))
+            raise db_exceptions.NoDataFoundException("Can't find review with ID: {id}".format(id=review_id))
 
         review = dict(review)
         review["last_revision"] = {
@@ -147,7 +154,7 @@ def hide(review_id):
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE review
-               SET is_hidden='true'
+               SET is_hidden='t'
              WHERE id = :review_id
         """), {
             "review_id": review_id,
@@ -163,25 +170,20 @@ def unhide(review_id):
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE review
-               SET is_hidden='fa'
+               SET is_hidden='f'
              WHERE id = :review_id
         """), {
             "review_id": review_id,
         })
 
 
-def get_count(**kwargs):
+def get_count(*, is_draft=False, is_hidden=False):
     """Get number of reviews in CritiqueBrainz.
 
     Args:
         is_draft (bool): True if drafted reviews are to be counted.
         is_hidden (bool): True if hidden reviews are to be counted.
     """
-    is_drafted = kwargs.pop('is_draft', False)
-    is_hidden = kwargs.pop('is_hidden', False)
-    if(kwargs):
-        raise TypeError('Unexpected **kwargs: %r' % kwargs)
-
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
             SELECT count(*)
@@ -189,13 +191,14 @@ def get_count(**kwargs):
              WHERE is_draft = :is_drafted
                AND is_hidden = :is_hidden
         """), {
-            "is_drafted": is_drafted,
+            "is_drafted": is_draft,
             "is_hidden": is_hidden,
         })
         return result.fetchone()[0]
 
 
-def update(review_id, drafted, **kwargs):
+def update(*, review_id, drafted, text, license_id=None,
+           language=None, is_draft=None):
     """Update contents of this review.
 
     Args:
@@ -204,40 +207,54 @@ def update(review_id, drafted, **kwargs):
         license_id(optional, str): Updated license id of a review.
         is_draft(optional, bool): Whether to publish review or keep it drafted.
         text(optional, str): Updated text of a review.
+    Returns:
+        Dictionary containing properties of updated review.
+        {
+            "id": uuid,
+            "entity_id": uuid,
+            "entity_type": str("release group", "event", "place"),
+            "user_id": uuid,
+            "user": dict,
+            "edits": int,
+            "is_draft": bool,
+            "is_hidden": bool,
+            "language": str,
+            "license_id": str,
+            "source": str,
+            "source_url": str,
+            "last_revision: dict,
+            "votes": dict,
+            "rating": int,
+            "text": str,
+            "created": datetime,
+            "license": dict,
+        }
     """
-
     updates = []
     updated_info = {}
 
-    license_id = kwargs.pop("license_id", None)
     if license_id is not None:
         if not drafted: # If trying to convert published review into draft.
-            raise BadRequest(lazy_gettext("Changing licence of a published review is not allowed."))
+            raise BadRequest(lazy_gettext("Changing license of a published review is not allowed."))
         updates.append("license_id = :license_id")
         updated_info["license_id"] = license_id
 
-    language = kwargs.pop("language", None)
     if language is not None:
         updates.append("language = :language")
         updated_info["language"] = language
 
-    is_draft = kwargs.pop("is_draft", None)
     if is_draft is not None:
         if not drafted and is_draft: # If trying to convert published review into draft
             raise BadRequest(lazy_gettext("Converting published reviews back to drafts is not allowed."))
         updates.append("is_draft = :is_draft")
         updated_info["is_draft"] = is_draft
 
-    text = kwargs.pop("text")
-    if kwargs:
-        raise TypeError('Unexpected **kwargs: %r' %kwargs)
-
     setstr = ", ".join(updates)
     query = sqlalchemy.text("""
         UPDATE review
-           SET {}
+           SET {setstr}
          WHERE id = :review_id
-    """.format(setstr))
+    """.format(setstr=setstr))
 
     if setstr:
         updated_info["review_id"] = review_id
@@ -250,17 +267,54 @@ def update(review_id, drafted, **kwargs):
     return review
 
 
-def create(**kwargs):
-    if 'release_group' in kwargs:
-       entity_id = kwargs.pop('release_group')
-       entity_type = 'release_group'
+def create(*, release_group=None, entity_id=None,
+           entity_type=None, user_id, is_draft, text,
+           language=DEFAULT_LANG, license_id=DEFAULT_LICENSE_ID,
+           source=None, source_url=None):
+    """Create a new review on an entity.
+    Args:
+        release_group, entity_id (uuid): ID of the release group to be reviewed.
+        entity_id (str): Type of the entity reviewed.
+        user_id (uuid): ID of the reviewer.
+        is_draft (bool): Whether the review is drafted.
+        text (str): Content of the review.
+        language (str): Language of the review written. (default: 'en')
+        license_id (str): ID of the license.
+        source (str): Source of the review.
+        source_url (str): Url of the source of the review.
+
+    Returns:
+        Dictionary with the following structure
+        {
+            "id": uuid,
+            "entity_id": uuid,
+            "entity_type": str("release group", "event", "place"),
+            "user_id": uuid,
+            "user": dict,
+            "edits": int,
+            "is_draft": bool,
+            "is_hidden": bool,
+            "language": str,
+            "license_id": str,
+            "source": str,
+            "source_url": str,
+            "last_revision: dict,
+            "votes": dict,
+            "rating": int,
+            "text": str,
+            "created": datetime,
+            "license": dict,
+        }
+    """
+    if release_group:
+       entity_id = release_group
+       entity_type = "release_group"
     else:
-        entity_id = kwargs.pop('entity_id')
-        entity_type = kwargs.pop('entity_type')
+        if not entity_type or not entity_id:
+          raise TypeError("Entity Type or ID not defined")
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            BEGIN;
             INSERT INTO review
             VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft,
             :is_hidden, :license_id, :language, :source, :source_url)
@@ -269,95 +323,80 @@ def create(**kwargs):
            "id": str(uuid.uuid4()),
            "entity_id": entity_id,
            "entity_type": entity_type,
-           "user_id": kwargs.pop("user_id"),
+           "user_id": user_id,
            "edits": 0,
-           "is_draft": kwargs.pop("is_draft", False),
+           "is_draft": is_draft,
            "is_hidden": False,
-           "language": kwargs.pop("language", DEFAULT_LANG),
-           "license_id": kwargs.pop("license_id", DEFAULT_LICENSE_ID),
-           "source": kwargs.pop("source", None),
-           "source_url": kwargs.pop("source_url", None),
+           "language": language,
+           "license_id": license_id,
+           "source": source,
+           "source_url": source_url,
         })
-        text = kwargs.pop("text")
-        if kwargs:
-            connection.execute(sqlalchemy.text("""
-                ROLLBACK;
-            """))
-            raise TypeError("Unexpected **kwargs: %r" % kwargs)
-        connection.execute(sqlalchemy.text("""
-            COMMIT;
-        """))
+
         review_id = result.fetchone()[0]
         review_revision = db_revision.create(review_id, text)
         cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
     return get_by_id(review_id)
 
 
-def list_reviews(**kwargs):
+def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
+                 entity_type=None, license_id=None, user_id=None,
+                 language=None, exclude=None, sort=None, limit=None,
+                 offset=None):
     """Get a list of reviews.
 
     This method provides several filters that can be used to select
     specific review. See argument description below for more info.
 
     Args:
-        entity_id: MBID of the entity that is associated with a review.
-        entity_type: One of the supported reviewable entities: 'release_group' or 'event', etc.
-        user_id: UUID of the author.
-        sort: Order of the returned reviews. Can be either "rating" (order by rating), or "created"
-            (order by creation time), or "random" (order randomly).
-        limit: Maximum number of reviews returned by this method.
-        offset: Offset that can be used in conjuction with the limit.
-        language: Language (code) of the returned reviews.
-        license_id: License of the returned reviews.
-        inc_drafts: True if reviews marked as drafts should be included.
-            False if not.
-        inc_hidden: True if reviews marked as hidden should be included.
-            False if not.
-        exclude: List of id of reviews to exclude.
+        entity_id (uuid): MBID of the entity that is associated with a review.
+        entity_type (str): One of the supported reviewable entities: 'release_group' or 'event', etc.
+        user_id (uuid): UUID of the author.
+        sort (str): Order of the returned reviews. Can be either "rating" (order by rating), or "created"
+                    (order by creation time), or "random" (order randomly).
+        limit (int): Maximum number of reviews returned by this method.
+        offset (int): Offset that can be used in conjuction with the limit.
+        language (str): Language (code) of the returned reviews.
+        license_id (str): License of the returned reviews.
+        inc_drafts (bool): True if reviews marked as drafts should be included. False if not.
+        inc_hidden (bool): True if reviews marked as hidden should be included. False if not.
+        exclude (list): List of id of reviews to exclude.
 
     Returns:
-        Pair of values: List of reviews that match applied filters
-        and total number of reviews.
+        Dictionary of reviews.
+        Total number of reviews.
     """
     filters = []
     filter_data = {}
-    inc_drafts = kwargs.pop('inc_drafts', None)
     if not inc_drafts:
         filters.append("is_draft = :is_draft")
         filter_data["is_draft"] = False
 
-    inc_hidden = kwargs.pop('inc_hidden', None)
     if not inc_hidden:
         filters.append("is_hidden = :is_hidden")
         filter_data["is_hidden"] = False
 
     # FILTERING
-    entity_id = kwargs.pop('entity_id', None)
     if entity_id is not None:
         filters.append("entity_id = :entity_id")
         filter_data["entity_id"] = entity_id
 
-    entity_type = kwargs.pop('entity_type', None)
     if entity_type is not None:
         filters.append("entity_type = :entity_type")
         filter_data["entity_type"] = entity_type
 
-    license_id = kwargs.pop('license_id', None)
     if license_id is not None:
         filters.append("license_id = :license_id")
         filter_data["license_id"] = license_id
 
-    user_id = kwargs.pop('user_id', None)
     if user_id is not None:
         filters.append("review.user_id = :user_id")
         filter_data["user_id"] = user_id
 
-    exclude = kwargs.pop('exclude', None)
     if exclude is not None:
         filters.append("review.id NOT IN :exclude")
         filter_data["exclude"] = tuple(exclude)
 
-    language = kwargs.pop('language', None)
     if language is not None:
         filters.append("language = :language")
         filter_data["language"] = language
@@ -369,106 +408,87 @@ def list_reviews(**kwargs):
     query = sqlalchemy.text("""
         SELECT COUNT(*)
           FROM review
-            {}
-        """.format(filterstr))
+            {filterstr}
+        """.format(filterstr=filterstr))
 
     with db.engine.connect() as connection:
         result = connection.execute(query, filter_data)
         count = result.fetchone()[0]
-    sort = kwargs.pop("sort", None)
     order_by_clause = str()
 
-    if sort == 'rating':
+    if sort == "rating":
         order_by_clause = """
             ORDER BY rating DESC
         """
-    elif sort == 'created':
+    elif sort == "created":
         order_by_clause = """
             ORDER BY created DESC
         """
-    elif sort == 'random':
+    elif sort == "random":
         order_by_clause = """
             ORDER BY RANDOM()
         """
     # Note that all revisions' votes are considered in these ratings
     query = sqlalchemy.text("""
         SELECT review.id,
-               entity_id,
-               entity_type,
-               edits,
-               is_draft,
-               is_hidden,
-               license_id,
-               language,
+               review.entity_id,
+               review.entity_type,
+               review.edits,
+               review.is_draft,
+               review.is_hidden,
+               review.license_id,
+               review.language,
+               review.source,
+               review.source_url,
                review.user_id,
-               display_name,
-               show_gravatar,
-               is_blocked,
-               email,
+               "user".display_name,
+               "user".show_gravatar,
+               "user".is_blocked,
+               "user".email,
                "user".created as user_created,
-               musicbrainz_id,
+               "user".musicbrainz_id,
                MIN(revision.timestamp) as created,
                SUM(
-                CASE
-                 WHEN vote='t' THEN 1
-                 ELSE 0
-                END
+                   CASE WHEN vote='t' THEN 1 ELSE 0 END
                ) AS votes_positive_count,
                SUM(
-                CASE
-                 WHEN vote='f' THEN 1
-                 ELSE 0
-                END
+                   CASE WHEN vote='f' THEN 1 ELSE 0 END
                ) AS votes_negative_count,
                SUM(
-                CASE
-                 WHEN vote = 't' THEN 1
-                 WHEN vote = 'f' THEN -1
-                 WHEN vote IS NULL THEN 0
-                END
+                   CASE WHEN vote = 't' THEN 1
+                   WHEN vote = 'f' THEN -1 WHEN vote IS NULL THEN 0 END
                ) AS rating,
                latest_revision.id as latest_revision_id,
                latest_revision.timestamp as latest_revision_timestamp,
                latest_revision.text as text,
-               source,
-               source_url,
                license.full_name,
                license.info_url
           FROM review
-          JOIN revision
-            ON review.id = revision.review_id
-     LEFT JOIN vote
-            ON vote.revision_id = revision.id
-          JOIN "user"
-            ON review.user_id = "user".id
-          JOIN license
-            ON license.id = license_id
+          JOIN revision ON review.id = revision.review_id
+     LEFT JOIN vote ON vote.revision_id = revision.id
+          JOIN "user" ON review.user_id = "user".id
+          JOIN license ON license.id = license_id
           JOIN (
                 revision
                 JOIN (
-                  SELECT review.id AS review_uuid,
-                         MAX(timestamp) AS latest_timestamp
-                    FROM review
-                    JOIN revision
-                      ON review.id = review_id
-                GROUP BY review.id
-                     ) AS latest
+                    SELECT review.id AS review_uuid,
+                           MAX(timestamp) AS latest_timestamp
+                      FROM review
+                      JOIN revision ON review.id = review_id
+                  GROUP BY review.id
+                  ) AS latest
                   ON latest.review_uuid = revision.review_id
                  AND latest.latest_timestamp = revision.timestamp
-               ) AS latest_revision
-            ON review.id = latest_revision.review_id
-            {}
+               ) AS latest_revision ON review.id = latest_revision.review_id
+        {where_clause}
       GROUP BY review.id, latest_revision.id, "user".id, license.id
-            {}
+        {order_by_clause}
          LIMIT :limit
         OFFSET :offset
-        """.format(filterstr, order_by_clause))
+        """.format(where_clause=filterstr, order_by_clause=order_by_clause))
 
-    filter_data["limit"] = kwargs.pop("limit", None)
-    filter_data["offset"] = kwargs.pop("offset", None)
-
-    if kwargs:
-        raise TypeError('Unexpected **kwargs: %r' % kwargs)
+    filter_data["limit"] = limit
+    filter_data["offset"] = offset
 
     with db.engine.connect() as connection:
         results = connection.execute(query, filter_data)
@@ -510,7 +530,7 @@ def get_popular(limit=None):
     Returns:
         Randomized list of popular reviews which are converted into dictionaries using to_dict method.
     """
-    cache_key = cache.gen_key('popular_reviews', limit)
+    cache_key = cache.gen_key("popular_reviews", limit)
     reviews = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
     reviews = None
     defined_limit = 4 * limit if limit else None
@@ -519,60 +539,58 @@ def get_popular(limit=None):
         with db.engine.connect() as connection:
             results = connection.execute(sqlalchemy.text("""
                 SELECT review.id,
-                       entity_id,
-                       entity_type,
+                       review.entity_id,
+                       review.entity_type,
                        review.user_id,
-                       edits,
-                       is_draft,
-                       is_hidden,
-                       license_id,
-                       language,
-                       source,
-                       source_url,
+                       review.edits,
+                       review.is_draft,
+                       review.is_hidden,
+                       review.license_id,
+                       review.language,
+                       review.source,
+                       review.source_url,
                        SUM(
-                        CASE
-                          WHEN vote = 't' THEN 1
-                          WHEN vote = 'f' THEN -1
-                          WHEN vote IS NULL THEN 0
-                        END
+                           CASE WHEN vote = 't' THEN 1
+                                WHEN vote = 'f' THEN -1
+                                WHEN vote IS NULL THEN 0 END
                        ) AS rating,
                        latest_revision.id AS latest_revision_id,
                        latest_revision.timestamp AS latest_revision_timestamp,
                        latest_revision.text AS text
-                      FROM review
-                  JOIN revision
-                    ON revision.review_id = review.id
-             LEFT JOIN vote
-                    ON vote.revision_id = revision.id
+                  FROM review
+                  JOIN revision ON revision.review_id = review.id
+             LEFT JOIN (
+                        SELECT revision_id, vote
+                          FROM vote
+                         WHERE rated_at > :last_month
+                       ) AS votes_last_month
+                    ON votes_last_month.revision_id = revision.id
                   JOIN (
-                        revision
-                        JOIN (
+                        revision JOIN (
                           SELECT review.id AS review_uuid,
                                  MAX(timestamp) AS latest_timestamp
                             FROM review
-                            JOIN revision
-                              ON review.id = review_id
+                            JOIN revision ON review.id = review_id
                         GROUP BY review.id
-                             ) AS latest
-                          ON latest.review_uuid = revision.review_id
-                         AND latest.latest_timestamp = revision.timestamp
+                        ) AS latest ON latest.review_uuid = revision.review_id
+                        AND latest.latest_timestamp = revision.timestamp
                        ) AS latest_revision
                     ON review.id = latest_revision.review_id
                  WHERE entity_id
                     IN (
-                          SELECT
-                        DISTINCT entity_id
-                            FROM (
-                          SELECT entity_id
-                            FROM review
-                        ORDER BY RANDOM()
-                        ) AS randomized_entity_ids
-                       )
+                        SELECT DISTINCT entity_id
+                          FROM (
+                        SELECT entity_id
+                          FROM review
+                      ORDER BY RANDOM()
+                      ) AS randomized_entity_ids
+                    )
               GROUP BY review.id, latest_revision.id
               ORDER BY rating
                  LIMIT :limit
             """), {
                 "limit": defined_limit,
+                "last_month": datetime.now() - timedelta(weeks=4)
             })
             reviews = results.fetchall()
 
@@ -586,7 +604,6 @@ def get_popular(limit=None):
                     "review_id": review["id"],
                 }
             reviews = [to_dict(review, confidential=True) for review in reviews]
-
         cache.set(cache_key, reviews, 1 * 60 * 60, REVIEW_CACHE_NAMESPACE) # 1 hour
     shuffle(reviews)
     return reviews[:limit]

@@ -23,7 +23,7 @@ def index():
     recent_reviews, _ = db_review.list_reviews(sort='created', limit=9)
 
     # Statistics
-    review_count = format_number(db_review.get_count(is_draft = False))
+    review_count = format_number(db_review.get_count(is_draft=False))
     user_count = format_number(db_users.total_count())
 
     return render_template('index/index.html', popular_reviews=popular_reviews, recent_reviews=recent_reviews,

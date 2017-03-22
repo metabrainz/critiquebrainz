@@ -38,23 +38,23 @@ class VoteTestCase(DataTestCase):
             vote.get(self.user_1.id, self.review["last_revision"]["id"])
 
     def test_get(self):
-        vote_1 = vote.submit(self.user_1.id, self.review["last_revision"]["id"], True)
+        vote.submit(self.user_1.id, self.review["last_revision"]["id"], True)
         vote_1_data = vote.get(self.user_1.id, self.review["last_revision"]["id"])
+        rated_at = vote_1_data.pop("rated_at")
         self.assertDictEqual(vote_1_data, {
-                "user_id": vote_1["user_id"],
-                "revision_id": vote_1["revision_id"],
-                "vote": True,
-                "rated_at": vote_1["rated_at"],
-            })
+            "user_id": UUID(self.user_1.id),
+            "revision_id": self.review["last_revision"]["id"],
+            "vote": True,
+        })
         self.assertEqual(type(vote_1_data["user_id"]), UUID)
         self.assertEqual(type(vote_1_data["revision_id"]), int)
-        self.assertEqual(type(vote_1_data["rated_at"]), datetime)
+        self.assertEqual(type(rated_at), datetime)
 
-        vote_2 = vote.submit(self.user_2.id, self.review["last_revision"]["id"], False)
+        vote.submit(self.user_2.id, self.review["last_revision"]["id"], False)
         vote_2_data = vote.get(self.user_2.id, self.review["last_revision"]["id"])
+        rated_at = vote_2_data.pop("rated_at")
         self.assertDictEqual(vote_2_data, {
-            "user_id": vote_2["user_id"],
-            "revision_id": vote_2["revision_id"],
+            "user_id": UUID(self.user_2.id),
+            "revision_id": self.review["last_revision"]["id"],
             "vote": False,
-            "rated_at": vote_2["rated_at"]
         })

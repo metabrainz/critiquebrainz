@@ -32,7 +32,7 @@ class UserTestCase(DataTestCase):
                 is_draft=False,
                 license_id=license.id,
         )
-        vote = db_vote.submit(self.user1.id, self.review["last_revision"]["id"], True)
+        db_vote.submit(self.user1.id, self.review["last_revision"]["id"], True)
         self.review_created = self.review["last_revision"]["timestamp"]
         self.review_id = self.review["id"]
         self.revision_id = self.review["last_revision"]["id"]

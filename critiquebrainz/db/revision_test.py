@@ -38,8 +38,8 @@ class RevisionTestCase(DataTestCase):
         self.assertEqual(type(first_revision['id']), int)
 
         self.review = db_review.update(
-            self.review["id"],
-            self.review["is_draft"],
+            review_id=self.review["id"],
+            drafted=self.review["is_draft"],
             text="Testing Again!",
         )
         second_revision = revision.get(review_id)[0]
@@ -50,8 +50,8 @@ class RevisionTestCase(DataTestCase):
         self.assertEqual(type(second_revision['id']), int)
 
         self.review = db_review.update(
-            self.review["id"],
-            self.review["is_draft"],
+            review_id=self.review["id"],
+            drafted=self.review["is_draft"],
             text="Testing Once Again!",
         )
         # Testing offset and limit
@@ -81,8 +81,8 @@ class RevisionTestCase(DataTestCase):
         rev_num = revision.get_revision_number(self.review["id"], self.review["last_revision"]["id"])
         self.assertEqual(rev_num, 1)
         self.review = db_review.update(
-            self.review["id"],
-            self.review["is_draft"],
+            review_id=self.review["id"],
+            drafted=self.review["is_draft"],
             text="Updated this review",
         )
         rev_num = revision.get_revision_number(self.review["id"], self.review["last_revision"]["id"])

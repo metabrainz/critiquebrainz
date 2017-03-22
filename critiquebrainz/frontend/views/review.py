@@ -52,10 +52,7 @@ def browse():
 @review_bp.route('/<uuid:id>/revisions/<int:rev>')
 @review_bp.route('/<uuid:id>')
 def entity(id, rev=None):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    review = db_review.get_or_404(id)
     # Not showing review if it isn't published yet and not viewed by author.
     if review["is_draft"] and not (current_user.is_authenticated
                                 and current_user == review["user"]):
@@ -104,10 +101,7 @@ def redirect_to_entity(review_id, revision_id):
 
 @review_bp.route('/<uuid:id>/revisions/compare')
 def compare(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    review = db_review.get_or_404(id)
     if review["is_draft"] and not (current_user.is_authenticated
                                 and current_user == review.user):
         raise NotFound(gettext("Can't find a review with the specified ID."))
@@ -128,11 +122,7 @@ def compare(id):
 
 @review_bp.route('/<uuid:id>/revisions')
 def revisions(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
-
+    review = db_review.get_or_404(id)
     # Not showing review if it isn't published yet and not viewed by author.
     if review["is_draft"] and not (current_user.is_authenticated
                                 and current_user == review["user"]):
@@ -151,11 +141,7 @@ def revisions(id):
 
 @review_bp.route('/<uuid:id>/revisions/more')
 def revisions_more(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
-
+    review = db_review.get_or_404(id)
     # Not showing review if it isn't published yet and not viewed by author.
     if review["is_draft"] and not (current_user.is_authenticated
                                 and current_user == review["user"]):
@@ -239,10 +225,7 @@ def preview():
 @review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))
 @login_required
 def edit(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    review = db_review.get_or_404(id)
     if review["is_draft"] and current_user != review["user"]:
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review["user"] != current_user:
@@ -261,8 +244,8 @@ def edit(id):
         else:
             license_choice = None
         review = db_review.update(
-            review["id"],
-            review["is_draft"],
+            review_id=review["id"],
+            drafted=review["is_draft"],
             text=form.text.data,
             is_draft=(form.state.data == 'draft'),
             license_id=license_choice, language=form.language.data,
@@ -281,10 +264,7 @@ def edit(id):
 @review_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    review = db_review.get_or_404(id)
     if review["user"] != current_user and not current_user.is_admin():
         raise Unauthorized(gettext("Only the author or an admin can delete this review."))
     if request.method == 'POST':
@@ -305,10 +285,7 @@ def vote_submit(review_id):
     else:
         vote = None
 
-    try:
-        review = db_review.get_by_id(review_id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    review = db_review.get_or_404(review_id)
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
     if review["user"] == current_user:
@@ -335,10 +312,7 @@ def vote_submit(review_id):
 @review_bp.route('/<uuid:id>/vote/delete', methods=['GET'])
 @login_required
 def vote_delete(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    review = db_review.get_or_404(id)
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
     try:
@@ -353,10 +327,7 @@ def vote_delete(id):
 @review_bp.route('/<uuid:id>/report', methods=['GET', 'POST'])
 @login_required
 def report(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    review = db_review.get_or_404(id)
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
     if review["user"] == current_user:
@@ -387,11 +358,7 @@ def report(id):
 @login_required
 @admin_view
 def hide(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
-
+    review = db_review.get_or_404(id)
     if review["is_hidden"]:
         flash.info(gettext("Review is already hidden."))
         return redirect(url_for('.entity', id=review["id"]))
@@ -414,10 +381,7 @@ def hide(id):
 @login_required
 @admin_view
 def unhide(id):
-    try:
-        review = db_review.get_by_id(id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    review = db_review.get_or_404(id)
     db_review.unhide(review["id"])
     flash.success(gettext("Review is not hidden anymore."))
     return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))

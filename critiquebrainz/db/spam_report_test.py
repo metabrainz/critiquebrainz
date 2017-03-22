@@ -57,8 +57,8 @@ class SpamReportTestCase(DataTestCase):
     def test_list_reports(self):
         report1 = db_spam_report.create(self.revision_id, self.user2.id, "This is a report")
         self.review = db_review.update(
-            self.review["id"],
-            self.review["is_draft"],
+            review_id=self.review["id"],
+            drafted=self.review["is_draft"],
             text="Updated Review",
         )
         report2 = db_spam_report.create(self.review["last_revision"]["id"], self.user1.id, "This is again a report on the updated review")
