@@ -21,8 +21,7 @@
     {% endif %}
 
     {{ _('%(place)s', place=event_name) }}
-
-    {% if place['life-span'] %}
+    {% if place['life-span'] and place['life-span']['begin'] %}
       <small>{{ place['life-span']['begin'][:4] }}</small>
     {% endif %}
   </h2>
