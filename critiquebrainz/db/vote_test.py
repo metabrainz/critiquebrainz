@@ -27,11 +27,14 @@ class VoteTestCase(DataTestCase):
         license = License(id='Test', full_name='Test License')
         db.session.add(license)
         db.session.commit()
-        self.review = db_review.create(release_group='e7aad618-fa86-3983-9e77-405e21796eca',
-                               text="Testing!",
-                               user_id=author.id,
-                               is_draft=False,
-                               license_id=license.id)
+        self.review = db_review.create(
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            text="Testing!",
+            user_id=author.id,
+            is_draft=False,
+            license_id=license.id
+        )
 
     def test_get_missing(self):
         with self.assertRaises(exceptions.NoDataFoundException):

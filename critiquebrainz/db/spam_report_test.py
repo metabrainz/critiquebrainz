@@ -24,11 +24,12 @@ class SpamReportTestCase(DataTestCase):
         db.session.add(license)
         db.session.commit()
         self.review = db_review.create(
-                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
-                text="Testing!",
-                user_id=author.id,
-                is_draft=False,
-                license_id=license.id,
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            text="Testing!",
+            user_id=author.id,
+            is_draft=False,
+            license_id=license.id,
         )
         self.revision_id = self.review["last_revision"]["id"]
         self.report = db_spam_report.create(self.revision_id, self.user1.id, "To test is this report")
@@ -56,11 +57,12 @@ class SpamReportTestCase(DataTestCase):
 
     def test_list_reports(self):
         report1 = db_spam_report.create(self.revision_id, self.user2.id, "This is a report")
-        self.review = db_review.update(
+        db_review.update(
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Updated Review",
         )
+        self.review = db_review.get_by_id(self.review["id"])
         report2 = db_spam_report.create(self.review["last_revision"]["id"], self.user1.id, "This is again a report on the updated review")
         # two reports on the old revision and one on the new revision.
         reports, count = db_spam_report.list_reports(review_id=self.review["id"])

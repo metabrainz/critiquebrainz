@@ -243,12 +243,13 @@ def edit(id):
             license_choice = form.license_choice.data
         else:
             license_choice = None
-        review = db_review.update(
+        db_review.update(
             review_id=review["id"],
             drafted=review["is_draft"],
             text=form.text.data,
             is_draft=(form.state.data == 'draft'),
-            license_id=license_choice, language=form.language.data,
+            license_id=license_choice,
+            language=form.language.data,
         )
         flash.success(gettext("Review has been updated."))
         return redirect(url_for('.entity', id=review["id"]))
@@ -365,7 +366,7 @@ def hide(id):
 
     form = AdminActionForm()
     if form.validate_on_submit():
-        db_review.hide(review["id"])
+        db_review.set_hidden_state(review["id"], is_hidden="True")
         ModerationLog.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
                              reason=form.reason.data, review_id=review["id"])
         review_reports, count = db_spam_report.list_reports(review_id=review["id"])
@@ -382,6 +383,6 @@ def hide(id):
 @admin_view
 def unhide(id):
     review = db_review.get_or_404(id)
-    db_review.unhide(review["id"])
+    db_review.set_hidden_state(review["id"], is_hidden="False")
     flash.success(gettext("Review is not hidden anymore."))
     return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))

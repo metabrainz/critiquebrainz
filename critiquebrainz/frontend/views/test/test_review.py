@@ -20,7 +20,8 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def create_dummy_review(self, is_draft=False):
         review = db_review.create(
-            release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_type="release_group",
             user_id=self.user.id,
             text=self.review_text,
             is_draft=is_draft,

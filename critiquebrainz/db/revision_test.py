@@ -19,11 +19,14 @@ class RevisionTestCase(DataTestCase):
         db.session.add(self.license)
         db.session.commit()
 
-        self.review = db_review.create(user_id=self.author.id,
-                                    release_group='e7aad618-fa86-3983-9e77-405e21796eca',
-                                    text=u"Testing!",
-                                    is_draft=False,
-                                    license_id=self.license.id)
+        self.review = db_review.create(
+            user_id=self.author.id,
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            text=u"Testing!",
+            is_draft=False,
+            license_id=self.license.id,
+        )
 
     def test_get_and_count(self):
         """Test the get function that gets revisions for the test review ordered by the timestamp
@@ -37,7 +40,7 @@ class RevisionTestCase(DataTestCase):
         self.assertEqual(type(first_revision['timestamp']), datetime)
         self.assertEqual(type(first_revision['id']), int)
 
-        self.review = db_review.update(
+        db_review.update(
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Testing Again!",
@@ -49,7 +52,7 @@ class RevisionTestCase(DataTestCase):
         self.assertEqual(type(second_revision['timestamp']), datetime)
         self.assertEqual(type(second_revision['id']), int)
 
-        self.review = db_review.update(
+        db_review.update(
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Testing Once Again!",
@@ -80,10 +83,11 @@ class RevisionTestCase(DataTestCase):
         """Test to get the revision number of a revision of a specified review."""
         rev_num = revision.get_revision_number(self.review["id"], self.review["last_revision"]["id"])
         self.assertEqual(rev_num, 1)
-        self.review = db_review.update(
+        db_review.update(
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Updated this review",
         )
+        self.review = db_review.get_by_id(self.review["id"])
         rev_num = revision.get_revision_number(self.review["id"], self.review["last_revision"]["id"])
         self.assertEqual(rev_num, 2)

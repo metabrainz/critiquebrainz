@@ -9,9 +9,9 @@ from flask_babel import lazy_gettext
 import critiquebrainz.db.revision as db_revision
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
-from critiquebrainz.db.user import User
 import uuid
 from datetime import datetime, timedelta
+import pycountry
 
 REVIEW_CACHE_NAMESPACE = "Review"
 DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
@@ -21,6 +21,11 @@ ENTITY_TYPES = [
     "place",
     "release_group",
 ]
+
+supported_languages = []
+for lang in list(pycountry.languages):
+    if 'iso639_1_code' in dir(lang):
+        supported_languages.append(lang.iso639_1_code)
 
 def get_or_404(review_id):
     """Get a review using review ID or abort with error 404."""
@@ -145,35 +150,21 @@ def get_by_id(review_id):
     return review
 
 
-def hide(review_id):
-    """Hide review given the review id.
-
-    Args:
-        review_id(uuid): ID of the review to hide.
-    """
-    with db.engine.connect() as connection:
-        connection.execute(sqlalchemy.text("""
-            UPDATE review
-               SET is_hidden='t'
-             WHERE id = :review_id
-        """), {
-            "review_id": review_id,
-        })
-
-
-def unhide(review_id):
-    """Unhide review given the review id.
+def set_hidden_state(review_id, *, is_hidden):
+    """Hide or unhide a review with a given ID.
 
     Args:
         review_id(uuid): ID of the review to unhide.
+        is_hidden(bool): True is review to be hidden. False if not.
     """
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE review
-               SET is_hidden='f'
+               SET is_hidden = :is_hidden
              WHERE id = :review_id
         """), {
             "review_id": review_id,
+            "is_hidden": is_hidden,
         })
 
 
@@ -199,7 +190,7 @@ def get_count(*, is_draft=False, is_hidden=False):
 
 def update(*, review_id, drafted, text, license_id=None,
            language=None, is_draft=None):
-    """Update contents of this review.
+    """Update contents of a review.
 
     Args:
         review_id (uuid): ID of the review.
@@ -207,28 +198,6 @@ def update(*, review_id, drafted, text, license_id=None,
         license_id(optional, str): Updated license id of a review.
         is_draft(optional, bool): Whether to publish review or keep it drafted.
         text(optional, str): Updated text of a review.
-    Returns:
-        Dictionary containing properties of updated review.
-        {
-            "id": uuid,
-            "entity_id": uuid,
-            "entity_type": str("release group", "event", "place"),
-            "user_id": uuid,
-            "user": dict,
-            "edits": int,
-            "is_draft": bool,
-            "is_hidden": bool,
-            "language": str,
-            "license_id": str,
-            "source": str,
-            "source_url": str,
-            "last_revision: dict,
-            "votes": dict,
-            "rating": int,
-            "text": str,
-            "created": datetime,
-            "license": dict,
-        }
     """
     updates = []
     updated_info = {}
@@ -262,19 +231,16 @@ def update(*, review_id, drafted, text, license_id=None,
             connection.execute(query, updated_info)
     # Create new revision
     new_revision = db_revision.create(review_id, text)
-    review = get_by_id(review_id)
     cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
-    return review
 
 
-def create(*, release_group=None, entity_id=None,
-           entity_type=None, user_id, is_draft, text,
+def create(*, entity_id, entity_type, user_id, is_draft, text,
            language=DEFAULT_LANG, license_id=DEFAULT_LICENSE_ID,
            source=None, source_url=None):
     """Create a new review on an entity.
     Args:
-        release_group, entity_id (uuid): ID of the release group to be reviewed.
-        entity_id (str): Type of the entity reviewed.
+        entity_id (uuid): ID of the entity to be reviewed.
+        entity_type (str): Type of the entity reviewed.
         user_id (uuid): ID of the reviewer.
         is_draft (bool): Whether the review is drafted.
         text (str): Content of the review.
@@ -306,12 +272,8 @@ def create(*, release_group=None, entity_id=None,
             "license": dict,
         }
     """
-    if release_group:
-       entity_id = release_group
-       entity_type = "release_group"
-    else:
-        if not entity_type or not entity_id:
-          raise TypeError("Entity Type or ID not defined")
+    if language not in supported_languages:
+        raise TypeError("Language: {} is not supported".format(language))
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
@@ -341,7 +303,7 @@ def create(*, release_group=None, entity_id=None,
 
 def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                  entity_type=None, license_id=None, user_id=None,
-                 language=None, exclude=None, sort=None, limit=None,
+                 language=None, exclude=None, sort=None, limit=20,
                  offset=None):
     """Get a list of reviews.
 
@@ -360,11 +322,11 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         license_id (str): License of the returned reviews.
         inc_drafts (bool): True if reviews marked as drafts should be included. False if not.
         inc_hidden (bool): True if reviews marked as hidden should be included. False if not.
-        exclude (list): List of id of reviews to exclude.
+        exclude (list): List of reviews (their IDs) to exclude from results.
 
     Returns:
         Dictionary of reviews.
-        Total number of reviews.
+        Total number of reviews that match the specified filters.
     """
     filters = []
     filter_data = {}

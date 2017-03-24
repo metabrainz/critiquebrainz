@@ -26,7 +26,8 @@ class UserTestCase(DataTestCase):
         db.session.add(license)
         db.session.commit()
         self.review = db_review.create(
-                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
+                entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+                entity_type="release_group",
                 text="Testing!",
                 user_id=self.author.id,
                 is_draft=False,
@@ -118,7 +119,11 @@ class UserTestCase(DataTestCase):
     def test_get_reviews(self):
         reviews = db_users.get_reviews(self.author.id)
         self.assertEqual(len(reviews), 1)
-        self.review.update(text="Testing Again")
+        db_review.update(
+            review_id=self.review["id"],
+            drafted=self.review["is_draft"],
+            text="Testing Again",
+        )
         reviews = db_users.get_reviews(self.author.id)
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0]['creation_time'], self.review_created)
