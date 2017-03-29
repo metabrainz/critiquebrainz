@@ -2,13 +2,14 @@ from flask import Blueprint, render_template, request, redirect, url_for, abort
 from flask_babel import gettext
 from flask_login import login_required, current_user
 
-from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_BLOCK_USER
+from critiquebrainz.db.moderation_log import ACTION_BLOCK_USER
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.db.user import User
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.frontend import flash
 import critiquebrainz.db.users as db_users
+import critiquebrainz.db.moderation_log as db_moderation_log
 
 user_bp = Blueprint('user', __name__)
 
@@ -59,7 +60,7 @@ def block(user_id):
     form = AdminActionForm()
     if form.validate_on_submit():
         db_users.block(user['id'])
-        ModerationLog.create(admin_id=current_user.id, action=ACTION_BLOCK_USER,
+        db_moderation_log.create(admin_id=current_user.id, action=ACTION_BLOCK_USER,
                              reason=form.reason.data, user_id=user['id'])
         flash.success(gettext("This user account has been blocked."))
         return redirect(url_for('user.reviews', user_id=user['id']))
