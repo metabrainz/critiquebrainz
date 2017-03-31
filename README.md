@@ -15,4 +15,4 @@ In case you want to build documentation yourself follow the following steps
     $ pip3 install -r requirements.txt
     $ make html
 
-After that open `./docs/_build/index.html` in your favourite browser.
+After that open `./docs/_build/html/index.html` in your favourite browser.
