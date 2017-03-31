@@ -1,6 +1,6 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
 from critiquebrainz.db.user import User
-from critiquebrainz.data.model.oauth_client import OAuthClient
+import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.users as db_users
 
 
@@ -22,7 +22,7 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
         )
 
     def create_dummy_application(self):
-        return OAuthClient.create(user=self.user, **self.application)
+        return db_oauth_client.create(user=self.user, **self.application)
 
     def test_index(self):
         self.temporary_login(self.user)
