@@ -5,7 +5,6 @@ from critiquebrainz.data.model.license import License
 
 def install(app, *args):
     db.init_app(app)
-    create_tables(app)
     for arg in args:
         for key, entity in arg.__dict__.items():
             if not key.startswith("__"):
