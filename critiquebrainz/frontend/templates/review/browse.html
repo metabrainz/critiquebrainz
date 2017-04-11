@@ -5,6 +5,16 @@
 
 {% block content %}
 <h2>{{ _('Reviews') }}</h2>
+<form method="GET" action="{{ url_for('review.browse') }}">
+  <div class="form-group" style="display: inline-block;">
+    <select class="form-control input-sm" name="entity_type" onchange="this.form.submit()"> 
+      <option value="None">{{ _('All') }}</option>
+      <option value="release_group" {% if entity_type == 'release_group' %} selected {% endif %}>{{ _('Release group') }}</option>
+      <option value="event" {% if entity_type == 'event' %} selected {% endif %}>{{ _('Event') }}</option>
+      <option value="place" {% if entity_type == 'place' %} selected {% endif %}>{{ _('Place') }}</option>
+    </select>
+  </div>
+</form>
 <p><em class="text-muted">{{ _('Ordered by creation date') }}</em></p>
 
 <div id="reviews-browse" class="row">
