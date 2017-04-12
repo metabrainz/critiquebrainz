@@ -1,10 +1,9 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.data import db
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 from critiquebrainz.data.model.review import Review
-from critiquebrainz.data.model.license import License
+import critiquebrainz.db.license as db_license
 from critiquebrainz.db import exceptions
 from critiquebrainz.db import vote
 from datetime import datetime
@@ -24,14 +23,17 @@ class VoteTestCase(DataTestCase):
         self.user_2 = User(db_users.get_or_create('2', new_user_data={
             "display_name": "Tester #2",
         }))
-        license = License(id='Test', full_name='Test License')
-        db.session.add(license)
-        db.session.commit()
-        self.review = Review.create(release_group='e7aad618-fa86-3983-9e77-405e21796eca',
-                               text="Testing!",
-                               user_id=author.id,
-                               is_draft=False,
-                               license_id=license.id)
+        license = db_license.create(
+            id='Test',
+            full_name='Test License'
+        )
+        self.review = Review.create(
+            release_group='e7aad618-fa86-3983-9e77-405e21796eca',
+            text="Testing!",
+            user_id=author.id,
+            is_draft=False,
+            license_id=license["id"],
+        )
 
     def test_get_missing(self):
         with self.assertRaises(exceptions.NoDataFoundException):

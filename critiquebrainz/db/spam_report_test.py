@@ -1,9 +1,8 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.data import db
 from critiquebrainz.db.user import User
 import critiquebrainz.db.spam_report as db_spam_report
 from critiquebrainz.data.model.review import Review
-from critiquebrainz.data.model.license import License
+import critiquebrainz.db.license as db_license
 import critiquebrainz.db.users as db_users
 
 
@@ -20,15 +19,16 @@ class SpamReportTestCase(DataTestCase):
         self.user2 = User(db_users.get_or_create('2', new_user_data={
             "display_name": "Tester #2",
         }))
-        license = License(id='Test', full_name='Test License')
-        db.session.add(license)
-        db.session.commit()
+        license = db_license.create(
+            id='Test',
+            full_name='Test License',
+        )
         self.review = Review.create(
-                release_group='e7aad618-fa86-3983-9e77-405e21796eca',
-                text="Testing!",
-                user_id=author.id,
-                is_draft=False,
-                license_id=license.id,
+            release_group='e7aad618-fa86-3983-9e77-405e21796eca',
+            text="Testing!",
+            user_id=author.id,
+            is_draft=False,
+            license_id=license["id"],
         )
         self.revision_id = self.review.last_revision.id
         self.report = db_spam_report.create(self.revision_id, self.user1.id, "To test is this report")
