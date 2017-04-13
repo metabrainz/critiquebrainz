@@ -2,10 +2,10 @@ from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
-from werkzeug.exceptions import BadRequest
 from critiquebrainz.data.model.license import License
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.revision as db_revision
+import critiquebrainz.db.exceptions as db_exceptions
 
 class ReviewTestCase(DataTestCase):
 
@@ -109,7 +109,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(revisions[0], retrieved_review["last_revision"])
 
         # Checking things that shouldn't be allowed
-        with self.assertRaises(BadRequest):
+        with self.assertRaises(db_exceptions.BadDataException):
             db_review.update(
                 review_id=retrieved_review["id"],
                 drafted=retrieved_review["is_draft"],
@@ -117,7 +117,7 @@ class ReviewTestCase(DataTestCase):
                 license_id=self.license.id,
             )
         review = db_review.get_by_id(review["id"])
-        with self.assertRaises(BadRequest):
+        with self.assertRaises(db_exceptions.BadDataException):
             db_review.update(
                 review_id=review["id"],
                 drafted=review["is_draft"],
@@ -190,10 +190,10 @@ class ReviewTestCase(DataTestCase):
             is_draft=False,
             license_id=self.license.id,
         )
-        db_review.set_hidden_state(review["id"], is_hidden="True")
+        db_review.set_hidden_state(review["id"], is_hidden=True)
         review = db_review.get_by_id(review["id"])
         self.assertEqual(review["is_hidden"], True)
-        db_review.set_hidden_state(review["id"], is_hidden="False")
+        db_review.set_hidden_state(review["id"], is_hidden=False)
         review = db_review.get_by_id(review["id"])
         self.assertEqual(review["is_hidden"], False)
 

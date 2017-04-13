@@ -1,11 +1,8 @@
 import sqlalchemy
 from critiquebrainz import db
 from critiquebrainz.db import exceptions as db_exceptions
-from flask import abort
 from brainzutils import cache
-from werkzeug.exceptions import BadRequest
 from random import shuffle
-from flask_babel import lazy_gettext
 import critiquebrainz.db.revision as db_revision
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
@@ -22,18 +19,11 @@ ENTITY_TYPES = [
     "release_group",
 ]
 
+
 supported_languages = []
 for lang in list(pycountry.languages):
     if 'iso639_1_code' in dir(lang):
         supported_languages.append(lang.iso639_1_code)
-
-def get_or_404(review_id):
-    """Get a review using review ID or abort with error 404."""
-    try:
-        review = get_by_id(review_id)
-    except db_exceptions.NoDataFoundException:
-        abort(404)
-    return review
 
 
 def to_dict(review, confidential=False):
@@ -204,7 +194,7 @@ def update(*, review_id, drafted, text, license_id=None,
 
     if license_id is not None:
         if not drafted: # If trying to convert published review into draft.
-            raise BadRequest(lazy_gettext("Changing license of a published review is not allowed."))
+            raise db_exceptions.BadDataException("Changing license of a published review is not allowed.")
         updates.append("license_id = :license_id")
         updated_info["license_id"] = license_id
 
@@ -214,7 +204,7 @@ def update(*, review_id, drafted, text, license_id=None,
 
     if is_draft is not None:
         if not drafted and is_draft: # If trying to convert published review into draft
-            raise BadRequest(lazy_gettext("Converting published reviews back to drafts is not allowed."))
+            raise db_exceptions.BadDataException("Converting published reviews back to drafts is not allowed.")
         updates.append("is_draft = :is_draft")
         updated_info["is_draft"] = is_draft
 
@@ -273,7 +263,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
         }
     """
     if language not in supported_languages:
-        raise TypeError("Language: {} is not supported".format(language))
+        raise ValueError("Language: {} is not supported".format(language))
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
