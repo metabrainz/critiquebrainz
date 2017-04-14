@@ -12,7 +12,7 @@ ACTION_BLOCK_USER = "block_user"
 
 def create(*, admin_id, review_id=None, user_id=None,
            action, reason):
-    """Log blocking a user or hiding a review with IDs.
+    """Make a record in the moderation log.
 
     Args:
         admin_id (uuid): ID of the admin.
@@ -22,7 +22,7 @@ def create(*, admin_id, review_id=None, user_id=None,
         reason (str): Reason for blocking a user or hiding a review.
     """
     if not review_id and not user_id:
-        raise TypeError("No review ID or user ID specified.")
+        raise ValueError("No review ID or user ID specified.")
     if action != ACTION_BLOCK_USER and action != ACTION_HIDE_REVIEW:
         raise TypeError("Please specify a valid action.")
     with db.engine.connect() as connection:
@@ -116,24 +116,24 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
 
     with db.engine.connect() as connection:
         result = connection.execute(query, filter_data)
-        logs = result.fetchall()
-        logs = [dict(log) for log in logs]
-        if logs:
-            for log in logs:
-                log["user"] = {
-                    "id": log["user_id"],
-                    "display_name": log.pop("user_name"),
+        logs = []
+        for log in result.fetchall():
+            log = dict(log)
+            log["user"] = {
+                "id": log["user_id"],
+                "display_name": log.pop("user_name"),
+            }
+            log["admin"] = {
+                "id": log["admin_id"],
+                "display_name": log.pop("admin_name"),
+            }
+            log["review"] = {
+                "id": log["review_id"],
+                "entity_id": log.pop("entity_id"),
+                "user": {
+                    "id": log.pop("review_user_id"),
+                    "display_name": log.pop("review_user_name"),
                 }
-                log["admin"] = {
-                    "id": log["admin_id"],
-                    "display_name": log.pop("admin_name"),
-                }
-                log["review"] = {
-                    "id": log["review_id"],
-                    "entity_id": log.pop("entity_id"),
-                    "user": {
-                        "id": log.pop("review_user_id"),
-                        "display_name": log.pop("review_user_name"),
-                    }
-                }
+            }
+            logs.append(log)
     return logs, count
