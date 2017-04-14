@@ -11,42 +11,32 @@ class OAuthClientTestCase(DataTestCase):
         self.user = User(db_users.get_or_create("Author", new_user_data={
             "display_name": "Author",
         }))
-
-    def test_create(self):
-        new_client = db_oauth_client.create(
-            user_id=self.user.id,
-            name="Test App",
-            desc="Application for testing",
-            website="https://example.com",
-            redirect_uri="https://example.com/oauth",
+        self.application = dict(
+            name="Some Application",
+            desc="Created for some purpose",
+            website="http://example.com/",
+            redirect_uri="https://example.com/redirect/",
         )
 
-        client = db_oauth_client.get_client(new_client["client_id"])
-        self.assertEqual(client["name"], "Test App")
+    def create_dummy_application(self):
+        db_oauth_client.create(user_id=self.user.id, **self.application)
+        client = db_users.clients(self.user.id)[0]
+        return client
+
+    def test_create(self):
+        client = self.create_dummy_application()
+        self.assertEqual(client["name"], "Some Application")
         self.assertEqual(len(client["client_id"]), 20)
         self.assertEqual(len(client["client_secret"]), 40)
 
     def test_delete(self):
-        oauth_client = db_oauth_client.create(
-            user_id=self.user.id,
-            name="Test App",
-            desc="Application for testing",
-            website="https://example.com",
-            redirect_uri="https://example.com/oauth",
-        )
-        clients = db_oauth_client.get_client(oauth_client["client_id"])
+        oauth_client = self.create_dummy_application()
         db_oauth_client.delete(oauth_client["client_id"])
         with self.assertRaises(NoDataFoundException):
             clients = db_oauth_client.get_client(oauth_client["client_id"])
 
     def test_update(self):
-        oauth_client = db_oauth_client.create(
-            user_id=self.user.id,
-            name="Test App",
-            desc="Application for testing",
-            website="https://example.com",
-            redirect_uri="https://example.com/oauth",
-        )
+        oauth_client = self.create_dummy_application()
         db_oauth_client.update(
             client_id = oauth_client["client_id"],
             name="Testing Application",

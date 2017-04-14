@@ -4,8 +4,12 @@ from critiquebrainz.utils import generate_string
 import sqlalchemy
 
 
+CLIENT_ID_LENGTH = 20
+CLIENT_SECRET_LENGTH = 40
+
+
 def create(*, user_id, name, desc, website, redirect_uri):
-    """Create new OAuth client and generates secret key for it.
+    """Creates new OAuth client and generates secret key for it.
 
     Args:
         user_id (uuid): ID of the user who manages the client.
@@ -25,24 +29,19 @@ def create(*, user_id, name, desc, website, redirect_uri):
             "redirect_uri": redirect_uri,
         }
     """
-    client_id = generate_string(20)
-    client_secret = generate_string(40)
-    client = {
-        "client_id": client_id,
-        "client_secret": client_secret,
+    with db.engine.connect() as connection:
+        connection.execute(sqlalchemy.text("""
+            INSERT INTO oauth_client VALUES(:client_id, :client_secret, :redirect_uri,
+                :user_id, :name, :desc, :website)
+        """), {
+        "client_id": generate_string(CLIENT_ID_LENGTH),
+        "client_secret": generate_string(CLIENT_SECRET_LENGTH),
         "redirect_uri": redirect_uri,
         "user_id": user_id,
         "name": name,
         "website": website,
         "desc": desc,
-    }
-    with db.engine.connect() as connection:
-        connection.execute(sqlalchemy.text("""
-            INSERT INTO oauth_client VALUES(:client_id, :client_secret, :redirect_uri,
-                :user_id, :name, :desc, :website)
-        """), client)
-
-    return client
+    })
 
 
 def update(*, client_id, name=None, desc=None, website=None, redirect_uri=None):
@@ -61,7 +60,7 @@ def update(*, client_id, name=None, desc=None, website=None, redirect_uri=None):
         updates.append("name = :name")
         update_data["name"] = name
     if desc is not None:
-        updates.append(""" "desc" = :desc""")
+        updates.append('"desc" = :desc')
         update_data["desc"] = desc
     if website is not None:
         updates.append("website = :website")
@@ -133,5 +132,5 @@ def get_client(client_id):
         })
         row = result.fetchone()
         if not row:
-            raise db_exceptions.NoDataFoundException("No client with ID: {} found".format(client_id))
+            raise db_exceptions.NoDataFoundException("Can't find OAuth client with ID: {id}".format(id=client_id))
     return dict(row)

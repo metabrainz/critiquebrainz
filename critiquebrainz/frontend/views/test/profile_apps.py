@@ -22,7 +22,9 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
         )
 
     def create_dummy_application(self):
-        return db_oauth_client.create(user=self.user, **self.application)
+        db_oauth_client.create(user_id=self.user.id, **self.application)
+        client = db_users.clients(self.user.id)[0]
+        return client
 
     def test_index(self):
         self.temporary_login(self.user)
@@ -43,7 +45,7 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
         self.application["name"] = "New Name of Application"
 
         self.temporary_login(self.user)
-        response = self.client.post('/profile/applications/%s/edit' % app.client_id,
+        response = self.client.post('/profile/applications/%s/edit' % app["client_id"],
                                     data=self.application, query_string=self.application,
                                     follow_redirects=True)
         self.assert200(response)
@@ -53,12 +55,12 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
         app = self.create_dummy_application()
 
         self.temporary_login(self.hacker)
-        response = self.client.get('/profile/applications/%s/delete' % app.client_id,
+        response = self.client.get('/profile/applications/%s/delete' % app["client_id"],
                                    follow_redirects=True)
         self.assert404(response, "Shouldn't be able to delete other's applications.")
 
         self.temporary_login(self.user)
-        response = self.client.get('/profile/applications/%s/delete' % app.client_id,
+        response = self.client.get('/profile/applications/%s/delete' % app["client_id"],
                                    follow_redirects=True)
         self.assert200(response)
         self.assertIn("You have deleted an application.", str(response.data))
@@ -67,5 +69,5 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
         app = self.create_dummy_application()
 
         self.temporary_login(self.user)
-        response = self.client.get('/profile/applications/%s/token/delete' % app.client_id)
+        response = self.client.get('/profile/applications/%s/token/delete' % app["client_id"])
         self.assertRedirects(response, '/profile/applications/')
