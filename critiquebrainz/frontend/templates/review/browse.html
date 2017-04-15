@@ -5,19 +5,22 @@
 
 {% block content %}
 <h2>{{ _('Reviews') }}</h2>
-<form method="GET" action="{{ url_for('review.browse') }}">
-  <div class="form-group" style="display: inline-block;">
-    <select class="form-control input-sm" name="entity_type" onchange="this.form.submit()"> 
-      <option value="None">{{ _('All') }}</option>
-      <option value="release_group" {% if entity_type == 'release_group' %} selected {% endif %}>{{ _('Release group') }}</option>
-      <option value="event" {% if entity_type == 'event' %} selected {% endif %}>{{ _('Event') }}</option>
-      <option value="place" {% if entity_type == 'place' %} selected {% endif %}>{{ _('Place') }}</option>
-    </select>
-  </div>
-</form>
 <p><em class="text-muted">{{ _('Ordered by creation date') }}</em></p>
+<ul class="nav nav-pills"> 
+  <li role="presentation" {{ "class=active" if entity_type == None }}>
+    <a href="{{ url_for('review.browse', entity_type='all') }}">{{ _('All') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'release_group' }}>
+    <a href="{{ url_for('review.browse', entity_type='release_group') }}">{{ _('Release group') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'event' }}>
+    <a href="{{ url_for('review.browse', entity_type='event') }}">{{ _('Event') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'place' }}>
+    <a href="{{ url_for('review.browse', entity_type='place') }}">{{ _('Place') }}</a></li>
+</ul>
 
 <div id="reviews-browse" class="row">
+{% if not reviews %}
+  <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+{% else %}
   {% for review in reviews %}
     {% set entity = entities[review.entity_id] %}
     <div class="col-md-4 review">
@@ -36,6 +39,7 @@
       </div>
     </div>
   {% endfor %}
+{% endif %}
 </div>
 
 {% if count > limit %}

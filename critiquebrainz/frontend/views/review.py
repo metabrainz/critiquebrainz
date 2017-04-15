@@ -28,7 +28,7 @@ RESULTS_LIMIT = 10
 @review_bp.route('/')
 def browse(): 
     entity_type = request.args.get('entity_type', default=None)
-    if entity_type == 'None':
+    if entity_type == 'all':
         entity_type = None
     page = int(request.args.get('page', default=1))
     if page < 1:
@@ -41,7 +41,8 @@ def browse():
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count/limit))))
         else:
-            raise NotFound(gettext("No reviews to display."))
+            if entity_type == None:
+                raise NotFound(gettext("No reviews to display."))
 
     # Loading info about entities for reviews
     entities = [(review.entity_id, review.entity_type) for review in reviews]
