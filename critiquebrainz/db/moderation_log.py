@@ -24,7 +24,7 @@ def create(*, admin_id, review_id=None, user_id=None,
     if not review_id and not user_id:
         raise ValueError("No review ID or user ID specified.")
     if action != ACTION_BLOCK_USER and action != ACTION_HIDE_REVIEW:
-        raise TypeError("Please specify a valid action.")
+        raise ValueError("Please specify a valid action.")
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO moderation_log(admin_id, user_id, review_id, action, timestamp, reason)
