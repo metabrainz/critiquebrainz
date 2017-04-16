@@ -13,7 +13,7 @@ def create(*, id, full_name, info_url=None):
     Returns:
         Dict containing the following attributes
         {
-            "id": (str),,
+            "id": (str),
             "full_name": (str),
             "info_url": (str),
         }
