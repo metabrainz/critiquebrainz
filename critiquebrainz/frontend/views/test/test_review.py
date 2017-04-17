@@ -1,21 +1,24 @@
 from critiquebrainz.frontend.testing import FrontendTestCase
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
-from critiquebrainz.data.model.license import License
 import critiquebrainz.db.users as db_users
+import critiquebrainz.db.license as db_license
 
 
 class ReviewViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(ReviewViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create(u"aef06569-098f-4218-a577-b413944d9493", new_user_data={
+        self.user = User(db_users.get_or_create("aef06569-098f-4218-a577-b413944d9493", new_user_data={
             "display_name": u"Tester",
         }))
-        self.hacker = User(db_users.get_or_create(u"9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
+        self.hacker = User(db_users.get_or_create("9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
             "display_name": u"Hacker!",
         }))
-        self.license = License.create(u"CC BY-SA 3.0", u"Created so we can fill the form correctly.")
+        self.license = db_license.create(
+            id="CC BY-SA 3.0",
+            full_name="Created so we can fill the form correctly.",
+        )
         self.review_text = "Testing! This text should be on the page."
 
     def create_dummy_review(self, is_draft=False):
@@ -25,7 +28,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             user_id=self.user.id,
             text=self.review_text,
             is_draft=is_draft,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
         return review
 
@@ -53,7 +56,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
             state='draft',
             text=self.review_text,
-            license_choice=self.license.id,
+            license_choice=self.license["id"],
             language='en',
             agreement='True'
         )
@@ -70,7 +73,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
             state='publish',
             text=updated_text,
-            license_choice=self.license.id,
+            license_choice=self.license["id"],
             language='en',
             agreement='True'
         )
@@ -130,7 +133,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             user_id=self.user.id,
             text="A great event, enjoyed it.",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
 
         response = self.client.get("/review/%s" % review["id"])
@@ -144,7 +147,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             user_id=self.user.id,
             text="A great place.",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
 
         response = self.client.get("/review/%s" % review["id"])

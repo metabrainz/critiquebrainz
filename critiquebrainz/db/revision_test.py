@@ -1,11 +1,12 @@
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
 import critiquebrainz.db.review as db_review
-from critiquebrainz.data.model.license import License
+
 from critiquebrainz.data.model.user import User
 from critiquebrainz.db import revision
 from critiquebrainz.db import vote
 from datetime import datetime
+import critiquebrainz.db.license as db_license
 
 
 class RevisionTestCase(DataTestCase):
@@ -15,10 +16,10 @@ class RevisionTestCase(DataTestCase):
         self.author = User.get_or_create('Author', musicbrainz_id='0')
         self.user_1 = User.get_or_create('Tester #1', musicbrainz_id='1')
         self.user_2 = User.get_or_create('Tester #2', musicbrainz_id='2')
-        self.license = License(id=u'TEST', full_name=u"Test License")
-        db.session.add(self.license)
-        db.session.commit()
-
+        self.license = db_license.create(
+            id=u'TEST',
+            full_name=u"Test License",
+        )
         self.review = db_review.create(
             user_id=self.author.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",

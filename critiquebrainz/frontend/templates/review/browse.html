@@ -6,8 +6,21 @@
 {% block content %}
 <h2>{{ _('Reviews') }}</h2>
 <p><em class="text-muted">{{ _('Ordered by creation date') }}</em></p>
+<ul class="nav nav-pills"> 
+  <li role="presentation" {{ "class=active" if entity_type == None }}>
+    <a href="{{ url_for('review.browse', entity_type='all') }}">{{ _('All') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'release_group' }}>
+    <a href="{{ url_for('review.browse', entity_type='release_group') }}">{{ _('Release group') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'event' }}>
+    <a href="{{ url_for('review.browse', entity_type='event') }}">{{ _('Event') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'place' }}>
+    <a href="{{ url_for('review.browse', entity_type='place') }}">{{ _('Place') }}</a></li>
+</ul>
 
 <div id="reviews-browse" class="row">
+{% if not reviews %}
+  <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+{% else %}
   {% for review in reviews %}
     {% set entity = entities[review.entity_id] %}
     <div class="col-md-4 review">
@@ -26,6 +39,7 @@
       </div>
     </div>
   {% endfor %}
+{% endif %}
 </div>
 
 {% if count > limit %}

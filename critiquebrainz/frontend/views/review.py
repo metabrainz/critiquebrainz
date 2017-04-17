@@ -6,9 +6,8 @@ from flask_login import login_required, current_user
 from markdown import markdown
 from sqlalchemy import desc
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
-
-from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
 from critiquebrainz.db.review import ENTITY_TYPES
+from critiquebrainz.db.moderation_log import ACTION_HIDE_REVIEW
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
@@ -20,6 +19,8 @@ from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.utils import side_by_side_diff
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
+import critiquebrainz.db.moderation_log as db_moderation_log
+
 
 review_bp = Blueprint('review', __name__)
 
@@ -36,26 +37,29 @@ def get_review_or_404(review_id):
 
 
 @review_bp.route('/')
-def browse():
+def browse(): 
+    entity_type = request.args.get('entity_type', default=None)
+    if entity_type == 'all':
+        entity_type = None
     page = int(request.args.get('page', default=1))
     if page < 1:
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
     reviews, count = db_review.list_reviews(sort='created', limit=limit, offset=offset)
-
     if not reviews:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count/limit))))
         else:
-            raise NotFound(gettext("No reviews to display."))
+            if entity_type == None:
+                raise NotFound(gettext("No reviews to display."))
 
     # Loading info about entities for reviews
     entities = [(review["entity_id"], review["entity_type"]) for review in reviews]
     entities_info = musicbrainz.get_multiple_entities(entities)
 
     return render_template('review/browse.html', reviews=reviews, entities=entities_info,
-                           page=page, limit=limit, count=count)
+                           page=page, limit=limit, count=count, entity_type=entity_type)
 
 
 @review_bp.route('/<uuid:id>/revisions/<int:rev>')
@@ -382,8 +386,8 @@ def hide(id):
     form = AdminActionForm()
     if form.validate_on_submit():
         db_review.set_hidden_state(review["id"], is_hidden=True)
-        ModerationLog.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
-                             reason=form.reason.data, review_id=review["id"])
+        db_moderation_log.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
+            reason=form.reason.data, review_id=review.id)
         review_reports, count = db_spam_report.list_reports(review_id=review["id"])
         for report in review_reports:
             db_spam_report.archive(report["user_id"], report["revision_id"])

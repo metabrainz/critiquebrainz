@@ -1,12 +1,11 @@
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
-from critiquebrainz.data import db
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.users import gravatar_url, get_many_by_mb_username
 import critiquebrainz.db.review as db_review
 from critiquebrainz.data.model.spam_report import SpamReport
-from critiquebrainz.data.model.license import License
 import critiquebrainz.db.vote as db_vote
+import critiquebrainz.db.license as db_license
 from datetime import datetime, date, timedelta
 from uuid import UUID
 
@@ -22,9 +21,10 @@ class UserTestCase(DataTestCase):
         self.author = User(db_users.get_or_create("author1", new_user_data={
             "display_name": "Author1",
         }))
-        license = License(id='Test', full_name='Test License')
-        db.session.add(license)
-        db.session.commit()
+        license = db_license.create(
+            id='Test',
+            full_name='Test License',
+        )
         self.review = db_review.create(
                 entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
                 entity_type="release_group",

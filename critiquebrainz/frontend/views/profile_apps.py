@@ -3,7 +3,8 @@ from flask_babel import gettext
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
 
-from critiquebrainz.data.model.oauth_client import OAuthClient
+import critiquebrainz.db.oauth_client as db_oauth_client
+import critiquebrainz.db.exceptions as db_exceptions
 from critiquebrainz.data.model.oauth_token import OAuthToken
 from critiquebrainz.frontend.forms.profile_apps import ApplicationForm
 from critiquebrainz.frontend import flash
@@ -26,9 +27,13 @@ def create():
     """Create application."""
     form = ApplicationForm()
     if form.validate_on_submit():
-        OAuthClient.create(user=current_user, name=form.name.data,
-                           desc=form.desc.data, website=form.website.data,
-                           redirect_uri=form.redirect_uri.data)
+        db_oauth_client.create(
+            user_id=current_user.id,
+            name=form.name.data,
+            desc=form.desc.data,
+            website=form.website.data,
+            redirect_uri=form.redirect_uri.data,
+        )
         flash.success(gettext('You have created an application!'))
         return redirect(url_for('.index'))
     return render_template('profile/applications/create.html', form=form)
@@ -37,30 +42,41 @@ def create():
 @profile_apps_bp.route('/<client_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit(client_id):
-    application = OAuthClient.query.get_or_404(client_id)
-    if application.user != current_user:
+    try:
+        application = db_oauth_client.get_client(client_id)
+    except db_exceptions.NoDataFoundException:
+        raise NotFount()
+    if str(application["user_id"]) != current_user.id:
         raise NotFound()
     form = ApplicationForm()
     if form.validate_on_submit():
-        application.update(name=form.name.data, desc=form.desc.data,
-                           website=form.website.data, redirect_uri=form.redirect_uri.data)
+        db_oauth_client.update(
+            client_id=application["client_id"],
+            name=form.name.data,
+            desc=form.desc.data,
+            website=form.website.data,
+            redirect_uri=form.redirect_uri.data,
+        )
         flash.success(gettext("You have updated an application!"))
         return redirect(url_for('.index'))
     else:
-        form.name.data = application.name
-        form.desc.data = application.desc
-        form.website.data = application.website
-        form.redirect_uri.data = application.redirect_uri
+        form.name.data = application["name"]
+        form.desc.data = application["desc"]
+        form.website.data = application["website"]
+        form.redirect_uri.data = application["redirect_uri"]
     return render_template('profile/applications/edit.html', form=form)
 
 
 @profile_apps_bp.route('/<client_id>/delete')
 @login_required
 def delete(client_id):
-    client = OAuthClient.query.get_or_404(client_id)
-    if client.user != current_user:
+    try:
+        application = db_oauth_client.get_client(client_id)
+    except db_exceptions.NoDataFoundException:
         raise NotFound()
-    client.delete()
+    if str(application["user_id"]) != current_user.id:
+        raise NotFound()
+    db_oauth_client.delete(application["client_id"])
 
     flash.success(gettext('You have deleted an application.'))
     return redirect(url_for('.index'))

@@ -3,7 +3,7 @@ import json
 from critiquebrainz.ws.testing import WebServiceTestCase
 from critiquebrainz.data.model.review import Review
 from critiquebrainz.data.model.user import User
-from critiquebrainz.data.model.license import License
+import critiquebrainz.db.license as db_license
 
 
 class ReviewViewsTestCase(WebServiceTestCase):
@@ -12,14 +12,17 @@ class ReviewViewsTestCase(WebServiceTestCase):
         super(ReviewViewsTestCase, self).setUp()
         self.user = User.get_or_create("Tester", "aef06569-098f-4218-a577-b413944d9493")
         self.another_user = User.get_or_create("Hacker!", "9371e5c7-5995-4471-a5a9-33481f897f9c")
-        self.license = License.create("CC BY-SA 3.0", "Created so we can fill the form correctly.")
+        self.license = db_license.create(
+            id="CC BY-SA 3.0",
+            full_name="Created so we can fill the form correctly.",
+        )
         self.review = dict(
             entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
             entity_type='release_group',
             user_id=self.user.id,
             text="Testing! This text should be on the page.",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
 
     def header(self, user):
@@ -69,7 +72,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             entity_id=self.review['entity_id'],
             entity_type='release_group',
             text=self.review['text'],
-            license_choice=self.license.id,
+            license_choice=self.license["id"],
             language='en',
             is_draft=True
         )
