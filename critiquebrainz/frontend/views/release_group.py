@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
 from critiquebrainz.frontend.external import musicbrainz, mbspotify, soundcloud
-from critiquebrainz.data.model.review import Review
+import critiquebrainz.db.review as db_review
 from werkzeug.exceptions import NotFound
 
 
@@ -31,14 +31,14 @@ def entity(id):
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated:
-        my_reviews, my_count = Review.list(entity_id=id, entity_type='release_group', user_id=current_user.id)
+        my_reviews, my_count = db_review.list_reviews(entity_id=id, entity_type='release_group', user_id=current_user.id)
         if my_count != 0:
             my_review = my_reviews[0]
         else:
             my_review = None
     else:
         my_review = None
-    reviews, count = Review.list(entity_id=id, entity_type='release_group', sort='rating', limit=limit, offset=offset)
+    reviews, count = db_review.list_reviews(entity_id=id, entity_type='release_group', sort='rating', limit=limit, offset=offset)
     return render_template('release_group/entity.html', id=id, release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
                            soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count)

@@ -2,7 +2,7 @@ from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.users import gravatar_url, get_many_by_mb_username
-from critiquebrainz.data.model.review import Review
+import critiquebrainz.db.review as db_review
 from critiquebrainz.data.model.spam_report import SpamReport
 import critiquebrainz.db.vote as db_vote
 import critiquebrainz.db.license as db_license
@@ -25,17 +25,18 @@ class UserTestCase(DataTestCase):
             id='Test',
             full_name='Test License',
         )
-        self.review = Review.create(
-            release_group='e7aad618-fa86-3983-9e77-405e21796eca',
-            text="Testing!",
-            user_id=self.author.id,
-            is_draft=False,
-            license_id=license["id"],
+        self.review = db_review.create(
+                entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+                entity_type="release_group",
+                text="Testing!",
+                user_id=self.author.id,
+                is_draft=False,
+                license_id=license["id"],
         )
-        vote = db_vote.submit(self.user1.id, self.review.last_revision.id, True)
-        self.review_created = self.review.last_revision.timestamp
-        self.review_id = self.review.id
-        self.revision_id = self.review.last_revision.id
+        db_vote.submit(self.user1.id, self.review["last_revision"]["id"], True)
+        self.review_created = self.review["last_revision"]["timestamp"]
+        self.review_id = self.review["id"]
+        self.revision_id = self.review["last_revision"]["id"]
         self.report = SpamReport.create(self.revision_id, self.user1.id, "Testing Reason Report")
 
     def test_get_many_by_mb_username(self):
@@ -91,9 +92,9 @@ class UserTestCase(DataTestCase):
         self.assertEqual(user['is_blocked'], False)
 
     def test_vote(self):
-        voted = db_users.has_voted(self.user1.id, self.review.id)
+        voted = db_users.has_voted(self.user1.id, self.review["id"])
         self.assertEqual(voted, True)
-        voted = db_users.has_voted(self.user2.id, self.review.id)
+        voted = db_users.has_voted(self.user2.id, self.review["id"])
         self.assertEqual(voted, False)
 
     def test_karma(self):
@@ -118,7 +119,11 @@ class UserTestCase(DataTestCase):
     def test_get_reviews(self):
         reviews = db_users.get_reviews(self.author.id)
         self.assertEqual(len(reviews), 1)
-        self.review.update(text="Testing Again")
+        db_review.update(
+            review_id=self.review["id"],
+            drafted=self.review["is_draft"],
+            text="Testing Again",
+        )
         reviews = db_users.get_reviews(self.author.id)
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0]['creation_time'], self.review_created)

@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from werkzeug.exceptions import BadRequest, NotFound
 from critiquebrainz.frontend.external import musicbrainz
-from critiquebrainz.data.model.review import Review
+import critiquebrainz.db.review as db_review
 from collections import OrderedDict
 
 artist_bp = Blueprint('artist', __name__)
@@ -35,7 +35,7 @@ def entity(mbid):
                                                               limit=limit, offset=offset)
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
-        reviews, review_count = Review.list(entity_id=release_group['id'], entity_type='release_group', sort='created', limit=1)
+        reviews, review_count = db_review.list_reviews(entity_id=release_group['id'], entity_type='release_group', sort='created', limit=1)
         release_group['review_count'] = review_count
 
     return render_template(
