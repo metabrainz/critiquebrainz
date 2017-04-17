@@ -33,7 +33,7 @@ class VoteTestCase(DataTestCase):
             text="Testing!",
             user_id=author.id,
             is_draft=False,
-            license_id=license.id,
+            license_id=license["id"],
         )
 
     def test_get_missing(self):

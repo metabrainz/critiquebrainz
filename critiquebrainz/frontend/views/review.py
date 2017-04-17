@@ -1,5 +1,4 @@
 from math import ceil
-
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
@@ -23,7 +22,6 @@ import critiquebrainz.db.moderation_log as db_moderation_log
 
 
 review_bp = Blueprint('review', __name__)
-
 RESULTS_LIMIT = 10
 
 
@@ -37,7 +35,7 @@ def get_review_or_404(review_id):
 
 
 @review_bp.route('/')
-def browse(): 
+def browse():
     entity_type = request.args.get('entity_type', default=None)
     if entity_type == 'all':
         entity_type = None

@@ -1,7 +1,6 @@
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import db
 import critiquebrainz.db.review as db_review
-
 from critiquebrainz.data.model.user import User
 from critiquebrainz.db import revision
 from critiquebrainz.db import vote
@@ -26,7 +25,7 @@ class RevisionTestCase(DataTestCase):
             entity_type="release_group",
             text=u"Testing!",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
 
     def test_get_and_count(self):

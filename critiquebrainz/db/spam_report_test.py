@@ -3,7 +3,6 @@ from critiquebrainz.db.user import User
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.license as db_license
-
 import critiquebrainz.db.users as db_users
 
 
@@ -30,7 +29,7 @@ class SpamReportTestCase(DataTestCase):
             text="Testing!",
             user_id=author.id,
             is_draft=False,
-            license_id=license.id,
+            license_id=license["id"],
         )
         self.revision_id = self.review["last_revision"]["id"]
         self.report = db_spam_report.create(self.revision_id, self.user1.id, "To test is this report")

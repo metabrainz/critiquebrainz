@@ -10,7 +10,6 @@ import critiquebrainz.db.users as db_users
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.moderation_log as db_moderation_log
 
-
 user_bp = Blueprint('user', __name__)
 
 
