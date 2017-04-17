@@ -7,7 +7,7 @@ from markdown import markdown
 from sqlalchemy import desc
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
 
-from critiquebrainz.data.model.moderation_log import ModerationLog, ACTION_HIDE_REVIEW
+from critiquebrainz.db.moderation_log import ACTION_HIDE_REVIEW
 from critiquebrainz.data.model.review import Review, ENTITY_TYPES
 from critiquebrainz.data.model.revision import Revision
 from critiquebrainz.data.model.vote import Vote
@@ -19,6 +19,7 @@ from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditFor
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.utils import side_by_side_diff
 import critiquebrainz.db.spam_report as db_spam_report
+import critiquebrainz.db.moderation_log as db_moderation_log
 
 review_bp = Blueprint('review', __name__)
 
@@ -367,7 +368,7 @@ def hide(id):
     form = AdminActionForm()
     if form.validate_on_submit():
         review.hide()
-        ModerationLog.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
+        db_moderation_log.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
                              reason=form.reason.data, review_id=review.id)
         for report in db_spam_report.list_reports(review_id=review.id):
             db_spam_report.archive(report["user_id"], report["revision_id"])
