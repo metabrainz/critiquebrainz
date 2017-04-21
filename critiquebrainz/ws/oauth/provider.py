@@ -2,8 +2,6 @@ from flask import request
 from datetime import datetime, timedelta
 from functools import wraps
 
-from critiquebrainz.data import db
-from critiquebrainz.data.model.oauth_grant import OAuthGrant
 from critiquebrainz.ws.constants import available_scopes
 from critiquebrainz.ws.exceptions import NotAuthorized
 from critiquebrainz.ws.oauth import exceptions
@@ -12,6 +10,7 @@ import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.oauth_token as db_oauth_token
 import critiquebrainz.db.exceptions as db_exceptions
 from critiquebrainz.data.model.user import User
+import critiquebrainz.db.oauth_grant as db_oauth_grant
 
 
 class CritiqueBrainzAuthorizationProvider(object):
@@ -68,17 +67,17 @@ class CritiqueBrainzAuthorizationProvider(object):
         if grant is None:
             return False
         else:
-            return grant.redirect_uri == redirect_uri
+            return grant["redirect_uri"] == redirect_uri
 
     def validate_grant_scope(self, client_id, code, scope):
         grant = self.fetch_grant(client_id, code)
-        return self.validate_scope(scope, grant.get_scopes())
+        return self.validate_scope(scope, db_oauth_grant.get_scopes(grant["id"]))
 
     def validate_grant(self, client_id, code):
         grant = self.fetch_grant(client_id, code)
         if grant is None:
             return False
-        return (datetime.now() > grant.expires) is False
+        return (datetime.now() > grant["expires"]) is False
 
     def validate_token_scope(self, client_id, refresh_token, scope):
         token = self.fetch_token(client_id, refresh_token)
@@ -100,15 +99,14 @@ class CritiqueBrainzAuthorizationProvider(object):
 
     @staticmethod
     def persist_grant(client_id, code, scopes, expires, redirect_uri, user_id):
-        grant = OAuthGrant(client_id=client_id,
-                           code=code,
-                           scopes=scopes,
-                           expires=expires,
-                           redirect_uri=redirect_uri,
-                           user_id=user_id)
-        db.session.add(grant)
-        db.session.commit()
-        return grant
+        return db_oauth_grant.create(
+            client_id=client_id,
+            code=code,
+            scopes=scopes,
+            expires=expires,
+            redirect_uri=redirect_uri,
+            user_id=user_id,
+        )
 
     @staticmethod
     def persist_token(client_id, scope, refresh_token, access_token, expires, user_id):
@@ -123,8 +121,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
     @staticmethod
     def fetch_grant(client_id, code):
-        grant = OAuthGrant.query.filter_by(client_id=client_id, code=code).first()
-        return grant
+        return db_oauth_grant.list_grants(client_id=client_id, code=code)[0]
 
     @staticmethod
     def fetch_token(client_id, refresh_token):
@@ -138,7 +135,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
     @staticmethod
     def discard_grant(client_id, code):
-        OAuthGrant.query.filter_by(client_id=client_id, code=code).delete()
+        db_oauth_grant.delete(client_id=client_id, code=code)
 
     @staticmethod
     def discard_token(client_id, refresh_token):
