@@ -5,7 +5,7 @@ from werkzeug.exceptions import NotFound
 
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.exceptions as db_exceptions
-from critiquebrainz.data.model.oauth_token import OAuthToken
+import critiquebrainz.db.oauth_token as db_oauth_token
 from critiquebrainz.frontend.forms.profile_apps import ApplicationForm
 from critiquebrainz.frontend import flash
 import critiquebrainz.db.users as db_users
@@ -85,5 +85,5 @@ def delete(client_id):
 @profile_apps_bp.route('/<client_id>/token/delete')
 @login_required
 def token_delete(client_id):
-    OAuthToken.purge_tokens(client_id=client_id, user_id=current_user.id)
+    db_oauth_token.delete(client_id=client_id, user_id=current_user.id)
     return redirect(url_for('.index'))
