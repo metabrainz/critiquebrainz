@@ -7,13 +7,13 @@ CREATE TABLE license (
 );
 
 CREATE TABLE moderation_log (
-    id        SERIAL       NOT NULL,
-    admin_id  UUID         NOT NULL,
-    user_id   UUID,
-    review_id UUID,
-    action    action_types NOT NULL,
-    timestamp TIMESTAMP    NOT NULL,
-    reason    VARCHAR      NOT NULL
+    id          SERIAL       NOT NULL,
+    admin_id    UUID         NOT NULL,
+    user_id     UUID,
+    review_id   UUID,
+    action      action_types NOT NULL,
+    "timestamp" TIMESTAMPTZ  NOT NULL,
+    reason      VARCHAR      NOT NULL
 );
 
 CREATE TABLE oauth_client (
@@ -27,23 +27,23 @@ CREATE TABLE oauth_client (
 );
 
 CREATE TABLE oauth_grant (
-    id           SERIAL    NOT NULL,
-    client_id    VARCHAR   NOT NULL,
-    code         VARCHAR   NOT NULL,
-    expires      TIMESTAMP NOT NULL,
-    redirect_uri TEXT      NOT NULL,
+    id           SERIAL      NOT NULL,
+    client_id    VARCHAR     NOT NULL,
+    code         VARCHAR     NOT NULL,
+    expires      TIMESTAMPTZ NOT NULL,
+    redirect_uri TEXT        NOT NULL,
     scopes       TEXT,
-    user_id      UUID      NOT NULL
+    user_id      UUID        NOT NULL
 );
 
 CREATE TABLE oauth_token (
-    id            SERIAL    NOT NULL,
-    client_id     VARCHAR   NOT NULL,
-    access_token  VARCHAR   NOT NULL,
-    refresh_token VARCHAR   NOT NULL,
-    expires       TIMESTAMP NOT NULL,
+    id            SERIAL      NOT NULL,
+    client_id     VARCHAR     NOT NULL,
+    access_token  VARCHAR     NOT NULL,
+    refresh_token VARCHAR     NOT NULL,
+    expires       TIMESTAMPTZ NOT NULL,
     scopes        TEXT,
-    user_id       UUID      NOT NULL
+    user_id       UUID        NOT NULL
 );
 ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_access_token_key UNIQUE (access_token);
 ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_refresh_token_key UNIQUE (refresh_token);
@@ -64,36 +64,36 @@ CREATE TABLE review (
 ALTER TABLE review ADD CONSTRAINT review_entity_id_user_id_key UNIQUE (entity_id, user_id);
 
 CREATE TABLE revision (
-    id        SERIAL    NOT NULL,
-    review_id UUID,
-    timestamp TIMESTAMP NOT NULL,
-    text      VARCHAR   NOT NULL
+    id          SERIAL      NOT NULL,
+    review_idl  UUID,
+    "timestamp" TIMESTAMPTZ NOT NULL,
+    text        VARCHAR     NOT NULL
 );
 
 CREATE TABLE spam_report (
-    user_id     UUID      NOT NULL,
+    user_id     UUID        NOT NULL,
     reason      VARCHAR,
-    revision_id INTEGER   NOT NULL,
-    reported_at TIMESTAMP NOT NULL,
-    is_archived BOOLEAN   NOT NULL
+    revision_id INTEGER     NOT NULL,
+    reported_at TIMESTAMPTZ NOT NULL,
+    is_archived BOOLEAN     NOT NULL
 );
 
 CREATE TABLE "user" (
-    id             UUID      NOT NULL DEFAULT uuid_generate_v4(),
-    display_name   VARCHAR   NOT NULL,
+    id             UUID        NOT NULL DEFAULT uuid_generate_v4(),
+    display_name   VARCHAR     NOT NULL,
     email          VARCHAR,
-    created        TIMESTAMP NOT NULL,
+    created        TIMESTAMPTZ NOT NULL,
     musicbrainz_id VARCHAR,
-    show_gravatar  BOOLEAN   NOT NULL DEFAULT False,
-    is_blocked     BOOLEAN   NOT NULL DEFAULT False
+    show_gravatar  BOOLEAN     NOT NULL DEFAULT False,
+    is_blocked     BOOLEAN     NOT NULL DEFAULT False
 );
 ALTER TABLE "user" ADD CONSTRAINT user_musicbrainz_id_key UNIQUE (musicbrainz_id);
 
 CREATE TABLE vote (
-    user_id     UUID      NOT NULL,
-    revision_id INTEGER   NOT NULL,
-    vote        BOOLEAN   NOT NULL,
-    rated_at    TIMESTAMP NOT NULL
+    user_id     UUID        NOT NULL,
+    revision_id INTEGER     NOT NULL,
+    vote        BOOLEAN     NOT NULL,
+    rated_at    TIMESTAMPTZ NOT NULL
 );
 
 COMMIT;
