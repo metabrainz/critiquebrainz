@@ -112,7 +112,7 @@ class CritiqueBrainzAuthorizationProvider(object):
 
     @staticmethod
     def persist_token(client_id, scope, refresh_token, access_token, expires, user_id):
-        token = db_oauth_token.create(
+        return db_oauth_token.create(
             client_id=client_id,
             scopes=scope,
             access_token=access_token,
@@ -120,7 +120,6 @@ class CritiqueBrainzAuthorizationProvider(object):
             expires=expires,
             user_id=user_id,
         )
-        return token
 
     @staticmethod
     def fetch_grant(client_id, code):

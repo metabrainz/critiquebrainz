@@ -130,7 +130,7 @@ def delete(*, client_id=None, refresh_token=None, user_id=None):
 
 
 def get_scopes(token_id):
-    """Returns the scopes of an application. CritiqueBrainz provides the scopes: review, vote and user.
+    """Returns the scopes of an application.
 
     Args:
         token_id (int): ID of the OAuth Token.
@@ -145,7 +145,7 @@ def get_scopes(token_id):
         """), {
             "token_id": token_id,
         })
-        scopes = result.fetchone()[0]
+        scopes = result.fetchone()
         if not scopes:
             return list()
-    return scopes.split()
+    return scopes[0].split()

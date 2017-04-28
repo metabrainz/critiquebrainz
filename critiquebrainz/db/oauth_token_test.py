@@ -69,3 +69,5 @@ class OAuthTokenTestCase(DataTestCase):
             scopes="Test Scopes",
         )
         self.assertIn("Test", db_oauth_token.get_scopes(oauth_token["id"]))
+        db_oauth_token.delete(client_id=self.oauth_client["client_id"], refresh_token="Test Refresh Token")
+        self.assertEqual([], db_oauth_token.get_scopes(oauth_token["id"]))
