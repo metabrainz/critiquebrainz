@@ -12,7 +12,7 @@ CREATE TABLE moderation_log (
     user_id     UUID,
     review_id   UUID,
     action      action_types NOT NULL,
-    "timestamp" TIMESTAMPTZ  NOT NULL,
+    "timestamp" TIMESTAMP    NOT NULL,
     reason      VARCHAR      NOT NULL
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE oauth_grant (
     id           SERIAL      NOT NULL,
     client_id    VARCHAR     NOT NULL,
     code         VARCHAR     NOT NULL,
-    expires      TIMESTAMPTZ NOT NULL,
+    expires      TIMESTAMP   NOT NULL,
     redirect_uri TEXT        NOT NULL,
     scopes       TEXT,
     user_id      UUID        NOT NULL
@@ -41,7 +41,7 @@ CREATE TABLE oauth_token (
     client_id     VARCHAR     NOT NULL,
     access_token  VARCHAR     NOT NULL,
     refresh_token VARCHAR     NOT NULL,
-    expires       TIMESTAMPTZ NOT NULL,
+    expires       TIMESTAMP   NOT NULL,
     scopes        TEXT,
     user_id       UUID        NOT NULL
 );
@@ -65,8 +65,8 @@ ALTER TABLE review ADD CONSTRAINT review_entity_id_user_id_key UNIQUE (entity_id
 
 CREATE TABLE revision (
     id          SERIAL      NOT NULL,
-    review_idl  UUID,
-    "timestamp" TIMESTAMPTZ NOT NULL,
+    review_id   UUID,
+    "timestamp" TIMESTAMP   NOT NULL,
     text        VARCHAR     NOT NULL
 );
 
@@ -74,7 +74,7 @@ CREATE TABLE spam_report (
     user_id     UUID        NOT NULL,
     reason      VARCHAR,
     revision_id INTEGER     NOT NULL,
-    reported_at TIMESTAMPTZ NOT NULL,
+    reported_at TIMESTAMP   NOT NULL,
     is_archived BOOLEAN     NOT NULL
 );
 
@@ -82,7 +82,7 @@ CREATE TABLE "user" (
     id             UUID        NOT NULL DEFAULT uuid_generate_v4(),
     display_name   VARCHAR     NOT NULL,
     email          VARCHAR,
-    created        TIMESTAMPTZ NOT NULL,
+    created        TIMESTAMP   NOT NULL,
     musicbrainz_id VARCHAR,
     show_gravatar  BOOLEAN     NOT NULL DEFAULT False,
     is_blocked     BOOLEAN     NOT NULL DEFAULT False
@@ -93,7 +93,7 @@ CREATE TABLE vote (
     user_id     UUID        NOT NULL,
     revision_id INTEGER     NOT NULL,
     vote        BOOLEAN     NOT NULL,
-    rated_at    TIMESTAMPTZ NOT NULL
+    rated_at    TIMESTAMP   NOT NULL
 );
 
 COMMIT;
