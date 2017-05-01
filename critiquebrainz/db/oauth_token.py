@@ -146,6 +146,8 @@ def get_scopes(token_id):
             "token_id": token_id,
         })
         scopes = result.fetchone()
-        if not scopes:
-            return list()
+    if not scopes:
+        raise db_exceptions.NoDataFoundException("No token exists with ID: {}".format(token_id))
+    if scopes[0] is None:
+        return list()
     return scopes[0].split()
