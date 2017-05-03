@@ -1,0 +1,12 @@
+BEGIN;
+ALTER TABLE license ADD CONSTRAINT license_pkey PRIMARY KEY (id);
+ALTER TABLE moderation_log ADD CONSTRAINT moderation_log_pkey PRIMARY KEY (id);
+ALTER TABLE oauth_client ADD CONSTRAINT oauth_client_pkey PRIMARY KEY (client_id);
+ALTER TABLE oauth_grant ADD CONSTRAINT oauth_grant_pkey PRIMARY KEY (id);
+ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_pkey PRIMARY KEY (id);
+ALTER TABLE review ADD CONSTRAINT review_pkey PRIMARY KEY (id);
+ALTER TABLE revision ADD CONSTRAINT revision_pkey PRIMARY KEY (id);
+ALTER TABLE spam_report ADD CONSTRAINT spam_report_pkey PRIMARY KEY (user_id, revision_id);
+ALTER TABlE "user" ADD CONSTRAINT user_pkey PRIMARY KEY (id);
+ALTER TABlE vote ADD CONSTRAINT vote_pkey PRIMARY KEY (user_id, revision_id);
+COMMIT;

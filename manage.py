@@ -102,7 +102,7 @@ def init_db(skip_create_db=False):
         create_extension(db_uri)
 
     click.echo("Creating tables... ", nl=False)
-    data_utils.create_tables(frontend.create_app())
+    data_utils.create_tables()
     click.echo("Done!")
 
     click.echo("Adding fixtures... ")
