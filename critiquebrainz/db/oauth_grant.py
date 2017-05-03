@@ -136,6 +136,8 @@ def get_scopes(grant_id):
             "grant_id": grant_id,
         })
         scopes = result.fetchone()
-        if not scopes:
-            return list()
+    if not scopes:
+        raise db_exceptions.NoDataFoundException("No grant exists with ID: {grant_id}".format(grant_id=grant_id))
+    if scopes[0] is None:
+        return list()
     return scopes[0].split()
