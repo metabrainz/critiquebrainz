@@ -13,21 +13,26 @@ import hashlib
 class User(db.Model, AdminMixin, DeleteMixin):
     __tablename__ = 'user'
 
-    id = db.Column(UUID, primary_key=True, server_default=db.text('uuid_generate_v4()'))
+    id = db.Column(UUID, primary_key=True, server_default=
+                            db.text('uuid_generate_v4()'))
     display_name = db.Column(db.Unicode, nullable=False)
     email = db.Column(db.Unicode)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     musicbrainz_id = db.Column(db.Unicode, unique=True)
-    show_gravatar = db.Column(db.Boolean, nullable=False, server_default="False")
-    is_blocked = db.Column(db.Boolean, nullable=False, server_default="False")
+    show_gravatar = db.Column(db.Boolean, nullable=False,
+                              server_default="False")
+    is_blocked = db.Column(db.Boolean, nullable=False,
+                           server_default="False")
 
     spam_reports = db.relationship('SpamReport', cascade='delete', backref='user')
     clients = db.relationship('OAuthClient', cascade='delete', backref='user')
     grants = db.relationship('OAuthGrant', cascade='delete', backref='user')
     tokens = db.relationship('OAuthToken', cascade='delete', backref='user')
 
-    _reviews = db.relationship('Review', cascade='delete', lazy='dynamic', backref=backref('user', lazy='joined'))
-    _votes = db.relationship('Vote', cascade='delete', lazy='dynamic', backref='user')
+    _reviews = db.relationship('Review', cascade='delete', lazy='dynamic',
+                               backref=backref('user', lazy='joined'))
+    _votes = db.relationship('Vote', cascade='delete', lazy='dynamic',
+                             backref='user')
 
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user_type', 'stats')
@@ -40,7 +45,8 @@ class User(db.Model, AdminMixin, DeleteMixin):
     def get_or_create(cls, display_name, musicbrainz_id, **kwargs):
         user = cls.query.filter_by(musicbrainz_id=musicbrainz_id, **kwargs).first()
         if user is None:
-            user = cls(display_name=display_name, musicbrainz_id=musicbrainz_id, **kwargs)
+            user = cls(display_name=display_name, musicbrainz_id=musicbrainz_id,
+                       **kwargs)
             db.session.add(user)
             db.session.commit()
         return user
@@ -61,31 +67,23 @@ class User(db.Model, AdminMixin, DeleteMixin):
         return cls.query.count()
 
     def has_voted(self, review):
-        if self._votes.filter_by(revision=review.last_revision).count() > 0:
-            return True
-        else:
-            return False
+        return self._votes.filter_by(revision=review.last_revision).count() > 0
 
     @property
     def is_review_limit_exceeded(self):
-        if self.reviews_today_count() >= self.user_type.reviews_per_day:
-            return True
-        else:
-            return False
+        return self.reviews_today_count() >= self.user_type.reviews_per_day
 
     @property
     def is_vote_limit_exceeded(self):
-        if self.votes_today_count() >= self.user_type.votes_per_day:
-            return True
-        else:
-            return False
+        return self.votes_today_count() >= self.user_type.votes_per_day
 
     @property
     def karma(self):
         """User's karma. Based on ratings of revisions."""
         if hasattr(self, '_karma') is False:
             # TODO: Improve this
-            q = db.session.query(Vote).outerjoin(Revision).outerjoin(Review).outerjoin(User).filter(User.id == self.id)
+            q = db.session.query(Vote).outerjoin(Revision) \
+                .outerjoin(Review).outerjoin(User).filter(User.id == self.id)
             query_pos = q.filter(Vote.vote == True)
             query_neg = q.filter(Vote.vote == False)
             self._karma = query_pos.count() - query_neg.count()
@@ -98,10 +96,13 @@ class User(db.Model, AdminMixin, DeleteMixin):
     @property
     def avatar(self):
         """Link to user's avatar image."""
+        url = "https://gravatar.com/avatar/{0}{1}"
         if self.show_gravatar and self.email:
-            return "https://gravatar.com/avatar/" + hashlib.md5(self.email.encode("utf-8")).hexdigest() + "?d=identicon&r=pg"
+            return url.format(hashlib.md5(self.email.encode("utf-8"))
+                              .hexdigest(), "?d=identicon&r=pg")
         else:
-            return "https://gravatar.com/avatar/" + hashlib.md5(self.id.encode("utf-8")).hexdigest() + "?d=identicon"
+            return url.format(hashlib.md5(self.id.encode("utf-8"))
+                              .hexdigest(), "?d=identicon")
 
     @property
     def stats(self):
@@ -115,9 +116,12 @@ class User(db.Model, AdminMixin, DeleteMixin):
             votes_this_month=self.votes_since_count(date(today.year, today.month, 1)))
 
     def _reviews_since(self, date):
-        rev_q = db.session.query(Revision.review_id, db.func.min(Revision.timestamp).label('creation_time'))\
-            .group_by(Revision.review_id).subquery('time')
-        return self._reviews.outerjoin(rev_q, Review.id == rev_q.c.review_id).filter(rev_q.c.creation_time >= date)
+        rev_q = db.session.query(Revision.review_id,
+                                 db.func.min(Revision.timestamp).
+                                 label('creation_time')). \
+            group_by(Revision.review_id).subquery('time')
+        return self._reviews.outerjoin(rev_q, Review.id == rev_q.c.review_id) \
+            .filter(rev_q.c.creation_time >= date)
 
     def reviews_since(self, date):
         return self._reviews_since(date).all()
