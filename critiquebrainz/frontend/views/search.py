@@ -1,4 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, jsonify, url_for
+from critiquebrainz.data.model.review import Review
 from critiquebrainz.frontend.external import musicbrainz
 
 search_bp = Blueprint('search', __name__)
@@ -6,8 +7,8 @@ search_bp = Blueprint('search', __name__)
 RESULTS_LIMIT = 10
 
 
-def search_wrapper(query, type, offset=None):
-    if query:
+def search_wrapper(query, type, offset=None, review_only=False):
+    if query and review_only == False:
         if type == "artist":
             count, results = musicbrainz.search_artists(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "event":
@@ -18,8 +19,34 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_release_groups(query, limit=RESULTS_LIMIT, offset=offset)
         else:
             count, results = 0, []
+    elif query and review_only == True:
+        if type == "artist":
+            count, results = musicbrainz.search_artists(query)
+        elif type == "event":
+            count, results = musicbrainz.search_events(query)
+        elif type == "place":
+            count, results = musicbrainz.search_places(query)
+        elif type == "release-group":
+            count, results = musicbrainz.search_release_groups(query)
+        else:
+            count, results = 0, []
     else:
         count, results = 0, []
+    if review_only is True:
+        fresults = []
+        if type == "artist":
+             for group in results:
+                 count, release_groups = musicbrainz.browse_release_groups(artist_id=group['id'], release_types=["album"])
+                 for release in release_groups:
+                     if(Review.list(entity_id=release['id'])[0]):
+                         fresults.append(group)
+                         break;    #we want atleast one review so that it qualifies to be in result
+             return len(fresults), fresults
+        if type == "event" or type == "release-group" or type == "place":
+            for group in results:
+                if Review.list(entity_id=group['id'])[0]:
+                    fresults.append(group)
+        return len(fresults), fresults
     return count, results
 
 
@@ -27,8 +54,15 @@ def search_wrapper(query, type, offset=None):
 def index():
     query = request.args.get('query')
     type = request.args.get('type')
-    count, results = search_wrapper(query, type)
-    return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=RESULTS_LIMIT)
+    if request.args.get('review-only')=="on":
+        review_only=True
+    else:
+        review_only=False
+    count, results = search_wrapper(query, type, review_only=review_only)
+    if review_only == True:
+        return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=count)
+    else:
+        return render_template('search/index.html', query=query, type=type, results=results, count=count, limit=RESULTS_LIMIT)
 
 
 @search_bp.route('/more')
