@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, request, redirect, url_for
-from critiquebrainz.data.model.user import User
+from flask import Blueprint, jsonify, request, redirect, url_for, abort
+from critiquebrainz.db.user import User
+from critiquebrainz.db import users as db_users, exceptions as db_exceptions
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
@@ -221,7 +222,10 @@ def user_entity_handler(user_id):
 
     :resheader Content-Type: *application/json*
     """
-    user = User.query.get_or_404(str(user_id))
+    try:
+        user = User(db_user.get_by_id(str(user_id)))
+    except db_exceptions.NoDataFoundException:
+        abort(404)
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
     return jsonify(user=user.to_dict(inc))
 
@@ -282,6 +286,7 @@ def review_list_handler():
         return limit, offset
 
     limit, offset = fetch_params()
-    users, count = User.list(limit, offset)
-    return jsonify(limit=limit, offset=offset, count=count,
+    users = db_users.list_users(limit, offset)
+    users = [User(user) for user in users]
+    return jsonify(limit=limit, offset=offset, count=len(users),
                    users=[p.to_dict() for p in users])

@@ -11,13 +11,21 @@ import re
 ADMIN_SQL_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'admin', 'sql')
 
 
-def create_tables():
+def create_all():
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_extensions.sql'))
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_types.sql'))
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_tables.sql'))
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_primary_keys.sql'))
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_foreign_keys.sql'))
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_indexes.sql'))
+
+
+def drop_tables():
+    db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'drop_tables.sql'))
+
+
+def drop_types():
+    db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'drop_types.sql'))
 
 
 def explode_db_uri(uri):

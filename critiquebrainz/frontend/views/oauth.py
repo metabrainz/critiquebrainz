@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from critiquebrainz.utils import build_url
 from critiquebrainz.ws.oauth import oauth
-from critiquebrainz.data.model.oauth_client import OAuthClient
+import critiquebrainz.db.oauth_client as db_oauth_client
 
 oauth_bp = Blueprint('oauth', __name__)
 
@@ -20,7 +20,7 @@ def authorize_prompt():
 
     if request.method == 'GET':  # Client requests access
         oauth.validate_authorization_request(client_id, response_type, redirect_uri, scope)
-        client = OAuthClient.query.get(client_id)
+        client = db_oauth_client.get_client(client_id)
         return render_template('oauth/prompt.html', client=client, scope=scope,
                                cancel_url=build_url(redirect_uri, dict(error='access_denied')))
 

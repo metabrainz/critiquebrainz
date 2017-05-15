@@ -1,8 +1,9 @@
 import json
 
 from critiquebrainz.ws.testing import WebServiceTestCase
-from critiquebrainz.data.model.review import Review
-from critiquebrainz.data.model.user import User
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
 import critiquebrainz.db.license as db_license
 
 
@@ -10,8 +11,12 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def setUp(self):
         super(ReviewViewsTestCase, self).setUp()
-        self.user = User.get_or_create("Tester", "aef06569-098f-4218-a577-b413944d9493")
-        self.another_user = User.get_or_create("Hacker!", "9371e5c7-5995-4471-a5a9-33481f897f9c")
+        self.user = User(db_users.get_or_create("Tester", new_user_data={
+            "display_name": "test user",
+        }))
+        self.another_user = User(db_users.get_or_create("Hacker!", new_user_data={
+            "display_name": "test hacker",
+        }))
         self.license = db_license.create(
             id="CC BY-SA 3.0",
             full_name="Created so we can fill the form correctly.",
@@ -33,7 +38,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
         return data
 
     def create_dummy_review(self):
-        return Review.create(**self.review)
+        return db_review.create(**self.review)
 
     def test_review_count(self):
         resp = self.client.get('/review/').json
@@ -41,22 +46,22 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def test_review_entity(self):
         review = self.create_dummy_review()
-        resp = self.client.get('/review/%s' % review.id).json
-        self.assertEqual(resp['review']['id'], review.id)
+        resp = self.client.get('/review/%s' % review["id"]).json
+        self.assertEqual(resp['review']['id'], str(review["id"]))
 
     def test_review_delete(self):
         review = self.create_dummy_review()
-        resp = self.client.delete('/review/%s' % review.id, headers=self.header(self.user))
+        resp = self.client.delete('/review/%s' % review["id"], headers=self.header(self.user))
         self.assert200(resp)
 
     def test_review_modify(self):
         review = self.create_dummy_review()
 
-        resp = self.client.post('/review/%s' % review.id, headers=self.header(self.another_user))
+        resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.another_user))
         self.assert403(resp, "Shouldn't be able to edit someone else's review.")
 
         data = dict(text="Some updated text with length more than twenty five.")
-        resp = self.client.post('/review/%s' % review.id, headers=self.header(self.user), data=json.dumps(data))
+        resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
         self.assert200(resp)
 
     def test_review_list(self):
@@ -64,7 +69,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.get('/review/').json
         self.assertEqual(resp['count'], 1)
         self.assertEqual(len(resp['reviews']), 1)
-        self.assertEqual(resp['reviews'][0]['id'], review.id)
+        self.assertEqual(resp['reviews'][0]['id'], str(review['id']))
         # TODO(roman): Completely verify output (I encountered unicode issues when tried to do that).
 
     def test_review_post(self):
@@ -82,28 +87,28 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def test_review_vote_entity(self):
         review = self.create_dummy_review()
-        resp = self.client.get('/review/%s/vote' % review.id, headers=self.header(self.user))
+        resp = self.client.get('/review/%s/vote' % review["id"], headers=self.header(self.user))
         self.assert404(resp)
 
     def test_review_vote_put(self):
         review = self.create_dummy_review()
 
         resp = self.client.put(
-            '/review/%s/vote' % review.id,
+            '/review/%s/vote' % review["id"],
             headers=self.header(self.user),
             data=json.dumps({"vote": True})
         )
         self.assertEqual(resp.json['description'], 'You cannot rate your own review.')
 
         resp = self.client.put(
-            '/review/%s/vote' % review.id,
+            '/review/%s/vote' % review["id"],
             headers=self.header(self.another_user),
             data=json.dumps({"vote": True})
         )
         self.assert200(resp)
 
         resp = self.client.put(
-            '/review/%s/vote' % review.id,
+            '/review/%s/vote' % review["id"],
             headers=self.header(self.another_user),
             data=json.dumps({"vote": False})
         )
@@ -112,10 +117,10 @@ class ReviewViewsTestCase(WebServiceTestCase):
     def test_review_vote_delete(self):
         review = self.create_dummy_review()
 
-        resp = self.client.delete('/review/%s/vote' % review.id, headers=self.header(self.another_user))
+        resp = self.client.delete('/review/%s/vote' % review["id"], headers=self.header(self.another_user))
         self.assert400(resp)
 
         vote = dict(vote=True)
-        self.client.put('/review/%s/vote' % review.id, headers=self.header(self.another_user), data=json.dumps(vote))
-        resp = self.client.delete('/review/%s/vote' % review.id, headers=self.header(self.another_user))
+        self.client.put('/review/%s/vote' % review["id"], headers=self.header(self.another_user), data=json.dumps(vote))
+        resp = self.client.delete('/review/%s/vote' % review["id"], headers=self.header(self.another_user))
         self.assert200(resp)

@@ -1,6 +1,6 @@
 from flask_testing import TestCase
 from critiquebrainz.ws import create_app
-from critiquebrainz.data import db
+from critiquebrainz.data.utils import create_all, drop_tables, drop_types
 from critiquebrainz.ws.oauth import oauth
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.users as db_users
@@ -18,12 +18,16 @@ class WebServiceTestCase(TestCase):
         return app
 
     def setUp(self):
-        db.create_all()
+        self.reset_db()
         # TODO(roman): Add stuff form fixtures.
 
     def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+        pass
+
+    def reset_db(self):
+        drop_tables()
+        drop_types()
+        create_all()
 
     def create_dummy_client(self, user):
         db_oauth_client.create(
