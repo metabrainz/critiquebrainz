@@ -1,6 +1,6 @@
 from critiquebrainz.ws.testing import WebServiceTestCase
-from critiquebrainz.data import db
-from critiquebrainz.data.model.user import User
+from critiquebrainz.db import users as db_users
+from critiquebrainz.db.user import User
 
 
 class UserViewsTestCase(WebServiceTestCase):
@@ -14,9 +14,10 @@ class UserViewsTestCase(WebServiceTestCase):
         ))
 
     def test_user_addition(self):
-        user = User(display_name=u'Tester 1', email=u'tester1@tesing.org')
-        db.session.add(user)
-        db.session.commit()
+        user = User(db_users.create(
+            display_name='Tester 1',
+            email='tester1@tesing.org',
+        ))
         resp = self.client.get('/user/').json
         self.assertEqual(resp['count'], 1)
         self.assertEqual(len(resp['users']), 1)

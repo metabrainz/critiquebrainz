@@ -19,13 +19,26 @@ def get(review_id, limit=1, offset=0):
             "id": (int),
             "review_id": (uuid),
             "timestamp": (datetime),
-            "text": (string)
+            "text": (string),
+            "votes_positive": (int),
+            "votes_negative": (int),
         }
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT id, review_id, timestamp, text
+            SELECT id,
+                   review_id,
+                   timestamp,
+                   text,
+                   SUM(
+                       CASE WHEN vote='t' THEN 1 ELSE 0 END
+                   ) AS votes_positive,
+                   SUM(
+                       CASE WHEN vote='f' THEN 1 ELSE 0 END
+                   ) AS votes_negative
               FROM revision
+         LEFT JOIN vote
+                ON vote.revision_id = revision.id
              WHERE review_id = :review_id
           ORDER BY timestamp DESC
             OFFSET :offset
@@ -103,6 +116,7 @@ def get_all_votes(review_id):
                 votes[revision]['positive'] += 1
     return votes
 
+
 def get_revision_number(review_id, revision_id):
     """Get revision number of the review from the revision_id.
 
@@ -149,6 +163,7 @@ def create(review_id, text):
             "timestamp": datetime.now(),
             "text": text,
         })
+
 
 def votes(revision_id):
     """Get votes of a particular revision.

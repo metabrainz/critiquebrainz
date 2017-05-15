@@ -7,6 +7,9 @@ from datetime import date, datetime, timedelta
 
 class User(AdminMixin, DeleteMixin):
 
+    # a list of allowed values of `inc` parameter in API calls
+    allowed_includes = ('user_type', 'stats')
+
     def __init__(self, user):
         self.id = str(user.get('id'))
         self.display_name = user.get('display_name')
