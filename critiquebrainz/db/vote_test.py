@@ -1,5 +1,4 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.review as db_review

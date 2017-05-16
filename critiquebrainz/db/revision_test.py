@@ -1,20 +1,26 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.data import db
 import critiquebrainz.db.review as db_review
-from critiquebrainz.data.model.user import User
+from critiquebrainz.db.user import User
 from critiquebrainz.db import revision
 from critiquebrainz.db import vote
 from datetime import datetime
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.users as db_users
 
 
 class RevisionTestCase(DataTestCase):
 
     def setUp(self):
         super(RevisionTestCase, self).setUp()
-        self.author = User.get_or_create('Author', musicbrainz_id='0')
-        self.user_1 = User.get_or_create('Tester #1', musicbrainz_id='1')
-        self.user_2 = User.get_or_create('Tester #2', musicbrainz_id='2')
+        self.author = User(db_users.get_or_create('Author', new_user_data={
+            "display_name":'0',
+        }))
+        self.user_1 = User(db_users.get_or_create('Tester #1', new_user_data={
+            "display_name":'1',
+        }))
+        self.user_2 = User(db_users.get_or_create('Tester #2', new_user_data={
+            "display_name":'2',
+        }))
         self.license = db_license.create(
             id=u'TEST',
             full_name=u"Test License",

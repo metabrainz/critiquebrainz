@@ -112,6 +112,7 @@ def list_reports(**kwargs):
             "review": (dict containing id, entity_id, user, last_revision)
             "user": (dict containing id, display_name)
         }
+        and the number of spam reports after applying the specified filters.
     """
     filters = []
     filter_data = {}

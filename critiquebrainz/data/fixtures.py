@@ -1,5 +1,4 @@
 from critiquebrainz.data import db
-from critiquebrainz.data.utils import create_tables
 import critiquebrainz.db.license as db_license
 
 

@@ -1,6 +1,6 @@
 from flask_testing import TestCase
 from critiquebrainz.frontend import create_app
-from critiquebrainz.data import db
+from critiquebrainz.data.utils import create_all, drop_tables, drop_types
 import os
 
 
@@ -14,9 +14,13 @@ class DataTestCase(TestCase):
         return app
 
     def setUp(self):
-        db.create_all()
+        self.reset_db()
         # TODO(roman): Add stuff form fixtures.
 
     def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+        pass
+
+    def reset_db(self):
+        drop_tables()
+        drop_types()
+        create_all()

@@ -3,7 +3,7 @@ from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.users import gravatar_url, get_many_by_mb_username
 import critiquebrainz.db.review as db_review
-from critiquebrainz.data.model.spam_report import SpamReport
+import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.vote as db_vote
 import critiquebrainz.db.license as db_license
 from datetime import datetime, date, timedelta
@@ -37,7 +37,7 @@ class UserTestCase(DataTestCase):
         self.review_created = self.review["last_revision"]["timestamp"]
         self.review_id = self.review["id"]
         self.revision_id = self.review["last_revision"]["id"]
-        self.report = SpamReport.create(self.revision_id, self.user1.id, "Testing Reason Report")
+        self.report = db_spam_report.create(self.revision_id, self.user1.id, "Testing Reason Report")
 
     def test_get_many_by_mb_username(self):
         users = [self.user1.musicbrainz_username, self.user2.musicbrainz_username]
@@ -146,8 +146,8 @@ class UserTestCase(DataTestCase):
         votes = db_users.get_votes(self.user1.id)
         self.assertEqual(len(votes), 0)
         # Spam Reports to be deleted as well
-        spam_report_count = SpamReport.query.filter_by(user_id=user1_id, revision_id=self.revision_id).count()
-        self.assertEqual(spam_report_count, 0)
+        spam_reports, count = db_spam_report.list_reports(user_id=user1_id)
+        self.assertEqual(count, 0)
 
         db_users.delete(self.author.id)
         # Review should not exist

@@ -1,11 +1,10 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.data import db
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
-from critiquebrainz.data.model.license import License
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.revision as db_revision
 import critiquebrainz.db.exceptions as db_exceptions
+import critiquebrainz.db.license as db_license
 
 class ReviewTestCase(DataTestCase):
 
@@ -17,9 +16,10 @@ class ReviewTestCase(DataTestCase):
             "display_name": "test user",
         }))
         # And license
-        self.license = License(id=u"Test", full_name="Test License")
-        db.session.add(self.license)
-        db.session.commit()
+        self.license = db_license.create(
+            id=u'Test',
+            full_name=u"Test License",
+        )
 
     def test_review_creation(self):
         review = db_review.create(
@@ -28,7 +28,7 @@ class ReviewTestCase(DataTestCase):
            entity_type="release_group",
            text="Testing",
            is_draft=False,
-           license_id=self.license.id,
+           license_id=self.license["id"],
         )
         reviews, count = db_review.list_reviews()
         self.assertEqual(count, 1)
@@ -43,7 +43,7 @@ class ReviewTestCase(DataTestCase):
             entity_type="release_group",
             text="Testing",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
         self.assertEqual(db_review.list_reviews()[1], 1)
         db_review.delete(review["id"])
@@ -56,7 +56,7 @@ class ReviewTestCase(DataTestCase):
             entity_type="release_group",
             text="Testing",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
             language="en",
         )
 
@@ -66,7 +66,7 @@ class ReviewTestCase(DataTestCase):
             entity_type="release_group",
             text="Testing",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
             language="de",
         )
         reviews, count = db_review.list_reviews(language="de")
@@ -83,30 +83,32 @@ class ReviewTestCase(DataTestCase):
             entity_type="release_group",
             text="Testing",
             is_draft=True,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
-        another_license = License(id="License-2", full_name="Another License")
-        db.session.add(another_license)
-        db.session.commit()
+        another_license = db_license.create(
+            id="License-2",
+            full_name="Another License",
+        )
         db_review.update(
             review_id=review["id"],
             drafted=review["is_draft"],
             text="Bad update",
             is_draft=False,
-            license_id=another_license.id,
+            license_id=another_license["id"],
             language="es",
         )
         # Checking if contents are updated
         retrieved_review = db_review.list_reviews()[0][0]
         self.assertEqual(retrieved_review["text"], "Bad update")
         self.assertFalse(retrieved_review["is_draft"])
-        self.assertEqual(retrieved_review["license_id"], another_license.id)
+        self.assertEqual(retrieved_review["license_id"], another_license["id"])
         self.assertEqual(retrieved_review["language"], "es")
 
         # Updating should create a new revision.
         revisions = db_revision.get(retrieved_review["id"], limit=None)
         self.assertEqual(len(revisions), 2)
-        self.assertEqual(revisions[0], retrieved_review["last_revision"])
+        self.assertEqual(revisions[0]["timestamp"], retrieved_review["last_revision"]["timestamp"])
+        self.assertEqual(revisions[0]["text"], retrieved_review["last_revision"]["text"])
 
         # Checking things that shouldn't be allowed
         with self.assertRaises(db_exceptions.BadDataException):
@@ -114,7 +116,7 @@ class ReviewTestCase(DataTestCase):
                 review_id=retrieved_review["id"],
                 drafted=retrieved_review["is_draft"],
                 text="Sucks!",
-                license_id=self.license.id,
+                license_id=self.license["id"],
             )
         review = db_review.get_by_id(review["id"])
         with self.assertRaises(db_exceptions.BadDataException):
@@ -136,7 +138,7 @@ class ReviewTestCase(DataTestCase):
             entity_type="release_group",
             text="Awesome",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
         reviews, count = db_review.list_reviews()
         self.assertEqual(count, 1)
@@ -175,7 +177,7 @@ class ReviewTestCase(DataTestCase):
             user_id=self.user.id,
             text="Awesome",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
 
         reviews = db_review.get_popular()
@@ -188,7 +190,7 @@ class ReviewTestCase(DataTestCase):
             entity_type="release_group",
             text="Awesome",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
         db_review.set_hidden_state(review["id"], is_hidden=True)
         review = db_review.get_by_id(review["id"])
@@ -206,7 +208,7 @@ class ReviewTestCase(DataTestCase):
             entity_type="release_group",
             text="Awesome",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
         )
         count = db_review.get_count(is_draft=False, is_hidden=False)
         self.assertEqual(count, 1)
