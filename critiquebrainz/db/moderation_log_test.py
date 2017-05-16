@@ -1,11 +1,10 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.data import db
-from critiquebrainz.data.model.review import Review
-from critiquebrainz.data.model.license import License
 import critiquebrainz.db.moderation_log as db_moderation_log
 from critiquebrainz.db.moderation_log import ACTION_BLOCK_USER, ACTION_HIDE_REVIEW
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
+import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
 
 
 class ModerationLogCase(DataTestCase):
@@ -19,18 +18,19 @@ class ModerationLogCase(DataTestCase):
         self.user = User(db_users.get_or_create("Tester",new_user_data={
             "display_name":"Tester",
         }))
-
         self.reason = "Testing!"
-        self.license = License(id="Test", full_name="Test License")
-        db.session.add(self.license)
-        db.session.flush()
+        self.license = db_license.create(
+            id=u'TEST',
+            full_name=u"Test License",
+        )
 
-        self.review = Review.create(
+        self.review = db_review.create(
             user_id=self.user.id,
-            release_group="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
             text="It is beautiful!",
             is_draft=False,
-            license_id=self.license.id,
+            license_id=self.license["id"],
             language='en',
         )
 
@@ -50,7 +50,7 @@ class ModerationLogCase(DataTestCase):
         db_moderation_log.create(
             admin_id=self.admin.id,
             reason=self.reason,
-            review_id=self.review.id,
+            review_id=self.review["id"],
             action=ACTION_HIDE_REVIEW,
         )
         logs, count = db_moderation_log.list_logs(admin_id=self.admin.id)

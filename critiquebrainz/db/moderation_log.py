@@ -2,7 +2,7 @@
 Methods here define logs for various activities that the moderators can take
 via the moderator interface. A new log entry is created for every action.
 """
-from critiquebrainz.data import db
+from critiquebrainz import db
 import sqlalchemy
 from datetime import datetime
 

@@ -40,6 +40,7 @@ def get(review_id, limit=1, offset=0):
          LEFT JOIN vote
                 ON vote.revision_id = revision.id
              WHERE review_id = :review_id
+          GROUP BY revision.id
           ORDER BY timestamp DESC
             OFFSET :offset
              LIMIT :limit

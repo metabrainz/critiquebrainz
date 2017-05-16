@@ -7,8 +7,6 @@ from sqlalchemy import desc
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
 from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.db.moderation_log import ACTION_HIDE_REVIEW
-from critiquebrainz.data.model.revision import Revision
-from critiquebrainz.data.model.vote import Vote
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, musicbrainz, soundcloud

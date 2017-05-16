@@ -1,5 +1,4 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.data import db
 import critiquebrainz.db.oauth_grant as db_oauth_grant
 import critiquebrainz.db.oauth_client as db_oauth_client
 from critiquebrainz.db.user import User
