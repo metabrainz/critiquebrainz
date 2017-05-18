@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, abort
+from flask import Blueprint, jsonify
 from critiquebrainz.db.review import supported_languages, ENTITY_TYPES
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions
@@ -18,11 +18,11 @@ REVIEW_CACHE_NAMESPACE = "Review"
 
 
 def get_review_or_404(review_id):
-    """Get a review using review ID or abort with error 404."""
+    """Get a review using review ID or raise error 404"""
     try:
         review = db_review.get_by_id(review_id)
     except db_exceptions.NoDataFoundException:
-        abort(404)
+        raise NotFound("Can't find a review with ID: {review_id}".format(review_id=review_id))
     return review
 
 

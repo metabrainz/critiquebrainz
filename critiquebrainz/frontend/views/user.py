@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, abort
+from flask import Blueprint, render_template, request, redirect, url_for
+from werkzeug.exceptions import NotFound
 from flask_babel import gettext
 from flask_login import login_required, current_user
 from critiquebrainz.db.moderation_log import ACTION_BLOCK_USER
@@ -21,7 +22,7 @@ def reviews(user_id):
     else:
         user = db_users.get_by_id(user_id)
         if not user:
-            abort(404)
+            raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
         user = User(user)
     page = int(request.args.get('page', default=1))
     if page < 1:
@@ -39,7 +40,7 @@ def reviews(user_id):
 def info(user_id):
     user = db_users.get_by_id(user_id)
     if not user:
-        abort(404)
+        raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
     user = User(user)
     return render_template('user/info.html', section='info', user=user)
 
@@ -50,7 +51,7 @@ def info(user_id):
 def block(user_id):
     user = db_users.get_by_id(user_id)
     if not user:
-        abort(404)
+        raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
 
     if user['is_blocked']:
         flash.info(gettext("This account is already blocked."))
@@ -73,7 +74,7 @@ def block(user_id):
 def unblock(user_id):
     user = db_users.get_by_id(user_id)
     if not user:
-        abort(404)
+        raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
     db_users.unblock(user['id'])
     flash.success(gettext("This user account has been unblocked."))
     return redirect(url_for('user.reviews', user_id=user['id']))
