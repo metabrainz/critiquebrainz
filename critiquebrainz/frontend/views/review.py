@@ -1,5 +1,5 @@
 from math import ceil
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
 from markdown import markdown
@@ -24,11 +24,11 @@ RESULTS_LIMIT = 10
 
 
 def get_review_or_404(review_id):
-    """Get a review using review ID or abort with error 404."""
+    """Get a review using review ID or raise error 404."""
     try:
         review = db_review.get_by_id(review_id)
     except db_exceptions.NoDataFoundException:
-        abort(404)
+        raise NotFound("Can't find a review with ID: {review_id}".format(review_id=review_id))
     return review
 
 

@@ -1,9 +1,10 @@
-from flask import Blueprint, jsonify, request, redirect, url_for, abort
+from flask import Blueprint, jsonify, request, redirect, url_for
 from critiquebrainz.db.user import User
-from critiquebrainz.db import users as db_users, exceptions as db_exceptions
+from critiquebrainz.db import users as db_users
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
+from critiquebrainz.ws.exceptions import NotFound
 
 user_bp = Blueprint('ws_user', __name__)
 
@@ -222,12 +223,11 @@ def user_entity_handler(user_id):
 
     :resheader Content-Type: *application/json*
     """
-    try:
-        user = User(db_user.get_by_id(str(user_id)))
-    except db_exceptions.NoDataFoundException:
-        abort(404)
+    user = db_users.get_by_id(str(user_id))
+    if not user:
+        raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
-    return jsonify(user=user.to_dict(inc))
+    return jsonify(user=User(user).to_dict(inc))
 
 
 @user_bp.route('/', methods=['GET'])
