@@ -45,3 +45,25 @@ def delete(*, id):
         """), {
             "id": id,
         })
+
+
+def list_licenses():
+    """Get a list of licenses in CritiqueBrainz.
+
+    Returns:
+        List of dictionaries with the following structure
+        {
+            "id": (str),
+            "info_url": (str),
+            "full_name": (str),
+        }
+    """
+    with db.engine.connect() as connection:
+        results = connection.execute(sqlalchemy.text("""
+            SELECT id,
+                   info_url,
+                   full_name
+              FROM license
+        """))
+        rows = results.fetchall()
+    return [dict(row) for row in rows]

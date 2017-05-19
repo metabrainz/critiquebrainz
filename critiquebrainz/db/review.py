@@ -575,3 +575,22 @@ def delete(review_id):
         """), {
             "review_id": review_id,
         })
+
+
+def distinct_entities():
+    """Get a list of ID(s) of entities reviewed on CritiqueBrainz.
+
+    Returns:
+        List of dictionaries of ID(s) of entities reviewed.
+        {
+            "entity_id": (uuid),
+        }
+    """
+    with db.engine.connect() as connection:
+        results = connection.execute(sqlalchemy.text("""
+            SELECT
+          DISTINCT entity_id
+              FROM review
+        """))
+        rows = results.fetchall()
+    return [dict(row) for row in rows]
