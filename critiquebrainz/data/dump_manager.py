@@ -6,7 +6,6 @@ from critiquebrainz import db
 from time import gmtime, strftime
 from datetime import datetime
 from functools import wraps
-import sqlalchemy
 import subprocess
 import tempfile
 import tarfile
@@ -18,7 +17,6 @@ import os
 
 
 cli = click.Group()
-
 
 def with_request_context(f):
     @wraps(f)
@@ -45,7 +43,8 @@ def full_db(location, rotate=False):
     create_path(location)
 
     FILE_PREFIX = "cb-backup-"
-    db_hostname, db_port, db_name, db_username, db_password = explode_db_uri(current_app.config['SQLALCHEMY_DATABASE_URI'])
+    db_hostname, db_port, db_name, db_username, db_password = \
+        explode_db_uri(current_app.config['SQLALCHEMY_DATABASE_URI'])
 
     print('Creating database dump in "%s"...' % location)
 
@@ -104,7 +103,7 @@ def json(location, rotate=False):
             # Finding release groups that have reviews with current license
             entities = db.review.distinct_entities()
             for entity in entities:
-                entity = str(entity["entity_id"])
+                entity = str(entity)
                 # Creating directory structure and dumping reviews
                 dir_part = os.path.join(entity[0:1], entity[0:2])
                 reviews = db.review.list_reviews(entity_id=entity, license_id=license["id"], limit=None)[0]
@@ -147,6 +146,9 @@ def public(location, rotate=False):
     print("Creating public database dump...")
     time_now = datetime.today()
 
+    connection = db.engine.raw_connection()
+    cursor = connection.cursor()
+
     # Creating a directory where all dumps will go
     dump_dir = os.path.join(location, time_now.strftime('%Y%m%d-%H%M%S'))
     create_path(dump_dir)
@@ -159,9 +161,6 @@ def public(location, rotate=False):
     with open(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), 'w') as f:
         f.write(str(db.SCHEMA_VERSION))
 
-    # Explode database uri
-    db_hostname, db_port, db_name, db_username, db_password = explode_db_uri(current_app.config['SQLALCHEMY_DATABASE_URI'])
-
     # BASE ARCHIVE
     # Archiving stuff that is independent from licenses (users, licenses)
     with tarfile.open(os.path.join(dump_dir, "cbdump.tar.bz2"), "w:bz2") as tar:
@@ -171,23 +170,10 @@ def public(location, rotate=False):
         # Dumping tables
         base_archive_tables_dir = os.path.join(base_archive_dir, 'cbdump')
         create_path(base_archive_tables_dir)
-
-        # Copying records from the user table
-        file_path = os.path.join(base_archive_tables_dir, 'user_sanitised')
-        result = subprocess.call("""
-            psql -h {} -p {} -U {} -d {} -a -c '\COPY "user"(id, created, display_name, musicbrainz_id) TO {} '
-        """.format(db_hostname, db_port, db_username, db_password, file_path), shell=True)
-        if result != 0:
-            raise Exception("Failed to create archives for table user!")
-
-        # Copying records from the license table
-        file_path = os.path.join(base_archive_tables_dir, 'license')
-        subprocess.call("""
-            psql -h {} -p {} -U {} -d {} -a -c "\COPY license TO {}"
-        """.format(db_hostname, db_port, db_username, db_password, file_path), shell=True)
-        if result != 0:
-            raise Exception("Failed to create archives for table license!")
-
+        with open(os.path.join(base_archive_tables_dir, 'user_sanitised'), 'w') as f:
+            cursor.copy_to(f, '"user"', columns=('id', 'created', 'display_name', 'musicbrainz_id'))
+        with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
+            cursor.copy_to(f, 'license', columns=('id', 'full_name', 'info_url'))
         tar.add(base_archive_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -211,29 +197,17 @@ def public(location, rotate=False):
         # Dumping tables
         reviews_combined_tables_dir = os.path.join(temp_dir, 'cbdump-reviews-all')
         create_path(reviews_combined_tables_dir)
-
         # Copying records from review table
-        file_path = os.path.join(reviews_combined_tables_dir, 'review')
-        result = subprocess.call("""
-            psql -h {} -p {} -U {} -d {} -a -c "\COPY (
+        with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
+            cursor.copy_to(f, """(
                 SELECT id, entity_id, entity_type, user_id, edits, is_draft,
                        is_hidden, license_id, language, source, source_url
                   FROM review
                  WHERE is_hidden = false
                    AND is_draft = false
-            ) TO {}"
-        """.format(db_hostname, db_port, db_username, db_password, file_path), shell=True)
-        if result != 0:
-            raise Exception("Failed to create archives for table review!")
-
-        # Copying records from revision table
-        file_path = os.path.join(reviews_combined_tables_dir, 'revision')
-        result = subprocess.call("""
-            psql -h {} -p {} -U {} -d {} -a -c "\COPY ( {REVISION_COMBINED_SQL} ) TO {}"
-        """.format(db_hostname, db_port, db_username, db_password, file_path, REVISION_COMBINED_SQL=REVISION_COMBINED_SQL), shell=True)
-        if result != 0:
-            raise Exception("Failed to create archives for table revision!")
-
+            )""")
+        with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
+            cursor.copy_to(f, "({sql})".format(sql=REVISION_COMBINED_SQL))
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -252,32 +226,18 @@ def public(location, rotate=False):
             # Dumping tables
             tables_dir = os.path.join(temp_dir, safe_name)
             create_path(tables_dir)
-
-            # Copying records from review table
-            file_path = os.path.join(tables_dir, 'review')
-            result = subprocess.call("""
-                psql -h {} -p {} -U {} -d {} -a -c "\COPY (
+            with open(os.path.join(tables_dir, 'review'), 'w') as f:
+                cursor.copy_to(f, """(
                     SELECT id, entity_id, entity_type, user_id, edits, is_draft,
                            is_hidden, license_id, language, source, source_url
                       FROM review
                      WHERE is_hidden = false
                        AND is_draft = false
                        AND license_id = '{license_id}'
-                ) TO {}"
-            """.format(db_hostname, db_port, db_username, db_password, file_path, license_id=license["id"]), shell=True)
-            if result != 0:
-                raise Exception("Failed to create archives for each license for the review table!")
-
-            # Copying records from revision_table
-            file_path = os.path.join(tables_dir, 'revision')
-
-            result = subprocess.call("""
-                psql -h {} -p {} -U {} -d {} -a -c "\COPY ( {REVISION_COMBINED_SQL} AND review.license_id = '{license_id}') TO {}"
-            """.format(db_hostname, db_port, db_username, db_password, file_path,
-                    REVISION_COMBINED_SQL=REVISION_COMBINED_SQL, license_id=license["id"]), shell=True)
-            if result != 0:
-                raise Exception("Failed to create archives for each license for the revision table!")
-
+                )""".format(license_id=license["id"]))
+            with open(os.path.join(tables_dir, 'revision'), 'w') as f:
+                cursor.copy_to(f, """({REVISION_COMBINED_SQL} AND review.license_id='{license_id}')"""
+                    .format(REVISION_COMBINED_SQL=REVISION_COMBINED_SQL, license_id=license["id"]))
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
@@ -288,6 +248,7 @@ def public(location, rotate=False):
         print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
 
     shutil.rmtree(temp_dir)  # Cleanup
+    connection.close()
 
     if rotate:
         print("Removing old dumps (except two latest)...")
@@ -332,8 +293,8 @@ def importer(archive):
                 sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
 
         # Importing data
-        import_data(os.path.join(temp_dir, 'cbdump', 'user_sanitised'), 'user',
-                    ('id', 'created', 'display_name', 'musicbrainz_id'))
+        import_data(os.path.join(temp_dir, 'cbdump', 'user_sanitised'), '"user"',
+            columns=('id', 'created', 'display_name', 'musicbrainz_id'))
         import_data(os.path.join(temp_dir, 'cbdump', 'license'), 'license')
         import_data(os.path.join(temp_dir, 'cbdump', 'review'), 'review')
         import_data(os.path.join(temp_dir, 'cbdump', 'revision'), 'revision')
@@ -344,45 +305,36 @@ def importer(archive):
 
 def import_data(file_name, tablename, columns=None):
 
-    if tablename == "user":
-        tablename = '"user"'
+    connection = db.engine.raw_connection()
+    try:
+        cursor = connection.cursor()
 
-    # Explode database uri
-    db_hostname, db_port, db_name, db_username, db_password = explode_db_uri(current_app.config['SQLALCHEMY_DATABASE_URI'])
-
-    # Checking if table already contains any data
-    with db.engine.connect() as connection:
-        count = connection.execute(sqlalchemy.text("""
+        # Checking if table already contains any data
+        cursor.execute("""
             SELECT COUNT(*)
               FROM {tablename}
-        """.format(tablename=tablename)))
-        count = count.fetchone()[0]
-    if count > 0:
-        print("Table %s already contains data. Skipping." % tablename)
-        return
-    # Checking if the specified file exists or if the file is empty
-    elif not os.path.exists(file_name) or os.stat(file_name).st_size == 0:
+        """.format(tablename=tablename))
+        count = cursor.fetchone()[0]
+        if count > 0:
+            print("Table %s already contains data. Skipping." % tablename)
+            return
+
+        # Checking if the specified file exists or if the file is empty
+        if not os.path.exists(file_name) or os.stat(file_name).st_size == 0:
             print("Can't find data file for %s table. Skipping." % tablename)
-    # and if it doesn't, trying to import data
-    else:
+            return
+
+        # and if it doesn't, trying to import data
         print("Importing data into %s table." % tablename)
-        try:
+        with open(file_name, 'r') as f:
             if columns:
-                result = subprocess.call("""
-                    psql -h {} -p {} -U {} -d {} -a -c '\COPY {tablename}({columns}) FROM {file_name}'
-                """.format(db_hostname, db_port, db_username, db_password, tablename=tablename,
-                        columns=", ".join(list(columns)), file_name=file_name), shell=True)
-                if result != 0:
-                    raise Exception("Failed to copy data for table %s" % tablename)
+                cursor.copy_from(f, tablename, columns=columns)
             else:
-                result = subprocess.call("""
-                    psql -h {} -p {} -U {} -d {} -a -c '\COPY {tablename} FROM {file_name}'
-                """.format(db_hostname, db_port, db_username, db_password, tablename=tablename,
-                        file_name=file_name), shell=True)
-                if result != 0:
-                    raise Exception("Failed to copy data for table %s" % tablename)
-        except Exception as exception:
-            sys.exit("Failed to import data with exception: %s" % exception)
+                cursor.copy_from(f, tablename)
+            connection.commit()
+
+    finally:
+        connection.close()
 
 
 class DumpJSONEncoder(JSONEncoder):

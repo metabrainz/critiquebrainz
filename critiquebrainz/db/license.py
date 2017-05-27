@@ -48,7 +48,7 @@ def delete(*, id):
 
 
 def list_licenses():
-    """Get a list of licenses in CritiqueBrainz.
+    """Get a list of licenses.
 
     Returns:
         List of dictionaries with the following structure
@@ -65,5 +65,4 @@ def list_licenses():
                    full_name
               FROM license
         """))
-        rows = results.fetchall()
-    return [dict(row) for row in rows]
+        return [dict(row) for row in results.fetchall()]

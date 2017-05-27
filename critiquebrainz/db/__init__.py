@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.pool import NullPool
 
 # This value must be incremented after schema changes on exported tables!
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 1
 
 engine = None
 
