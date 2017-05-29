@@ -42,7 +42,7 @@ def browse():
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
-    reviews, count = db_review.list_reviews(sort='created', limit=limit, offset=offset)
+    reviews, count = db_review.list_reviews(sort='created', limit=limit, offset=offset, entity_type=entity_type)
     if not reviews:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count/limit))))
