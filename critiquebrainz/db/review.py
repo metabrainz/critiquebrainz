@@ -578,15 +578,14 @@ def delete(review_id):
 
 
 def distinct_entities():
-    """Get a list of ID(s) of entities reviewed.
+    """Get a set of ID(s) of entities reviewed.
 
     Returns:
-        List of ID(s) of distinct entities reviewed.
-
+        Set of ID(s) of distinct entities reviewed.
     """
     with db.engine.connect() as connection:
         results = connection.execute(sqlalchemy.text("""
             SELECT DISTINCT entity_id
               FROM review
         """))
-        return [row[0] for row in results.fetchall()]
+        return {row[0] for row in results.fetchall()}

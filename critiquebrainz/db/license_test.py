@@ -28,7 +28,6 @@ class LicenseTestCase(DataTestCase):
             info_url="www.example.com",
         )
         licenses = db_license.list_licenses()
-        self.assertEqual(len(licenses), 1)
         self.assertDictEqual({
             "id": "test",
             "full_name": "Test license",

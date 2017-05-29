@@ -1,12 +1,14 @@
 from flask import current_app, jsonify
 from flask.json import JSONEncoder
 from critiquebrainz.data.utils import create_path, remove_old_archives, get_columns, slugify, explode_db_uri
+from critiquebrainz.db import license as db_license, review as db_review
 from critiquebrainz import frontend
 from critiquebrainz import db
 from time import gmtime, strftime
 from datetime import datetime
 from functools import wraps
 import subprocess
+import sqlalchemy
 import tempfile
 import tarfile
 import shutil
@@ -18,12 +20,63 @@ import os
 
 cli = click.Group()
 
+
+_TABLES = {
+    "review": (
+        "id",
+        "entity_id",
+        "entity_type",
+        "user_id",
+        "edits",
+        "is_draft",
+        "is_hidden",
+        "license_id",
+        "language",
+        "source",
+        "source_url",
+    ),
+    "revision": (
+        "id",
+        "review_id",
+        "timestamp",
+        "text",
+    ),
+    "license": (
+        "id",
+        "full_name",
+        "info_url",
+    ),
+    "user": (
+        "id",
+        "display_name",
+        "email",
+        "created",
+        "musicbrainz_id",
+        "show_gravatar",
+        "is_blocked",
+        "spam_reports",
+        "clients",
+        "grants",
+        "tokens"
+    ),
+}
+
+
 def with_request_context(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         with frontend.create_app().test_request_context():
             return f(*args, **kwargs)
     return decorated
+
+
+def has_data(table_name):
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT COUNT(*)
+              FROM "{table_name}"
+        """.format(table_name=table_name)))
+        return result.fetchone()[0] > 0
 
 
 @cli.command()
@@ -92,7 +145,7 @@ def json(location, rotate=False):
     current_app.json_encoder = DumpJSONEncoder
 
     print("Creating new archives...")
-    for license in db.license.list_licenses():
+    for license in db_license.list_licenses():
         safe_name = slugify(license["id"])
         with tarfile.open(os.path.join(location, "critiquebrainz-%s-%s-json.tar.bz2" %
                 (datetime.today().strftime('%Y%m%d'), safe_name)), "w:bz2") as tar:
@@ -100,18 +153,18 @@ def json(location, rotate=False):
             license_dir = os.path.join(temp_dir, safe_name)
             create_path(license_dir)
 
-            # Finding release groups that have reviews with current license
-            entities = db.review.distinct_entities()
+            # Finding entities that have reviews with current license
+            entities = db_review.distinct_entities()
             for entity in entities:
                 entity = str(entity)
                 # Creating directory structure and dumping reviews
                 dir_part = os.path.join(entity[0:1], entity[0:2])
-                reviews = db.review.list_reviews(entity_id=entity, license_id=license["id"], limit=None)[0]
+                reviews = db_review.list_reviews(entity_id=entity, license_id=license["id"], limit=None)[0]
                 if len(reviews) > 0:
                     rg_dir = '%s/%s' % (license_dir, dir_part)
                     create_path(rg_dir)
                     f = open('%s/%s.json' % (rg_dir, entity), 'w+')
-                    f.write(jsonify(reviews=[db.review.to_dict(r) for r in reviews]).data.decode("utf-8"))
+                    f.write(jsonify(reviews=[db_review.to_dict(r) for r in reviews]).data.decode("utf-8"))
                     f.close()
 
             tar.add(license_dir, arcname='reviews')
@@ -173,7 +226,7 @@ def public(location, rotate=False):
         with open(os.path.join(base_archive_tables_dir, 'user_sanitised'), 'w') as f:
             cursor.copy_to(f, '"user"', columns=('id', 'created', 'display_name', 'musicbrainz_id'))
         with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
-            cursor.copy_to(f, 'license', columns=('id', 'full_name', 'info_url'))
+            cursor.copy_to(f, 'license', columns=_TABLES["license"])
         tar.add(base_archive_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -189,23 +242,18 @@ def public(location, rotate=False):
 
     # 1. COMBINED
     # Archiving all reviews (any license)
-    REVISION_COMBINED_SQL = "SELECT revision.id, revision.review_id, timestamp, text " \
-                            "FROM revision JOIN review " \
-                            "ON review.id = revision.review_id " \
-                            "WHERE review.is_hidden = false AND review.is_draft = false "
+    REVISION_COMBINED_SQL = """
+        SELECT {columns} FROM revision JOIN review
+            ON review.id = revision.review_id
+         WHERE review.is_hidden = false AND review.is_draft = false
+    """.format(columns=', '.join(['revision.' + col for col in _TABLES["revision"]]))
     with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-all.tar.bz2"), "w:bz2") as tar:
         # Dumping tables
         reviews_combined_tables_dir = os.path.join(temp_dir, 'cbdump-reviews-all')
         create_path(reviews_combined_tables_dir)
-        # Copying records from review table
         with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
-            cursor.copy_to(f, """(
-                SELECT id, entity_id, entity_type, user_id, edits, is_draft,
-                       is_hidden, license_id, language, source, source_url
-                  FROM review
-                 WHERE is_hidden = false
-                   AND is_draft = false
-            )""")
+            cursor.copy_to(f, "(SELECT {columns} FROM review WHERE is_hidden = false AND is_draft = false)"
+                          .format(columns=', '.join(_TABLES["review"])))
         with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
             cursor.copy_to(f, "({sql})".format(sql=REVISION_COMBINED_SQL))
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
@@ -220,7 +268,7 @@ def public(location, rotate=False):
 
     # 2. SEPARATE
     # Creating separate archives for each license
-    for license in db.license.list_licenses():
+    for license in db_license.list_licenses():
         safe_name = slugify(license["id"])
         with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-%s.tar.bz2" % safe_name), "w:bz2") as tar:
             # Dumping tables
@@ -228,13 +276,12 @@ def public(location, rotate=False):
             create_path(tables_dir)
             with open(os.path.join(tables_dir, 'review'), 'w') as f:
                 cursor.copy_to(f, """(
-                    SELECT id, entity_id, entity_type, user_id, edits, is_draft,
-                           is_hidden, license_id, language, source, source_url
+                    SELECT {columns}
                       FROM review
                      WHERE is_hidden = false
                        AND is_draft = false
                        AND license_id = '{license_id}'
-                )""".format(license_id=license["id"]))
+                )""".format(columns=', '.join(_TABLES["review"]), license_id=license["id"]))
             with open(os.path.join(tables_dir, 'revision'), 'w') as f:
                 cursor.copy_to(f, """({REVISION_COMBINED_SQL} AND review.license_id='{license_id}')"""
                     .format(REVISION_COMBINED_SQL=REVISION_COMBINED_SQL, license_id=license["id"]))
@@ -293,7 +340,7 @@ def importer(archive):
                 sys.exit("Failed to open SCHEMA_SEQUENCE file. Error: %s" % exception)
 
         # Importing data
-        import_data(os.path.join(temp_dir, 'cbdump', 'user_sanitised'), '"user"',
+        import_data(os.path.join(temp_dir, 'cbdump', 'user_sanitised'), 'user',
             columns=('id', 'created', 'display_name', 'musicbrainz_id'))
         import_data(os.path.join(temp_dir, 'cbdump', 'license'), 'license')
         import_data(os.path.join(temp_dir, 'cbdump', 'review'), 'review')
@@ -303,34 +350,28 @@ def importer(archive):
         print("Done!")
 
 
-def import_data(file_name, tablename, columns=None):
+def import_data(file_name, table_name, columns=None):
 
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
 
         # Checking if table already contains any data
-        cursor.execute("""
-            SELECT COUNT(*)
-              FROM {tablename}
-        """.format(tablename=tablename))
-        count = cursor.fetchone()[0]
-        if count > 0:
-            print("Table %s already contains data. Skipping." % tablename)
+        if has_data(table_name):
+            print("Table %s already contains data. Skipping." % table_name)
             return
 
         # Checking if the specified file exists or if the file is empty
         if not os.path.exists(file_name) or os.stat(file_name).st_size == 0:
-            print("Can't find data file for %s table. Skipping." % tablename)
+            print("Can't find data file for %s table. Skipping." % table_name)
             return
 
         # and if it doesn't, trying to import data
-        print("Importing data into %s table." % tablename)
+        print("Importing data into %s table." % table_name)
         with open(file_name, 'r') as f:
-            if columns:
-                cursor.copy_from(f, tablename, columns=columns)
-            else:
-                cursor.copy_from(f, tablename)
+            if columns is None:
+                columns = _TABLES[table_name]
+            cursor.copy_from(f, '"{table_name}"'.format(table_name=table_name), columns=columns)
             connection.commit()
 
     finally:
