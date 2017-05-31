@@ -34,17 +34,9 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 
-# Node dependencies
-COPY ./package.json /code/
-COPY ./npm-shrinkwrap.json /code/
-RUN npm install
-
 COPY . /code/
 
 # Compile translations
 RUN pybabel compile -d critiquebrainz/frontend/translations
-
-# Build static files
-RUN ./node_modules/.bin/gulp
 
 CMD python3 manage.py runserver -h 0.0.0.0 -p 80 -d
