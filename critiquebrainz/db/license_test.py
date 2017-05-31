@@ -20,3 +20,16 @@ class LicenseTestCase(DataTestCase):
             info_url="www.example.com",
         )
         db_license.delete(id=license["id"])
+
+    def test_list_licenses(self):
+        license = db_license.create(
+            id="test",
+            full_name="Test license",
+            info_url="www.example.com",
+        )
+        licenses = db_license.list_licenses()
+        self.assertDictEqual({
+            "id": "test",
+            "full_name": "Test license",
+            "info_url":"www.example.com"
+        }, licenses[0])

@@ -15,6 +15,10 @@ class ReviewTestCase(DataTestCase):
         self.user = User(db_users.get_or_create("Tester", new_user_data={
             "display_name": "test user",
         }))
+        self.user_2 = User(db_users.get_or_create("Tester 2", new_user_data={
+            "display_name": "test user 2",
+        }))
+
         # And license
         self.license = db_license.create(
             id=u'Test',
@@ -212,3 +216,23 @@ class ReviewTestCase(DataTestCase):
         )
         count = db_review.get_count(is_draft=False, is_hidden=False)
         self.assertEqual(count, 1)
+
+    def test_distinct_entities(self):
+        review = db_review.create(
+            user_id=self.user.id,
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            text="Awesome",
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        review = db_review.create(
+            user_id=self.user_2.id,
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            text="Awesome Album",
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        entities = db_review.distinct_entities()
+        self.assertEqual(len(entities), 1)
