@@ -1,9 +1,7 @@
-from critiquebrainz.data import db
 import critiquebrainz.db.license as db_license
 
 
-def install(app, *args):
-    db.init_app(app)
+def install(*args):
     for arg in args:
         if arg == LicenseData:
             for key, entity in arg.__dict__.items():
