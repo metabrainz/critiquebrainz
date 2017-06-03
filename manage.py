@@ -108,7 +108,7 @@ def init_db(skip_create_db=False):
     click.echo("Adding fixtures... ")
     app = frontend.create_app()
     with app.app_context():
-        _fixtures.install(app, *_fixtures.all_data)
+        _fixtures.install(*_fixtures.all_data)
     click.echo("Done!")
 
     click.echo("Initialization has been completed!")

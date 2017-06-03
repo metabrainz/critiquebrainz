@@ -1,11 +1,11 @@
-from critiquebrainz.data.model.mixins import DeleteMixin, AdminMixin
+from critiquebrainz.data.mixins import AdminMixin
 import critiquebrainz.db.users as db_users
 import hashlib
 from critiquebrainz.data.constants import user_types
 from datetime import date, datetime, timedelta
 
 
-class User(AdminMixin, DeleteMixin):
+class User(AdminMixin):
 
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user_type', 'stats')
