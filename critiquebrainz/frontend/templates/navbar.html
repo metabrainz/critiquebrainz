@@ -48,10 +48,11 @@
       </ul>
       <form class="navbar-form navbar-right" role="search" method="GET" action="{{ url_for('search.index') }}">
         <div class="form-group">
-          <input type="text" name="query" class="form-control input-sm" placeholder="{{ _('Search') }}">
+          <input id="navbar-search" type="text" name="query" class="form-control input-sm" placeholder="{{ _('Search') }}">
         </div>
         <div class="form-group">
           <select id="type-selector" name="type" class="form-control input-sm">
+            <option value="" selected disabled>{{ _('Select search type') }}</option>
             <option value="artist">{{ _('Artist') }}</option>
             <option value="release-group">{{ _('Release group') }}</option>
             <option value="event">{{ _('Event') }}</option>
@@ -63,3 +64,62 @@
     </div>
   </div>
 </nav>
+
+<script type="text/javascript">
+ 
+function driverFunction(mediaQuery) {
+  // @media (min-width: @grid-float-breakpoint)
+  if (mediaQuery.matches) {
+    searchBox.style.display = 'none';
+    searchBox.setAttribute("onblur", "focusOut()");
+    typeSelect.setAttribute("onchange", "selectOption()");
+  }
+  else {
+    searchBox.style.display = 'inline-block';
+    searchBox.removeAttribute("onblur");
+    typeSelect.removeAttribute("onchange");
+  }
+}
+
+// On selecting one of the search options, type-selector disappears
+// And searchBox appears with relevant placeholder
+function selectOption() {
+  var optionValue = typeSelect.value;
+  typeSelect.style.display = 'none';
+  searchBox.style.display = 'inline-block';
+  searchBox.focus();
+   
+  switch(optionValue){
+   case 'artist': 
+      searchBox.placeholder = "{{ _('Search') }}" + " " + "{{ _('artist') }}";
+      break;
+    case 'release-group':
+      searchBox.placeholder = "{{ _('Search') }}" + " " + "{{ _('release group') }}";
+      break;
+    case 'event': 
+      searchBox.placeholder = "{{ _('Search') }}" + " " + "{{ _('event') }}";
+      break;
+    case 'place':
+      searchBox.placeholder = "{{ _('Search') }}" + " " + "{{ _('place') }}";
+      break;
+  }
+   
+}
+
+// On leaving the search field, type-selector appears again
+function focusOut() {
+  typeSelect.style.display = 'inline-block';
+  typeSelect.value = '';
+  searchBox.style.display = 'none';
+}
+ 
+var searchBox = document.getElementById("navbar-search");
+var typeSelect = document.getElementById("type-selector");
+var mediaQuery = window.matchMedia("(min-width: 992px)");
+
+// Call listener function at run time
+driverFunction(mediaQuery);    
+// Attach listener function on state changes                        
+mediaQuery.addListener(driverFunction);             
+ 
+</script>
