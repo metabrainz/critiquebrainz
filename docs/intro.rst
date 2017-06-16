@@ -44,19 +44,17 @@ Then you can build all the services::
 
    $ docker-compose -f docker/docker-compose.dev.yml build
 
-You need MusicBrainz database containing all the MusicBrainz music metadata for setting up your application. Data dumps provided from https://musicbrainz.org can be downloaded from https://musicbrainz.org/doc/MusicBrainz_Database/Download. ``mbdump.tar.bz2`` is the core MusicBrainz database including the tables for artist, release groups etc. ``mbdump-derived.tar.bz2`` contains annotations, user tags and search indexes. The core and the derived database covers almost all the data required for a CritiqueBrainz server.
+You need MusicBrainz database containing all the MusicBrainz music metadata for setting up your application. Data dumps provided from https://musicbrainz.org can be downloaded from https://musicbrainz.org/doc/MusicBrainz_Database/Download. ``mbdump.tar.bz2`` is the core MusicBrainz database including the tables for artist, release groups etc. ``mbdump-derived.tar.bz2`` contains annotations, user tags and search indexes. The core and the derived database covers all the data required for a CritiqueBrainz server.
 
 Then you can create and populate the database::
 
    $ docker-compose -f docker/docker-compose.dev.yml run -v $DUMPS_DIR:/home/musicbrainz/musicbrainz-server -v $PWD/data/mbdata:/var/lib/postgresql/data/pgdata musicbrainz_db
 
-**Note** ``DUMP_DIR`` should be set to the path containing the downloaded dumps.
+**Note** ``DUMPS_DIR`` should be set to the path containing the downloaded dumps.
 
-You can skip downloading the dumps separately. Get the dumps, create and populate the database using::
+You can automatically download ``mbdump.tar.bz2`` and ``mbdump-derived.tar.bz2`` and import them by not specifying a volume::
 
-   $ docker-compose -f docker/docker-compose.dev.yml run -v $PWD/data/mbdata:/var/lib/postgresql/data/pgdata musicbrainz_db
-
-**Note** The above command downloads only the latest ``mbdump.tar.bz2`` and ``mbdump-derived.tar.bz2`` dumps for populating the database.
+   $ docker-compose -f docker/docker-compose.dev.yml run musicbrainz_db
 
 Initialization of CritiqueBrainz database is also required::
 
@@ -65,12 +63,6 @@ Initialization of CritiqueBrainz database is also required::
 Then you can start all the services::
 
    $ docker-compose -f docker/docker-compose.dev.yml up -d
-
-**Note** Alternative way to build, download and import dumps for MusicBrainz database and run all services::
-
-   $ docker-compose -f docker/docker-compose.dev.yml up -d --build
-
-This will set up the MusicBrainz database by downloading the dumps. The first time after this is run, initialization of CritiqueBrainz database is also required.
 
 Building static files
 '''''''''''''''''''''
