@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
-from critiquebrainz.frontend.external import musicbrainz
+import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
+import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.db.review as db_review
 from werkzeug.exceptions import NotFound
 
@@ -11,8 +12,9 @@ place_bp = Blueprint('place', __name__)
 @place_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    place = musicbrainz.get_place_by_id(id)
-    if not place:
+    try:
+        place = mb_place.get_place_by_id(id)
+    except mb_exceptions.NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find a place with that MusicBrainz ID."))
 
     if current_user.is_authenticated:
