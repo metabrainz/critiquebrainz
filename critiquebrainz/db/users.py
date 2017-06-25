@@ -611,17 +611,23 @@ def tokens(user_id):
             "refresh_token": (str),
             "expires": (datetime),
             "scopes": (str)
+            "client_name": (str),
+            "client_website": (str),
         }
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT id,
-                   client_id,
-                   access_token,
-                   refresh_token,
-                   expires,
-                   scopes
+            SELECT oauth_token.id,
+                   oauth_token.client_id,
+                   oauth_token.access_token,
+                   oauth_token.refresh_token,
+                   oauth_token.expires,
+                   oauth_token.scopes,
+                   oauth_client.name AS client_name,
+                   oauth_client.website AS client_website
               FROM oauth_token
+              JOIN oauth_client
+                ON oauth_token.client_id = oauth_client.client_id
              WHERE user_id = :user_id
         """), {
             "user_id": user_id

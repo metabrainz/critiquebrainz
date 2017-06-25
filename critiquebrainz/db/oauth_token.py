@@ -64,13 +64,15 @@ def list_tokens(*, client_id=None, refresh_token=None, access_token=None, limit=
             "expires": (datetime),
             "user_id": (uuid),
             "scopes": (str),
+            "client_name": (str),
+            "client_website": (str),
         }
     """
     filters = []
     filter_data = {}
 
     if client_id is not None:
-        filters.append("client_id = :client_id")
+        filters.append("oauth_token.client_id = :client_id")
         filter_data["client_id"] = client_id
     if refresh_token is not None:
         filters.append("refresh_token = :refresh_token")
@@ -88,14 +90,18 @@ def list_tokens(*, client_id=None, refresh_token=None, access_token=None, limit=
 
     with db.engine.connect() as connection:
         results = connection.execute(sqlalchemy.text("""
-            SELECT id,
-                   client_id,
-                   access_token,
-                   refresh_token,
-                   expires,
-                   user_id,
-                   scopes
+            SELECT oauth_token.id,
+                   oauth_token.client_id,
+                   oauth_token.access_token,
+                   oauth_token.refresh_token,
+                   oauth_token.expires,
+                   oauth_token.user_id,
+                   oauth_token.scopes,
+                   oauth_client.name AS client_name,
+                   oauth_client.website AS client_website
               FROM oauth_token
+              JOIN oauth_client
+                ON oauth_token.client_id = oauth_client.client_id
               {where_clause}
              LIMIT :limit
             OFFSET :offset
