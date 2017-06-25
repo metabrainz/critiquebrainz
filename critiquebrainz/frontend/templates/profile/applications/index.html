@@ -60,8 +60,8 @@
       <tbody>
         {% for token in tokens %}
           <tr>
-            <td><b>{{ token.client.name }}</b></td>
-            <td>{{ token.client.website }}</td>
+            <td><b>{{ token.client_name }}</b></td>
+            <td>{{ token.client_website }}</td>
             <td>
               {% if token.scopes %}
                 <ul>
@@ -76,7 +76,7 @@
               {% endif %}
             </td>
             <td>
-              <a class="btn btn-danger btn-xs" href="{{ url_for('profile_applications.token_delete', client_id=token.client.client_id) }}">{{ _('Revoke access') }}</a>
+              <a class="btn btn-danger btn-xs" href="{{ url_for('profile_applications.token_delete', client_id=token.client_id) }}">{{ _('Revoke access') }}</a>
             </td>
           </tr>
         {% endfor %}
