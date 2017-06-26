@@ -6,6 +6,8 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.vote as db_vote
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.oauth_client as db_oauth_client
+import critiquebrainz.db.oauth_token as db_oauth_token
 from datetime import datetime, date, timedelta
 from uuid import UUID
 
@@ -153,3 +155,36 @@ class UserTestCase(DataTestCase):
         # Review should not exist
         reviews = db_users.get_reviews(self.author.id)
         self.assertEqual(len(reviews), 0)
+
+    def test_user_clients(self):
+        db_oauth_client.create(
+            user_id=self.user1.id,
+            name="Some Application",
+            desc="Created for some purpose",
+            website="https://example.com",
+            redirect_uri="https://example.com/redirect/",
+        )
+        client = db_users.clients(self.user1.id)[0]
+        self.assertEqual(client["name"], "Some Application")
+        self.assertEqual(client["website"], "https://example.com")
+
+    def test_user_tests(self):
+        db_oauth_client.create(
+            user_id=self.user1.id,
+            name="Some Application",
+            desc="Created for some purpose",
+            website="https://example.com",
+            redirect_uri="https://example.com/redirect/",
+        )
+        client = db_users.clients(self.user1.id)[0]
+        oauth_token = db_oauth_token.create(
+            client_id=client["client_id"],
+            access_token="Test Access Token",
+            refresh_token="Test Refresh Token",
+            expires=datetime.now() + timedelta(seconds=200),
+            user_id=self.user1.id,
+            scopes=None,
+        )
+        tokens = db_users.tokens(self.user1.id)
+        self.assertEqual(tokens[0]["client_name"], "Some Application")
+        self.assertEqual(tokens[0]["refresh_token"], "Test Refresh Token")
