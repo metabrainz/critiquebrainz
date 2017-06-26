@@ -628,7 +628,7 @@ def tokens(user_id):
               FROM oauth_token
               JOIN oauth_client
                 ON oauth_token.client_id = oauth_client.client_id
-             WHERE user_id = :user_id
+             WHERE oauth_token.user_id = :user_id
         """), {
             "user_id": user_id
         })
