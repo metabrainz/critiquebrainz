@@ -6,7 +6,7 @@ ALTER TABLE oauth_grant ADD CONSTRAINT oauth_grant_pkey PRIMARY KEY (id);
 ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_pkey PRIMARY KEY (id);
 ALTER TABLE review ADD CONSTRAINT review_pkey PRIMARY KEY (id);
 ALTER TABLE revision ADD CONSTRAINT revision_pkey PRIMARY KEY (id);
-ALTER TABLE avg_rating ADD CONSTRAINT avg_rating_pkey PRIMARY KEY (entity_id);
+ALTER TABLE avg_rating ADD CONSTRAINT avg_rating_pkey PRIMARY KEY (entity_id, entity_type);
 ALTER TABLE spam_report ADD CONSTRAINT spam_report_pkey PRIMARY KEY (user_id, revision_id);
 ALTER TABlE "user" ADD CONSTRAINT user_pkey PRIMARY KEY (id);
 ALTER TABlE vote ADD CONSTRAINT vote_pkey PRIMARY KEY (user_id, revision_id);

@@ -12,7 +12,7 @@ CREATE TABLE avg_rating (
     entity_type entity_types NOT NULL,
     rating      SMALLINT     NOT NULL CHECK (rating >= 0 AND rating <= 100),
     count       INTEGER      NOT NULL,
-    PRIMARY KEY (entity_id)
+    PRIMARY KEY (entity_id, entity_type)
 );
 
 COMMIT;
