@@ -1,6 +1,19 @@
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 
-RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'event', 'recording', 'release', 'release-group', 'series', 'url', 'work', 'instrument']
+RELATABLE_TYPES = [
+    'area',
+    'artist',
+    'label',
+    'place',
+    'event',
+    'recording',
+    'release',
+    'release-group',
+    'series',
+    'url',
+    'work',
+    'instrument'
+]
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
 TAG_INCLUDES = ["tags", "user-tags"]
 RATING_INCLUDES = ["ratings", "user-ratings"]

@@ -12,19 +12,19 @@ DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60 # seconds (12 hours)
 THREAD_POOL_PROCESSES = 10
 
 
-def get_place_by_id(id):
+def get_place_by_id(mbid):
     """Get place with the MusicBrainz ID.
 
     Args:
-        id (uuid): MBID(gid) of the place.
+        mbid (uuid): MBID(gid) of the place.
     Returns:
         Dictionary containing the place information.
     """
-    key = cache.gen_key(id)
+    key = cache.gen_key(mbid)
     place = cache.get(key)
     if not place:
         place = _get_place_by_id(
-            id, includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
+            mbid, includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
         )
     cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
     return place
