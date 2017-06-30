@@ -1,5 +1,3 @@
-import os
-
 {{- define "KEY" -}}
     {{ key (printf "docker-server-configs/CB/config.%s.json/%s" (env "DEPLOY_ENV") .) }}
 {{- end -}}
@@ -7,15 +5,16 @@ import os
     {{- range $index, $element := (key (printf "docker-server-configs/CB/config.%s.json/%s" (env "DEPLOY_ENV") .) | parseJSON) -}}
         "{{.}}",
     {{- end -}}
-{{- end -}}
+{{- end }}
+
+import os
 
 SECRET_KEY = '''{{template "KEY" "secret_key"}}'''
 
 LOG_SENTRY = {
     'dsn': '''{{template "KEY" "sentry/dsn_private"}}''',
     'environment': '''{{template "KEY" "sentry/environment"}}''',
-    'release': os.getenv('GIT_SHA', None)
-,
+    'release': os.getenv('GIT_SHA', None),
 }
 SENTRY_DSN_PUBLIC = '''{{template "KEY" "sentry_dsn_public"}}'''
 
