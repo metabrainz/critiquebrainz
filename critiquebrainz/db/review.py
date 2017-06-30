@@ -267,9 +267,10 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO review
-            VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft,
-            :is_hidden, :license_id, :language, :source, :source_url)
+            INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft,
+                        is_hidden, license_id, language, source, source_url)
+                 VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft,
+                        :is_hidden, :license_id, :language, :source, :source_url)
          RETURNING id;
        """), {
            "id": str(uuid.uuid4()),
@@ -484,7 +485,6 @@ def get_popular(limit=None):
     """
     cache_key = cache.gen_key("popular_reviews", limit)
     reviews = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
-    reviews = None
     defined_limit = 4 * limit if limit else None
 
     if not reviews:

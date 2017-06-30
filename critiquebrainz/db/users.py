@@ -148,7 +148,7 @@ def create(**user_data):
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO "user"
+            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar, is_blocked)
                  VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar, :is_blocked)
               RETURNING id
             """), {

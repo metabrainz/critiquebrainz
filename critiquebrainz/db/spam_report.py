@@ -79,7 +79,7 @@ def create(revision_id, user_id, reason):
     """
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
-            INSERT INTO spam_report
+            INSERT INTO spam_report (user_id, reason, revision_id, reported_at, is_archived)
                  VALUES (:user_id, :reason, :revision_id, :reported_at, :is_archived)
             """), {
                 "user_id": str(user_id),
