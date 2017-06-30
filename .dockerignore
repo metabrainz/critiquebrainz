@@ -23,8 +23,9 @@ pip-delete-this-directory.txt
 # Application data
 /data
 
-# Configuration generated from Consul's KV storage
+# Configuration
 /consul_config.py
+/custom_config.py
 
 # Test results
 htmlcov
