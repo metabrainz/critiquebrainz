@@ -66,4 +66,7 @@ ADD ./docker/prod/cron/jobs /tmp/crontab
 RUN crontab /tmp/crontab
 RUN rm /tmp/crontab
 
+ARG GIT_COMMIT_SHA
+ENV GIT_SHA ${GIT_COMMIT_SHA}
+
 EXPOSE 13032
