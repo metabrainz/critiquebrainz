@@ -124,3 +124,12 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.client.put('/review/%s/vote' % review["id"], headers=self.header(self.another_user), data=json.dumps(vote))
         resp = self.client.delete('/review/%s/vote' % review["id"], headers=self.header(self.another_user))
         self.assert200(resp)
+
+    def test_revision_entity_handler(self):
+        review = self.create_dummy_review()
+        resp = self.client.get('/review/%s/revisions/1' % review["id"])
+        self.assert200(resp)
+        data = dict(text="This is an updated review")
+        resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
+        resp = self.client.get('/review/%s/revisions/2' % review["id"])
+        self.assert200(resp)

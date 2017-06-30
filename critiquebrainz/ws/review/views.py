@@ -167,7 +167,7 @@ def review_revision_entity_handler(review_id, rev):
     if rev > count:
         raise NotFound("Can't find the revision you are looking for.")
 
-    revision = db_revision.get(review_id, offset=count-rev)
+    revision = db_revision.get(review_id, offset=count-rev)[0]
     revision.update(id=rev)
     return jsonify(revision=revision)
 
