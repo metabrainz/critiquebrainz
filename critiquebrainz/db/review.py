@@ -182,9 +182,7 @@ def get_count(*, is_draft=False, is_hidden=False):
         return result.fetchone()[0]
 
 
-def update(*, review_id, drafted, text, license_id=None,
-           language=None, is_draft=None):
-    """Update contents of a review.
+def update(review_id, *, drafted, text, license_id=None, language=None, is_draft=None):
     # TODO: Get rid of `drafted` argument. This information about review should be retrieved inside this function.
     """Update a review.
 
