@@ -295,10 +295,9 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
            "source": source,
            "source_url": source_url,
         })
-
         review_id = result.fetchone()[0]
-        review_revision = db_revision.create(review_id, text)
         # TODO(roman): It would be better to create review and revision in one transaction
+        db_revision.create(review_id, text)
         cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
     return get_by_id(review_id)
 
