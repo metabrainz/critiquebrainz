@@ -495,7 +495,6 @@ def get_popular(limit=None):
     """
     cache_key = cache.gen_key("popular_reviews", limit)
     reviews = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
-    reviews = None
     defined_limit = 4 * limit if limit else None
 
     if not reviews:
