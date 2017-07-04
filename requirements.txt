@@ -8,6 +8,7 @@ Flask-SQLAlchemy==2.2
 Flask-Testing==0.6.2
 Flask-WTF==0.14.2
 Markdown==2.6.8
+mbdata==2017.6.2
 musicbrainzngs==0.6
 pytest==3.1.2
 pytest-cov==2.5.1
