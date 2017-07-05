@@ -7,8 +7,8 @@ from flask_babel import lazy_gettext
 
 def process(release_group):
     """Handles processing supported relation lists."""
-    if 'url-relation-list' in release_group and release_group['url-relation-list']:
-        release_group['external-urls'] = _url(release_group['url-relation-list'])
+    if 'url-rels' in release_group and release_group['url-rels']:
+        release_group['external-urls'] = _url(release_group['url-rels'])
     return release_group
 
 

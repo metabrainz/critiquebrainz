@@ -13,6 +13,9 @@
     {% for credit in release_group['artist-credit'] %}
       {% if credit.artist %}
         {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', mbid=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
+        {% if credit.join_phrase %}
+          {% do artist.append(credit.join_phrase) %}
+        {% endif %}
       {% else %}
         {% do artist.append(credit) %}
       {% endif %}
@@ -20,8 +23,8 @@
 
     {{ _('%(album)s by %(artist)s', album = release_group.title, artist = artist|join()) }}
 
-    {% if release_group['first-release-date'] %}
-      <small>{{ release_group['first-release-date'][:4] }}</small>
+    {% if release_group['first-release-year'] %}
+      <small>{{ release_group['first-release-year'] }}</small>
     {% endif %}
   </h2>
 
