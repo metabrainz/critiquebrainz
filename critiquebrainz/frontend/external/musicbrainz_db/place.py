@@ -24,30 +24,44 @@ def get_place_by_id(mbid):
     key = cache.gen_key(mbid)
     place = cache.get(key)
     if not place:
-        place = _get_place_by_id(
-            mbid, includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
-        )
+        place = fetch_multiple_places(
+            mbids=[mbid],
+            includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
+        ).get(mbid)
     cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
     return place_rel.process(place)
 
 
-def _get_place_by_id(place_id, includes=None):
+def fetch_multiple_places(*, mbids, includes=None):
+    """Get info related to multiple places using their MusicBrainz IDs.
+
+    Args:
+        mbids (list): List of MBIDs of places.
+        includes (list): List of information to be included.
+
+    Returns:
+        Dictionary containing info of multiple places keyed by their mbid.
+    """
     if includes is None:
         includes = []
     includes_data = {}
     check_includes('place', includes)
     with mb_session() as db:
         query = db.query(models.Place)
-        place = get_something_by_gid(query, models.PlaceGIDRedirect, place_id)
-        if not place:
-            raise mb_exceptions.NoDataFoundException("Couldn't find a place with id: {place_id}".format(place_id=place_id))
+        places = []
+        for mbid in mbids:
+            place = get_something_by_gid(query, models.PlaceGIDRedirect, mbid)
+            if not place:
+                raise mb_exceptions.NoDataFoundException("Couldn't find a place with id: {mbid}".format(mbid=mbid))
+            places.append(place)
+        place_ids = [place.id for place in places]
 
         if 'artist-rels' in includes:
-            includes_data.setdefault('relationship_objs', {})['artist-rels'] = entity_relation_helper(db, 'artist', 'place', place.id)
+            entity_relation_helper(db, 'artist', 'place', place_ids, includes_data)
         if 'place-rels' in includes:
-            includes_data.setdefault('relationship_objs', {})['place-rels'] = entity_relation_helper(db, 'place', 'place', place.id)
+            entity_relation_helper(db, 'place', 'place', place_ids, includes_data)
         if 'url-rels' in includes:
-            includes_data.setdefault('relationship_objs', {})['url-rels'] = entity_relation_helper(db, 'url', 'place', place.id)
+            entity_relation_helper(db, 'url', 'place', place_ids, includes_data)
 
-        place = to_dict_places(place, includes_data)
-    return place
+        places = {str(place.gid): to_dict_places(place, includes_data[place.id]) for place in places}
+    return places
