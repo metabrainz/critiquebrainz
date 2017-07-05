@@ -21,11 +21,11 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Application data
-/data
+data
 
 # Configuration
-/consul_config.py
-/custom_config.py
+consul_config.py
+custom_config.py
 
 # Test results
 htmlcov
