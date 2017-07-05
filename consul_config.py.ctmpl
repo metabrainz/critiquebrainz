@@ -26,7 +26,7 @@ MUSICBRAINZ_CLIENT_SECRET = '''{{template "KEY" "musicbrainz/client_secret"}}'''
 {{if service "pgbouncer-master"}}
 {{with index (service "pgbouncer-master") 0}}
 SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@{{.Address}}:{{.Port}}/critiquebrainz_db"
-MB_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@{{.Address}}:{{.Port}}/musicbrainz_db"
+MB_DATABASE_URI = "postgresql://musicbrainz_ro@{{.Address}}:{{.Port}}/musicbrainz_db"
 {{end}}
 {{end}}
 
