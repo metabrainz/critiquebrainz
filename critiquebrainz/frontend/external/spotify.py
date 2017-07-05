@@ -6,10 +6,53 @@ More information about it is available at https://developer.spotify.com/web-api/
 import requests
 import urllib.parse
 from brainzutils import cache
+from base64 import b64encode
+from flask import current_app as app
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
+ACCESS_TOKEN_EXPIRATION = 60 * 60 # seconds (1 hour)
 
 BASE_URL = "https://api.spotify.com/v1"
+
+
+def fetch_access_token():
+    """Get an access token from the oauth credentials."""
+
+    key = cache.gen_key("spotify_access_token")
+    namespace = "spotify_access_token"
+    access_token = cache.get(key, namespace)
+
+    client_id = app.config.get("SPOTIFY_CLIENT_ID")
+    client_secret = app.config.get("SPOTIFY_CLIENT_SECRET")
+    auth_value = b64encode(bytes(f"{client_id}:{client_secret}", "utf-8")).decode("utf-8")
+
+    if not access_token:
+        access_token = requests.post(
+            "https://accounts.spotify.com/api/token",
+            data={"grant_type": "client_credentials"},
+            headers={"Authorization": f"Basic {auth_value}"},
+        ).json()
+        access_token = access_token.get('access_token')
+        if not access_token:
+            raise Exception("Could not fetch access token for Spotify")
+        cache.set(key=key, namespace=namespace, val=access_token, time=ACCESS_TOKEN_EXPIRATION)
+    return access_token
+
+
+def get_spotify(url):
+    """Make a GET request to Spotify Web API.
+
+    Args:
+        url (str): URL of API endpoint.
+
+    Returns:
+        Dictionary containing the information.
+    """
+    access_token = fetch_access_token()
+    headers = {"Authorization": f"Bearer {access_token}"}
+
+    result = requests.get(f"{url}", headers=headers)
+    return result.json()
 
 
 def search(query, type, limit=20, offset=0):
@@ -22,9 +65,9 @@ def search(query, type, limit=20, offset=0):
     namespace = "spotify_search"
     result = cache.get(key, namespace)
     if not result:
-        result = requests.get("%s/search?q=%s&type=%s&limit=%s&offset=%s" %
-                              (BASE_URL, urllib.parse.quote(query.encode('utf8')),
-                               type, str(limit), str(offset))).json()
+        result = get_spotify("%s/search?q=%s&type=%s&limit=%s&offset=%s" %
+                            (BASE_URL, urllib.parse.quote(query.encode('utf8')),
+                            type, str(limit), str(offset)))
         cache.set(key=key, namespace=namespace, val=result,
                   time=DEFAULT_CACHE_EXPIRATION)
     return result
@@ -40,7 +83,7 @@ def get_album(spotify_id):
     namespace = "spotify_album"
     album = cache.get(spotify_id, namespace)
     if not album:
-        album = requests.get("%s/albums/%s" % (BASE_URL, spotify_id)).json()
+        album = get_spotify("%s/albums/%s" % (BASE_URL, spotify_id))
         cache.set(key=spotify_id, namespace=namespace, val=album,
                   time=DEFAULT_CACHE_EXPIRATION)
     return album
@@ -63,7 +106,7 @@ def get_multiple_albums(spotify_ids):
             spotify_ids.remove(album_id)
 
     if len(spotify_ids) > 0:
-        resp = requests.get("%s/albums?ids=%s" % (BASE_URL, ','.join(spotify_ids))).json()['albums']
+        resp = get_spotify("%s/albums?ids=%s" % (BASE_URL, ','.join(spotify_ids)))["albums"]
 
         received_albums = {}
         for album in resp:
