@@ -6,7 +6,7 @@
 {% block content %}
 <h2>{{ _('Reviews') }}</h2>
 <p><em class="text-muted">{{ _('Ordered by creation date') }}</em></p>
-<ul class="nav nav-pills"> 
+<ul class="nav nav-pills">
   <li role="presentation" {{ "class=active" if entity_type == None }}>
     <a href="{{ url_for('review.browse', entity_type='all') }}">{{ _('All') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'release_group' }}>
@@ -46,10 +46,10 @@
   <div class="col-md-12">
     <ul class="pager">
       {% if page > 1 %}
-        <li class="previous"><a href="{{ url_for('review.browse', page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
+        <li class="previous"><a href="{{ url_for('review.browse', entity_type=entity_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
       {% endif %}
       {% if page-1 < count//limit %}
-        <li class="next"><a href="{{ url_for('review.browse', page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
+        <li class="next"><a href="{{ url_for('review.browse', entity_type=entity_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
       {% endif %}
     </ul>
   </div>
