@@ -45,6 +45,9 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 #MBSPOTIFY_BASE_URI = "https://mbspotify.musicbrainz.org/"
 #MBSPOTIFY_ACCESS_KEY = ""
 
+# Spotify
+#SPOTIFY_CLIENT_ID = ""
+#SPOTIFY_CLIENT_SECRET = ""
 
 # OTHER STUFF
 

@@ -59,6 +59,10 @@ MUSICBRAINZ_USERAGENT = "CritiqueBrainz"
 MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
 
+# Spotify
+SPOTIFY_CLIENT_ID = ""
+SPOTIFY_CLIENT_SECRET = ""
+
 # mbspotify
 # https://github.com/metabrainz/mbspotify
 MBSPOTIFY_BASE_URI = "https://mbspotify.musicbrainz.org/"
