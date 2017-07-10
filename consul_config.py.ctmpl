@@ -40,6 +40,9 @@ REDIS_PORT = {{.Port}}
 MBSPOTIFY_BASE_URI = '''{{template "KEY" "mbspotify_url"}}'''
 MBSPOTIFY_ACCESS_KEY = '''{{template "KEY" "mbspotify_key"}}'''
 
+SPOTIFY_CLIENT_ID = '''{{template "KEY" "spotify/client_id"}}'''
+SPOTIFY_CLIENT_SECRET = '''{{template "KEY" "spotify/client_secret"}}'''
+
 # List of MusicBrainz usernames of people that are allowed to access
 # admin section of the website. Usernames are case-sensetive!
 ADMINS = [

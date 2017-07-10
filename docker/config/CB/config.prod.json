@@ -12,6 +12,10 @@
     "client_id": "",
     "client_secret": ""
   },
+  "spotify": {
+    "client_id": "",
+    "client_secret": ""
+  },
   "mbspotify_url": "https://mbspotify.musicbrainz.org/",
   "mbspotify_key": "",
   "ga_tracking_id": ""
