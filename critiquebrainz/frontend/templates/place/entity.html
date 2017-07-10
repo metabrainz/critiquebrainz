@@ -92,6 +92,35 @@
 
   <div class="col-md-3">
     <h4>{{ _('Place information') }}</h4>
+      {% if place['external-urls'] %}
+        <b>{{ _('External links') }}</b>
+          <ul class="list-unstyled external-links">
+            {% for url in place['external-urls'] %}
+              <li class="clearfix">
+                <div class="favicon-container">
+                  {% if url.icon %}
+                    <img src="{{ get_static_path('favicons/'+url.icon) }}" />
+                  {% else %}
+                    <img src="{{ get_static_path('favicons/external-16.png') }}" />
+                  {% endif %}
+                </div>
+                <a href="{{ url.url.url }}">{{ url.name }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+      {% if place['place-rels'] %}
+        <b>{{ _('Part of') }}</b>
+          <ul class="list-unstyled">
+            {% for relation in place['place-rels'] %}
+              <li class="clearfix">
+                <a href="{{ url_for('place.entity', id=relation['place']['id']) }}">{{ relation['place']['name'] }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+      {% endif %}
+
     <div class="external-links">
       <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
       <a href="https://musicbrainz.org/place/{{ place.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>

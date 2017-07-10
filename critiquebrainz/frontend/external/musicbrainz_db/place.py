@@ -5,6 +5,7 @@ from critiquebrainz.frontend.external.musicbrainz_db.includes import check_inclu
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.external.musicbrainz_db.serialize import to_dict_places
 from critiquebrainz.frontend.external.musicbrainz_db.helpers import entity_relation_helper
+from critiquebrainz.frontend.external.relationships import place as place_rel
 from brainzutils import cache
 
 
@@ -27,7 +28,7 @@ def get_place_by_id(mbid):
             mbid, includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
         )
     cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
-    return place
+    return place_rel.process(place)
 
 
 def _get_place_by_id(place_id, includes=[]):
