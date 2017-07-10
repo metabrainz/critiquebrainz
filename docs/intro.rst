@@ -14,7 +14,7 @@ First, you need to create custom configuration file. Copy the skeleton configura
 
    $ cp custom_config.py.example custom_config.py
 
-Then, open ``critiquebrainz/config.py`` in your favourite text editor and update
+Then, open ``critiquebrainz/custom_config.py`` in your favourite text editor and update
 any variables, as needed.
 
 Configuring MusicBrainz login
@@ -22,7 +22,7 @@ Configuring MusicBrainz login
 
 Before you begin using authentication with MusicBrainz accounts,
 you need to set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET`` values.
-To obtain these keys, you need to register your instance of CrituqeBrainz on MusicBrainz.
+To obtain these keys, you need to register your instance of CritiqueBrainz on MusicBrainz.
 
 **Note** ``<your domain>`` field in the urls listed below should probably be set
 to ``localhost``, if you plan to run your CritiqueBrainz instance locally
@@ -35,8 +35,22 @@ In ``Callback URL`` field type::
    http://<your domain>/login/musicbrainz/post
 
 Finally, save the obtained ``OAuth Client ID`` and ``OAuth Client Secret`` fields
-in your ``config.py`` fields ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
+in your ``custom_config.py`` fields ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
 respectively.
+
+Configuring Spotfiy API authentication
+''''''''''''''''''''''''''''''''''''''
+
+To use the Spotify Web API in an instance of CritiqueBrainz, you need to set the
+``SPOTIFY_CLIENT_ID`` and ``SPOTIFY_CLIENT_SECRET`` values. To obtain the keys,
+register your instance of CritiqueBrainz on Spotify.
+
+After registering and logging into your Spotify account, head to
+https://developer.spotify.com/my-applications/ and then register your application following
+instructions on https://developer.spotify.com/web-api/tutorial/#registering-your-application.
+
+Finally, save the obtained ``Client ID`` and ``Client Secret`` fields in your ``custom_config.py``
+fields ``SPOTIFY_CLIENT_ID`` and ``SPOTIFY_CLIENT_SECRET`` respectively.
 
 Startup
 ^^^^^^^
