@@ -102,7 +102,7 @@
                     <img src="{{ get_static_path('favicons/'+url.icon) }}" />
                   {% else %}
                     <img src="{{ get_static_path('favicons/external-16.png') }}" />
-                  {%endif%}
+                  {% endif %}
                 </div>
                 <a href="{{ url.url.url }}">{{ url.name }}</a>
               </li>
