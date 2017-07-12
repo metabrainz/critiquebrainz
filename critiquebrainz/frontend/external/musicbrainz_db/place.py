@@ -6,6 +6,7 @@ import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptio
 from critiquebrainz.frontend.external.musicbrainz_db.serialize import to_dict_places
 from critiquebrainz.frontend.external.musicbrainz_db.helpers import entity_relation_helper
 from critiquebrainz.frontend.external.relationships import place as place_rel
+from collections import defaultdict
 from brainzutils import cache
 
 
@@ -44,7 +45,7 @@ def fetch_multiple_places(*, mbids, includes=None):
     """
     if includes is None:
         includes = []
-    includes_data = {}
+    includes_data = defaultdict(dict)
     check_includes('place', includes)
     with mb_session() as db:
         query = db.query(models.Place)
