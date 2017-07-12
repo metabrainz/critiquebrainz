@@ -1,5 +1,7 @@
 from datetime import datetime
 from critiquebrainz import db
+from critiquebrainz.db import review as db_review
+from critiquebrainz.db import avg_rating as db_avg_rating
 from critiquebrainz.db import exceptions as db_exceptions
 import sqlalchemy
 
@@ -20,6 +22,7 @@ def get(review_id, limit=1, offset=0):
             "review_id": (uuid),
             "timestamp": (datetime),
             "text": (string),
+            "rating": (int),
             "votes_positive": (int),
             "votes_negative": (int),
         }
@@ -30,6 +33,7 @@ def get(review_id, limit=1, offset=0):
                    review_id,
                    timestamp,
                    text,
+                   rating,
                    SUM(
                        CASE WHEN vote='t' THEN 1 ELSE 0 END
                    ) AS votes_positive,
@@ -148,22 +152,33 @@ def get_revision_number(review_id, revision_id):
     return rev_num
 
 
-def create(review_id, text):
+def create(review_id, text, rating):
     """Creates a new revision for the given review.
 
     Args:
         review_id (uuid): ID of the review.
-        text (str): Updated/New text of the review.
+        text (str): Updated/New text part of the review.
+        rating (int): Updated/New rating part of the review
     """
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
-            INSERT INTO revision(review_id, timestamp, text)
-                 VALUES (:review_id, :timestamp, :text)
+            INSERT INTO revision(review_id, timestamp, text, rating)
+                 VALUES (:review_id, :timestamp, :text, :rating)
         """), {
             "review_id": review_id,
             "timestamp": datetime.now(),
             "text": text,
+            "rating": rating,
         })
+
+    review = db_review.get_by_id(review_id)
+    rev_num = get_revision_number(review["id"], review["last_revision"]["id"])
+    if rev_num > 1:
+        revisions = get(review["id"], limit=2, offset=0)
+        if revisions[0]["rating"] != revisions[1]["rating"]:
+            db_avg_rating.update(review["entity_id"], review["entity_type"])
+    elif rating is not None:
+        db_avg_rating.update(review["entity_id"], review["entity_type"])
 
 
 def votes(revision_id):
