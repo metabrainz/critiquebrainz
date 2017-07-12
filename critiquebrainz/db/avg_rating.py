@@ -37,14 +37,13 @@ def update(entity_id, entity_type):
             "entity_id": entity_id,
             "entity_type": entity_type,
         })
-
         row = result.fetchone()
-        if row is None:
-            delete(entity_id, entity_type)
-            return
     
-    #Calulate average rating and update it  
+    #Calulate average rating and update it
     sum, count = row[0], row[1]
+    if count == 0:
+        delete(entity_id, entity_type)
+        return
     avg_rating = int(sum / count + 0.5)
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
@@ -97,9 +96,12 @@ def get(entity_id, entity_type):
             "count": int,
         }
     """
-    with db.engine.connet() as connection:
+    with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT *
+            SELECT entity_id,
+                   entity_type,
+                   rating,
+                   count
               FROM avg_rating
              WHERE entity_id = :entity_id
                AND entity_type = :entity_type
@@ -110,7 +112,7 @@ def get(entity_id, entity_type):
 
         avg_rating = result.fetchone()
         if not avg_rating:
-            raise db_exceptions.NoDataFoundException("No rating for the entity with ID: {id}".format(id=entity_id))
+            raise db_exceptions.NoDataFoundException("""No rating for the entity with ID: {id} and Type: {type}
+                                                     """.format(id=entity_id, type=entity_type))
 
     return dict(avg_rating)
-    
