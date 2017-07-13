@@ -1,29 +1,29 @@
 from flask import jsonify
-from critiquebrainz.ws.exceptions import *
+from critiquebrainz.ws import exceptions as ws_exceptions
 
 
 def init_error_handlers(app):
 
-    @app.errorhandler(WebServiceError)
+    @app.errorhandler(ws_exceptions.WebServiceError)
     def base_error_handler(error):
         return jsonify(error=error.code, description=error.desc), error.status
 
-    @app.errorhandler(ParserError)
+    @app.errorhandler(ws_exceptions.ParserError)
     def parser_error_handler(error):
-        return base_error_handler(InvalidRequest('Parameter `%s`: %s' % (error.key, error.desc)))
+        return base_error_handler(ws_exceptions.InvalidRequest('Parameter `%s`: %s' % (error.key, error.desc)))
 
     @app.errorhandler(401)
     def oauth_error_handler():
-        return base_error_handler(NotAuthorized())
+        return base_error_handler(ws_exceptions.NotAuthorized())
 
     @app.errorhandler(403)
     def oauth_error_handler():
-        return base_error_handler(AccessDenied())
+        return base_error_handler(ws_exceptions.AccessDenied())
 
     @app.errorhandler(404)
     def not_found_handler():
-        return base_error_handler(NotFound())
+        return base_error_handler(ws_exceptions.NotFound())
 
     @app.errorhandler(500)
     def exception_handler():
-        return base_error_handler(ServerError())
+        return base_error_handler(ws_exceptions.ServerError())
