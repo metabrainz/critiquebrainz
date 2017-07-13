@@ -73,7 +73,7 @@ def remove_old_archives(location, pattern, is_dir=False, sort_key=None):
     """
     entries = [os.path.join(location, e) for e in os.listdir(location)]
     pattern = re.compile(pattern)
-    entries = filter(lambda x: pattern.search(x), entries)
+    entries = filter(pattern.search, entries)
 
     if is_dir:
         entries = filter(os.path.isdir, entries)

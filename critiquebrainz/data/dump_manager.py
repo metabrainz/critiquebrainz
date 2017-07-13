@@ -124,7 +124,7 @@ def full_db(location, rotate=False):
     if rotate:
         print("Removing old backups (except two latest)...")
         remove_old_archives(location, "%s[0-9]+-[0-9]+.tar" % FILE_PREFIX,
-                            is_dir=False, sort_key=lambda x: os.path.getmtime(x))
+                            is_dir=False, sort_key=os.path.getmtime)
 
     print("Done!")
 
@@ -179,7 +179,7 @@ def json(location, rotate=False):
     if rotate:
         print("Removing old sets of archives (except two latest)...")
         remove_old_archives(location, "critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2",
-                            is_dir=False, sort_key=lambda x: os.path.getmtime(x))
+                            is_dir=False, sort_key=os.path.getmtime)
 
     print("Done!")
 
