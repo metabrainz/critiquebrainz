@@ -35,4 +35,3 @@ def delete():
         db_users.delete(current_user.id)
         return redirect(url_for('frontend.index'))
     return render_template('profile/delete.html')
-

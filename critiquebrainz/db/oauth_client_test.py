@@ -38,7 +38,7 @@ class OAuthClientTestCase(DataTestCase):
     def test_update(self):
         oauth_client = self.create_dummy_application()
         db_oauth_client.update(
-            client_id = oauth_client["client_id"],
+            client_id=oauth_client["client_id"],
             name="Testing Application",
             desc="An app for testing",
         )

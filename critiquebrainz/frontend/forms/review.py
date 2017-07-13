@@ -45,13 +45,14 @@ class ReviewEditForm(Form):
     language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
 
     def __init__(self, default_license_id='CC BY-SA 3.0', default_language='en', **kwargs):
-       kwargs.setdefault('license_choice', default_license_id)
-       kwargs.setdefault('language', default_language)
-       Form.__init__(self, **kwargs)
+        kwargs.setdefault('license_choice', default_license_id)
+        kwargs.setdefault('language', default_language)
+        Form.__init__(self, **kwargs)
 
 
 class ReviewCreateForm(ReviewEditForm):
     agreement = BooleanField(validators=[validators.DataRequired(message=lazy_gettext("You need to accept the license agreement!"))])
+
 
 class ReviewReportForm(Form):
     reason = TextAreaField(validators=[validators.DataRequired()])

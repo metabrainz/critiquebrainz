@@ -71,7 +71,7 @@ def get_count(review_id):
             SELECT count(*)
               FROM revision
              WHERE review_id = :review_id
-        """),{
+        """), {
             "review_id": review_id
         })
         count = result.fetchone()[0]
@@ -99,7 +99,7 @@ def get_all_votes(review_id):
                          ON vote.revision_id = revision.id
                       WHERE review_id = :review_id
                    ORDER BY timestamp DESC
-        """),{
+        """), {
             "review_id": review_id,
         })
 

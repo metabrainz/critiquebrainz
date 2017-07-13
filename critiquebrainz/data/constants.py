@@ -41,6 +41,3 @@ sorcerer = UserType(
     votes_per_day=200)
 
 user_types = (blocked, spammer, noob, apprentice, sorcerer)
-
-
-

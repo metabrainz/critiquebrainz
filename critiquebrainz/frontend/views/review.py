@@ -99,6 +99,7 @@ def entity(id, rev=None):
     other_reviews = user_all_reviews[:3]
     return render_template('review/entity/%s.html' % review["entity_type"], review=review, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url, vote=vote, other_reviews=other_reviews)
 
+
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')
 def redirect_to_entity(review_id, revision_id):
     try:
@@ -106,6 +107,7 @@ def redirect_to_entity(review_id, revision_id):
     except db_exceptions.NoDataFoundException:
         raise NotFound(gettext("The revision you are looking for does not exist."))
     return redirect(url_for('.entity', id=review_id, rev=revision_number))
+
 
 @review_bp.route('/<uuid:id>/revisions/compare')
 def compare(id):
@@ -219,7 +221,7 @@ def create():
     if entity_type == 'release_group':
         spotify_mappings = mbspotify.mappings(entity_id)
         soundcloud_url = soundcloud.get_url(entity_id)
-        return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings = spotify_mappings, soundcloud_url=soundcloud_url)
+        return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
     return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
 
 
@@ -272,7 +274,7 @@ def edit(id):
     if review["entity_type"] == 'release_group':
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
-        return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"], entity=entity, spotify_mappings = spotify_mappings, soundcloud_url=soundcloud_url)
+        return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"], entity=entity, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
     return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"])
 
 

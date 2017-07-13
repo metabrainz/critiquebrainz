@@ -13,10 +13,10 @@ class ModerationLogCase(DataTestCase):
         super(ModerationLogCase, self).setUp()
 
         self.admin = User(db_users.get_or_create("Admin", new_user_data={
-            "display_name":"Admin",
+            "display_name": "Admin",
         }))
-        self.user = User(db_users.get_or_create("Tester",new_user_data={
-            "display_name":"Tester",
+        self.user = User(db_users.get_or_create("Tester", new_user_data={
+            "display_name": "Tester",
         }))
         self.reason = "Testing!"
         self.license = db_license.create(
