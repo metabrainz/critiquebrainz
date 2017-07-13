@@ -128,7 +128,7 @@ def spotify_report():
 
     # Checking if release group is mapped to Spotify
     spotify_mappings = mbspotify.mappings(str(release_group_id))
-    if not (spotify_uri in spotify_mappings):
+    if spotify_uri not in spotify_mappings:
         flash.error(gettext("This album is not mapped to Spotify yet!"))
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
