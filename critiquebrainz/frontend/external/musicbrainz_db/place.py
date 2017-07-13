@@ -31,7 +31,9 @@ def get_place_by_id(mbid):
     return place_rel.process(place)
 
 
-def _get_place_by_id(place_id, includes=[]):
+def _get_place_by_id(place_id, includes=None):
+    if includes is None:
+        includes = []
     includes_data = {}
     check_includes('place', includes)
     with mb_session() as db:

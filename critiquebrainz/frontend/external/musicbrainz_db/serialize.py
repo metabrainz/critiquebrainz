@@ -25,7 +25,9 @@ def to_dict_relationships(data, source_obj, relationship_objs):
                 data[relation].append(link_data)
 
 
-def to_dict_areas(area, includes={}):
+def to_dict_areas(area, includes=None):
+    if includes is None:
+        includes = {}
     data = {
         'id': area.gid,
         'name': area.name,
@@ -36,7 +38,9 @@ def to_dict_areas(area, includes={}):
     return data
 
 
-def to_dict_artists(artist, includes={}):
+def to_dict_artists(artist, includes=None):
+    if includes is None:
+        includes = {}
     data = {
         'id': artist.gid,
         'name': artist.name,
@@ -48,7 +52,9 @@ def to_dict_artists(artist, includes={}):
     return data
 
 
-def to_dict_urls(url, includes={}):
+def to_dict_urls(url, includes=None):
+    if includes is None:
+        includes = {}
     data = {
         'id': url.gid,
         'url': url.url,
@@ -59,7 +65,9 @@ def to_dict_urls(url, includes={}):
     return data
 
 
-def to_dict_places(place, includes={}):
+def to_dict_places(place, includes=None):
+    if includes is None:
+        includes = {}
     data = {
         'id': place.gid,
         'name': place.name,
@@ -83,7 +91,9 @@ def to_dict_places(place, includes={}):
     return data
 
 
-def to_dict_release_groups(release_group, includes={}):
+def to_dict_release_groups(release_group, includes=None):
+    if includes is None:
+        includes = {}
     data = {
         'id': release_group.id,
         'name': release_group.name,
