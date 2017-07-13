@@ -381,7 +381,7 @@ def import_data(file_name, table_name, columns=None):
 class DumpJSONEncoder(JSONEncoder):
     """Custom JSON encoder for database dumps."""
 
-    def default(self, o):
+    def default(self, o):  # pylint: disable=method-hidden
         try:
             if isinstance(o, datetime):
                 return o.isoformat()
