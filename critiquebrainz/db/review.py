@@ -27,11 +27,10 @@ for lang in list(pycountry.languages):
 
 
 # TODO(roman): Rename this function. It doesn't convert a review to dictionary.
-# Review that is passed to it is already a dictionary. `confidential` argument
-# is also unused. Why is it here?
+# Review that is passed to it is already a dictionary.
 def to_dict(review, confidential=False):
     review["user"] = User(db_users.get_by_id(review.pop("user_id")))
-    review["user"] = review["user"].to_dict(confidential=True)
+    review["user"] = review["user"].to_dict(confidential)
     review["id"] = str(review["id"])
     review["entity_id"] = str(review["entity_id"])
     review["last_updated"] = review["last_revision"]["timestamp"]
