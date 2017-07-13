@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, render_template, url_for, session, flash
+from flask import Blueprint, request, redirect, render_template, url_for, session
 from flask_login import login_user, logout_user, login_required
 from flask_babel import gettext
 from critiquebrainz.frontend.login import mb_auth, login_forbidden
