@@ -1,0 +1,32 @@
+[MESSAGES CONTROL]
+
+# Disable the message, report, category or checker with the given id(s). You
+# can either give multiple identifiers separated by comma (,) or put this
+# option multiple times (only on the command line, not in the configuration
+# file where it should appear only once).You can also use "--disable=all" to
+# disable everything first and then reenable specific checks. For example, if
+# you want to run only the similarities checker, you can use "--disable=all
+# --enable=similarities". If you want to run only the classes checker, but have
+# no Warning level messages displayed, use"--disable=all --enable=classes
+# --disable=W"
+disable=missing-docstring,protected-access,invalid-name,global-statement,wrong-import-order,unnecessary-lambda,unused-import,fixme,unused-argument,too-many-locals,too-many-branches,redefined-builtin,no-else-return,singleton-comparison,unused-variable,broad-except,line-too-long,superfluous-parens,function-redefined,reimported,bad-continuation,ungrouped-imports,bad-whitespace,too-many-arguments,too-many-instance-attributes,simplifiable-if-statement,redefined-outer-name,attribute-defined-outside-init,dangerous-default-value,len-as-condition,bad-indentation,undefined-variable,anomalous-backslash-in-string,trailing-newlines,no-self-use,too-many-statements,global-variable-undefined,no-member,too-few-public-methods,redefined-argument-from-local,arguments-differ,method-hidden,consider-using-ternary,undefined-loop-variable,too-many-return-statements,wildcard-import,unused-wildcard-import,too-many-function-args,redefined-argument-from-local,too-many-public-methods,unsubscriptable-object,no-name-in-module,wrong-import-position
+
+
+[REPORTS]
+
+# Set the output format. Available formats are text, parseable, colorized, msvs
+# (visual studio) and html. You can also give a reporter class, eg
+# mypackage.mymodule.MyReporterClass.
+output-format=parseable
+
+# Put messages in a separate file for each module / package specified on the
+# command line instead of printing them on stdout. Reports (if any) will be
+# written in a file name "pylint_global.[txt|html]". This option is deprecated
+# and it will be removed in Pylint 2.0.
+files-output=no
+
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+max-line-length=130

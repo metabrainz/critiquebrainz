@@ -1,0 +1,8 @@
+# Docker Compose file for testing
+version: "2"
+services:
+
+  critiquebrainz_test:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile.test.pylint
