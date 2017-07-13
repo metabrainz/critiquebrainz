@@ -1,6 +1,6 @@
 from flask import current_app, jsonify
 from flask.json import JSONEncoder
-from critiquebrainz.data.utils import create_path, remove_old_archives, get_columns, slugify, explode_db_uri
+from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri
 from critiquebrainz.db import license as db_license, review as db_review
 from critiquebrainz import frontend
 from critiquebrainz import db

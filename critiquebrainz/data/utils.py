@@ -1,5 +1,4 @@
 from critiquebrainz import db
-from sqlalchemy import create_engine
 import urllib.parse
 import unicodedata
 import shutil

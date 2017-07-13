@@ -1,8 +1,7 @@
 from critiquebrainz.data.mixins import AdminMixin
 import critiquebrainz.db.users as db_users
-import hashlib
 from critiquebrainz.data.constants import user_types
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 
 
 class User(AdminMixin):

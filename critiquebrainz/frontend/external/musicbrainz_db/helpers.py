@@ -1,4 +1,3 @@
-import critiquebrainz.frontend.external.musicbrainz_db as mb
 from mbdata.utils.models import get_entity_type_model, get_link_model
 from sqlalchemy.orm import joinedload
 
