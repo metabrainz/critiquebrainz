@@ -20,7 +20,8 @@ class DataTestCase(TestCase):
     def tearDown(self):
         pass
 
-    def reset_db(self):
+    @staticmethod
+    def reset_db():
         drop_tables()
         drop_types()
         create_all()

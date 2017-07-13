@@ -9,5 +9,7 @@ class AdminMixin(UserMixin):
 
 
 class AnonymousUser(AnonymousUserMixin):
-    def is_admin(self):
+
+    @staticmethod
+    def is_admin():
         return False

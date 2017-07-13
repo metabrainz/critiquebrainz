@@ -24,12 +24,14 @@ class WebServiceTestCase(TestCase):
     def tearDown(self):
         pass
 
-    def reset_db(self):
+    @staticmethod
+    def reset_db():
         drop_tables()
         drop_types()
         create_all()
 
-    def create_dummy_client(self, user):
+    @staticmethod
+    def create_dummy_client(user):
         db_oauth_client.create(
             user_id=user.id,
             name="Dummy Client",

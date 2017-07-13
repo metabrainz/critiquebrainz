@@ -13,7 +13,8 @@ class LicenseTestCase(DataTestCase):
         self.assertEqual(license["full_name"], "Test License")
         self.assertEqual(license["info_url"], "www.example.com")
 
-    def test_delete_license(self):
+    @staticmethod
+    def test_delete_license():
         license = db_license.create(
             id="test",
             full_name="Test license",
