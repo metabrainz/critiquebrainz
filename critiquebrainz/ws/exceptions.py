@@ -1,21 +1,20 @@
 class WebServiceError(Exception):
-    def __init__(self, code, desc=None, status=400):
+    def __init__(self, code, desc=None, status=400, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.code = code
         self.desc = desc
         self.status = status
 
 
 class LoginError(WebServiceError):
-    def __init__(self, code, redirect_uri=None):
-        self.code = code
+    def __init__(self, code, redirect_uri=None, *args, **kwargs):
+        super().__init__(code=code, *args, **kwargs)
         self.redirect_uri = redirect_uri
 
 
 class NotFound(WebServiceError):
-    def __init__(self, desc=None):
-        self.code = 'not_found'
-        self.desc = desc
-        self.status = 404
+    def __init__(self, desc=None, *args, **kwargs):
+        super().__init__(code='not_found', desc=desc, status=404, *args, **kwargs)
 
 
 class AccessDenied(WebServiceError):
@@ -60,9 +59,9 @@ class InvalidRequest(WebServiceError):
 
 
 class ParserError(WebServiceError):
-    def __init__(self, key, desc):
+    def __init__(self, key, desc, *args, **kwargs):
+        super().__init__(desc=desc, *args, **kwargs)
         self.key = key
-        self.desc = desc
 
 
 class MissingDataError(ParserError):
