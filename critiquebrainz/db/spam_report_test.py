@@ -1,9 +1,9 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.db.user import User
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
 
 
 class SpamReportTestCase(DataTestCase):
@@ -27,6 +27,7 @@ class SpamReportTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Testing!",
+            rating=100,
             user_id=author.id,
             is_draft=False,
             license_id=license["id"],
@@ -61,6 +62,7 @@ class SpamReportTestCase(DataTestCase):
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Updated Review",
+            rating=100,
         )
         self.review = db_review.get_by_id(self.review["id"])
         db_spam_report.create(self.review["last_revision"]["id"], self.user1.id, "This is again a report on the updated review")

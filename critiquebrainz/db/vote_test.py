@@ -1,12 +1,12 @@
 from datetime import datetime
 from uuid import UUID
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.license as db_license
 from critiquebrainz.db import exceptions
 from critiquebrainz.db import vote
+from critiquebrainz.db.user import User
 
 
 class VoteTestCase(DataTestCase):
@@ -30,6 +30,7 @@ class VoteTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Testing!",
+            rating=100,
             user_id=author.id,
             is_draft=False,
             license_id=license["id"],

@@ -1,8 +1,8 @@
 from critiquebrainz.data.testing import DataTestCase
 import critiquebrainz.db.oauth_client as db_oauth_client
-from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.exceptions import NoDataFoundException
+from critiquebrainz.db.user import User
 
 
 class OAuthClientTestCase(DataTestCase):

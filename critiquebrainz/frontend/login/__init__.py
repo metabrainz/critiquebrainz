@@ -8,9 +8,9 @@ from flask import redirect, url_for
 from flask_login import LoginManager, current_user
 from flask_babel import lazy_gettext, gettext
 from critiquebrainz.data.mixins import AnonymousUser
-from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 from werkzeug.exceptions import Unauthorized
+from critiquebrainz.db.user import User
 
 mb_auth = None
 
