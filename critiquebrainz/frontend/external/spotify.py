@@ -107,7 +107,7 @@ def get_multiple_albums(spotify_ids):
         if data is not None and album_id in spotify_ids:
             spotify_ids.remove(album_id)
 
-    if len(spotify_ids) > 0:
+    if spotify_ids:
         resp = _get_spotify("/albums?ids=%s" % (','.join(spotify_ids)))["albums"]
 
         received_albums = {}

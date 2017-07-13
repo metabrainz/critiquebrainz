@@ -30,7 +30,7 @@ def spotify_list(release_group_id):
     for mapping in spotify_mappings:
         spotify_ids.append(mapping[14:])
 
-    if len(spotify_ids) > 0:
+    if spotify_ids:
         spotify_albums = spotify_api.get_multiple_albums(spotify_ids)
     else:
         spotify_albums = []

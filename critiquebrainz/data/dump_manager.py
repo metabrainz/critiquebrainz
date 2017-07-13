@@ -160,7 +160,7 @@ def json(location, rotate=False):
                 # Creating directory structure and dumping reviews
                 dir_part = os.path.join(entity[0:1], entity[0:2])
                 reviews = db_review.list_reviews(entity_id=entity, license_id=license["id"], limit=None)[0]
-                if len(reviews) > 0:
+                if reviews:
                     rg_dir = '%s/%s' % (license_dir, dir_part)
                     create_path(rg_dir)
                     f = open('%s/%s.json' % (rg_dir, entity), 'w+')
