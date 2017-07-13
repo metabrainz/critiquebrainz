@@ -45,7 +45,7 @@ def edit(client_id):
     try:
         application = db_oauth_client.get_client(client_id)
     except db_exceptions.NoDataFoundException:
-        raise NotFount()
+        raise NotFound()
     if str(application["user_id"]) != current_user.id:
         raise NotFound()
     form = ApplicationForm()
