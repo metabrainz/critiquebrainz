@@ -381,13 +381,13 @@ def import_data(file_name, table_name, columns=None):
 class DumpJSONEncoder(JSONEncoder):
     """Custom JSON encoder for database dumps."""
 
-    def default(self, obj):
+    def default(self, o):
         try:
-            if isinstance(obj, datetime):
-                return obj.isoformat()
-            iterable = iter(obj)
+            if isinstance(o, datetime):
+                return o.isoformat()
+            iterable = iter(o)
         except TypeError:
             pass
         else:
             return list(iterable)
-        return JSONEncoder.default(self, obj)
+        return JSONEncoder.default(self, o)
