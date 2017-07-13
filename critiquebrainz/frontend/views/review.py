@@ -113,7 +113,7 @@ def redirect_to_entity(review_id, revision_id):
 def compare(id):
     review = get_review_or_404(id)
     if review["is_draft"] and not (current_user.is_authenticated
-                                and current_user == review.user):
+                                and current_user == review["user"]):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
@@ -384,7 +384,7 @@ def hide(id):
     if form.validate_on_submit():
         db_review.set_hidden_state(review["id"], is_hidden=True)
         db_moderation_log.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
-            reason=form.reason.data, review_id=review.id)
+            reason=form.reason.data, review_id=review["id"])
         review_reports, count = db_spam_report.list_reports(review_id=review["id"])
         for report in review_reports:
             db_spam_report.archive(report["user_id"], report["revision_id"])
