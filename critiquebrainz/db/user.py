@@ -28,17 +28,11 @@ class User(AdminMixin):
 
     @property
     def is_vote_limit_exceeded(self):
-        if self.votes_today_count() >= self.user_type.votes_per_day:
-            return True
-        else:
-            return False
+        return self.votes_today_count() >= self.user_type.votes_per_day
 
     @property
     def is_review_limit_exceeded(self):
-        if self.reviews_today_count() >= self.user_type.reviews_per_day:
-            return True
-        else:
-            return False
+        return self.reviews_today_count() >= self.user_type.reviews_per_day
 
     @property
     def karma(self):
