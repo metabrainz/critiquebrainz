@@ -111,10 +111,10 @@ def get_all_votes(review_id):
             revision = row.id
             if revision not in votes:
                 votes[revision] = {'positive':0, 'negative':0}
-            if row.vote == False:
-                votes[revision]['negative'] += 1
-            elif row.vote == True:
+            if row.vote:  # True = positive
                 votes[revision]['positive'] += 1
+            else:  # False = negative
+                votes[revision]['negative'] += 1
     return votes
 
 
@@ -192,8 +192,8 @@ def votes(revision_id):
         votes = result.fetchall()
         revision_votes = {"positive": 0, "negative": 0}
         for vote in votes:
-            if vote.vote == True:
+            if vote.vote:  # True = positive
                 revision_votes["positive"] += 1
-            elif vote.vote == False:
+            else:  # False = negative
                 revision_votes["negative"] += 1
     return revision_votes

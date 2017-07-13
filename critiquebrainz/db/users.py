@@ -378,9 +378,9 @@ def karma(user_id):
         rows = result.fetchall()
         karma_value = 0
         for row in rows:
-            if row.vote == True:
+            if row.vote:  # positive
                 karma_value += 1
-            else:
+            else:  # negative
                 karma_value -= 1
     return karma_value
 
