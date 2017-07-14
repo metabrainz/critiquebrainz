@@ -1,9 +1,11 @@
+from typing import Optional
 from contextlib import contextmanager
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session, Session
 from sqlalchemy.pool import NullPool
 
 engine = None
+Session: Optional[Session] = None
 
 def init_db_engine(connect_str):
     global engine, Session
