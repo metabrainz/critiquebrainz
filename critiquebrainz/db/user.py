@@ -23,8 +23,7 @@ class User(AdminMixin):
         """Link to user's avatar image."""
         if self.show_gravatar and self.email:
             return db_users.gravatar_url(self.email)
-        else:
-            return db_users.gravatar_url(self.id)
+        return db_users.gravatar_url(self.id)
 
     @property
     def is_vote_limit_exceeded(self):

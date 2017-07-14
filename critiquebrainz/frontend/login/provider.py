@@ -37,8 +37,7 @@ class BaseAuthentication(object):
         """Fetch data from session."""
         if self._session_key not in session:
             return None
-        else:
-            return session[self._session_key].get(key, default)
+        return session[self._session_key].get(key, default)
 
     def __init__(self, name, service, session_key):
         self._name = name

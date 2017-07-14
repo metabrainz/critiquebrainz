@@ -49,25 +49,20 @@ class CritiqueBrainzAuthorizationProvider(object):
         client = db_oauth_client.get_client(client_id)
         if client is None:
             return False
-        else:
-            return client["client_secret"] == client_secret
+        return client["client_secret"] == client_secret
 
     @staticmethod
     def validate_client_redirect_uri(client_id, redirect_uri):
         client = db_oauth_client.get_client(client_id)
-
         if client is None or isinstance(redirect_uri, str) is False:
             return False
-        else:
-            return client["redirect_uri"] == redirect_uri.split('?')[0]
+        return client["redirect_uri"] == redirect_uri.split('?')[0]
 
     def validate_grant_redirect_uri(self, client_id, code, redirect_uri):
         grant = self.fetch_grant(client_id, code)
-
         if grant is None:
             return False
-        else:
-            return grant["redirect_uri"] == redirect_uri
+        return grant["redirect_uri"] == redirect_uri
 
     def validate_grant_scope(self, client_id, code, scope):
         grant = self.fetch_grant(client_id, code)

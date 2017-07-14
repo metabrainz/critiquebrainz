@@ -24,10 +24,9 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     user = db_users.get_by_id(user_id)
-    if user:
-        return User(user)
-    else:
+    if not user:
         return None
+    return User(user)
 
 
 def login_forbidden(f):

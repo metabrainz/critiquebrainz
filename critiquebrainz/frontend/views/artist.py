@@ -91,13 +91,11 @@ def _get_period(member):
     end_date = member.get('end', None)
 
     def get_year_from_date(date):
-        if date:
-            return date.split('-')[0]
-        else:
+        if not date:
             return ''
+        return date.split('-')[0]
 
     begin_date, end_date = get_year_from_date(begin_date), get_year_from_date(end_date)
-    if begin_date or end_date:
-        return begin_date, end_date
-    else:
+    if not (begin_date or end_date):
         return None
+    return begin_date, end_date
