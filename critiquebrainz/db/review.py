@@ -513,7 +513,7 @@ def get_popular(limit=None):
                        ) AS popularity,
                        latest_revision.id AS latest_revision_id,
                        latest_revision.timestamp AS latest_revision_timestamp,
-                       latest_revision.text AS text,
+                       latest_revision.text AS text
                   FROM review
                   JOIN revision ON revision.review_id = review.id
              LEFT JOIN (
