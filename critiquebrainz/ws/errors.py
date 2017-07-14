@@ -13,11 +13,11 @@ def init_error_handlers(app):
         return base_error_handler(ws_exceptions.InvalidRequest('Parameter `%s`: %s' % (error.key, error.desc)))
 
     @app.errorhandler(401)
-    def oauth_error_handler():
+    def not_authorized_handler():
         return base_error_handler(ws_exceptions.NotAuthorized())
 
     @app.errorhandler(403)
-    def oauth_error_handler():
+    def access_denied_handler():
         return base_error_handler(ws_exceptions.AccessDenied())
 
     @app.errorhandler(404)
