@@ -62,7 +62,7 @@ def spotify():
     punctuation_map = dict((ord(char), None) for char in string.punctuation)
     query = release_group['title'].translate(punctuation_map)
     # Searching...
-    response = spotify_api.search(query, 'album', limit, offset).get('albums')
+    response = spotify_api.search(query, item_types='album', limit=limit, offset=offset).get('albums')
 
     albums_ids = [x['id'] for x in response['items']]
     full_response = spotify_api.get_multiple_albums(albums_ids)
