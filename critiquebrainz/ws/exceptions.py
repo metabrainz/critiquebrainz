@@ -1,5 +1,5 @@
 class WebServiceError(Exception):
-    def __init__(self, code, desc=None, status=400, *args, **kwargs):
+    def __init__(self, code='', desc=None, status=400, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.code = code
         self.desc = desc
