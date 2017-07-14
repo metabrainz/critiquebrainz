@@ -124,7 +124,7 @@ def init_postgres(db_uri):
 
     # Checking if user already exists
     retv = subprocess.check_output('sudo -u postgres psql -t -A -c "SELECT COUNT(*) FROM pg_user WHERE usename = \'%s\';"' % username, shell=True)
-    if retv[0] == '0':
+    if retv == '0':
         exit_code = subprocess.call('sudo -u postgres psql -c "CREATE ROLE %s PASSWORD \'%s\' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;"' % (username, password), shell=True)
         if exit_code != 0:
             raise Exception('Failed to create PostgreSQL user!')
