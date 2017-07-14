@@ -1,3 +1,4 @@
+# pylint: disable=unused-variable
 from flask import jsonify
 from critiquebrainz.ws import exceptions as ws_exceptions
 

@@ -144,6 +144,7 @@ def create_app(debug=None, config_path=None):
 
 
 def add_robots(app):
+
     @app.route('/robots.txt')
-    def robots_txt():
+    def robots_txt():  # pylint: disable=unused-variable
         return send_from_directory(app.static_folder, 'robots.txt')

@@ -12,7 +12,7 @@ def install(*args):
                             full_name=entity["full_name"],
                             info_url=entity["info_url"],
                         )
-                    except Exception as e:
+                    except Exception:
                         print('Failed to add %s!' % key)
                     else:
                         print('Added %s.' % key)

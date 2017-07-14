@@ -39,7 +39,7 @@ class CritiqueBrainzAuthorizationProvider(object):
         if not client_id:
             return False
         try:
-            client = db_oauth_client.get_client(client_id)
+            db_oauth_client.get_client(client_id)
             return True
         except db_exceptions.NoDataFoundException:
             return False
@@ -174,7 +174,7 @@ class CritiqueBrainzAuthorizationProvider(object):
     def generate_grant(self, client_id, user_id, redirect_uri, scope=None):
         code = generate_string(self.token_length)
         expires = datetime.now() + timedelta(seconds=self.grant_expire)
-        grant = self.persist_grant(client_id, code, scope, expires, redirect_uri, user_id)
+        self.persist_grant(client_id, code, scope, expires, redirect_uri, user_id)
         return code
 
     def generate_token(self, client_id, refresh_token, user_id, scope=None):
@@ -183,7 +183,7 @@ class CritiqueBrainzAuthorizationProvider(object):
         access_token = generate_string(self.token_length)
         expires = datetime.now() + timedelta(seconds=self.token_expire)
 
-        token = self.persist_token(client_id, scope, refresh_token, access_token, expires, user_id)
+        self.persist_token(client_id, scope, refresh_token, access_token, expires, user_id)
 
         return access_token, 'Bearer', self.token_expire, refresh_token
 

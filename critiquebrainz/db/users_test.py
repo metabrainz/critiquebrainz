@@ -66,7 +66,7 @@ class UserTestCase(DataTestCase):
         users = db_users.list_users(0, 10)
         self.assertEqual(len(users), 0)
 
-        user3 = db_users.get_or_create("user_1", new_user_data={
+        db_users.get_or_create("user_1", new_user_data={
             "display_name": "test2",
         })
         users = db_users.list_users(1, 1)
@@ -77,7 +77,7 @@ class UserTestCase(DataTestCase):
         count = db_users.total_count()
         self.assertEqual(count, 3)
 
-        user3 = db_users.get_or_create("user1", new_user_data={
+        db_users.get_or_create("user1", new_user_data={
             "display_name": "user_1",
         })
         count = db_users.total_count()
@@ -148,7 +148,7 @@ class UserTestCase(DataTestCase):
         votes = db_users.get_votes(self.user1.id)
         self.assertEqual(len(votes), 0)
         # Spam Reports to be deleted as well
-        spam_reports, count = db_spam_report.list_reports(user_id=user1_id)
+        spam_reports, count = db_spam_report.list_reports(user_id=user1_id)  # pylint: disable=unused-variable
         self.assertEqual(count, 0)
 
         db_users.delete(self.author.id)
@@ -177,7 +177,7 @@ class UserTestCase(DataTestCase):
             redirect_uri="https://example.com/redirect/",
         )
         client = db_users.clients(self.user1.id)[0]
-        oauth_token = db_oauth_token.create(
+        db_oauth_token.create(
             client_id=client["client_id"],
             access_token="Test Access Token",
             refresh_token="Test Refresh Token",

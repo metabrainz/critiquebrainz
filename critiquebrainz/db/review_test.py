@@ -54,7 +54,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(db_review.list_reviews()[1], 0)
 
     def test_languages(self):
-        review_en = db_review.create(
+        db_review.create(
             user_id=self.user.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796ece",
             entity_type="release_group",
@@ -64,7 +64,7 @@ class ReviewTestCase(DataTestCase):
             language="en",
         )
 
-        review_de = db_review.create(
+        db_review.create(
             user_id=self.user.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
@@ -175,7 +175,7 @@ class ReviewTestCase(DataTestCase):
         reviews = db_review.get_popular()
         self.assertEqual(len(reviews), 0)
 
-        new_review = db_review.create(
+        db_review.create(
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             user_id=self.user.id,
@@ -206,7 +206,7 @@ class ReviewTestCase(DataTestCase):
     def test_get_count(self):
         count = db_review.get_count()
         self.assertEqual(count, 0)
-        review = db_review.create(
+        db_review.create(
             user_id=self.user.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
@@ -218,7 +218,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(count, 1)
 
     def test_distinct_entities(self):
-        review = db_review.create(
+        db_review.create(
             user_id=self.user.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
@@ -226,7 +226,7 @@ class ReviewTestCase(DataTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
-        review = db_review.create(
+        db_review.create(
             user_id=self.user_2.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",

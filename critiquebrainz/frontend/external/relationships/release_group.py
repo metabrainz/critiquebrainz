@@ -45,7 +45,7 @@ def _url(url_list):
                 else:
                     # TODO(roman): Process other types here
                     pass
-            except Exception as e:  # FIXME(roman): Too broad exception clause.
+            except Exception:  # FIXME(roman): Too broad exception clause.
                 # TODO(roman): Log error.
                 pass
 

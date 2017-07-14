@@ -95,7 +95,7 @@ def full_db(location, rotate=False):
     create_path(location)
 
     FILE_PREFIX = "cb-backup-"
-    db_hostname, db_port, db_name, db_username, db_password = \
+    db_hostname, db_port, db_name, db_username, _ = \
         explode_db_uri(current_app.config['SQLALCHEMY_DATABASE_URI'])
 
     print('Creating database dump in "%s"...' % location)

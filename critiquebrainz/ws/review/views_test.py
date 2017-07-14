@@ -130,6 +130,6 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.get('/review/%s/revisions/1' % review["id"])
         self.assert200(resp)
         data = dict(text="This is an updated review")
-        resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
+        self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
         resp = self.client.get('/review/%s/revisions/2' % review["id"])
         self.assert200(resp)

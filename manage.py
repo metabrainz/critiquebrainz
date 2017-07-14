@@ -118,7 +118,7 @@ def init_postgres(db_uri):
 
     New user and database will be created, if needed. It also creates uuid-ossp extension.
     """
-    hostname, port, db, username, password = data_utils.explode_db_uri(db_uri)
+    hostname, port, db, username, password = data_utils.explode_db_uri(db_uri)  # pylint: disable=unused-variable
     if hostname not in ['localhost', '127.0.0.1']:
         raise Exception('Cannot configure a remote database')
 

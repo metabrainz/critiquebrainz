@@ -54,7 +54,7 @@ class VoteTestCase(DataTestCase):
 
         vote.submit(self.user_2.id, self.review["last_revision"]["id"], False)
         vote_2_data = vote.get(self.user_2.id, self.review["last_revision"]["id"])
-        rated_at = vote_2_data.pop("rated_at")
+        vote_2_data.pop("rated_at")
         self.assertDictEqual(vote_2_data, {
             "user_id": UUID(self.user_2.id),
             "revision_id": self.review["last_revision"]["id"],

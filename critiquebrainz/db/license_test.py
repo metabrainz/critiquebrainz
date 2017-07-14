@@ -23,7 +23,7 @@ class LicenseTestCase(DataTestCase):
         db_license.delete(id=license["id"])
 
     def test_list_licenses(self):
-        license = db_license.create(
+        db_license.create(
             id="test",
             full_name="Test license",
             info_url="www.example.com",

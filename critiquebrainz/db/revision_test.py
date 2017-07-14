@@ -73,7 +73,7 @@ class RevisionTestCase(DataTestCase):
         """Test to get the number of votes on revisions of a review"""
 
         review_id = self.review["id"]
-        count = revision.get_count(review_id)
+        revision.get_count(review_id)
         first_revision = revision.get(review_id)[0]
         vote.submit(self.user_1.id, first_revision['id'], True)
         vote.submit(self.user_2.id, first_revision['id'], False)

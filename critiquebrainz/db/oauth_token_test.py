@@ -24,7 +24,7 @@ class OAuthTokenTestCase(DataTestCase):
 
     def test_create(self):
         self.assertEqual(len(db_oauth_token.list_tokens()), 0)
-        oauth_token = db_oauth_token.create(
+        db_oauth_token.create(
             client_id=self.oauth_client["client_id"],
             access_token="Test Access Token",
             refresh_token="Test Refresh Token",
@@ -35,7 +35,7 @@ class OAuthTokenTestCase(DataTestCase):
         self.assertEqual(len(db_oauth_token.list_tokens()), 1)
 
     def test_list(self):
-        oauth_token = db_oauth_token.create(
+        db_oauth_token.create(
             client_id=self.oauth_client["client_id"],
             access_token="Test Access Token",
             refresh_token="Test Refresh Token",
@@ -47,7 +47,7 @@ class OAuthTokenTestCase(DataTestCase):
         self.assertEqual(len(db_oauth_token.list_tokens(refresh_token="Test Refresh Token")), 1)
 
     def test_delete(self):
-        oauth_token = db_oauth_token.create(
+        db_oauth_token.create(
             client_id=self.oauth_client["client_id"],
             access_token="Test Access Token",
             refresh_token="Test Refresh Token",
@@ -73,7 +73,7 @@ class OAuthTokenTestCase(DataTestCase):
         # Test fetching scopes of a token that does not exist
         db_oauth_token.delete(client_id=self.oauth_client["client_id"], refresh_token="Test Refresh Token")
         with self.assertRaises(db_exceptions.NoDataFoundException):
-            scopes = db_oauth_token.get_scopes(oauth_token["id"])
+            db_oauth_token.get_scopes(oauth_token["id"])
 
         # Test fetching scopes of token with no scopes
         oauth_token = db_oauth_token.create(

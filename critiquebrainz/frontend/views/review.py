@@ -95,7 +95,7 @@ def entity(id, rev=None):
         vote = None
     review["text_html"] = markdown(revision['text'], safe_mode="escape")
 
-    user_all_reviews, review_count = db_review.list_reviews(user_id=review["user_id"], sort="random", exclude=[review["id"]])
+    user_all_reviews, review_count = db_review.list_reviews(user_id=review["user_id"], sort="random", exclude=[review["id"]])  # pylint: disable=unused-variable
     other_reviews = user_all_reviews[:3]
     return render_template('review/entity/%s.html' % review["entity_type"], review=review, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url, vote=vote, other_reviews=other_reviews)
 
@@ -385,7 +385,7 @@ def hide(id):
         db_review.set_hidden_state(review["id"], is_hidden=True)
         db_moderation_log.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
             reason=form.reason.data, review_id=review["id"])
-        review_reports, count = db_spam_report.list_reports(review_id=review["id"])
+        review_reports, count = db_spam_report.list_reports(review_id=review["id"])  # pylint: disable=unused-variable
         for report in review_reports:
             db_spam_report.archive(report["user_id"], report["revision_id"])
         flash.success(gettext("Review has been hidden."))

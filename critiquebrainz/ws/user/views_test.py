@@ -14,10 +14,10 @@ class UserViewsTestCase(WebServiceTestCase):
         ))
 
     def test_user_addition(self):
-        user = User(db_users.create(
+        db_users.create(
             display_name='Tester 1',
             email='tester1@tesing.org',
-        ))
+        )
         resp = self.client.get('/user/').json
         self.assertEqual(resp['count'], 1)
         self.assertEqual(len(resp['users']), 1)

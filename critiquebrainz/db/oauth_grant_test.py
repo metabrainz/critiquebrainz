@@ -24,7 +24,7 @@ class OAuthGrantTestCase(DataTestCase):
 
     def test_create(self):
         self.assertEqual(len(db_oauth_grant.list_grants()), 0)
-        oauth_grant = db_oauth_grant.create(
+        db_oauth_grant.create(
             client_id=self.oauth_client["client_id"],
             code="Test Code",
             redirect_uri="https://example.com",
@@ -74,7 +74,7 @@ class OAuthGrantTestCase(DataTestCase):
         # Test fetching scopes of a grant that does not exist
         db_oauth_grant.delete(client_id=self.oauth_client["client_id"], code=oauth_grant["code"])
         with self.assertRaises(db_exceptions.NoDataFoundException):
-            scopes = db_oauth_grant.get_scopes(oauth_grant["id"])
+            db_oauth_grant.get_scopes(oauth_grant["id"])
 
         # Test fetching scopes of grant with no scopes
         oauth_grant = db_oauth_grant.create(

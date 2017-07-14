@@ -33,7 +33,7 @@ class OAuthClientTestCase(DataTestCase):
         oauth_client = self.create_dummy_application()
         db_oauth_client.delete(oauth_client["client_id"])
         with self.assertRaises(NoDataFoundException):
-            clients = db_oauth_client.get_client(oauth_client["client_id"])
+            db_oauth_client.get_client(oauth_client["client_id"])
 
     def test_update(self):
         oauth_client = self.create_dummy_application()

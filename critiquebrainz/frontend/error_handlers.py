@@ -1,3 +1,4 @@
+# pylint: disable=unused-variable
 from flask import render_template, g
 
 
