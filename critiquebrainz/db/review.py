@@ -277,18 +277,18 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
             INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url)
             VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url)
          RETURNING id;
-       """), {
-           "id": str(uuid.uuid4()),
-           "entity_id": entity_id,
-           "entity_type": entity_type,
-           "user_id": user_id,
-           "edits": 0,
-           "is_draft": is_draft,
-           "is_hidden": False,
-           "language": language,
-           "license_id": license_id,
-           "source": source,
-           "source_url": source_url,
+        """), {
+            "id": str(uuid.uuid4()),
+            "entity_id": entity_id,
+            "entity_type": entity_type,
+            "user_id": user_id,
+            "edits": 0,
+            "is_draft": is_draft,
+            "is_hidden": False,
+            "language": language,
+            "license_id": license_id,
+            "source": source,
+            "source_url": source_url,
         })
         review_id = result.fetchone()[0]
         # TODO(roman): It would be better to create review and revision in one transaction

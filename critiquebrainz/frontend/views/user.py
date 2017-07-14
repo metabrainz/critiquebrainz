@@ -30,8 +30,8 @@ def reviews(user_id):
     limit = 12
     offset = (page - 1) * limit
     reviews, count = db_review.list_reviews(user_id=user_id, sort='created', limit=limit, offset=offset,
-                                 inc_hidden=current_user.is_admin(),
-                                 inc_drafts=current_user.is_authenticated and current_user.id == user_id)
+                                            inc_hidden=current_user.is_admin(),
+                                            inc_drafts=current_user.is_authenticated and current_user.id == user_id)
     return render_template('user/reviews.html', section='reviews', user=user,
                            reviews=reviews, page=page, limit=limit, count=count)
 
@@ -61,7 +61,7 @@ def block(user_id):
     if form.validate_on_submit():
         db_users.block(user['id'])
         db_moderation_log.create(admin_id=current_user.id, action=ACTION_BLOCK_USER,
-                             reason=form.reason.data, user_id=user['id'])
+                                 reason=form.reason.data, user_id=user['id'])
         flash.success(gettext("This user account has been blocked."))
         return redirect(url_for('user.reviews', user_id=user['id']))
 

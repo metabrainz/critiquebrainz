@@ -27,12 +27,12 @@ class ReviewTestCase(DataTestCase):
 
     def test_review_creation(self):
         review = db_review.create(
-           user_id=self.user.id,
-           entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
-           entity_type="release_group",
-           text="Testing",
-           is_draft=False,
-           license_id=self.license["id"],
+            user_id=self.user.id,
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            text="Testing",
+            is_draft=False,
+            license_id=self.license["id"],
         )
         reviews, count = db_review.list_reviews()
         self.assertEqual(count, 1)

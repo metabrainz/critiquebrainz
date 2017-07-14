@@ -35,7 +35,7 @@ class ReviewEditForm(Form):
         validators.DataRequired(message=lazy_gettext("Review is empty!")),
         StateAndLength(min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH,
                        message=lazy_gettext("Review length needs to be between %(min)d and %(max)d characters.",
-                                       min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH))])
+                                            min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH))])
     license_choice = RadioField(
         choices=[
             ('CC BY-SA 3.0', lazy_gettext('Allow commercial use of this review (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA 3.0 license</a>)')),

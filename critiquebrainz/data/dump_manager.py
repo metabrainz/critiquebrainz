@@ -147,7 +147,7 @@ def json(location, rotate=False):
     for license in db_license.list_licenses():
         safe_name = slugify(license["id"])
         with tarfile.open(os.path.join(location, "critiquebrainz-%s-%s-json.tar.bz2" %
-                (datetime.today().strftime('%Y%m%d'), safe_name)), "w:bz2") as tar:
+                                       (datetime.today().strftime('%Y%m%d'), safe_name)), "w:bz2") as tar:
             temp_dir = tempfile.mkdtemp()
             license_dir = os.path.join(temp_dir, safe_name)
             create_path(license_dir)
@@ -252,7 +252,7 @@ def public(location, rotate=False):
         create_path(reviews_combined_tables_dir)
         with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
             cursor.copy_to(f, "(SELECT {columns} FROM review WHERE is_hidden = false AND is_draft = false)"
-                          .format(columns=', '.join(_TABLES["review"])))
+                           .format(columns=', '.join(_TABLES["review"])))
         with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
             cursor.copy_to(f, "({sql})".format(sql=REVISION_COMBINED_SQL))
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
@@ -283,7 +283,7 @@ def public(location, rotate=False):
                 )""".format(columns=', '.join(_TABLES["review"]), license_id=license["id"]))
             with open(os.path.join(tables_dir, 'revision'), 'w') as f:
                 cursor.copy_to(f, """({REVISION_COMBINED_SQL} AND review.license_id='{license_id}')"""
-                    .format(REVISION_COMBINED_SQL=REVISION_COMBINED_SQL, license_id=license["id"]))
+                               .format(REVISION_COMBINED_SQL=REVISION_COMBINED_SQL, license_id=license["id"]))
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
@@ -340,7 +340,7 @@ def importer(archive):
 
         # Importing data
         import_data(os.path.join(temp_dir, 'cbdump', 'user_sanitised'), 'user',
-            columns=('id', 'created', 'display_name', 'musicbrainz_id'))
+                    columns=('id', 'created', 'display_name', 'musicbrainz_id'))
         import_data(os.path.join(temp_dir, 'cbdump', 'license'), 'license')
         import_data(os.path.join(temp_dir, 'cbdump', 'review'), 'review')
         import_data(os.path.join(temp_dir, 'cbdump', 'revision'), 'revision')

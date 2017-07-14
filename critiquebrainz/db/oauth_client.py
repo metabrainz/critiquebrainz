@@ -36,14 +36,14 @@ def create(*, user_id, name, desc, website, redirect_uri):
                  VALUES (:client_id, :client_secret, :redirect_uri,
                         :user_id, :name, :desc, :website)
         """), {
-        "client_id": generate_string(CLIENT_ID_LENGTH),
-        "client_secret": generate_string(CLIENT_SECRET_LENGTH),
-        "redirect_uri": redirect_uri,
-        "user_id": user_id,
-        "name": name,
-        "website": website,
-        "desc": desc,
-    })
+            "client_id": generate_string(CLIENT_ID_LENGTH),
+            "client_secret": generate_string(CLIENT_SECRET_LENGTH),
+            "redirect_uri": redirect_uri,
+            "user_id": user_id,
+            "name": name,
+            "website": website,
+            "desc": desc,
+        })
 
 
 def update(*, client_id, name=None, desc=None, website=None, redirect_uri=None):

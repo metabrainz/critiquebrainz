@@ -97,12 +97,12 @@ class User(AdminMixin):
         if includes is None:
             includes = []
         response = dict(
-                    id=self.id,
-                    display_name=self.display_name,
-                    created=self.created,
-                    karma=self.karma,
-                    user_type=self.user_type.label,
-                )
+            id=self.id,
+            display_name=self.display_name,
+            created=self.created,
+            karma=self.karma,
+            user_type=self.user_type.label,
+        )
 
         if confidential is True:
             response.update(dict(

@@ -28,12 +28,12 @@ class UserTestCase(DataTestCase):
             full_name='Test License',
         )
         self.review = db_review.create(
-                entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
-                entity_type="release_group",
-                text="Testing!",
-                user_id=self.author.id,
-                is_draft=False,
-                license_id=license["id"],
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            text="Testing!",
+            user_id=self.author.id,
+            is_draft=False,
+            license_id=license["id"],
         )
         db_vote.submit(self.user1.id, self.review["last_revision"]["id"], True)
         self.review_created = self.review["last_revision"]["timestamp"]

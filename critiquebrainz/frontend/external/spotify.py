@@ -68,8 +68,7 @@ def search(query, type, limit=20, offset=0):
     result = cache.get(key, namespace)
     if not result:
         result = _get_spotify("/search?q=%s&type=%s&limit=%s&offset=%s" %
-                             (urllib.parse.quote(query.encode('utf8')),
-                             type, str(limit), str(offset)))
+                              (urllib.parse.quote(query.encode('utf8')), type, str(limit), str(offset)))
         cache.set(key=key, namespace=namespace, val=result,
                   time=DEFAULT_CACHE_EXPIRATION)
     return result

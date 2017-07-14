@@ -67,10 +67,9 @@ def spotify():
     albums_ids = [x['id'] for x in response['items']]
     full_response = spotify_api.get_multiple_albums(albums_ids)
 
-    return render_template(
-            'mapping/spotify.html', release_group=release_group,
-            search_results=[full_response[id] for id in albums_ids if id in full_response],
-            page=page, limit=limit, count=response.get('total'))
+    return render_template('mapping/spotify.html', release_group=release_group,
+                           search_results=[full_response[id] for id in albums_ids if id in full_response],
+                           page=page, limit=limit, count=response.get('total'))
 
 
 @mapping_bp.route('/spotify/confirm', methods=['GET', 'POST'])
