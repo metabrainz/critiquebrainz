@@ -60,7 +60,7 @@ def review_entity_handler(review_id):
               "id": "CC BY-NC-SA 3.0",
               "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
             },
-            "rating": 0,
+            "popularity": 0,
             "source": "BBC",
             "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
             "text": "REVIEW GOES HERE",
@@ -283,7 +283,7 @@ def review_list_handler():
                 "id": "CC BY-NC-SA 3.0",
                 "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
               },
-              "rating": 0,
+              "popularity": 0,
               "source": "BBC",
               "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
               "text": "REVIEW TEXT GOES HERE",

@@ -59,7 +59,7 @@ def get_by_id(review_id):
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "rating": int,
+            "popularity": int,
             "text": str,
             "created": datetime,
             "license": dict,
@@ -137,7 +137,7 @@ def get_by_id(review_id):
         votes = db_revision.votes(review["last_revision"]["id"])
         review["votes_positive_count"] = votes["positive"]
         review["votes_negative_count"] = votes["negative"]
-        review["rating"] = review["votes_positive_count"] - review["votes_negative_count"]
+        review["popularity"] = review["votes_positive_count"] - review["votes_negative_count"]
     return review
 
 
@@ -263,7 +263,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "rating": int,
+            "popularity": int,
             "text": str,
             "created": datetime,
             "license": dict,
@@ -419,7 +419,6 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                latest_revision.id as latest_revision_id,
                latest_revision.timestamp as latest_revision_timestamp,
                latest_revision.text as text,
-               latest_revision.rating as rating,
                license.full_name,
                license.info_url
           FROM review
@@ -460,7 +459,6 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                     "id": row.pop("latest_revision_id"),
                     "timestamp": row.pop("latest_revision_timestamp"),
                     "text": row["text"],
-                    "rating": row["rating"],
                     "review_id": row["id"],
                 }
                 row["user"] = User({
@@ -516,7 +514,6 @@ def get_popular(limit=None):
                        latest_revision.id AS latest_revision_id,
                        latest_revision.timestamp AS latest_revision_timestamp,
                        latest_revision.text AS text,
-                       latest_revision.rating AS rating
                   FROM review
                   JOIN revision ON revision.review_id = review.id
              LEFT JOIN (
@@ -561,7 +558,6 @@ def get_popular(limit=None):
                     "id": review.pop("latest_revision_id"),
                     "timestamp": review.pop("latest_revision_timestamp"),
                     "text": review["text"],
-                    "rating": review["rating"],
                     "review_id": review["id"],
                 }
             reviews = [to_dict(review, confidential=True) for review in reviews]
