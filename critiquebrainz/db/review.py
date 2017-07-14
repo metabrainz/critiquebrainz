@@ -59,7 +59,7 @@ def get_by_id(review_id):
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "rating": int,
+            "popularity": int,
             "text": str,
             "created": datetime,
             "license": dict,
@@ -137,7 +137,7 @@ def get_by_id(review_id):
         votes = db_revision.votes(review["last_revision"]["id"])
         review["votes_positive_count"] = votes["positive"]
         review["votes_negative_count"] = votes["negative"]
-        review["rating"] = review["votes_positive_count"] - review["votes_negative_count"]
+        review["popularity"] = review["votes_positive_count"] - review["votes_negative_count"]
     return review
 
 
@@ -263,7 +263,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "rating": int,
+            "popularity": int,
             "text": str,
             "created": datetime,
             "license": dict,
@@ -310,8 +310,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         entity_id (uuid): ID of the entity that has been reviewed.
         entity_type (str): Type of the entity that has been reviewed.
         user_id (uuid): ID of the author.
-        sort (str): Order of the returned reviews. Can be either "rating" (order by rating), or "created"
-                    (order by creation time), or "random" (order randomly).
+        sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
+                    or "created" (order by creation time), or "random" (order randomly).
         limit (int): Maximum number of reviews to return.
         offset (int): Offset that can be used in conjunction with the limit.
         language (str): Language code of reviews.
@@ -375,9 +375,9 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         count = result.fetchone()[0]
     order_by_clause = str()
 
-    if sort == "rating":
+    if sort == "popularity":
         order_by_clause = """
-            ORDER BY rating DESC
+            ORDER BY popularity DESC
         """
     elif sort == "created":
         order_by_clause = """
@@ -387,7 +387,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         order_by_clause = """
             ORDER BY RANDOM()
         """
-    # Note that all revisions' votes are considered in these ratings
+    # Note that all revisions' votes are considered in this popularity
     query = sqlalchemy.text("""
         SELECT review.id,
                review.entity_id,
@@ -416,7 +416,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                SUM(
                    CASE WHEN vote = 't' THEN 1
                    WHEN vote = 'f' THEN -1 WHEN vote IS NULL THEN 0 END
-               ) AS rating,
+               ) AS popularity,
                latest_revision.id as latest_revision_id,
                latest_revision.timestamp as latest_revision_timestamp,
                latest_revision.text as text,
@@ -477,9 +477,9 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
 def get_popular(limit=None):
     """Get a list of popular reviews.
 
-    Popularity is determined by rating of a particular review. Rating is a
+    Popularity is determined by 'popularity' of a particular review. popularity is a
     difference between positive votes and negative. In this case only votes
-    from the last month are used to calculate rating to make results more
+    from the last month are used to calculate popularity to make results more
     varied.
 
     Args:
@@ -511,7 +511,7 @@ def get_popular(limit=None):
                            CASE WHEN vote = 't' THEN 1
                                 WHEN vote = 'f' THEN -1
                                 WHEN vote IS NULL THEN 0 END
-                       ) AS rating,
+                       ) AS popularity,
                        latest_revision.id AS latest_revision_id,
                        latest_revision.timestamp AS latest_revision_timestamp,
                        latest_revision.text AS text
@@ -544,7 +544,7 @@ def get_popular(limit=None):
                       ) AS randomized_entity_ids
                     )
               GROUP BY review.id, latest_revision.id
-              ORDER BY rating
+              ORDER BY popularity
                  LIMIT :limit
             """), {
                 "limit": defined_limit,
