@@ -1,7 +1,7 @@
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.pool import NullPool
-from contextlib import contextmanager
 
 engine = None
 

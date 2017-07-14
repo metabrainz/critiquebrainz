@@ -1,21 +1,20 @@
-from flask import current_app, jsonify
-from flask.json import JSONEncoder
-from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri
-from critiquebrainz.db import license as db_license, review as db_review
-from critiquebrainz import frontend
-from critiquebrainz import db
 from time import gmtime, strftime
 from datetime import datetime
 from functools import wraps
 import subprocess
-import sqlalchemy
 import tempfile
 import tarfile
 import shutil
-import click
 import errno
 import sys
 import os
+from flask import current_app, jsonify
+from flask.json import JSONEncoder
+from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri
+from critiquebrainz.db import license as db_license, review as db_review
+from critiquebrainz import frontend, db
+import sqlalchemy
+import click
 
 
 cli = click.Group()

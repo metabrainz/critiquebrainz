@@ -1,9 +1,9 @@
+from collections import OrderedDict
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from werkzeug.exceptions import BadRequest, NotFound
 from critiquebrainz.frontend.external import musicbrainz
 import critiquebrainz.db.review as db_review
-from collections import OrderedDict
 
 artist_bp = Blueprint('artist', __name__)
 

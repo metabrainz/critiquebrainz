@@ -1,12 +1,11 @@
-﻿from werkzeug.serving import run_simple
+﻿import subprocess
+from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
-from critiquebrainz import frontend
-from critiquebrainz import ws
 from brainzutils import cache
+from critiquebrainz import frontend, ws
 from critiquebrainz.data import dump_manager
 import critiquebrainz.data.utils as data_utils
 import critiquebrainz.data.fixtures as _fixtures
-import subprocess
 import click
 
 

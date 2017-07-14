@@ -1,9 +1,9 @@
-from hashlib import md5
-import critiquebrainz.db.revision as db_revision
-import sqlalchemy
-from critiquebrainz import db
 from datetime import datetime
 import uuid
+from hashlib import md5
+from critiquebrainz import db
+from critiquebrainz.db import revision as db_revision
+import sqlalchemy
 
 
 def gravatar_url(source, default="identicon", rating="pg"):

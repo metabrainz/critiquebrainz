@@ -1,7 +1,7 @@
+from datetime import datetime
 from critiquebrainz import db
 from critiquebrainz.db import exceptions as db_exceptions
 import sqlalchemy
-from datetime import datetime
 
 
 def get(review_id, limit=1, offset=0):

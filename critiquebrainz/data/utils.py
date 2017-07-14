@@ -1,4 +1,3 @@
-from critiquebrainz import db
 import urllib.parse
 import unicodedata
 import shutil
@@ -6,6 +5,7 @@ import errno
 import sys
 import os
 import re
+from critiquebrainz import db
 
 ADMIN_SQL_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'admin', 'sql')
 

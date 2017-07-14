@@ -6,6 +6,9 @@ Spotify. These mappings are then used to show embedded Spotify player on some
 pages. See https://github.com/metabrainz/mbspotify for more info about this
 project.
 """
+import urllib.parse
+import os.path
+import string
 from flask import Blueprint, render_template, request, url_for, redirect
 from flask_login import login_required, current_user
 from flask_babel import gettext
@@ -13,9 +16,6 @@ from werkzeug.exceptions import NotFound, BadRequest
 import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend.external import musicbrainz, mbspotify
 from critiquebrainz.frontend import flash
-import urllib.parse
-import os.path
-import string
 
 mapping_bp = Blueprint('mapping', __name__)
 

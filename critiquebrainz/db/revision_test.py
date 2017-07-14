@@ -1,9 +1,8 @@
+from datetime import datetime
 from critiquebrainz.data.testing import DataTestCase
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
-from critiquebrainz.db import revision
-from critiquebrainz.db import vote
-from datetime import datetime
+from critiquebrainz.db import revision, vote
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.users as db_users
 

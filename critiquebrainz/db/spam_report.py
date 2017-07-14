@@ -1,7 +1,7 @@
-from critiquebrainz import db
-import sqlalchemy
-from critiquebrainz.db import revision as db_revision
 from datetime import datetime
+from critiquebrainz import db
+from critiquebrainz.db import revision as db_revision
+import sqlalchemy
 
 
 def get(user_id, revision_id):

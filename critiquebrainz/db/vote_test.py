@@ -1,3 +1,5 @@
+from datetime import datetime
+from uuid import UUID
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
@@ -5,8 +7,6 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.db.license as db_license
 from critiquebrainz.db import exceptions
 from critiquebrainz.db import vote
-from datetime import datetime
-from uuid import UUID
 
 
 class VoteTestCase(DataTestCase):

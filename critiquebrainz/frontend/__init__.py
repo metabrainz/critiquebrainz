@@ -1,6 +1,6 @@
-from brainzutils.flask import CustomFlask
 import logging
 import os
+from brainzutils.flask import CustomFlask
 from flask import send_from_directory
 
 

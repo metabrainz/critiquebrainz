@@ -1,8 +1,8 @@
+import urllib.parse
+import re
 from flask import request
 from critiquebrainz.utils import validate_uuid
 from critiquebrainz.ws.exceptions import MissingDataError, ParserError
-import urllib.parse
-import re
 
 
 class Parser(object):

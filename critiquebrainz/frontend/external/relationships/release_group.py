@@ -1,8 +1,8 @@
 """
 Relationship processor for release group entity.
 """
-from flask_babel import lazy_gettext
 import urllib.parse
+from flask_babel import lazy_gettext
 
 
 def process(release_group):

@@ -1,13 +1,11 @@
-import sqlalchemy
-from critiquebrainz import db
-from critiquebrainz.db import exceptions as db_exceptions
-from brainzutils import cache
 from random import shuffle
-import critiquebrainz.db.revision as db_revision
-from critiquebrainz.db.user import User
-import critiquebrainz.db.users as db_users
-import uuid
 from datetime import datetime, timedelta
+import uuid
+import sqlalchemy
+from brainzutils import cache
+from critiquebrainz import db
+from critiquebrainz.db import exceptions as db_exceptions, revision as db_revision, users as db_users
+from critiquebrainz.db.user import User
 import pycountry
 
 REVIEW_CACHE_NAMESPACE = "Review"

@@ -1,3 +1,5 @@
+from datetime import datetime, date, timedelta
+from uuid import UUID
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
@@ -8,8 +10,6 @@ import critiquebrainz.db.vote as db_vote
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.oauth_token as db_oauth_token
-from datetime import datetime, date, timedelta
-from uuid import UUID
 
 class UserTestCase(DataTestCase):
     def setUp(self):

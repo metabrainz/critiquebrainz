@@ -1,5 +1,5 @@
-from critiquebrainz.frontend.external import musicbrainz
 import re
+from critiquebrainz.frontend.external import musicbrainz
 
 
 def get_url(mbid):

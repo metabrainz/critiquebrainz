@@ -1,7 +1,7 @@
+import os
 from flask_testing import TestCase
 from critiquebrainz.frontend import create_app
 from critiquebrainz.data.utils import create_all, drop_tables, drop_types
-import os
 
 
 class DataTestCase(TestCase):

@@ -1,6 +1,6 @@
-from brainzutils.flask import CustomFlask
 import logging
 import os
+from brainzutils.flask import CustomFlask
 
 
 def create_app(debug=None, config_path=None):

@@ -1,10 +1,10 @@
+import os
 from flask_testing import TestCase
 from critiquebrainz.ws import create_app
 from critiquebrainz.data.utils import create_all, drop_tables, drop_types
 from critiquebrainz.ws.oauth import oauth
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.users as db_users
-import os
 
 
 class WebServiceTestCase(TestCase):

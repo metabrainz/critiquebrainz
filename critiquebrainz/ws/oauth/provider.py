@@ -1,7 +1,6 @@
-from flask import request
 from datetime import datetime, timedelta
 from functools import wraps
-
+from flask import request
 from critiquebrainz.ws.constants import available_scopes
 from critiquebrainz.ws.exceptions import NotAuthorized
 from critiquebrainz.ws.oauth import exceptions

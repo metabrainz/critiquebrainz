@@ -3,10 +3,10 @@ This module provides access to Spotify Web API.
 
 More information about it is available at https://developer.spotify.com/web-api/.
 """
-import requests
-import urllib.parse
-from brainzutils import cache
 from base64 import b64encode
+import urllib.parse
+import requests
+from brainzutils import cache
 from flask import current_app as app
 from critiquebrainz.frontend.external.exceptions import SpotifyWebAPIException
 
