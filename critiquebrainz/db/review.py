@@ -297,6 +297,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
     return get_by_id(review_id)
 
 
+# pylint: disable=too-many-branches
 def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                  entity_type=None, license_id=None, user_id=None,
                  language=None, exclude=None, sort=None, limit=20,
