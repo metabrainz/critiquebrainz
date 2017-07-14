@@ -8,7 +8,7 @@ import urllib.parse
 import requests
 from brainzutils import cache
 from flask import current_app as app
-from critiquebrainz.frontend.external.exceptions import SpotifyWebAPIException
+from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 ACCESS_TOKEN_EXPIRATION = 60 * 60 # seconds (1 hour)
@@ -119,3 +119,8 @@ def get_multiple_albums(spotify_ids):
         albums.update(received_albums)
 
     return albums
+
+
+class SpotifyException(ExternalServiceException):
+    """Exception related to errors related to the Spotify API."""
+    pass
