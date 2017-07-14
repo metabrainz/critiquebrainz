@@ -60,10 +60,10 @@ def review_entity_handler(review_id):
               "id": "CC BY-NC-SA 3.0",
               "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
             },
-            "rating": 0,
             "source": "BBC",
             "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
             "text": "REVIEW GOES HERE",
+            "rating": 100, (Rating part of the review)
             "user": {
               "created": "Wed, 07 May 2014 14:55:23 GMT",
               "display_name": "Paul Clarke",
@@ -283,10 +283,10 @@ def review_list_handler():
                 "id": "CC BY-NC-SA 3.0",
                 "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
               },
-              "rating": 0,
               "source": "BBC",
               "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
               "text": "REVIEW TEXT GOES HERE",
+              "rating": 100, (Rating part of the review)
               "user": {
                 "created": "Wed, 07 May 2014 16:20:47 GMT",
                 "display_name": "Jenny Nelson",
@@ -303,7 +303,7 @@ def review_list_handler():
     :json uuid entity_id: UUID of the release group that is being reviewed
     :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc. **(optional)**
     :query user_id: user's UUID **(optional)**
-    :query sort: ``rating`` or ``created`` **(optional)**
+    :query sort: ``popularity`` or ``created`` **(optional)**
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
@@ -320,7 +320,7 @@ def review_list_handler():
         entity_type = Parser.string('uri', 'entity_type', valid_values=ENTITY_TYPES, optional=True)
 
     user_id = Parser.uuid('uri', 'user_id', optional=True)
-    sort = Parser.string('uri', 'sort', valid_values=['rating', 'created'], optional=True)
+    sort = Parser.string('uri', 'sort', valid_values=['popularity', 'created'], optional=True)
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
     offset = Parser.int('uri', 'offset', optional=True) or 0
     language = Parser.string('uri', 'language', min=2, max=3, optional=True)
