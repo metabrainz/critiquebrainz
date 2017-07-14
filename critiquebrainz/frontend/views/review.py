@@ -1,4 +1,5 @@
 from math import ceil
+import logging
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
@@ -176,10 +177,16 @@ def revisions_more(id):
 @review_bp.route('/write', methods=('GET', 'POST'))
 @login_required
 def create():
+    entity_id, entity_type = None, None
     for entity_type in ENTITY_TYPES:
         entity_id = request.args.get(entity_type)
         if entity_id:
+            entity_type = entity_type
             break
+
+    if not (entity_id or entity_type):
+        logging.warning("Unsupported entity type")
+        raise BadRequest("Unsupported entity type")
 
     if not entity_id:
         flash.info(gettext("Please choose an entity to review."))
