@@ -1,4 +1,3 @@
-# USER TYPES
 class UserType(object):
 
     def __init__(self, label, karma, reviews_per_day, votes_per_day):
