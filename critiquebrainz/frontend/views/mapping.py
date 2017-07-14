@@ -12,8 +12,9 @@ import string
 from flask import Blueprint, render_template, request, url_for, redirect
 from flask_login import login_required, current_user
 from flask_babel import gettext
-from werkzeug.exceptions import NotFound, BadRequest
+from werkzeug.exceptions import NotFound, BadRequest, ServiceUnavailable
 import critiquebrainz.frontend.external.spotify as spotify_api
+from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 from critiquebrainz.frontend.external import musicbrainz, mbspotify
 from critiquebrainz.frontend import flash
 
@@ -31,7 +32,10 @@ def spotify_list(release_group_id):
         spotify_ids.append(mapping[14:])
 
     if spotify_ids:
-        spotify_albums = spotify_api.get_multiple_albums(spotify_ids)
+        try:
+            spotify_albums = spotify_api.get_multiple_albums(spotify_ids)
+        except ExternalServiceException as e:
+            raise ServiceUnavailable(e)
     else:
         spotify_albums = []
     release_group = musicbrainz.get_release_group_by_id(release_group_id)
@@ -62,10 +66,16 @@ def spotify():
     punctuation_map = dict((ord(char), None) for char in string.punctuation)
     query = release_group['title'].translate(punctuation_map)
     # Searching...
-    response = spotify_api.search(query, item_types='album', limit=limit, offset=offset).get('albums')
+    try:
+        response = spotify_api.search(query, item_types='album', limit=limit, offset=offset).get('albums')
+    except ExternalServiceException as e:
+        raise ServiceUnavailable(e)
 
     albums_ids = [x['id'] for x in response['items']]
-    full_response = spotify_api.get_multiple_albums(albums_ids)
+    try:
+        full_response = spotify_api.get_multiple_albums(albums_ids)
+    except ExternalServiceException as e:
+        raise ServiceUnavailable(e)
 
     return render_template('mapping/spotify.html', release_group=release_group,
                            search_results=[full_response[id] for id in albums_ids if id in full_response],
@@ -94,8 +104,9 @@ def spotify_confirm():
         flash.error(gettext("You need to specify a correct link to this album on Spotify!"))
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
-    album = spotify_api.get_album(spotify_id)
-    if not album or album.get('error'):
+    try:
+        album = spotify_api.get_album(spotify_id)
+    except ExternalServiceException:
         flash.error(gettext("You need to specify existing album from Spotify!"))
         return redirect(url_for('.spotify', release_group_id=release_group_id))
 
@@ -137,8 +148,9 @@ def spotify_report():
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     else:
-        album = spotify_api.get_album(spotify_id)
-        if not album or album.get('error'):
+        try:
+            album = spotify_api.get_album(spotify_id)
+        except ExternalServiceException:
             flash.error(gettext("You need to specify existing album from Spotify!"))
             return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
