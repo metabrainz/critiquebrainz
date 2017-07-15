@@ -2,8 +2,11 @@ from mbdata.utils.models import get_entity_type_model, get_link_model
 from sqlalchemy.orm import joinedload
 
 
-def entity_relation_helper(db, target_type, source_type, source_entity_ids, includes_data):
+def get_relationship_info(*, db, target_type, source_type, source_entity_ids, includes_data):
     """Get information related to relationships between different entities.
+
+    Keep in mind that includes_data (dict) is altered to contain the relationship objects
+    keyed by the source entity MBIDs.
 
     Args:
         db (Session object): Session object.
@@ -32,6 +35,9 @@ def entity_relation_helper(db, target_type, source_type, source_entity_ids, incl
 def _relationship_link_helper(relation, query, source_attr, target_attr, target_type, source_entity_ids, includes_data):
     """Get relationship links between two entities.
 
+    Keep in mind that includes_data (dict) is altered to contain the relationship objects
+    keyed by the source entity MBIDs.
+
     Args:
         relation (mbdata.model): Model relating the two entities.
         query (Session.query): Query object.
@@ -40,11 +46,7 @@ def _relationship_link_helper(relation, query, source_attr, target_attr, target_
         target_type (str): Type of the target entity.
         source_entity_ids (list): IDs of the source entity.
         includes_data (dict): Dictionary containing the includes data of entities.
-
-    Note:
-        includes_data (dict) is altered to contain the relationship objects
-        keyed by the source entity mbids
-    """
+   """
     source_id_attr = source_attr + "_id"
     query = query.filter(getattr(relation, source_id_attr).in_(source_entity_ids))
     query = query.options(joinedload(target_attr, innerjoin=True))
