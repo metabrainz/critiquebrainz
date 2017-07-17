@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 from critiquebrainz.data.mixins import AdminMixin
-import critiquebrainz.db.users as db_users
+from critiquebrainz.db import users as db_users
 from critiquebrainz.data.user_types import user_types
 
 

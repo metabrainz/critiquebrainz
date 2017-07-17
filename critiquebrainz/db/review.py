@@ -4,7 +4,7 @@ import uuid
 import sqlalchemy
 from brainzutils import cache
 from critiquebrainz import db
-from critiquebrainz.db import exceptions as db_exceptions, revision as db_revision, users as db_users
+from critiquebrainz.db import exceptions as db_exceptions, revision as db_revision, users as db_users, avg_rating as db_avg_rating
 from critiquebrainz.db.user import User
 import pycountry
 
@@ -59,7 +59,7 @@ def get_by_id(review_id):
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "popularity": int,
+            "rating": int,
             "text": str,
             "created": datetime,
             "license": dict,
@@ -81,6 +81,7 @@ def get_by_id(review_id):
                    revision.id AS last_revision_id,
                    revision.timestamp,
                    revision.text,
+                   revision.rating,
                    "user".email,
                    "user".created as user_created,
                    "user".display_name,
@@ -118,6 +119,7 @@ def get_by_id(review_id):
             "id": review.pop("last_revision_id"),
             "timestamp": review.pop("timestamp"),
             "text": review.get("text"),
+            "rating": review.get("rating"),
             "review_id": review.get("id"),
         }
         review["user"] = User({
@@ -135,9 +137,11 @@ def get_by_id(review_id):
             "full_name": review["full_name"],
         }
         votes = db_revision.votes(review["last_revision"]["id"])
-        review["votes_positive_count"] = votes["positive"]
-        review["votes_negative_count"] = votes["negative"]
-        review["popularity"] = review["votes_positive_count"] - review["votes_negative_count"]
+        review["votes"] = {
+            "positive": votes["positive"],
+            "negative": votes["negative"],
+            "popularity": votes["positive"] - votes["negative"],
+        }
     return review
 
 
@@ -179,7 +183,7 @@ def get_count(*, is_draft=False, is_hidden=False):
         return result.fetchone()[0]
 
 
-def update(review_id, *, drafted, text, license_id=None, language=None, is_draft=None):
+def update(review_id, *, drafted, text, rating, license_id=None, language=None, is_draft=None):
     # TODO: Get rid of `drafted` argument. This information about review should be retrieved inside this function.
     """Update a review.
 
@@ -188,7 +192,8 @@ def update(review_id, *, drafted, text, license_id=None, language=None, is_draft
         drafted (bool): Whether the review is currently set as a draft.
         license_id (str): ID of a license that needs to be associated with this review.
         is_draft (bool): Whether to publish review (False) or keep it as a graft (True).
-        text (str): Updated text of a review.
+        text (str): Updated text part of a review.
+        rating (int): Updated rating part of a review.
     """
     updates = []
     updated_info = {}
@@ -221,11 +226,11 @@ def update(review_id, *, drafted, text, license_id=None, language=None, is_draft
         with db.engine.connect() as connection:
             connection.execute(query, updated_info)
 
-    db_revision.create(review_id, text)
+    db_revision.create(review_id, text, rating)
     cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
 
 
-def create(*, entity_id, entity_type, user_id, is_draft, text,
+def create(*, entity_id, entity_type, user_id, is_draft, text, rating,
            language=DEFAULT_LANG, license_id=DEFAULT_LICENSE_ID,
            source=None, source_url=None):
     """Create a new review.
@@ -239,7 +244,8 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
         entity_type (str): Entity type associated with the `entity_id`.
         user_id (uuid): ID of the reviewer.
         is_draft (bool): Whether this review is a draft (not shown to public).
-        text (str): Content of the review.
+        text (str): Text part of the review.
+        rating (int): Rating part of the review.
         language (str): Language code that indicates which language the review
                         is written in.
         license_id (str): ID of the license.
@@ -263,7 +269,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "popularity": int,
+            "rating": int,
             "text": str,
             "created": datetime,
             "license": dict,
@@ -292,7 +298,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
         })
         review_id = result.fetchone()[0]
         # TODO(roman): It would be better to create review and revision in one transaction
-        db_revision.create(review_id, text)
+        db_revision.create(review_id, text, rating)
         cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
     return get_by_id(review_id)
 
@@ -420,6 +426,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                latest_revision.id as latest_revision_id,
                latest_revision.timestamp as latest_revision_timestamp,
                latest_revision.text as text,
+               latest_revision.rating as rating,
                license.full_name,
                license.info_url
           FROM review
@@ -460,6 +467,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                     "id": row.pop("latest_revision_id"),
                     "timestamp": row.pop("latest_revision_timestamp"),
                     "text": row["text"],
+                    "rating": row["rating"],
                     "review_id": row["id"],
                 }
                 row["user"] = User({
@@ -514,7 +522,8 @@ def get_popular(limit=None):
                        ) AS popularity,
                        latest_revision.id AS latest_revision_id,
                        latest_revision.timestamp AS latest_revision_timestamp,
-                       latest_revision.text AS text
+                       latest_revision.text AS text,
+                       latest_revision.rating AS rating
                   FROM review
                   JOIN revision ON revision.review_id = review.id
              LEFT JOIN (
@@ -559,6 +568,7 @@ def get_popular(limit=None):
                     "id": review.pop("latest_revision_id"),
                     "timestamp": review.pop("latest_revision_timestamp"),
                     "text": review["text"],
+                    "rating": review["rating"],
                     "review_id": review["id"],
                 }
             reviews = [to_dict(review, confidential=True) for review in reviews]
@@ -573,6 +583,7 @@ def delete(review_id):
     Args:
         review_id: ID of the review to be deleted.
     """
+    review = get_by_id(review_id)
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
@@ -581,6 +592,9 @@ def delete(review_id):
         """), {
             "review_id": review_id,
         })
+
+    if review["rating"] is not None:
+    	db_avg_rating.update(review["entity_id"], review["entity_type"])
 
 
 def distinct_entities():
