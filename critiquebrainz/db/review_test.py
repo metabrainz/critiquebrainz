@@ -42,6 +42,15 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(reviews[0]["license_id"], review["license_id"])
         self.assertEqual(reviews[0]["rating"], review["rating"])
 
+        with self.assertRaises(db_exceptions.IntegrityError):
+            db_review.create(
+                user_id=self.user_2.id,
+                entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+                entity_type="release_group",
+                is_draft=False,
+                license_id=self.license["id"],
+            )
+
     def test_review_deletion(self):
         review = db_review.create(
             user_id=self.user.id,
