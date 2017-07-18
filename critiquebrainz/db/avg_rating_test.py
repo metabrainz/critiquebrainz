@@ -21,7 +21,7 @@ class AvgRatingTestCase(DataTestCase):
             id=u'Test',
             full_name=u"Test License",
         )
-        
+
     def test_insert_and_get(self):
         """Test if rating and count are inserted on creation of the first review with rating
         and the get function that returns a dict containing rating and count"""
@@ -78,8 +78,8 @@ class AvgRatingTestCase(DataTestCase):
         avg_rating = db_avg_rating.get(review["entity_id"], review["entity_type"])
         self.assertEqual(avg_rating["rating"], 100)
         self.assertEqual(avg_rating["count"], 1)
-        
-        #Check if avg_rating is updated after a review with rating is deleted 
+
+        #Check if avg_rating is updated after a review with rating is deleted
         db_review.delete(review["id"])
         with self.assertRaises(db_exceptions.NoDataFoundException):
             db_avg_rating.get(review["entity_id"], review["entity_type"])

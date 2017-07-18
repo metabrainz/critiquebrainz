@@ -5,11 +5,11 @@ from critiquebrainz.db import exceptions as db_exceptions
 
 def update(entity_id, entity_type):
     """Updates the average rating of the entity
-    
+
     It does so by collecting all the review_ids for a given entity from review
     and selecting respective revisions with latest timestamp
-    and calculating sum and count of ratings 
-    
+    and calculating sum and count of ratings
+
     Args:
         entity_id (uuid): ID of the entity
         entity_type (str): Type of the entity
@@ -33,12 +33,12 @@ def update(entity_id, entity_type):
         INNER JOIN LatestRevisions
                 ON revision.review_id = LatestRevisions.review_id
                AND revision.timestamp = LatestRevisions.created_at
-        """),{
+        """), {
             "entity_id": entity_id,
             "entity_type": entity_type,
         })
         row = result.fetchone()
-    
+
     #Calulate average rating and update it
     sum, count = row[0], row[1]
     if count == 0:
@@ -54,7 +54,7 @@ def update(entity_id, entity_type):
               DO UPDATE
                     SET rating = EXCLUDED.rating, 
                         count = EXCLUDED.count
-        """),{
+        """), {
             "entity_id": entity_id,
             "entity_type": entity_type,
             "rating": avg_rating,
@@ -65,7 +65,7 @@ def update(entity_id, entity_type):
 def delete(entity_id, entity_type):
     """Deletes the avg_rating, given entity_id and entity_type
 
-    Args: 
+    Args:
         entity_id (uuid): ID of the entity
         entity_type (str): Type of the entity
     """
@@ -84,7 +84,7 @@ def delete(entity_id, entity_type):
 def get(entity_id, entity_type):
     """Get average rating from entity_id
 
-    Args: 
+    Args:
         entity_id (uuid): ID of the entity
         entity_type (str): Type of the entity
     Returns:

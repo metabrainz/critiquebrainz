@@ -13,5 +13,5 @@ class BadDataException(DatabaseException):
     pass
 
 class IntegrityError(DatabaseException):
-	"""Should be used when any database constraint is violated"""
-	pass
+    """Should be used when any database constraint is violated"""
+    pass
