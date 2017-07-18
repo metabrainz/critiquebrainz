@@ -59,6 +59,7 @@ def get_by_id(review_id):
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
+            "popularity": int,
             "rating": int,
             "text": str,
             "created": datetime,
@@ -137,11 +138,9 @@ def get_by_id(review_id):
             "full_name": review["full_name"],
         }
         votes = db_revision.votes(review["last_revision"]["id"])
-        review["votes"] = {
-            "positive": votes["positive"],
-            "negative": votes["negative"],
-            "popularity": votes["positive"] - votes["negative"],
-        }
+        review["votes_positive_count"] = votes["positive"]
+        review["votes_negative_count"] = votes["negative"]
+        review["popularity"] = review["votes_positive_count"] - review["votes_negative_count"]
     return review
 
 
@@ -183,7 +182,7 @@ def get_count(*, is_draft=False, is_hidden=False):
         return result.fetchone()[0]
 
 
-def update(review_id, *, drafted, text, rating, license_id=None, language=None, is_draft=None):
+def update(review_id, *, drafted, text=None, rating=None, license_id=None, language=None, is_draft=None):
     # TODO: Get rid of `drafted` argument. This information about review should be retrieved inside this function.
     """Update a review.
 
@@ -195,6 +194,9 @@ def update(review_id, *, drafted, text, rating, license_id=None, language=None, 
         text (str): Updated text part of a review.
         rating (int): Updated rating part of a review.
     """
+    if text is None and rating is None:
+    	raise db_exceptions.IntegrityError("Text part and rating part of a review can not be None simultaneously")
+
     updates = []
     updated_info = {}
 
@@ -230,7 +232,7 @@ def update(review_id, *, drafted, text, rating, license_id=None, language=None, 
     cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
 
 
-def create(*, entity_id, entity_type, user_id, is_draft, text, rating,
+def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
            language=DEFAULT_LANG, license_id=DEFAULT_LICENSE_ID,
            source=None, source_url=None):
     """Create a new review.
@@ -269,12 +271,15 @@ def create(*, entity_id, entity_type, user_id, is_draft, text, rating,
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "rating": int,
+            "popularity": int,
             "text": str,
+            "rating": int,
             "created": datetime,
             "license": dict,
         }
     """
+    if text is None and rating is None:
+    	raise db_exceptions.IntegrityError("Text part and rating part of a review can not be None simultaneously")
     if language not in supported_languages:
         raise ValueError("Language: {} is not supported".format(language))
 
@@ -594,7 +599,7 @@ def delete(review_id):
         })
 
     if review["rating"] is not None:
-    	db_avg_rating.update(review["entity_id"], review["entity_type"])
+      db_avg_rating.update(review["entity_id"], review["entity_type"])
 
 
 def distinct_entities():
