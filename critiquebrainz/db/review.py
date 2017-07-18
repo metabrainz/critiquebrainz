@@ -135,9 +135,11 @@ def get_by_id(review_id):
             "full_name": review["full_name"],
         }
         votes = db_revision.votes(review["last_revision"]["id"])
-        review["votes_positive_count"] = votes["positive"]
-        review["votes_negative_count"] = votes["negative"]
-        review["popularity"] = review["votes_positive_count"] - review["votes_negative_count"]
+        review["votes"] = {
+            "positive": votes["positive"],
+            "negative": votes["negative"],
+        }
+        review["popularity"] = review["votes"]["positive"] - review["votes"]["negative"]
     return review
 
 

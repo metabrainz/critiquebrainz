@@ -71,8 +71,10 @@ def review_entity_handler(review_id):
               "karma": 0,
               "user_type": "Noob"
             },
-            "votes_negative": 0,
-            "votes_positive": 0
+            "votes": {
+              "positive": 0,
+              "negative": 0
+            }
           }
         }
 
@@ -294,8 +296,10 @@ def review_list_handler():
                 "karma": 0,
                 "user_type": "Noob"
               },
-              "votes_negative": 0,
-              "votes_positive": 0
+              "votes": {
+                "positive": 0,
+                "negative": 0
+              }
             }
           ]
         }
