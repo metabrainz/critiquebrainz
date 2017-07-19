@@ -195,7 +195,7 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
         rating (int): Updated rating part of a review.
     """
     if text is None and rating is None:
-        raise db_exceptions.IntegrityError("Text part and rating part of a review can not be None simultaneously")
+        raise db_exceptions.BadDataException("Text part and rating part of a review can not be None simultaneously")
 
     updates = []
     updated_info = {}
@@ -279,7 +279,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
         }
     """
     if text is None and rating is None:
-        raise db_exceptions.IntegrityError("Text part and rating part of a review can not be None simultaneously")
+        raise db_exceptions.BadDataException("Text part and rating part of a review can not be None simultaneously")
     if language not in supported_languages:
         raise ValueError("Language: {} is not supported".format(language))
 
