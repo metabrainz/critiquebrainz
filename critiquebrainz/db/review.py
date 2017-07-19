@@ -59,7 +59,6 @@ def get_by_id(review_id):
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "popularity": int,
             "text": str,
             "created": datetime,
             "license": dict,
@@ -137,7 +136,6 @@ def get_by_id(review_id):
         votes = db_revision.votes(review["last_revision"]["id"])
         review["votes_positive_count"] = votes["positive"]
         review["votes_negative_count"] = votes["negative"]
-        review["popularity"] = review["votes_positive_count"] - review["votes_negative_count"]
     return review
 
 
@@ -263,7 +261,6 @@ def create(*, entity_id, entity_type, user_id, is_draft, text,
             "source_url": str,
             "last_revision: dict,
             "votes": dict,
-            "popularity": int,
             "text": str,
             "created": datetime,
             "license": dict,
