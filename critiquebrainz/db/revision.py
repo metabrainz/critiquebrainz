@@ -171,6 +171,7 @@ def create(review_id, text, rating):
             "rating": rating,
         })
 
+    # Update average rating if rating part of the review has changed
     review = db_review.get_by_id(review_id)
     rev_num = get_revision_number(review["id"], review["last_revision"]["id"])
     if rev_num > 1:
