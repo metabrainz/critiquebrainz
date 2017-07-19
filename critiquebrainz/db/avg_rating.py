@@ -6,9 +6,8 @@ from critiquebrainz.db import exceptions as db_exceptions
 def update(entity_id, entity_type):
     """Updates the average rating of the entity
 
-    It does so by collecting all the review_ids for a given entity from review
-    and selecting respective revisions with latest timestamp
-    and calculating sum and count of ratings
+    It is done by selecting ratings from the latest revisions of all reviews
+    for a given entity.
 
     Args:
         entity_id (uuid): ID of the entity

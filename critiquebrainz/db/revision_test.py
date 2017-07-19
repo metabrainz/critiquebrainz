@@ -99,7 +99,6 @@ class RevisionTestCase(DataTestCase):
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Updated this review",
-            rating=80,
         )
         self.review = db_review.get_by_id(self.review["id"])
         rev_num = revision.get_revision_number(self.review["id"], self.review["last_revision"]["id"])

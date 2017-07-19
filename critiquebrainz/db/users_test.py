@@ -31,7 +31,6 @@ class UserTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Testing!",
-            rating=100,
             user_id=self.author.id,
             is_draft=False,
             license_id=license["id"],
@@ -126,7 +125,6 @@ class UserTestCase(DataTestCase):
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Testing Again",
-            rating=100,
         )
         reviews = db_users.get_reviews(self.author.id)
         self.assertEqual(len(reviews), 1)

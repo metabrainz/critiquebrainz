@@ -29,7 +29,6 @@ class ModerationLogCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="It is beautiful!",
-            rating=100,
             is_draft=False,
             license_id=self.license["id"],
             language='en',
