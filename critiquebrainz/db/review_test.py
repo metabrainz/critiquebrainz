@@ -105,10 +105,10 @@ class ReviewTestCase(DataTestCase):
             id="License-2",
             full_name="Another License",
         )
+        # Update review to only rating
         db_review.update(
             review_id=review["id"],
             drafted=review["is_draft"],
-            text=None,
             rating=80,
             is_draft=False,
             license_id=another_license["id"],
@@ -121,12 +121,25 @@ class ReviewTestCase(DataTestCase):
         self.assertFalse(retrieved_review["is_draft"])
         self.assertEqual(retrieved_review["license_id"], another_license["id"])
         self.assertEqual(retrieved_review["language"], "es")
+        # Update review to only text
+        db_review.update(
+            review_id=review["id"],
+            drafted=review["is_draft"],
+            text="Testing update",
+            is_draft=False,
+            license_id=another_license["id"],
+            language="es",
+        )
+        #Checking if contents are updated
+        retrieved_review = db_review.list_reviews()[0][0]
+        self.assertEqual(retrieved_review["text"], "Testing update")
+        self.assertEqual(retrieved_review["rating"], None)
 
         # Updating should create a new revision.
         revisions = db_revision.get(retrieved_review["id"], limit=None)
-        self.assertEqual(len(revisions), 2)
+        self.assertEqual(len(revisions), 3)
         self.assertEqual(revisions[0]["timestamp"], retrieved_review["last_revision"]["timestamp"])
-        self.assertEqual(revisions[0]["text"], retrieved_review["last_revision"]["text"])
+        self.assertEqual(revisions[0]["text"], retrieved_review["text"])
         self.assertEqual(revisions[0]["rating"], retrieved_review["rating"])
 
         # Checking things that shouldn't be allowed
@@ -242,7 +255,6 @@ class ReviewTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Awesome",
-            rating=100,
             is_draft=False,
             license_id=self.license["id"],
         )
