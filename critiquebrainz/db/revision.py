@@ -152,7 +152,7 @@ def get_revision_number(review_id, revision_id):
     return rev_num
 
 
-def create(review_id, text, rating):
+def create(review_id, text=None, rating=None):
     """Creates a new revision for the given review.
 
     Args:
@@ -160,6 +160,9 @@ def create(review_id, text, rating):
         text (str): Updated/New text part of the review.
         rating (int): Updated/New rating part of the review
     """
+    if text is None and rating is None:
+        raise db_exceptions.BadDataException("Text part and rating part of a revision can not be None simultaneously")
+
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO revision(review_id, timestamp, text, rating)
