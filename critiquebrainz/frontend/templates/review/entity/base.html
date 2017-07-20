@@ -16,10 +16,10 @@
       {% else %}
         <em class="text-muted">{{ _('Published on %(date)s', date = review.created|date) }}</em><br />
         <em class="text-muted">{{ _('Written in %(language)s', language = review.language|language_name) }}</em><br />
-        {% set votes_total = review.votes_positive_count + review.votes_negative_count %}
+        {% set votes_total = review.votes.positive + review.votes.negative %}
         <em class="text-muted">
           {% if votes_total > 0 %}
-            {{ _('%s out of %s people have found this review useful' % (review.votes_positive_count, votes_total)) }}
+            {{ _('%s out of %s people have found this review useful' % (review.votes.positive, votes_total)) }}
           {% else %}
             {{ _('This review has not yet been rated') }}
           {% endif %}
