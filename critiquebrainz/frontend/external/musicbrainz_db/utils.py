@@ -13,5 +13,5 @@ def get_entities_by_gids(query, entity_model, redirect_model, mbids):
         entities.extend(redirected_entities)
     remaining_gids = list(set(mbids) - {entity.gid for entity in entities})
     if remaining_gids:
-        raise mb_exceptions.NoDataFoundException("Couldn't find a place with id(s): {mbids}".format(mbids=remaining_gids))
+        raise mb_exceptions.NoDataFoundException("Couldn't find an entity with id(s): {mbids}".format(mbids=remaining_gids))
     return entities

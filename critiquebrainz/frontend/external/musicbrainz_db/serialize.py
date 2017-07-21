@@ -74,8 +74,8 @@ def to_dict_places(place, includes=None):
         'address': place.address,
     }
 
-    if place.type:
-        data['type'] = place.type.name
+    if 'type' in includes and includes['type']:
+        data['type'] = includes['type'].name
 
     if place.coordinates:
         data['coordinates'] = {
@@ -83,8 +83,8 @@ def to_dict_places(place, includes=None):
             'longitude': place.coordinates[1],
         }
 
-    if place.area:
-        data['area'] = to_dict_areas(place.area)
+    if 'area' in includes and includes['area']:
+        data['area'] = to_dict_areas(includes['area'])
 
     if 'relationship_objs' in includes:
         to_dict_relationships(data, place, includes['relationship_objs'])

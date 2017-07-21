@@ -79,5 +79,8 @@ def fetch_multiple_places(mbids, *, includes=None):
                 includes_data=includes_data,
             )
 
+        for place in places:
+            includes_data[place.id]['area'] = place.area
+            includes_data[place.id]['type'] = place.type
         places = {str(place.gid): to_dict_places(place, includes_data[place.id]) for place in places}
     return places
