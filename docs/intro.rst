@@ -14,40 +14,38 @@ First, you need to create custom configuration file. Copy the skeleton configura
 
    $ cp custom_config.py.example custom_config.py
 
-Then, open ``critiquebrainz/custom_config.py`` in your favourite text editor and update
-any variables, as needed.
+Then open ``critiquebrainz/custom_config.py`` in your favourite text editor and update
+configuration values as described next.
 
-Configuring MusicBrainz login
-'''''''''''''''''''''''''''''
+MusicBrainz login
+'''''''''''''''''
 
-Before you begin using authentication with MusicBrainz accounts,
-you need to set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET`` values.
-To obtain these keys, you need to register your instance of CritiqueBrainz on MusicBrainz.
+To be able to log in using MusicBrainz accounts you need to set ``MUSICBRAINZ_CLIENT_ID``
+and ``MUSICBRAINZ_CLIENT_SECRET`` OAuth values.
 
-**Note** ``<your domain>`` field in the urls listed below should probably be set
-to ``localhost``, if you plan to run your CritiqueBrainz instance locally
-in development mode.
+These values can be obtained from MusicBrainz after you register a new instance of
+CritiqueBrainz at https://musicbrainz.org/account/applications/register (you'll need a
+MusicBrainz account). In the ``Callback URL`` field type::
 
-You need MusicBrainz account to register your application. Then head to
-https://musicbrainz.org/account/applications/register and follow the instructions.
-In ``Callback URL`` field type::
+   http://<HOST>/login/musicbrainz/post
 
-   http://<your domain>/login/musicbrainz/post
+.. note::
 
-Finally, save the obtained ``OAuth Client ID`` and ``OAuth Client Secret`` fields
-in your ``custom_config.py`` fields ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
-respectively.
+   ``<HOST>`` field should be set to ``localhost`` if you plan to run a local instance of
+   CritiqueBrainz for development purposes.
 
-Configuring Spotfiy API authentication
-''''''''''''''''''''''''''''''''''''''
+After application has been registered, set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
+in your ``custom_config.py`` to the values that you see on the MusicBrainz website.
 
-To use the Spotify Web API in an instance of CritiqueBrainz, you need to set the
-``SPOTIFY_CLIENT_ID`` and ``SPOTIFY_CLIENT_SECRET`` values. To obtain the keys,
-register your instance of CritiqueBrainz on Spotify.
+Spotfiy API authentication
+''''''''''''''''''''''''''
+
+To use the Spotify Web API, you need to set the ``SPOTIFY_CLIENT_ID`` and ``SPOTIFY_CLIENT_SECRET``
+values. OAuth keys can be obtained after registering on the Spotify developer website.
 
 After registering and logging into your Spotify account, head to
-https://developer.spotify.com/my-applications/ and then register your application following
-instructions on https://developer.spotify.com/web-api/tutorial/#registering-your-application.
+https://developer.spotify.com/my-applications/ and then register your application following the
+instructions at https://developer.spotify.com/web-api/tutorial/#registering-your-application.
 
 Finally, save the obtained ``Client ID`` and ``Client Secret`` fields in your ``custom_config.py``
 fields ``SPOTIFY_CLIENT_ID`` and ``SPOTIFY_CLIENT_SECRET`` respectively.
@@ -70,16 +68,9 @@ begin the import for the MusicBrainz database::
 
    $ docker-compose -f docker/docker-compose.dev.yml run musicbrainz_db
 
-Initialization of CritiqueBrainz database is also required::
+.. note::
 
-   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz python3 \
-   manage.py init_db --skip-create-db
-
-Then you can start all the services::
-
-   $ docker-compose -f docker/docker-compose.dev.yml up -d
-
-.. seealso:: An alternative way for setting up the MusicBrainz database is to
+   An alternative way for setting up the MusicBrainz database is to
    download the archives manually and then do the import. Archives provided from
    https://musicbrainz.org can be downloaded from
    https://musicbrainz.org/doc/MusicBrainz_Database/Download. Note that the
@@ -89,6 +80,20 @@ Then you can start all the services::
       $ docker-compose -f docker/docker-compose.dev.yml run -v $DUMPS_DIR:/home/musicbrainz/dumps \
       -v $PWD/data/mbdata:/var/lib/postgresql/data/pgdata musicbrainz_db
 
+.. warning::
+
+   Keep in mind that this process is very time consuming, so make sure that you don't delete
+   the ``data/mbdata`` directory by accident. Also make sure that you have about 25GB of free
+   space to keep the MusicBrainz data.
+
+Initialization of CritiqueBrainz database is also required::
+
+   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz python3 \
+   manage.py init_db --skip-create-db
+
+Then you can start all the services::
+
+   $ docker-compose -f docker/docker-compose.dev.yml up -d
 
 Building static files
 '''''''''''''''''''''
