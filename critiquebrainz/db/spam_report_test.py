@@ -1,9 +1,9 @@
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.db.user import User
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
 
 
 class SpamReportTestCase(DataTestCase):

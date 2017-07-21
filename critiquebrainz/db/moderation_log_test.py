@@ -1,10 +1,10 @@
 from critiquebrainz.data.testing import DataTestCase
 import critiquebrainz.db.moderation_log as db_moderation_log
 from critiquebrainz.db.moderation_log import ACTION_BLOCK_USER, ACTION_HIDE_REVIEW
-from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
+from critiquebrainz.db.user import User
 
 
 class ModerationLogCase(DataTestCase):

@@ -2,9 +2,9 @@ from datetime import datetime, timedelta
 from critiquebrainz.data.testing import DataTestCase
 import critiquebrainz.db.oauth_grant as db_oauth_grant
 import critiquebrainz.db.oauth_client as db_oauth_client
-from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.exceptions as db_exceptions
+from critiquebrainz.db.user import User
 
 class OAuthGrantTestCase(DataTestCase):
 
