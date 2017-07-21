@@ -29,6 +29,7 @@ class HelpersTestCase(TestCase):
             'url-rels': [
                 {
                     'type': 'official homepage',
+                    'type-id': '696b79da-7e45-40e6-a9d4-b31438eb7e5d',
                     'direction': 'forward',
                     'url': {
                         'id': '7462ea62-7439-47f7-93bc-a425d1d989e8',
@@ -37,6 +38,7 @@ class HelpersTestCase(TestCase):
                 },
                 {
                     'type': 'social network',
+                    'type-id': '040de4d5-ace5-4cfb-8a45-95c5c73bce01',
                     'direction': 'forward',
                     'url': {
                         'id': '8de22e00-c8e8-475f-814e-160ef761da63',
