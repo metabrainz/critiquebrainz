@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
-from critiquebrainz.frontend.external import musicbrainz, mbspotify, soundcloud
+from critiquebrainz.frontend.external import mbspotify, soundcloud
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.db.review as db_review
+import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 from werkzeug.exceptions import NotFound
 
 
@@ -24,7 +25,7 @@ def entity(id):
     else:
         tags = None
     if 'release-list' in release_group and release_group['release-list']:
-        release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'])
+        release = mb_release.get_release_by_id(release_group['release-list'][0]['id'])
     else:
         release = None
     soundcloud_url = soundcloud.get_url(release_group['id'])

@@ -14,11 +14,11 @@ def to_dict_relationships(data, source_obj, relationship_objs):
         Dictionary containing lists of dictionaries of related entities.
     """
     for entity_type in ENTITY_MODELS:
-        relation = '{entity_type}-rels'.format(entity_type=entity_type)
+        relation = f'{entity_type}-rels'
         if relation in relationship_objs:
             data[relation] = []
             for obj in relationship_objs[relation]:
-                link_data = {'type': obj.link.link_type.name}
+                link_data = {'type': obj.link.link_type.name, 'type-id': obj.link.link_type.gid}
                 link_data['direction'] = 'forward' if source_obj.id == obj.entity0_id else 'backward'
                 if obj.link.ended:
                     link_data['ended'] = True
@@ -129,19 +129,57 @@ def to_dict_release_groups(release_group, includes=None):
 
     if 'tags' in includes:
         data['tag-list'] = includes['tags']
+    return data
 
+
+def to_dict_medium(medium, includes=None):
+    if includes is None:
+        includes = {}
+    data = {
+        'name': medium.name,
+        'track_count': medium.track_count,
+        'position': medium.position,
+        'format': medium.format.name,
+    }
+
+    if 'tracks' in includes and includes['tracks']:
+        data['track-list'] = [to_dict_track(track) for track in includes['tracks']]
+    return data
+
+
+def to_dict_track(track, includes=None):
+    if includes is None:
+        includes = {}
+    data = {
+        'id': track.gid,
+        'name': track.name,
+        'number': track.number,
+        'position': track.position,
+        'length': track.length,
+        'recording_id': track.recording.gid,
+        'recording_title': track.recording.name,
+    }
     return data
 
 
 def to_dict_releases(release, includes=None):
     if includes is None:
         includes = {}
+
     data = {
         'id': release.gid,
         'name': release.name,
     }
+
     if 'relationship_objs' in includes:
         to_dict_relationships(data, release, includes['relationship_objs'])
+
+    if 'release-groups' in includes:
+        data['release-group'] = to_dict_release_groups(includes['release-groups'])
+
+    if 'media' in includes:
+        data['medium-list'] = [to_dict_medium(medium, includes={'tracks': medium.tracks})
+                               for medium in includes['media']]
     return data
 
 
@@ -178,4 +216,5 @@ TO_DICT_ENTITIES = {
     'release': to_dict_releases,
     'event': to_dict_events,
     'series': to_dict_series,
+    'medium': to_dict_medium,
 }

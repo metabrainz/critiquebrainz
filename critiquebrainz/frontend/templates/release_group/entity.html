@@ -111,13 +111,13 @@
               <tr>
                 <td>{{ track.number }}</td>
                 <td>
-                  <a href="http://acousticbrainz.org/{{ track.recording.id }}" title="View on AcousticBrainz">
-                    {{ track.recording.title }}
+                  <a href="http://acousticbrainz.org/{{ track.recording_id }}" title="View on AcousticBrainz">
+                    {{ track.recording_title }}
                   </a>
                 </td>
                 <td>
-                  {% if track.recording.length %}
-                    {{ track.recording.length | track_length }}
+                  {% if track.length %}
+                    {{ track.length | track_length }}
                   {% else %}
                     -
                   {% endif %}

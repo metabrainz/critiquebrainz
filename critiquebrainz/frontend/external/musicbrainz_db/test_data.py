@@ -324,6 +324,54 @@ release_numb_encore.mediums = [
 release_numb_encore.release_group = releasegroup_numb_encore
 release_numb_encore.status = releasestatus_official
 
+track_numb_encore_explicit_1 = Track()
+track_numb_encore_explicit_1.id = 7878846
+track_numb_encore_explicit_1.gid = '13aa9571-c0a0-3aaf-8159-9511658e5978'
+track_numb_encore_explicit_1.position = 1
+track_numb_encore_explicit_1.number = '1'
+track_numb_encore_explicit_1.name = 'Numb/Encore (explicit)'
+track_numb_encore_explicit_1.length = 208253
+track_numb_encore_explicit_1.is_data_track = False
+track_numb_encore_explicit_1.artist_credit = artistcredit_jay_z_linkin_park
+track_numb_encore_explicit_1.recording = recording_numb_encore_explicit
+
+track_numb_encore_instrumental_1 = Track()
+track_numb_encore_instrumental_1.id = 7878847
+track_numb_encore_instrumental_1.gid = '8f0abcc1-0ec0-3427-9e3e-925ee1e5b3e6'
+track_numb_encore_instrumental_1.position = 2
+track_numb_encore_instrumental_1.number = '2'
+track_numb_encore_instrumental_1.name = 'Numb/Encore (instrumental)'
+track_numb_encore_instrumental_1.length = 207453
+track_numb_encore_instrumental_1.is_data_track = False
+track_numb_encore_instrumental_1.artist_credit = artistcredit_jay_z_linkin_park
+track_numb_encore_instrumental_1.recording = recording_numb_encore_instrumental
+
+medium_2 = Medium()
+medium_2.id = 527716
+medium_2.position = 1
+medium_2.name = ''
+medium_2.track_count = 2
+medium_2.format = mediumformat_cd
+medium_2.tracks = [
+    track_numb_encore_explicit_1,
+    track_numb_encore_instrumental_1,
+]
+
+release_numb_encore_1 = Release()
+release_numb_encore_1.id = 527716
+release_numb_encore_1.gid = 'a64a0467-9d7a-4ffa-90b8-d87d9b41e311'
+release_numb_encore_1.name = 'Numb/Encore'
+release_numb_encore_1.barcode = '054391612328'
+release_numb_encore_1.comment = ''
+release_numb_encore_1.quality = -1
+release_numb_encore_1.artist_credit = artistcredit_jay_z_linkin_park
+release_numb_encore_1.mediums = [
+    medium_2,
+]
+release_numb_encore_1.release_group = releasegroup_numb_encore
+release_numb_encore_1.script = script_latin
+release_numb_encore_1.status = releasestatus_official
+
 releasegroupmeta_1 = ReleaseGroupMeta()
 releasegroupmeta_1.release_count = 4
 releasegroupmeta_1.first_release_date_year = 2004
@@ -361,3 +409,10 @@ event_ra_hall_uk.name = '1996-04-17: Royal Albert Hall, London, England, UK'
 event_ra_hall_uk.cancelled = False
 event_ra_hall_uk.ended = True
 event_ra_hall_uk.type = eventtype_concert
+
+release_collision_course = Release()
+release_collision_course.id = 28459
+release_collision_course.release_group = releasegroup_collision_course
+release_collision_course.gid = 'f51598f5-4ef9-4b8a-865d-06a077bf78cf'
+release_collision_course.name = 'Collision Course'
+release_collision_course.status = releasestatus_official
