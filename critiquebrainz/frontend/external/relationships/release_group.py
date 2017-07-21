@@ -27,7 +27,7 @@ def _url(url_list):
             external_urls.append(dict(list(relation.items()) + list(basic_types[relation['type']].items())))
         else:
             try:
-                target = urllib.parse.urlparse(relation['target'])
+                target = urllib.parse.urlparse(relation['url']['url'])
                 if relation['type'] == 'lyrics':
                     external_urls.append(dict(
                         relation.items() + {

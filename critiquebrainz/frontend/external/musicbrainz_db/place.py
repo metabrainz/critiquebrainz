@@ -10,10 +10,6 @@ from critiquebrainz.frontend.external.relationships import place as place_rel
 from critiquebrainz.frontend.external.musicbrainz_db.utils import get_entities_by_gids
 
 
-DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60 # seconds (12 hours)
-THREAD_POOL_PROCESSES = 10
-
-
 def get_place_by_id(mbid):
     """Get place with the MusicBrainz ID.
 

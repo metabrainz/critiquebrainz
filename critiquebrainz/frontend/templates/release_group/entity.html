@@ -153,7 +153,7 @@
                 <img src="{{ get_static_path('favicons/external-16.png') }}" />
               {% endif %}
             </div>
-            <a href="{{ url.target }}">{{ url.name }}</a>
+            <a href="{{ url.url.url }}">{{ url.name }}</a>
             {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
           </li>
         {% endfor %}

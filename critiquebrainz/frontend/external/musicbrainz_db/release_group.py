@@ -1,16 +1,13 @@
 from collections import defaultdict
 from brainzutils import cache
+from sqlalchemy.orm import joinedload
 from mbdata import models
-from mbdata.utils import get_something_by_gid
-from critiquebrainz.frontend.external.musicbrainz_db import mb_session
-from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relationship_info
+from critiquebrainz.frontend.external.musicbrainz_db import mb_session, DEFAULT_CACHE_EXPIRATION
+from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relationship_info, get_tags
 from critiquebrainz.frontend.external.musicbrainz_db.serialize import to_dict_release_groups
 from critiquebrainz.frontend.external.musicbrainz_db.includes import check_includes
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+from critiquebrainz.frontend.external.musicbrainz_db.utils import get_entities_by_gids
 import critiquebrainz.frontend.external.relationships.release_group as release_group_rel
-
-
-DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60 # seconds (12 hours)
 
 
 def get_release_group_by_id(mbid):
@@ -19,25 +16,27 @@ def get_release_group_by_id(mbid):
     release_group = cache.get(key)
     if not release_group:
         release_group = fetch_multiple_release_groups(
-            mbids=[mbid],
+            [mbid],
             includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'work-rels', 'tags']
         )[mbid]
     cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
     return release_group_rel.process(release_group)
 
 
-def fetch_multiple_release_groups(*, mbids, includes=None):
+def fetch_multiple_release_groups(mbids, *, includes=None):
     includes = [] if includes is None else includes
     includes_data = defaultdict(dict)
     check_includes('release_group', includes)
     with mb_session() as db:
-        query = db.query(models.ReleaseGroup)
-        release_groups = []
-        for mbid in mbids:
-            release_group = get_something_by_gid(query, models.ReleaseGroupGIDRedirect, mbid)
-            if not release_group:
-                raise mb_exceptions.NoDataFoundException("Couldn't find a release group with id: {mbid}".format(mbid=mbid))
-            release_groups.append(release_group)
+        query = db.query(models.ReleaseGroup).options(joinedload("meta"))
+
+        if 'artists' in includes:
+            query = query.options(joinedload("artist_credit")).\
+                    options(joinedload("artist_credit.artists")).\
+                    options(joinedload("artist_credit.artists.artist"))
+
+        release_groups = get_entities_by_gids(query, models.ReleaseGroup, models.ReleaseGroupGIDRedirect, mbids)
+
         release_group_ids = [release_group.id for release_group in release_groups]
 
         if 'artists' in includes:
@@ -78,12 +77,18 @@ def fetch_multiple_release_groups(*, mbids, includes=None):
             )
 
         if 'tags' in includes:
-            query = db.query(models.ReleaseGroup.id, models.Tag.name).\
-            join(models.ReleaseGroupTag).\
-            join(models.Tag).filter(models.ReleaseGroup.id.in_(release_group_ids))
-            for release_group_id, tag in query:
-                includes_data[release_group_id].setdefault('tags', []).append(tag)
+            release_group_tags = get_tags(
+                db=db,
+                entity_model=models.ReleaseGroup,
+                tag_model=models.ReleaseGroupTag,
+                entity_ids=release_group_ids,
+            )
+            for release_group_id, tags in release_group_tags:
+                includes_data[release_group_id]['tags'] = tags
 
-        release_groups = {str(release_group.gid): to_dict_release_groups(release_group, includes_data.get(release_group.id, {}))
+        for release_group in release_groups:
+            includes_data[release_group.id]['meta'] = release_group.meta
+            includes_data[release_group.id]['artist_credit_phrase'] = release_group.artist_credit.name
+        release_groups = {str(release_group.gid): to_dict_release_groups(release_group, includes_data[release_group.id])
                           for release_group in release_groups}
         return release_groups

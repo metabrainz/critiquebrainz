@@ -104,13 +104,17 @@ def to_dict_artist_credit_names(artist_credit_name):
 def to_dict_release_groups(release_group, includes=None):
     if includes is None:
         includes = {}
+
     data = {
         'id': release_group.gid,
         'title': release_group.name,
-        'artist-credit-phrase': release_group.artist_credit.name,
     }
-    if release_group.meta.first_release_date_year:
-        data['first-release-year'] = release_group.meta.first_release_date_year
+
+    if 'artist-credit-phrase' in includes:
+        data['artist-credit-phrase'] = includes['artist-credit-phrase']
+
+    if 'meta' in includes and includes['meta'].first_release_date_year:
+        data['first-release-year'] = includes['meta'].first_release_date_year
 
     if 'artist-credit-names' in includes:
         data['artist-credit'] = [to_dict_artist_credit_names(artist_credit_name)
