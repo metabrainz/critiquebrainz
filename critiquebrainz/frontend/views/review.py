@@ -94,7 +94,10 @@ def entity(id, rev=None):
             vote = None
     else:  # otherwise set vote to None, its value will not be used
         vote = None
-    review["text_html"] = markdown(revision['text'], safe_mode="escape")
+    if revision["text"] is None:
+        review["text_html"] = None
+    else:
+        review["text_html"] = markdown(revision['text'], safe_mode="escape")
 
     user_all_reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
         user_id=review["user_id"],
@@ -218,8 +221,10 @@ def create():
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
         is_draft = form.state.data == 'draft'
+        if not form.text.data:
+            form.text.data = None
         review = db_review.create(user_id=current_user.id, entity_id=entity_id, entity_type=entity_type,
-                                  text=form.text.data, license_id=form.license_choice.data,
+                                  text=form.text.data, rating=form.rating.data, license_id=form.license_choice.data,
                                   language=form.language.data, is_draft=is_draft)
         if is_draft:
             flash.success(gettext("Review has been saved!"))
@@ -268,12 +273,15 @@ def edit(id):
             license_choice = form.license_choice.data
         else:
             license_choice = None
+        if not form.text.data:
+            form.text.data = None
 
         try:
             db_review.update(
                 review_id=review["id"],
                 drafted=review["is_draft"],
                 text=form.text.data,
+                rating=form.rating.data,
                 is_draft=(form.state.data == 'draft'),
                 license_id=license_choice,
                 language=form.language.data,
@@ -286,6 +294,7 @@ def edit(id):
         return redirect(url_for('.entity', id=review["id"]))
     else:
         form.text.data = review["text"]
+        form.rating.data = review["rating"]
     if review["entity_type"] == 'release_group':
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
