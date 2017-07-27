@@ -1,8 +1,8 @@
 from flask_wtf import Form
 from flask_babel import lazy_gettext, Locale
-from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators
+from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
-from wtforms.widgets import HiddenInput
+from wtforms.widgets import HiddenInput, Input
 from babel.core import UnknownLocaleError
 from critiquebrainz.db.review import supported_languages
 import pycountry
@@ -16,7 +16,15 @@ class StateAndLength(validators.Length):
         if form.state.data == "draft":
             return
         l = len(field.data) if field.data else 0
-        if l < self.min or self.max != -1 and l > self.max:
+        if (l < self.min or self.max != -1 and l > self.max) and (l != 0):
+            raise ValidationError(self.message)
+
+class TextAndRatingBothNotEmpty(object):
+    def __init__(self, message):
+        self.message = message
+
+    def __call__(self, form, field):
+        if not field.data and not form.rating.data:
             raise ValidationError(self.message)
 
 
@@ -32,9 +40,9 @@ for language_code in supported_languages:
 class ReviewEditForm(Form):
     state = StringField(widget=HiddenInput(), default='draft', validators=[validators.DataRequired()])
     text = TextAreaField(lazy_gettext("Text"), [
-        validators.DataRequired(message=lazy_gettext("Review is empty!")),
+        TextAndRatingBothNotEmpty(message="Please provide at least one of text or rating for the review."),
         StateAndLength(min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH,
-                       message=lazy_gettext("Review length needs to be between %(min)d and %(max)d characters.",
+                       message=lazy_gettext("Text length needs to be between %(min)d and %(max)d characters.",
                                             min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH))])
     license_choice = RadioField(
         choices=[
@@ -43,6 +51,7 @@ class ReviewEditForm(Form):
         ],
         validators=[validators.DataRequired(message=lazy_gettext("You need to choose a license!"))])
     language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
+    rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
 
     def __init__(self, default_license_id='CC BY-SA 3.0', default_language='en', **kwargs):
         kwargs.setdefault('license_choice', default_license_id)
