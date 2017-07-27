@@ -26,6 +26,7 @@
         </em>
       {% endif %}
 
+      <input type="number" class="rating" value={{ review.rating }} data-readonly />
       <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text_html|safe }}</p>
 
       <hr />
@@ -123,4 +124,8 @@
      </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ get_static_path('scripts/rating1.js') }}" type="text/javascript"></script>
 {% endblock %}
