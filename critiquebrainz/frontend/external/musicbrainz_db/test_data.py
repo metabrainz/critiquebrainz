@@ -21,6 +21,8 @@ from mbdata.models import (
     ReleaseGroupPrimaryType,
     ReleaseStatus,
     Script,
+    Event,
+    EventType,
     Track,
 )
 
@@ -331,3 +333,31 @@ releasegroup_collision_course.id = 1110052
 releasegroup_collision_course.gid = '8ef859e3-feb2-4dd1-93da-22b91280d768'
 releasegroup_collision_course.name = 'Collision Course'
 releasegroup_collision_course.meta = releasegroupmeta_1
+
+eventtype_festival = EventType()
+eventtype_festival.id = 2
+eventtype_festival.name = 'Festival'
+eventtype_festival.description = 'An event where a number of different acts perform across the course of the day. Larger festivals may be spread across multiple days.'
+eventtype_festival.gid = 'b6ded574-b592-3f0e-b56e-5b5f06aa0678'
+
+taubertal_festival_2004 = Event()
+taubertal_festival_2004.id = 1607
+taubertal_festival_2004.gid = 'ebe6ce0f-22c0-4fe7-bfd4-7a0397c9fe94'
+taubertal_festival_2004.name = 'Taubertal-Festival 2004, Day 1'
+taubertal_festival_2004.cancelled = False
+taubertal_festival_2004.ended = True
+taubertal_festival_2004.type = eventtype_festival
+
+eventtype_concert = EventType()
+eventtype_concert.id = 1
+eventtype_concert.name = 'Concert'
+eventtype_concert.description = 'An individual concert by a single artist or collaboration, often with supporting artists who perform before the main act.'
+eventtype_concert.gid = 'ef55e8d7-3d00-394a-8012-f5506a29ff0b'
+
+event_ra_hall_uk = Event()
+event_ra_hall_uk.id = 21675
+event_ra_hall_uk.gid = '40e6153d-a042-4c95-a0a9-b0a47e3825ce'
+event_ra_hall_uk.name = '1996-04-17: Royal Albert Hall, London, England, UK'
+event_ra_hall_uk.cancelled = False
+event_ra_hall_uk.ended = True
+event_ra_hall_uk.type = eventtype_concert

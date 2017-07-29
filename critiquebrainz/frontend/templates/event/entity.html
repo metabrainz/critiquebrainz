@@ -26,8 +26,8 @@
   {% endif %}
 </div>
 
-{% if event['place-relation-list'] %}
-  {% set place = event['place-relation-list'][0]['place'] %}
+{% if event['place-rels'] %}
+  {% set place = event['place-rels'][0]['place'] %}
   {% if place['coordinates'] %}
     {% set lat = place['coordinates']['latitude'] | float %}
     {% set long = place['coordinates']['longitude'] | float %}
@@ -102,13 +102,13 @@
   <div class="col-md-3">
     <h4>{{ _('Event information') }}</h4>
 
-    {% if 'release_group-relation-list' in event %}
-      {% for rg in event['release_group-relation-list'] %}
-          <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['target']) }}">{{ rg['release-group']['title'] }}</a></p>
+    {% if 'release_group-rels' in event %}
+      {% for rg in event['release_group-rels'] %}
+          <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['release_group']['id']) }}">{{ rg['release_group']['title'] }}</a></p>
       {% endfor %}
     {% endif %}
 
-    {% if 'artist-relation-list' in event %}
+    {% if 'artist-rels' in event %}
       {% for type, artists in event['artists_grouped'] %}
         <b>{{ type | title }}</b>
         <ul class="list-unstyled">

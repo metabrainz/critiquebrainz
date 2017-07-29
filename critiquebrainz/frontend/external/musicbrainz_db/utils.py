@@ -9,6 +9,8 @@ ENTITY_MODELS = {
     'release_group': models.ReleaseGroup,
     'release': models.Release,
     'event': models.Event,
+    'series': models.Series,
+    'url': models.URL,
 }
 
 
