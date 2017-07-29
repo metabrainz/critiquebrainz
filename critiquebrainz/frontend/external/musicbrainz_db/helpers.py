@@ -1,7 +1,8 @@
-from mbdata.utils.models import get_entity_type_model, get_link_model
+from mbdata.utils.models import get_link_model
 from mbdata.models import Tag
 from sqlalchemy.orm import joinedload
 from sqlalchemy import func
+from critiquebrainz.frontend.external.musicbrainz_db.utils import ENTITY_MODELS
 
 
 def get_relationship_info(*, db, target_type, source_type, source_entity_ids, includes_data):
@@ -17,8 +18,8 @@ def get_relationship_info(*, db, target_type, source_type, source_entity_ids, in
         source_entity_ids (list): IDs of the source entity.
         includes_data (dict): Dictionary containing includes data of entities.
    """
-    source_model = get_entity_type_model(source_type)
-    target_model = get_entity_type_model(target_type)
+    source_model = ENTITY_MODELS[source_type]
+    target_model = ENTITY_MODELS[target_type]
     relation = get_link_model(source_model, target_model)
 
     query = db.query(relation).\

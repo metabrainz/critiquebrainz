@@ -1,4 +1,5 @@
-from mbdata.utils.models import ENTITY_TYPES, get_link_target
+from mbdata.utils.models import get_link_target
+from critiquebrainz.frontend.external.musicbrainz_db.utils import ENTITY_MODELS
 
 
 def to_dict_relationships(data, source_obj, relationship_objs):
@@ -12,7 +13,7 @@ def to_dict_relationships(data, source_obj, relationship_objs):
     Returns:
         Dictionary containing lists of dictionaries of related entities.
     """
-    for entity_type in ENTITY_TYPES:
+    for entity_type in ENTITY_MODELS:
         relation = '{entity_type}-rels'.format(entity_type=entity_type)
         if relation in relationship_objs:
             data[relation] = []
@@ -144,6 +145,30 @@ def to_dict_releases(release, includes=None):
     return data
 
 
+def to_dict_events(event, includes=None):
+    if includes is None:
+        includes = {}
+    data = {
+        'id': event.gid,
+        'name': event.name,
+    }
+    if 'relationship_objs' in includes:
+        to_dict_relationships(data, event, includes['relationship_objs'])
+    return data
+
+
+def to_dict_series(series, includes=None):
+    if includes is None:
+        includes = []
+    data = {
+        'id': series.gid,
+        'name': series.name,
+    }
+    if 'relationship_objs' in includes:
+        to_dict_relationships(data, series, includes['relationship_objs'])
+    return data
+
+
 TO_DICT_ENTITIES = {
     'artist': to_dict_artists,
     'url': to_dict_urls,
@@ -151,4 +176,6 @@ TO_DICT_ENTITIES = {
     'release_group': to_dict_release_groups,
     'area': to_dict_areas,
     'release': to_dict_releases,
+    'event': to_dict_events,
+    'series': to_dict_series,
 }
