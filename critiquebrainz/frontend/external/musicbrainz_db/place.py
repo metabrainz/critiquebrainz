@@ -51,7 +51,11 @@ def fetch_multiple_places(mbids, *, includes=None):
         query = db.query(models.Place).\
                 options(joinedload("area")).\
                 options(joinedload("type"))
-        places = get_entities_by_gids(query, models.Place, models.PlaceGIDRedirect, mbids)
+        places = get_entities_by_gids(
+            query=query,
+            entity_type='place',
+            mbids=mbids,
+        )
         place_ids = [place.id for place in places]
 
         if 'artist-rels' in includes:

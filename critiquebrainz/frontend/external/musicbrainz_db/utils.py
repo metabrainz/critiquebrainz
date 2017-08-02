@@ -1,18 +1,46 @@
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+from mbdata import models
 
 
-def get_entities_by_gids(query, entity_model, redirect_model, mbids):
-    """Get entities using their mbids.
+# Entity models
+ENTITY_MODELS = {
+    'artist': models.Artist,
+    'place': models.Place,
+    'release_group': models.ReleaseGroup,
+    'release': models.Release,
+    'event': models.Event,
+}
+
+
+# Redirect models
+REDIRECT_MODELS = {
+    'place': models.PlaceGIDRedirect,
+    'artist': models.ArtistGIDRedirect,
+    'release': models.ReleaseGIDRedirect,
+    'release_group': models.ReleaseGroupGIDRedirect,
+    'event': models.EventGIDRedirect,
+}
+
+
+def get_entities_by_gids(*, query, entity_type, mbids):
+    """Get entities using their MBIDs.
+
+    An entity can have multiple MBIDs. This function may be passed another
+    MBID of an entity, in which case, it is redirected to the original entity.
+
+    Note that the query may be modified before passing it to this
+    function in order to save queries made to the database.
 
     Args:
-        query (Query): sqlalchemy Query object.
-        entity_model (mbdata.models): Model of the target entity.
-        redirect_model (mbdata.models): Redirect Model of the target entity.
+        query (Query): SQLAlchemy Query object.
+        entity_type (str): Type of entity being queried.
         mbids (list): IDs of the target entities.
 
     Returns:
         List of objects of target entities.
     """
+    entity_model = ENTITY_MODELS[entity_type]
+    redirect_model = REDIRECT_MODELS[entity_type]
     entities = query.filter(entity_model.gid.in_(mbids)).all()
     remaining_gids = list(set(mbids) - {entity.gid for entity in entities})
     if remaining_gids:
