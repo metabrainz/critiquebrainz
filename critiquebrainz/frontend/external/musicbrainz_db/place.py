@@ -1,13 +1,13 @@
 from collections import defaultdict
 from mbdata import models
-from mbdata.utils import get_something_by_gid
+from sqlalchemy.orm import joinedload
+from brainzutils import cache
 from critiquebrainz.frontend.external.musicbrainz_db import mb_session
 from critiquebrainz.frontend.external.musicbrainz_db.includes import check_includes
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.external.musicbrainz_db.serialize import to_dict_places
 from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relationship_info
 from critiquebrainz.frontend.external.relationships import place as place_rel
-from brainzutils import cache
+from critiquebrainz.frontend.external.musicbrainz_db.utils import get_entities_by_gids
 
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60 # seconds (12 hours)
@@ -48,13 +48,14 @@ def fetch_multiple_places(mbids, *, includes=None):
     includes_data = defaultdict(dict)
     check_includes('place', includes)
     with mb_session() as db:
-        query = db.query(models.Place)
-        places = []
-        for mbid in mbids:
-            place = get_something_by_gid(query, models.PlaceGIDRedirect, mbid)
-            if not place:
-                raise mb_exceptions.NoDataFoundException("Couldn't find a place with id: {mbid}".format(mbid=mbid))
-            places.append(place)
+        query = db.query(models.Place).\
+                options(joinedload("area")).\
+                options(joinedload("type"))
+        places = get_entities_by_gids(
+            query=query,
+            entity_type='place',
+            mbids=mbids,
+        )
         place_ids = [place.id for place in places]
 
         if 'artist-rels' in includes:
@@ -82,5 +83,8 @@ def fetch_multiple_places(mbids, *, includes=None):
                 includes_data=includes_data,
             )
 
+        for place in places:
+            includes_data[place.id]['area'] = place.area
+            includes_data[place.id]['type'] = place.type
         places = {str(place.gid): to_dict_places(place, includes_data[place.id]) for place in places}
     return places
