@@ -1,11 +1,13 @@
+from unittest import TestCase
 from unittest.mock import MagicMock
-from critiquebrainz.frontend.external.musicbrainz_db.testing import MBDatabaseTestCase
 from critiquebrainz.frontend.external.musicbrainz_db import place as mb_place
 from critiquebrainz.frontend.external.musicbrainz_db.test_data import place_suisto, place_verkatehdas
+from critiquebrainz.frontend.external.musicbrainz_db.tests import setup_cache
 
-class PlaceTestCase(MBDatabaseTestCase):
+class PlaceTestCase(TestCase):
 
     def setUp(self):
+        setup_cache()
         mb_place.mb_session = MagicMock()
         self.mock_db = mb_place.mb_session.return_value.__enter__.return_value
         self.place_query = self.mock_db.query.return_value.options.return_value.options.return_value.filter.return_value.all

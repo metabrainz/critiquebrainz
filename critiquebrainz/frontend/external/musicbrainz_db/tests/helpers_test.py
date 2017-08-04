@@ -1,12 +1,12 @@
 from collections import defaultdict
+from unittest import TestCase
 from unittest.mock import MagicMock
-from critiquebrainz.frontend.external.musicbrainz_db.testing import MBDatabaseTestCase
 from critiquebrainz.frontend.external.musicbrainz_db.serialize import to_dict_relationships
 from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relationship_info
 import critiquebrainz.frontend.external.musicbrainz_db as mb
 from critiquebrainz.frontend.external.musicbrainz_db.test_data import linkplaceurl_1, linkplaceurl_2, place_suisto
 
-class HelpersTestCase(MBDatabaseTestCase):
+class HelpersTestCase(TestCase):
 
     def setUp(self):
         mb.mb_session = MagicMock()
