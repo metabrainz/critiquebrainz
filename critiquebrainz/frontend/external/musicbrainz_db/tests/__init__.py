@@ -1,9 +1,5 @@
 from brainzutils import cache
-
-
-REDIS_HOST = 'critiquebrainz_redis'
-REDIS_PORT = 6379
-REDIS_NAMESPACE = 'CB'
+from critiquebrainz.test_config import REDIS_HOST, REDIS_PORT, REDIS_NAMESPACE
 
 
 def setup_cache():
