@@ -23,7 +23,7 @@ def entity(id):
         tags = release_group['tag-list']
     else:
         tags = None
-    if release_group['release-list']:
+    if 'release-list' in release_group and release_group['release-list']:
         release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'])
     else:
         release = None

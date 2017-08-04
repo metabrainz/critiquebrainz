@@ -15,12 +15,17 @@ def get_release_group_by_id(mbid):
     key = cache.gen_key(mbid)
     release_group = cache.get(key)
     if not release_group:
-        release_group = fetch_multiple_release_groups(
-            [mbid],
-            includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'work-rels', 'tags']
-        )[mbid]
-    cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
+        release_group = _get_release_group_by_id(mbid)
+        cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
     return release_group_rel.process(release_group)
+
+
+def _get_release_group_by_id(mbid):
+    release_group = fetch_multiple_release_groups(
+        [mbid],
+        includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'tags'],
+    )[mbid]
+    return release_group
 
 
 def fetch_multiple_release_groups(mbids, *, includes=None):
@@ -28,6 +33,7 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
     includes_data = defaultdict(dict)
     check_includes('release_group', includes)
     with mb_session() as db:
+        # Join table meta which contains release date for a release group
         query = db.query(models.ReleaseGroup).options(joinedload("meta"))
 
         if 'artists' in includes:
@@ -35,14 +41,18 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
                     options(joinedload("artist_credit.artists")).\
                     options(joinedload("artist_credit.artists.artist"))
 
-        release_groups = get_entities_by_gids(query, models.ReleaseGroup, models.ReleaseGroupGIDRedirect, mbids)
-
+        release_groups = get_entities_by_gids(
+            query=query,
+            entity_type='release_group',
+            mbids=mbids,
+        )
         release_group_ids = [release_group.id for release_group in release_groups]
 
         if 'artists' in includes:
             for release_group in release_groups:
                 artist_credit_names = release_group.artist_credit.artists
                 includes_data[release_group.id]['artist-credit-names'] = artist_credit_names
+                includes_data[release_group.id]['artist-credit-phrase'] = release_group.artist_credit.name
 
         if 'releases' in includes:
             query = db.query(models.Release).filter(getattr(models.Release, "release_group_id").in_(release_group_ids))
@@ -88,7 +98,6 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
 
         for release_group in release_groups:
             includes_data[release_group.id]['meta'] = release_group.meta
-            includes_data[release_group.id]['artist_credit_phrase'] = release_group.artist_credit.name
         release_groups = {str(release_group.gid): to_dict_release_groups(release_group, includes_data[release_group.id])
                           for release_group in release_groups}
         return release_groups
