@@ -16,15 +16,7 @@ class StateAndLength(validators.Length):
         if form.state.data == "draft":
             return
         l = len(field.data) if field.data else 0
-        if (l < self.min or self.max != -1 and l > self.max) and (l != 0):
-            raise ValidationError(self.message)
-
-class TextAndRatingBothNotEmpty(object):
-    def __init__(self, message):
-        self.message = message
-
-    def __call__(self, form, field):
-        if not field.data and not form.rating.data:
+        if l < self.min or self.max != -1 and l > self.max:
             raise ValidationError(self.message)
 
 
@@ -40,7 +32,7 @@ for language_code in supported_languages:
 class ReviewEditForm(Form):
     state = StringField(widget=HiddenInput(), default='draft', validators=[validators.DataRequired()])
     text = TextAreaField(lazy_gettext("Text"), [
-        TextAndRatingBothNotEmpty(message="Please provide at least one of text or rating for the review."),
+        validators.Optional(),
         StateAndLength(min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH,
                        message=lazy_gettext("Text length needs to be between %(min)d and %(max)d characters.",
                                             min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH))])
@@ -57,6 +49,15 @@ class ReviewEditForm(Form):
         kwargs.setdefault('license_choice', default_license_id)
         kwargs.setdefault('language', default_language)
         Form.__init__(self, **kwargs)
+
+    def validate(self):
+        if not super(ReviewEditForm, self).validate():
+            return False
+        if not self.text.data and not self.rating.data:
+            message = "Please provide at least one of text or rating for this review."
+            self.text.errors.append(message)
+            return False
+        return True
 
 
 class ReviewCreateForm(ReviewEditForm):
