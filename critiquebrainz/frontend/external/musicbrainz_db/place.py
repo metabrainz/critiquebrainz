@@ -27,11 +27,10 @@ def get_place_by_id(mbid):
 
 
 def _get_place_by_id(mbid):
-    place = fetch_multiple_places(
+    return fetch_multiple_places(
         [mbid],
         includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
     )[mbid]
-    return place
 
 
 def fetch_multiple_places(mbids, *, includes=None):

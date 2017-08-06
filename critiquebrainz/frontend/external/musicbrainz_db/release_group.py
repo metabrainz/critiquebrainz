@@ -21,11 +21,10 @@ def get_release_group_by_id(mbid):
 
 
 def _get_release_group_by_id(mbid):
-    release_group = fetch_multiple_release_groups(
+    return fetch_multiple_release_groups(
         [mbid],
         includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'tags'],
     )[mbid]
-    return release_group
 
 
 def fetch_multiple_release_groups(mbids, *, includes=None):
