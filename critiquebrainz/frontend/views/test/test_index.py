@@ -10,3 +10,7 @@ class ViewsTestCase(FrontendTestCase):
     def test_404(self):
         response = self.client.get("/404")
         self.assert404(response)
+
+    def test_guidelines(self):
+        response = self.client.get("/guidelines")
+        self.assert200(response)
