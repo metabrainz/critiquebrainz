@@ -33,3 +33,8 @@ def index():
 @frontend_bp.route('/about')
 def about():
     return render_template('index/about.html')
+
+
+@frontend_bp.route('/guidelines')
+def guidelines():
+    return render_template('index/guidelines.html')

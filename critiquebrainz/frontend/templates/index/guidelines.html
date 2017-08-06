@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ _('Review guidelines') }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+
+  <h2>{{ _('General guidelines before writing a review') }}</h2>
+  <ul>
+    <li>
+      {{ _('Read some good reviews!') }}
+      <dl>
+        <dd>{{ _('You can find lots of great reviews on CritiqueBrainz, or search the web.') }}</dd>
+      </dl>
+    </li>
+    <li>
+      {{ _('Write in a comfortable voice.') }}
+      <dl>
+        <dd>
+          {{ _('A good review probably won\'t sound like an academic paper, and probably won\'t sound like a Youtube comment,
+          but it should sound like <em>you</em>.') }}
+        </dd>
+        <dd>
+          {{ _('Reviews don\'t need to be in English. If you\'re more comfortable in another language, go for it. Choose a
+          language in which you can express your emotions/thoughts freely.') }}
+        </dd>
+      </dl>
+    </li>
+  </ul>
+
+  <h3>{{ _('Writing a well formatted review') }}</h3>
+  <p>
+    {{ _('The editor in the review column follows <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> so you may
+    always beautify your review using the formatting styles because a well formatted article/review makes it readable
+    and it becomes a little easy to understand what you have written. You can use the following <a
+    href="http://daringfireball.net/projects/markdown/syntax">link</a> to learn markdown.') }}
+  </p>
+
+  <h2>{{ _('Writing the Review') }}</h2>
+  <p>{{ _('Here are some tips for getting started as a reviewer :-') }}</p>
+  <ul>
+    <li>
+      {{ _('Writing <strong>short</strong> description - Give your review a <strong>short context</strong> as to what you
+      are reviewing.') }}
+    </li>
+    <li>
+      {{ _('<strong>Follow your thinking/feelings</strong> - A good reviewer is one who always review a particular thing
+      based on what <strong>he feels</strong> rather than what others.') }}
+    </li>
+    <li>
+      {{ _('Good reviews are <strong>neither too short nor too long</strong> - It\'s better neither to make your reviews too
+      short nor too long. Try to make it something which gives the readers a clear image as to how the work is and at
+      the same time it doesn\'t bore them.') }}
+    </li>
+    <li>
+      {{ _('<strong>Don\'t mention only factual data</strong> in your review - Sometimes people mention only factual data in
+      reviews which makes the review a press release, not a good review.') }}
+    </li>
+  </ul>
+
+  <h2>{{ _('More tips for specific review types') }}</h2>
+  <p>{{ _('In addition to the general tips given above, here are some specific tips for each review type which might help you
+    to strengthen your review :-') }}</p>
+
+  <h3>{{ _('Album Reviews') }}</h3>
+  <ul>
+    <li>
+      {{ _('Describing the instrumental arrangement - Mentioning about the rhythmic effects, describing the variety of
+      instruments used in the song and how were the digital effects etc.') }}
+    </li>
+    <li>
+      {{ _('You may tell about lyrics and the recording quality -') }}
+      <dl>
+        <dd>
+          {{ _('Lyrics is what makes a song/album meaningful. You can always right about how were the lyrics? Was it
+          meaningful? Did it match the music?') }}
+        </dd>
+        <dd>
+          {{ _('Recording quality matters a lot. If it\'s good it\'s good but if it\'s bad it will flop the whole album. It\'s
+          always better to note these things and mention about it in your review.') }}
+        </dd>
+      </dl>
+    </li>
+    <li>
+      {{ _('Be clear with your conclusion - If it\'s a must hear album give it some direction. It\'s always good to mention
+      the genre of the music. You may try to compare it with some other album which has been already released having the
+      same genre which will give the readers an idea as to what they can expect.') }}
+    </li>
+  </ul>
+
+  <h3>{{ _('Event Reviews') }}</h3>
+  <ul>
+    <li>
+      {{ _('Describe the event place - Event reviews are enhanced by description of the event venue as to how big was it?
+      Was it sufficient for the crowd? or How well the band/artist sound in it?') }}
+    </li>
+    <li>
+      {{ _('Writing about the music played there - You may describe which songs were played in the event. Which were your
+      favourite songs played, you can write about the staging of the band. Were there any things which you didn\'t like?
+      If yes, then why?') }}
+    </li>
+    <li>
+      {{ _('Special moments, effects and surprises - Often there are special moments in every event, you may describe such
+      moments that took place. You may also write about special guests(if any) also any special effects in the event
+      which caught everyone\'s attention.') }}
+    </li>
+    <li>
+      {{ _('Writing about Event atmosphere - You may always describe about the crowd, how well the artists/band were able to
+      entertain the crowd? Was the crowd exciting or was it a monotonous atmosphere?') }}
+    </li>
+  </ul>
+
+  <h3>{{ _('Place Review') }}</h3>
+  <ul>
+    <li>
+      {{ _('Description about the location - You may describe where the place is located, whether it\'s located in the heart
+      of the city or is it located on the periphery.') }}
+    </li>
+    <li>
+      {{ _('Writing about the architecture - If it\'s a musical stadium people want to know about how many people can the
+      place occupy, how well the artist sounds in each corner of the place etc.') }}
+    </li>
+  </ul>
+
+  <p>
+    <strong>{{ _('💡 Note:') }}</strong>
+    {{ _('Try to be <strong>honest</strong> while reviewing, simply don\'t follow the trend. Review the album as to what
+    you felt. And try to follow active voice.') }}
+  </p>
+
+  <h2>{{ _('Common mistakes people do while writing reviews') }}</h2>
+  <ul>
+    <li>{{ _('Writing <strong>long reviews that lack specific details.</strong>') }}</li>
+    <li>
+      {{ _('<strong>Forgetting to check the factual information</strong> in the review after completing the writing process.') }}
+    </li>
+    <li>{{ _('<strong>Overlooking proofreading</strong> the review after finishing it.') }}</li>
+    <li><strong>{{ _('Mistakes such as punctuation, typo errors, capitalization etc.') }}</strong></li>
+    <li>
+      {{ _('<strong>Writing in slangs</strong> - Try to write in proper English (or whatever language you prefer). It\'s
+      better <strong>not to write reviews in slangs.</strong>') }}
+    </li>
+  </ul>
+
+  <h2>{{ _('External links') }}</h2>
+  <p>{{ _('You can read some reviews from these sites before writing your own :-') }}</p>
+  <h3>{{ _('A few great review sites') }}</h3>
+  <ul>
+    <li><a href="http://pitchfork.com/reviews/albums/">pitchfork.com</a></li>
+    <li><a href="http://exclaim.ca/music/reviews">exclaim.ca</a></li>
+    <li><a href="http://www.nme.com/reviews">nme.com</a></li>
+  </ul>
+{% endblock %}
