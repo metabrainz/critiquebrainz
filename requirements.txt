@@ -14,7 +14,7 @@ pytest==3.2.0
 pytest-cov==2.5.1
 pylint==1.7.2
 psycopg2==2.7.3
-pycountry==17.5.14
+pycountry==1.20
 python-dateutil==2.6.1
 rauth==0.7.3
 requests==2.18.3
