@@ -127,5 +127,6 @@
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ get_static_path('scripts/rating1.js') }}" type="text/javascript"></script>
+  {{ super() }}
+  <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}
