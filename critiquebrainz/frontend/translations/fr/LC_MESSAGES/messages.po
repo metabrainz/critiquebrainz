@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-14 13:47+0100\n"
-"PO-Revision-Date: 2017-06-27 12:23+0000\n"
-"Last-Translator: Raphaël Fery <pask@kodu.fr>\n"
+"POT-Creation-Date: 2017-07-10 14:03+0200\n"
+"PO-Revision-Date: 2017-08-03 13:57+0000\n"
+"Last-Translator: Roman Tsukanov\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/critiquebrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.4.0\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -385,6 +385,7 @@ msgstr "Votes sur les critiques"
 
 #: critiquebrainz/frontend/templates/macros.html:39
 #: critiquebrainz/frontend/templates/navbar.html:57
+#: critiquebrainz/frontend/templates/review/browse.html:15
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
 #: critiquebrainz/frontend/templates/search/index.html:28
 #: critiquebrainz/frontend/templates/search/selector.html:13
@@ -394,6 +395,7 @@ msgstr "Événement"
 
 #: critiquebrainz/frontend/templates/macros.html:46
 #: critiquebrainz/frontend/templates/navbar.html:58
+#: critiquebrainz/frontend/templates/review/browse.html:17
 #: critiquebrainz/frontend/templates/review/modify/event.html:13
 #: critiquebrainz/frontend/templates/review/modify/place.html:6
 #: critiquebrainz/frontend/templates/search/index.html:29
@@ -473,6 +475,7 @@ msgid "Artist"
 msgstr "Artiste"
 
 #: critiquebrainz/frontend/templates/navbar.html:56
+#: critiquebrainz/frontend/templates/review/browse.html:13
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:9
 #: critiquebrainz/frontend/templates/search/index.html:27
 #: critiquebrainz/frontend/templates/search/index.html:69
@@ -517,12 +520,12 @@ msgstr[0] "%(num)d critique"
 msgstr[1] "%(num)d critiques"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:102
-#: critiquebrainz/frontend/templates/review/browse.html:35
+#: critiquebrainz/frontend/templates/review/browse.html:49
 msgid "Previous"
 msgstr "Précédent"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:105
-#: critiquebrainz/frontend/templates/review/browse.html:38
+#: critiquebrainz/frontend/templates/review/browse.html:52
 msgid "Next"
 msgstr "Suivant"
 
@@ -603,6 +606,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/index/index.html:33
 #: critiquebrainz/frontend/templates/index/index.html:58
 #: critiquebrainz/frontend/templates/place/entity.html:52
+#: critiquebrainz/frontend/templates/review/browse.html:22
 #: critiquebrainz/frontend/templates/user/reviews.html:7
 msgid "No reviews found"
 msgstr "Aucune critique trouvée"
@@ -1024,6 +1028,10 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/browse.html:8
 msgid "Ordered by creation date"
 msgstr "Trier par date de création"
+
+#: critiquebrainz/frontend/templates/review/browse.html:11
+msgid "All"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/review/compare.html:3
 msgid "Difference between revisions"
@@ -1492,7 +1500,7 @@ msgstr "Cet album n'est pas encore mappé vers Spotify !"
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr "Le mappage erroné de Spotify a été signalé. Merci !"
 
-#: critiquebrainz/frontend/views/place.py:16
+#: critiquebrainz/frontend/views/place.py:18
 msgid "Sorry, we couldn't find a place with that MusicBrainz ID."
 msgstr ""
 
@@ -1500,15 +1508,15 @@ msgstr ""
 msgid "Profile updated."
 msgstr "Profil mis à jour."
 
-#: critiquebrainz/frontend/views/profile_apps.py:32
+#: critiquebrainz/frontend/views/profile_apps.py:37
 msgid "You have created an application!"
 msgstr "Vous avez créé une application !"
 
-#: critiquebrainz/frontend/views/profile_apps.py:47
+#: critiquebrainz/frontend/views/profile_apps.py:60
 msgid "You have updated an application!"
 msgstr "Vous avez mis une application à jour !"
 
-#: critiquebrainz/frontend/views/profile_apps.py:65
+#: critiquebrainz/frontend/views/profile_apps.py:81
 msgid "You have deleted an application."
 msgstr "Vous avez supprimé une application."
 
@@ -1524,154 +1532,160 @@ msgstr "Désolé, nous n'avons pas pu trouver de groupe de parution avec cet ID 
 msgid "Report has been archived."
 msgstr "Le signalement a été archivée."
 
-#: critiquebrainz/frontend/views/review.py:41
+#: critiquebrainz/frontend/views/review.py:51
 msgid "No reviews to display."
 msgstr "Aucun critique à afficher."
 
-#: critiquebrainz/frontend/views/review.py:58
-#: critiquebrainz/frontend/views/review.py:106
-#: critiquebrainz/frontend/views/review.py:231
+#: critiquebrainz/frontend/views/review.py:68
+#: critiquebrainz/frontend/views/review.py:116
+#: critiquebrainz/frontend/views/review.py:239
 msgid "Can't find a review with the specified ID."
 msgstr "Impossible de trouver une critique avec l'ID spécifié."
 
-#: critiquebrainz/frontend/views/review.py:61
+#: critiquebrainz/frontend/views/review.py:71
 msgid "Review has been hidden. You need to be an administrator to view it."
 msgstr "La critique est cachée. Vous devez être un administrateur pour la voir."
 
-#: critiquebrainz/frontend/views/review.py:64
-#: critiquebrainz/frontend/views/review.py:108
-#: critiquebrainz/frontend/views/review.py:131
-#: critiquebrainz/frontend/views/review.py:151
-#: critiquebrainz/frontend/views/review.py:235
-#: critiquebrainz/frontend/views/review.py:286
-#: critiquebrainz/frontend/views/review.py:313
-#: critiquebrainz/frontend/views/review.py:328
-#: critiquebrainz/frontend/views/review.py:370
+#: critiquebrainz/frontend/views/review.py:74
+#: critiquebrainz/frontend/views/review.py:118
+#: critiquebrainz/frontend/views/review.py:140
+#: critiquebrainz/frontend/views/review.py:159
+#: critiquebrainz/frontend/views/review.py:243
+#: critiquebrainz/frontend/views/review.py:306
+#: critiquebrainz/frontend/views/review.py:333
+#: critiquebrainz/frontend/views/review.py:348
+#: critiquebrainz/frontend/views/review.py:390
 msgid "Review has been hidden."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:75
+#: critiquebrainz/frontend/views/review.py:85
 msgid ""
 "You are viewing an old revision, the review has been updated since then."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:77
-#: critiquebrainz/frontend/views/review.py:98
+#: critiquebrainz/frontend/views/review.py:87
+#: critiquebrainz/frontend/views/review.py:108
 msgid "The revision you are looking for does not exist."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:112
-#: critiquebrainz/frontend/views/review.py:136
-#: critiquebrainz/frontend/views/review.py:159
+#: critiquebrainz/frontend/views/review.py:122
+#: critiquebrainz/frontend/views/review.py:145
+#: critiquebrainz/frontend/views/review.py:167
 msgid "The revision(s) you are looking for does not exist."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:176
+#: critiquebrainz/frontend/views/review.py:184
 msgid "Please choose an entity to review."
 msgstr "Veuillez choisir un sujet pour votre critique."
 
-#: critiquebrainz/frontend/views/review.py:180
+#: critiquebrainz/frontend/views/review.py:188
 msgid ""
 "You are not allowed to write new reviews because your account has been "
 "blocked by a moderator."
 msgstr "Vous n'êtes pas autorisé à rédiger de nouvelles critiques car votre compte a été bloqué par un modérateur."
 
-#: critiquebrainz/frontend/views/review.py:187
+#: critiquebrainz/frontend/views/review.py:195
 msgid "You have already published a review for this entity!"
 msgstr "Vous avez déjà publié une critique sur ce sujet !"
 
-#: critiquebrainz/frontend/views/review.py:194
+#: critiquebrainz/frontend/views/review.py:202
 msgid "You have exceeded your limit of reviews per day."
 msgstr "Vous avez dépassé votre limite de critiques par jour."
 
-#: critiquebrainz/frontend/views/review.py:202
+#: critiquebrainz/frontend/views/review.py:210
 msgid "Review has been saved!"
 msgstr "La critique a été enregistrée !"
 
-#: critiquebrainz/frontend/views/review.py:204
+#: critiquebrainz/frontend/views/review.py:212
 msgid "Review has been published!"
 msgstr "La critique a été publiée !"
 
-#: critiquebrainz/frontend/views/review.py:209
+#: critiquebrainz/frontend/views/review.py:217
 msgid "You can only write a review for an entity that exists on MusicBrainz!"
 msgstr "Vous ne pouvez rédiger une critique que pour un sujet présent sur MusicBrainz !"
 
-#: critiquebrainz/frontend/views/review.py:233
+#: critiquebrainz/frontend/views/review.py:241
 msgid "Only author can edit this review."
 msgstr "Seul l'auteur peut modifier cette critique."
 
-#: critiquebrainz/frontend/views/review.py:249
+#: critiquebrainz/frontend/views/review.py:266
+msgid ""
+"Changing license of a published review                or converting a "
+"published review back to drafts is not allowed."
+msgstr ""
+
+#: critiquebrainz/frontend/views/review.py:269
 msgid "Review has been updated."
 msgstr "La critique a été mise à jour."
 
-#: critiquebrainz/frontend/views/review.py:265
+#: critiquebrainz/frontend/views/review.py:285
 msgid "Only the author or an admin can delete this review."
 msgstr "Seuls l'auteur ou l'administrateur peuvent supprimer cette critique."
 
-#: critiquebrainz/frontend/views/review.py:268
+#: critiquebrainz/frontend/views/review.py:288
 msgid "Review has been deleted."
 msgstr "La critique a été supprimée."
 
-#: critiquebrainz/frontend/views/review.py:288
+#: critiquebrainz/frontend/views/review.py:308
 msgid "You cannot rate your own review."
 msgstr "Vous ne pouvez pas évaluer votre propre critique."
 
-#: critiquebrainz/frontend/views/review.py:291
+#: critiquebrainz/frontend/views/review.py:311
 msgid "You have exceeded your limit of votes per day."
 msgstr "Vous avez dépassé votre limite de votes par jour."
 
-#: critiquebrainz/frontend/views/review.py:294
+#: critiquebrainz/frontend/views/review.py:314
 msgid ""
 "You are not allowed to rate this review because your account has been "
 "blocked by a moderator."
 msgstr "Vous n'êtes pas autorisé à voter cette critique car votre compte a été bloqué par un modérateur."
 
-#: critiquebrainz/frontend/views/review.py:304
+#: critiquebrainz/frontend/views/review.py:324
 msgid "You have rated this review!"
 msgstr "Vous avez évalué cette critique !"
 
-#: critiquebrainz/frontend/views/review.py:316
+#: critiquebrainz/frontend/views/review.py:336
 msgid "You have deleted your vote for this review!"
 msgstr "Vous avez supprimé votre vote pour cette critique !"
 
-#: critiquebrainz/frontend/views/review.py:319
+#: critiquebrainz/frontend/views/review.py:339
 msgid "This review is not rated yet."
 msgstr "Cette critique n'est pas encore évaluée."
 
-#: critiquebrainz/frontend/views/review.py:330
+#: critiquebrainz/frontend/views/review.py:350
 msgid "You cannot report your own review."
 msgstr "Vous ne pouvez pas signaler votre propre critique."
 
-#: critiquebrainz/frontend/views/review.py:334
+#: critiquebrainz/frontend/views/review.py:354
 msgid ""
 "You are not allowed to report this review because your account has been "
 "blocked by a moderator."
 msgstr "Vous n'êtes pas autorisé à signaler cette critique car votre compte a été bloqué par un modérateur."
 
-#: critiquebrainz/frontend/views/review.py:341
+#: critiquebrainz/frontend/views/review.py:361
 msgid "You have already reported this review."
 msgstr "Vous avez déjà signalé cette critique."
 
-#: critiquebrainz/frontend/views/review.py:347
+#: critiquebrainz/frontend/views/review.py:367
 msgid "Review has been reported."
 msgstr "La critique a été signalée."
 
-#: critiquebrainz/frontend/views/review.py:360
+#: critiquebrainz/frontend/views/review.py:379
 msgid "Review is already hidden."
 msgstr "Cette critique est déjà cachée."
 
-#: critiquebrainz/frontend/views/review.py:382
+#: critiquebrainz/frontend/views/review.py:402
 msgid "Review is not hidden anymore."
 msgstr ""
 
-#: critiquebrainz/frontend/views/user.py:56
+#: critiquebrainz/frontend/views/user.py:57
 msgid "This account is already blocked."
 msgstr "Ce compte est déjà bloqué."
 
-#: critiquebrainz/frontend/views/user.py:64
+#: critiquebrainz/frontend/views/user.py:65
 msgid "This user account has been blocked."
 msgstr "Ce compte utilisateur a été bloqué."
 
-#: critiquebrainz/frontend/views/user.py:78
+#: critiquebrainz/frontend/views/user.py:79
 msgid "This user account has been unblocked."
 msgstr "Ce compte utilisateur a été débloqué."
