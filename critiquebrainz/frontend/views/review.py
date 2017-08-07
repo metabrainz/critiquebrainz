@@ -221,7 +221,7 @@ def create():
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
         is_draft = form.state.data == 'draft'
-        if not form.text.data:
+        if form.text.data == '':
             form.text.data = None
         review = db_review.create(user_id=current_user.id, entity_id=entity_id, entity_type=entity_type,
                                   text=form.text.data, rating=form.rating.data, license_id=form.license_choice.data,
@@ -273,7 +273,7 @@ def edit(id):
             license_choice = form.license_choice.data
         else:
             license_choice = None
-        if not form.text.data:
+        if form.text.data == '':
             form.text.data = None
 
         try:
