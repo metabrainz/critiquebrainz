@@ -8,13 +8,15 @@
       'min': 20,
       'max': 100,
       'step': 20,
+      'title': ["Terrible", "Bad", "Average", "Good", "Extraordinary"],
       'empty-value': null,
       'iconLib': 'glyphicon',
       'activeIcon': 'glyphicon-star',
       'inactiveIcon': 'glyphicon-star-empty',
+      'color': '#DAA520',
       'clearable': true,
       'clearableIcon': 'glyphicon-minus-sign',
-      'clearableRemain': true,
+      'clearableRemain': false,
       'inline': false,
       'readonly': false
     };
@@ -51,7 +53,7 @@
 
     // Render rating icons
     for (var i = options.min; i <= options.max; i += options.step) {
-      $ratingEl.append('<i class="' + options.iconLib + '" data-value="' + i + '"></i>');
+      $ratingEl.append('<i class="' + options.iconLib + '" data-value="' + i + '" title="' + options.title[i/20-1] + '" style="color:' + options.color + '"></i>');
     }
 
     // Render clear link

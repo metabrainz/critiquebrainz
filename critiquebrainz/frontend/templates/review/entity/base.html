@@ -25,10 +25,17 @@
           {% endif %}
         </em>
       {% endif %}
+      <br>
+      <br>
 
-      <input type="number" class="rating" value={{ review.rating }} data-readonly />
-      <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text_html|safe }}</p>
-
+      {% if review.rating %}
+        <input type="number" class="rating" id="rating" value={{ review.rating }} data-readonly data-inline />
+        <label style="font-weight: normal"> - {{ rating_titles.get(review.rating) }}</label>
+      {% endif %}
+      {% if review.text %}
+        <p style="word-wrap: break-word; white-space: pre-wrap; display: inline;">{{ review.text_html|safe }}</p>
+      {% endif %}
+      
       <hr />
 
       {% if not review.is_draft %}

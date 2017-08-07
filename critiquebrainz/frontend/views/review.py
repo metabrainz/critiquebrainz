@@ -105,9 +105,9 @@ def entity(id, rev=None):
         exclude=[review["id"]],
     )
     other_reviews = user_all_reviews[:3]
-    return render_template('review/entity/%s.html' % review["entity_type"], review=review,
-                           spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
-                           vote=vote, other_reviews=other_reviews)
+    rating_titles = {20: "Terrible", 40: "Bad", 60: "Average", 80: "Good", 100: "Extradordinary"}
+    return render_template('review/entity/%s.html' % review["entity_type"], review=review, spotify_mappings=spotify_mappings,
+                           soundcloud_url=soundcloud_url, vote=vote, other_reviews=other_reviews, rating_titles=rating_titles)
 
 
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')
