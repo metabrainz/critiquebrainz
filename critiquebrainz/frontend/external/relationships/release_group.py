@@ -7,8 +7,8 @@ from flask_babel import lazy_gettext
 
 def process(release_group):
     """Handles processing supported relation lists."""
-    if 'url-relation-list' in release_group and release_group['url-relation-list']:
-        release_group['external-urls'] = _url(release_group['url-relation-list'])
+    if 'url-rels' in release_group and release_group['url-rels']:
+        release_group['external-urls'] = _url(release_group['url-rels'])
     return release_group
 
 
@@ -27,7 +27,7 @@ def _url(url_list):
             external_urls.append(dict(list(relation.items()) + list(basic_types[relation['type']].items())))
         else:
             try:
-                target = urllib.parse.urlparse(relation['target'])
+                target = urllib.parse.urlparse(relation['url']['url'])
                 if relation['type'] == 'lyrics':
                     external_urls.append(dict(
                         relation.items() + {

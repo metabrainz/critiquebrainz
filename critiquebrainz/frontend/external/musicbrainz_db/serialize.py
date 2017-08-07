@@ -91,15 +91,57 @@ def to_dict_places(place, includes=None):
     return data
 
 
+def to_dict_artist_credit_names(artist_credit_name):
+    data = {
+        'name': artist_credit_name.name,
+        'artist': to_dict_artists(artist_credit_name.artist),
+    }
+    if artist_credit_name.join_phrase:
+        data['join_phrase'] = artist_credit_name.join_phrase
+    return data
+
+
 def to_dict_release_groups(release_group, includes=None):
     if includes is None:
         includes = {}
+
     data = {
-        'id': release_group.id,
-        'name': release_group.name,
+        'id': release_group.gid,
+        'title': release_group.name,
     }
+
+    if 'artist-credit-phrase' in includes:
+        data['artist-credit-phrase'] = includes['artist-credit-phrase']
+
+    if 'meta' in includes and includes['meta'].first_release_date_year:
+        data['first-release-year'] = includes['meta'].first_release_date_year
+
+    if 'artist-credit-names' in includes:
+        data['artist-credit'] = [to_dict_artist_credit_names(artist_credit_name)
+                                 for artist_credit_name in includes['artist-credit-names']]
+
+    if 'releases' in includes:
+        data['release-list'] = [to_dict_releases(release) for release in includes['releases']]
+
     if 'relationship_objs' in includes:
         to_dict_relationships(data, release_group, includes['relationship_objs'])
+
+    if 'tags' in includes:
+        data['tag-list'] = includes['tags']
+
+    return data
+
+
+def to_dict_releases(release, includes=None):
+    if includes is None:
+        includes = {}
+    data = {
+        'id': release.gid,
+        'name': release.name,
+    }
+    if 'relationship_objs' in includes:
+        to_dict_relationships(data, release, includes['relationship_objs'])
+    return data
 
 
 TO_DICT_ENTITIES = {
@@ -108,4 +150,5 @@ TO_DICT_ENTITIES = {
     'place': to_dict_places,
     'release_group': to_dict_release_groups,
     'area': to_dict_areas,
+    'release': to_dict_releases,
 }

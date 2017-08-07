@@ -2,16 +2,12 @@ from collections import defaultdict
 from mbdata import models
 from sqlalchemy.orm import joinedload
 from brainzutils import cache
-from critiquebrainz.frontend.external.musicbrainz_db import mb_session
+from critiquebrainz.frontend.external.musicbrainz_db import mb_session, DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.musicbrainz_db.includes import check_includes
 from critiquebrainz.frontend.external.musicbrainz_db.serialize import to_dict_places
 from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relationship_info
 from critiquebrainz.frontend.external.relationships import place as place_rel
 from critiquebrainz.frontend.external.musicbrainz_db.utils import get_entities_by_gids
-
-
-DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60 # seconds (12 hours)
-THREAD_POOL_PROCESSES = 10
 
 
 def get_place_by_id(mbid):
@@ -28,8 +24,8 @@ def get_place_by_id(mbid):
         place = fetch_multiple_places(
             [mbid],
             includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
-        ).get(mbid)
-    cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
+        )[mbid]
+        cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
     return place_rel.process(place)
 
 

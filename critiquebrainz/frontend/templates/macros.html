@@ -96,7 +96,7 @@
 {% macro show_tags(tags) %}
   {% if tags %}
     {% for tag in tags %}
-      <a href="{{ 'https://musicbrainz.org/tag/%s'|format(tag['name']) }}">{{ tag['name'] }}</a>
+    <a href="https://musicbrainz.org/tag/{{ tag }}">{{ tag }}</a>
       {%- if not loop.last -%}
         ,
       {% endif %}

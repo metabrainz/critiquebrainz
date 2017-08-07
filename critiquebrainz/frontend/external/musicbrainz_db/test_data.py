@@ -1,6 +1,30 @@
 import datetime
-from mbdata.models import LinkPlaceURL, LinkType, Place, PlaceType, LinkPlacePlace, URL, Area, Link
+from mbdata.models import (
+    LinkPlaceURL,
+    LinkType,
+    Place,
+    PlaceType,
+    LinkPlacePlace,
+    URL,
+    Area,
+    Link,
+    Artist,
+    ArtistCredit,
+    ArtistCreditName,
+    ArtistType,
+    Medium,
+    MediumFormat,
+    Recording,
+    Release,
+    ReleaseGroup,
+    ReleaseGroupMeta,
+    ReleaseGroupPrimaryType,
+    ReleaseStatus,
+    Script,
+    Track,
+)
 
+# Place (d71ffe38-5eaf-426b-9a2e-e1f21bc84609) with url-rels, place-rels
 area_hameenlinna = Area()
 area_hameenlinna.id = 9598
 area_hameenlinna.gid = '4479c385-74d8-4a2b-bdab-f48d1e6969ba'
@@ -137,3 +161,173 @@ linkplaceplace_1.entity1_credit = ''
 linkplaceplace_1.entity0 = place_verkatehdas
 linkplaceplace_1.entity1 = place_suisto
 linkplaceplace_1.link = link_1
+
+# Release (16bee711-d7ce-48b0-adf4-51f124bcc0df) with release group(with its artist credit), medium,
+# tracks and recordings
+artisttype_person = ArtistType()
+artisttype_person.id = 1
+artisttype_person.name = 'Person'
+artisttype_person.gid = 'b6e035f4-3ce9-331c-97df-83397230b0df'
+
+artist_jay_z = Artist()
+artist_jay_z.id = 167
+artist_jay_z.gid = 'f82bcf78-5b69-4622-a5ef-73800768d9ac'
+artist_jay_z.name = 'JAY Z'
+artist_jay_z.sort_name = 'JAY Z'
+artist_jay_z.begin_date_year = 1969
+artist_jay_z.begin_date_month = 12
+artist_jay_z.begin_date_day = 4
+artist_jay_z.comment = 'US rapper, formerly Jay-Z'
+artist_jay_z.ended = False
+artist_jay_z.type = artisttype_person
+
+artistcreditname_jay_z = ArtistCreditName()
+artistcreditname_jay_z.position = 0
+artistcreditname_jay_z.name = 'Jay-Z'
+artistcreditname_jay_z.join_phrase = '/'
+artistcreditname_jay_z.artist = artist_jay_z
+
+artisttype_group = ArtistType()
+artisttype_group.id = 2
+artisttype_group.name = 'Group'
+artisttype_group.child_order = 2
+artisttype_group.gid = 'e431f5f6-b5d2-343d-8b36-72607fffb74b'
+
+artist_linkin_park = Artist()
+artist_linkin_park.id = 11330
+artist_linkin_park.gid = 'f59c5520-5f46-4d2c-b2c4-822eabf53419'
+artist_linkin_park.name = 'Linkin Park'
+artist_linkin_park.sort_name = 'Linkin Park'
+artist_linkin_park.begin_date_year = 1995
+artist_linkin_park.comment = ''
+artist_linkin_park.ended = False
+artist_linkin_park.type = artisttype_group
+
+artistcreditname_linkin_park = ArtistCreditName()
+artistcreditname_linkin_park.position = 1
+artistcreditname_linkin_park.name = 'Linkin Park'
+artistcreditname_linkin_park.join_phrase = ''
+artistcreditname_linkin_park.artist = artist_linkin_park
+
+artistcredit_jay_z_linkin_park = ArtistCredit()
+artistcredit_jay_z_linkin_park.id = 1617798
+artistcredit_jay_z_linkin_park.name = 'Jay-Z/Linkin Park'
+artistcredit_jay_z_linkin_park.artist_count = 2
+artistcredit_jay_z_linkin_park.ref_count = 5
+artistcredit_jay_z_linkin_park.created = datetime.datetime(2016, 2, 28, 21, 42, 14, 873583)
+artistcredit_jay_z_linkin_park.artists = [
+    artistcreditname_jay_z,
+    artistcreditname_linkin_park,
+]
+
+mediumformat_cd = MediumFormat()
+mediumformat_cd.id = 1
+mediumformat_cd.name = 'CD'
+mediumformat_cd.year = 1982
+mediumformat_cd.gid = '9712d52a-4509-3d4b-a1a2-67c88c643e31'
+
+recording_numb_encore_explicit = Recording()
+recording_numb_encore_explicit.id = 3094737
+recording_numb_encore_explicit.gid = 'daccb724-8023-432a-854c-e0accb6c8678'
+recording_numb_encore_explicit.name = 'Numb/Encore (explicit)'
+recording_numb_encore_explicit.length = 205280
+recording_numb_encore_explicit.comment = ''
+recording_numb_encore_explicit.video = False
+recording_numb_encore_explicit.artist_credit = artistcredit_jay_z_linkin_park
+
+track_numb_encore_explicit = Track()
+track_numb_encore_explicit.id = 20280427
+track_numb_encore_explicit.gid = 'dfe024b2-95b2-453f-b03e-3b9fa06f44e6'
+track_numb_encore_explicit.position = 1
+track_numb_encore_explicit.number = '1'
+track_numb_encore_explicit.name = 'Numb/Encore (explicit)'
+track_numb_encore_explicit.length = 207000
+track_numb_encore_explicit.is_data_track = False
+track_numb_encore_explicit.artist_credit = artistcredit_jay_z_linkin_park
+track_numb_encore_explicit.recording = recording_numb_encore_explicit
+
+recording_numb_encore_instrumental = Recording()
+recording_numb_encore_instrumental.id = 3094739
+recording_numb_encore_instrumental.gid = '965b75df-397d-4395-aac8-de11854c4630'
+recording_numb_encore_instrumental.name = 'Numb/Encore (instrumental)'
+recording_numb_encore_instrumental.length = 207333
+recording_numb_encore_instrumental.comment = ''
+recording_numb_encore_instrumental.video = False
+recording_numb_encore_instrumental.artist_credit = artistcredit_jay_z_linkin_park
+
+track_numb_encore_instrumental = Track()
+track_numb_encore_instrumental.id = 20280428
+track_numb_encore_instrumental.gid = '4fd6d4b0-0d14-428a-a554-1052060a9a27'
+track_numb_encore_instrumental.position = 2
+track_numb_encore_instrumental.number = '2'
+track_numb_encore_instrumental.name = 'Numb/Encore (instrumental)'
+track_numb_encore_instrumental.length = 206000
+track_numb_encore_instrumental.is_data_track = False
+track_numb_encore_instrumental.artist_credit = artistcredit_jay_z_linkin_park
+track_numb_encore_instrumental.recording = recording_numb_encore_instrumental
+
+medium_1 = Medium()
+medium_1.id = 1842217
+medium_1.position = 1
+medium_1.name = ''
+medium_1.track_count = 2
+medium_1.format = mediumformat_cd
+medium_1.tracks = [
+    track_numb_encore_explicit,
+    track_numb_encore_instrumental,
+]
+
+releasegroupprimarytype_single = ReleaseGroupPrimaryType()
+releasegroupprimarytype_single.id = 2
+releasegroupprimarytype_single.name = 'Single'
+releasegroupprimarytype_single.child_order = 2
+releasegroupprimarytype_single.gid = 'd6038452-8ee0-3f68-affc-2de9a1ede0b9'
+
+releasegroupmeta = ReleaseGroupMeta()
+releasegroupmeta.release_count = 3
+releasegroupmeta.first_release_date_year = 2004
+releasegroupmeta.rating = 100
+
+releasegroup_numb_encore = ReleaseGroup()
+releasegroup_numb_encore.id = 828504
+releasegroup_numb_encore.gid = '7c1014eb-454c-3867-8854-3c95d265f8de'
+releasegroup_numb_encore.name = 'Numb/Encore'
+releasegroup_numb_encore.artist_credit = artistcredit_jay_z_linkin_park
+releasegroup_numb_encore.meta = releasegroupmeta
+releasegroup_numb_encore.type = releasegroupprimarytype_single
+
+script_latin = Script()
+script_latin.id = 28
+script_latin.iso_code = 'Latn'
+script_latin.iso_number = '215'
+script_latin.name = 'Latin'
+script_latin.frequency = 4
+
+releasestatus_official = ReleaseStatus()
+releasestatus_official.id = 1
+releasestatus_official.name = 'Official'
+releasestatus_official.description = 'Any release officially sanctioned by the artist and/or their record company. Most releases will fit into this category.'
+releasestatus_official.gid = '4e304316-386d-3409-af2e-78857eec5cfe'
+
+release_numb_encore = Release()
+release_numb_encore.id = 1738247
+release_numb_encore.gid = '16bee711-d7ce-48b0-adf4-51f124bcc0df'
+release_numb_encore.name = 'Numb/Encore'
+release_numb_encore.barcode = '054391612328'
+release_numb_encore.comment = ''
+release_numb_encore.artist_credit = artistcredit_jay_z_linkin_park
+release_numb_encore.mediums = [
+    medium_1,
+]
+release_numb_encore.release_group = releasegroup_numb_encore
+release_numb_encore.status = releasestatus_official
+
+releasegroupmeta_1 = ReleaseGroupMeta()
+releasegroupmeta_1.release_count = 4
+releasegroupmeta_1.first_release_date_year = 2004
+
+releasegroup_collision_course = ReleaseGroup()
+releasegroup_collision_course.id = 1110052
+releasegroup_collision_course.gid = '8ef859e3-feb2-4dd1-93da-22b91280d768'
+releasegroup_collision_course.name = 'Collision Course'
+releasegroup_collision_course.meta = releasegroupmeta_1
