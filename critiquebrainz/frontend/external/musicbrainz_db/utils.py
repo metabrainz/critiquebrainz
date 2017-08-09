@@ -1,4 +1,5 @@
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+from critiquebrainz.frontend.external.musicbrainz_db import mb_session
 from mbdata import models
 
 
@@ -47,8 +48,11 @@ def get_entities_by_gids(*, query, entity_type, mbids):
         redirects = query.session.query(redirect_model).filter(redirect_model.gid.in_(remaining_gids))
         redirect_gids = {redirect.redirect_id: redirect.gid for redirect in redirects}
         redirected_entities = query.filter(redirect_model.redirect.property.primaryjoin.left.in_(redirect_gids.keys())).all()
-        for entity in redirected_entities:
-            entity.gid = redirect_gids[entity.id]
+        # Change gid of fetched redirected entities to the original gid.
+        with mb_session() as session:
+            with session.no_autoflush:
+                for entity in redirected_entities:
+                    entity.gid = redirect_gids[entity.id]
         entities.extend(redirected_entities)
     remaining_gids = list(set(mbids) - {entity.gid for entity in entities})
     if remaining_gids:
