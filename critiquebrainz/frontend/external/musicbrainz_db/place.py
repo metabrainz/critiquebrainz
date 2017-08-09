@@ -21,12 +21,16 @@ def get_place_by_id(mbid):
     key = cache.gen_key(mbid)
     place = cache.get(key)
     if not place:
-        place = fetch_multiple_places(
-            [mbid],
-            includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
-        )[mbid]
+        place = _get_place_by_id(mbid)
         cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
     return place_rel.process(place)
+
+
+def _get_place_by_id(mbid):
+    return fetch_multiple_places(
+        [mbid],
+        includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
+    ).get(mbid)
 
 
 def fetch_multiple_places(mbids, *, includes=None):
