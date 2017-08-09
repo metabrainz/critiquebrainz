@@ -9,6 +9,10 @@
         <h3>{{ _('Revision') }} {{ left['number'] }}</h3>
         <p class="small">{{ _('as of') }} {{ left['timestamp'] | datetime }}</p>
       </div>
+      {% if left.rating %}
+        <input type="number" class="rating" id="rating" value={{ left['rating'] }} data-readonly data-inline />
+        <label for="rating" style="font-weight: normal"> - {{ left['rating_title'] | safe }}</label>
+      {% endif %}
       <div class="diff-content">{{ left['text'] | safe }}</div>
     </div>
     <div class="col-md-6">
@@ -16,7 +20,16 @@
         <h3>{{ _('Revision') }} {{ right['number'] }}</h3>
         <p class="small">{{ _('as of') }} {{ right['timestamp'] | datetime }}</p>
       </div>
+      {% if right.rating %}
+        <input type="number" class="rating" id="rating" value={{ right['rating'] }} data-readonly data-inline />
+        <label for="rating" style="font-weight: normal"> - {{ right['rating_title'] | safe }}</label>
+      {% endif %}
       <div class="diff-content">{{ right['text'] | safe }}</div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}

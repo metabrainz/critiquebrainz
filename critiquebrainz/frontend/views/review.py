@@ -137,6 +137,8 @@ def compare(id):
     right = db_revision.get(id, offset=count - new)[0]
     left['number'], right['number'] = old, new
     left['text'], right['text'] = side_by_side_diff(left['text'], right['text'])
+    rating_titles = {20: "Terrible", 40: "Bad", 60: "Average", 80: "Good", 100: "Extradordinary"}
+    left['rating_title'], right['rating_title'] = side_by_side_diff(rating_titles[left['rating']], rating_titles[right['rating']])
     return render_template('review/compare.html', review=review, left=left, right=right)
 
 
