@@ -45,10 +45,10 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
             entity_type='release_group',
             mbids=mbids,
         )
-        release_group_ids = [release_group.id for release_group in release_groups]
+        release_group_ids = [release_group.id for release_group in release_groups.values()]
 
         if 'artists' in includes:
-            for release_group in release_groups:
+            for release_group in release_groups.values():
                 artist_credit_names = release_group.artist_credit.artists
                 includes_data[release_group.id]['artist-credit-names'] = artist_credit_names
                 includes_data[release_group.id]['artist-credit-phrase'] = release_group.artist_credit.name
@@ -95,8 +95,8 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
             for release_group_id, tags in release_group_tags:
                 includes_data[release_group_id]['tags'] = tags
 
-        for release_group in release_groups:
+        for release_group in release_groups.values():
             includes_data[release_group.id]['meta'] = release_group.meta
-        release_groups = {str(release_group.gid): to_dict_release_groups(release_group, includes_data[release_group.id])
-                          for release_group in release_groups}
+        release_groups = {str(mbid): to_dict_release_groups(release_groups[mbid], includes_data[release_groups[mbid].id])
+                          for mbid in mbids}
         return release_groups

@@ -52,7 +52,7 @@ def fetch_multiple_places(mbids, *, includes=None):
             entity_type='place',
             mbids=mbids,
         )
-        place_ids = [place.id for place in places]
+        place_ids = [place.id for place in places.values()]
 
         if 'artist-rels' in includes:
             get_relationship_info(
@@ -79,8 +79,8 @@ def fetch_multiple_places(mbids, *, includes=None):
                 includes_data=includes_data,
             )
 
-        for place in places:
+        for place in places.values():
             includes_data[place.id]['area'] = place.area
             includes_data[place.id]['type'] = place.type
-        places = {str(place.gid): to_dict_places(place, includes_data[place.id]) for place in places}
+        places = {str(mbid): to_dict_places(places[mbid], includes_data[places[mbid].id]) for mbid in mbids}
     return places
