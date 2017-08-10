@@ -53,7 +53,7 @@
 
     // Render rating icons
     for (var i = options.min; i <= options.max; i += options.step) {
-      $ratingEl.append('<i class="' + options.iconLib + '" data-value="' + i + '" title="' + options.title[i/20-1] + '" style="color:' + options.color + '"></i>');
+      $ratingEl.append('<i class="' + options.iconLib + '" data-value="' + i + '" title="' + options.title[i/20-1] + '" style="color:' + options.color + '; font-size: 16px;"></i>');
     }
 
     // Render clear link

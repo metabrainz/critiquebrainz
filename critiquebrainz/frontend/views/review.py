@@ -242,8 +242,12 @@ def create():
     if entity_type == 'release_group':
         spotify_mappings = mbspotify.mappings(entity_id)
         soundcloud_url = soundcloud.get_url(entity_id)
+        if not form.errors:
+            flash.info(gettext("Please provide at least one of text or rating for this review."))
         return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity,
                                spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
+    if not form.errors:
+        flash.info(gettext("Please provide at least one of text or rating for this review."))
     return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
 
 
