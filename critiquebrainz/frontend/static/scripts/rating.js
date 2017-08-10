@@ -76,8 +76,6 @@
     this.highlight($input.val());
   };
 
-  Rating.VERSION = '0.4.0';
-
   Rating.DEFAULTS = DEFAULTS;
 
   Rating.prototype = {

@@ -25,12 +25,12 @@
           {% endif %}
         </em>
       {% endif %}
-      <br>
-      <br>
 
       {% if review.rating %}
-        <input type="number" class="rating" id="rating" value={{ review.rating }} data-readonly data-inline />
-        <label style="font-weight: normal"> - {{ rating_titles.get(review.rating) }}</label>
+        <div style="margin-top: 15px; margin-bottom: -3px;">
+          <input type="number" class="rating" id="rating" value={{ review.rating }} data-readonly data-inline />
+          <label for="rating" style="font-weight: normal"> - {{ rating_titles.get(review.rating) }}</label>
+        </div>
       {% endif %}
       {% if review.text %}
         <p style="word-wrap: break-word; white-space: pre-wrap; display: inline;">{{ review.text_html|safe }}</p>
