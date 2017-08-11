@@ -27,22 +27,22 @@ def entity(id):
         release = musicbrainz.get_release_by_id(release_group['release-list'][0]['id'])
     else:
         release = None
-    soundcloud_url = soundcloud.get_url(id)
+    soundcloud_url = soundcloud.get_url(release_group['id'])
     if soundcloud_url:
         spotify_mappings = None
     else:
-        spotify_mappings = mbspotify.mappings(id)
+        spotify_mappings = mbspotify.mappings(release_group['id'])
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated:
-        my_reviews, my_count = db_review.list_reviews(entity_id=id, entity_type='release_group', user_id=current_user.id)
+        my_reviews, my_count = db_review.list_reviews(entity_id=release_group['id'], entity_type='release_group', user_id=current_user.id)
         if my_count != 0:
             my_review = my_reviews[0]
         else:
             my_review = None
     else:
         my_review = None
-    reviews, count = db_review.list_reviews(entity_id=id, entity_type='release_group', sort='popularity', limit=limit, offset=offset)
-    return render_template('release_group/entity.html', id=id, release_group=release_group, reviews=reviews,
+    reviews, count = db_review.list_reviews(entity_id=release_group['id'], entity_type='release_group', sort='popularity', limit=limit, offset=offset)
+    return render_template('release_group/entity.html', id=release_group['id'], release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
                            soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count)

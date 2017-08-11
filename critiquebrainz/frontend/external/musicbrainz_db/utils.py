@@ -37,20 +37,19 @@ def get_entities_by_gids(*, query, entity_type, mbids):
         mbids (list): IDs of the target entities.
 
     Returns:
-        List of objects of target entities.
+        Dictionary of objects of target entities keyed by their MBID.
     """
     entity_model = ENTITY_MODELS[entity_type]
-    redirect_model = REDIRECT_MODELS[entity_type]
-    entities = query.filter(entity_model.gid.in_(mbids)).all()
-    remaining_gids = list(set(mbids) - {entity.gid for entity in entities})
+    results = query.filter(entity_model.gid.in_(mbids)).all()
+    remaining_gids = list(set(mbids) - {entity.gid for entity in results})
+    entities = {str(entity.gid): entity for entity in results}
     if remaining_gids:
-        redirects = query.session.query(redirect_model).filter(redirect_model.gid.in_(remaining_gids))
-        redirect_gids = {redirect.redirect_id: redirect.gid for redirect in redirects}
-        redirected_entities = query.filter(redirect_model.redirect.property.primaryjoin.left.in_(redirect_gids.keys())).all()
-        for entity in redirected_entities:
-            entity.gid = redirect_gids[entity.id]
-        entities.extend(redirected_entities)
-    remaining_gids = list(set(mbids) - {entity.gid for entity in entities})
+        redirect_model = REDIRECT_MODELS[entity_type]
+        query = query.add_entity(redirect_model).join(redirect_model)
+        results = query.filter(redirect_model.gid.in_(remaining_gids))
+        for entity, redirect_obj in results:
+            entities[redirect_obj.gid] = entity
+        remaining_gids = list(set(mbids) - {redirect_obj.gid for entity, redirect_obj in results})
     if remaining_gids:
         raise mb_exceptions.NoDataFoundException("Couldn't find entities with IDs: {mbids}".format(mbids=remaining_gids))
     return entities
