@@ -37,7 +37,7 @@ def get_entities_by_gids(*, query, entity_type, mbids):
         mbids (list): IDs of the target entities.
 
     Returns:
-        Dictionary of objects of target entities keyed by their mbid.
+        Dictionary of objects of target entities keyed by their MBID.
     """
     entity_model = ENTITY_MODELS[entity_type]
     results = query.filter(entity_model.gid.in_(mbids)).all()
