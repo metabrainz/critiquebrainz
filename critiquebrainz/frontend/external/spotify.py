@@ -134,7 +134,7 @@ def _fetch_access_token() -> str:
         if not access_token:
             raise SpotifyException("Could not fetch access token for Spotify API")
         # Making the token stored in cache expire at the same time as the actual token
-        cache.set(key=key, val=access_token, time=resp.get("expires_in"))
+        cache.set(key=key, val=access_token, time=resp.get("expires_in", 10))
     return access_token
 
 
