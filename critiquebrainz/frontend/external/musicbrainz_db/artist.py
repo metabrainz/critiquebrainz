@@ -6,6 +6,7 @@ from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relation
 from critiquebrainz.frontend.external.relationships import artist as artist_rel
 from critiquebrainz.frontend.external.musicbrainz_db.utils import get_entities_by_gids
 from critiquebrainz.frontend.external.musicbrainz_db.serialize import to_dict_artists
+from critiquebrainz.frontend.external.musicbrainz_db.includes import check_includes
 from brainzutils import cache
 
 
@@ -45,7 +46,7 @@ def fetch_multiple_artists(mbids, *, includes=None):
     if includes is None:
         includes = []
     includes_data = defaultdict(dict)
-    # TODO(ferbncode): Check includes
+    check_includes('artist', includes)
     with mb_session() as db:
         query = db.query(models.Artist).\
                 options(joinedload("type"))

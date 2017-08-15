@@ -7,13 +7,11 @@ from critiquebrainz.frontend.external.musicbrainz_db.tests import setup_cache
 
 class ArtistTestCase(TestCase):
 
-
     def setUp(self):
         setup_cache()
         mb_artist.mb_session = MagicMock()
         self.mock_db = mb_artist.mb_session.return_value.__enter__.return_value
         self.artist_query = self.mock_db.query.return_value.options.return_value.filter.return_value.all
-
 
     def test_get_by_id(self):
         self.artist_query.return_value = [artist_linkin_park]
@@ -24,7 +22,6 @@ class ArtistTestCase(TestCase):
             "sort_name": "Linkin Park",
             "type": "Group"
         })
-
 
     def test_fetch_multiple_artists(self):
         self.artist_query.return_value = [artist_jay_z, artist_linkin_park]
