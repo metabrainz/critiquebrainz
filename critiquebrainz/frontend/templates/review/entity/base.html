@@ -31,7 +31,6 @@
       {% if review.rating %}
         <div style="margin-top: 15px; margin-bottom: -3px;">
           <input type="number" class="rating" id="rating" value={{ review.rating }} data-readonly data-inline />
-          <label for="rating" style="font-weight: normal"> - {{ rating_titles.get(review.rating) }}</label>
         </div>
       {% endif %}
       {% if review.text %}
