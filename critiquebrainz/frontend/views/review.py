@@ -243,11 +243,11 @@ def create():
         spotify_mappings = mbspotify.mappings(entity_id)
         soundcloud_url = soundcloud.get_url(entity_id)
         if not form.errors:
-            flash.info(gettext("Please provide at least one of text or rating for this review."))
+            flash.info(gettext("Please provide some text or a rating for this review."))
         return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity,
                                spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
     if not form.errors:
-        flash.info(gettext("Please provide at least one of text or rating for this review."))
+        flash.info(gettext("Please provide some text or a rating for this review."))
     return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
 
 

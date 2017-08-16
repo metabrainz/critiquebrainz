@@ -54,7 +54,7 @@ class ReviewEditForm(Form):
         if not super(ReviewEditForm, self).validate():
             return False
         if not self.text.data and not self.rating.data:
-            self.text.errors.append("You must provide at least one of text or rating to complete this review.")
+            self.text.errors.append("You must provide some text or a rating to complete this review.")
             return False
         return True
 
