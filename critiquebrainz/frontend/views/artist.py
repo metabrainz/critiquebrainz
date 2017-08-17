@@ -35,7 +35,11 @@ def entity(mbid):
                                                               limit=limit, offset=offset)
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
-        reviews, review_count = db_review.list_reviews(entity_id=release_group['id'], entity_type='release_group', sort='created', limit=1)  # pylint: disable=unused-variable
+        reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
+            entity_id=release_group['id'],
+            entity_type='release_group',
+            sort='created', limit=1,
+        )
         release_group['review_count'] = review_count
 
     return render_template(

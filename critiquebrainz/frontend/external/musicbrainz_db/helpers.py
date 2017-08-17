@@ -72,7 +72,9 @@ def get_tags(*, db, entity_model, tag_model, entity_ids):
         List of tuples containing the entity_ids and the list of associated tags.
     """
     tags = db.query(entity_model.id, func.array_agg(Tag.name)).\
-           join(tag_model).\
-           join(Tag).filter(entity_model.id.in_(entity_ids)).\
-           group_by(entity_model.id).all()
+        join(tag_model).\
+        join(Tag).\
+        filter(entity_model.id.in_(entity_ids)).\
+        group_by(entity_model.id).\
+        all()
     return tags

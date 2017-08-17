@@ -1,7 +1,11 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from critiquebrainz.frontend.external.musicbrainz_db.tests import setup_cache
-from critiquebrainz.frontend.external.musicbrainz_db.test_data import release_numb_encore, release_collision_course, release_numb_encore_1
+from critiquebrainz.frontend.external.musicbrainz_db.test_data import (
+    release_numb_encore,
+    release_collision_course,
+    release_numb_encore_1,
+)
 from critiquebrainz.frontend.external.musicbrainz_db import release as mb_release
 
 
@@ -16,9 +20,7 @@ class ReleaseTestCase(TestCase):
 
     def test_get_by_id(self):
         self.release_query.return_value = [release_numb_encore]
-        release = mb_release.get_release_by_id(
-            '16bee711-d7ce-48b0-adf4-51f124bcc0df'
-        )
+        release = mb_release.get_release_by_id('16bee711-d7ce-48b0-adf4-51f124bcc0df')
         self.assertEqual(release["name"], "Numb/Encore")
         self.assertEqual(len(release["medium-list"][0]["track-list"]), 2)
         self.assertDictEqual(release["medium-list"][0]["track-list"][0], {

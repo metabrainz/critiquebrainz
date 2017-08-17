@@ -114,7 +114,7 @@ def get_all_votes(review_id):
         for row in rows:
             revision = row.id
             if revision not in votes:
-                votes[revision] = {'positive':0, 'negative':0}
+                votes[revision] = {'positive': 0, 'negative': 0}
             if row.vote:  # True = positive
                 votes[revision]['positive'] += 1
             else:  # False = negative
@@ -148,7 +148,8 @@ def get_revision_number(review_id, revision_id):
         })
         rev_num = result.fetchone()[0]
         if not rev_num:
-            raise db_exceptions.NoDataFoundException("Can't find the revision with id={} for specified review.".format(revision_id))
+            raise db_exceptions.NoDataFoundException("Can't find the revision with id={} for specified review.".
+                                                     format(revision_id))
     return rev_num
 
 

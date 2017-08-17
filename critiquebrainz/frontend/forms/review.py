@@ -38,8 +38,8 @@ class ReviewEditForm(Form):
                                             min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH))])
     license_choice = RadioField(
         choices=[
-            ('CC BY-SA 3.0', lazy_gettext('Allow commercial use of this review (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA 3.0 license</a>)')),
-            ('CC BY-NC-SA 3.0', lazy_gettext('Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),
+            ('CC BY-SA 3.0', lazy_gettext('Allow commercial use of this review(<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA 3.0 license</a>)')),  # noqa: E501
+            ('CC BY-NC-SA 3.0', lazy_gettext('Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),  # noqa: E501
         ],
         validators=[validators.DataRequired(message=lazy_gettext("You need to choose a license!"))])
     language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
@@ -51,7 +51,9 @@ class ReviewEditForm(Form):
 
 
 class ReviewCreateForm(ReviewEditForm):
-    agreement = BooleanField(validators=[validators.DataRequired(message=lazy_gettext("You need to accept the license agreement!"))])
+    agreement = BooleanField(validators=[
+        validators.DataRequired(message=lazy_gettext("You need to accept the license agreement!")),
+    ])
 
 
 class ReviewReportForm(Form):

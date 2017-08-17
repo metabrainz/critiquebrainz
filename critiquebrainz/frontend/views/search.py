@@ -39,7 +39,7 @@ def more():
     offset = page * RESULTS_LIMIT
     count, results = search_wrapper(query, type, offset)
     template = render_template('search/results.html', type=type, results=results)
-    return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
+    return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
 
 
 @search_bp.route('/selector')
@@ -86,4 +86,4 @@ def selector_more():
     else:
         count, results = 0, []
     template = render_template('search/selector_results.html', results=results, type=type)
-    return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
+    return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)

@@ -94,6 +94,7 @@ def browse_releases(artist_id=None, release_group=None, release_types=None, limi
         cache.set(key=key, val=releases, time=DEFAULT_CACHE_EXPIRATION)
     return releases
 
+
 def get_artist_by_id(id):
     """Get artist with the MusicBrainz ID.
 

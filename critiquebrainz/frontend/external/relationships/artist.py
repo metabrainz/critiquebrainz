@@ -52,8 +52,11 @@ def _url(url_list):
                     external_urls.append(dict(
                         relation.items() + {
                             'name': lazy_gettext('Wikipedia'),
-                            'disambiguation': target.netloc.split('.')[0] + ':' +
-                                              urllib.parse.unquote(target.path.split('/')[2]).decode('utf8').replace("_", " "),
+                            'disambiguation': (
+                                target.netloc.split('.')[0] +
+                                ':' +
+                                urllib.parse.unquote(target.path.split('/')[2]).decode('utf8').replace("_", " ")
+                            ),
                             'icon': 'wikipedia-16.png',
                         }.items()))
                 elif relation['type'] == 'youtube':

@@ -7,15 +7,14 @@ from critiquebrainz.frontend.external.musicbrainz_db.tests import setup_cache
 
 class ReleaseGroupTestCase(TestCase):
 
-
     def setUp(self):
         setup_cache()
         mb_release_group.mb_session = MagicMock()
         self.mock_db = mb_release_group.mb_session.return_value.__enter__.return_value
         self.release_group_query = self.mock_db.query.return_value.options.return_value.\
-                options.return_value.options.return_value.options.return_value.filter.return_value.all
-        self.release_group_query_without_artists = self.mock_db.query.return_value.options.return_value.filter.return_value.all
-
+            options.return_value.options.return_value.options.return_value.filter.return_value.all
+        self.release_group_query_without_artists = self.mock_db.query.return_value.\
+            options.return_value.filter.return_value.all
 
     def test_get_by_id(self):
         self.release_group_query.return_value = [releasegroup_numb_encore]
@@ -44,7 +43,6 @@ class ReleaseGroupTestCase(TestCase):
                 'sort_name': 'Linkin Park',
             },
         })
-
 
     def test_fetch_release_groups(self):
         self.release_group_query_without_artists.return_value = [releasegroup_numb_encore, releasegroup_collision_course]

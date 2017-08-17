@@ -81,13 +81,13 @@ def create(revision_id, user_id, reason):
         connection.execute(sqlalchemy.text("""
             INSERT INTO spam_report (user_id, reason, revision_id, reported_at, is_archived)
                  VALUES (:user_id, :reason, :revision_id, :reported_at, :is_archived)
-            """), {
-                "user_id": str(user_id),
-                "reason": reason,
-                "revision_id": revision_id,
-                "reported_at": datetime.now(),
-                "is_archived": False,
-            })
+        """), {
+            "user_id": str(user_id),
+            "reason": reason,
+            "revision_id": revision_id,
+            "reported_at": datetime.now(),
+            "is_archived": False,
+        })
     return get(user_id, revision_id)
 
 

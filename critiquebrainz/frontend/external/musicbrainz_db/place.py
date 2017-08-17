@@ -49,8 +49,8 @@ def fetch_multiple_places(mbids, *, includes=None):
     check_includes('place', includes)
     with mb_session() as db:
         query = db.query(models.Place).\
-                options(joinedload("area")).\
-                options(joinedload("type"))
+            options(joinedload("area")).\
+            options(joinedload("type"))
         places = get_entities_by_gids(
             query=query,
             entity_type='place',

@@ -6,6 +6,7 @@ import critiquebrainz.db.revision as db_revision
 import critiquebrainz.db.exceptions as db_exceptions
 import critiquebrainz.db.license as db_license
 
+
 class ReviewTestCase(DataTestCase):
 
     def setUp(self):
@@ -130,7 +131,7 @@ class ReviewTestCase(DataTestCase):
             license_id=another_license["id"],
             language="es",
         )
-        #Checking if contents are updated
+        # Checking if contents are updated
         retrieved_review = db_review.list_reviews()[0][0]
         self.assertEqual(retrieved_review["text"], "Testing update")
         self.assertEqual(retrieved_review["rating"], None)

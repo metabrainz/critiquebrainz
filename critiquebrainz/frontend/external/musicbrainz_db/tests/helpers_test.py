@@ -6,12 +6,14 @@ from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relation
 import critiquebrainz.frontend.external.musicbrainz_db as mb
 from critiquebrainz.frontend.external.musicbrainz_db.test_data import linkplaceurl_1, linkplaceurl_2, place_suisto
 
+
 class HelpersTestCase(TestCase):
 
     def setUp(self):
         mb.mb_session = MagicMock()
         self.mock_db = mb.mb_session.return_value.__enter__.return_value
-        self.relationships_query = self.mock_db.query.return_value.options.return_value.options.return_value.filter.return_value.options
+        self.relationships_query = self.mock_db.query.return_value.options.return_value.\
+            options.return_value.filter.return_value.options
 
     def test_get_relationship_info(self):
         data = {}

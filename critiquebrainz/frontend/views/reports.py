@@ -24,10 +24,9 @@ def index():
 def more():
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
-
     results, count = db_spam_report.list_reports(offset=offset, limit=RESULTS_LIMIT, inc_archived=False)
     template = render_template('reports/reports_results.html', results=results)
-    return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
+    return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
 
 
 @reports_bp.route('/<uuid:user_id>/<int:revision_id>/archive')

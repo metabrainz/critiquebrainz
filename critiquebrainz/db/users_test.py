@@ -11,6 +11,7 @@ import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.oauth_token as db_oauth_token
 from critiquebrainz.db.user import User
 
+
 class UserTestCase(DataTestCase):
     def setUp(self):
         super(UserTestCase, self).setUp()

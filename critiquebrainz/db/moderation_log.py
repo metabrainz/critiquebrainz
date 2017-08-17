@@ -10,6 +10,7 @@ import sqlalchemy
 ACTION_HIDE_REVIEW = "hide_review"
 ACTION_BLOCK_USER = "block_user"
 
+
 def create(*, admin_id, review_id=None, user_id=None,
            action, reason):
     """Make a record in the moderation log.
@@ -29,14 +30,14 @@ def create(*, admin_id, review_id=None, user_id=None,
         connection.execute(sqlalchemy.text("""
             INSERT INTO moderation_log(admin_id, user_id, review_id, action, timestamp, reason)
                  VALUES (:admin_id, :user_id, :review_id, :action, :timestamp, :reason)
-            """), {
-                "admin_id": admin_id,
-                "user_id": user_id,
-                "review_id": review_id,
-                "action": action,
-                "timestamp": datetime.now(),
-                "reason": reason,
-            })
+        """), {
+            "admin_id": admin_id,
+            "user_id": user_id,
+            "review_id": review_id,
+            "action": action,
+            "timestamp": datetime.now(),
+            "reason": reason,
+        })
 
 
 def list_logs(*, admin_id=None, limit=None, offset=None):

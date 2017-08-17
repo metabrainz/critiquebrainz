@@ -89,7 +89,7 @@ class User(AdminMixin):
             reviews_last_7_days=self.reviews_since_count(today - timedelta(days=7)),
             reviews_this_month=self.reviews_since_count(date(today.year, today.month, 1)),
             votes_today=self.votes_today_count(),
-            votes_last_7_days=self.votes_since_count(today-timedelta(days=7)),
+            votes_last_7_days=self.votes_since_count(today - timedelta(days=7)),
             votes_this_month=self.votes_since_count(date(today.year, today.month, 1)),
         )
 

@@ -28,7 +28,13 @@ def entity(id):
 
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
-    reviews, count = db_review.list_reviews(entity_id=place['id'], entity_type='place', sort='popularity', limit=limit, offset=offset)
+    reviews, count = db_review.list_reviews(
+        entity_id=place['id'],
+        entity_type='place',
+        sort='popularity',
+        limit=limit,
+        offset=offset,
+    )
 
     return render_template('place/entity.html', id=place['id'], place=place, reviews=reviews,
                            my_review=my_review, limit=limit, offset=offset, count=count)

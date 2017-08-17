@@ -19,13 +19,13 @@ def update(entity_id, entity_type):
                 SELECT review_id,
                        MAX("timestamp") created_at
                   FROM revision
-                 WHERE review_id in ( 
-                           SELECT id 
+                 WHERE review_id in (
+                           SELECT id
                              FROM review
                             WHERE entity_id = :entity_id
                               AND entity_type = :entity_type)
-              GROUP BY review_id)
-            
+              GROUP BY review_id
+            )
             SELECT SUM(rating),
                    COUNT(rating)
               FROM revision
@@ -38,7 +38,7 @@ def update(entity_id, entity_type):
         })
         row = result.fetchone()
 
-    #Calulate average rating and update it
+    # Calculate average rating and update it
     sum, count = row[0], row[1]
     if count == 0:
         delete(entity_id, entity_type)
@@ -48,10 +48,10 @@ def update(entity_id, entity_type):
         connection.execute(sqlalchemy.text("""
             INSERT INTO avg_rating(entity_id, entity_type, rating, count)
                  VALUES (:entity_id, :entity_type, :rating, :count)
-            ON CONFLICT 
+            ON CONFLICT
           ON CONSTRAINT avg_rating_pkey
               DO UPDATE
-                    SET rating = EXCLUDED.rating, 
+                    SET rating = EXCLUDED.rating,
                         count = EXCLUDED.count
         """), {
             "entity_id": entity_id,
@@ -70,7 +70,7 @@ def delete(entity_id, entity_type):
     """
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
-            DELETE 
+            DELETE
               FROM avg_rating
              WHERE entity_id = :entity_id
                AND entity_type = :entity_type
@@ -111,7 +111,7 @@ def get(entity_id, entity_type):
 
         avg_rating = result.fetchone()
         if not avg_rating:
-            raise db_exceptions.NoDataFoundException("""No rating for the entity with ID: {id} and Type: {type}
-                                                     """.format(id=entity_id, type=entity_type))
+            raise db_exceptions.NoDataFoundException("""No rating for the entity with ID: {id} and Type: {type}""".
+                                                     format(id=entity_id, type=entity_type))
 
     return dict(avg_rating)

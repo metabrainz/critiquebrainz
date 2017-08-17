@@ -45,7 +45,7 @@ def browse():
     reviews, count = db_review.list_reviews(sort='created', limit=limit, offset=offset, entity_type=entity_type)
     if not reviews:
         if page - 1 > count / limit:
-            return redirect(url_for('review.browse', page=int(ceil(count/limit))))
+            return redirect(url_for('review.browse', page=int(ceil(count / limit))))
         else:
             if not entity_type:
                 raise NotFound(gettext("No reviews to display."))
@@ -63,8 +63,8 @@ def browse():
 def entity(id, rev=None):
     review = get_review_or_404(id)
     # Not showing review if it isn't published yet and not viewed by author.
-    if review["is_draft"] and not (current_user.is_authenticated
-                                   and current_user == review["user"]):
+    if review["is_draft"] and not (current_user.is_authenticated and
+                                   current_user == review["user"]):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review["is_hidden"]:
         if not current_user.is_admin():
@@ -86,7 +86,7 @@ def entity(id, rev=None):
     elif rev > count:
         raise NotFound(gettext("The revision you are looking for does not exist."))
 
-    revision = db_revision.get(id, offset=count-rev)[0]
+    revision = db_revision.get(id, offset=count - rev)[0]
     if not review["is_draft"] and current_user.is_authenticated:  # if user is logged in, get their vote for this review
         try:
             vote = db_vote.get(user_id=current_user.id, revision_id=revision['id'])
@@ -96,9 +96,15 @@ def entity(id, rev=None):
         vote = None
     review["text_html"] = markdown(revision['text'], safe_mode="escape")
 
-    user_all_reviews, review_count = db_review.list_reviews(user_id=review["user_id"], sort="random", exclude=[review["id"]])  # pylint: disable=unused-variable
+    user_all_reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
+        user_id=review["user_id"],
+        sort="random",
+        exclude=[review["id"]],
+    )
     other_reviews = user_all_reviews[:3]
-    return render_template('review/entity/%s.html' % review["entity_type"], review=review, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url, vote=vote, other_reviews=other_reviews)
+    return render_template('review/entity/%s.html' % review["entity_type"], review=review,
+                           spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
+                           vote=vote, other_reviews=other_reviews)
 
 
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')
@@ -113,8 +119,8 @@ def redirect_to_entity(review_id, revision_id):
 @review_bp.route('/<uuid:id>/revisions/compare')
 def compare(id):
     review = get_review_or_404(id)
-    if review["is_draft"] and not (current_user.is_authenticated
-                                   and current_user == review["user"]):
+    if review["is_draft"] and not (current_user.is_authenticated and
+                                   current_user == review["user"]):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
@@ -124,8 +130,8 @@ def compare(id):
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
     if old > new:
         return redirect(url_for('.compare', id=id, old=new, new=old))
-    left = db_revision.get(id, offset=count-old)[0]
-    right = db_revision.get(id, offset=count-new)[0]
+    left = db_revision.get(id, offset=count - old)[0]
+    right = db_revision.get(id, offset=count - new)[0]
     left['number'], right['number'] = old, new
     left['text'], right['text'] = side_by_side_diff(left['text'], right['text'])
     return render_template('review/compare.html', review=review, left=left, right=right)
@@ -135,8 +141,8 @@ def compare(id):
 def revisions(id):
     review = get_review_or_404(id)
     # Not showing review if it isn't published yet and not viewed by author.
-    if review["is_draft"] and not (current_user.is_authenticated
-                                   and current_user == review["user"]):
+    if review["is_draft"] and not (current_user.is_authenticated and
+                                   current_user == review["user"]):
         raise NotFound("Can't find a review with the specified ID.")
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
@@ -146,16 +152,17 @@ def revisions(id):
     except db_exceptions.NoDataFoundException:
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
     votes = db_revision.get_all_votes(id)
-    results = list(zip(reversed(range(count-RESULTS_LIMIT, count)), revisions))
-    return render_template('review/revisions.html', review=review, results=results, count=count, limit=RESULTS_LIMIT, votes=votes)
+    results = list(zip(reversed(range(count - RESULTS_LIMIT, count)), revisions))
+    return render_template('review/revisions.html', review=review, results=results,
+                           count=count, limit=RESULTS_LIMIT, votes=votes)
 
 
 @review_bp.route('/<uuid:id>/revisions/more')
 def revisions_more(id):
     review = get_review_or_404(id)
     # Not showing review if it isn't published yet and not viewed by author.
-    if review["is_draft"] and not (current_user.is_authenticated
-                                   and current_user == review["user"]):
+    if review["is_draft"] and not (current_user.is_authenticated and
+                                   current_user == review["user"]):
         raise NotFound("Can't find a review with the specified ID.")
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
@@ -168,10 +175,10 @@ def revisions_more(id):
     except db_exceptions.NoDataFoundException:
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
     votes = db_revision.get_all_votes(id)
-    results = list(zip(reversed(range(count-offset-RESULTS_LIMIT, count-offset)), revisions))
+    results = list(zip(reversed(range(count - offset - RESULTS_LIMIT, count - offset)), revisions))
 
     template = render_template('review/revision_results.html', review=review, results=results, votes=votes, count=count)
-    return jsonify(results=template, more=(count-offset-RESULTS_LIMIT) > 0)
+    return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
 
 
 @review_bp.route('/write', methods=('GET', 'POST'))
@@ -228,7 +235,8 @@ def create():
     if entity_type == 'release_group':
         spotify_mappings = mbspotify.mappings(entity_id)
         soundcloud_url = soundcloud.get_url(entity_id)
-        return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
+        return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity,
+                               spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
     return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
 
 
@@ -281,7 +289,8 @@ def edit(id):
     if review["entity_type"] == 'release_group':
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
-        return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"], entity=entity, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
+        return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"],
+                               entity=entity, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
     return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"])
 
 
