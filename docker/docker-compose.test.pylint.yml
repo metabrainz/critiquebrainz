@@ -1,4 +1,4 @@
-# Docker Compose file for testing
+# Docker Compose file that runs pylint and flake8
 version: "2"
 services:
 
