@@ -98,6 +98,15 @@ def _squash_duplicated_members(members):
 
 
 def _get_period(member):
+    """Get period for which an artist is/was part of a group, orchestra or choir.
+
+    Args:
+        member (Dict): Dictionary containing the artist information.
+
+    Returns:
+        Tuple containing the begin and end year during which an artist was part of
+        a group.
+    """
     begin_date = member.get('begin-year', '')
     end_date = member.get('end-year', '')
 

@@ -24,17 +24,15 @@ def return_release_groups(*, artist_id, release_types=None, limit=None, offset=N
             'title': 'A Thousand Suns',
             'first-release-year': 2010,
         }], 1)
-    return ([], 0)
+    return [], 0
 
 
 class ArtistViewsTestCase(FrontendTestCase):
-
 
     def setUp(self):
         super(ArtistViewsTestCase, self).setUp()
         mb_artist.get_artist_by_id = MagicMock()
         mb_release_group.browse_release_groups = MagicMock(side_effect=return_release_groups)
-
 
     def test_artist_page(self):
         # Basic artist page should be available.
