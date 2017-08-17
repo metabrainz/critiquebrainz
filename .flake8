@@ -1,0 +1,10 @@
+[flake8]
+max_line_length = 130
+exclude =
+    .git,
+    __pycache__,
+    old,
+    build,
+    dist,
+    ./custom_config.py,
+    ./docs/conf.py
