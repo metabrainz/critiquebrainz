@@ -151,15 +151,15 @@ def create(**user_data):
             INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar, is_blocked)
                  VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar, :is_blocked)
               RETURNING id
-            """), {
-                "id": str(uuid.uuid4()),
-                "display_name": display_name,
-                "email": email,
-                "created": datetime.now(),
-                "musicbrainz_id": musicbrainz_username,
-                "show_gravatar": show_gravatar,
-                "is_blocked": is_blocked,
-            })
+        """), {
+            "id": str(uuid.uuid4()),
+            "display_name": display_name,
+            "email": email,
+            "created": datetime.now(),
+            "musicbrainz_id": musicbrainz_username,
+            "show_gravatar": show_gravatar,
+            "is_blocked": is_blocked,
+        })
         new_id = result.fetchone()[0]
     return get_by_id(new_id)
 
@@ -343,10 +343,10 @@ def has_voted(user_id, review_id):
               FROM vote
              WHERE revision_id = :revision_id
                AND user_id = :user_id
-            """), {
-                "revision_id": last_revision['id'],
-                "user_id": user_id
-            })
+        """), {
+            "revision_id": last_revision['id'],
+            "user_id": user_id
+        })
         count = result.fetchone()[0]
     return count > 0
 

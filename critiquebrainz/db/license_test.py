@@ -1,6 +1,7 @@
 from critiquebrainz.data.testing import DataTestCase
 import critiquebrainz.db.license as db_license
 
+
 class LicenseTestCase(DataTestCase):
 
     def test_license_create(self):
@@ -32,5 +33,5 @@ class LicenseTestCase(DataTestCase):
         self.assertDictEqual({
             "id": "test",
             "full_name": "Test license",
-            "info_url":"www.example.com"
+            "info_url": "www.example.com"
         }, licenses[0])

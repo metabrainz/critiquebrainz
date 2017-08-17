@@ -4,7 +4,10 @@ import uuid
 import sqlalchemy
 from brainzutils import cache
 from critiquebrainz import db
-from critiquebrainz.db import exceptions as db_exceptions, revision as db_revision, users as db_users, avg_rating as db_avg_rating
+from critiquebrainz.db import (exceptions as db_exceptions,
+                               revision as db_revision,
+                               users as db_users,
+                               avg_rating as db_avg_rating)
 from critiquebrainz.db.user import User
 import pycountry
 
@@ -290,7 +293,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url)
             VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url)
          RETURNING id;
-        """), {
+        """), {  # noqa: E501
             "id": str(uuid.uuid4()),
             "entity_id": entity_id,
             "entity_type": entity_type,

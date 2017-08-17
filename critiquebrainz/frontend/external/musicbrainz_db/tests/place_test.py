@@ -4,6 +4,7 @@ from critiquebrainz.frontend.external.musicbrainz_db import place as mb_place
 from critiquebrainz.frontend.external.musicbrainz_db.test_data import place_suisto, place_verkatehdas
 from critiquebrainz.frontend.external.musicbrainz_db.tests import setup_cache
 
+
 class PlaceTestCase(TestCase):
 
     def setUp(self):

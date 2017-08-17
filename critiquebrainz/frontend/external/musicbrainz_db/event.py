@@ -94,6 +94,4 @@ def fetch_multiple_events(mbids, *, includes=None):
                 source_entity_ids=event_ids,
                 includes_data=includes_data,
             )
-
-    events = {str(mbid): to_dict_events(events[mbid], includes_data[events[mbid].id]) for mbid in mbids}
-    return events
+    return {str(mbid): to_dict_events(events[mbid], includes_data[events[mbid].id]) for mbid in mbids}

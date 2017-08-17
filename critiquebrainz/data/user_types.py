@@ -9,6 +9,7 @@ class UserType(object):
     def is_instance(self, user):
         return self.karma(user.karma)
 
+
 blocked = UserType(
     label='Blocked',
     karma=lambda x: (x < -20),

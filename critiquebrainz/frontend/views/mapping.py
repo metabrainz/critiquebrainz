@@ -147,14 +147,13 @@ def spotify_report():
         flash.success(gettext("Incorrect Spotify mapping has been reported. Thank you!"))
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
-    else:
-        try:
-            album = spotify_api.get_album(spotify_id)
-        except ExternalServiceException:
-            flash.error(gettext("You need to specify existing album from Spotify!"))
-            return redirect(url_for('.spotify_list', release_group_id=release_group_id))
+    try:
+        album = spotify_api.get_album(spotify_id)
+    except ExternalServiceException:
+        flash.error(gettext("You need to specify existing album from Spotify!"))
+        return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
-        return render_template('mapping/report.html', release_group=release_group, spotify_album=album)
+    return render_template('mapping/report.html', release_group=release_group, spotify_album=album)
 
 
 def parse_spotify_id(spotify_ref):
@@ -169,7 +168,7 @@ def parse_spotify_id(spotify_ref):
         return spotify_ref[14:]
 
     # Link to Spotify
-    # TODO(roman): Improve checking there. See https://bitbucket.org/metabrainz/critiquebrainz/pull-request/167/cb-115-support-for-different-types-of/activity#comment-2757329
+    # TODO(roman): Improve checking there.
     if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
         if spotify_ref.endswith('/'):
             spotify_ref = spotify_ref[:-1]

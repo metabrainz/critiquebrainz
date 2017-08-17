@@ -6,6 +6,7 @@ import critiquebrainz.db.users as db_users
 import critiquebrainz.db.exceptions as db_exceptions
 from critiquebrainz.db.user import User
 
+
 class OAuthGrantTestCase(DataTestCase):
 
     def setUp(self):

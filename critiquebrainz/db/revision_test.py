@@ -12,13 +12,13 @@ class RevisionTestCase(DataTestCase):
     def setUp(self):
         super(RevisionTestCase, self).setUp()
         self.author = User(db_users.get_or_create('Author', new_user_data={
-            "display_name":'0',
+            "display_name": '0',
         }))
         self.user_1 = User(db_users.get_or_create('Tester #1', new_user_data={
-            "display_name":'1',
+            "display_name": '1',
         }))
         self.user_2 = User(db_users.get_or_create('Tester #2', new_user_data={
-            "display_name":'2',
+            "display_name": '2',
         }))
         self.license = db_license.create(
             id=u'TEST',
@@ -87,8 +87,8 @@ class RevisionTestCase(DataTestCase):
         votes = revision.get_all_votes(review_id)
         votes_first_revision = votes[first_revision['id']]
         self.assertDictEqual(votes_first_revision, {
-            "positive":1,
-            "negative":1
+            "positive": 1,
+            "negative": 1
         })
 
     def test_get_revision_number(self):

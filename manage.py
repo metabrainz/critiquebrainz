@@ -123,9 +123,16 @@ def init_postgres(db_uri):
         raise Exception('Cannot configure a remote database')
 
     # Checking if user already exists
-    retv = subprocess.check_output('sudo -u postgres psql -t -A -c "SELECT COUNT(*) FROM pg_user WHERE usename = \'%s\';"' % username, shell=True)
+    retv = subprocess.check_output('sudo -u postgres psql -t -A -c'
+                                   '"SELECT COUNT(*) FROM pg_user WHERE usename = \'%s\';"' %
+                                   username, shell=True)
     if retv == '0':
-        exit_code = subprocess.call('sudo -u postgres psql -c "CREATE ROLE %s PASSWORD \'%s\' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;"' % (username, password), shell=True)
+        exit_code = subprocess.call(
+            'sudo -u postgres psql -c '
+            '"CREATE ROLE %s PASSWORD \'%s\' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;"' %
+            (username, password),
+            shell=True,
+        )
         if exit_code != 0:
             raise Exception('Failed to create PostgreSQL user!')
 
@@ -140,7 +147,11 @@ def init_postgres(db_uri):
 def create_extension(db_uri):
     host, port, db, username, password = data_utils.explode_db_uri(db_uri)
     psql_cmd = "psql -h %s -p %s -U %s -W %s %s" % (host, port, username, password, db)
-    exit_code = subprocess.call('%s  -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' % (psql_cmd, 'uuid-ossp', db), shell=True)
+    exit_code = subprocess.call(
+        '%s  -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' %
+        (psql_cmd, 'uuid-ossp', db),
+        shell=True,
+    )
     if exit_code != 0:
         raise Exception('Failed to create PostgreSQL extension!')
 

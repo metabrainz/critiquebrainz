@@ -5,7 +5,6 @@ import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 
 class ReleaseViewsTestCase(FrontendTestCase):
 
-
     def setUp(self):
         super(ReleaseViewsTestCase, self).setUp()
         mb_release.get_release_by_id = MagicMock()
@@ -17,7 +16,6 @@ class ReleaseViewsTestCase(FrontendTestCase):
                 'name': 'The 20/20 Experience',
             }
         }
-
 
     def test_release_page(self):
         response = self.client.get("/release/57ebb904-03de-47cd-89d6-ae444a31fc88")

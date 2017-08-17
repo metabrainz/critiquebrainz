@@ -129,7 +129,7 @@ def review_revisions_handler(review_id):
     revisions = db_revision.get(review_id, limit=None)
     count = len(revisions)
     for i, r in enumerate(revisions):
-        r.update(id=count-i)
+        r.update(id=count - i)
     return jsonify(revisions=revisions)
 
 
@@ -173,7 +173,7 @@ def review_revision_entity_handler(review_id, rev):
     if rev > count:
         raise NotFound("Can't find the revision you are looking for.")
 
-    revision = db_revision.get(review_id, offset=count-rev)[0]
+    revision = db_revision.get(review_id, offset=count - rev)[0]
     revision.update(id=rev)
     return jsonify(revision=revision)
 

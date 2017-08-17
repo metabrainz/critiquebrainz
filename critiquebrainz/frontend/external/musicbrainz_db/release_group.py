@@ -36,9 +36,10 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
         query = db.query(models.ReleaseGroup).options(joinedload("meta"))
 
         if 'artists' in includes:
-            query = query.options(joinedload("artist_credit")).\
-                    options(joinedload("artist_credit.artists")).\
-                    options(joinedload("artist_credit.artists.artist"))
+            query = query.\
+                options(joinedload("artist_credit")).\
+                options(joinedload("artist_credit.artists")).\
+                options(joinedload("artist_credit.artists.artist"))
 
         release_groups = get_entities_by_gids(
             query=query,

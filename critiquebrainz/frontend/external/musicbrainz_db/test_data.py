@@ -37,7 +37,7 @@ area_hameenlinna.comment = ''
 placetype_venue = PlaceType()
 placetype_venue.id = 2
 placetype_venue.name = 'Venue'
-placetype_venue.description = 'A place that has live artistic performances as one of its primary functions, such as a concert hall.'
+placetype_venue.description = 'A place that has live artistic performances.'
 placetype_venue.gid = 'cd92781a-a73f-30e8-a430-55d7521338db'
 
 place_suisto = Place()
@@ -100,7 +100,7 @@ linktype_social_network.gid = '040de4d5-ace5-4cfb-8a45-95c5c73bce01'
 linktype_social_network.entity_type0 = 'place'
 linktype_social_network.entity_type1 = 'url'
 linktype_social_network.name = 'social network'
-linktype_social_network.description = 'A social network page is a place\'s own page on a <a href="https://en.wikipedia.org/wiki/Social_networking_service">social network</a> which only people involved with the place can post content to. Examples include Facebook pages, and accounts on Twitter, Instagram and Flickr.'
+linktype_social_network.description = 'A social network description.'
 linktype_social_network.link_phrase = 'social networking'
 linktype_social_network.reverse_link_phrase = 'social networking page for'
 linktype_social_network.long_link_phrase = 'has a social networking page at'
@@ -308,7 +308,7 @@ script_latin.frequency = 4
 releasestatus_official = ReleaseStatus()
 releasestatus_official.id = 1
 releasestatus_official.name = 'Official'
-releasestatus_official.description = 'Any release officially sanctioned by the artist and/or their record company. Most releases will fit into this category.'
+releasestatus_official.description = 'Description for an official release.'
 releasestatus_official.gid = '4e304316-386d-3409-af2e-78857eec5cfe'
 
 release_numb_encore = Release()
@@ -385,7 +385,7 @@ releasegroup_collision_course.meta = releasegroupmeta_1
 eventtype_festival = EventType()
 eventtype_festival.id = 2
 eventtype_festival.name = 'Festival'
-eventtype_festival.description = 'An event where a number of different acts perform across the course of the day. Larger festivals may be spread across multiple days.'
+eventtype_festival.description = 'Festival description.'
 eventtype_festival.gid = 'b6ded574-b592-3f0e-b56e-5b5f06aa0678'
 
 taubertal_festival_2004 = Event()
@@ -399,7 +399,7 @@ taubertal_festival_2004.type = eventtype_festival
 eventtype_concert = EventType()
 eventtype_concert.id = 1
 eventtype_concert.name = 'Concert'
-eventtype_concert.description = 'An individual concert by a single artist or collaboration, often with supporting artists who perform before the main act.'
+eventtype_concert.description = 'Concert description.'
 eventtype_concert.gid = 'ef55e8d7-3d00-394a-8012-f5506a29ff0b'
 
 event_ra_hall_uk = Event()

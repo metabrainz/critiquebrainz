@@ -14,18 +14,23 @@ SUCCESS = "success"
 WARNING = "warning"
 ERROR = "error"
 
+
 def info(message):
     flash(message, INFO)
+
 
 def success(message):
     flash(message, SUCCESS)
 
+
 def warning(message):
     flash(message, WARNING)
+
 
 def warn(message):
     """Alias for `warning`."""
     warning(message)
+
 
 def error(message):
     flash(message, ERROR)
