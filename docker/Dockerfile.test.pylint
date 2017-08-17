@@ -22,4 +22,5 @@ RUN pip install -r requirements.txt
 
 COPY . /code/
 
-CMD find . -iname "*.py" | xargs pylint -j 4 | tee /data/pylint.out
+CMD find . -iname "*.py" | xargs pylint -j 4 | tee /data/pylint.out && \
+    find . -iname "*.py" | xargs flake8 -j 4 | tee /data/flake8.out
