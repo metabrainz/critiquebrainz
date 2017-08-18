@@ -4,9 +4,9 @@ from flask_babel import gettext
 import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.db.review as db_review
-from werkzeug.exceptions import NotFound
 import critiquebrainz.db.avg_rating as db_avg_rating
 import critiquebrainz.db.exceptions as db_exceptions
+from werkzeug.exceptions import NotFound
 
 place_bp = Blueprint('place', __name__)
 
