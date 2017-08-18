@@ -5,6 +5,8 @@ import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.db.review as db_review
 from werkzeug.exceptions import NotFound
+import critiquebrainz.db.avg_rating as db_avg_rating
+import critiquebrainz.db.exceptions as db_exceptions
 
 place_bp = Blueprint('place', __name__)
 
@@ -35,6 +37,11 @@ def entity(id):
         limit=limit,
         offset=offset,
     )
+    try:
+        avg_rating = db_avg_rating.get(id, "place")
+        avg_rating["rating"] = round(avg_rating["rating"] / 20, 1)
+    except db_exceptions.NoDataFoundException:
+        avg_rating = None
 
-    return render_template('place/entity.html', id=place['id'], place=place, reviews=reviews,
-                           my_review=my_review, limit=limit, offset=offset, count=count)
+    return render_template('place/entity.html', id=id, place=place, reviews=reviews,
+                           my_review=my_review, limit=limit, offset=offset, count=count, avg_rating=avg_rating)

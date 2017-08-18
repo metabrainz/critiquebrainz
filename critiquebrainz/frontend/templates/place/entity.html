@@ -92,6 +92,13 @@
 
   <div class="col-md-3">
     <h4>{{ _('Place information') }}</h4>
+      {% if avg_rating %}
+          <p>
+          <i class="glyphicon glyphicon-star"></i>
+          <span style="font-size: 16px;">{{ avg_rating.rating }}</span><em class="text-muted">/5 based on {{ avg_rating.count }} ratings
+          </em>
+        </p>
+      {% endif %}
       {% if place['external-urls'] %}
         <b>{{ _('External links') }}</b>
           <ul class="list-unstyled external-links">

@@ -138,6 +138,12 @@
 
   <div class="col-md-3">
     <h4>{{ _('Release group information') }}</h4>
+    {% if avg_rating %}
+      <p>
+        <i class="glyphicon glyphicon-star"></i>
+        <span style="font-size: 16px;">{{ avg_rating.rating }}</span><em class="text-muted">/5 based on {{ avg_rating.count }} ratings</em>
+      </p>
+    {% endif %}
     <p>
       {% if release_group['first-release-date'] %}{{ _('First release in %(year)s', year=release_group['first-release-date'][:4]) }}{% endif %}
     </p>

@@ -102,6 +102,13 @@
   <div class="col-md-3">
     <h4>{{ _('Event information') }}</h4>
 
+    {% if avg_rating %}
+      <p>
+        <i class="glyphicon glyphicon-star"></i>
+        <span style="font-size: 16px;">{{ avg_rating.rating }}</span><em class="text-muted">/5 based on {{ avg_rating.count }} ratings</em>
+      </p>
+    {% endif %}
+    
     {% if 'release_group-rels' in event %}
       {% for rg in event['release_group-rels'] %}
           <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['release_group']['id']) }}">{{ rg['release_group']['title'] }}</a></p>
