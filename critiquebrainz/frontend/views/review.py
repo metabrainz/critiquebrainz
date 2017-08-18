@@ -144,8 +144,10 @@ def compare(id):
     right = db_revision.get(id, offset=count - new)[0]
     left['number'], right['number'] = old, new
     left['text'], right['text'] = side_by_side_diff(left['text'], right['text'])
-    if left['rating'] is not None: left['rating'] //= 20
-    if right['rating'] is not None: right['rating'] //= 20
+    if left['rating'] is not None:
+        left['rating'] //= 20
+    if right['rating'] is not None:
+        right['rating'] //= 20
     return render_template('review/compare.html', review=review, left=left, right=right)
 
 
