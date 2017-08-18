@@ -42,10 +42,10 @@ def entity(id):
     offset = int(request.args.get('offset', default=0))
     reviews, count = db_review.list_reviews(entity_id=id, entity_type='event', sort='popularity', limit=limit, offset=offset)
     try:
-        avg_rating = db_avg_rating.get(id, "event")
+        avg_rating = db_avg_rating.get(event['id'], "event")
         avg_rating["rating"] = round(avg_rating["rating"] / 20, 1)
     except db_exceptions.NoDataFoundException:
         avg_rating = None
 
-    return render_template('event/entity.html', id=id, event=event, reviews=reviews,
+    return render_template('event/entity.html', id=event['id'], event=event, reviews=reviews,
                            my_review=my_review, limit=limit, offset=offset, count=count, avg_rating=avg_rating)

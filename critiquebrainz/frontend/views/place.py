@@ -38,10 +38,10 @@ def entity(id):
         offset=offset,
     )
     try:
-        avg_rating = db_avg_rating.get(id, "place")
+        avg_rating = db_avg_rating.get(place['id'], "place")
         avg_rating["rating"] = round(avg_rating["rating"] / 20, 1)
     except db_exceptions.NoDataFoundException:
         avg_rating = None
 
-    return render_template('place/entity.html', id=id, place=place, reviews=reviews,
+    return render_template('place/entity.html', id=place['id'], place=place, reviews=reviews,
                            my_review=my_review, limit=limit, offset=offset, count=count, avg_rating=avg_rating)

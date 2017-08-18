@@ -57,10 +57,10 @@ def entity(id):
         offset=offset,
     )
     try:
-        avg_rating = db_avg_rating.get(id, "release_group")
+        avg_rating = db_avg_rating.get(release_group['id'], "release_group")
         avg_rating["rating"] = round(avg_rating["rating"] / 20, 1)
     except db_exceptions.NoDataFoundException:
         avg_rating = None
-    return render_template('release_group/entity.html', id=id, release_group=release_group, reviews=reviews,
+    return render_template('release_group/entity.html', id=release_group['id'], release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
                            soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count, avg_rating=avg_rating)
