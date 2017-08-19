@@ -63,7 +63,8 @@ def review_entity_handler(review_id):
             "popularity": 0,
             "source": "BBC",
             "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
-            "text": "REVIEW GOES HERE",
+            "text": "TEXT CONTENT OF REVIEW",
+            "rating": 100,
             "user": {
               "created": "Wed, 07 May 2014 14:55:23 GMT",
               "display_name": "Paul Clarke",
@@ -110,7 +111,8 @@ def review_revisions_handler(review_id):
             {
               "id": 1,
               "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
-              "text": "REVIEW TEXT GOES HERE",
+              "text": "TEXT CONTENT OF REVIEW",
+              "rating": 100,
               "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
               "votes_negative": 0,
               "votes_positive": 0
@@ -153,7 +155,8 @@ def review_revision_entity_handler(review_id, rev):
           "revision": {
             "id": 1,
             "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
-            "text": "REVIEW TEXT GOES HERE",
+            "text": "TEXT CONTENT OF REVIEW",
+            "rating": 100,
             "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
             "votes_negative": 0,
             "votes_positive": 0
@@ -288,7 +291,8 @@ def review_list_handler():
               "popularity": 0,
               "source": "BBC",
               "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
-              "text": "REVIEW TEXT GOES HERE",
+              "text": "TEXT CONTENT OF REVIEW",
+              "rating": 100,
               "user": {
                 "created": "Wed, 07 May 2014 16:20:47 GMT",
                 "display_name": "Jenny Nelson",
