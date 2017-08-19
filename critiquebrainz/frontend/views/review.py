@@ -59,6 +59,8 @@ def browse():
                            page=page, limit=limit, count=count, entity_type=entity_type)
 
 
+# TODO : Refactor this function to remove PyLint warning.
+# pylint: disable=too-many-branches
 @review_bp.route('/<uuid:id>/revisions/<int:rev>')
 @review_bp.route('/<uuid:id>')
 def entity(id, rev=None):
@@ -195,6 +197,8 @@ def revisions_more(id):
     return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
 
 
+# TODO : Refactor this function to remove PyLint warning.
+# pylint: disable=too-many-branches
 @review_bp.route('/write', methods=('GET', 'POST'))
 @login_required
 def create():
