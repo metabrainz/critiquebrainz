@@ -9,7 +9,7 @@
         <h3>{{ _('Revision') }} {{ left['number'] }}</h3>
         <p class="small">{{ _('as of') }} {{ left['timestamp'] | datetime }}</p>
       </div>
-      {% if left.rating %}
+      {% if left.rating or right.rating %}
         <input type="number" class="rating" id="rating" value={{ left['rating'] }} data-readonly data-inline />
       {% endif %}
       <div class="diff-content">{{ left['text'] | safe }}</div>
@@ -19,7 +19,7 @@
         <h3>{{ _('Revision') }} {{ right['number'] }}</h3>
         <p class="small">{{ _('as of') }} {{ right['timestamp'] | datetime }}</p>
       </div>
-      {% if right.rating %}
+      {% if right.rating or left.rating %}
         <input type="number" class="rating" id="rating" value={{ right['rating'] }} data-readonly data-inline />
       {% endif %}
       <div class="diff-content">{{ right['text'] | safe }}</div>

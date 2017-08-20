@@ -38,7 +38,12 @@
         </div>
       {% endif %}
       {% if review.text %}
-        <p style="word-wrap: break-word; white-space: pre-wrap; display: inline;">{{ review.text_html|safe }}</p>
+        <!-- Used to display only-text review properly -->
+        {% if review.rating %}
+          <p style="word-wrap: break-word; white-space: pre-wrap; display: inline;">{{ review.text_html|safe }}</p>
+        {% else %}
+          <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text_html|safe }}</p>
+        {% endif %}
       {% endif %}
       
       <hr />
