@@ -1,18 +1,16 @@
-CritiqueBrainz source code is hosted on [GitHub](https://github.com/metabrainz/critiquebrainz).
-Bug tracker is located at http://tickets.musicbrainz.org/browse/CB.
-Documentation at https://critiquebrainz.readthedocs.org/.
+# Contribution guidelines 📜
 
-## How to contribute code
+**Thank you for you interest in contributing to the CritiqueBrainz project!** 
 
-1. Fork this repository.
-2. Create a new branch.
-3. Make some changes and [write good commit messages](http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message).
-4. Create new pull request [on GitHub](https://github.com/metabrainz/critiquebrainz/pulls).
-5. :shipit:
+Our primary Git repository is located at https://github.com/metabrainz/critiquebrainz. That's where all the changes
+should be submitted.
 
-## How to report bugs and request new features
+If you want to submit a bug report or suggest an improvement, please use our [bug tracker](http://tickets.musicbrainz.org/browse/CB).
+Try to provide a good description for the ticket. If it's a bug report, tell us how the issue can be reproduced.
 
-Create ticket in [bug tracker](http://tickets.musicbrainz.org/browse/CB). Try to provide a good description.
+**All MetaBrainz projects have a general contribution guidelines: https://github.com/metabrainz/guidelines.** Make sure
+to take a look at the documents in that repository. Especially, ones that are directly related to the CritiqueBrainz
+project (Python, SQL, etc.).
 
-If you want to discuss something, go to [#metabrainz](irc://irc.freenode.net/metabrainz)
-IRC channel on irc.freenode.net. More info is available at https://wiki.musicbrainz.org/Communication.
+One of the best ways to discuss something with us is by connecting to the [#metabrainz](irc://irc.freenode.net/metabrainz)
+IRC channel on the Freenode network. Other ways to communicate with us are described at https://metabrainz.org/contact.
