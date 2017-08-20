@@ -319,7 +319,10 @@ def edit(id):
         return redirect(url_for('.entity', id=review["id"]))
     else:
         form.text.data = review["text"]
-        form.rating.data = review["rating"] // 20
+        if review["rating"] is not None:
+            form.rating.data = review["rating"] // 20
+        else:
+            form.rating.data = 0
     if review["entity_type"] == 'release_group':
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
