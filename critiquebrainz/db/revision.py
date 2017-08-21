@@ -7,6 +7,7 @@ import sqlalchemy
 
 VALID_RATING_VALUES = [None, 1, 2, 3, 4, 5]
 RATING_SCALE_0_100 = {1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
+RATING_SCALE_1_5 = {20: 1, 40: 2, 60: 3, 80: 4, 100: 5}
 
 
 def get(review_id, limit=1, offset=0):
@@ -61,6 +62,9 @@ def get(review_id, limit=1, offset=0):
         if not rows:
             raise db_exceptions.NoDataFoundException("Cannot find specified review.")
         rows = [dict(row) for row in rows]
+        # Convert ratings to values on a scale 1-5
+        for row in rows:
+            row["rating"] = RATING_SCALE_1_5.get(row["rating"])
     return rows
 
 
