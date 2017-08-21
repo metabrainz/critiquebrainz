@@ -5,6 +5,9 @@ from critiquebrainz.db import avg_rating as db_avg_rating
 from critiquebrainz.db import exceptions as db_exceptions
 import sqlalchemy
 
+VALID_RATING_VALUES = [None, 1, 2, 3, 4, 5]
+RATING_SCALE_0_100 = {1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
+
 
 def get(review_id, limit=1, offset=0):
     """Get revisions on a review ordered by the timestamp
@@ -163,6 +166,10 @@ def create(review_id, text=None, rating=None):
     """
     if text is None and rating is None:
         raise db_exceptions.BadDataException("Text part and rating part of a revision can not be None simultaneously")
+    if rating not in VALID_RATING_VALUES:
+        raise ValueError("{} is not a valid rating value. It must be on the scale 1-5".format(rating))
+    # Convert ratings to values on a scale 0-100
+    rating = RATING_SCALE_0_100.get(rating)
 
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
