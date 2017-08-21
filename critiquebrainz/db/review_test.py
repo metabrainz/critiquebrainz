@@ -32,7 +32,7 @@ class ReviewTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Testing",
-            rating=100,
+            rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
@@ -98,7 +98,7 @@ class ReviewTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Testing",
-            rating=100,
+            rating=5,
             is_draft=True,
             license_id=self.license["id"],
         )
@@ -110,7 +110,7 @@ class ReviewTestCase(DataTestCase):
         db_review.update(
             review_id=review["id"],
             drafted=review["is_draft"],
-            rating=80,
+            rating=4,
             is_draft=False,
             license_id=another_license["id"],
             language="es",
@@ -118,7 +118,7 @@ class ReviewTestCase(DataTestCase):
         # Checking if contents are updated
         retrieved_review = db_review.list_reviews()[0][0]
         self.assertEqual(retrieved_review["text"], None)
-        self.assertEqual(retrieved_review["rating"], 80)
+        self.assertEqual(retrieved_review["rating"], 4)
         self.assertFalse(retrieved_review["is_draft"])
         self.assertEqual(retrieved_review["license_id"], another_license["id"])
         self.assertEqual(retrieved_review["language"], "es")
@@ -170,7 +170,7 @@ class ReviewTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Awesome",
-            rating=100,
+            rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
@@ -178,19 +178,19 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0]["text"], "Awesome")
-        self.assertEqual(reviews[0]["rating"], 100)
+        self.assertEqual(reviews[0]["rating"], 5)
 
         db_review.update(
             review_id=review["id"],
             drafted=review["is_draft"],
             text="Beautiful!",
-            rating=80,
+            rating=4,
         )
         reviews, count = db_review.list_reviews()
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0]["text"], "Beautiful!")
-        self.assertEqual(reviews[0]["rating"], 80)
+        self.assertEqual(reviews[0]["rating"], 4)
 
         reviews, count = db_review.list_reviews(sort="popularity")
         self.assertEqual(count, 1)
@@ -243,7 +243,7 @@ class ReviewTestCase(DataTestCase):
             user_id=self.user.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
-            rating=100,
+            rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
@@ -263,7 +263,7 @@ class ReviewTestCase(DataTestCase):
             user_id=self.user_2.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
-            rating=100,
+            rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
