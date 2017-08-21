@@ -13,11 +13,11 @@ from critiquebrainz.frontend.external import mbspotify, musicbrainz, soundcloud
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
 from critiquebrainz.frontend.login import admin_view
+import critiquebrainz.frontend.views.avg_rating as view_avg_rating
 from critiquebrainz.utils import side_by_side_diff
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.moderation_log as db_moderation_log
-import critiquebrainz.db.avg_rating as db_avg_rating
 
 
 review_bp = Blueprint('review', __name__)
@@ -110,13 +110,10 @@ def entity(id, rev=None):
     other_reviews = user_all_reviews[:3]
     if review["rating"] is not None:
         review["rating"] //= 20
-    try:
-        avg_rating = db_avg_rating.get(review["entity_id"], review["entity_type"])
-        avg_rating["rating"] = round(avg_rating["rating"] / 20, 1)
-    except db_exceptions.NoDataFoundException:
-        avg_rating = None
-    return render_template('review/entity/%s.html' % review["entity_type"], review=review, spotify_mappings=spotify_mappings,
-                           soundcloud_url=soundcloud_url, vote=vote, other_reviews=other_reviews, avg_rating=avg_rating)
+    avg_rating = view_avg_rating.get(review["id"], review["entity_type"])
+    return render_template('review/entity/%s.html' % review["entity_type"], review=review,
+                           spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
+                           vote=vote, other_reviews=other_reviews, avg_rating=avg_rating)
 
 
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')

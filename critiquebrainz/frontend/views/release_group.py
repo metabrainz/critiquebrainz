@@ -8,6 +8,7 @@ import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.avg_rating as db_avg_rating
 import critiquebrainz.db.exceptions as db_exceptions
+import critiquebrainz.frontend.views.avg_rating as view_avg_rating
 from werkzeug.exceptions import NotFound
 
 
@@ -56,11 +57,8 @@ def entity(id):
         limit=limit,
         offset=offset,
     )
-    try:
-        avg_rating = db_avg_rating.get(release_group['id'], "release_group")
-        avg_rating["rating"] = round(avg_rating["rating"] / 20, 1)
-    except db_exceptions.NoDataFoundException:
-        avg_rating = None
+    avg_rating = view_avg_rating.get(release_group['id'], "release_group")
+
     return render_template('release_group/entity.html', id=release_group['id'], release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
                            soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count, avg_rating=avg_rating)
