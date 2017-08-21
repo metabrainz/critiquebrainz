@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import review_credit, cover_art with context %}
+{% from 'macros.html' import review_credit, cover_art, show_avg_rating with context %}
 
 {% block content %}
 <div id="review-entity">
   {% block entity_title %}{% endblock %}
   {% if avg_rating %}
-    <i class="glyphicon glyphicon-star"></i>
-    <span style="font-size: 16px;">{{ avg_rating.rating }}</span><em class="text-muted">/5 based on {{ avg_rating.count }} ratings</em>
+    {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
   {% endif %}
 
   <div id="review-content" class="row">

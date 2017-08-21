@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, show_embedded_player, show_tags with context %}
+{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -140,8 +140,7 @@
     <h4>{{ _('Release group information') }}</h4>
     {% if avg_rating %}
       <p>
-        <i class="glyphicon glyphicon-star"></i>
-        <span style="font-size: 16px;">{{ avg_rating.rating }}</span><em class="text-muted">/5 based on {{ avg_rating.count }} ratings</em>
+        {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
       </p>
     {% endif %}
     <p>

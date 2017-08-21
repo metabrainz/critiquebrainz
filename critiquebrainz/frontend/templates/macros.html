@@ -121,3 +121,8 @@
       {{ spotify_player(spotify_release_group_id, spotify_mappings, spotify_show_add_message) }}
   {% endif %}
 {% endmacro %}
+
+{% macro show_avg_rating(rating, count) %}
+  <i class="glyphicon glyphicon-star"></i>
+  <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ _('based on') }} {{ count }} {{ _('ratings') }}</em>
+{% endmacro %}
