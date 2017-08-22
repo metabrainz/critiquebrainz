@@ -128,22 +128,24 @@ def browse_release_groups(*, artist_id, release_types=None, limit=None, offset=N
     release_groups = cache.get(key)
     if not release_groups:
         with mb_session() as db:
-            release_groups = db.query(models.ReleaseGroup).\
-                options(joinedload('meta')).\
-                join(models.ReleaseGroupPrimaryType).join(models.ReleaseGroupMeta).\
-                join(models.ArtistCreditName, models.ArtistCreditName.artist_credit_id == models.ReleaseGroup.artist_credit_id).\
-                join(models.Artist, models.Artist.id == models.ArtistCreditName.artist_id).\
-                filter(models.Artist.gid == artist_id).filter(models.ReleaseGroupPrimaryType.name.in_(release_types))
-
-            count = release_groups.count()
-            release_groups = release_groups.order_by(
+            release_groups_query = _browse_release_groups_query(db, artist_id, release_types)
+            count = release_groups_query.count()
+            release_groups = release_groups_query.order_by(
                 case([(models.ReleaseGroupMeta.first_release_date_year.is_(None), 1)], else_=0),
                 models.ReleaseGroupMeta.first_release_date_year.desc()
-            ).limit(limit).offset(offset)
-
+            ).limit(limit).offset(offset).all()
         for release_group in release_groups:
             includes_data[release_group.id]['meta'] = release_group.meta
         release_groups = ([to_dict_release_groups(release_group, includes_data[release_group.id])
-                           for release_group in release_groups], count)
+                          for release_group in release_groups], count)
         cache.set(key=key, val=release_groups, time=DEFAULT_CACHE_EXPIRATION)
     return release_groups
+
+
+def _browse_release_groups_query(db, artist_id, release_types):
+    return db.query(models.ReleaseGroup).\
+        options(joinedload('meta')).\
+        join(models.ReleaseGroupPrimaryType).join(models.ReleaseGroupMeta).\
+        join(models.ArtistCreditName, models.ArtistCreditName.artist_credit_id == models.ReleaseGroup.artist_credit_id).\
+        join(models.Artist, models.Artist.id == models.ArtistCreditName.artist_id).\
+        filter(models.Artist.gid == artist_id).filter(models.ReleaseGroupPrimaryType.name.in_(release_types))
