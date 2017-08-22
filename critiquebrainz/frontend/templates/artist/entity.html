@@ -48,7 +48,17 @@
 
 <div class="row">
   <div class="col-sm-9">
-    <h4>{{ _('Discography') }}</h4>
+    <div class="row">
+      <div class="col-sm-8">
+        <h4>{{ _('Discography') }}</h4>
+      </div>
+      <div class="col-sm-4">
+        <div>
+          <input type="checkbox" name="only-reviewed" value="1" class="only-reviewed" onchange="showOnlyReviewed()"/>
+          {{ _('Filter releases here with reviews') }}<br/>
+        </div>
+      </div>
+    </div>
     <ul class="nav nav-tabs">
       <li {% if release_type=='album' %}class="active"{% endif %}>
         <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=album">{{ _('Albums') }}</a>
@@ -66,13 +76,16 @@
         <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=other">{{ _('Other releases') }}</a>
       </li>
     </ul>
+    <div class="no_reviewed_entities">
+      <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No reviewed releases found here') }}</p>
+    </div>
     {% if count==0 %}
       <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No releases found') }}</p>
     {% else %}
       <div id="release-groups" class="row">
         {% for release_group in release_groups %}
-          <div class="col-sm-4 col-md-4 col-lg-3">
-            {% set has_reviews = (release_group.review_count > 0) %}
+        {% set has_reviews = (release_group.review_count > 0) %}
+          <div class="col-sm-4 col-md-4 col-lg-3 release-group {% if not has_reviews %}not_reviewed{% endif %}">
             <div class="thumbnail clearfix {% if has_reviews %}reviewed{% endif %}">
               {% if has_reviews %}
                 <div class="review-count">
@@ -180,4 +193,25 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+  $(".no_reviewed_entities").hide();
+  function showOnlyReviewed() {
+      if($('.only-reviewed').is(":checked")) {
+        $(".not_reviewed").hide();
+        var reviewed = $('.reviewed').length;
+        var release_group_count = $('.release-group').length;
+        if(reviewed == 0 && release_group_count != 0) {
+            $(".no_reviewed_entities").show();
+        }
+      }
+      else {
+        $(".not_reviewed").show();
+        $(".no_reviewed_entities").hide();
+      }
+  }
+  </script>
 {% endblock %}
