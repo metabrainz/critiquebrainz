@@ -54,8 +54,8 @@
       </div>
       <div class="col-sm-4">
         <div>
-          <input type="checkbox" name="only-reviewed" value="1" class="only-reviewed" onchange="showOnlyReviewed()"/>
-          {{ _('Filter releases here with reviews') }}<br/>
+          <input type="checkbox" name="only-reviewed" value="1" id="only-reviewed"/>
+          {{ _('Only show releases with reviews') }}<br/>
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@
         <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=other">{{ _('Other releases') }}</a>
       </li>
     </ul>
-    <div class="no_reviewed_entities">
+    <div id="no-reviewed-entities" class="hidden">
       <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No reviewed releases found here') }}</p>
     </div>
     {% if count==0 %}
@@ -198,20 +198,21 @@
 {% block scripts %}
   {{ super() }}
   <script>
-  $(".no_reviewed_entities").hide();
-  function showOnlyReviewed() {
-      if($('.only-reviewed').is(":checked")) {
-        $(".not_reviewed").hide();
-        var reviewed = $('.reviewed').length;
-        var release_group_count = $('.release-group').length;
-        if(reviewed == 0 && release_group_count != 0) {
-            $(".no_reviewed_entities").show();
+    $(document).ready(function() {
+      $("#only-reviewed").change(function() {
+        if($('#only-reviewed').is(":checked")) {
+          $(".not_reviewed").hide();
+          var reviewed = $('.reviewed').length;
+          var release_group_count = $('.release-group').length;
+          if(reviewed == 0 && release_group_count != 0) {
+              $("#no-reviewed-entities").removeClass('hidden');
+          }
         }
-      }
-      else {
-        $(".not_reviewed").show();
-        $(".no_reviewed_entities").hide();
-      }
-  }
+        else {
+          $(".not_reviewed").show();
+          $("#no-reviewed-entities").addClass('hidden');
+        }
+      })
+    })
   </script>
 {% endblock %}
