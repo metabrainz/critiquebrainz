@@ -129,6 +129,20 @@ class ReviewViewsTestCase(WebServiceTestCase):
         )
         self.assert200(resp)
 
+        # Update to review to only-rating type
+        db_review.update(
+            review_id=review["id"],
+            drafted=review["is_draft"],
+            rating=5,
+            is_draft=False,
+        )
+        resp = self.client.put(
+            '/review/%s/vote' % review["id"],
+            headers=self.header(self.another_user),
+            data=json.dumps({"vote": True})
+        )
+        self.assert400(resp, "Cannot vote for an only-rating type of review.")
+
     def test_review_vote_delete(self):
         review = self.create_dummy_review()
 
