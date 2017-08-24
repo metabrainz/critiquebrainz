@@ -22,7 +22,7 @@
   <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
 {% else %}
   {% for review in reviews %}
-    {% set entity = entities[review.entity_id] %}
+    {% set entity = entities[review.entity_id | string] %}
     <div class="col-md-4 review">
       <div class="cover-art-container pull-left">
         <a href="{{ url_for('review.entity', id=review.id) }}">
