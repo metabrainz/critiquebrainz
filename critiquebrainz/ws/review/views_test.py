@@ -61,7 +61,11 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.another_user))
         self.assert403(resp, "Shouldn't be able to edit someone else's review.")
 
-        data = dict(text="Some updated text with length more than twenty five.")
+        data = dict(text=self.review['text'], rating=str(self.review['rating']))
+        resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
+        self.assert400(resp, "Can't update review if review contents are not edited.")
+
+        data = dict(text="Some updated text with length more than twenty five.", rating="5")
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
         self.assert200(resp)
 

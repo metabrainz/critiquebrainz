@@ -233,21 +233,30 @@ def review_modify_handler(review_id, user):
 
     :resheader Content-Type: *application/json*
     """
-
+    # TODO(psolanki): One caveat is that client will have to pass the unmodified parameter with previous revision's value
+    #                 otherwise it will be set to None
     def fetch_params():
-        text = Parser.string('json', 'text', min=REVIEW_MIN_LENGTH, max=REVIEW_MAX_LENGTH)
-        return text
+        text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
+        rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX, optional=True)
+        if text is None and rating is None:
+            raise InvalidRequest(desc='Text part and rating part of a review cannot be None simultaneously')
+        return text, rating
 
     review = get_review_or_404(review_id)
     if review["is_hidden"]:
         raise NotFound("Review has been hidden.")
     if str(review["user_id"]) != user.id:
         raise AccessDenied
-    text = fetch_params()
+    text, rating = fetch_params()
+    # Check if contents of the review are updated
+    if (text == review['text']) and (rating == review['rating']):
+        raise InvalidRequest(desc='Either text or rating should be edited to update the review')
+
     db_review.update(
         review_id=review_id,
         drafted=review["is_draft"],
         text=text,
+        rating=rating
     )
     return jsonify(message='Request processed successfully',
                    review=dict(id=review["id"]))
