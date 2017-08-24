@@ -26,6 +26,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             entity_type='release_group',
             user_id=self.user.id,
             text="Testing! This text should be on the page.",
+            rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
@@ -77,13 +78,23 @@ class ReviewViewsTestCase(WebServiceTestCase):
             entity_id=self.review['entity_id'],
             entity_type='release_group',
             text=self.review['text'],
+            rating=str(self.review['rating']),
             license_choice=self.license["id"],
             language='en',
             is_draft=True
         )
-
         resp = self.client.post('/review/', headers=self.header(self.user), data=json.dumps(review))
         self.assert200(resp)
+
+        review_2 = dict(
+            entity_id=self.review['entity_id'],
+            entity_type='release_group',
+            license_choice=self.license["id"],
+            language='en',
+            is_draft=True
+        )
+        resp = self.client.post('/review/', headers=self.header(self.another_user), data=json.dumps(review_2))
+        self.assert400(resp, "Text part and rating part of a review cannot be None simultaneously")
 
     def test_review_vote_entity(self):
         review = self.create_dummy_review()

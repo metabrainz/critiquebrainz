@@ -16,8 +16,10 @@ from brainzutils import cache
 
 review_bp = Blueprint('ws_review', __name__)
 
-REVIEW_MAX_LENGTH = 100000
-REVIEW_MIN_LENGTH = 25
+REVIEW_TEXT_MAX_LENGTH = 100000
+REVIEW_TEXT_MIN_LENGTH = 25
+REVIEW_RATING_MAX = 5
+REVIEW_RATING_MIN = 1
 REVIEW_CACHE_NAMESPACE = "Review"
 
 
@@ -384,26 +386,30 @@ def review_post_handler(user):
     def fetch_params():
         is_draft = Parser.bool('json', 'is_draft', optional=True) or False
         if is_draft:
-            REVIEW_MIN_LENGTH = None
+            REVIEW_TEXT_MIN_LENGTH = None
         entity_id = Parser.uuid('json', 'entity_id')
         entity_type = Parser.string('json', 'entity_type', valid_values=ENTITY_TYPES)
-        text = Parser.string('json', 'text', min=REVIEW_MIN_LENGTH, max=REVIEW_MAX_LENGTH)
+        text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
+        rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX, optional=True)
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
+        if text is None and rating is None:
+            raise InvalidRequest(desc='Text part and rating part of a review cannot be None simultaneously')
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
         if db_review.list_reviews(user_id=user.id, entity_id=entity_id)[1]:
             raise InvalidRequest(desc='You have already published a review for this album')
-        return entity_id, entity_type, text, license_choice, language, is_draft
+        return entity_id, entity_type, text, rating, license_choice, language, is_draft
 
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
-    entity_id, entity_type, text, license_choice, language, is_draft = fetch_params()
+    entity_id, entity_type, text, rating, license_choice, language, is_draft = fetch_params()
     review = db_review.create(
         user_id=user.id,
         entity_id=entity_id,
         entity_type=entity_type,
         text=text,
+        rating=rating,
         license_id=license_choice,
         language=language,
         is_draft=is_draft,
