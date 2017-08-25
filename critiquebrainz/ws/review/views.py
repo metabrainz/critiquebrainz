@@ -228,7 +228,13 @@ def review_modify_handler(review_id, user):
 
     **OAuth scope:** review
 
+    :json string text: Text part of review, min length is 25, max is 5000 **(optional)**
+    :json integer rating: Rating part of review, min is 1, max is 5 **(optional)**
+
+    **NOTE:** The value of unmodified parameter should be set to its value in previous revison.
+
     :statuscode 200: success
+    :statuscode 400: invalid request (see source)
     :statuscode 403: access denied
     :statuscode 404: review not found
 
@@ -377,10 +383,13 @@ def review_post_handler(user):
 
     :json uuid entity_id: UUID of the entity that is being reviewed
     :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc.
-    :json string text: review contents, min length is 25, max is 5000
+    :json string text: Text part of review, min length is 25, max is 5000 **(optional)**
+    :json integer rating: Rating part of review, min is 1, max is 5 **(optional)**
     :json string license_choice: license ID
     :json string lang: language code (ISO 639-1), default is ``en`` **(optional)**
     :json boolean is_draft: whether the review should be saved as a draft or not, default is ``False`` **(optional)**
+
+    **NOTE:** You must provide some text or rating for the review.
 
     :resheader Content-Type: *application/json*
     """
