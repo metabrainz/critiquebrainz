@@ -64,7 +64,7 @@ def review_entity_handler(review_id):
             "source": "BBC",
             "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
             "text": "TEXT CONTENT OF REVIEW",
-            "rating": 100,
+            "rating": 5,
             "user": {
               "created": "Wed, 07 May 2014 14:55:23 GMT",
               "display_name": "Paul Clarke",
@@ -112,7 +112,7 @@ def review_revisions_handler(review_id):
               "id": 1,
               "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
               "text": "TEXT CONTENT OF REVIEW",
-              "rating": 100,
+              "rating": 5,
               "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
               "votes_negative": 0,
               "votes_positive": 0
@@ -156,7 +156,7 @@ def review_revision_entity_handler(review_id, rev):
             "id": 1,
             "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
             "text": "TEXT CONTENT OF REVIEW",
-            "rating": 100,
+            "rating": 5,
             "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
             "votes_negative": 0,
             "votes_positive": 0
@@ -298,7 +298,7 @@ def review_list_handler():
               "source": "BBC",
               "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
               "text": "TEXT CONTENT OF REVIEW",
-              "rating": 100,
+              "rating": 5,
               "user": {
                 "created": "Wed, 07 May 2014 16:20:47 GMT",
                 "display_name": "Jenny Nelson",
