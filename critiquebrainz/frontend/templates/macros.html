@@ -124,5 +124,5 @@
 
 {% macro show_avg_rating(rating, count) %}
   <i class="glyphicon glyphicon-star"></i>
-  <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ _('based on') }} {{ count }} {{ _('ratings') }}</em>
+  <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ _('based on %(number)s ratings', number=count) }}</em>
 {% endmacro %}
