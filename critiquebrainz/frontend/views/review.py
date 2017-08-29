@@ -108,8 +108,6 @@ def entity(id, rev=None):
         exclude=[review["id"]],
     )
     other_reviews = user_all_reviews[:3]
-    if review["rating"] is not None:
-        review["rating"] //= 20
     avg_rating = get_avg_rating(review["entity_id"], review["entity_type"])
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
                            spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
@@ -143,10 +141,6 @@ def compare(id):
     right = db_revision.get(id, offset=count - new)[0]
     left['number'], right['number'] = old, new
     left['text'], right['text'] = side_by_side_diff(left['text'], right['text'])
-    if left['rating'] is not None:
-        left['rating'] //= 20
-    if right['rating'] is not None:
-        right['rating'] //= 20
     return render_template('review/compare.html', review=review, left=left, right=right)
 
 
@@ -235,9 +229,6 @@ def create():
         is_draft = form.state.data == 'draft'
         if form.text.data == '':
             form.text.data = None
-        # Convert ratings to values on a scale 0-100
-        rating_values = {0: None, 1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
-        form.rating.data = rating_values.get(form.rating.data)
         review = db_review.create(user_id=current_user.id, entity_id=entity_id, entity_type=entity_type,
                                   text=form.text.data, rating=form.rating.data, license_id=form.license_choice.data,
                                   language=form.language.data, is_draft=is_draft)
@@ -294,9 +285,6 @@ def edit(id):
             license_choice = None
         if form.text.data == '':
             form.text.data = None
-        # Convert ratings to values on a scale 0-100
-        rating_values = {0: None, 1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
-        form.rating.data = rating_values.get(form.rating.data)
 
         try:
             db_review.update(
@@ -316,10 +304,7 @@ def edit(id):
         return redirect(url_for('.entity', id=review["id"]))
     else:
         form.text.data = review["text"]
-        if review["rating"] is not None:
-            form.rating.data = review["rating"] // 20
-        else:
-            form.rating.data = 0
+        form.rating.data = review["rating"]
     if review["entity_type"] == 'release_group':
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
