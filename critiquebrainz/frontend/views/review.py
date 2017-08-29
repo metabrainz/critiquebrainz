@@ -13,7 +13,7 @@ from critiquebrainz.frontend.external import mbspotify, musicbrainz, soundcloud
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
 from critiquebrainz.frontend.login import admin_view
-import critiquebrainz.frontend.views.avg_rating as view_avg_rating
+from critiquebrainz.frontend.views import get_avg_rating
 from critiquebrainz.utils import side_by_side_diff
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
@@ -110,7 +110,7 @@ def entity(id, rev=None):
     other_reviews = user_all_reviews[:3]
     if review["rating"] is not None:
         review["rating"] //= 20
-    avg_rating = view_avg_rating.get(review["id"], review["entity_type"])
+    avg_rating = get_avg_rating(review["entity_id"], review["entity_type"])
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
                            spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
                            vote=vote, other_reviews=other_reviews, avg_rating=avg_rating)
