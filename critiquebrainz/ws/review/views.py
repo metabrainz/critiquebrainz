@@ -545,7 +545,7 @@ def review_vote_put_handler(review_id, user):
     vote = fetch_params()
     if str(review["user_id"]) == user.id:
         raise InvalidRequest(desc='You cannot rate your own review.')
-    if review['rating'] and review["text"] is None:
+    if review["text"] is None:
         raise InvalidRequest(desc='You cannot vote for an only-rating type of review.')
     if user.is_vote_limit_exceeded is True and db_users.has_voted(user.id, review_id) is False:
         raise LimitExceeded('You have exceeded your limit of votes per day.')
