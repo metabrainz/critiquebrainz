@@ -55,7 +55,7 @@
       <div class="col-sm-4">
         <div>
           <input type="checkbox" name="only-reviewed" value="1" id="only-reviewed"/>
-          {{ _('Only show releases with reviews') }}<br/>
+          {{ _('Only show release groups with reviews') }}<br/>
         </div>
       </div>
     </div>
@@ -197,22 +197,5 @@
 
 {% block scripts %}
   {{ super() }}
-  <script>
-    $(document).ready(function() {
-      $("#only-reviewed").change(function() {
-        if($('#only-reviewed').is(":checked")) {
-          $(".not_reviewed").hide();
-          var reviewed = $('.reviewed').length;
-          var release_group_count = $('.release-group').length;
-          if(reviewed == 0 && release_group_count != 0) {
-              $("#no-reviewed-entities").removeClass('hidden');
-          }
-        }
-        else {
-          $(".not_reviewed").show();
-          $("#no-reviewed-entities").addClass('hidden');
-        }
-      })
-    })
-  </script>
+  <script src="{{ get_static_path('release_groups.js') }}"></script>
 {% endblock %}
