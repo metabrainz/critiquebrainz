@@ -239,7 +239,7 @@ def review_modify_handler(review_id, user):
         text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
         rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX, optional=True)
         if text is None and rating is None:
-            raise InvalidRequest(desc='Text part and rating part of a review cannot be None simultaneously')
+            raise InvalidRequest(desc='Review must have either text or rating')
         return text, rating
 
     review = get_review_or_404(review_id)
@@ -403,7 +403,7 @@ def review_post_handler(user):
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
         if text is None and rating is None:
-            raise InvalidRequest(desc='Text part and rating part of a review cannot be None simultaneously')
+            raise InvalidRequest(desc='Review must have either text or rating')
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
         if db_review.list_reviews(user_id=user.id, entity_id=entity_id)[1]:
@@ -546,7 +546,7 @@ def review_vote_put_handler(review_id, user):
     if str(review["user_id"]) == user.id:
         raise InvalidRequest(desc='You cannot rate your own review.')
     if review["text"] is None:
-        raise InvalidRequest(desc='You cannot vote for an only-rating type of review.')
+        raise InvalidRequest(desc='Voting on reviews without text is not allowed.')
     if user.is_vote_limit_exceeded is True and db_users.has_voted(user.id, review_id) is False:
         raise LimitExceeded('You have exceeded your limit of votes per day.')
 

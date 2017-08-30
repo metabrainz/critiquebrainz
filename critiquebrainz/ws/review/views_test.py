@@ -63,7 +63,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
         data = dict(text=self.review['text'], rating=str(self.review['rating']))
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
-        self.assert400(resp, "Can't update review if review contents are not edited.")
+        self.assert400(resp, "Either text or rating should be edited to update the review.")
 
         data = dict(text="Some updated text with length more than twenty five.", rating="5")
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
@@ -98,7 +98,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             is_draft=True
         )
         resp = self.client.post('/review/', headers=self.header(self.another_user), data=json.dumps(review_2))
-        self.assert400(resp, "Text part and rating part of a review cannot be None simultaneously")
+        self.assert400(resp, "Review must have either text or rating")
 
     def test_review_vote_entity(self):
         review = self.create_dummy_review()
@@ -141,7 +141,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             headers=self.header(self.another_user),
             data=json.dumps({"vote": True})
         )
-        self.assert400(resp, "Cannot vote for an only-rating type of review.")
+        self.assert400(resp, "Voting on reviews without text is not allowed.")
 
     def test_review_vote_delete(self):
         review = self.create_dummy_review()
