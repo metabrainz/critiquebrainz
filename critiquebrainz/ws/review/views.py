@@ -525,6 +525,8 @@ def review_vote_put_handler(review_id, user):
 
     :json boolean vote: ``true`` if upvote, ``false`` if downvote
 
+    **NOTE:** Voting on reviews without text is not allowed.
+
     :statuscode 200: success
     :statuscode 400: invalid request (see source)
     :statuscode 403: daily vote limit exceeded
