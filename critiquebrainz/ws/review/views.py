@@ -8,7 +8,7 @@ from critiquebrainz.db import (
     revision as db_revision,
     users as db_users,
 )
-from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded
+from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
 from critiquebrainz.decorators import crossdomain
@@ -233,11 +233,16 @@ def review_modify_handler(review_id, user):
 
     :resheader Content-Type: *application/json*
     """
-    # TODO(psolanki): One caveat is that client will have to pass the unmodified parameter with previous revision's value
-    #                 otherwise it will be set to None
+
     def fetch_params():
-        text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
-        rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX, optional=True)
+        try:
+            text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH)
+        except MissingDataError:
+            text = 'same'                        # Assign temporary value which indicates no modification
+        try:
+            rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX)
+        except MissingDataError:
+            rating = 0                           # Assign temporary value which indicates no modification
         if text is None and rating is None:
             raise InvalidRequest(desc='Review must have either text or rating')
         return text, rating
@@ -248,7 +253,10 @@ def review_modify_handler(review_id, user):
     if str(review["user_id"]) != user.id:
         raise AccessDenied
     text, rating = fetch_params()
-    # Check if contents of the review are updated
+    if text == 'same':
+        text = review['text']
+    if rating == 0:
+        rating = review['rating']
     if (text == review['text']) and (rating == review['rating']):
         raise InvalidRequest(desc='Either text or rating should be edited to update the review')
 

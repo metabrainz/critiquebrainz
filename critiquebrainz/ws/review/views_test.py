@@ -65,9 +65,13 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
         self.assert400(resp, "Either text or rating should be edited to update the review.")
 
+        # Check if the passed parameter is modified and the other is not
         data = dict(text="Some updated text with length more than twenty five.", rating="5")
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
         self.assert200(resp)
+        resp = self.client.get('/review/%s' % review["id"]).json
+        self.assertEqual(resp['review']['text'], data['text'])
+        self.assertEqual(resp['review']['rating'], review['rating'])
 
     def test_review_list(self):
         review = self.create_dummy_review()
