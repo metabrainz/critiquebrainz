@@ -10,37 +10,37 @@ def get_multiple_entities(entities):
         entites: List of tuples containing the entity_id and the entity_type.
 
     Returns:
-        Dictionary containing the entities keyed by their mbid.
+        Dictionary containing the basic information related to the entites.
+        {
+            "id": uuid,
+            "name/title": str,
+        }
+        Information related to the artists of release groups and the
+        coordinates of the places is also included.
     """
     entities_info = {}
     release_group_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'release_group', entities)]
     place_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'place', entities)]
     event_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'event', entities)]
-    if release_group_mbids:
-        release_groups = fetch_multiple_release_groups(
-            release_group_mbids,
-            includes=['artists'],
-        )
-        entities_info.update(release_groups)
-    if place_mbids:
-        places = fetch_multiple_places(
-            place_mbids,
-        )
-        entities_info.update(places)
-    if event_mbids:
-        events = fetch_multiple_events(
-            event_mbids,
-        )
-        entities_info.update(events)
+    entities_info.update(fetch_multiple_release_groups(
+        release_group_mbids,
+        includes=['artists'],
+    ))
+    entities_info.update(fetch_multiple_places(
+        place_mbids,
+    ))
+    entities_info.update(fetch_multiple_events(
+        event_mbids,
+    ))
     return entities_info
 
 
 def get_entity_by_id(id, type='release_group'):
     """A wrapper to call the correct get_*_by_id function."""
     if type == 'release_group':
-        entity = get_release_group_by_id(id)
+        entity = get_release_group_by_id(str(id))
     elif type == 'place':
-        entity = get_place_by_id(id)
+        entity = get_place_by_id(str(id))
     elif type == 'event':
-        entity = get_event_by_id(id)
+        entity = get_event_by_id(str(id))
     return entity

@@ -139,8 +139,9 @@ def to_dict_medium(medium, includes=None):
         'name': medium.name,
         'track_count': medium.track_count,
         'position': medium.position,
-        'format': medium.format.name,
     }
+    if medium.format:
+        data['format'] = medium.format.name
 
     if 'tracks' in includes and includes['tracks']:
         data['track-list'] = [to_dict_track(track) for track in includes['tracks']]
