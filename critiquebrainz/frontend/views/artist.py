@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request
 from flask_babel import gettext
 from werkzeug.exceptions import BadRequest, NotFound
 import critiquebrainz.db.review as db_review
@@ -29,16 +29,9 @@ def entity(mbid):
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
         raise BadRequest("Unsupported release type.")
 
-    page = int(request.args.get('page', default=1))
-    if page < 1:
-        return redirect(url_for('.reviews'))
-    limit = 20
-    offset = (page - 1) * limit
     release_groups, count = mb_release_group.browse_release_groups(
         artist_id=artist['id'],
         release_types=[release_type],
-        limit=limit,
-        offset=offset,
     )
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
@@ -55,8 +48,6 @@ def entity(mbid):
         artist=artist,
         release_type=release_type,
         release_groups=release_groups,
-        page=page,
-        limit=limit,
         count=count,
         band_members=band_members,
     )

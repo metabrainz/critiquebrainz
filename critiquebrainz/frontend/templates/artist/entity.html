@@ -85,7 +85,7 @@
       <div id="release-groups" class="row">
         {% for release_group in release_groups %}
         {% set has_reviews = (release_group.review_count > 0) %}
-          <div class="col-sm-4 col-md-4 col-lg-3 release-group {% if not has_reviews %}not_reviewed{% endif %}">
+          <div class="col-sm-4 col-md-4 col-lg-3 hidden release-group {% if has_reviews %}has-review{% endif %}">
             <div class="thumbnail clearfix {% if has_reviews %}reviewed{% endif %}">
               {% if has_reviews %}
                 <div class="review-count">
@@ -108,18 +108,12 @@
         {% endfor %}
         <div class="clearfix"></div>
 
-        {% if count > limit %}
-          <div class="col-md-12">
-            <ul class="pager">
-              {% if page > 1 %}
-                <li class="previous"><a href="{{ url_for('artist.entity', mbid=id, release_type=release_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
-              {% endif %}
-              {% if page-1 < count//limit %}
-                <li class="next"><a href="{{ url_for('artist.entity', mbid=id, release_type=release_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
-              {% endif %}
-            </ul>
-          </div>
-        {% endif %}
+        <div class="col-md-12">
+          <ul class="pager">
+            <li class="previous"><a href="#" class="previousLink">&larr; {{ _('Previous') }}</a></li>
+            <li class="next"><a href="#" class="nextLink">{{ _('Next') }} &rarr;</a></li>
+          </ul>
+        </div>
       </div>
     {% endif %}
   </div>
