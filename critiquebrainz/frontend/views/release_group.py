@@ -6,8 +6,6 @@ import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_relea
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 import critiquebrainz.db.review as db_review
-import critiquebrainz.db.avg_rating as db_avg_rating
-import critiquebrainz.db.exceptions as db_exceptions
 from critiquebrainz.frontend.views import get_avg_rating
 from werkzeug.exceptions import NotFound
 
