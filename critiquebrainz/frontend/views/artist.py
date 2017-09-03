@@ -2,8 +2,10 @@ from collections import OrderedDict
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from werkzeug.exceptions import BadRequest, NotFound
-from critiquebrainz.frontend.external import musicbrainz
 import critiquebrainz.db.review as db_review
+import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 
 artist_bp = Blueprint('artist', __name__)
 
@@ -15,8 +17,9 @@ def entity(mbid):
     Displays release groups (split up into several sections depending on their
     type), artist information (type, members/member of, external links).
     """
-    artist = musicbrainz.get_artist_by_id(mbid)
-    if not artist:
+    try:
+        artist = mb_artist.get_artist_by_id(str(mbid))
+    except mb_exceptions.NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
     # Note that some artists might not have a list of members because they are not a band
@@ -31,8 +34,12 @@ def entity(mbid):
         return redirect(url_for('.reviews'))
     limit = 20
     offset = (page - 1) * limit
-    count, release_groups = musicbrainz.browse_release_groups(artist_id=mbid, release_types=[release_type],
-                                                              limit=limit, offset=offset)
+    release_groups, count = mb_release_group.browse_release_groups(
+        artist_id=artist['id'],
+        release_types=[release_type],
+        limit=limit,
+        offset=offset,
+    )
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
         reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
@@ -44,7 +51,7 @@ def entity(mbid):
 
     return render_template(
         'artist/entity.html',
-        id=mbid,
+        id=artist['id'],
         artist=artist,
         release_type=release_type,
         release_groups=release_groups,
@@ -58,8 +65,8 @@ def entity(mbid):
 def _get_band_members(artist):
     band_members = artist.get('band-members', [])
 
-    former_members = [member for member in band_members if member.get('ended', 'false') == 'true']
-    current_members = [member for member in band_members if member.get('ended', 'false') == 'false']
+    former_members = [member for member in band_members if member.get('ended', False) is True]
+    current_members = [member for member in band_members if member.get('ended', False) is False]
 
     return {
         'former_members': _squash_duplicated_members(former_members),
@@ -91,15 +98,18 @@ def _squash_duplicated_members(members):
 
 
 def _get_period(member):
-    begin_date = member.get('begin', None)
-    end_date = member.get('end', None)
+    """Get period for which an artist is/was part of a group, orchestra or choir.
 
-    def get_year_from_date(date):
-        if not date:
-            return ''
-        return date.split('-')[0]
+    Args:
+        member (Dict): Dictionary containing the artist information.
 
-    begin_date, end_date = get_year_from_date(begin_date), get_year_from_date(end_date)
+    Returns:
+        Tuple containing the begin and end year during which an artist was part of
+        a group.
+    """
+    begin_date = member.get('begin-year', '')
+    end_date = member.get('end-year', '')
+
     if not (begin_date or end_date):
         return None
-    return begin_date, end_date
+    return str(begin_date), str(end_date)

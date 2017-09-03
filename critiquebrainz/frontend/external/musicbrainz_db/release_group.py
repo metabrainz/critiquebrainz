@@ -1,6 +1,7 @@
 from collections import defaultdict
 from brainzutils import cache
 from sqlalchemy.orm import joinedload
+from sqlalchemy import case
 from mbdata import models
 from critiquebrainz.frontend.external.musicbrainz_db import mb_session, DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relationship_info, get_tags
@@ -33,7 +34,8 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
     check_includes('release_group', includes)
     with mb_session() as db:
         # Join table meta which contains release date for a release group
-        query = db.query(models.ReleaseGroup).options(joinedload("meta"))
+        query = db.query(models.ReleaseGroup).options(joinedload("meta")).\
+                options(joinedload("type"))
 
         if 'artists' in includes:
             query = query.\
@@ -98,6 +100,52 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
 
         for release_group in release_groups.values():
             includes_data[release_group.id]['meta'] = release_group.meta
+            includes_data[release_group.id]['type'] = release_group.type
         release_groups = {str(mbid): to_dict_release_groups(release_groups[mbid], includes_data[release_groups[mbid].id])
                           for mbid in mbids}
         return release_groups
+
+
+def browse_release_groups(*, artist_id, release_types=None, limit=None, offset=None):
+    """Get all release groups linked to an artist.
+
+    Args:
+        artist_id (uuid): MBID of the artist.
+        release_types (list): List of types of release groups to be fetched.
+        limit (int): Max number of release groups to return.
+        offset (int): Offset that can be used in conjunction with the limit.
+
+    Returns:
+        Tuple containing the list of dictionaries of release groups ordered by release year
+        and the total count of the release groups.
+    """
+    artist_id = str(artist_id)
+    includes_data = defaultdict(dict)
+    if release_types is None:
+        release_types = []
+    release_types = [release_type.capitalize() for release_type in release_types]
+    key = cache.gen_key(artist_id, limit, offset, *release_types)
+    release_groups = cache.get(key)
+    if not release_groups:
+        with mb_session() as db:
+            release_groups_query = _browse_release_groups_query(db, artist_id, release_types)
+            count = release_groups_query.count()
+            release_groups = release_groups_query.order_by(
+                case([(models.ReleaseGroupMeta.first_release_date_year.is_(None), 1)], else_=0),
+                models.ReleaseGroupMeta.first_release_date_year.desc()
+            ).limit(limit).offset(offset).all()
+        for release_group in release_groups:
+            includes_data[release_group.id]['meta'] = release_group.meta
+        release_groups = ([to_dict_release_groups(release_group, includes_data[release_group.id])
+                          for release_group in release_groups], count)
+        cache.set(key=key, val=release_groups, time=DEFAULT_CACHE_EXPIRATION)
+    return release_groups
+
+
+def _browse_release_groups_query(db, artist_id, release_types):
+    return db.query(models.ReleaseGroup).\
+        options(joinedload('meta')).\
+        join(models.ReleaseGroupPrimaryType).join(models.ReleaseGroupMeta).\
+        join(models.ArtistCreditName, models.ArtistCreditName.artist_credit_id == models.ReleaseGroup.artist_credit_id).\
+        join(models.Artist, models.Artist.id == models.ArtistCreditName.artist_id).\
+        filter(models.Artist.gid == artist_id).filter(models.ReleaseGroupPrimaryType.name.in_(release_types))
