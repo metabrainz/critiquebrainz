@@ -63,7 +63,8 @@ def review_entity_handler(review_id):
             "popularity": 0,
             "source": "BBC",
             "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
-            "text": "REVIEW GOES HERE",
+            "text": "TEXT CONTENT OF REVIEW",
+            "rating": 5,
             "user": {
               "created": "Wed, 07 May 2014 14:55:23 GMT",
               "display_name": "Paul Clarke",
@@ -110,7 +111,8 @@ def review_revisions_handler(review_id):
             {
               "id": 1,
               "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
-              "text": "REVIEW TEXT GOES HERE",
+              "text": "TEXT CONTENT OF REVIEW",
+              "rating": 5,
               "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
               "votes_negative": 0,
               "votes_positive": 0
@@ -153,7 +155,8 @@ def review_revision_entity_handler(review_id, rev):
           "revision": {
             "id": 1,
             "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
-            "text": "REVIEW TEXT GOES HERE",
+            "text": "TEXT CONTENT OF REVIEW",
+            "rating": 5,
             "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
             "votes_negative": 0,
             "votes_positive": 0
@@ -225,7 +228,13 @@ def review_modify_handler(review_id, user):
 
     **OAuth scope:** review
 
+    :json string text: Text part of review, min length is 25, max is 5000 **(optional)**
+    :json integer rating: Rating part of review, min is 1, max is 5 **(optional)**
+
+    **NOTE:** The value of unmodified parameter should be set to its value in previous revison.
+
     :statuscode 200: success
+    :statuscode 400: invalid request (see source)
     :statuscode 403: access denied
     :statuscode 404: review not found
 
@@ -288,7 +297,8 @@ def review_list_handler():
               "popularity": 0,
               "source": "BBC",
               "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
-              "text": "REVIEW TEXT GOES HERE",
+              "text": "TEXT CONTENT OF REVIEW",
+              "rating": 5,
               "user": {
                 "created": "Wed, 07 May 2014 16:20:47 GMT",
                 "display_name": "Jenny Nelson",
@@ -373,10 +383,13 @@ def review_post_handler(user):
 
     :json uuid entity_id: UUID of the entity that is being reviewed
     :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc.
-    :json string text: review contents, min length is 25, max is 5000
+    :json string text: Text part of review, min length is 25, max is 5000 **(optional)**
+    :json integer rating: Rating part of review, min is 1, max is 5 **(optional)**
     :json string license_choice: license ID
     :json string lang: language code (ISO 639-1), default is ``en`` **(optional)**
     :json boolean is_draft: whether the review should be saved as a draft or not, default is ``False`` **(optional)**
+
+    **NOTE:** You must provide some text or rating for the review.
 
     :resheader Content-Type: *application/json*
     """
@@ -511,6 +524,8 @@ def review_vote_put_handler(review_id, user):
         }
 
     :json boolean vote: ``true`` if upvote, ``false`` if downvote
+
+    **NOTE:** Voting on reviews without text is not allowed.
 
     :statuscode 200: success
     :statuscode 400: invalid request (see source)
