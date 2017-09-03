@@ -4,13 +4,13 @@ from critiquebrainz.frontend.external.musicbrainz_db.event import fetch_multiple
 
 
 def get_multiple_entities(entities):
-    """Fetch multiple entities using their mbids.
+    """Fetch multiple entities using their MBIDs.
 
     Args:
-        entites: List of tuples containing the entity_id and the entity_type.
+        entites: List of tuples containing the entity ID and the entity type.
 
     Returns:
-        Dictionary containing the basic information related to the entites.
+        Dictionary containing the basic information related to the entities.
         {
             "id": uuid,
             "name/title": str,
