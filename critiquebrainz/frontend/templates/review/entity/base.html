@@ -70,8 +70,8 @@
         {% if current_user.is_authenticated %}
           {% if current_user != review.user %}
             <div class="row">
-              {% if review.text %}
-                <div class="col-md-8">
+              <div class="col-md-8">
+                {% if review.text %}
                   <form method="POST" action="{{ url_for('review.vote_submit', review_id=review.id) }}">
                     {% if vote == None %}
                       {{ _('Did you find this review useful?') }}
@@ -86,10 +86,8 @@
                       <a href="{{ url_for('review.vote_delete', id=review.id) }}" class="btn btn-default btn-xs" title="{{ _('Delete your vote') }}"><span class="glyphicon glyphicon-trash"></span></a>
                     {% endif %}
                   </form>
-                </div>
-              {% else %}
-                <div class="col-md-8"></div>
-              {% endif %}
+                {% endif %}
+              </div>
               <div class="col-md-4" id="reporting">
                 <a href="{{ url_for('review.report', id=review.id) }}" class="text-danger">{{ _('Report abuse') }}</a>
               </div>
@@ -109,13 +107,11 @@
           <a id="old-revisions" href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
         {% else %}
           <div class="row">
-            {% if review.text %}
-              <div class="col-md-5">
-               {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
-              </div>
-            {% else %}
-              <div class="col-md-5"></div>
-            {% endif %}
+            <div class="col-md-5">
+              {% if review.text %}
+                {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
+              {% endif %}
+            </div>
             <div class="col-md-4 col-md-offset-3">
               <a id="old-revisions" href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
             </div>
