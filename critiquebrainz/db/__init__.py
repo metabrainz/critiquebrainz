@@ -3,6 +3,10 @@ from sqlalchemy.pool import NullPool
 
 # This value must be incremented after schema changes on exported tables!
 SCHEMA_VERSION = 1
+VALID_RATING_VALUES = [None, 1, 2, 3, 4, 5]
+# Scales for rating conversion
+RATING_SCALE_0_100 = {1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
+RATING_SCALE_1_5 = {20: 1, 40: 2, 60: 3, 80: 4, 100: 5}
 
 engine = None
 

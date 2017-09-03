@@ -7,7 +7,8 @@ from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
                                revision as db_revision,
                                users as db_users,
-                               avg_rating as db_avg_rating)
+                               avg_rating as db_avg_rating,
+                               RATING_SCALE_1_5)
 from critiquebrainz.db.user import User
 import pycountry
 
@@ -119,6 +120,7 @@ def get_by_id(review_id):
             raise db_exceptions.NoDataFoundException("Can't find review with ID: {id}".format(id=review_id))
 
         review = dict(review)
+        review["rating"] = RATING_SCALE_1_5.get(review["rating"])
         review["last_revision"] = {
             "id": review.pop("last_revision_id"),
             "timestamp": review.pop("timestamp"),
@@ -473,6 +475,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         # Organise last revision info in reviews
         if rows:
             for row in rows:
+                row["rating"] = RATING_SCALE_1_5.get(row["rating"])
                 row["last_revision"] = {
                     "id": row.pop("latest_revision_id"),
                     "timestamp": row.pop("latest_revision_timestamp"),
@@ -575,6 +578,7 @@ def get_popular(limit=None):
         reviews = [dict(review) for review in reviews]
         if reviews:
             for review in reviews:
+                review["rating"] = RATING_SCALE_1_5.get(review["rating"])
                 review["last_revision"] = {
                     "id": review.pop("latest_revision_id"),
                     "timestamp": review.pop("latest_revision_timestamp"),

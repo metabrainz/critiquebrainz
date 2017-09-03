@@ -30,7 +30,7 @@ class VoteTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Testing!",
-            rating=100,
+            rating=5,
             user_id=author.id,
             is_draft=False,
             license_id=license["id"],

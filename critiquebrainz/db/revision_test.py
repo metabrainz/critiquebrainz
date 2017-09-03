@@ -29,7 +29,7 @@ class RevisionTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text=u"Testing!",
-            rating=100,
+            rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
@@ -43,7 +43,7 @@ class RevisionTestCase(DataTestCase):
         first_revision = revision.get(review_id)[0]
         self.assertEqual(count, 1)
         self.assertEqual(first_revision['text'], "Testing!")
-        self.assertEqual(first_revision['rating'], 100)
+        self.assertEqual(first_revision['rating'], 5)
         self.assertEqual(type(first_revision['timestamp']), datetime)
         self.assertEqual(type(first_revision['id']), int)
 
@@ -51,13 +51,13 @@ class RevisionTestCase(DataTestCase):
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Testing Again!",
-            rating=80,
+            rating=4,
         )
         second_revision = revision.get(review_id)[0]
         count = revision.get_count(review_id)
         self.assertEqual(count, 2)
         self.assertEqual(second_revision['text'], "Testing Again!")
-        self.assertEqual(second_revision['rating'], 80)
+        self.assertEqual(second_revision['rating'], 4)
         self.assertEqual(type(second_revision['timestamp']), datetime)
         self.assertEqual(type(second_revision['id']), int)
 
@@ -65,7 +65,7 @@ class RevisionTestCase(DataTestCase):
             review_id=self.review["id"],
             drafted=self.review["is_draft"],
             text="Testing Once Again!",
-            rating=60,
+            rating=3,
         )
         # Testing offset and limit
         first_two_revisions = revision.get(review_id, limit=2, offset=1)
@@ -73,8 +73,8 @@ class RevisionTestCase(DataTestCase):
         self.assertEqual(count, 3)
         self.assertEqual(first_two_revisions[1]['text'], "Testing!")
         self.assertEqual(first_two_revisions[0]['text'], "Testing Again!")
-        self.assertEqual(first_two_revisions[1]['rating'], 100)
-        self.assertEqual(first_two_revisions[0]['rating'], 80)
+        self.assertEqual(first_two_revisions[1]['rating'], 5)
+        self.assertEqual(first_two_revisions[0]['rating'], 4)
 
     def test_get_all_votes(self):
         """Test to get the number of votes on revisions of a review"""

@@ -31,7 +31,7 @@ class AvgRatingTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text=u"Testing!",
-            rating=100,
+            rating=5,
             user_id=self.user.id,
             is_draft=False,
             license_id=self.license["id"],
@@ -39,7 +39,7 @@ class AvgRatingTestCase(DataTestCase):
         avg_rating = db_avg_rating.get(review["entity_id"], review["entity_type"])
         self.assertEqual(avg_rating["entity_id"], review["entity_id"])
         self.assertEqual(avg_rating["entity_type"], review["entity_type"])
-        self.assertEqual(avg_rating["rating"], review["rating"])
+        self.assertEqual(avg_rating["rating"], 5.0)
         self.assertEqual(avg_rating["count"], 1)
 
     def test_update(self):
@@ -49,7 +49,7 @@ class AvgRatingTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text=u"Testing!",
-            rating=100,
+            rating=5,
             user_id=self.user.id,
             is_draft=False,
             license_id=self.license["id"],
@@ -58,7 +58,7 @@ class AvgRatingTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text=u"Testing!",
-            rating=80,
+            rating=4,
             user_id=self.user_2.id,
             is_draft=False,
             license_id=self.license["id"],
@@ -66,7 +66,7 @@ class AvgRatingTestCase(DataTestCase):
         avg_rating = db_avg_rating.get(review["entity_id"], review["entity_type"])
         self.assertEqual(avg_rating["entity_id"], review["entity_id"])
         self.assertEqual(avg_rating["entity_type"], review["entity_type"])
-        self.assertEqual(avg_rating["rating"], 90)
+        self.assertEqual(avg_rating["rating"], 4.5)
         self.assertEqual(avg_rating["count"], 2)
 
         db_review.update(
@@ -77,7 +77,7 @@ class AvgRatingTestCase(DataTestCase):
         )
         # Check if avg_rating is updated after change in rating
         avg_rating = db_avg_rating.get(review["entity_id"], review["entity_type"])
-        self.assertEqual(avg_rating["rating"], 100)
+        self.assertEqual(avg_rating["rating"], 5.0)
         self.assertEqual(avg_rating["count"], 1)
 
         # Check if avg_rating is updated after a review with rating is deleted
@@ -92,7 +92,7 @@ class AvgRatingTestCase(DataTestCase):
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text=u"Testing!",
-            rating=100,
+            rating=5,
             user_id=self.user.id,
             is_draft=False,
             license_id=self.license["id"],

@@ -113,5 +113,7 @@ def get(entity_id, entity_type):
         if not avg_rating:
             raise db_exceptions.NoDataFoundException("""No rating for the entity with ID: {id} and Type: {type}""".
                                                      format(id=entity_id, type=entity_type))
+        avg_rating = dict(avg_rating)
+        avg_rating["rating"] = round(avg_rating["rating"] / 20, 1)
 
-    return dict(avg_rating)
+    return avg_rating

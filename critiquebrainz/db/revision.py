@@ -3,6 +3,7 @@ from critiquebrainz import db
 from critiquebrainz.db import review as db_review
 from critiquebrainz.db import avg_rating as db_avg_rating
 from critiquebrainz.db import exceptions as db_exceptions
+from critiquebrainz.db import VALID_RATING_VALUES, RATING_SCALE_1_5, RATING_SCALE_0_100
 import sqlalchemy
 
 
@@ -58,6 +59,9 @@ def get(review_id, limit=1, offset=0):
         if not rows:
             raise db_exceptions.NoDataFoundException("Cannot find specified review.")
         rows = [dict(row) for row in rows]
+        # Convert ratings to values on a scale 1-5
+        for row in rows:
+            row["rating"] = RATING_SCALE_1_5.get(row["rating"])
     return rows
 
 
@@ -163,6 +167,10 @@ def create(review_id, text=None, rating=None):
     """
     if text is None and rating is None:
         raise db_exceptions.BadDataException("Text part and rating part of a revision can not be None simultaneously")
+    if rating not in VALID_RATING_VALUES:
+        raise ValueError("{} is not a valid rating value. It must be on the scale 1-5".format(rating))
+    # Convert ratings to values on a scale 0-100
+    rating = RATING_SCALE_0_100.get(rating)
 
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
