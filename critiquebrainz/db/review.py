@@ -7,7 +7,8 @@ from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
                                revision as db_revision,
                                users as db_users,
-                               avg_rating as db_avg_rating)
+                               avg_rating as db_avg_rating,
+                               RATING_SCALE_1_5)
 from critiquebrainz.db.user import User
 import pycountry
 
@@ -19,7 +20,6 @@ ENTITY_TYPES = [
     "place",
     "release_group",
 ]
-RATING_SCALE_1_5 = {20: 1, 40: 2, 60: 3, 80: 4, 100: 5}
 
 
 supported_languages = []

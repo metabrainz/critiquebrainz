@@ -3,11 +3,8 @@ from critiquebrainz import db
 from critiquebrainz.db import review as db_review
 from critiquebrainz.db import avg_rating as db_avg_rating
 from critiquebrainz.db import exceptions as db_exceptions
+from critiquebrainz.db import VALID_RATING_VALUES, RATING_SCALE_1_5, RATING_SCALE_0_100
 import sqlalchemy
-
-VALID_RATING_VALUES = [None, 1, 2, 3, 4, 5]
-RATING_SCALE_0_100 = {1: 20, 2: 40, 3: 60, 4: 80, 5: 100}
-RATING_SCALE_1_5 = {20: 1, 40: 2, 60: 3, 80: 4, 100: 5}
 
 
 def get(review_id, limit=1, offset=0):
