@@ -1,8 +1,29 @@
+from unittest.mock import MagicMock
 from critiquebrainz.frontend.testing import FrontendTestCase
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.license as db_license
+import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
+from flask import current_app
+
+
+def mock_get_entity_by_id(id, type='release_group'):
+    if id == '6b3cd75d-7453-39f3-86c4-1441f360e121' and type == 'release_group':
+        return {
+            'id': '6b3cd75d-7453-39f3-86c4-1441f360e121',
+            'title': 'Moderat',
+        }
+    if id == 'b4e75ef8-3454-4fdc-8af1-61038c856abc' and type == 'event':
+        return {
+            'id': 'b4e75ef8-3454-4fdc-8af1-61038c856abc',
+            'name': 'Rock am Ring 2014',
+        }
+    if id == 'c5c9c210-b7a0-4f6e-937e-02a586c8e14c' and type == 'place':
+        return {
+            'id': 'c5c9c210-b7a0-4f6e-937e-02a586c8e14c',
+            'name': 'University of London Union',
+        }
 
 
 class ReviewViewsTestCase(FrontendTestCase):
@@ -20,6 +41,8 @@ class ReviewViewsTestCase(FrontendTestCase):
             full_name="Created so we can fill the form correctly.",
         )
         self.review_text = "Testing! This text should be on the page."
+        mb_release.browse_releases = MagicMock()
+        current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
 
     def create_dummy_review(self, is_draft=False):
         review = db_review.create(

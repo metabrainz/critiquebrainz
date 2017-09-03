@@ -51,7 +51,7 @@ def get_entities_by_gids(*, query, entity_type, mbids):
         results = query.filter(redirect_model.gid.in_(remaining_gids))
         for entity, redirect_obj in results:
             entities[redirect_obj.gid] = entity
-        remaining_gids = list(set(mbids) - {redirect_obj.gid for entity, redirect_obj in results})
+        remaining_gids = list(set(remaining_gids) - {redirect_obj.gid for entity, redirect_obj in results})
     if remaining_gids:
         raise mb_exceptions.NoDataFoundException("Couldn't find entities with IDs: {mbids}".format(mbids=remaining_gids))
     return entities

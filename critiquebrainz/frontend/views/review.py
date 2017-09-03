@@ -9,7 +9,7 @@ from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.db.moderation_log import ACTION_HIDE_REVIEW
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
 from critiquebrainz.frontend import flash
-from critiquebrainz.frontend.external import mbspotify, musicbrainz, soundcloud
+from critiquebrainz.frontend.external import mbspotify, soundcloud
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
 from critiquebrainz.frontend.login import admin_view
@@ -17,6 +17,7 @@ from critiquebrainz.utils import side_by_side_diff
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.moderation_log as db_moderation_log
+from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
 
 
 review_bp = Blueprint('review', __name__)
@@ -51,8 +52,8 @@ def browse():
                 raise NotFound(gettext("No reviews to display."))
 
     # Loading info about entities for reviews
-    entities = [(review["entity_id"], review["entity_type"]) for review in reviews]
-    entities_info = musicbrainz.get_multiple_entities(entities)
+    entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
+    entities_info = get_multiple_entities(entities)
 
     return render_template('review/browse.html', reviews=reviews, entities=entities_info,
                            page=page, limit=limit, count=count, entity_type=entity_type)
@@ -227,7 +228,7 @@ def create():
             flash.success(gettext("Review has been published!"))
         return redirect(url_for('.entity', id=review['id']))
 
-    entity = musicbrainz.get_entity_by_id(entity_id, entity_type)
+    entity = get_entity_by_id(entity_id, entity_type)
     if not entity:
         flash.error(gettext("You can only write a review for an entity that exists on MusicBrainz!"))
         return redirect(url_for('search.selector', next=url_for('.create')))
