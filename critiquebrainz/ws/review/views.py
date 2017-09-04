@@ -234,15 +234,15 @@ def review_modify_handler(review_id, user):
     :resheader Content-Type: *application/json*
     """
 
-    def fetch_params():
+    def fetch_params(review):
         try:
             text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH)
         except MissingDataError:
-            text = 'same'                        # Assign temporary value which indicates no modification
+            text = review['text']
         try:
             rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX)
         except MissingDataError:
-            rating = 0                           # Assign temporary value which indicates no modification
+            rating = review['rating']
         if text is None and rating is None:
             raise InvalidRequest(desc='Review must have either text or rating')
         return text, rating
@@ -252,13 +252,9 @@ def review_modify_handler(review_id, user):
         raise NotFound("Review has been hidden.")
     if str(review["user_id"]) != user.id:
         raise AccessDenied
-    text, rating = fetch_params()
-    if text == 'same':
-        text = review['text']
-    if rating == 0:
-        rating = review['rating']
+    text, rating = fetch_params(review)
     if (text == review['text']) and (rating == review['rating']):
-        raise InvalidRequest(desc='Either text or rating should be edited to update the review')
+        return jsonify(message='Request processed successfully', review=dict(id=review["id"]))
 
     db_review.update(
         review_id=review_id,
