@@ -104,9 +104,9 @@
     <h4>{{ _('Event information') }}</h4>
 
     {% if avg_rating %}
-      <p>
+      <div class="avg-rating">
         {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
-      </p>
+      </div>
     {% endif %}
     
     {% if 'release_group-rels' in event %}

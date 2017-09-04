@@ -139,9 +139,9 @@
   <div class="col-md-3">
     <h4>{{ _('Release group information') }}</h4>
     {% if avg_rating %}
-      <p>
+      <div class="avg-rating">
         {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
-      </p>
+      </div>
     {% endif %}
     <p>
       {% if release_group['first-release-date'] %}{{ _('First release in %(year)s', year=release_group['first-release-date'][:4]) }}{% endif %}

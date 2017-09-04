@@ -94,9 +94,9 @@
   <div class="col-md-3">
     <h4>{{ _('Place information') }}</h4>
       {% if avg_rating %}
-        <p>
+        <div class="avg-rating">
           {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
-        </p>
+        </div>
       {% endif %}
       {% if place['external-urls'] %}
         <b>{{ _('External links') }}</b>
