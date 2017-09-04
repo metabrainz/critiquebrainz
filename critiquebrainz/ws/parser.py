@@ -21,8 +21,7 @@ class Parser(object):
         _dict = cls.get_dict(src)
         if key not in _dict and not optional:
             raise MissingDataError(key)
-        else:
-            return _dict.get(key)
+        return _dict.get(key)
 
     @classmethod
     def bool(cls, src, key, optional=False):
