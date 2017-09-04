@@ -7,6 +7,10 @@ from critiquebrainz.db import (
     spam_report as db_spam_report,
     revision as db_revision,
     users as db_users,
+    REVIEW_RATING_MIN,
+    REVIEW_RATING_MAX,
+    REVIEW_TEXT_MIN_LENGTH,
+    REVIEW_TEXT_MAX_LENGTH
 )
 from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError
 from critiquebrainz.ws.oauth import oauth
@@ -16,10 +20,6 @@ from brainzutils import cache
 
 review_bp = Blueprint('ws_review', __name__)
 
-REVIEW_TEXT_MAX_LENGTH = 100000
-REVIEW_TEXT_MIN_LENGTH = 25
-REVIEW_RATING_MAX = 5
-REVIEW_RATING_MIN = 1
 REVIEW_CACHE_NAMESPACE = "Review"
 
 
