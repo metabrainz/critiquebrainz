@@ -99,11 +99,15 @@ function buildScripts() {
   let spotifyBundle = runYarb('spotify.js', function (b) {
     b.external(commonBundle);
   });
+  let releaseGroupBundle = runYarb('release_groups.js', function (b) {
+    b.external(commonBundle);
+  });
 
   return Q.all([
     writeScript(commonBundle, 'common.js'),
     writeScript(leafletBundle, 'leaflet.js'),
     writeScript(spotifyBundle, 'spotify.js'),
+    writeScript(releaseGroupBundle, 'release_groups.js'),
   ]).then(writeManifest);
 }
 
