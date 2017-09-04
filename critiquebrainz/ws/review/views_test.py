@@ -61,12 +61,15 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.another_user))
         self.assert403(resp, "Shouldn't be able to edit someone else's review.")
 
-        data = dict(text=self.review['text'], rating=str(self.review['rating']))
+        # Check that a new revision is not created when review contents are not edited
+        data = dict()
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
-        self.assert400(resp, "Either text or rating should be edited to update the review.")
+        self.assert200(resp)
+        resp = self.client.get('/review/%s/revisions' % review["id"]).json
+        self.assertEqual(len(resp['revisions']), 1)
 
         # Check if the passed parameter is modified and the other is not
-        data = dict(text="Some updated text with length more than twenty five.", rating="5")
+        data = dict(text="Some updated text with length more than twenty five.")
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
         self.assert200(resp)
         resp = self.client.get('/review/%s' % review["id"]).json
