@@ -13,6 +13,7 @@ from critiquebrainz.frontend.external import mbspotify, soundcloud
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
 from critiquebrainz.frontend.login import admin_view
+from critiquebrainz.frontend.views import get_avg_rating
 from critiquebrainz.utils import side_by_side_diff
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
@@ -59,6 +60,8 @@ def browse():
                            page=page, limit=limit, count=count, entity_type=entity_type)
 
 
+# TODO(psolanki): Refactor this function to remove PyLint warning.
+# pylint: disable=too-many-branches
 @review_bp.route('/<uuid:id>/revisions/<int:rev>')
 @review_bp.route('/<uuid:id>')
 def entity(id, rev=None):
@@ -95,7 +98,10 @@ def entity(id, rev=None):
             vote = None
     else:  # otherwise set vote to None, its value will not be used
         vote = None
-    review["text_html"] = markdown(revision['text'], safe_mode="escape")
+    if revision["text"] is None:
+        review["text_html"] = None
+    else:
+        review["text_html"] = markdown(revision['text'], safe_mode="escape")
 
     user_all_reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
         user_id=review["user_id"],
@@ -103,9 +109,10 @@ def entity(id, rev=None):
         exclude=[review["id"]],
     )
     other_reviews = user_all_reviews[:3]
+    avg_rating = get_avg_rating(review["entity_id"], review["entity_type"])
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
                            spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
-                           vote=vote, other_reviews=other_reviews)
+                           vote=vote, other_reviews=other_reviews, avg_rating=avg_rating)
 
 
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')
@@ -182,6 +189,8 @@ def revisions_more(id):
     return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
 
 
+# TODO(psolanki): Refactor this function to remove PyLint warning.
+# pylint: disable=too-many-branches
 @review_bp.route('/write', methods=('GET', 'POST'))
 @login_required
 def create():
@@ -219,8 +228,10 @@ def create():
             return redirect(url_for('user.reviews', user_id=current_user.id))
 
         is_draft = form.state.data == 'draft'
+        if form.text.data == '':
+            form.text.data = None
         review = db_review.create(user_id=current_user.id, entity_id=entity_id, entity_type=entity_type,
-                                  text=form.text.data, license_id=form.license_choice.data,
+                                  text=form.text.data, rating=form.rating.data, license_id=form.license_choice.data,
                                   language=form.language.data, is_draft=is_draft)
         if is_draft:
             flash.success(gettext("Review has been saved!"))
@@ -236,8 +247,12 @@ def create():
     if entity_type == 'release_group':
         spotify_mappings = mbspotify.mappings(entity_id)
         soundcloud_url = soundcloud.get_url(entity_id)
+        if not form.errors:
+            flash.info(gettext("Please provide some text or a rating for this review."))
         return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity,
                                spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
+    if not form.errors:
+        flash.info(gettext("Please provide some text or a rating for this review."))
     return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
 
 
@@ -269,12 +284,15 @@ def edit(id):
             license_choice = form.license_choice.data
         else:
             license_choice = None
+        if form.text.data == '':
+            form.text.data = None
 
         try:
             db_review.update(
                 review_id=review["id"],
                 drafted=review["is_draft"],
                 text=form.text.data,
+                rating=form.rating.data,
                 is_draft=(form.state.data == 'draft'),
                 license_id=license_choice,
                 language=form.language.data,
@@ -287,6 +305,7 @@ def edit(id):
         return redirect(url_for('.entity', id=review["id"]))
     else:
         form.text.data = review["text"]
+        form.rating.data = review["rating"]
     if review["entity_type"] == 'release_group':
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))

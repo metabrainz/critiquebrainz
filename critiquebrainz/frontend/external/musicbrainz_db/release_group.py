@@ -137,7 +137,7 @@ def browse_release_groups(*, artist_id, release_types=None, limit=None, offset=N
         for release_group in release_groups:
             includes_data[release_group.id]['meta'] = release_group.meta
         release_groups = ([to_dict_release_groups(release_group, includes_data[release_group.id])
-                          for release_group in release_groups], count)
+                           for release_group in release_groups], count)
         cache.set(key=key, val=release_groups, time=DEFAULT_CACHE_EXPIRATION)
     return release_groups
 

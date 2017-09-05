@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, show_embedded_player, show_tags with context %}
+{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -138,6 +138,11 @@
 
   <div class="col-md-3">
     <h4>{{ _('Release group information') }}</h4>
+    {% if avg_rating %}
+      <div class="avg-rating">
+        {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
+      </div>
+    {% endif %}
     <p>
       {% if release_group['first-release-date'] %}{{ _('First release in %(year)s', year=release_group['first-release-date'][:4]) }}{% endif %}
     </p>

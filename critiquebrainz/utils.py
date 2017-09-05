@@ -84,6 +84,10 @@ def side_by_side_diff(old, new):
     prev_start, prev_end = None, ''
     prev_item = ''
 
+    if old is None:
+        old = ''
+    if new is None:
+        new = ''
     for item in difflib.ndiff(old.split(), new.split()):
         tag = tags.get(item[0])
 

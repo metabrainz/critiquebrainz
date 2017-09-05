@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import review_credit, cover_art with context %}
+{% from 'macros.html' import review_credit, cover_art, show_avg_rating with context %}
 
 {% block content %}
 <div id="review-entity">
   {% block entity_title %}{% endblock %}
+  {% if avg_rating %}
+    {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
+  {% endif %}
 
   <div id="review-content" class="row">
     {% block sidebar %}{% endblock %}
@@ -15,19 +18,33 @@
         <div class="alert alert-warning" role="alert">{{ _('<b>This review has not been published yet!</b> Only you can see it.') }}</div>
       {% else %}
         <em class="text-muted">{{ _('Published on %(date)s', date = review.created|date) }}</em><br />
-        <em class="text-muted">{{ _('Written in %(language)s', language = review.language|language_name) }}</em><br />
-        {% set votes_total = review.votes.positive + review.votes.negative %}
-        <em class="text-muted">
-          {% if votes_total > 0 %}
-            {{ _('%s out of %s people have found this review useful' % (review.votes.positive, votes_total)) }}
-          {% else %}
-            {{ _('This review has not yet been rated') }}
-          {% endif %}
-        </em>
+        {% if review.text %}
+          <em class="text-muted">{{ _('Written in %(language)s', language = review.language|language_name) }}</em><br />
+          {% set votes_total = review.votes.positive + review.votes.negative %}
+          <em class="text-muted">
+            {% if votes_total > 0 %}
+              {{ _('%s out of %s people have found this review useful' % (review.votes.positive, votes_total)) }}
+            {% else %}
+              {{ _('This review has not yet been rated') }}
+            {% endif %}
+          </em>
+        {% endif %}
       {% endif %}
 
-      <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text_html|safe }}</p>
-
+      {% if review.rating %}
+        <div style="margin-top: 15px;">
+          <input type="number" class="rating" id="rating" value={{ review.rating }} data-readonly data-inline />
+        </div>
+      {% endif %}
+      {% if review.text %}
+        <!-- Used to display only-text review properly -->
+        {% if review.rating %}
+          <p style="word-wrap: break-word; white-space: pre-wrap; display: inline;">{{ review.text_html|safe }}</p>
+        {% else %}
+          <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text_html|safe }}</p>
+        {% endif %}
+      {% endif %}
+      
       <hr />
 
       {% if not review.is_draft %}
@@ -54,20 +71,22 @@
           {% if current_user != review.user %}
             <div class="row">
               <div class="col-md-8">
-                <form method="POST" action="{{ url_for('review.vote_submit', review_id=review.id) }}">
-                  {% if vote == None %}
-                    {{ _('Did you find this review useful?') }}
-                    <button type="submit" class="btn btn-default btn-xs {% if vote.vote == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
-                    <button type="submit" class="btn btn-default btn-xs {% if vote.vote == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
-                  {% else %}
-                    {% if vote.vote == True %}
-                      <span class="text-success">{{ _('You found this review useful.') }}</span>
+                {% if review.text %}
+                  <form method="POST" action="{{ url_for('review.vote_submit', review_id=review.id) }}">
+                    {% if vote == None %}
+                      {{ _('Did you find this review useful?') }}
+                      <button type="submit" class="btn btn-default btn-xs {% if vote.vote == False %}disabled{% endif %}" name="yes">{{ _('Yes') }}</button>
+                      <button type="submit" class="btn btn-default btn-xs {% if vote.vote == True %}disabled{% endif %}" name="no">{{ _('No') }}</button>
                     {% else %}
-                      <span class="text-warning">{{ _('You didn\'t find this review useful.') }}</span>
+                      {% if vote.vote == True %}
+                        <span class="text-success">{{ _('You found this review useful.') }}</span>
+                      {% else %}
+                        <span class="text-warning">{{ _('You didn\'t find this review useful.') }}</span>
+                      {% endif %}
+                      <a href="{{ url_for('review.vote_delete', id=review.id) }}" class="btn btn-default btn-xs" title="{{ _('Delete your vote') }}"><span class="glyphicon glyphicon-trash"></span></a>
                     {% endif %}
-                    <a href="{{ url_for('review.vote_delete', id=review.id) }}" class="btn btn-default btn-xs" title="{{ _('Delete your vote') }}"><span class="glyphicon glyphicon-trash"></span></a>
-                  {% endif %}
-                </form>
+                  </form>
+                {% endif %}
               </div>
               <div class="col-md-4" id="reporting">
                 <a href="{{ url_for('review.report', id=review.id) }}" class="text-danger">{{ _('Report abuse') }}</a>
@@ -89,7 +108,9 @@
         {% else %}
           <div class="row">
             <div class="col-md-5">
-              {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
+              {% if review.text %}
+                {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
+              {% endif %}
             </div>
             <div class="col-md-4 col-md-offset-3">
               <a id="old-revisions" href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
@@ -123,4 +144,9 @@
      </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}

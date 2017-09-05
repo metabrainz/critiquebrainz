@@ -3,6 +3,7 @@ from flask_login import current_user
 from flask_babel import gettext
 import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+from critiquebrainz.frontend.views import get_avg_rating
 import critiquebrainz.db.review as db_review
 from werkzeug.exceptions import NotFound
 
@@ -35,6 +36,7 @@ def entity(id):
         limit=limit,
         offset=offset,
     )
+    avg_rating = get_avg_rating(place['id'], "place")
 
     return render_template('place/entity.html', id=place['id'], place=place, reviews=reviews,
-                           my_review=my_review, limit=limit, offset=offset, count=count)
+                           my_review=my_review, limit=limit, offset=offset, count=count, avg_rating=avg_rating)
