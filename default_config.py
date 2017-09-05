@@ -38,6 +38,7 @@ SUPPORTED_LANGUAGES = [
     'fr',  # French
     'de',  # German
     'it',  # Italian
+    'nb',  # Norwegian Bokmål
     'pl',  # Polish
     'es',  # Spanish
     'sv',  # Swedish
