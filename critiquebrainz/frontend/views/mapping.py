@@ -15,7 +15,9 @@ from flask_babel import gettext
 from werkzeug.exceptions import NotFound, BadRequest, ServiceUnavailable
 import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend.external.exceptions import ExternalServiceException
-from critiquebrainz.frontend.external import musicbrainz, mbspotify
+from critiquebrainz.frontend.external import mbspotify
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend import flash
 
 mapping_bp = Blueprint('mapping', __name__)
@@ -38,8 +40,9 @@ def spotify_list(release_group_id):
             raise ServiceUnavailable(e)
     else:
         spotify_albums = []
-    release_group = musicbrainz.get_release_group_by_id(release_group_id)
-    if not release_group:
+    try:
+        release_group = mb_release_group.get_release_group_by_id(release_group_id)
+    except mb_exceptions.NoDataFoundException:
         raise NotFound("Can't find release group with a specified ID.")
     return render_template('mapping/list.html', spotify_albums=spotify_albums,
                            release_group=release_group)
@@ -50,9 +53,9 @@ def spotify():
     release_group_id = request.args.get('release_group_id')
     if not release_group_id:
         return redirect(url_for('frontend.index'))
-
-    release_group = musicbrainz.get_release_group_by_id(release_group_id)
-    if not release_group:
+    try:
+        release_group = mb_release_group.get_release_group_by_id(release_group_id)
+    except mb_exceptions.NoDataFoundException:
         flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
 
@@ -89,8 +92,9 @@ def spotify_confirm():
     release_group_id = request.args.get('release_group_id')
     if not release_group_id:
         raise BadRequest("Didn't provide `release_group_id`!")
-    release_group = musicbrainz.get_release_group_by_id(release_group_id)
-    if not release_group:
+    try:
+        release_group = mb_release_group.get_release_group_by_id(release_group_id)
+    except mb_exceptions.NoDataFoundException:
         flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
 
@@ -131,8 +135,9 @@ def spotify_report():
     spotify_uri = "spotify:album:" + spotify_id
 
     # Checking if release group exists
-    release_group = musicbrainz.get_release_group_by_id(release_group_id)
-    if not release_group:
+    try:
+        release_group = mb_release_group.get_release_group_by_id(release_group_id)
+    except mb_exceptions.NoDataFoundException:
         flash.error(gettext("Can't find release group with that ID!"))
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
