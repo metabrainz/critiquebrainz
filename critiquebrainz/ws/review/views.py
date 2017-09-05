@@ -7,8 +7,12 @@ from critiquebrainz.db import (
     spam_report as db_spam_report,
     revision as db_revision,
     users as db_users,
+    REVIEW_RATING_MIN,
+    REVIEW_RATING_MAX,
+    REVIEW_TEXT_MIN_LENGTH,
+    REVIEW_TEXT_MAX_LENGTH
 )
-from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded
+from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
 from critiquebrainz.decorators import crossdomain
@@ -16,8 +20,6 @@ from brainzutils import cache
 
 review_bp = Blueprint('ws_review', __name__)
 
-REVIEW_MAX_LENGTH = 100000
-REVIEW_MIN_LENGTH = 25
 REVIEW_CACHE_NAMESPACE = "Review"
 
 
@@ -63,7 +65,8 @@ def review_entity_handler(review_id):
             "popularity": 0,
             "source": "BBC",
             "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
-            "text": "REVIEW GOES HERE",
+            "text": "TEXT CONTENT OF REVIEW",
+            "rating": 5,
             "user": {
               "created": "Wed, 07 May 2014 14:55:23 GMT",
               "display_name": "Paul Clarke",
@@ -110,7 +113,8 @@ def review_revisions_handler(review_id):
             {
               "id": 1,
               "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
-              "text": "REVIEW TEXT GOES HERE",
+              "text": "TEXT CONTENT OF REVIEW",
+              "rating": 5,
               "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
               "votes_negative": 0,
               "votes_positive": 0
@@ -153,7 +157,8 @@ def review_revision_entity_handler(review_id, rev):
           "revision": {
             "id": 1,
             "review_id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
-            "text": "REVIEW TEXT GOES HERE",
+            "text": "TEXT CONTENT OF REVIEW",
+            "rating": 5,
             "timestamp": "Tue, 10 Aug 2010 00:00:00 GMT",
             "votes_negative": 0,
             "votes_positive": 0
@@ -225,27 +230,46 @@ def review_modify_handler(review_id, user):
 
     **OAuth scope:** review
 
+    :json string text: Text part of review, min length is 25, max is 5000 **(optional)**
+    :json integer rating: Rating part of review, min is 1, max is 5 **(optional)**
+
+    **NOTE:** Please provide only those parameters which need to be updated
+
     :statuscode 200: success
+    :statuscode 400: invalid request
     :statuscode 403: access denied
     :statuscode 404: review not found
 
     :resheader Content-Type: *application/json*
     """
 
-    def fetch_params():
-        text = Parser.string('json', 'text', min=REVIEW_MIN_LENGTH, max=REVIEW_MAX_LENGTH)
-        return text
+    def fetch_params(review):
+        try:
+            text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH)
+        except MissingDataError:
+            text = review['text']
+        try:
+            rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX)
+        except MissingDataError:
+            rating = review['rating']
+        if text is None and rating is None:
+            raise InvalidRequest(desc='Review must have either text or rating')
+        return text, rating
 
     review = get_review_or_404(review_id)
     if review["is_hidden"]:
         raise NotFound("Review has been hidden.")
     if str(review["user_id"]) != user.id:
         raise AccessDenied
-    text = fetch_params()
+    text, rating = fetch_params(review)
+    if (text == review['text']) and (rating == review['rating']):
+        return jsonify(message='Request processed successfully', review=dict(id=review["id"]))
+
     db_review.update(
         review_id=review_id,
         drafted=review["is_draft"],
         text=text,
+        rating=rating
     )
     return jsonify(message='Request processed successfully',
                    review=dict(id=review["id"]))
@@ -288,7 +312,8 @@ def review_list_handler():
               "popularity": 0,
               "source": "BBC",
               "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
-              "text": "REVIEW TEXT GOES HERE",
+              "text": "TEXT CONTENT OF REVIEW",
+              "rating": 5,
               "user": {
                 "created": "Wed, 07 May 2014 16:20:47 GMT",
                 "display_name": "Jenny Nelson",
@@ -373,10 +398,13 @@ def review_post_handler(user):
 
     :json uuid entity_id: UUID of the entity that is being reviewed
     :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc.
-    :json string text: review contents, min length is 25, max is 5000
+    :json string text: Text part of review, min length is 25, max is 5000 **(optional)**
+    :json integer rating: Rating part of review, min is 1, max is 5 **(optional)**
     :json string license_choice: license ID
     :json string lang: language code (ISO 639-1), default is ``en`` **(optional)**
     :json boolean is_draft: whether the review should be saved as a draft or not, default is ``False`` **(optional)**
+
+    **NOTE:** You must provide some text or rating for the review.
 
     :resheader Content-Type: *application/json*
     """
@@ -384,26 +412,30 @@ def review_post_handler(user):
     def fetch_params():
         is_draft = Parser.bool('json', 'is_draft', optional=True) or False
         if is_draft:
-            REVIEW_MIN_LENGTH = None
+            REVIEW_TEXT_MIN_LENGTH = None
         entity_id = Parser.uuid('json', 'entity_id')
         entity_type = Parser.string('json', 'entity_type', valid_values=ENTITY_TYPES)
-        text = Parser.string('json', 'text', min=REVIEW_MIN_LENGTH, max=REVIEW_MAX_LENGTH)
+        text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
+        rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX, optional=True)
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
+        if text is None and rating is None:
+            raise InvalidRequest(desc='Review must have either text or rating')
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
         if db_review.list_reviews(user_id=user.id, entity_id=entity_id)[1]:
             raise InvalidRequest(desc='You have already published a review for this album')
-        return entity_id, entity_type, text, license_choice, language, is_draft
+        return entity_id, entity_type, text, rating, license_choice, language, is_draft
 
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
-    entity_id, entity_type, text, license_choice, language, is_draft = fetch_params()
+    entity_id, entity_type, text, rating, license_choice, language, is_draft = fetch_params()
     review = db_review.create(
         user_id=user.id,
         entity_id=entity_id,
         entity_type=entity_type,
         text=text,
+        rating=rating,
         license_id=license_choice,
         language=language,
         is_draft=is_draft,
@@ -512,6 +544,8 @@ def review_vote_put_handler(review_id, user):
 
     :json boolean vote: ``true`` if upvote, ``false`` if downvote
 
+    **NOTE:** Voting on reviews without text is not allowed.
+
     :statuscode 200: success
     :statuscode 400: invalid request (see source)
     :statuscode 403: daily vote limit exceeded
@@ -530,6 +564,8 @@ def review_vote_put_handler(review_id, user):
     vote = fetch_params()
     if str(review["user_id"]) == user.id:
         raise InvalidRequest(desc='You cannot rate your own review.')
+    if review["text"] is None:
+        raise InvalidRequest(desc='Voting on reviews without text is not allowed.')
     if user.is_vote_limit_exceeded is True and db_users.has_voted(user.id, review_id) is False:
         raise LimitExceeded('You have exceeded your limit of votes per day.')
 

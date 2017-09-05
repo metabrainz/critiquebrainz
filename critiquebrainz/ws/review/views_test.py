@@ -26,6 +26,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             entity_type='release_group',
             user_id=self.user.id,
             text="Testing! This text should be on the page.",
+            rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
@@ -60,9 +61,20 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.another_user))
         self.assert403(resp, "Shouldn't be able to edit someone else's review.")
 
+        # Check that a new revision is not created when review contents are not edited
+        data = dict()
+        resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
+        self.assert200(resp)
+        resp = self.client.get('/review/%s/revisions' % review["id"]).json
+        self.assertEqual(len(resp['revisions']), 1)
+
+        # Check if the passed parameter is modified and the other is not
         data = dict(text="Some updated text with length more than twenty five.")
         resp = self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
         self.assert200(resp)
+        resp = self.client.get('/review/%s' % review["id"]).json
+        self.assertEqual(resp['review']['text'], data['text'])
+        self.assertEqual(resp['review']['rating'], review['rating'])
 
     def test_review_list(self):
         review = self.create_dummy_review()
@@ -77,13 +89,23 @@ class ReviewViewsTestCase(WebServiceTestCase):
             entity_id=self.review['entity_id'],
             entity_type='release_group',
             text=self.review['text'],
+            rating=str(self.review['rating']),
             license_choice=self.license["id"],
             language='en',
             is_draft=True
         )
-
         resp = self.client.post('/review/', headers=self.header(self.user), data=json.dumps(review))
         self.assert200(resp)
+
+        review_2 = dict(
+            entity_id=self.review['entity_id'],
+            entity_type='release_group',
+            license_choice=self.license["id"],
+            language='en',
+            is_draft=True
+        )
+        resp = self.client.post('/review/', headers=self.header(self.another_user), data=json.dumps(review_2))
+        self.assert400(resp, "Review must have either text or rating")
 
     def test_review_vote_entity(self):
         review = self.create_dummy_review()
@@ -113,6 +135,20 @@ class ReviewViewsTestCase(WebServiceTestCase):
             data=json.dumps({"vote": False})
         )
         self.assert200(resp)
+
+        # Update to review to only-rating type
+        db_review.update(
+            review_id=review["id"],
+            drafted=review["is_draft"],
+            rating=5,
+            is_draft=False,
+        )
+        resp = self.client.put(
+            '/review/%s/vote' % review["id"],
+            headers=self.header(self.another_user),
+            data=json.dumps({"vote": True})
+        )
+        self.assert400(resp, "Voting on reviews without text is not allowed.")
 
     def test_review_vote_delete(self):
         review = self.create_dummy_review()
