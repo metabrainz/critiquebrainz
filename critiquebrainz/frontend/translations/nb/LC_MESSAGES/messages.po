@@ -3,9 +3,11 @@
 # This file is distributed under the same license as the PROJECT project.
 # 
 # Translators:
-# Juan González <bifomania@protonmail.com>, 2016
-# Mathias Gonzalez <mathiias.gonzalez@gmail.com>, 2015
-# Nicolás Tamargo <reosarevok@gmail.com>, 2014
+# Allan Nordhøy <epost@anotheragency.no>, 2016
+# Andreas Dreyer Hysing, 2016
+# CatQuest, The Endeavouring Cat, 2017
+# CatQuest, The Endeavouring Cat, 2017
+# Kurt-Håkon Eilertsen <kurt@kheds.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
@@ -13,18 +15,18 @@ msgstr ""
 "POT-Creation-Date: 2017-08-07 15:47+0200\n"
 "PO-Revision-Date: 2017-08-07 15:01+0000\n"
 "Last-Translator: Roman Tsukanov\n"
-"Language-Team: Spanish (http://www.transifex.com/musicbrainz/critiquebrainz/language/es/)\n"
+"Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/critiquebrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.4.0\n"
-"Language: es\n"
+"Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:50
 msgid ""
 "Spotify mapping server is unavailable. You will not see an embedded player."
-msgstr "El servidor de mapeo Spotify no está disponible. No verá un reproductor incrustado. "
+msgstr "Spotifys koblingsserver er utilgjengelig. Innebygget spiller utilgjengelig."
 
 #: critiquebrainz/frontend/external/relationships/artist.py:31
 #: critiquebrainz/frontend/external/relationships/place.py:19
@@ -51,7 +53,7 @@ msgstr "Bandcamp"
 #: critiquebrainz/frontend/external/relationships/place.py:28
 #: critiquebrainz/frontend/external/relationships/release_group.py:21
 msgid "Official homepage"
-msgstr "Página oficial"
+msgstr "Offisiell hjemmeside"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:36
 msgid "BBC Music"
@@ -60,7 +62,7 @@ msgstr "BBC Music"
 #: critiquebrainz/frontend/external/relationships/artist.py:48
 #: critiquebrainz/frontend/external/relationships/release_group.py:34
 msgid "Lyrics"
-msgstr "Letra"
+msgstr "Tekster"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:54
 #: critiquebrainz/frontend/external/relationships/release_group.py:40
@@ -81,148 +83,148 @@ msgstr ""
 
 #: critiquebrainz/frontend/external/relationships/release_group.py:22
 msgid "Recording studio"
-msgstr "Estudio de grabación"
+msgstr "Innspillingsstudio"
 
 #: critiquebrainz/frontend/forms/log.py:8
 msgid "You need to specify a reason for taking this action."
-msgstr "Necesita especificar una razón para llevar a cabo esta acción."
+msgstr "Du må oppgi en grunn til å utføre denne handlingen."
 
 #: critiquebrainz/frontend/forms/profile.py:8
 msgid "Display name"
-msgstr "Apodo"
+msgstr "Visningsnavn"
 
 #: critiquebrainz/frontend/forms/profile.py:9
 msgid "Display name field is empty."
-msgstr "Debes completar el campo de Apodo"
+msgstr "Visningsnavn felt er tomt."
 
 #: critiquebrainz/frontend/forms/profile.py:10
 msgid "Display name needs to be at least 3 characters long."
-msgstr "El apodo debe ser mayor a 3 caracteres"
+msgstr "Visningsnavn må være minst 3 tegn."
 
 #: critiquebrainz/frontend/forms/profile.py:11
 msgid "Display name needs to be at most 64 characters long."
-msgstr "El apodo puede tener hasta 64 caracteres"
+msgstr "Visningsnavn kan ikke være mer enn 64 tegn."
 
 #: critiquebrainz/frontend/forms/profile.py:12
 #: critiquebrainz/frontend/templates/user/info.html:22
 msgid "Email"
-msgstr "Email"
+msgstr "E-post"
 
 #: critiquebrainz/frontend/forms/profile.py:14
 msgid "Email field is not a valid email address."
-msgstr "El Email ingresado no es valido"
+msgstr "E-post felt er ikke en godkjent e-post adresse."
 
 #: critiquebrainz/frontend/forms/profile.py:15
 msgid "Show my Gravatar"
-msgstr "Mostrar mi Gravatar"
+msgstr "Vis Gravatar"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
-msgstr "Nombre de aplicación"
+msgstr "Søknadsnavn"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:8
 msgid "Application name field is empty."
-msgstr "Debes completar el campo de Nombre de aplicación. "
+msgstr "Applikasjonsnavnet er tomt"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:9
 msgid "Application name needs to be at least 3 characters long."
-msgstr "El nombre de aplicación de ser mayor a 3 caracteres. "
+msgstr "Applikasjonsnavnet må være på minst 3 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:10
 msgid "Application name needs to be at most 64 characters long."
-msgstr "El nombre de aplicación puede tener hasta 64 caracteres."
+msgstr "Appliasjonsnavnet må være på maksimum 64 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:11
 #: critiquebrainz/frontend/templates/oauth/prompt.html:17
 msgid "Description"
-msgstr "Descripcion"
+msgstr "Beskrivelse"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:12
 msgid "Client description field is empty."
-msgstr "Debes completar el campo de Descripción del cliente. "
+msgstr "Søknadsbeskrivelsen er tom"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:13
 msgid "Client description needs to be at least 3 characters long."
-msgstr "La descripción del cliente debe ser mayor a 3 caracteres. "
+msgstr "Søknadsbeskrivelsen må være på minst 3 bokstaver."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:14
 msgid "Client description needs to be at most 512 characters long."
-msgstr "La descripción del cliente puede tener hasta 512 caracteres. "
+msgstr "Søknadsbeskrivelsen må være på maksimum 512 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:15
 msgid "Homepage"
-msgstr "Página de inicio"
+msgstr "Hjemmeside"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:16
 msgid "Homepage field is empty."
-msgstr "Debes completar el campo de Página de inicio. "
+msgstr "Hjemmeside felt er tomt."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:17
 msgid "Homepage is not a valid URI."
-msgstr "La página de inicio no es un URL válido. "
+msgstr "Hjemmeside er ikke en godkjent URI."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:18
 msgid "Authorization callback URL"
-msgstr ""
+msgstr "Autorisasjonstilbakekallingsadresse"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:19
 msgid "Authorization callback URL field is empty."
-msgstr ""
+msgstr "Autorisasjonstilbakekallingsadressen er tom"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:20
 msgid "Authorization callback URL is invalid."
-msgstr ""
+msgstr "Autorisasjonstilbakekallingsadressen er ugyldig"
 
 #: critiquebrainz/frontend/forms/review.py:34
 msgid "Text"
-msgstr "Texto"
+msgstr "Tekst"
 
 #: critiquebrainz/frontend/forms/review.py:35
 msgid "Review is empty!"
-msgstr "¡No has añadido una reseña!"
+msgstr "Anmeldelsen er tom!"
 
 #: critiquebrainz/frontend/forms/review.py:37
 #, python-format
 msgid "Review length needs to be between %(min)d and %(max)d characters."
-msgstr "La reseña debe tener entre %(min)d y %(max)d caracteres."
+msgstr "Anmeldelsen må å være mellom %(min)d og %(max)d tegn."
 
 #: critiquebrainz/frontend/forms/review.py:41
 msgid ""
 "Allow commercial use of this review (<a "
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
 "target=\"_blank\">CC BY-SA 3.0 license</a>)"
-msgstr "Permitir el uso comercial de esta reseña (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
+msgstr "Tillat kommersiell bruk av denne anmeldelsen (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 
 #: critiquebrainz/frontend/forms/review.py:42
 msgid ""
 "Do not allow commercial use of this review, unless approved by MetaBrainz "
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
-msgstr "No deseo permitir el uso comercial de esta reseña, salvo cuando lo permita la MetaBrainz Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
+msgstr "Ikke tillat kommersiell bruk av denne anmeldelsen, med mindre godkjenning fra MetaBrainz Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 lisens</a>) foreligger."
 
 #: critiquebrainz/frontend/forms/review.py:44
 msgid "You need to choose a license!"
-msgstr "Necesita escoger una licencia!"
+msgstr "Du må velge en lisens!"
 
 #: critiquebrainz/frontend/forms/review.py:45
 #: critiquebrainz/frontend/forms/review.py:54
 msgid "You need to accept the license agreement!"
-msgstr "Debes aceptar los acuerdos de licencia "
+msgstr "Du må godta lisensvilkårene!"
 
 #: critiquebrainz/frontend/login/__init__.py:19
 msgid "Please sign in to access this page."
-msgstr "Debes iniciar sesión para acceder a esta página."
+msgstr "Logg inn for å få tilgang til denne siden."
 
 #: critiquebrainz/frontend/login/__init__.py:46
 msgid "You must be an administrator to view this page."
-msgstr "Debe ser un administrador para ver esta página. "
+msgstr "Du må være administrator for å ha tilgang til denne siden."
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/mapping/confirm.html:14
 #: critiquebrainz/frontend/templates/mapping/report.html:14
 #, python-format
 msgid "%(album)s by %(artist)s"
-msgstr "%(album)s por %(artist)s"
+msgstr "%(album)s av %(artist)s"
 
 #: critiquebrainz/frontend/templates/entity_review.html:4
 #: critiquebrainz/frontend/templates/log/action.html:5
@@ -233,14 +235,14 @@ msgstr "%(album)s por %(artist)s"
 #: critiquebrainz/frontend/templates/review/report.html:4
 #: critiquebrainz/frontend/templates/user/reviews.html:31
 msgid "[Unknown release group]"
-msgstr "[Grupo de estreno desconocido]"
+msgstr "[Ukjent utgivelsesgruppe]"
 
 #: critiquebrainz/frontend/templates/entity_review.html:5
 #: critiquebrainz/frontend/templates/reports/reports_results.html:11
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:8
 #: critiquebrainz/frontend/templates/user/reviews.html:35
 msgid "[Unknown artist]"
-msgstr "[Artista desconocido]"
+msgstr "[Ukjent artist]"
 
 #: critiquebrainz/frontend/templates/entity_review.html:7
 #: critiquebrainz/frontend/templates/review/entity/event.html:18
@@ -256,7 +258,7 @@ msgstr "%(event)s"
 #: critiquebrainz/frontend/templates/review/modify/event.html:8
 #: critiquebrainz/frontend/templates/user/reviews.html:38
 msgid "[Unknown event]"
-msgstr "[Evento desconocido]"
+msgstr "[Ukjent arrangement]"
 
 #: critiquebrainz/frontend/templates/entity_review.html:9
 #: critiquebrainz/frontend/templates/review/entity/place.html:23
@@ -271,22 +273,22 @@ msgstr "%(place)s"
 #: critiquebrainz/frontend/templates/review/modify/place.html:8
 #: critiquebrainz/frontend/templates/user/reviews.html:49
 msgid "[Unknown place]"
-msgstr "[Lugar desconocido]"
+msgstr "[Ukjent sted]"
 
 #: critiquebrainz/frontend/templates/footer.html:5
 msgid "Admin zone:"
-msgstr "Zona del administrador:"
+msgstr "Administratorsone:"
 
 #: critiquebrainz/frontend/templates/footer.html:6
 msgid "Reports"
-msgstr "Reportes"
+msgstr "Rapporter"
 
 #: critiquebrainz/frontend/templates/footer.html:7
 #: critiquebrainz/frontend/templates/footer.html:34
 #: critiquebrainz/frontend/templates/log/browse.html:3
 #: critiquebrainz/frontend/templates/log/browse.html:6
 msgid "Moderation log"
-msgstr ""
+msgstr "Moderasjonslogg"
 
 #: critiquebrainz/frontend/templates/event/entity.html:59
 #: critiquebrainz/frontend/templates/footer.html:16
@@ -298,40 +300,40 @@ msgstr ""
 #: critiquebrainz/frontend/templates/user/info.html:36
 #: critiquebrainz/frontend/templates/user/reviews.html:3
 msgid "Reviews"
-msgstr "Reseñas"
+msgstr "Anmeldinger"
 
 #: critiquebrainz/frontend/templates/event/entity.html:19
 #: critiquebrainz/frontend/templates/footer.html:18
 #: critiquebrainz/frontend/templates/navbar.html:37
 #: critiquebrainz/frontend/templates/place/entity.html:19
 msgid "Write a review"
-msgstr "Escribir reseña"
+msgstr "Skriv en anmeldelse"
 
 #: critiquebrainz/frontend/templates/footer.html:22
 msgid "Developers"
-msgstr "Desarrolladores"
+msgstr "Utviklere"
 
 #: critiquebrainz/frontend/templates/footer.html:24
 msgid "Web API"
-msgstr ""
+msgstr "Web API"
 
 #: critiquebrainz/frontend/templates/footer.html:25
 msgid "Source code"
-msgstr "Código fuente"
+msgstr "Kildekode"
 
 #: critiquebrainz/frontend/templates/footer.html:26
 msgid "Data dumps"
-msgstr ""
+msgstr "Datadump"
 
 #: critiquebrainz/frontend/templates/footer.html:30
 #: critiquebrainz/frontend/templates/index/about.html:3
 #: critiquebrainz/frontend/templates/index/about.html:6
 msgid "About the project"
-msgstr "Acerca del proyecto"
+msgstr "Om prosjektet"
 
 #: critiquebrainz/frontend/templates/footer.html:32
 msgid "Blog"
-msgstr "Blog"
+msgstr "Blogg"
 
 #: critiquebrainz/frontend/templates/footer.html:33
 #: critiquebrainz/frontend/templates/moderators/moderators.html:3
@@ -342,53 +344,53 @@ msgstr ""
 #: critiquebrainz/frontend/templates/footer.html:41
 #: critiquebrainz/frontend/templates/navbar.html:40
 msgid "Language"
-msgstr "Lenguaje"
+msgstr "Språk"
 
 #: critiquebrainz/frontend/templates/footer.html:52
 #, python-format
 msgid "Project of the %(metabrainz_fdn)s"
-msgstr "Proyecto del %(metabrainz_fdn)s"
+msgstr "%(metabrainz_fdn)s Prosjekt"
 
 #: critiquebrainz/frontend/templates/macros.html:18
 msgid "Modify profile info and delete your profile."
-msgstr "Modifique la información del perfil y elimine su perfil. "
+msgstr "Rediger profilinformasjon og slett profilen din."
 
 #: critiquebrainz/frontend/templates/macros.html:18
 msgid "Profile data"
-msgstr "Datos del perfil"
+msgstr "Profildata"
 
 #: critiquebrainz/frontend/templates/macros.html:21
 msgid "Create and modify your reviews."
-msgstr "Cree y modifique sus reseñas."
+msgstr "Opprett og rediger dine anmeldelser."
 
 #: critiquebrainz/frontend/templates/macros.html:23
 msgid "Modify your applications (create, edit, delete)."
-msgstr "Modifique sus aplicaciones (cree, edite, elimine)."
+msgstr "Rediger søknadene dine (opprett, endre, slett)."
 
 #: critiquebrainz/frontend/templates/macros.html:23
 #: critiquebrainz/frontend/templates/navbar.html:29
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
 msgid "Applications"
-msgstr "Aplicaciones"
+msgstr "Søknader"
 
 #: critiquebrainz/frontend/templates/macros.html:26
 msgid ""
 "Manage access to your profile for other apps (can allow complete access to "
 "your profile and remove existing access authorizations)."
-msgstr "Administre el acceso a su perfil para otras aplicaciones (puede permitir el acceso completo a su perfil y puede remover autorizaciones de acceso existentes)."
+msgstr "Administrér tilgang til profilen din for andre apper (du kan tillate full tilgang til profilen din eller fjerne eksisterende rettighetstildelinger)"
 
 #: critiquebrainz/frontend/templates/macros.html:26
 msgid "Authorization"
-msgstr "Autorización"
+msgstr "Autorisering"
 
 #: critiquebrainz/frontend/templates/macros.html:29
 msgid "Submit and delete your votes."
-msgstr "Envie y elimine sus votos. "
+msgstr "Send inn eller fjern vurderinger."
 
 #: critiquebrainz/frontend/templates/macros.html:29
 msgid "Review votes"
-msgstr "Votos de las reseñas"
+msgstr "Anmeldingsstemmer"
 
 #: critiquebrainz/frontend/templates/macros.html:39
 #: critiquebrainz/frontend/templates/navbar.html:57
@@ -398,7 +400,7 @@ msgstr "Votos de las reseñas"
 #: critiquebrainz/frontend/templates/search/selector.html:13
 #: critiquebrainz/frontend/templates/search/selector.html:52
 msgid "Event"
-msgstr "Evento"
+msgstr "Arrangement "
 
 #: critiquebrainz/frontend/templates/macros.html:46
 #: critiquebrainz/frontend/templates/navbar.html:58
@@ -408,31 +410,31 @@ msgstr "Evento"
 #: critiquebrainz/frontend/templates/search/index.html:29
 #: critiquebrainz/frontend/templates/search/selector.html:72
 msgid "Place"
-msgstr "Lugar"
+msgstr "Sted"
 
 #: critiquebrainz/frontend/templates/macros.html:53
 #: critiquebrainz/frontend/templates/search/selector.html:10
 msgid "Release Group"
-msgstr "Grupo de estreno"
+msgstr "Utgivelsesgruppe"
 
 #: critiquebrainz/frontend/templates/macros.html:69
 #, python-format
 msgid "Review by %(user)s"
-msgstr "Reseña de %(user)s"
+msgstr "Anmeldelse av %(user)s"
 
 #: critiquebrainz/frontend/templates/macros.html:79
 msgid "View Spotify mapping information"
-msgstr "Ver la información de mapeo de Spotify"
+msgstr "Vis Spotifys sammenkoblingsinformasjon"
 
 #: critiquebrainz/frontend/templates/macros.html:85
 msgid ""
 "We don't have a mapping between this release group and Spotify. Please help "
 "us find the right album."
-msgstr "No tenemos un mapeo entre este grupo de estreno y Spotify. Por favor, ayúdenos a encontrar el álbum correcto. "
+msgstr "Vi har ingen kobling mellom denne utgivelsesgruppen og Spotify. Hjelp oss med å finne det riktige albumet."
 
 #: critiquebrainz/frontend/templates/macros.html:89
 msgid "Match this!"
-msgstr "¡Una esto!"
+msgstr "Sammenføy denne!"
 
 #: critiquebrainz/frontend/templates/macros.html:105
 msgid "(none)"
@@ -440,25 +442,25 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/navbar.html:6
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Skru på navigering"
 
 #: critiquebrainz/frontend/templates/login/index.html:3
 #: critiquebrainz/frontend/templates/login/index.html:6
 #: critiquebrainz/frontend/templates/navbar.html:21
 msgid "Sign in"
-msgstr "Iniciar sesión"
+msgstr "Logg inn"
 
 #: critiquebrainz/frontend/templates/navbar.html:28
 msgid "Profile"
-msgstr "Perfil"
+msgstr "Profil"
 
 #: critiquebrainz/frontend/templates/navbar.html:31
 msgid "Sign out"
-msgstr "Cerrar sesión"
+msgstr "Logg ut"
 
 #: critiquebrainz/frontend/templates/navbar.html:36
 msgid "Browse reviews"
-msgstr "Buscar reseñas"
+msgstr "Bla i anmeldelser "
 
 #: critiquebrainz/frontend/templates/navbar.html:51
 #: critiquebrainz/frontend/templates/search/index.html:7
@@ -468,7 +470,7 @@ msgstr "Buscar reseñas"
 #: critiquebrainz/frontend/templates/search/selector.html:60
 #: critiquebrainz/frontend/templates/search/selector.html:80
 msgid "Search"
-msgstr "Búsqueda"
+msgstr "Søk"
 
 #: critiquebrainz/frontend/templates/navbar.html:55
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:8
@@ -479,7 +481,7 @@ msgstr "Búsqueda"
 #: critiquebrainz/frontend/templates/search/selector.html:106
 #: critiquebrainz/frontend/templates/search/selector.html:114
 msgid "Artist"
-msgstr "Artista"
+msgstr "Artist"
 
 #: critiquebrainz/frontend/templates/navbar.html:56
 #: critiquebrainz/frontend/templates/review/browse.html:13
@@ -489,127 +491,127 @@ msgstr "Artista"
 #: critiquebrainz/frontend/templates/search/selector.html:32
 #: critiquebrainz/frontend/templates/search/selector.html:107
 msgid "Release group"
-msgstr "Grupo de estreno"
+msgstr "Utgivelsesgruppe"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:51
 msgid "Discography"
-msgstr "Discografía"
+msgstr "Diskografi"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:54
 msgid "Albums"
-msgstr "Álbumes"
+msgstr "Albumer"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:57
 msgid "Singles"
-msgstr "Sencillos"
+msgstr "Singler"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:60
 msgid "EPs"
-msgstr "EPs"
+msgstr "EPer"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:63
 msgid "Broadcasts"
-msgstr "Transmisiones"
+msgstr "Kringkastinger"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:66
 msgid "Other releases"
-msgstr "Otras publicaciones"
+msgstr "Andre utgivelser"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:70
 msgid "No releases found"
-msgstr "Ningún lanzamiento encontrado"
+msgstr "Ingen utgivelser funnet "
 
 #: critiquebrainz/frontend/templates/artist/entity.html:79
 #, python-format
 msgid "%(num)d review"
 msgid_plural "%(num)d reviews"
-msgstr[0] "%(num)d reseña"
-msgstr[1] "%(num)d reseñas"
+msgstr[0] "%(num)d anmeldelse"
+msgstr[1] "%(num)d anmeldelser"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:102
 #: critiquebrainz/frontend/templates/review/browse.html:49
 msgid "Previous"
-msgstr "Anterior"
+msgstr "Forrige"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:105
 #: critiquebrainz/frontend/templates/review/browse.html:52
 msgid "Next"
-msgstr "Siguiente"
+msgstr "Neste"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:115
 msgid "Artist information"
-msgstr "Información del artista"
+msgstr "Artistinformasjon"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:121
 msgid "Member of"
-msgstr "Miembro de"
+msgstr "Medlem av"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:123
 msgid "Members"
-msgstr "Miembros"
+msgstr "Medlemmer"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:132
 #: critiquebrainz/frontend/templates/artist/entity.html:152
 msgid "View all..."
-msgstr "Ver todo…"
+msgstr "Vis alle..."
 
 #: critiquebrainz/frontend/templates/artist/entity.html:140
 msgid "Former member of"
-msgstr "Antiguo miembro de"
+msgstr "Tidligere medlem av"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:142
 msgid "Former members"
-msgstr "Antiguos miembros"
+msgstr "Tidligere medlemmer"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:159
 #: critiquebrainz/frontend/templates/index/guidelines.html:151
 #: critiquebrainz/frontend/templates/place/entity.html:96
 msgid "External links"
-msgstr "Enlaces externos"
+msgstr "Eksterne linker"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:179
 #: critiquebrainz/frontend/templates/event/entity.html:125
 #: critiquebrainz/frontend/templates/place/entity.html:126
 msgid "Edit on MusicBrainz"
-msgstr "Editar en MusicBrainz"
+msgstr "Rediger hos MusicBrainz"
 
 #: critiquebrainz/frontend/templates/errors/400.html:2
 msgid "Invalid request"
-msgstr "Petición inválida "
+msgstr "Ugyldig forespørsel"
 
 #: critiquebrainz/frontend/templates/errors/401.html:2
 msgid "Unauthorized"
-msgstr "No autorizado"
+msgstr "Uautorisert"
 
 #: critiquebrainz/frontend/templates/errors/403.html:2
 msgid "Access denied"
-msgstr "Acceso denegado"
+msgstr "Ingen tilgang"
 
 #: critiquebrainz/frontend/templates/errors/404.html:2
 msgid "Page not found"
-msgstr "Página no encontrada"
+msgstr "Siden finnes ikke"
 
 #: critiquebrainz/frontend/templates/errors/500.html:2
 msgid "Internal server error"
-msgstr "Error en el servidor interno"
+msgstr "Intern serverfeil"
 
 #: critiquebrainz/frontend/templates/errors/503.html:2
 msgid "Service unavailable"
-msgstr "Servicio no disponible"
+msgstr "Tjeneste utilgjengelig"
 
 #: critiquebrainz/frontend/templates/errors/base.html:9
 msgid "Back to home page"
-msgstr "Regresar a página de inicio"
+msgstr "Tilbake til hjemmesiden"
 
 #: critiquebrainz/frontend/templates/event/entity.html:24
 #: critiquebrainz/frontend/templates/place/entity.html:24
 msgid "Edit my review"
-msgstr "Modificar mi reseña"
+msgstr "Endre min anmeldelse"
 
 #: critiquebrainz/frontend/templates/event/entity.html:49
 #: critiquebrainz/frontend/templates/review/entity/event.html:47
 msgid "Held at"
-msgstr ""
+msgstr "Holdt ved"
 
 #: critiquebrainz/frontend/templates/event/entity.html:61
 #: critiquebrainz/frontend/templates/index/index.html:33
@@ -618,12 +620,12 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/browse.html:22
 #: critiquebrainz/frontend/templates/user/reviews.html:7
 msgid "No reviews found"
-msgstr "No hemos encontrado reseñas."
+msgstr "Ingen anmeldelser funnet"
 
 #: critiquebrainz/frontend/templates/event/entity.html:67
 #: critiquebrainz/frontend/templates/place/entity.html:58
 msgid "Published on"
-msgstr "Publicado en"
+msgstr "Publisert på"
 
 #: critiquebrainz/frontend/templates/event/entity.html:68
 #: critiquebrainz/frontend/templates/place/entity.html:59
@@ -631,39 +633,39 @@ msgstr "Publicado en"
 #: critiquebrainz/frontend/templates/review/revisions.html:26
 #: critiquebrainz/frontend/templates/user/reviews.html:17
 msgid "Votes (+/-)"
-msgstr "Votos (+/-)"
+msgstr "Stemmer (+/-)"
 
 #: critiquebrainz/frontend/templates/event/entity.html:76
 #: critiquebrainz/frontend/templates/place/entity.html:67
 #, python-format
 msgid "by %(reviewer)s"
-msgstr "por %(reviewer)s"
+msgstr "av %(reviewer)s"
 
 #: critiquebrainz/frontend/templates/event/entity.html:103
 msgid "Event information"
-msgstr "Información del evento"
+msgstr "Arrangementsinformasjon"
 
 #: critiquebrainz/frontend/templates/index/about.html:8
 msgid "What is CritiqueBrainz?"
-msgstr "¿Qué es CritiqueBrainz?"
+msgstr "Hva er CritiqueBrainz?"
 
 #: critiquebrainz/frontend/templates/index/about.html:10
 msgid ""
 "<strong>CritiqueBrainz is a repository for Creative Commons licensed music reviews.</strong>\n"
 "  Here you can read what others have written about an album or event and write your own review!\n"
 "  It is based on data from MusicBrainz - open music encyclopedia."
-msgstr "<strong>CritiqueBrainz es un archivo de reseñas musicales con licencia Creative Commons.</strong>\n¡Aquí puede leer lo que otros han escrito acerca de un álbum o evento y escribir su propia reseña!\nEstá basado en los datos de MusicBrainz - enciclopedia pública de música."
+msgstr "<strong>CritiqueBrainz er et depositum for Creative Commons lisensierte musikkanmeldelser .</strong>\nHer kan du lese hva andre har skrevet om et album eller arrangement, og skrive dine egne anmeldelser!\nDet er basert på data fra MusicBrainz - det åpne musikkleksikon"
 
 #: critiquebrainz/frontend/templates/index/about.html:15
 msgid "What is it for?"
-msgstr "¿Para qué sirve?"
+msgstr "Hva brukes det til?"
 
 #: critiquebrainz/frontend/templates/index/about.html:17
 msgid ""
 "Projects like Wikipedia and MusicBrainz are good at aggregating information about\n"
 "  music, but not suited for expressing opinions about it. That's not their purpose.\n"
 "  CritiqueBrainz fills the gap between music critics and raw data."
-msgstr "Proyectos como Wikipedia y MusicBrainz son buenos para reunir información sobre\nmúsica, pero no están hechos para expresar opiniones sobre ésta. No es su propósito.\nCritiqueBrainz llena el espacio entre crítica musical y datos puros."
+msgstr "Prosjekter som Wikipedia og MusicBrainz er gode til å samle inn informasjon om\nmusikk, men ikke like egnet til å uttrykke meninger om dette. Det er ikke deres formål.\nCritiqueBrainz fyller hullet mellom musikk-kritikere og rå data."
 
 #: critiquebrainz/frontend/templates/index/about.html:22
 msgid ""
@@ -671,13 +673,13 @@ msgid ""
 "  and contribute. If you are good at writing and want to share your thoughts about\n"
 "  an album - feel free to write a new review. If that's not your thing and you just\n"
 "  want to read opinions - that's fine too."
-msgstr "Esta es una plataforma pública. Esto significa que todos - incluido usted - puede participar\ny contribuir. Si es bueno al escribir y quiere compartir sus opiniones  sobre\nun álbum - por favor, escriba una nueva reseña. Si no es lo suyo y sólo \nquiere leer las reseñas - también está bien."
+msgstr "Dette er en åpen plattform. Det betyr alle - du også - kan delta og bidra.\nHvis du er god til å skrive og vil dele dine tanker om et album - skriv gjerne en ny anmeldelse.\nHvis det er ikke er din greie, \nog du bare ønsker å lese meninger - det er greit det også."
 
 #: critiquebrainz/frontend/templates/index/about.html:28
 msgid ""
 "After reading a review you can mark it as useful or not. That will help other\n"
 "  music enthusiasts like you find good reviews."
-msgstr "Después de leer una reseña puede marcarla como útil o no. Esto ayudará a otros\ncomo usted a encontrar buenas reseñas."
+msgstr "Etter å ha lest en anmeldelse kan du markere den som nyttig eller ikke.\nDette vil hjelpe andre musikkentusiaster, som deg selv, til å finne gode anmeldelser."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:3
 #: critiquebrainz/frontend/templates/index/guidelines.html:7
@@ -904,60 +906,60 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/index.html:10
 msgid "Welcome to CritiqueBrainz!"
-msgstr "¡CritiqueBrainz te da la bienvenida!"
+msgstr "Velkommen til CritiqueBrainz!"
 
 #: critiquebrainz/frontend/templates/index/index.html:12
 msgid ""
 "CritiqueBrainz is a repository for Creative Commons licensed music reviews.\n"
 "        Here you can read what other people have written about an album or event and write your own review!"
-msgstr "CritiqueBrainz es un archivo de reseñas musicales con licencia Creative Commons.\n¡Aquí puede leer lo que otros han escrito sobre un álbum o un evento y escribir su propia reseña!"
+msgstr "CritiqueBrainz er en samling for musikkanmeldelser med Creative Commons lisens.\nHer kan du lese hva andre folk har skrevet om et album et arrangement, eller skrive din egen anmeldelse!"
 
 #: critiquebrainz/frontend/templates/index/index.html:16
 msgid ""
 "CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
-msgstr "CritiqueBrainz está basado en los datos de MusicBrainz - enciclopedia pública de música.\n<br/>Todos - incluido usted - puede participar y contribuir."
+msgstr "CritiqueBrainz er basert på data fra MusicBrainz - det åpne musikkleksikon.\n<br/>Alle - også du - kan delta og bidra."
 
 #: critiquebrainz/frontend/templates/index/index.html:22
 #: critiquebrainz/frontend/templates/user/info.html:35
 msgid "Statistics"
-msgstr "Estadísticas"
+msgstr "Statistikker"
 
 #: critiquebrainz/frontend/templates/index/index.html:24
 #, python-format
 msgid "Reviews: %(reviews_count)s"
-msgstr "Reseñas: %(reviews_count)s"
+msgstr "Anmeldelser: %(reviews_count)s"
 
 #: critiquebrainz/frontend/templates/index/index.html:25
 #, python-format
 msgid "Users: %(users_count)s"
-msgstr "Usuarios: %(users_count)s"
+msgstr "Brukere: %(users_count)s"
 
 #: critiquebrainz/frontend/templates/index/index.html:31
 msgid "Popular reviews"
-msgstr "Reseñas populares"
+msgstr "Populære anmeldelser"
 
 #: critiquebrainz/frontend/templates/index/index.html:56
 msgid "Recent reviews"
-msgstr "Reseñas más recientes"
+msgstr "Nye anmeldelser"
 
 #: critiquebrainz/frontend/templates/index/index.html:77
 msgid "View all reviews..."
-msgstr "Ver todas las reseñas…"
+msgstr "Vis alle anmeldelser..."
 
 #: critiquebrainz/frontend/templates/log/action.html:7
 #, python-format
 msgid "Hide %(user)s's review of \"%(rg)s\""
-msgstr "Ocultar reseña de \"%(rg)s\" hecha por %(user)s"
+msgstr "Skjul %(user)ss anmeldelse av \"%(rg)s\""
 
 #: critiquebrainz/frontend/templates/log/action.html:10
 #, python-format
 msgid "Block %(user)s"
-msgstr "Bloquear a %(user)s"
+msgstr "Blokkér %(user)s"
 
 #: critiquebrainz/frontend/templates/log/action.html:32
 msgid "Please provide a reason for taking this action (required)"
-msgstr "Por favor, dé una razón para llevar a cabo esta acción (requerida)"
+msgstr "Oppgi en grunn for å utføre denne handlingen (påkrevd)"
 
 #: critiquebrainz/frontend/templates/log/action.html:36
 #: critiquebrainz/frontend/templates/mapping/confirm.html:27
@@ -965,59 +967,59 @@ msgstr "Por favor, dé una razón para llevar a cabo esta acción (requerida)"
 #: critiquebrainz/frontend/templates/review/delete.html:24
 #: critiquebrainz/frontend/templates/review/report.html:27
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Avbryt"
 
 #: critiquebrainz/frontend/templates/log/browse.html:11
 msgid "Load older logs"
-msgstr "Cargar registros previos "
+msgstr "Hent eldre logger"
 
 #: critiquebrainz/frontend/templates/log/browse.html:13
 msgid "Loading older logs..."
-msgstr "Cargando registros previos…"
+msgstr "Henter eldre logger..."
 
 #: critiquebrainz/frontend/templates/log/browse.html:38
 msgid "Failed to load older logs!"
-msgstr "¡No se han podido cargar los registros previos!"
+msgstr "Feilet ved lasting av eldre logger"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:6
 msgid "review"
-msgstr "reseña"
+msgstr "anmeldelse"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:18
 #, python-format
 msgid "%(admin)s archived a %(review)s written by %(user)s"
-msgstr "%(admin)s ha almacenado una %(review)s escrita por %(user)s"
+msgstr "%(admin)s arkiverte %(review)s skrevet av %(user)s"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:23
 #, python-format
 msgid "%(admin)s blocked %(user)s"
-msgstr "%(admin)s ha bloqueado a %(user)s"
+msgstr "%(user)s blokkert av %(admin)s"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:27
 msgid "Reason:"
-msgstr "Motivo:"
+msgstr "Begrunnelse:"
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
 "To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
-msgstr "Para ingresar, utilice su cuenta MusicBrainz y permita que CritiqueBrainz tenga acceso a los datos de su perfil."
+msgstr "For å logge inn, bruk MusicBrainz-kontoen din, og tildel CritiqueBrainz tilgang til profildataene dine."
 
 #: critiquebrainz/frontend/templates/login/index.html:11
 msgid "Sign in with MusicBrainz"
-msgstr "Iniciar sesión con MusicBrainz"
+msgstr "Logg inn med MusicBrainz"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"
-msgstr "Nueva confirmación de mapeo Spotify"
+msgstr "Bekreftelse av ny Spotify kobling"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:7
 msgid "Spotify album mapping confirmation"
-msgstr "Confirmación de mapeo del álbum en Spotify."
+msgstr "Konfigurasjon av Spotifys albumssammenkobling "
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:9
 msgid "Are you sure you want to create this mapping?"
-msgstr "¿Seguro que quiere crear este mapeo?"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:18
 #: critiquebrainz/frontend/templates/mapping/report.html:18
@@ -1027,24 +1029,24 @@ msgstr "Spotify"
 #: critiquebrainz/frontend/templates/mapping/confirm.html:19
 #: critiquebrainz/frontend/templates/mapping/report.html:19
 msgid "URI:"
-msgstr ""
+msgstr "URI:"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:26
 msgid "Create"
-msgstr "Crear"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/mapping/report.html:4
 #: critiquebrainz/frontend/templates/mapping/report.html:7
 msgid "Incorrect mapping reporting"
-msgstr ""
+msgstr "Feilkoblingsrapportering"
 
 #: critiquebrainz/frontend/templates/mapping/report.html:9
 msgid "Are you sure you want to report incorrect mapping?"
-msgstr "¿Seguro que quiere reportar mapeo incorrecto?"
+msgstr "Er du sikker på at du vil rapportere en feilsammenkobling?"
 
 #: critiquebrainz/frontend/templates/mapping/report.html:26
 msgid "Report incorrect mapping"
-msgstr "Reportar mapeo incorrecto"
+msgstr "Rapportér feiltilkobling"
 
 #: critiquebrainz/frontend/templates/moderators/moderators.html:8
 msgid "These users respond to reports and make sure that spammers don't spam."
@@ -1052,16 +1054,16 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
-msgstr "Autorización OAuth"
+msgstr "OAuth autorisering"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:7
 #, python-format
 msgid "Do you want to give access to your account to %(name)s?"
-msgstr "¿Seguro que quiere dar acceso a su cuenta a %(name)s?"
+msgstr "Vil du gi %(name)s tilgang til kontoen din?"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:9
 msgid "You can revoke access at any time in your profile settings."
-msgstr "En cualquier momento puede revocar el acceso en su configuración de perfil.  "
+msgstr "Du kan tilbakekalle tilgangen når som helst i profilinnstillingene dine."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:15
 #: critiquebrainz/frontend/templates/profile/applications/index.html:20
@@ -1072,37 +1074,37 @@ msgstr "En cualquier momento puede revocar el acceso en su configuración de per
 #: critiquebrainz/frontend/templates/search/selector.html:113
 #: critiquebrainz/frontend/templates/search/selector.html:120
 msgid "Name"
-msgstr "Nombre"
+msgstr "Navn"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:16
 #: critiquebrainz/frontend/templates/profile/applications/index.html:21
 #: critiquebrainz/frontend/templates/profile/applications/index.html:55
 msgid "Website"
-msgstr "Sitio web"
+msgstr "Nettside"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:23
 #, python-format
 msgid ""
 "%(client)s is requesting permission to access the following parts of your "
 "profile:"
-msgstr "%(client)s está solicitando permiso para accesar a las siguientes partes de su perfil:"
+msgstr "%(client)s ber om tilgang til følgende deler av profilen din:"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:30
 #, python-format
 msgid "%(client)s does not require any special permissions."
-msgstr "%(client)s no requiere permisos especiales. "
+msgstr "%(client)s krever ingen spesielle tillatelser.."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:36
 msgid "Allow access"
-msgstr "Permita el acceso"
+msgstr "Gi tilgang"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:37
 msgid "No thanks"
-msgstr "No, gracias"
+msgstr "Nei takk"
 
 #: critiquebrainz/frontend/templates/place/entity.html:94
 msgid "Place information"
-msgstr "Información del lugar"
+msgstr "Stedsinformasjon"
 
 #: critiquebrainz/frontend/templates/place/entity.html:114
 msgid "Part of"
@@ -1111,159 +1113,159 @@ msgstr ""
 #: critiquebrainz/frontend/templates/profile/delete.html:3
 #: critiquebrainz/frontend/templates/profile/delete.html:6
 msgid "Delete account"
-msgstr "Eliminar cuenta"
+msgstr "Slett konto"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:10
 msgid "Are you sure you want to delete your account?"
-msgstr "¿Seguro que quieres eliminar la cuenta?"
+msgstr "Er du sikker på at du vil slette brukerkontoen din?"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:11
 msgid ""
 "All your data (i.e. reviews, votes, reports) will be purged. You "
 "<strong>cannot</strong> undo this action."
-msgstr "Todos sus datos (i.e. reseñas, votos, reportes) serán depurados. Usted <strong>no podrá</strong> deshacer esta acción.  "
+msgstr "Alle dataene dine (dvs. anmeldelser, vurderinger, rapporter) vil bli forkastet. Du kan <strong>ikke</strong> angre på denne handlingen."
 
 #: critiquebrainz/frontend/templates/profile/delete.html:14
 msgid "Yes, I want to delete my account"
-msgstr "Sí, quiero eliminar mi cuenta."
+msgstr "Jo. jeg vil slette kontoen min"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:15
 #: critiquebrainz/frontend/templates/review/entity/base.html:61
 msgid "No"
-msgstr "No."
+msgstr "Nei"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:3
 #: critiquebrainz/frontend/templates/profile/edit.html:6
 #: critiquebrainz/frontend/templates/user/base.html:13
 msgid "Edit profile"
-msgstr "Editar perfil"
+msgstr "Rediger profil"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:36
 msgid "Save"
-msgstr "Guardar"
+msgstr "Lagre"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:41
 msgid "Delete my account"
-msgstr "Eliminar mi cuenta"
+msgstr "Slett min brukerkonto"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:3
 #: critiquebrainz/frontend/templates/profile/applications/create.html:6
 #: critiquebrainz/frontend/templates/profile/applications/index.html:11
 msgid "Create new application"
-msgstr "Crear una nueva aplicación"
+msgstr "Opprett ny søknad"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:37
 msgid "Create application"
-msgstr "Crear aplicación"
+msgstr "Opprett søknad"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:3
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:6
 #, python-format
 msgid "Edit application %(name)s"
-msgstr "Modificar la aplicación %(name)s"
+msgstr "Rediger %(name)s søknaden"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:37
 msgid "Save changes"
-msgstr "Guardar cambios"
+msgstr "Lagre endringer"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:9
 msgid "Your applications"
-msgstr "Sus aplicaciones"
+msgstr "Dine søknader"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:15
 msgid "No applications found"
-msgstr "Ninguna aplicación encontrada"
+msgstr "Ingen søknader funnet"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:22
 msgid "Client ID"
-msgstr "ID del cliente"
+msgstr "Klient ID"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:23
 msgid "Client secret"
-msgstr "Secreto del cliente"
+msgstr "Klient hemmelighet"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:35
 msgid "Modify"
-msgstr "Modificar"
+msgstr "Endre"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:36
 #: critiquebrainz/frontend/templates/user/reviews.html:78
 msgid "Delete"
-msgstr "Eliminar"
+msgstr "Slett"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:43
 #, python-format
 msgid "Developer documentation is available at %(link)s."
-msgstr "La documentación del desarrollador está disponible en %(link)s."
+msgstr "Utviklerdokumentasjon er tilgjengelig på %(link)s."
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:47
 msgid "Authorized applications"
-msgstr "Aplicaciones autorizadas"
+msgstr "Autoriserte søknader"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:49
 msgid "No authorized applications found"
-msgstr "Ninguna aplicación autorizada encontrada"
+msgstr "Ingen autoriserte applikasjoner funnet"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:56
 msgid "Access"
-msgstr "Acceso"
+msgstr "Tilgang"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:75
 msgid "No special requirements"
-msgstr "Ningún requisito especial"
+msgstr "Ingen spesielle krav"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:79
 msgid "Revoke access"
-msgstr "Anular el acceso"
+msgstr "Opphev tilgang"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:3
 #: critiquebrainz/frontend/templates/reports/reports.html:6
 msgid "Recent reports"
-msgstr "Reportes recientes"
+msgstr "Nye rapporter"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:25
 msgid "Reported on"
-msgstr "Reportada el "
+msgstr "Rapportert på"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:26
 msgid "Reported by"
-msgstr "Reportada por"
+msgstr "Rapportert av"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:27
 msgid "Reason"
-msgstr "Motivo"
+msgstr "Grunn"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:28
 msgid "Review"
-msgstr "Reseña"
+msgstr "Anmeldelse"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:29
 msgid "Author"
-msgstr "Autor"
+msgstr "Forfatter"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:30
 msgid "Actions"
-msgstr "Acciones"
+msgstr "Handlinger"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:38
 msgid "Load older reports"
-msgstr "Cargar reportes previos"
+msgstr "Last eldre rapporter"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:40
 msgid "Loading older reports..."
-msgstr "Cargando reportes previos…"
+msgstr "Laster eldre rapporter..."
 
 #: critiquebrainz/frontend/templates/reports/reports.html:65
 msgid "Failed to load older reports!"
-msgstr "¡La carga de reportes previos ha fallado!"
+msgstr "Feil ved lasting av eldre rapporter!"
 
 #: critiquebrainz/frontend/templates/reports/reports_results.html:25
 msgid "Read latest revision"
-msgstr "Leer la última revisión"
+msgstr "Les siste revisjon"
 
 #: critiquebrainz/frontend/templates/review/browse.html:8
 msgid "Ordered by creation date"
-msgstr "Ordenar por fecha de creación"
+msgstr "Sortert etter opprettelsesdato"
 
 #: critiquebrainz/frontend/templates/review/browse.html:11
 msgid "All"
@@ -1271,253 +1273,253 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/compare.html:3
 msgid "Difference between revisions"
-msgstr "Diferencia entre revisiones"
+msgstr "Forskjelligheter mellom revisjoner"
 
 #: critiquebrainz/frontend/templates/review/compare.html:9
 #: critiquebrainz/frontend/templates/review/compare.html:16
 msgid "Revision"
-msgstr "Revisión"
+msgstr "Revisjon"
 
 #: critiquebrainz/frontend/templates/review/compare.html:10
 #: critiquebrainz/frontend/templates/review/compare.html:17
 msgid "as of"
-msgstr ""
+msgstr "siden"
 
 #: critiquebrainz/frontend/templates/review/delete.html:11
 #: critiquebrainz/frontend/templates/review/modify/edit.html:13
 #, python-format
 msgid "Edit review of \"%(entity)s\""
-msgstr "Modificar la reseña de \"%(entity)s\""
+msgstr "Rediger anmeldelse av \"%(entity)s\""
 
 #: critiquebrainz/frontend/templates/review/delete.html:15
 msgid "Deleting review"
-msgstr "Eliminando la reseña"
+msgstr "Sletter anmeldelse"
 
 #: critiquebrainz/frontend/templates/review/delete.html:19
 #, python-format
 msgid "Are you sure you want to delete your review of \"%(entity)s\"?"
-msgstr "¿Seguro que quiere eliminar su reseña de \"%(entity)s\"?"
+msgstr "  Er du sikker på at du vil slette anmeldelse din av \"%(entity)s\"?"
 
 #: critiquebrainz/frontend/templates/review/delete.html:20
 msgid "There is no way to undo this action!"
-msgstr "¡No hay forma de deshacer esta acción!"
+msgstr "Det er ingen måte å angre denne handlingen på!"
 
 #: critiquebrainz/frontend/templates/review/delete.html:23
 msgid "Delete review"
-msgstr "Eliminar reseña"
+msgstr "Fjern anmeldelse"
 
 #: critiquebrainz/frontend/templates/review/report.html:6
 #: critiquebrainz/frontend/templates/review/report.html:9
 #, python-format
 msgid "Report %(user)s's review of \"%(rg)s\""
-msgstr "Reportar la reseña de \"%(rg)s\" hecha por %(user)s"
+msgstr "Rapportér %(user)ss anmeldelse av \"%(rg)s\""
 
 #: critiquebrainz/frontend/templates/review/report.html:23
 msgid "Please provide a description of the violation (required)"
-msgstr "Por favor, dé una descripción de la violación (requerida)"
+msgstr "Vennligst oppgi en beskrivelse av regelbruddet (påkrevd)"
 
 #: critiquebrainz/frontend/templates/review/report.html:26
 msgid "Report review"
-msgstr "Reportar reseña"
+msgstr "Rapportér anmeldelse"
 
 #: critiquebrainz/frontend/templates/review/revision_results.html:3
 #, python-format
 msgid "Revision %(number)s"
-msgstr "Revisión %(number)s"
+msgstr "Revisjon nr %(number)s"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:12
 #, python-format
 msgid "Revisions of Review of \"%(entity)s\" by %(user)s"
-msgstr "Revisiones de la reseña de \"%(entity)s\" por %(user)s"
+msgstr "Revisjoner av %(user)s \"%(entity)s\" anmeldelse"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:16
 #, python-format
 msgid "Revisions of Review by %(user)s"
-msgstr "Revisiones de la reseña por %(user)s"
+msgstr "Revisjoner av %(user)s anmeldelse"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:21
 #: critiquebrainz/frontend/templates/review/revisions.html:25
 #: critiquebrainz/frontend/templates/user/reviews.html:16
 msgid "Created on"
-msgstr "Creada el"
+msgstr "Skrevet"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:28
 msgid "Compare"
-msgstr "Comparar"
+msgstr "Sammenlign"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:35
 msgid "Load older revisions"
-msgstr "Cargar revisiones previas"
+msgstr "Last eldre revisjoner"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:36
 msgid "Loading older revisions..."
-msgstr "Cargando revisiones previas"
+msgstr "Laster eldre revisjoner.."
 
 #: critiquebrainz/frontend/templates/review/revisions.html:62
 msgid "Failed to load older revisions!"
-msgstr "¡La carga de revisiones previas ha fallado!"
+msgstr "Feil ved lasting av eldre revisjoner!"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:75
 msgid "Select two different revisions."
-msgstr "Seleccionar dos diferentes revisiones."
+msgstr "Velg to forskjellige revisjoner."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:15
 msgid "<b>This review has not been published yet!</b> Only you can see it."
-msgstr "<b>¡Esta reseña aún no ha sido publicada!</b>Sólo usted puede verla."
+msgstr "<b>Denne anmeldelsen er ikke ennå publisert!</b> Bare du kan se den."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:17
 #, python-format
 msgid "Published on %(date)s"
-msgstr "Publicado el %(date)s"
+msgstr "Publisert på %(date)s"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:18
 #, python-format
 msgid "Written in %(language)s"
-msgstr "Escrito en %(language)s"
+msgstr "Skrevet på %(language)s"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:24
 msgid "This review has not yet been rated"
-msgstr "Esta reseña aún no ha sido calificada. "
+msgstr "Denne anmeldelsen er ikke vurdert ennå."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:44
 #, python-format
 msgid "This review is licensed under a %(name)s license."
-msgstr "Esta reseña está autorizada por una licencia de %(name)s."
+msgstr "Denne anmeldelsen er lisensiert under en %(name)s lisens."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:46
 #, python-format
 msgid "It was imported from %(source)s."
-msgstr "Fue importado desde %(source)s."
+msgstr "Importert fra %(source)s."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:59
 msgid "Did you find this review useful?"
-msgstr "¿Le parece una reseña útil?"
+msgstr "Synes du anmeldelsen er nyttig?"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:60
 msgid "Yes"
-msgstr "Sí"
+msgstr "Ja"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:64
 msgid "You found this review useful."
-msgstr "Le pareció útil esta reseña."
+msgstr "Du syntes denne anmeldelsen var nyttig"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:66
 msgid "You didn't find this review useful."
-msgstr "No le pareció útil esta reseña."
+msgstr "Du syntes ikke denne anmeldelsen var nyttig"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:68
 msgid "Delete your vote"
-msgstr "Elimine su voto"
+msgstr "Fjern din vurdering"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:73
 msgid "Report abuse"
-msgstr "Reportar abuso"
+msgstr "Rapporter misbruk"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:79
 msgid "Edit this review"
-msgstr "Modificar esta reseña"
+msgstr "Rediger denne anmeldelsen"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:83
 #: critiquebrainz/frontend/templates/review/modify/edit.html:43
 msgid "Delete this review"
-msgstr "Eliminar esta reseña"
+msgstr "Slett denne anmeldelsen"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:88
 #: critiquebrainz/frontend/templates/review/entity/base.html:95
 msgid "View older revisions"
-msgstr "Ver revisiones previas"
+msgstr "Se eldre revisjoner"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:92
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
-msgstr "<a href=\"%(link)s\">Inicie sesión</a> para calificar esta reseña"
+msgstr "<a href=\"%(link)s\">Logg inn</a> for å vurdere denne anmeldelsen"
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:7
 #, python-format
 msgid "Review of \"%(event)s\" by %(user)s"
-msgstr "Reseña de \"%(event)s\" por %(user)s"
+msgstr "Anmeldelse av \"%(event)s\" av %(user)s"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:12
 #, python-format
 msgid "Review of \"%(place)s\" by %(user)s"
-msgstr "Reseña de \"%(place)s\" por %(user)s"
+msgstr "Anmeldelse av \"%(place)s\" av %(user)s"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:18
 msgid "Write"
-msgstr "Escribir"
+msgstr "Skriv"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:19
 msgid "Preview"
-msgstr "Vista preliminar"
+msgstr "Forhåndsvisning"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:21
 #, python-format
 msgid ""
 "You can use <a href=\"%(url)s\" target=\"_blank\">Markdown</a> syntax to "
 "apply custom formatting."
-msgstr ""
+msgstr "Du kan bruke <a href=\"%(url)s\" target=\"_blank\">Markdownsyntaks</a> for å tilpasse formateringen."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:34
 #: critiquebrainz/frontend/templates/review/modify/base.html:105
 msgid "Loading preview..."
-msgstr "Cargando la vista preliminar..."
+msgstr "Laster forhåndsvisning..."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:39
 msgid "Please, specify language of this review:"
-msgstr "Por favor, especificar el idioma de esta reseña:"
+msgstr "Velg anmeldelsens språk:"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:51
 msgid "You cannot change the license after the review is published."
-msgstr "No puede cambiar la licencia después de ser publicada la reseña. "
+msgstr "Du kan ikke endre lisensen etter at en anmeldelse er publisert."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:94
 msgid "Review is empty."
-msgstr "La reseña está vacía. "
+msgstr "Anmeldelsen er tom."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:101
 msgid "Failed to load preview."
-msgstr "La carga del previo ha fallado."
+msgstr "Feil ved lasting av forhåndsvisning."
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:17
 msgid "Editing review"
-msgstr "Modificando la reseña"
+msgstr "Rediger anmeldelse"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:25
 #: critiquebrainz/frontend/templates/user/reviews.html:14
 msgid "Status"
-msgstr "Estado"
+msgstr "Status"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:28
 #: critiquebrainz/frontend/templates/user/reviews.html:61
 msgid "Draft"
-msgstr "Borrador"
+msgstr "Kladd"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:30
 #: critiquebrainz/frontend/templates/user/reviews.html:63
 msgid "Published"
-msgstr "Publicado"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:37
 #: critiquebrainz/frontend/templates/review/modify/write.html:37
 msgid "Publish"
-msgstr "Publicar"
+msgstr "Publisér"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:38
 #: critiquebrainz/frontend/templates/review/modify/write.html:38
 msgid "Save draft"
-msgstr "Guardar borrador"
+msgstr "Lagre kladd"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:40
 msgid "Update"
-msgstr "Actualizar"
+msgstr "Oppdater"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:42
 msgid "Discard changes"
-msgstr "Descartar cambios"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/event.html:15
 msgid "Unknown place"
-msgstr "Lugar desconocido"
+msgstr "Ukjent sted"
 
 #: critiquebrainz/frontend/templates/review/modify/place.html:13
 #: critiquebrainz/frontend/templates/search/index.html:59
@@ -1525,16 +1527,16 @@ msgstr "Lugar desconocido"
 #: critiquebrainz/frontend/templates/search/selector.html:115
 #: critiquebrainz/frontend/templates/search/selector.html:122
 msgid "Location"
-msgstr "Ubicación"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/write.html:10
 #, python-format
 msgid "Write review of \"%(entity)s\""
-msgstr "Escribir reseña de \"%(entity)s\""
+msgstr "Skriv anmeldelse av \"%(entity)s\""
 
 #: critiquebrainz/frontend/templates/review/modify/write.html:14
 msgid "Write review"
-msgstr "Escribir reseña"
+msgstr "Skriv anmeldelse"
 
 #: critiquebrainz/frontend/templates/review/modify/write.html:23
 msgid ""
@@ -1549,11 +1551,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"
-msgstr "Resultados de la búsqueda"
+msgstr "Søkeresultater"
 
 #: critiquebrainz/frontend/templates/search/index.html:17
 msgid "Query"
-msgstr "Consulta"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/index.html:23
 #: critiquebrainz/frontend/templates/search/index.html:52
@@ -1562,78 +1564,78 @@ msgstr "Consulta"
 #: critiquebrainz/frontend/templates/search/selector.html:108
 #: critiquebrainz/frontend/templates/search/selector.html:121
 msgid "Type"
-msgstr "Tipo"
+msgstr "Type"
 
 #: critiquebrainz/frontend/templates/search/index.html:43
 #: critiquebrainz/frontend/templates/search/selector.html:99
 msgid "No results found"
-msgstr "No hemos encontrado resultados."
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/index.html:51
 msgid "Sort name"
-msgstr "Nombre de ordenación"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/index.html:53
 msgid "Country"
-msgstr "País"
+msgstr "Land"
 
 #: critiquebrainz/frontend/templates/search/index.html:80
 #: critiquebrainz/frontend/templates/search/selector.html:133
 msgid "Load more results"
-msgstr "Cargar más resultados"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/index.html:81
 #: critiquebrainz/frontend/templates/search/selector.html:134
 msgid "Loading more results..."
-msgstr "Cargando más resultados…"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/index.html:110
 #: critiquebrainz/frontend/templates/search/selector.html:173
 msgid "Failed to load more search results!"
-msgstr "¡La carga de más resultados de búsqueda ha fallado!"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/results.html:35
 #: critiquebrainz/frontend/templates/search/selector_results.html:29
 #: critiquebrainz/frontend/templates/user/reviews.html:44
 msgid "more"
-msgstr "más"
+msgstr "mer"
 
 #: critiquebrainz/frontend/templates/search/selector.html:3
 msgid "Entity selection"
-msgstr "Selección de entidad"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/selector.html:22
 msgid "Release group selection"
-msgstr "Selección de grupo de estreno"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/selector.html:49
 msgid "Event selection"
-msgstr "Selección del evento"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/selector.html:69
 msgid "Place selection"
-msgstr "Selección del lugar"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/search/selector.html:138
 msgid "Continue"
-msgstr "Continuar"
+msgstr "Fortsett"
 
 #: critiquebrainz/frontend/templates/user/base.html:26
 #: critiquebrainz/frontend/templates/user/info.html:3
 msgid "Info"
-msgstr "Información"
+msgstr "Info"
 
 #: critiquebrainz/frontend/templates/user/info.html:16
 msgid "General information"
-msgstr "Información general"
+msgstr "Generell informasjon"
 
 #: critiquebrainz/frontend/templates/user/info.html:18
 msgid "Member since"
-msgstr "Miembro desde"
+msgstr "Medlem siden"
 
 #: critiquebrainz/frontend/templates/user/info.html:19
 msgid "User type"
-msgstr "Tipo de usuario"
+msgstr "Brukertype"
 
 #: critiquebrainz/frontend/templates/user/info.html:20
 msgid "Karma"
@@ -1641,146 +1643,146 @@ msgstr "Karma"
 
 #: critiquebrainz/frontend/templates/user/info.html:26
 msgid "Limits"
-msgstr "Restricciones"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/user/info.html:28
 msgid "Reviews/day"
-msgstr "Reseñas al día"
+msgstr "Anmeldelser per dag"
 
 #: critiquebrainz/frontend/templates/user/info.html:29
 msgid "Votes/day"
-msgstr "Votos al día"
+msgstr "Stemmer per dag"
 
 #: critiquebrainz/frontend/templates/user/info.html:38
 #: critiquebrainz/frontend/templates/user/info.html:44
 msgid "Today"
-msgstr "Hoy"
+msgstr "Idag"
 
 #: critiquebrainz/frontend/templates/user/info.html:39
 #: critiquebrainz/frontend/templates/user/info.html:45
 msgid "Last 7 days"
-msgstr "Últimos 7 días"
+msgstr "Siste 7 dager"
 
 #: critiquebrainz/frontend/templates/user/info.html:40
 #: critiquebrainz/frontend/templates/user/info.html:46
 msgid "This month"
-msgstr "Este mes"
+msgstr "Denne måneden"
 
 #: critiquebrainz/frontend/templates/user/info.html:42
 msgid "Votes"
-msgstr "Votos"
+msgstr "Stemmer"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:69
 msgid "Hidden"
-msgstr "Oculto"
+msgstr "Skjult"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:77
 msgid "Edit"
-msgstr "Editar"
+msgstr "Rediger"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:89
 msgid "Newer"
-msgstr "Más nuevo"
+msgstr "Nyere"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:92
 msgid "Older"
-msgstr "Más antiguo"
+msgstr "Eldre"
 
 #: critiquebrainz/frontend/views/artist.py:20
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
-msgstr "Disculpa, no hemos podido encontrar ese artista en MusicBrainz ID"
+msgstr ""
 
 #: critiquebrainz/frontend/views/event.py:19
 msgid "Sorry, we couldn't find a event with that MusicBrainz ID."
-msgstr "Lo sentimos, no hemos podido encontrar ningún evento con ese ID MusicBrainz."
+msgstr ""
 
 #: critiquebrainz/frontend/views/log.py:17
 msgid "No logs to display."
-msgstr ""
+msgstr "Ingen logger å vise."
 
 #: critiquebrainz/frontend/views/login.py:33
 msgid "Login failed."
-msgstr "Acceso incorrecto"
+msgstr "Kunne ikke logge inn."
 
 #: critiquebrainz/frontend/views/mapping.py:56
 #: critiquebrainz/frontend/views/mapping.py:94
 msgid "Only existing release groups can be mapped to Spotify!"
-msgstr "¡Sólo los grupos de estreno actuales pueden ser mapeados con Spotify!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/mapping.py:99
 msgid "You need to select an album from Spotify!"
-msgstr "¡Debe seleccionar un álbum de Spotify!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/mapping.py:104
 msgid "You need to specify a correct link to this album on Spotify!"
-msgstr "¡Debe especificar un liga correcta a este álbum en Spotify!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/mapping.py:110
 #: critiquebrainz/frontend/views/mapping.py:154
 msgid "You need to specify existing album from Spotify!"
-msgstr "¡Debe especificar un álbum existente de Spotify!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/mapping.py:116
 msgid "Spotify mapping has been added!"
-msgstr "¡El mapeo con Spotify ha sido añadido!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/mapping.py:136
 msgid "Can't find release group with that ID!"
-msgstr "¡No hemos podido encontrar un grupo de estreno con ese ID!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/mapping.py:142
 msgid "This album is not mapped to Spotify yet!"
-msgstr "¡Este álbum aún no está mapeado con Spotify!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/mapping.py:147
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
-msgstr "Un mapeo incorrecto de Spotify ha sido reportado. ¡Gracias!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/place.py:18
 msgid "Sorry, we couldn't find a place with that MusicBrainz ID."
-msgstr "Lo sentimos, no hemos podido encontrar ningún lugar con ese ID MusicBrainz."
+msgstr "Beklager, vi kunne ikke finne et sted med denne MusicBrainz IDen."
 
 #: critiquebrainz/frontend/views/profile.py:22
 msgid "Profile updated."
-msgstr "Perfil actualizado"
+msgstr "Profilen er oppdatert."
 
 #: critiquebrainz/frontend/views/profile_apps.py:37
 msgid "You have created an application!"
-msgstr "¡Usted ha creado una aplicación!"
+msgstr "Du har opprettet en applikasjon!"
 
 #: critiquebrainz/frontend/views/profile_apps.py:60
 msgid "You have updated an application!"
-msgstr "¡Usted ha actualizado una aplicación!"
+msgstr "Du har oppdatert en applikasjon!"
 
 #: critiquebrainz/frontend/views/profile_apps.py:81
 msgid "You have deleted an application."
-msgstr "Usted ha eliminado una aplicación."
+msgstr "Du har slettet en applikasjon."
 
 #: critiquebrainz/frontend/views/release.py:18
 msgid "Sorry, we couldn't find a release with that MusicBrainz ID."
-msgstr "Lo sentimos, no hemos podido encontrar ningún lanzamiento con ese ID MusicBrainz. "
+msgstr "Beklager, vi kunne ikke finne en utgivelse med denne MusicBrainz IDen."
 
 #: critiquebrainz/frontend/views/release_group.py:20
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
-msgstr "Lo sentimos, no hemos podido encontrar ningún grupo de estreno con ese ID MusicBrainz. "
+msgstr "Beklager, vi kunne ikke finne en utgivelsesgruppe med denne MusicBrainz IDen."
 
 #: critiquebrainz/frontend/views/reports.py:42
 msgid "Report has been archived."
-msgstr "El reporte ha sido almacenado."
+msgstr "Rapporten er arkivert."
 
 #: critiquebrainz/frontend/views/review.py:51
 msgid "No reviews to display."
-msgstr "No hay reseñas disponibles."
+msgstr "Ingen anmeldelser å vise."
 
 #: critiquebrainz/frontend/views/review.py:68
 #: critiquebrainz/frontend/views/review.py:118
 #: critiquebrainz/frontend/views/review.py:247
 msgid "Can't find a review with the specified ID."
-msgstr "No se ha podido encontrar una reseña con el ID especificado. "
+msgstr "Finner ikke en anmeldelse med denne IDen"
 
 #: critiquebrainz/frontend/views/review.py:71
 msgid "Review has been hidden. You need to be an administrator to view it."
-msgstr "La reseña está oculta. Debe ser un administrador para poder verla. "
+msgstr "Anmeldelsen er skjult, du må være administrator for å se den."
 
 #: critiquebrainz/frontend/views/review.py:74
 #: critiquebrainz/frontend/views/review.py:120
@@ -1792,57 +1794,57 @@ msgstr "La reseña está oculta. Debe ser un administrador para poder verla. "
 #: critiquebrainz/frontend/views/review.py:356
 #: critiquebrainz/frontend/views/review.py:398
 msgid "Review has been hidden."
-msgstr "La reseña está oculta. "
+msgstr "Anmeldelsen er skjult."
 
 #: critiquebrainz/frontend/views/review.py:85
 msgid ""
 "You are viewing an old revision, the review has been updated since then."
-msgstr "Está viendo una revisión antigua, desde entonces la reseña ha sido actualizada. "
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:87
 #: critiquebrainz/frontend/views/review.py:109
 msgid "The revision you are looking for does not exist."
-msgstr "La revisión que está buscando no existe. "
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:124
 #: critiquebrainz/frontend/views/review.py:147
 #: critiquebrainz/frontend/views/review.py:169
 msgid "The revision(s) you are looking for does not exist."
-msgstr "La revisión(es) que está buscando no existe."
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:192
 msgid "Please choose an entity to review."
-msgstr "Por favor, elija una entidad para reseñar. "
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:196
 msgid ""
 "You are not allowed to write new reviews because your account has been "
 "blocked by a moderator."
-msgstr "No tiene permitido escribir nuevas reseñas porque su cuenta ha sido bloqueada por un moderador. "
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:203
 msgid "You have already published a review for this entity!"
-msgstr "¡Ya ha publicado una reseña para esta entidad!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:210
 msgid "You have exceeded your limit of reviews per day."
-msgstr "Ha sobrepasado su límite de reseñas por día. "
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:218
 msgid "Review has been saved!"
-msgstr "¡La reseña ha sido guardada!"
+msgstr "Anmeldelsen er lagret!"
 
 #: critiquebrainz/frontend/views/review.py:220
 msgid "Review has been published!"
-msgstr "¡La reseña ha sido publicada!"
+msgstr "Anmeldelsen er publisert!"
 
 #: critiquebrainz/frontend/views/review.py:225
 msgid "You can only write a review for an entity that exists on MusicBrainz!"
-msgstr "¡Sólo puede reseñar una entidad existente en MusicBrainz!"
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:249
 msgid "Only author can edit this review."
-msgstr "Sólo el autor puede modificar esta reseña."
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:274
 msgid ""
@@ -1852,76 +1854,76 @@ msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:277
 msgid "Review has been updated."
-msgstr "La reseña ha sido actualizada."
+msgstr "Anmeldelsen er oppdatert."
 
 #: critiquebrainz/frontend/views/review.py:293
 msgid "Only the author or an admin can delete this review."
-msgstr "Sólo el autor o un administrador puede eliminar esta reseña."
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:296
 msgid "Review has been deleted."
-msgstr "La reseña ha sido eliminada."
+msgstr "Anmeldelsen er slettet."
 
 #: critiquebrainz/frontend/views/review.py:316
 msgid "You cannot rate your own review."
-msgstr "No puede calificar su propia reseña. "
+msgstr "Du kan ikke vurdere din egen anmeldelse."
 
 #: critiquebrainz/frontend/views/review.py:319
 msgid "You have exceeded your limit of votes per day."
-msgstr "Ha sobrepasado su límite de votos por día. "
+msgstr "Du har overskredet grensen for stemmer per dag."
 
 #: critiquebrainz/frontend/views/review.py:322
 msgid ""
 "You are not allowed to rate this review because your account has been "
 "blocked by a moderator."
-msgstr "No tiene permitido calificar esta reseña porque su cuenta ha sido bloqueada por un moderador. "
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:332
 msgid "You have rated this review!"
-msgstr "¡Ha calificado esta reseña!"
+msgstr "Du har vurdert denne anmeldelsen!"
 
 #: critiquebrainz/frontend/views/review.py:344
 msgid "You have deleted your vote for this review!"
-msgstr "¡Ha eliminado su voto para esta reseña!"
+msgstr "Du har fjernet stemmen din på denne anmeldelsen!"
 
 #: critiquebrainz/frontend/views/review.py:347
 msgid "This review is not rated yet."
-msgstr "La reseña no ha sido calificada aún. "
+msgstr "Denne anmeldelsen er ikke vurdert ennå."
 
 #: critiquebrainz/frontend/views/review.py:358
 msgid "You cannot report your own review."
-msgstr "No puede reportar su propia reseña. "
+msgstr "Du kan ikke rapportere din egen anmeldelse."
 
 #: critiquebrainz/frontend/views/review.py:362
 msgid ""
 "You are not allowed to report this review because your account has been "
 "blocked by a moderator."
-msgstr "No tiene permitido reportar esta reseña porque su cuenta ha sido bloqueada por un moderador. "
+msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:369
 msgid "You have already reported this review."
-msgstr "¡Ya ha reportado esta reseña!"
+msgstr "Du har allerede rapportert denne anmeldelsen."
 
 #: critiquebrainz/frontend/views/review.py:375
 msgid "Review has been reported."
-msgstr "La reseña ha sido reportada. "
+msgstr "Anmeldelsen er rapportert."
 
 #: critiquebrainz/frontend/views/review.py:387
 msgid "Review is already hidden."
-msgstr "La reseña ya está oculta. "
+msgstr "Anmeldelsen er allerede skjult."
 
 #: critiquebrainz/frontend/views/review.py:410
 msgid "Review is not hidden anymore."
-msgstr "La reseña ya no está oculta."
+msgstr "Anmeldelsen er ikke skjult lengre."
 
 #: critiquebrainz/frontend/views/user.py:57
 msgid "This account is already blocked."
-msgstr "Esta cuenta ya está bloqueada. "
+msgstr "Denne brukerkontoen er allerede blokkert."
 
 #: critiquebrainz/frontend/views/user.py:65
 msgid "This user account has been blocked."
-msgstr "Esta cuenta de usuario ha sido bloqueada. "
+msgstr "Denne brukeren er allerede blokkert."
 
 #: critiquebrainz/frontend/views/user.py:79
 msgid "This user account has been unblocked."
-msgstr "Esta cuenta de usuario ha sido desbloqueada."
+msgstr "Denne brukerkontoen er reaktivert."

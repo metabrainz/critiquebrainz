@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-07-10 14:03+0200\n"
-"PO-Revision-Date: 2017-08-03 13:57+0000\n"
-"Last-Translator: Abraham Esterkin <trueemovlad@gmail.com>\n"
+"POT-Creation-Date: 2017-08-07 15:47+0200\n"
+"PO-Revision-Date: 2017-08-07 15:01+0000\n"
+"Last-Translator: Roman Tsukanov\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/critiquebrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,11 +28,13 @@ msgid ""
 msgstr "Сервер-связка Spotify недоступен. Встроенный проигрыватель показан не будет."
 
 #: critiquebrainz/frontend/external/relationships/artist.py:31
+#: critiquebrainz/frontend/external/relationships/place.py:19
 #: critiquebrainz/frontend/external/relationships/release_group.py:18
 msgid "Wikidata"
 msgstr "Wikidata"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:32
+#: critiquebrainz/frontend/external/relationships/place.py:22
 #: critiquebrainz/frontend/external/relationships/release_group.py:19
 msgid "Discogs"
 msgstr "Discogs"
@@ -47,6 +49,7 @@ msgid "Bandcamp"
 msgstr "Bandcamp"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:35
+#: critiquebrainz/frontend/external/relationships/place.py:28
 #: critiquebrainz/frontend/external/relationships/release_group.py:21
 msgid "Official homepage"
 msgstr "Официальная страница"
@@ -72,6 +75,10 @@ msgstr "YouTube"
 #: critiquebrainz/frontend/external/relationships/artist.py:75
 msgid "Twitter"
 msgstr "Твиттер"
+
+#: critiquebrainz/frontend/external/relationships/place.py:25
+msgid "Last.fm"
+msgstr ""
 
 #: critiquebrainz/frontend/external/relationships/release_group.py:22
 msgid "Recording studio"
@@ -207,7 +214,7 @@ msgstr "Вы должны согласиться с условиями лице�
 msgid "Please sign in to access this page."
 msgstr "Пожалуйста, войдите чтобы получить доступ к этой странице."
 
-#: critiquebrainz/frontend/login/__init__.py:47
+#: critiquebrainz/frontend/login/__init__.py:46
 msgid "You must be an administrator to view this page."
 msgstr "Вы должны быть администратором для просмотра этой страницы."
 
@@ -558,12 +565,14 @@ msgid "Former members"
 msgstr "Бывшие члены"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:159
+#: critiquebrainz/frontend/templates/index/guidelines.html:151
+#: critiquebrainz/frontend/templates/place/entity.html:96
 msgid "External links"
 msgstr "Внешние ссылки"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:179
 #: critiquebrainz/frontend/templates/event/entity.html:125
-#: critiquebrainz/frontend/templates/place/entity.html:97
+#: critiquebrainz/frontend/templates/place/entity.html:126
 msgid "Edit on MusicBrainz"
 msgstr "Редактировать на MusicBrainz"
 
@@ -671,6 +680,229 @@ msgstr ""
 msgid ""
 "After reading a review you can mark it as useful or not. That will help other\n"
 "  music enthusiasts like you find good reviews."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:3
+#: critiquebrainz/frontend/templates/index/guidelines.html:7
+msgid "Review guidelines"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:9
+msgid ""
+"\n"
+"      <strong>Please note that this is an early version of the guidelines page.</strong>\n"
+"      Feel free to suggest improvements to this page and report any issues that you find. Thanks!\n"
+"  "
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:14
+msgid "General guidelines before writing a review"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:17
+msgid "Read some good reviews!"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:19
+msgid ""
+"You can find lots of great reviews on CritiqueBrainz, or search the web."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:23
+msgid "Write in a comfortable voice."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:26
+msgid ""
+"A good review probably won't sound like an academic paper, and probably won't sound like a Youtube comment,\n"
+"          but it should sound like <em>you</em>."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:30
+msgid ""
+"Reviews don't need to be in English. If you're more comfortable in another language, go for it. Choose a\n"
+"          language in which you can express your emotions/thoughts freely."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:37
+msgid "Writing a well formatted review"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:39
+msgid ""
+"The editor in the review column follows <a href=\"https://en.wikipedia.org/wiki/Markdown\">Markdown</a> so you may\n"
+"    always beautify your review using the formatting styles because a well formatted article/review makes it readable\n"
+"    and it becomes a little easy to understand what you have written. You can use the following <a\n"
+"    href=\"http://daringfireball.net/projects/markdown/syntax\">link</a> to learn markdown."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:45
+msgid "Writing the Review"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:46
+msgid "Here are some tips for getting started as a reviewer :-"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:49
+msgid ""
+"Writing <strong>short</strong> description - Give your review a <strong>short context</strong> as to what you\n"
+"      are reviewing."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:53
+msgid ""
+"<strong>Follow your thinking/feelings</strong> - A good reviewer is one who always review a particular thing\n"
+"      based on what <strong>he feels</strong> rather than what others."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:57
+msgid ""
+"Good reviews are <strong>neither too short nor too long</strong> - It's better neither to make your reviews too\n"
+"      short nor too long. Try to make it something which gives the readers a clear image as to how the work is and at\n"
+"      the same time it doesn't bore them."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:62
+msgid ""
+"<strong>Don't mention only factual data</strong> in your review - Sometimes people mention only factual data in\n"
+"      reviews which makes the review a press release, not a good review."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:67
+msgid "More tips for specific review types"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:68
+msgid ""
+"In addition to the general tips given above, here are some specific tips for each review type which might help you\n"
+"    to strengthen your review :-"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:71
+msgid "Album Reviews"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:74
+msgid ""
+"Describing the instrumental arrangement - Mentioning about the rhythmic effects, describing the variety of\n"
+"      instruments used in the song and how were the digital effects etc."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:78
+msgid "You may tell about lyrics and the recording quality -"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:81
+msgid ""
+"Lyrics is what makes a song/album meaningful. You can always right about how were the lyrics? Was it\n"
+"          meaningful? Did it match the music?"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:85
+msgid ""
+"Recording quality matters a lot. If it's good it's good but if it's bad it will flop the whole album. It's\n"
+"          always better to note these things and mention about it in your review."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:91
+msgid ""
+"Be clear with your conclusion - If it's a must hear album give it some direction. It's always good to mention\n"
+"      the genre of the music. You may try to compare it with some other album which has been already released having the\n"
+"      same genre which will give the readers an idea as to what they can expect."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:97
+msgid "Event Reviews"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:100
+msgid ""
+"Describe the event place - Event reviews are enhanced by description of the event venue as to how big was it?\n"
+"      Was it sufficient for the crowd? or How well the band/artist sound in it?"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:104
+msgid ""
+"Writing about the music played there - You may describe which songs were played in the event. Which were your\n"
+"      favourite songs played, you can write about the staging of the band. Were there any things which you didn't like?\n"
+"      If yes, then why?"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:109
+msgid ""
+"Special moments, effects and surprises - Often there are special moments in every event, you may describe such\n"
+"      moments that took place. You may also write about special guests(if any) also any special effects in the event\n"
+"      which caught everyone's attention."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:114
+msgid ""
+"Writing about Event atmosphere - You may always describe about the crowd, how well the artists/band were able to\n"
+"      entertain the crowd? Was the crowd exciting or was it a monotonous atmosphere?"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:119
+msgid "Place Review"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:122
+msgid ""
+"Description about the location - You may describe where the place is located, whether it's located in the heart\n"
+"      of the city or is it located on the periphery."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:126
+msgid ""
+"Writing about the architecture - If it's a musical stadium people want to know about how many people can the\n"
+"      place occupy, how well the artist sounds in each corner of the place etc."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:132
+msgid "💡 Note:"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:133
+msgid ""
+"Try to be <strong>honest</strong> while reviewing, simply don't follow the trend. Review the album as to what\n"
+"    you felt. And try to follow active voice."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:137
+msgid "Common mistakes people do while writing reviews"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:139
+msgid "Writing <strong>long reviews that lack specific details.</strong>"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:141
+msgid ""
+"<strong>Forgetting to check the factual information</strong> in the review "
+"after completing the writing process."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:143
+msgid ""
+"<strong>Overlooking proofreading</strong> the review after finishing it."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:144
+msgid "Mistakes such as punctuation, typo errors, capitalization etc."
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:146
+msgid ""
+"<strong>Writing in slangs</strong> - Try to write in proper English (or whatever language you prefer). It's\n"
+"      better <strong>not to write reviews in slangs.</strong>"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:152
+msgid "You can read some reviews from these sites before writing your own :-"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/index/guidelines.html:153
+msgid "A few great review sites"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/index.html:10
@@ -873,6 +1105,10 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/place/entity.html:94
 msgid "Place information"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/place/entity.html:114
+msgid "Part of"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/delete.html:3
@@ -1469,37 +1705,37 @@ msgstr ""
 msgid "Login failed."
 msgstr "Ошибка регистрации. "
 
-#: critiquebrainz/frontend/views/mapping.py:52
-#: critiquebrainz/frontend/views/mapping.py:85
+#: critiquebrainz/frontend/views/mapping.py:56
+#: critiquebrainz/frontend/views/mapping.py:94
 msgid "Only existing release groups can be mapped to Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/mapping.py:90
+#: critiquebrainz/frontend/views/mapping.py:99
 msgid "You need to select an album from Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/mapping.py:95
+#: critiquebrainz/frontend/views/mapping.py:104
 msgid "You need to specify a correct link to this album on Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/mapping.py:100
-#: critiquebrainz/frontend/views/mapping.py:143
+#: critiquebrainz/frontend/views/mapping.py:110
+#: critiquebrainz/frontend/views/mapping.py:154
 msgid "You need to specify existing album from Spotify!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/mapping.py:106
+#: critiquebrainz/frontend/views/mapping.py:116
 msgid "Spotify mapping has been added!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/mapping.py:126
+#: critiquebrainz/frontend/views/mapping.py:136
 msgid "Can't find release group with that ID!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/mapping.py:132
+#: critiquebrainz/frontend/views/mapping.py:142
 msgid "This album is not mapped to Spotify yet!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/mapping.py:137
+#: critiquebrainz/frontend/views/mapping.py:147
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr ""
 
@@ -1527,7 +1763,7 @@ msgstr ""
 msgid "Sorry, we couldn't find a release with that MusicBrainz ID."
 msgstr ""
 
-#: critiquebrainz/frontend/views/release_group.py:17
+#: critiquebrainz/frontend/views/release_group.py:20
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
 msgstr ""
 
@@ -1540,8 +1776,8 @@ msgid "No reviews to display."
 msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:68
-#: critiquebrainz/frontend/views/review.py:116
-#: critiquebrainz/frontend/views/review.py:239
+#: critiquebrainz/frontend/views/review.py:118
+#: critiquebrainz/frontend/views/review.py:247
 msgid "Can't find a review with the specified ID."
 msgstr ""
 
@@ -1550,14 +1786,14 @@ msgid "Review has been hidden. You need to be an administrator to view it."
 msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:74
-#: critiquebrainz/frontend/views/review.py:118
-#: critiquebrainz/frontend/views/review.py:140
-#: critiquebrainz/frontend/views/review.py:159
-#: critiquebrainz/frontend/views/review.py:243
-#: critiquebrainz/frontend/views/review.py:306
-#: critiquebrainz/frontend/views/review.py:333
-#: critiquebrainz/frontend/views/review.py:348
-#: critiquebrainz/frontend/views/review.py:390
+#: critiquebrainz/frontend/views/review.py:120
+#: critiquebrainz/frontend/views/review.py:142
+#: critiquebrainz/frontend/views/review.py:161
+#: critiquebrainz/frontend/views/review.py:251
+#: critiquebrainz/frontend/views/review.py:314
+#: critiquebrainz/frontend/views/review.py:341
+#: critiquebrainz/frontend/views/review.py:356
+#: critiquebrainz/frontend/views/review.py:398
 msgid "Review has been hidden."
 msgstr "Обзор был скрыт."
 
@@ -1567,117 +1803,117 @@ msgid ""
 msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:87
-#: critiquebrainz/frontend/views/review.py:108
+#: critiquebrainz/frontend/views/review.py:109
 msgid "The revision you are looking for does not exist."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:122
-#: critiquebrainz/frontend/views/review.py:145
-#: critiquebrainz/frontend/views/review.py:167
+#: critiquebrainz/frontend/views/review.py:124
+#: critiquebrainz/frontend/views/review.py:147
+#: critiquebrainz/frontend/views/review.py:169
 msgid "The revision(s) you are looking for does not exist."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:184
+#: critiquebrainz/frontend/views/review.py:192
 msgid "Please choose an entity to review."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:188
+#: critiquebrainz/frontend/views/review.py:196
 msgid ""
 "You are not allowed to write new reviews because your account has been "
 "blocked by a moderator."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:195
+#: critiquebrainz/frontend/views/review.py:203
 msgid "You have already published a review for this entity!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:202
+#: critiquebrainz/frontend/views/review.py:210
 msgid "You have exceeded your limit of reviews per day."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:210
+#: critiquebrainz/frontend/views/review.py:218
 msgid "Review has been saved!"
 msgstr "Обзор сохранен!"
 
-#: critiquebrainz/frontend/views/review.py:212
+#: critiquebrainz/frontend/views/review.py:220
 msgid "Review has been published!"
 msgstr "Обзор опубликован!"
 
-#: critiquebrainz/frontend/views/review.py:217
+#: critiquebrainz/frontend/views/review.py:225
 msgid "You can only write a review for an entity that exists on MusicBrainz!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:241
+#: critiquebrainz/frontend/views/review.py:249
 msgid "Only author can edit this review."
 msgstr "Только автор может редактировать этот обзор."
 
-#: critiquebrainz/frontend/views/review.py:266
+#: critiquebrainz/frontend/views/review.py:274
 msgid ""
 "Changing license of a published review                or converting a "
 "published review back to drafts is not allowed."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:269
+#: critiquebrainz/frontend/views/review.py:277
 msgid "Review has been updated."
 msgstr "Обзор был обновлен."
 
-#: critiquebrainz/frontend/views/review.py:285
+#: critiquebrainz/frontend/views/review.py:293
 msgid "Only the author or an admin can delete this review."
 msgstr "Только автор или администратор может удалить этот обзор."
 
-#: critiquebrainz/frontend/views/review.py:288
+#: critiquebrainz/frontend/views/review.py:296
 msgid "Review has been deleted."
 msgstr "Обзор был удален."
 
-#: critiquebrainz/frontend/views/review.py:308
+#: critiquebrainz/frontend/views/review.py:316
 msgid "You cannot rate your own review."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:311
+#: critiquebrainz/frontend/views/review.py:319
 msgid "You have exceeded your limit of votes per day."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:314
+#: critiquebrainz/frontend/views/review.py:322
 msgid ""
 "You are not allowed to rate this review because your account has been "
 "blocked by a moderator."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:324
+#: critiquebrainz/frontend/views/review.py:332
 msgid "You have rated this review!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:336
+#: critiquebrainz/frontend/views/review.py:344
 msgid "You have deleted your vote for this review!"
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:339
+#: critiquebrainz/frontend/views/review.py:347
 msgid "This review is not rated yet."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:350
+#: critiquebrainz/frontend/views/review.py:358
 msgid "You cannot report your own review."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:354
+#: critiquebrainz/frontend/views/review.py:362
 msgid ""
 "You are not allowed to report this review because your account has been "
 "blocked by a moderator."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:361
+#: critiquebrainz/frontend/views/review.py:369
 msgid "You have already reported this review."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:367
+#: critiquebrainz/frontend/views/review.py:375
 msgid "Review has been reported."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:379
+#: critiquebrainz/frontend/views/review.py:387
 msgid "Review is already hidden."
 msgstr ""
 
-#: critiquebrainz/frontend/views/review.py:402
+#: critiquebrainz/frontend/views/review.py:410
 msgid "Review is not hidden anymore."
 msgstr ""
 
