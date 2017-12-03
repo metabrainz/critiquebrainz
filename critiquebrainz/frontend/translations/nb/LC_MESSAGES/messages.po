@@ -216,8 +216,8 @@ msgid "Please sign in to access this page."
 msgstr "Logg inn for å få tilgang til denne siden."
 
 #: critiquebrainz/frontend/login/__init__.py:46
-msgid "You must be an administrator to view this page."
-msgstr "Du må være administrator for å ha tilgang til denne siden."
+msgid "You must bea moderator to view this page."
+msgstr "Du må være moderator for å ha tilgang til denne siden."
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/mapping/confirm.html:14
@@ -1781,8 +1781,8 @@ msgid "Can't find a review with the specified ID."
 msgstr "Finner ikke en anmeldelse med denne IDen"
 
 #: critiquebrainz/frontend/views/review.py:71
-msgid "Review has been hidden. You need to be an administrator to view it."
-msgstr "Anmeldelsen er skjult, du må være administrator for å se den."
+msgid "Review has been hidden. You need to be a moderator to view it."
+msgstr "Anmeldelsen er skjult, du må være moderator for å se den."
 
 #: critiquebrainz/frontend/views/review.py:74
 #: critiquebrainz/frontend/views/review.py:120

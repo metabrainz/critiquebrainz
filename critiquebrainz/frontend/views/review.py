@@ -73,7 +73,7 @@ def entity(id, rev=None):
     if review["is_hidden"]:
         if not current_user.is_admin():
             raise Forbidden(gettext("Review has been hidden. "
-                                    "You need to be an administrator to view it."))
+                                    "You need to be a moderator to view it."))
         else:
             flash.warn(gettext("Review has been hidden."))
 
