@@ -51,7 +51,7 @@ MUSICBRAINZ_CLIENT_SECRET = ""
 
 # OTHER STUFF
 
-# List of administrators (MusicBrainz usernames as strings)
+# List of moderators (MusicBrainz usernames as strings)
 ADMINS = []
 
 # Mail server

@@ -45,7 +45,7 @@ SUPPORTED_LANGUAGES = [
     'ru',  # Russian
 ]
 
-# List of administrators (MusicBrainz usernames as strings)
+# List of moderators (MusicBrainz usernames as strings)
 ADMINS = []
 
 
