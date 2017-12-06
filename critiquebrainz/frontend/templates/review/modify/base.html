@@ -32,51 +32,51 @@
         <div class="col-sm-12">
           {% for choice in form.license_choice %}
             <div class="radio">
-                <label>{{ choice }}{{ choice.label.text | safe }}</label>
+              <label>{{ choice }}{{ choice.label.text | safe }}</label>
             </div>
-            {% endfor %}
-            <br /><small class="text-warning"><em>{{ _('You cannot change the license after the review is published.') }}</em></small>
+          {% endfor %}
+          <br /><small class="text-warning"><em>{{ _('You cannot change the license after the review is published.') }}</em></small>
         </div>
       </div>
-      {% endif %}
-      {% block license_agreement_input %}{% endblock %}
+     {% endif %}
+     {% block license_agreement_input %}{% endblock %}
   </form>
   {% block buttons %}{% endblock %}
-  {% endblock %}
+{% endblock %}
 
-  {% block scripts %}
+{% block scripts %}
   {{ super() }}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
   <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
   <script>
-   $(document).ready(function() {
-       new SimpleMDE({ element: $('#review-content')[0] });
+    $(document).ready(function() {
+      new SimpleMDE({ element: $('#review-content')[0] });
 
-       // Show warning when leaving review editor without saving changes
-       var beingSaved = false;
-       var oldData = $('#review-editor').serialize();
-       $(window).bind('beforeunload', function(e) {
-           if (beingSaved || (oldData == $('#review-editor').serialize())) {
-               return undefined;
-           }
-           var confirmationMessage = "Your review has not been saved.";
-           (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
-           return confirmationMessage;                                // Gecko and WebKit
-       });
+      // Show warning when leaving review editor without saving changes
+      var beingSaved = false;
+      var oldData = $('#review-editor').serialize();
+      $(window).bind('beforeunload', function(e) {
+          if (beingSaved || (oldData == $('#review-editor').serialize())) {
+              return undefined;
+          }
+          var confirmationMessage = "Your review has not been saved.";
+          (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
+          return confirmationMessage;                                // Gecko and WebKit
+      });
 
-       $("#btn-publish").click(function(){
-           beingSaved = true;
-           $("#state").attr('value', 'publish');
-           $("#review-editor").submit();
-       });
-       if ('{{not review or review.is_draft}}'){
-           $("#btn-draft").click(function(){
-               beingSaved = true;
-               $("#state").attr('value', 'draft');
-               $("#review-editor").submit();
-           });
-       }
-   });
+      $("#btn-publish").click(function(){
+          beingSaved = true;
+          $("#state").attr('value', 'publish');
+          $("#review-editor").submit();
+      });
+      if ('{{not review or review.is_draft}}'){
+          $("#btn-draft").click(function(){
+              beingSaved = true;
+              $("#state").attr('value', 'draft');
+              $("#review-editor").submit();
+          });
+      }
+    });
   </script>
   <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}
