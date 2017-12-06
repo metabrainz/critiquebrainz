@@ -21,7 +21,13 @@
       <label class="col-sm-1" for="rating">{{ _('Rating:') }}</label>
       <div class="col-sm-2">{{ form.rating(class="rating", id="rating") }}</div>
     </div>
-    {{ form.text(id="review-content") }}
+    <div class="form-group">
+      <small class="text-muted pull-left" style="font-style:italic;">
+        {{ _('You can use <a href="%(url)s" target="_blank">Markdown</a> syntax to apply custom formatting.',
+             url='http://daringfireball.net/projects/markdown/syntax') }}
+      </small><br/><br/>
+      {{ form.text(id="review-content") }}
+    </div>
     <div class="form-group">
       <label class="control-label col-sm-4" for="review-language">{{ _('Please, specify language of this review:') }}</label>
       <div class="col-sm-8">{{ form.language(id="review-language", class="form-control") }}</div>
