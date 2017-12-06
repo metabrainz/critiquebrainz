@@ -102,12 +102,16 @@ function buildScripts() {
   let ratingBundle = runYarb('rating.js', function (b) {
     b.external(commonBundle);
   });
+  let wysiwygBundle = runYarb('wysiwyg-editor.js', function(b) {
+    b.external(commonBundle)
+  });
 
   return Q.all([
     writeScript(commonBundle, 'common.js'),
     writeScript(leafletBundle, 'leaflet.js'),
     writeScript(spotifyBundle, 'spotify.js'),
     writeScript(ratingBundle, 'rating.js'),
+    writeScript(wysiwygBundle, 'wysiwyg-editor.js'),
   ]).then(writeManifest);
 }
 
