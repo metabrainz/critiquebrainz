@@ -19,7 +19,7 @@ class StateAndLength(validators.Length):
         if l < self.min or self.max != -1 and l > self.max:
             raise ValidationError(self.message)
 
-# Frequently Used Languages
+# Loading Frequently Used Languages
 frequently_used_languages_raw = ['ar','zh','cs','da','nl','en','fi','fr','de','el','it','ja','ko','pl','pt','ru','es','sv','tr']
 frequently_used_languages = []
 for language_code in frequently_used_languages_raw:
