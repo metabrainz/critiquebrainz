@@ -23,6 +23,7 @@ class StateAndLength(validators.Length):
 frequently_used_languages_raw = ['ar','zh','cs','da','nl','en','fi','fr','de','el','it','ja','ko','pl','pt','ru','es','sv','tr']
 frequently_used_languages = []
 for language_code in frequently_used_languages_raw:
+    supported_languages.remove(language_code)
     frequently_used_languages.append((language_code, Locale(language_code).language_name))
 
 
