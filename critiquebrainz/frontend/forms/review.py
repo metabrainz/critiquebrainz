@@ -19,14 +19,28 @@ class StateAndLength(validators.Length):
         if l < self.min or self.max != -1 and l > self.max:
             raise ValidationError(self.message)
 
+# Frequently Used Languages
+frequently_used_languages_raw = ['ar','zh','cs','da','nl','en','fi','fr','de','el','it','ja','ko','pl','pt','ru','es','sv','tr']
+frequently_used_languages = []
+for language_code in frequently_used_languages_raw:
+    frequently_used_languages.append((language_code, Locale(language_code).language_name))
+
 
 # Loading supported languages
-languages = []
+other_languages = []
 for language_code in supported_languages:
     try:
-        languages.append((language_code, Locale(language_code).language_name))
+        other_languages.append((language_code, Locale(language_code).language_name))
     except UnknownLocaleError:
-        languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+        other_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+
+languages = []
+languages.append(('', 'Frequently Used Languages'))
+for language in frequently_used_languages:
+    languages.append(language)
+languages.append(('', 'Other Languages'))
+for language in other_languages:
+    languages.append(language)
 
 
 class ReviewEditForm(Form):
