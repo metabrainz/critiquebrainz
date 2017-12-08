@@ -591,6 +591,16 @@ def get_popular(limit=None):
     shuffle(reviews)
     return reviews[:limit]
 
+def top_languages():
+    all_languages= []
+    for review in reviews:
+        all_languages.append(review.language)
+    unique_languages = set(all_languages)
+    language_count = {}
+    for language in unique_languages:
+        language_count[language] = all_languages.count(language)
+    most_used_languages = sorted(language_count,key=language_count.get,reverse=True)
+    most_used_languages = most_used_languages[:10]
 
 def delete(review_id):
     """Delete a review.

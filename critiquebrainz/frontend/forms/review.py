@@ -4,9 +4,8 @@ from wtforms import TextAreaField, RadioField, SelectField, BooleanField, String
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input
 from babel.core import UnknownLocaleError
-from critiquebrainz.db.review import supported_languages
+from critiquebrainz.db.review import supported_languages, top_languages
 import pycountry
-
 MIN_REVIEW_LENGTH = 25
 MAX_REVIEW_LENGTH = 100000
 
@@ -19,12 +18,9 @@ class StateAndLength(validators.Length):
         if l < self.min or self.max != -1 and l > self.max:
             raise ValidationError(self.message)
 
-# Loading Frequently Used Languages
-frequently_used_languages_raw = ['ar','zh','cs','da','nl','en','fi','fr','de','el','it','ja','ko','pl','pt','ru','es','sv','tr']
-frequently_used_languages = []
-for language_code in frequently_used_languages_raw:
-    supported_languages.remove(language_code)
-    frequently_used_languages.append((language_code, Locale(language_code).language_name))
+# Frequently Used Languages
+most_used_languages = []
+top_languages()
 
 
 # Loading supported languages
@@ -35,9 +31,13 @@ for language_code in supported_languages:
     except UnknownLocaleError:
         other_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
 
+# Remove Frequently Used Languages from Other Languages
+for language in most_used_languages:
+    other_languages.remove(language)
+
 languages = []
 languages.append(('', 'Frequently Used Languages'))
-for language in frequently_used_languages:
+for language in most_used_languages:
     languages.append(language)
 languages.append(('', 'Other Languages'))
 for language in other_languages:
