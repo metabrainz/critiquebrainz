@@ -19,6 +19,7 @@ import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.moderation_log as db_moderation_log
 from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
+from langdetect import detect
 
 
 review_bp = Blueprint('review', __name__)
@@ -307,6 +308,13 @@ def edit(id):
         return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"],
                                entity=entity, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
     return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"])
+
+
+@review_bp.route('/write/get_language', methods=['POST'])
+@login_required
+def get_language():
+    """Return the most likely language of the text."""
+    return detect(request.form['text'])
 
 
 @review_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'])
