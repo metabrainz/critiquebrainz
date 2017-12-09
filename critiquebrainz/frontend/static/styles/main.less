@@ -557,3 +557,9 @@ a#edit-review { margin-top: 20px; }
 .glyphicon-remove-circle:hover {
   color: red;
 }
+
+// SimpleMDE editor fullscreen - put z-index as high
+// as possible in order to avoid clashes with header.
+.editor-toolbar.fullscreen, .CodeMirror-fullscreen {
+    z-index: 1000 !important;
+}

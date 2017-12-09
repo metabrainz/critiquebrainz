@@ -256,13 +256,6 @@ def create():
     return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
 
 
-@review_bp.route('/write/preview', methods=['POST'])
-@login_required
-def preview():
-    """Get markdown preview of a text."""
-    return markdown(request.form['text'], safe_mode="escape")
-
-
 @review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))
 @login_required
 def edit(id):
