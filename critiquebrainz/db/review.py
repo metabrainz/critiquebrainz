@@ -592,6 +592,7 @@ def get_popular(limit=None):
     return reviews[:limit]
 
 def top_languages():
+    global most_used_languages
     all_languages= []
     for review in reviews:
         all_languages.append(review.language)
