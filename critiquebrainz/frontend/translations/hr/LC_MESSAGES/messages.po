@@ -213,8 +213,8 @@ msgid "Please sign in to access this page."
 msgstr "Molimo Vas da se prijavite kako bi pristupili ovoj stranici"
 
 #: critiquebrainz/frontend/login/__init__.py:46
-msgid "You must be an administrator to view this page."
-msgstr "Moraš biti administrator da bi mogao vidjeti ovu stranicu"
+msgid "You must be a moderator to view this page."
+msgstr "Moraš biti moderator da bi mogao vidjeti ovu stranicu"
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/mapping/confirm.html:14
@@ -1779,7 +1779,7 @@ msgid "Can't find a review with the specified ID."
 msgstr "Nismo mogli pronaći kritički osvrt s tom ID oznakom"
 
 #: critiquebrainz/frontend/views/review.py:71
-msgid "Review has been hidden. You need to be an administrator to view it."
+msgid "Review has been hidden. You need to be a moderator to view it."
 msgstr ""
 
 #: critiquebrainz/frontend/views/review.py:74
