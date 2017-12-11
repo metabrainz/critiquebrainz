@@ -18,25 +18,13 @@ class StateAndLength(validators.Length):
         if l < self.min or self.max != -1 and l > self.max:
             raise ValidationError(self.message)
 
-# Frequently Used Languages
-most_used_languages = []
-top_languages()
+# Loading 10 most popular languages
+top_languages_iso639 = get_top_languages()
+top_languages = []
+for language_code in top_languages_iso639:
+    top_languages.append((language_code, Locale(language_code).language_name))
+    supported_languages.remove(language_code)
 
-# Finds ISO-639 Codes of Most Popular Languages
-most_used_languages_iso639 = []
-for lang in list(pycountry.languages):
-  for language in most_used_languages:
-    if lang.name == language:
-      most_used_languages_iso639.append(lang.iso639_1_code)
-
-# Removes all ISO-639 codes of most used languages from supported_languages
-for iso639_code in most_used_languages_iso639:
-    supported_languages.remove(iso639_code)
-
-# Collects popular language ISO-639 codes and names into single list
-frequently_used_languages = []
-for name, isocode in zip(most_used_languages,most_used_languages_iso639):
-  frequently_used_languages.append((isocode,name))
 
 # Loading other languages
 other_languages = []
@@ -45,10 +33,11 @@ for language_code in supported_languages:
         other_languages.append((language_code, Locale(language_code).language_name))
     except UnknownLocaleError:
         other_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
-
+        
+# Combining popular and other languages into 1 list
 languages = []
 languages.append(('', 'Frequently Used Languages'))
-for language in frequently_used_languages:
+for language in top_languages:
     languages.append(language)
 languages.append(('', 'Other Languages'))
 for language in other_languages:
