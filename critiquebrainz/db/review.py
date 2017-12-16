@@ -40,6 +40,21 @@ def to_dict(review, confidential=False):
     return review
 
 
+def get_top_languages():
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+        SELECT  language, 
+                COUNT(id) AS count
+        FROM review
+        GROUP BY language
+        ORDER BY count
+        DESC LIMIT 10
+        """))
+    languages = result.fetchall()
+    return languages
+
+
+
 def get_by_id(review_id):
     """Get a review by its ID.
 
@@ -591,19 +606,6 @@ def get_popular(limit=None):
     shuffle(reviews)
     return reviews[:limit]
 
-def get_top_languages():
-    languages = {}
-    supported_languages_iso639 = []
-    top_languages_iso639 = []
-    for lang in list(pycountry.languages):
-        if 'iso639_1_code' in dir(lang):
-            supported_languages_iso639.append(lang.iso639_1_code)
-    for langcode in supported_languages_iso639:
-          review = list_reviews(language = str(langcode))
-          languages[langcode] = review[1]
-    languages = sorted(languages, key=languages.get, reverse=True)
-    top_languages_iso639 = list(languages.keys)
-    return top_languages_iso639[:9]
 
 def delete(review_id):
     """Delete a review.

@@ -4,8 +4,9 @@ from wtforms import TextAreaField, RadioField, SelectField, BooleanField, String
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input
 from babel.core import UnknownLocaleError
-from critiquebrainz.db.review import supported_languages, get_top_languages, list_reviews
+from critiquebrainz.db.review import supported_languages, get_top_languages
 import pycountry
+
 MIN_REVIEW_LENGTH = 25
 MAX_REVIEW_LENGTH = 100000
 
@@ -18,28 +19,30 @@ class StateAndLength(validators.Length):
         if l < self.min or self.max != -1 and l > self.max:
             raise ValidationError(self.message)
 
-# Loading 10 most popular languages
-top_languages_iso639 = get_top_languages()
-top_languages = []
-for language_code in top_languages_iso639:
-    top_languages.append((language_code, Locale(language_code).language_name))
-    supported_languages.remove(language_code)
-
-
-# Loading other languages
+other_languages_codes = supported_languages
+frequently_used_languages_codes = list(get_top_languages())
+for language in frequently_used_languages_codes:
+    other_languages_codes.remove(language)
 other_languages = []
-for language_code in supported_languages:
+frequently_used_languages = []
+for language_code in other_languages_codes:
     try:
         other_languages.append((language_code, Locale(language_code).language_name))
     except UnknownLocaleError:
         other_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
-        
-# Combining popular and other languages into 1 list
+for language_code in frequently_used_languages_codes:
+    try:
+        frequently_used_languages.append((language_code, Locale(language_code).language_name))
+    except UnknownLocaleError:
+        frequently_used_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+
+
+# Loading supported languages
 languages = []
-languages.append(('', 'Frequently Used Languages'))
-for language in top_languages:
+languages.append(("","Frequently Used Languages"))
+for language in frequently_used_languages:
     languages.append(language)
-languages.append(('', 'Other Languages'))
+languages.append(("","Other Languages"))
 for language in other_languages:
     languages.append(language)
 
