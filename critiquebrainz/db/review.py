@@ -43,16 +43,15 @@ def to_dict(review, confidential=False):
 def get_top_languages():
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-        SELECT  language, 
+            SELECT  language,
                 COUNT(id) AS count
-        FROM review
-        GROUP BY language
-        ORDER BY count
-        DESC LIMIT 10
-        """))
-    languages = result.fetchall()
+            FROM review
+            GROUP BY language
+            ORDER BY count
+            DESC LIMIT 10
+            """))
+        languages = result.fetchall()
     return languages
-
 
 
 def get_by_id(review_id):
