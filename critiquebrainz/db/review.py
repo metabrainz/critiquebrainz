@@ -44,7 +44,7 @@ def get_top_languages():
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
             SELECT  language,
-                COUNT(id) AS count
+                    COUNT(id) AS count
             FROM review
             GROUP BY language
             ORDER BY count
