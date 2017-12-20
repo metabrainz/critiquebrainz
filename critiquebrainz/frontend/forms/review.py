@@ -1,11 +1,12 @@
 from flask_wtf import Form
+import pycountry
 from flask_babel import lazy_gettext, Locale
 from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input
 from babel.core import UnknownLocaleError
 from critiquebrainz.db.review import supported_languages, get_top_languages
-import pycountry
+from wtforms_components import SelectField as OptgroupSelectField
 
 MIN_REVIEW_LENGTH = 25
 MAX_REVIEW_LENGTH = 100000
@@ -19,8 +20,9 @@ class StateAndLength(validators.Length):
         if l < self.min or self.max != -1 and l > self.max:
             raise ValidationError(self.message)
 
+
 other_languages_codes = supported_languages
-frequently_used_languages_codes = list(get_top_languages())
+frequently_used_languages_codes = get_top_languages()
 for language in frequently_used_languages_codes:
     other_languages_codes.remove(language)
 other_languages = []
@@ -38,13 +40,14 @@ for language_code in frequently_used_languages_codes:
 
 
 # Loading supported languages
-languages = []
-languages.append(("","Frequently Used Languages"))
-for language in frequently_used_languages:
-    languages.append(language)
-languages.append(("","Other Languages"))
-for language in other_languages:
-    languages.append(language)
+languages = (
+            ('Frequently Used Languages', (
+                frequently_used_languages
+            )),
+            ('Other Languages', (
+                other_languages,
+            ))
+            )
 
 
 class ReviewEditForm(Form):
@@ -60,7 +63,7 @@ class ReviewEditForm(Form):
             ('CC BY-NC-SA 3.0', lazy_gettext('Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),  # noqa: E501
         ],
         validators=[validators.DataRequired(message=lazy_gettext("You need to choose a license!"))])
-    language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
+    language = OptgroupSelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
     rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
 
     def __init__(self, default_license_id='CC BY-SA 3.0', default_language='en', **kwargs):
