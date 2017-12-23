@@ -45,10 +45,10 @@ def get_top_languages():
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
             SELECT  language
-            FROM review
-            GROUP BY language
-            ORDER BY COUNT(id)
-            DESC LIMIT 10
+              FROM review
+             GROUP BY language
+             ORDER BY COUNT(id) DESC 
+             LIMIT 10
             """))
         languages = result.fetchall()
     return languages

@@ -27,3 +27,4 @@ htmlcov
 # Configuration
 /consul_config.py
 /custom_config.py
+*.xml
