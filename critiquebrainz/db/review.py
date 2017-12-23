@@ -39,7 +39,8 @@ def to_dict(review, confidential=False):
     review["last_revision"]["review_id"] = str(review["last_revision"]["review_id"])
     return review
 
-
+# Returns:
+#     List of the top ten languages (only the language codes) in CritiqueBrainz.
 def get_top_languages():
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""

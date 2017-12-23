@@ -1,7 +1,7 @@
 from flask_wtf import Form
 import pycountry
 from flask_babel import lazy_gettext, Locale
-from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
+from wtforms import TextAreaField, RadioField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input
 from babel.core import UnknownLocaleError
@@ -21,33 +21,29 @@ class StateAndLength(validators.Length):
             raise ValidationError(self.message)
 
 
-other_languages_codes = supported_languages
-frequently_used_languages_codes = get_top_languages()
-for language in frequently_used_languages_codes:
-    other_languages_codes.remove(language)
-other_languages = []
-frequently_used_languages = []
-for language_code in other_languages_codes:
+OTHER_LANGUAGES_CODES = supported_languages
+FREQUENTLY_USED_LANGUAGES_CODES = get_top_languages()
+for language in FREQUENTLY_USED_LANGUAGES_CODES:
+    OTHER_LANGUAGES_CODES.remove(language)
+OTHER_LANGUAGES = []
+FREQUENTLY_USED_LANGUAGES = []
+for language_code in OTHER_LANGUAGES_CODES:
     try:
-        other_languages.append((language_code, Locale(language_code).language_name))
+        OTHER_LANGUAGES.append((language_code, Locale(language_code).language_name))
     except UnknownLocaleError:
-        other_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
-for language_code in frequently_used_languages_codes:
+        OTHER_LANGUAGES.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+for language_code in FREQUENTLY_USED_LANGUAGES_CODES:
     try:
-        frequently_used_languages.append((language_code, Locale(language_code).language_name))
+        FREQUENTLY_USED_LANGUAGES.append((language_code, Locale(language_code).language_name))
     except UnknownLocaleError:
-        frequently_used_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+        FREQUENTLY_USED_LANGUAGES.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
 
 
 # Loading supported languages
-languages = (
-            ('Frequently Used Languages', (
-                frequently_used_languages
-            )),
-            ('Other Languages', (
-                other_languages,
-            ))
-            )
+LANGUAGES = (('Frequently Used Languages',
+              tuple(FREQUENTLY_USED_LANGUAGES)),
+             ('Other Languages',
+              tuple(OTHER_LANGUAGES)))
 
 
 class ReviewEditForm(Form):
