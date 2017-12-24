@@ -39,6 +39,7 @@ def to_dict(review, confidential=False):
     review["last_revision"]["review_id"] = str(review["last_revision"]["review_id"])
     return review
 
+
 # Returns:
 #     List of the top ten languages (only the language codes) in CritiqueBrainz.
 def get_top_languages():
@@ -47,7 +48,7 @@ def get_top_languages():
             SELECT  language
               FROM review
              GROUP BY language
-             ORDER BY COUNT(id) DESC 
+             ORDER BY COUNT(id) DESC
              LIMIT 10
             """))
         languages = result.fetchall()
