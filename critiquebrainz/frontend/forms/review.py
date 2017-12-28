@@ -24,7 +24,10 @@ class StateAndLength(validators.Length):
 OTHER_LANGUAGES_CODES = supported_languages
 FREQUENTLY_USED_LANGUAGES_CODES = get_top_languages()
 for language in FREQUENTLY_USED_LANGUAGES_CODES:
-    OTHER_LANGUAGES_CODES.remove(language)
+    try:
+        OTHER_LANGUAGES_CODES.remove(language)
+    except ValueError:
+        continue
 OTHER_LANGUAGES = []
 FREQUENTLY_USED_LANGUAGES = []
 for language_code in OTHER_LANGUAGES_CODES:
