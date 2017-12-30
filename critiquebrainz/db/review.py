@@ -52,7 +52,7 @@ def get_top_languages():
                 LIMIT 10
             """))
         languages = result.fetchall()
-        return {language[0] for language in languages}
+        return [language[0] for language in languages]
 
 
 def get_by_id(review_id):
