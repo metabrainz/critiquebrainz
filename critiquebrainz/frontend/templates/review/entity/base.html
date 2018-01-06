@@ -17,7 +17,7 @@
       {% if review.is_draft %}
         <div class="alert alert-warning" role="alert">{{ _('<b>This review has not been published yet!</b> Only you can see it.') }}</div>
       {% else %}
-        <em class="text-muted">{{ _('Published on %(date)s', date = review.created|date) }}</em><br />
+        <em class="text-muted">{{ _('Published on %(date)s', date = review.last_revision.timestamp|date) }}</em><br />
         {% if review.text %}
           <em class="text-muted">{{ _('Written in %(language)s', language = review.language|language_name) }}</em><br />
           {% set votes_total = review.votes.positive + review.votes.negative %}
