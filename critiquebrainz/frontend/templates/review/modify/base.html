@@ -21,25 +21,12 @@
       <label class="col-sm-1" for="rating">{{ _('Rating:') }}</label>
       <div class="col-sm-2">{{ form.rating(class="rating", id="rating") }}</div>
     </div>
-    <div class="clearfix">
-      <ul class="nav nav-tabs" style="margin-bottom:-1px;">
-        <li class="active"><a href="#write" data-toggle="tab">{{ _('Write') }}</a></li>
-        <li><a href="#preview" data-toggle="tab">{{ _('Preview') }}</a></li>
-        <small class="text-muted pull-right" style="margin-top:20px;font-style:italic;">
-          {{ _('You can use <a href="%(url)s" target="_blank">Markdown</a> syntax to apply custom formatting.',
-                url='http://daringfireball.net/projects/markdown/syntax') }}
-        </small>
-      </ul>
-    </div>
     <div class="form-group">
-      <div class="col-sm-12 tab-content">
-        <div class="tab-pane fade in active" id="write">
-          {{ form.text(id="review-content", class="form-control", rows="5") }}
-        </div>
-        <div class="tab-pane fade" id="preview" style="margin-top:20px;">
-          <span class="text-muted">{{ _('Loading preview...') }}</span>
-        </div>
-      </div>
+      <small class="text-muted pull-left" style="font-style:italic;">
+        {{ _('You can use <a href="%(url)s" target="_blank">Markdown</a> syntax to apply custom formatting.',
+             url='http://daringfireball.net/projects/markdown/syntax') }}
+      </small><br/><br/>
+      {{ form.text(id="review-content") }}
     </div>
     <div class="form-group">
       <label class="control-label col-sm-4" for="review-language">{{ _('Please, specify language of this review:') }}</label>
@@ -65,8 +52,12 @@
 
 {% block scripts %}
   {{ super() }}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
   <script>
     $(document).ready(function() {
+      new SimpleMDE({ element: $('#review-content')[0] });
+
       // Show warning when leaving review editor without saving changes
       var beingSaved = false;
       var oldData = $('#review-editor').serialize();
@@ -91,27 +82,6 @@
           $("#review-editor").submit();
         });
       }
-      // Preview tab functionality
-      $(function() {
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-          if (e.target.hash.substring(1) == "preview") {
-            var text = $("#review-content").val();
-            if (!text) {
-              $("#preview").html('<em class="text-muted">' + {{ _('Review is empty.') | tojson }} + '</em>');
-            } else {
-              $.ajax({
-                type: "POST",
-                url: "{{ url_for('review.preview') }}",
-                data: { text: text },
-                success: function(data) { $("#preview").html(data); },
-                error: function() { $("#preview").html('<em class="text-danger">' + {{ _('Failed to load preview.') | tojson }} + '</em>'); }
-              });
-            }
-          } else {
-            $("#preview").html('<em class="text-muted">' + {{ _('Loading preview...') | tojson }} + '</em>');
-          }
-        });
-      });
     });
   </script>
   <script src="{{ get_static_path('rating.js') }}"></script>

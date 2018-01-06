@@ -1,5 +1,4 @@
 git+https://github.com/metabrainz/brainzutils-python.git@v1.3.0
-git+https://github.com/kvesteri/wtforms-components.git
 beautifulsoup4==4.6.0
 coverage==4.4.1
 click==6.7
