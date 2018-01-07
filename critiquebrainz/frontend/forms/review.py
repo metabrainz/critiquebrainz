@@ -1,11 +1,12 @@
 from flask_wtf import Form
+import pycountry
 from flask_babel import lazy_gettext, Locale
-from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
+from wtforms import TextAreaField, RadioField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input
 from babel.core import UnknownLocaleError
-from critiquebrainz.db.review import supported_languages
-import pycountry
+from critiquebrainz.db.review import supported_languages, get_top_languages
+from wtforms_components import SelectField as OptgroupSelectField
 
 MIN_REVIEW_LENGTH = 25
 MAX_REVIEW_LENGTH = 100000
@@ -20,13 +21,30 @@ class StateAndLength(validators.Length):
             raise ValidationError(self.message)
 
 
-# Loading supported languages
-languages = []
-for language_code in supported_languages:
-    try:
-        languages.append((language_code, Locale(language_code).language_name))
-    except UnknownLocaleError:
-        languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+def get_language_choices():
+    other_language_codes = supported_languages
+    frequently_used_languages_codes = get_top_languages()
+    for language in frequently_used_languages_codes:
+        try:
+            other_language_codes.remove(language)
+        except ValueError:
+            continue
+    other_languages = []
+    frequently_used_languages = []
+    for language_code in other_language_codes:
+        try:
+            other_languages.append((language_code, Locale(language_code).language_name))
+        except UnknownLocaleError:
+            other_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+    for language_code in frequently_used_languages_codes:
+        try:
+            frequently_used_languages.append((language_code, Locale(language_code).language_name))
+        except UnknownLocaleError:
+            frequently_used_languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+
+    languages = (('Frequently Used Languages', tuple(frequently_used_languages)),
+                 ('Other Languages', tuple(other_languages)))
+    return languages
 
 
 class ReviewEditForm(Form):
@@ -42,7 +60,8 @@ class ReviewEditForm(Form):
             ('CC BY-NC-SA 3.0', lazy_gettext('Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),  # noqa: E501
         ],
         validators=[validators.DataRequired(message=lazy_gettext("You need to choose a license!"))])
-    language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
+    language = OptgroupSelectField(lazy_gettext("You need to accept the license agreement!"),
+                                   choices=get_language_choices())
     rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
 
     def __init__(self, default_license_id='CC BY-SA 3.0', default_language='en', **kwargs):
