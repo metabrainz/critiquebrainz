@@ -30,7 +30,7 @@ for lang in list(pycountry.languages):
 
 # TODO(roman): Rename this function. It doesn't convert a review to dictionary.
 # Review that is passed to it is already a dictionary.
-def to_dict(review, confidential=False):
+def to_dict(review, confidential=False):  
     review["user"] = User(db_users.get_by_id(review.pop("user_id")))
     review["user"] = review["user"].to_dict(confidential=confidential)
     review["id"] = str(review["id"])
@@ -334,7 +334,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                  offset=None):
     """Get a list of reviews.
 
-    This function provides several  filters that can be used to select a subset of reviews.
+    This function provides several filters that can be used to select a subset of reviews.
 
     Args:
         entity_id (uuid): ID of the entity that has been reviewed.
