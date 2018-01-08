@@ -67,7 +67,7 @@
                   {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
                 </a>
               </td>
-              <td>{{ review.created | date }}</td>
+              <td>{{ review.publish_time | date }}</td>
               <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
             </tr>
           {% endfor %}

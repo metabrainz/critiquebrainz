@@ -49,17 +49,18 @@ ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_access_token_key UNIQUE (acce
 ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_refresh_token_key UNIQUE (refresh_token);
 
 CREATE TABLE review (
-    id          UUID         NOT NULL DEFAULT uuid_generate_v4(),
-    entity_id   UUID         NOT NULL,
-    entity_type entity_types NOT NULL,
-    user_id     UUID         NOT NULL,
-    edits       INTEGER      NOT NULL,
-    is_draft    BOOLEAN      NOT NULL,
-    is_hidden   BOOLEAN      NOT NULL,
-    license_id  VARCHAR      NOT NULL,
-    language    VARCHAR(3)   NOT NULL,
-    source      VARCHAR,
-    source_url  VARCHAR
+    id              UUID         NOT NULL DEFAULT uuid_generate_v4(),
+    entity_id       UUID         NOT NULL,
+    entity_type     entity_types NOT NULL,
+    user_id         UUID         NOT NULL,
+    edits           INTEGER      NOT NULL,
+    is_draft        BOOLEAN      NOT NULL,
+    is_hidden       BOOLEAN      NOT NULL,
+    license_id      VARCHAR      NOT NULL,
+    language        VARCHAR(3)   NOT NULL,
+    publish_time    TIMESTAMP,
+    source          VARCHAR,
+    source_url      VARCHAR
 );
 ALTER TABLE review ADD CONSTRAINT review_entity_id_user_id_key UNIQUE (entity_id, user_id);
 

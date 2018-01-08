@@ -68,6 +68,7 @@ def get_by_id(review_id):
             "text": str,
             "created": datetime,
             "license": dict,
+            "publish_time": datetime,
         }
     """
     with db.engine.connect() as connection:
@@ -83,6 +84,7 @@ def get_by_id(review_id):
                    review.language,
                    review.source,
                    review.source_url,
+                   review.publish_time,
                    revision.id AS last_revision_id,
                    revision.timestamp,
                    revision.text,
@@ -220,6 +222,10 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
     if is_draft is not None:
         if not drafted and is_draft:  # If trying to convert published review into draft
             raise db_exceptions.BadDataException("Converting published reviews back to drafts is not allowed.")
+        if drafted and (not is_draft):
+            publish_time = datetime.now()
+            updates.append("publish_time = :publish_time")
+            updated_info["publish_time"] = publish_time
         updates.append("is_draft = :is_draft")
         updated_info["is_draft"] = is_draft
 
@@ -283,17 +289,22 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "rating": int,
             "created": datetime,
             "license": dict,
+            "publish_time": datetime,
         }
     """
     if text is None and rating is None:
         raise db_exceptions.BadDataException("Text part and rating part of a review can not be None simultaneously")
     if language not in supported_languages:
         raise ValueError("Language: {} is not supported".format(language))
+    if is_draft:
+        publish_time = None
+    else:
+        publish_time = datetime.now()
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url)
-            VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url)
+            INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url, publish_time)
+            VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url, :publish_time)
          RETURNING id;
         """), {  # noqa: E501
             "id": str(uuid.uuid4()),
@@ -307,6 +318,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "license_id": license_id,
             "source": source,
             "source_url": source_url,
+            "publish_time": publish_time,
         })
         review_id = result.fetchone()[0]
         # TODO(roman): It would be better to create review and revision in one transaction
@@ -322,7 +334,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                  offset=None):
     """Get a list of reviews.
 
-    This function provides several filters that can be used to select a subset of reviews.
+    This function provides several  filters that can be used to select a subset of reviews.
 
     Args:
         entity_id (uuid): ID of the entity that has been reviewed.
