@@ -58,7 +58,7 @@ CREATE TABLE review (
     is_hidden       BOOLEAN      NOT NULL,
     license_id      VARCHAR      NOT NULL,
     language        VARCHAR(3)   NOT NULL,
-    publish_time    TIMESTAMP,
+    published_on    TIMESTAMP,
     source          VARCHAR,
     source_url      VARCHAR
 );
