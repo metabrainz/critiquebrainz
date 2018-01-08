@@ -210,7 +210,7 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
     if is_draft is not None:
         if not drafted and is_draft:  # If trying to convert published review into draft
             raise db_exceptions.BadDataException("Converting published reviews back to drafts is not allowed.")
-        if drafted and (not is_draft):
+        if drafted and not is_draft:
             published_on = datetime.now()
             updates.append("published_on = :published_on")
             updated_info["published_on"] = published_on
