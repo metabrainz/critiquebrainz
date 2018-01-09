@@ -31,6 +31,7 @@ _TABLES = {
         "is_hidden",
         "license_id",
         "language",
+        "published_on",
         "source",
         "source_url",
     ),
