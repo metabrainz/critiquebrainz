@@ -275,7 +275,6 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "popularity": int,
             "text": str,
             "rating": int,
-            "created": datetime,
             "license": dict,
             "published_on": datetime,
         }
@@ -329,7 +328,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         entity_type (str): Type of the entity that has been reviewed.
         user_id (uuid): ID of the author.
         sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
-                    or "created" (order by creation time), or "random" (order randomly).
+                    or "published_on" (order by publish time), or "random" (order randomly).
         limit (int): Maximum number of reviews to return.
         offset (int): Offset that can be used in conjunction with the limit.
         language (str): Language code of reviews.
@@ -397,9 +396,9 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         order_by_clause = """
             ORDER BY popularity DESC
         """
-    elif sort == "created":
+    elif sort == "published_on":
         order_by_clause = """
-            ORDER BY created DESC
+            ORDER BY review.published_on DESC
         """
     elif sort == "random":
         order_by_clause = """
@@ -424,7 +423,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                "user".email,
                "user".created as user_created,
                "user".musicbrainz_id,
-               MIN(revision.timestamp) as created,
+               review.published_on,
                SUM(
                    CASE WHEN vote='t' THEN 1 ELSE 0 END
                ) AS votes_positive_count,

@@ -1,5 +1,1 @@
-BEGIN;
-
 ALTER TABLE review ADD COLUMN published_on TIMESTAMP;
-
-COMMIT;
