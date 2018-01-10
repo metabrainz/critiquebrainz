@@ -135,7 +135,7 @@
               </div>
               {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
               <div class="album">{% include 'entity_review.html' %}</div>
-              {{ review.created | date }}
+              {{ review.published_on | date }}
             </div>
           {% endfor %}
         </div>

@@ -70,7 +70,7 @@
               {% endif %}
             </td>
           {% endif %}
-          <td>{{ review.created | date }}</td>
+          <td>{{ review.published_on | date }}</td>
           <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
           {% if current_user.is_authenticated and current_user == user %}
             <td>
