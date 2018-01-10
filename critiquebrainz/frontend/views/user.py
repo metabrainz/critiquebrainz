@@ -29,7 +29,7 @@ def reviews(user_id):
         return redirect(url_for('.reviews'))
     limit = 12
     offset = (page - 1) * limit
-    reviews, count = db_review.list_reviews(user_id=user_id, sort='created', limit=limit, offset=offset,
+    reviews, count = db_review.list_reviews(user_id=user_id, sort='published_on', limit=limit, offset=offset,
                                             inc_hidden=current_user.is_admin(),
                                             inc_drafts=current_user.is_authenticated and current_user.id == user_id)
     return render_template('user/reviews.html', section='reviews', user=user,

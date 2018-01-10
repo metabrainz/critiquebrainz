@@ -196,7 +196,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
-        reviews, count = db_review.list_reviews(sort="published_on")
+        reviews, count = db_review.list_reviews(sort="")
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
@@ -208,7 +208,7 @@ class ReviewTestCase(DataTestCase):
         reviews = db_review.get_popular()
         self.assertEqual(len(reviews), 0)
 
-        db_review.create`(
+        db_review.create(
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             user_id=self.user.id,
