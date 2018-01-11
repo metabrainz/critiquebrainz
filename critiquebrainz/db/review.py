@@ -100,6 +100,7 @@ def get_by_id(review_id):
               JOIN revision ON revision.review_id = review.id
               JOIN "user" ON "user".id = review.user_id
               JOIN license ON license.id = license_id
+             WHERE review.id = :review_id
           ORDER BY timestamp DESC
         """), {
             "review_id": review_id,
