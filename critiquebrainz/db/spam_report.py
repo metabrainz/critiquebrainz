@@ -1,7 +1,7 @@
 from datetime import datetime
+import sqlalchemy
 from critiquebrainz import db
 from critiquebrainz.db import revision as db_revision
-import sqlalchemy
 
 
 def get(user_id, revision_id):

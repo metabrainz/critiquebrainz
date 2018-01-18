@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template
 from flask_babel import format_number
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.review as db_review
 from bs4 import BeautifulSoup
 from markdown import markdown
+import critiquebrainz.db.users as db_users
+import critiquebrainz.db.review as db_review
 
 DEFAULT_CACHE_EXPIRATION = 10 * 60  # seconds
 

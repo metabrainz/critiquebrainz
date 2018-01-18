@@ -1,5 +1,5 @@
-from critiquebrainz import db
 import sqlalchemy
+from critiquebrainz import db
 
 
 def create(*, id, full_name, info_url=None):

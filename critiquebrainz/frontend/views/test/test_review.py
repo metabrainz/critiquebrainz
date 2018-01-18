@@ -1,11 +1,11 @@
 from unittest.mock import MagicMock
+from flask import current_app
 from critiquebrainz.frontend.testing import FrontendTestCase
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.license as db_license
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
-from flask import current_app
 
 
 def mock_get_entity_by_id(id, type='release_group'):

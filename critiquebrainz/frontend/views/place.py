@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
+from werkzeug.exceptions import NotFound
 import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.views import get_avg_rating
 import critiquebrainz.db.review as db_review
-from werkzeug.exceptions import NotFound
 
 place_bp = Blueprint('place', __name__)
 

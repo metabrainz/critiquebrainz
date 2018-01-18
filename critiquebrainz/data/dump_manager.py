@@ -10,11 +10,11 @@ import sys
 import os
 from flask import current_app, jsonify
 from flask.json import JSONEncoder
+import sqlalchemy
+import click
 from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri
 from critiquebrainz.db import license as db_license, review as db_review
 from critiquebrainz import frontend, db
-import sqlalchemy
-import click
 
 
 cli = click.Group()

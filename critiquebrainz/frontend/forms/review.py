@@ -4,8 +4,8 @@ from wtforms import TextAreaField, RadioField, SelectField, BooleanField, String
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input
 from babel.core import UnknownLocaleError
-from critiquebrainz.db.review import supported_languages
 import pycountry
+from critiquebrainz.db.review import supported_languages
 
 MIN_REVIEW_LENGTH = 25
 MAX_REVIEW_LENGTH = 100000

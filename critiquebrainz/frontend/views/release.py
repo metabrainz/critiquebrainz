@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect
 from flask_babel import gettext
-import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 from werkzeug.exceptions import NotFound
+import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 
 release_bp = Blueprint('release', __name__)
 

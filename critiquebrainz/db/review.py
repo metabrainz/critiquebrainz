@@ -2,6 +2,7 @@ from random import shuffle
 from datetime import datetime, timedelta
 import uuid
 import sqlalchemy
+import pycountry
 from brainzutils import cache
 from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
@@ -10,7 +11,6 @@ from critiquebrainz.db import (exceptions as db_exceptions,
                                avg_rating as db_avg_rating,
                                RATING_SCALE_1_5)
 from critiquebrainz.db.user import User
-import pycountry
 
 REVIEW_CACHE_NAMESPACE = "Review"
 DEFAULT_LICENSE_ID = "CC BY-SA 3.0"

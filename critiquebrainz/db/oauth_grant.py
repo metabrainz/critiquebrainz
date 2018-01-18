@@ -1,6 +1,6 @@
+import sqlalchemy
 from critiquebrainz import db
 from critiquebrainz.db import exceptions as db_exceptions
-import sqlalchemy
 
 
 def create(*, client_id, scopes, code, expires, redirect_uri, user_id):

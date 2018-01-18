@@ -1,13 +1,13 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
+from werkzeug.exceptions import NotFound
 from critiquebrainz.frontend.external import mbspotify, soundcloud
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 import critiquebrainz.db.review as db_review
 from critiquebrainz.frontend.views import get_avg_rating
-from werkzeug.exceptions import NotFound
 
 
 release_group_bp = Blueprint('release_group', __name__)
