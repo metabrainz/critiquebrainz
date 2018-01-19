@@ -80,6 +80,12 @@ begin the import for the MusicBrainz database::
       $ docker-compose -f docker/docker-compose.dev.yml run -v $DUMPS_DIR:/home/musicbrainz/dumps \
       -v $PWD/data/mbdata:/var/lib/postgresql/data/pgdata musicbrainz_db
 
+   You can also use the smaller sample dumps available at
+   http://ftp.musicbrainz.org/pub/musicbrainz/data/sample/ to set up the MusicBrainz database.
+   However, note that these dumps are .tar.xz dumps while CritiqueBrainz currently only
+   supports import of .tar.bz2 dumps. So, a decompression of the sample dumps and recompression
+   into .tar.bz2 dumps will be needed.
+
 .. warning::
 
    Keep in mind that this process is very time consuming, so make sure that you don't delete
