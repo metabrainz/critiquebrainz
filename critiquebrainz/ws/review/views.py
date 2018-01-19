@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from brainzutils import cache
 from critiquebrainz.db.review import supported_languages, ENTITY_TYPES
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import (
@@ -16,7 +17,6 @@ from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest,
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
 from critiquebrainz.decorators import crossdomain
-from brainzutils import cache
 
 review_bp = Blueprint('ws_review', __name__)
 

@@ -7,10 +7,10 @@ from functools import wraps
 from flask import redirect, url_for
 from flask_login import LoginManager, current_user
 from flask_babel import lazy_gettext, gettext
+from werkzeug.exceptions import Unauthorized
 from critiquebrainz.data.mixins import AnonymousUser
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
-from werkzeug.exceptions import Unauthorized
 
 mb_auth = None
 

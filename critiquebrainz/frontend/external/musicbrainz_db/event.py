@@ -1,11 +1,11 @@
 from collections import defaultdict
 from mbdata import models
+from brainzutils import cache
 from critiquebrainz.frontend.external.musicbrainz_db import mb_session, DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.musicbrainz_db.utils import get_entities_by_gids
 from critiquebrainz.frontend.external.musicbrainz_db.includes import check_includes
 from critiquebrainz.frontend.external.musicbrainz_db.serialize import to_dict_events
 from critiquebrainz.frontend.external.musicbrainz_db.helpers import get_relationship_info
-from brainzutils import cache
 
 
 def get_event_by_id(mbid):

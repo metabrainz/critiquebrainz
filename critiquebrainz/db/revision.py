@@ -1,10 +1,10 @@
 from datetime import datetime
+import sqlalchemy
 from critiquebrainz import db
 from critiquebrainz.db import review as db_review
 from critiquebrainz.db import avg_rating as db_avg_rating
 from critiquebrainz.db import exceptions as db_exceptions
 from critiquebrainz.db import VALID_RATING_VALUES, RATING_SCALE_1_5, RATING_SCALE_0_100
-import sqlalchemy
 
 
 def get(review_id, limit=1, offset=0):

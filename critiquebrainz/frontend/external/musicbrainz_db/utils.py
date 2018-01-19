@@ -1,5 +1,5 @@
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from mbdata import models
+import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 
 
 # Entity models

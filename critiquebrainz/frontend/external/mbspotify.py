@@ -7,9 +7,9 @@ import json
 import requests
 from requests.exceptions import RequestException
 from requests.adapters import HTTPAdapter
-from critiquebrainz.frontend import flash
 from flask_babel import lazy_gettext
 from brainzutils import cache
+from critiquebrainz.frontend import flash
 
 _base_url = ""
 _key = ""

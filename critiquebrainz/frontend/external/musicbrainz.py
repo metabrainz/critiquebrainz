@@ -9,9 +9,9 @@ More information about the MusicBrainz webservice can be found at http://wiki.mu
 import musicbrainzngs
 from musicbrainzngs.musicbrainz import ResponseError
 from brainzutils import cache
+from werkzeug.exceptions import InternalServerError
 from critiquebrainz.frontend.external.relationships import artist as artist_rel
 from critiquebrainz.frontend.external.relationships import release_group as release_group_rel
-from werkzeug.exceptions import InternalServerError
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 

@@ -2,11 +2,11 @@
 from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
 from brainzutils import cache
+import click
 from critiquebrainz import frontend, ws
 from critiquebrainz.data import dump_manager
 import critiquebrainz.data.utils as data_utils
 import critiquebrainz.data.fixtures as _fixtures
-import click
 
 
 cli = click.Group()
