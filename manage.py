@@ -1,4 +1,5 @@
-﻿import subprocess
+﻿import os
+import subprocess
 from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
 from brainzutils import cache
@@ -85,8 +86,10 @@ def clear_memcached():
 
 @click.option("--skip-create-db", "-s", is_flag=True,
               help="Skip database creation step.")
+@click.option("--test-db", "-t", is_flag=True,
+              help="Initialize the test database.")
 @cli.command()
-def init_db(skip_create_db=False):
+def init_db(skip_create_db=False, test_db=False):
     """Initialize the database.
 
     * Creates the database.
@@ -95,7 +98,14 @@ def init_db(skip_create_db=False):
     """
     click.echo("Initializing the database...")
 
-    db_uri = frontend.create_app().config['SQLALCHEMY_DATABASE_URI']
+    if test_db:
+        db_uri = frontend.create_app(config_path=os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            'critiquebrainz', 'test_config.py'
+        )).config['SQLALCHEMY_DATABASE_URI']
+    else:
+        db_uri = frontend.create_app().config['SQLALCHEMY_DATABASE_URI']
+
     if not skip_create_db:
         init_postgres(db_uri)
         create_extension(db_uri)
