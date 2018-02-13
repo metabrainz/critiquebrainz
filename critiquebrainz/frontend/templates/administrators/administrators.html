@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ _('Moderators') }} - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Administrators') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-  <div id="moderators-list">
-    <h2>{{ _('Moderators') }}</h2>
+  <div id="administrators-list">
+    <h2>{{ _('Administrators') }}</h2>
     <p><em>{{ _('These users respond to reports and make sure that spammers don\'t spam.') }}</em></p>
     <ul>
-    {% for mod in moderators %}
+    {% for mod in administrators %}
       <li>
         <img src="{{ mod['avatar_url'] }}" class="avatar" />
         {% if mod['critiquebrainz_id'] %}

@@ -211,7 +211,7 @@ def create():
 
     if current_user.is_blocked:
         flash.error(gettext("You are not allowed to write new reviews because your "
-                            "account has been blocked by a moderator."))
+                            "account has been blocked by an administrator."))
         return redirect(url_for('user.reviews', user_id=current_user.id))
 
     # Checking if the user already wrote a review for this entity
@@ -342,7 +342,7 @@ def vote_submit(review_id):
         return redirect(url_for('.entity', id=review_id))
     if current_user.is_blocked:
         flash.error(gettext("You are not allowed to rate this review because "
-                            "your account has been blocked by a moderator."))
+                            "your account has been blocked by an administrator."))
         return redirect(url_for('.entity', id=review_id))
 
     db_vote.submit(
@@ -382,7 +382,7 @@ def report(id):
 
     if current_user.is_blocked:
         flash.error(gettext("You are not allowed to report this review because "
-                            "your account has been blocked by a moderator."))
+                            "your account has been blocked by an administrator."))
         return redirect(url_for('.entity', id=id))
 
     last_revision_id = review["last_revision"]["id"]

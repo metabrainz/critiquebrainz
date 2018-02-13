@@ -3,10 +3,10 @@ from flask import current_app
 from critiquebrainz.db import users as db_users
 from critiquebrainz.db.users import gravatar_url
 
-moderators_bp = Blueprint('moderators', __name__)
+administrators_bp = Blueprint('administrators', __name__)
 
 
-@moderators_bp.route('/')
+@administrators_bp.route('/')
 def mods_list():
     mod_usernames = set(map(str.lower, current_app.config['ADMINS']))  # MusicBrainz usernames
     mods_data = db_users.get_many_by_mb_username(list(mod_usernames))
@@ -26,4 +26,4 @@ def mods_list():
             'avatar_url': gravatar_url(mod_username, default="mm"),
         })
     mods = sorted(mods, key=lambda k: k['musicbrainz_username'].lower())
-    return render_template('moderators/moderators.html', moderators=mods)
+    return render_template('administrators/administrators.html', administrators=mods)
