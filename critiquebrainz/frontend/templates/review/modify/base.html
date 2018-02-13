@@ -23,8 +23,10 @@
     </div>
     <div class="form-group">
       <small class="text-muted pull-left" style="font-style:italic;">
-        {{ _('You can use <a href="%(url)s" target="_blank">Markdown</a> syntax to apply custom formatting.',
-             url='http://daringfireball.net/projects/markdown/syntax') }}
+          {{ _('You can read the <a href="%(style_guide_url)s" target="_blank">style guide</a> for writing good CritiqueBrainz reviews!<br/>
+                Furthermore, you can use <a href="%(markdown_url)s" target="_blank">Markdown</a> syntax to apply custom formatting.',
+                style_guide_url='https://wiki.musicbrainz.org/How_to_write_Good_Critiquebrainz_Reviews',
+                markdown_url='http://daringfireball.net/projects/markdown/syntax') }}
       </small><br/><br/>
       {{ form.text(id="review-content") }}
     </div>
