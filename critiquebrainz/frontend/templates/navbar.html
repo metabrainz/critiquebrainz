@@ -32,6 +32,10 @@
               </ul>
             </li>
           {% endif %}
+        {% else %}
+          {% if not current_user or current_user.is_anonymous %}
+            <li><a href="{{ url_for('login.index', next=request.url) }}">{{ _('Sign in') }}</a></li>
+          {% endif %}
         {% endif %}
         <li><a href="{{ url_for('review.browse') }}">{{ _('Browse reviews') }}</a></li>
         <li><a href="{{ url_for('review.create') }}">{{ _('Write a review') }}</a></li>
