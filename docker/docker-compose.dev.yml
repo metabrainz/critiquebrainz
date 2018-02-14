@@ -7,7 +7,7 @@ services:
       file: ./common.yml
       service: db
     volumes:
-      - ../data/pgdata:/var/lib/postgresql/data/pgdata
+      - ../data/pgdata:/var/lib/postgresql/data/pgdata:z
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
@@ -27,8 +27,8 @@ services:
       context: ..
       dockerfile: ./docker/Dockerfile.dev
     volumes:
-      - ../:/code
-      - ../data/app:/data
+      - ../:/code:z
+      - ../data/app:/data:z
     ports:
       - "80:80"
     depends_on:
@@ -43,7 +43,7 @@ services:
   musicbrainz_db:
     image: metabrainz/musicbrainz-test-database:schema-change-2017-q2
     volumes:
-      - ../data/mbdata:/var/lib/postgresql/data/pgdata
+      - ../data/mbdata:/var/lib/postgresql/data/pgdata:z
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       MB_IMPORT_DUMPS: "true"

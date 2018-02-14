@@ -63,10 +63,6 @@ The ``mbdump-derived.tar.bz2`` archive contains annotations, user tags and searc
 These archives include all the data required for setting up an instance of
 CritiqueBrainz.
 
-Note that if you have SELinux enabled on your OS, you must perform one of the following steps:
-   Set SELinux to disabled mode. Run $setenforce 0 and try again.
-   If you do not wish to disable SELinux append a :Z to the volume declaration so that Docker will fix the SELinux context of the volume directory
-
 You can automatically download the archives (``mbdump.tar.bz2`` and ``mbdump-derived.tar.bz2``) and
 begin the import for the MusicBrainz database::
 
