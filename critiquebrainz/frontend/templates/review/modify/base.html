@@ -58,7 +58,10 @@
   <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
   <script>
     $(document).ready(function() {
-      new SimpleMDE({ element: $('#review-content')[0] });
+      reviewContentEditor = new SimpleMDE({
+        element: $('#review-content')[0],
+        spellChecker: false
+      });
 
       // Show warning when leaving review editor without saving changes
       var beingSaved = false;
@@ -70,6 +73,31 @@
         var confirmationMessage = "Your review has not been saved.";
         (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
         return confirmationMessage;                                // Gecko and WebKit
+      });
+
+      oldReviewLength = reviewContentEditor.value().length
+      languageSelector = $('#review-language')[0]
+      // Detect the language of the review on change
+      // codemirror is the underlying editor behind SimpleMDE.
+      reviewContentEditor.codemirror.on("change", function() {
+        const MIN_DIFFERENCE = 10
+
+        var currentReviewContent = reviewContentEditor.value()
+        var currentReviewLength = currentReviewContent.length
+        if(currentReviewLength == 0) { return; }
+
+        // Don't call too often.
+        var difference = Math.abs(currentReviewLength - oldReviewLength)
+        if(difference < MIN_DIFFERENCE) { return; }
+        oldReviewLength = currentReviewLength
+
+        $.ajax({
+          type: "POST",
+          url: "{{ url_for('review.get_language') }}",
+          data: {text: currentReviewContent},
+          success: function(data) { $(languageSelector).val(data) },
+          error: function() { console.error("Getting language failed"); } // Ignore any failure, won't do any harm
+        })
       });
 
       $("#btn-publish").click(function(){
