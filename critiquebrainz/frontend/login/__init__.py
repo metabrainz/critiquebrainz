@@ -43,7 +43,7 @@ def admin_view(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if not current_user.is_admin():
-            raise Unauthorized(lazy_gettext('You must be an administrator to view this page.'))
+            raise Unauthorized(lazy_gettext('You must be a moderator to view this page.'))
         return f(*args, **kwargs)
 
     return decorated
