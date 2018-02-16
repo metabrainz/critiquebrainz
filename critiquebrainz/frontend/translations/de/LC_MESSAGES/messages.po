@@ -220,8 +220,8 @@ msgid "Please sign in to access this page."
 msgstr "Logge dich bitte ein, um auf diese Seite zuzugreifen."
 
 #: critiquebrainz/frontend/login/__init__.py:46
-msgid "You must be an administrator to view this page."
-msgstr "Du musst Administrator sein, um diese Seite sehen zu können."
+msgid "You must be a moderator to view this page."
+msgstr "Du musst moderator sein, um diese Seite sehen zu können."
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/mapping/confirm.html:14
@@ -1785,8 +1785,8 @@ msgid "Can't find a review with the specified ID."
 msgstr "Eine Rezension mit der angegebenen ID konnte nicht gefunden werden."
 
 #: critiquebrainz/frontend/views/review.py:71
-msgid "Review has been hidden. You need to be an administrator to view it."
-msgstr "Rezension wurde versteckt. Du musst ein Administrator sein, um sie sehen zu können."
+msgid "Review has been hidden. You need to be a moderator to view it."
+msgstr "Rezension wurde versteckt. Du musst ein moderator sein, um sie sehen zu können."
 
 #: critiquebrainz/frontend/views/review.py:74
 #: critiquebrainz/frontend/views/review.py:120
@@ -1862,7 +1862,7 @@ msgstr "Rezension wurde aktualisiert."
 
 #: critiquebrainz/frontend/views/review.py:293
 msgid "Only the author or an admin can delete this review."
-msgstr "Nur der Autor oder ein Administrator kann diese Rezension löschen."
+msgstr "Nur der Autor oder ein moderator kann diese Rezension löschen."
 
 #: critiquebrainz/frontend/views/review.py:296
 msgid "Review has been deleted."
