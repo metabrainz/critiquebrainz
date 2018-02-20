@@ -5,6 +5,7 @@ from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
 from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
+from langdetect import detect
 from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.db.moderation_log import ACTION_HIDE_REVIEW
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
@@ -19,7 +20,6 @@ import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.moderation_log as db_moderation_log
 from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
-from langdetect import detect
 
 
 review_bp = Blueprint('review', __name__)
