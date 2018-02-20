@@ -12,6 +12,18 @@ class FakeSpotifyResponse:
 
     @classmethod
     def fromSpotifyIds(cls, spotify_ids):
+        """Returns a response similar to Spotify Web API fetching multiple albums.
+
+        Args:
+            spotify_ids (list): List of Spotify IDs of the albums.
+
+        Returns:
+            Dictionary with the key: 'albums' and list of albums as value with the structure
+            {
+                'id': str (spotify_id),
+                'data': str,
+            }
+        """
         response = []
         for spotify_id in spotify_ids:
             response.append({'id': spotify_id, 'data': spotify._BASE_URL + spotify_id})
