@@ -60,6 +60,9 @@ def get_multiple_albums(spotify_ids: List[str]) -> List[dict]:
         List of album objects from Spotify. More info about this type of objects
         is available at https://developer.spotify.com/web-api/object-model/#album-object.
     """
+    if not spotify_ids:
+        return []
+    spotify_ids = list(spotify_ids)
     cache_namespace = "spotify_albums"
     albums = cache.get_many(spotify_ids, cache_namespace)
 
