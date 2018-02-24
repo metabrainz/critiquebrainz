@@ -40,6 +40,22 @@ def to_dict(review, confidential=False):
     return review
 
 
+def get_top_languages():
+    """
+        List of the top ten languages (only the language codes) in CritiqueBrainz.
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+               SELECT review.language
+                 FROM review
+             GROUP BY review.language
+             ORDER BY COUNT(review.id) DESC
+                LIMIT 10
+            """))
+        languages = result.fetchall()
+        return [language[0] for language in languages]
+
+
 def get_by_id(review_id):
     """Get a review by its ID.
 
