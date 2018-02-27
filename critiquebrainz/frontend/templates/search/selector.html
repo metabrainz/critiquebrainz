@@ -173,6 +173,11 @@
           alert({{ _("Failed to load more search results!") | tojson }});
         });
       }
+
+      /* function that makes the whole row selectable and onClick will 'check' the respective row's radio button  */
+      $('#results tr').click(function(){
+        $(this).find('input[type=radio]').prop('checked', true);
+      });
     </script>
   {% endblock %}
 {% endif %}
