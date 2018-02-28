@@ -49,6 +49,8 @@ RUN ./node_modules/.bin/gulp
 # Compile translations
 RUN pybabel compile -d critiquebrainz/frontend/translations
 
+RUN useradd --create-home --shell /bin/bash critiquebrainz
+
 ############
 # Services #
 ############
@@ -63,8 +65,12 @@ COPY ./docker/prod/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
 
 # cron jobs
 ADD ./docker/prod/cron/jobs /tmp/crontab
-RUN crontab /tmp/crontab
+RUN chmod 0644 /tmp/crontab && crontab -u critiquebrainz /tmp/crontab
 RUN rm /tmp/crontab
+
+# Make sure the cron service doesn't start automagically
+# http://smarden.org/runit/runsv.8.html
+RUN touch /etc/service/cron/down
 
 ARG GIT_COMMIT_SHA
 ENV GIT_SHA ${GIT_COMMIT_SHA}
