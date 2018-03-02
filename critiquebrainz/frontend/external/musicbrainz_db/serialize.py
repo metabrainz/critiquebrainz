@@ -125,7 +125,7 @@ def to_dict_release_groups(release_group, includes=None):
     if 'artist-credit-phrase' in includes:
         data['artist-credit-phrase'] = includes['artist-credit-phrase']
 
-    if 'meta' in includes and includes['meta'].first_release_date_year:
+    if 'meta' in includes and includes['meta'] and includes['meta'].first_release_date_year:
         data['first-release-year'] = includes['meta'].first_release_date_year
 
     if 'artist-credit-names' in includes:

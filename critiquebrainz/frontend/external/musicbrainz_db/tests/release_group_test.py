@@ -1,6 +1,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from critiquebrainz.frontend.external.musicbrainz_db import release_group as mb_release_group
+from critiquebrainz.frontend.external.musicbrainz_db import special_entities
 from critiquebrainz.frontend.external.musicbrainz_db.test_data import releasegroup_numb_encore, releasegroup_collision_course
 from critiquebrainz.frontend.external.musicbrainz_db.tests import setup_cache
 
@@ -78,3 +79,19 @@ class ReleaseGroupTestCase(TestCase):
             }
         ])
         self.assertEqual(release_groups[1], 2)
+
+    def test_unknown_release_group(self):
+        mb_release_group.get_entities_by_gids = MagicMock()
+        mb_release_group.get_entities_by_gids.return_value = {
+            '8ef859e3-feb2-4dd1-93da-22b91280d7df': special_entities.unknown_release_group
+        }
+        release_group = mb_release_group.get_release_group_by_id('8ef859e3-feb2-4dd1-93da-22b91280d7df')
+        self.assertEqual(release_group['title'], '[Unknown Release Group]')
+        self.assertListEqual(release_group['artist-credit'], [{
+            'name': '[unknown]',
+            'artist': {
+                'id': '125ec42a-7229-4250-afc5-e057484327fe',
+                'name': '[unknown]',
+                'sort_name': '[unknown]'
+            }
+        }])

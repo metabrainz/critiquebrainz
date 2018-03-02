@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 from critiquebrainz.frontend.external.musicbrainz_db import place as mb_place
 from critiquebrainz.frontend.external.musicbrainz_db.test_data import place_suisto, place_verkatehdas
 from critiquebrainz.frontend.external.musicbrainz_db.tests import setup_cache
+from critiquebrainz.frontend.external.musicbrainz_db import special_entities
 
 
 class PlaceTestCase(TestCase):
@@ -32,3 +33,11 @@ class PlaceTestCase(TestCase):
         places = mb_place.fetch_multiple_places(['f9587914-8505-4bd1-833b-16a3100a4948', 'd71ffe38-5eaf-426b-9a2e-e1f21bc84609'])
         self.assertEqual(places['d71ffe38-5eaf-426b-9a2e-e1f21bc84609']['name'], 'Suisto')
         self.assertEqual(places['f9587914-8505-4bd1-833b-16a3100a4948']['name'], 'Verkatehdas')
+
+    def test_unknown_place(self):
+        mb_place.get_entities_by_gids = MagicMock()
+        mb_place.get_entities_by_gids.return_value = {
+            'd71ffe38-5eaf-426b-9a2e-e1f21bc846df': special_entities.unknown_place
+        }
+        place = mb_place.get_place_by_id('d71ffe38-5eaf-426b-9a2e-e1f21bc846df')
+        self.assertEqual(place['name'], '[Unknown Place]')

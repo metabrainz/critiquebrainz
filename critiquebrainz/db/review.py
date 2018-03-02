@@ -628,3 +628,29 @@ def distinct_entities():
               FROM review
         """))
         return {row[0] for row in results.fetchall()}
+
+
+def reviewed_entities(*, entity_ids, entity_type):
+    """Check if an entity has been reviewed.
+
+    Args:
+        entity_ids: List of ID(s) of the entities.
+        entity_type: Type of the entities.
+    Returns:
+        Dictionary stating whether an entity has been reviewed keyed by the entity ID.
+    """
+    with db.engine.connect() as connection:
+        results = connection.execute(sqlalchemy.text("""
+            SELECT entity_id
+              FROM review
+             WHERE entity_type = :entity_type
+               AND entity_id IN :entity_ids
+        """), {
+            "entity_type": entity_type,
+            "entity_ids": tuple(entity_ids),
+        })
+        reviewed_ids = [str(row[0]) for row in results.fetchall()]
+    reviewed = {}
+    for entity_id in entity_ids:
+        reviewed[entity_id] = True if entity_id in reviewed_ids else False
+    return reviewed
