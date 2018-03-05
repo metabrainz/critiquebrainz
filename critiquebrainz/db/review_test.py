@@ -269,3 +269,24 @@ class ReviewTestCase(DataTestCase):
         )
         entities = db_review.distinct_entities()
         self.assertEqual(len(entities), 1)
+
+    def test_reviewed_entities(self):
+        review = db_review.create(
+            user_id=self.user.id,
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            text="Awesome",
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        reviewed_entities = db_review.reviewed_entities(
+            entity_ids=["e7aad618-fa86-3983-9e77-405e21796eca", "deae6fc2-a675-4f35-9565-d2aaea4872c7"],
+            entity_type="release_group",
+        )
+        self.assertListEqual(reviewed_entities, ["e7aad618-fa86-3983-9e77-405e21796eca"])
+        db_review.delete(review["id"])
+        reviewed_entities = db_review.reviewed_entities(
+            entity_ids=["e7aad618-fa86-3983-9e77-405e21796eca"],
+            entity_type="release_group",
+        )
+        self.assertListEqual(reviewed_entities, [])

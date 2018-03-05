@@ -637,7 +637,7 @@ def reviewed_entities(*, entity_ids, entity_type):
         entity_ids: List of ID(s) of the entities.
         entity_type: Type of the entities.
     Returns:
-        Dictionary stating whether an entity has been reviewed keyed by the entity ID.
+        List of entity ID(s) that have a review in the database.
     """
     with db.engine.connect() as connection:
         results = connection.execute(sqlalchemy.text("""
@@ -650,7 +650,4 @@ def reviewed_entities(*, entity_ids, entity_type):
             "entity_ids": tuple(entity_ids),
         })
         reviewed_ids = [str(row[0]) for row in results.fetchall()]
-    reviewed = {}
-    for entity_id in entity_ids:
-        reviewed[entity_id] = True if entity_id in reviewed_ids else False
-    return reviewed
+    return reviewed_ids

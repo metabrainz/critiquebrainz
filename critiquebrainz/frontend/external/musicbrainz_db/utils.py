@@ -75,11 +75,10 @@ def get_entities_by_gids(*, query, entity_type, mbids):
         remaining_gids = list(set(remaining_gids) - {redirect_obj.gid for entity, redirect_obj in results})
 
     if remaining_gids and entity_type in db_review.ENTITY_TYPES:
-        reviewed = db_review.reviewed_entities(
+        reviewed_gids = db_review.reviewed_entities(
             entity_ids=remaining_gids,
             entity_type=entity_type,
         )
-        reviewed_gids = [entity_id for entity_id in reviewed if reviewed[entity_id]]
         for entity_id in reviewed_gids:
             entities[entity_id] = unknown_entity(entity_id, entity_type)
         remaining_gids = list(set(remaining_gids) - set(reviewed_gids))
