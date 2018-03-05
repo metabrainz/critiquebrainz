@@ -1,7 +1,7 @@
 from mbdata import models
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.external.musicbrainz_db import special_entities
-from critiquebrainz.db import review as db_review
+from critiquebrainz.db.review import reviewed_entities, ENTITY_TYPES as CB_ENTITIES
 
 
 # Entity models
@@ -74,8 +74,8 @@ def get_entities_by_gids(*, query, entity_type, mbids):
             entities[redirect_obj.gid] = entity
         remaining_gids = list(set(remaining_gids) - {redirect_obj.gid for entity, redirect_obj in results})
 
-    if remaining_gids and entity_type in db_review.ENTITY_TYPES:
-        reviewed_gids = db_review.reviewed_entities(
+    if remaining_gids and entity_type in CB_ENTITIES:
+        reviewed_gids = reviewed_entities(
             entity_ids=remaining_gids,
             entity_type=entity_type,
         )

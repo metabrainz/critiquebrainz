@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from critiquebrainz.frontend.external.musicbrainz_db import event as mb_event
-from critiquebrainz.frontend.external.musicbrainz_db import special_entities
 from critiquebrainz.frontend.external.musicbrainz_db.test_data import taubertal_festival_2004, event_ra_hall_uk
 from critiquebrainz.frontend.external.musicbrainz_db.tests import setup_cache
+import critiquebrainz.frontend.external.musicbrainz_db.utils as mb_utils
 
 
 class EventTestCase(TestCase):
@@ -33,9 +33,8 @@ class EventTestCase(TestCase):
                          '1996-04-17: Royal Albert Hall, London, England, UK')
 
     def test_unknown_place(self):
-        mb_event.get_entities_by_gids = MagicMock()
-        mb_event.get_entities_by_gids.return_value = {
-            '40e6153d-a042-4c95-a0a9-b0a47e3825df': special_entities.unknown_event
-        }
+        self.event_query.return_value = []
+        mb_utils.reviewed_entities = MagicMock()
+        mb_utils.reviewed_entities.return_value = ['40e6153d-a042-4c95-a0a9-b0a47e3825df']
         event = mb_event.get_event_by_id('40e6153d-a042-4c95-a0a9-b0a47e3825df')
         self.assertEqual(event['name'], '[Unknown Event]')
