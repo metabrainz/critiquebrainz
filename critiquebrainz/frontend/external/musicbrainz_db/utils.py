@@ -1,5 +1,7 @@
 from mbdata import models
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+from critiquebrainz.frontend.external.musicbrainz_db import special_entities
+from critiquebrainz.db.review import reviewed_entities, ENTITY_TYPES as CB_ENTITIES
 
 
 # Entity models
@@ -22,6 +24,25 @@ REDIRECT_MODELS = {
     'release_group': models.ReleaseGroupGIDRedirect,
     'event': models.EventGIDRedirect,
 }
+
+
+def unknown_entity(entity_gid, entity_type):
+    """Returns special unknown entities (in case, they are not present in MB).
+
+    Args:
+        entity_gid: MBID of the unknown entity.
+        entity_type: Type of the unknown entity.
+    Returns:
+        Special entity object (unknown) of specified entity_type.
+    """
+    if entity_type == 'release_group':
+        entity = special_entities.unknown_release_group
+    elif entity_type == 'place':
+        entity = special_entities.unknown_place
+    elif entity_type == 'event':
+        entity = special_entities.unknown_event
+    entity.gid = entity_gid
+    return entity
 
 
 def get_entities_by_gids(*, query, entity_type, mbids):
@@ -52,6 +73,16 @@ def get_entities_by_gids(*, query, entity_type, mbids):
         for entity, redirect_obj in results:
             entities[redirect_obj.gid] = entity
         remaining_gids = list(set(remaining_gids) - {redirect_obj.gid for entity, redirect_obj in results})
+
+    if remaining_gids and entity_type in CB_ENTITIES:
+        reviewed_gids = reviewed_entities(
+            entity_ids=remaining_gids,
+            entity_type=entity_type,
+        )
+        for entity_id in reviewed_gids:
+            entities[entity_id] = unknown_entity(entity_id, entity_type)
+        remaining_gids = list(set(remaining_gids) - set(reviewed_gids))
+
     if remaining_gids:
         raise mb_exceptions.NoDataFoundException("Couldn't find entities with IDs: {mbids}".format(mbids=remaining_gids))
     return entities
