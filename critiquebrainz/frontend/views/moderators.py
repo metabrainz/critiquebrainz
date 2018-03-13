@@ -18,7 +18,7 @@ def mods_list():
         mods.append({
             'critiquebrainz_id': mod_data["id"],
             'musicbrainz_username': mod_data["musicbrainz_username"],
-            'avatar_url': gravatar_url(mod_data["musicbrainz_username"]),
+            'avatar_url': mod_data["avatar_url"],
         })
     for mod_username in mod_usernames:  # The rest
         mods.append({
