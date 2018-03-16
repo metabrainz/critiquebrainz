@@ -67,6 +67,8 @@ COPY ./docker/prod/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
 ADD ./docker/prod/cron/jobs /tmp/crontab
 RUN chmod 0644 /tmp/crontab && crontab -u critiquebrainz /tmp/crontab
 RUN rm /tmp/crontab
+RUN touch /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log \
+    && chown critiquebrainz:critiquebrainz /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log
 
 # Make sure the cron service doesn't start automagically
 # http://smarden.org/runit/runsv.8.html

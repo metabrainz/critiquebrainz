@@ -1,12 +1,14 @@
+PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
+PYTHONPATH=/usr/local/lib/python36.zip:/usr/local/lib/python3.6:/usr/local/lib/python3.6/lib-dynload:/usr/local/lib/python3.6/site-packages:/usr/local/lib/python3.6/site-packages/messybrainz-99.0.0.dev0-py3.6.egg
+
 # Database backup creation
-10 00 * * * cd /code/ && python3 manage.py dump full_db -l /data/backups -r
+10 00 * * * /usr/local/bin/python /code/manage.py dump full_db -l /data/backups -r >> /var/log/dump_backup.log 2>&1
 
 # Public MB-style dump creation
-15 00 * * * cd /code/ && python3 manage.py dump public -l /data/dumps/tsv -r
+15 00 * * * /usr/local/bin/python manage.py dump public -l /data/dumps/tsv -r >> /var/log/public_dump_create.log 2>&1
 
 # JSON dump creation
-20 00 * * * cd /code/ && python3 manage.py dump json -l /data/dumps/json -r
+20 00 * * * /usr/local/bin/python manage.py dump json -l /data/dumps/json -r >> /var/log/json_dump_create.log 2>&1
 
 # Copy everything over...
-# TODO: Fix this
-#45 00 * * * rsync -av --delete-after -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" /data/dumps/ ftp-misc@taz.mb:/media/ftp/root/pub/musicbrainz/critiquebrainz
+45 00 * * * /code/admin/rsync-dump-files.sh
