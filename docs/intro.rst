@@ -8,7 +8,7 @@ You can set up CritiqueBrainz server using `Docker <https://www.docker.com/>`_. 
 requires minimum amount of configuration.
 
 .. warning::
-  Make sure you have the latest version of Docker.
+  Make sure you have the latest version of docker and docker-compose.
 
 Configuration
 ^^^^^^^^^^^^^
@@ -94,7 +94,8 @@ a single command::
 
         $ echo $DUMPS_DIR
 
-      This must display the path of your folder containing database dumps.
+      This must display the path of your folder containing database dumps. The folder must contain at least
+      the file ``mbdump.tar.bz2``.
 
   iii. Then import the database dumps by this command::
 
@@ -106,7 +107,10 @@ a single command::
   to set up the MusicBrainz database. However, note that these dumps are .tar.xz
   dumps while CritiqueBrainz currently only supports import of .tar.bz2 dumps.
   So, a decompression of the sample dumps and recompression into .tar.bz2 dumps
-  will be needed.
+  will be needed. This can be done using the following command
+
+      $ xzcat mbdump-sample.tar.xz | bzip2 > mbdump.tar.bz2
+
 
 .. warning::
 
