@@ -39,6 +39,7 @@ _TABLES = {
         "review_id",
         "timestamp",
         "text",
+        "rating",
     ),
     "license": (
         "id",
@@ -57,6 +58,12 @@ _TABLES = {
         "clients",
         "grants",
         "tokens"
+    ),
+    "avg_rating": (
+        "entity_id",
+        "entity_type",
+        "rating",
+        "count",
     ),
 }
 
@@ -247,14 +254,21 @@ def public(location, rotate=False):
          WHERE review.is_hidden = false AND review.is_draft = false
     """.format(columns=', '.join(['revision.' + col for col in _TABLES["revision"]]))
     with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-all.tar.bz2"), "w:bz2") as tar:
+
         # Dumping tables
         reviews_combined_tables_dir = os.path.join(temp_dir, 'cbdump-reviews-all')
         create_path(reviews_combined_tables_dir)
+
         with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
             cursor.copy_to(f, "(SELECT {columns} FROM review WHERE is_hidden = false AND is_draft = false)"
                            .format(columns=', '.join(_TABLES["review"])))
+
         with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
             cursor.copy_to(f, "({sql})".format(sql=REVISION_COMBINED_SQL))
+
+        with open(os.path.join(reviews_combined_tables_dir, 'avg_rating'), 'w') as f:
+            cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
+
         tar.add(reviews_combined_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -284,6 +298,9 @@ def public(location, rotate=False):
             with open(os.path.join(tables_dir, 'revision'), 'w') as f:
                 cursor.copy_to(f, """({REVISION_COMBINED_SQL} AND review.license_id='{license_id}')"""
                                .format(REVISION_COMBINED_SQL=REVISION_COMBINED_SQL, license_id=license["id"]))
+            with open(os.path.join(tables_dir, 'avg_rating'), 'w') as f:
+                cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
+
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
@@ -344,6 +361,7 @@ def importer(archive):
         import_data(os.path.join(temp_dir, 'cbdump', 'license'), 'license')
         import_data(os.path.join(temp_dir, 'cbdump', 'review'), 'review')
         import_data(os.path.join(temp_dir, 'cbdump', 'revision'), 'revision')
+        import_data(os.path.join(temp_dir, 'cbdump', 'avg_rating'), 'avg_rating')
 
         shutil.rmtree(temp_dir)  # Cleanup
         print("Done!")
