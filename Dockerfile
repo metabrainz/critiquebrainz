@@ -11,6 +11,7 @@ RUN apt-get update \
                         libssl-dev \
                         libxml2-dev \
                         libxslt1-dev \
+                        rsync \
     && rm -rf /var/lib/apt/lists/*
 
 # PostgreSQL client
