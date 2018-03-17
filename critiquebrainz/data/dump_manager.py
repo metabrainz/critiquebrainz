@@ -169,7 +169,7 @@ def json(location, rotate=False):
             tar.add(license_dir, arcname='reviews')
 
             # Copying legal text
-            tar.add(os.path.join("critiquebrainz", "data", "licenses", safe_name + ".txt"), arcname='COPYING')
+            tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"), arcname='COPYING')
 
             print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
 
@@ -230,7 +230,7 @@ def public(location, rotate=False):
 
         # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
-        tar.add(os.path.join('critiquebrainz', 'data', 'licenses', 'cc-by-nc-sa-30.txt'), arcname='COPYING')
+        tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"), arcname='COPYING')
         tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
         tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
@@ -259,7 +259,7 @@ def public(location, rotate=False):
 
         # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
-        tar.add(os.path.join('critiquebrainz', 'data', 'licenses', 'cc-by-nc-sa-30.txt'), arcname='COPYING')
+        tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"), arcname='COPYING')
         tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
         tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
@@ -287,7 +287,7 @@ def public(location, rotate=False):
             tar.add(tables_dir, arcname='cbdump')
 
             # Including additional information about this archive
-            tar.add(os.path.join("critiquebrainz", "data", "licenses", safe_name + ".txt"), arcname='COPYING')
+            tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"), arcname='COPYING')
             tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
             tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
