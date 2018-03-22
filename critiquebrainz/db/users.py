@@ -644,9 +644,9 @@ def add_follower(following_id, follower_id):
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO follower
                  VALUES (:following_id, :follower_id)
-        ON CONFLICT SET (following_id, follower_id)
+            ON CONFLICT (following_id, follower_id)
           DO UPDATE SET following_id = :following_id,
-                        follower_id  = :follower_id,
+                        follower_id  = :follower_id
 
             """), {
             'following_id': following_id,
