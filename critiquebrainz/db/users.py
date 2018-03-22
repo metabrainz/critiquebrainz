@@ -665,6 +665,7 @@ def get_followers(user_id):
                 SELECT follower_id
                   FROM follower
                  WHERE following_id = :id
+                )
         """), {
             'id': user_id,
         })

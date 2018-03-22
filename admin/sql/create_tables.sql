@@ -108,7 +108,7 @@ CREATE TABLE vote (
 
 CREATE TABLE follower (
     follower_id     UUID,
-    following_id    UUID,
+    following_id    UUID
 );
 
 COMMIT;
