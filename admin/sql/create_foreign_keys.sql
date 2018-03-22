@@ -94,13 +94,13 @@ ALTER TABLE revision
 
 ALTER TABLE follower
   ADD CONSTRAINT follower_follower_id_fkey
-  FOREIGN KEY (id)
+  FOREIGN KEY (following_id)
   REFERENCES "user"(id)
   ON DELETE CASCADE;
 
 ALTER TABLE follower
   ADD CONSTRAINT follower_following_id_fkey
-  FOREIGN KEY (id)
+  FOREIGN KEY (follower_id)
   REFERENCES "user"(id)
   ON DELETE CASCADE;
 
