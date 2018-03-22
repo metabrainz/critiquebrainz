@@ -92,4 +92,16 @@ ALTER TABLE revision
   REFERENCES review(id)
   ON DELETE CASCADE;
 
+ALTER TABLE follower
+  ADD CONSTRAINT follower_follower_id_fkey
+  FOREIGN KEY (id)
+  REFERENCES "user"(id)
+  ON DELETE CASCADE;
+
+ALTER TABLE follower
+  ADD CONSTRAINT follower_following_id_fkey
+  FOREIGN KEY (id)
+  REFERENCES "user"(id)
+  ON DELETE CASCADE;
+
 COMMIT;

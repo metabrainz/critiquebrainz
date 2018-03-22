@@ -106,4 +106,9 @@ CREATE TABLE vote (
     rated_at    TIMESTAMP   NOT NULL
 );
 
+CREATE TABLE follower (
+    follower_id     UUID,
+    following_id    UUID,
+);
+
 COMMIT;

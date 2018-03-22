@@ -635,3 +635,37 @@ def tokens(user_id):
 
         rows = result.fetchall()
     return [dict(row) for row in rows]
+
+
+def add_follower(following_id, follower_id):
+    """ Add a follower with specified user_id for a user with specified user_id
+    """
+    with db.engine.connect() as connection:
+        result = connect.execute(sqlalchemy.text("""
+            INSERT INTO follower
+                 VALUES (:following_id, :follower_id)
+        ON CONFLICT SET (following_id, follower_id)
+          DO UPDATE SET following_id = :following_id,
+                        follower_id  = :follower_id,
+
+            """), {
+            'following_id': following_id,
+            'follower_id': follower_id,
+        })
+
+
+def get_followers(user_id):
+    """ Get all followers of the specified user
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT id
+              FROM "user"
+             WHERE "user".id in (
+                SELECT follower_id
+                  FROM follower
+                 WHERE following_id = :id
+        """), {
+            'id': user_id,
+        })
+        return [row['id'] for row in result]
