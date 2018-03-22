@@ -10,4 +10,5 @@ ALTER TABLE avg_rating ADD CONSTRAINT avg_rating_pkey PRIMARY KEY (entity_id, en
 ALTER TABLE spam_report ADD CONSTRAINT spam_report_pkey PRIMARY KEY (user_id, revision_id);
 ALTER TABlE "user" ADD CONSTRAINT user_pkey PRIMARY KEY (id);
 ALTER TABlE vote ADD CONSTRAINT vote_pkey PRIMARY KEY (user_id, revision_id);
+ALTER TABLE follower ADD CONSTRAINT follower_pkey PRIMARY KEY (follower_id, following_id);
 COMMIT;
