@@ -641,7 +641,7 @@ def add_follower(following_id, follower_id):
     """ Add a follower with specified user_id for a user with specified user_id
     """
     with db.engine.connect() as connection:
-        result = connect.execute(sqlalchemy.text("""
+        result = connection.execute(sqlalchemy.text("""
             INSERT INTO follower
                  VALUES (:following_id, :follower_id)
         ON CONFLICT SET (following_id, follower_id)
