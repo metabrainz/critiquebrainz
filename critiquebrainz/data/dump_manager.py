@@ -1,6 +1,5 @@
 from time import gmtime, strftime
 from datetime import datetime
-from functools import wraps
 import subprocess
 import tempfile
 import tarfile
@@ -12,9 +11,9 @@ from flask import current_app, jsonify
 from flask.json import JSONEncoder
 import sqlalchemy
 import click
-from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri
+from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri, with_request_context
 from critiquebrainz.db import license as db_license, review as db_review
-from critiquebrainz import frontend, db
+from critiquebrainz import db
 
 
 cli = click.Group()
@@ -66,14 +65,6 @@ _TABLES = {
         "count",
     ),
 }
-
-
-def with_request_context(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        with frontend.create_app().test_request_context():
-            return f(*args, **kwargs)
-    return decorated
 
 
 def has_data(table_name):
