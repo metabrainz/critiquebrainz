@@ -9,7 +9,7 @@
 cd "$(dirname "${BASH_SOURCE[0]}")/../"
 
 ENV=${1:-beta}
-TAG=${1:-beta}
+TAG=${2:-beta}
 docker build -t metabrainz/critiquebrainz:$TAG \
         --build-arg GIT_COMMIT_SHA=$(git rev-parse HEAD) \
         --build-arg DEPLOY_ENV=$ENV .
