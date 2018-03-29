@@ -103,3 +103,15 @@ def with_request_context(f):
         with frontend.create_app().test_request_context():
             return f(*args, **kwargs)
     return decorated
+
+
+def with_test_request_context(f):
+    """Decorator for providing request context for application using test_config.py."""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        with frontend.create_app(
+            config_path=os.path.join(
+                os.path.dirname(os.path.realpath(__file__)),
+                '..', 'test_config.py')).test_request_context():
+            return f(*args, **kwargs)
+    return decorated

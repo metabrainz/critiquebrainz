@@ -1,37 +1,31 @@
 import os
 import tempfile
-from functools import wraps
 from datetime import datetime
 from click.testing import CliRunner
 from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.frontend import create_app
 from critiquebrainz.data import utils
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
 
-
-def with_test_request_context(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        print("HERE IN TEST REQUEST CONTEXT")
-        with create_app(
-            config_path=os.path.join(
-                os.path.dirname(os.path.realpath(__file__)),
-                '..', 'test_config.py')).test_request_context():
-
-            return f(*args, **kwargs)
-    return decorated
-
-
-utils.with_request_context = with_test_request_context
-from critiquebrainz.data import dump_manager  # pylint: disable=wrong-import-position
+utils.with_request_context = utils.with_test_request_context  # noqa
+from critiquebrainz.data import dump_manager # pylint:disable=wrong-import-position
 
 
 def get_archives(root_dir):
+    """Returns a dictionary of bz2 archives and their respective paths.
+
+    Args:
+        root_dir: Path of the root dir.
+    Returns:
+        Dictionary with the following structure:
+        {
+            archive_name: archive_path
+        }
+    """
     archives = {}
-    for roots, dirs, files in os.walk(root_dir):  # pylint: disable=unused-variable
+    for roots, _, files in os.walk(root_dir):
         for f in files:
             if f.endswith('tar.bz2'):
                 archives[f] = os.path.join(roots, f)
@@ -69,7 +63,7 @@ class DumpManagerTestCase(DataTestCase):
         user = User(db_users.get_or_create("Tester", new_user_data={
             "display_name": "test user",
         }))
-        db_review.create(
+        review = db_review.create(
             user_id=user.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
@@ -79,10 +73,13 @@ class DumpManagerTestCase(DataTestCase):
             license_id=self.license["id"],
         )
 
-        # Make dumps and reset db
+        # Make dumps and delete entities
         self.runner.invoke(dump_manager.public, ['--location', self.tempdir])
         archives = get_archives(self.tempdir)
-        # self.reset_db()
+        db_review.delete(review['id'])
+        db_users.delete(user.id)
+        self.assertEqual(db_users.total_count(), 0)
+        self.assertEqual(db_review.get_count(), 0)
 
         # Import dumps - cbdump.tar.bz2 and cbdump-reviews-all.tar.bz2 and check if data imported properly
         self.runner.invoke(dump_manager.importer, [archives['cbdump.tar.bz2']])
