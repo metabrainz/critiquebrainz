@@ -30,6 +30,16 @@
           </div>
         </div>
       </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ form.license_choice.label.text }}</label>
+        <div class="col-sm-6">
+          {% for choice in form.license_choice %}
+            <div class="radio">
+              <label>{{ choice }}{{ choice.label.text | safe }}</label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
     </fieldset>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">

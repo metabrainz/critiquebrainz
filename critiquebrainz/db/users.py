@@ -58,7 +58,8 @@ def get_many_by_mb_username(usernames):
                    email,
                    created,
                    musicbrainz_id,
-                   show_gravatar
+                   show_gravatar,
+                   license_choice
               FROM "user"
              WHERE musicbrainz_id ILIKE ANY(:musicbrainz_usernames)
         """), {
@@ -91,7 +92,8 @@ def get_by_id(user_id):
             "created": (datetime),
             "musicbrainz_username": (str),
             "show_gravatar": (bool),
-            "is_blocked": (bool)
+            "is_blocked": (bool),
+            "license_choice": (str)
         }
     """
     with db.engine.connect() as connection:
@@ -102,7 +104,8 @@ def get_by_id(user_id):
                    created,
                    musicbrainz_id,
                    show_gravatar,
-                   is_blocked
+                   is_blocked,
+                   license_choice
               FROM "user"
              WHERE id = :user_id
         """), {
@@ -125,6 +128,7 @@ def create(**user_data):
         email(str, optional): email of the user.
         show_gravatar(bool, optional): whether to show gravatar(default: false).
         is_blocked(bool, optional): whether user is blocked(default: false).
+        license_choice(str, optional): preferred license for reviews by the user
 
     Returns:
         Dictionary with the following structure:
@@ -135,7 +139,8 @@ def create(**user_data):
             "created": (datetime),
             "musicbrainz_username": (str),
             "show_gravatar": (bool),
-            "is_blocked": (bool)
+            "is_blocked": (bool),
+            "license_choice": (str)
         }
     """
     display_name = user_data.pop('display_name')
@@ -143,13 +148,14 @@ def create(**user_data):
     email = user_data.pop('email', None)
     show_gravatar = user_data.pop('show_gravatar', False)
     is_blocked = user_data.pop('is_blocked', False)
+    license_choice = user_data.pop('license_choice', None)
     if user_data:
         raise TypeError('Unexpected **user_data: %r' % user_data)
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar, is_blocked)
-                 VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar, :is_blocked)
+            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar, is_blocked, license_choice)
+                 VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar, :is_blocked, :license_choice)
               RETURNING id
         """), {
             "id": str(uuid.uuid4()),
@@ -159,6 +165,7 @@ def create(**user_data):
             "musicbrainz_id": musicbrainz_username,
             "show_gravatar": show_gravatar,
             "is_blocked": is_blocked,
+            "license_choice": license_choice,
         })
         new_id = result.fetchone()[0]
     return get_by_id(new_id)
@@ -179,7 +186,8 @@ def get_by_mbid(musicbrainz_username):
             "created": (datetime),
             "musicbrainz_username": (str),
             "show_gravatar": (bool),
-            "is_blocked": (bool)
+            "is_blocked": (bool),
+            "license_choice": (str)
         }
     """
     with db.engine.connect() as connection:
@@ -190,7 +198,8 @@ def get_by_mbid(musicbrainz_username):
                    created,
                    musicbrainz_id,
                    show_gravatar,
-                   is_blocked
+                   is_blocked,
+                   license_choice
             FROM "user"
             WHERE musicbrainz_id = :musicbrainz_username
         """), {
@@ -216,6 +225,7 @@ def get_or_create(musicbrainz_username, new_user_data):
             "email": email of the user(optional).
             "show_gravatar": whether to show gravatar(default: false, optional).
             "is_blocked": whether user is blocked(default: false, optional).
+            "license_choice": preferred license for reviews by the user(optional)
         }
 
     Returns:
@@ -227,7 +237,8 @@ def get_or_create(musicbrainz_username, new_user_data):
             "created": (datetime),
             "musicbrainz_username": (str),
             "show_gravatar": (bool),
-            "is_blocked": (bool)
+            "is_blocked": (bool),
+            "license_choice": (str)
         }
     """
     user = get_by_mbid(musicbrainz_username)
@@ -268,7 +279,8 @@ def list_users(limit=None, offset=0):
             "created": (datetime),
             "musicbrainz_username": (str),
             "show_gravatar": (bool),
-            "is_blocked": (bool)
+            "is_blocked": (bool),
+            "license_choice": (str)
         }
     """
     with db.engine.connect() as connection:
@@ -279,7 +291,8 @@ def list_users(limit=None, offset=0):
                    created,
                    musicbrainz_id,
                    show_gravatar,
-                   is_blocked
+                   is_blocked,
+                   license_choice
               FROM "user"
              LIMIT :limit
             OFFSET :offset
@@ -521,6 +534,7 @@ def update(user_id, user_new_info):
             "display_name": (str),
             "show_gravatar": (bool),
             "email": (str)
+            "license_choice": (str)
         }
     """
     updates = []
@@ -530,6 +544,8 @@ def update(user_id, user_new_info):
         updates.append("show_gravatar = :show_gravatar")
     if "email" in user_new_info:
         updates.append("email = :email")
+    if "license_choice" in user_new_info:
+        updates.append("license_choice = :license_choice")
 
     setstr = ", ".join(updates)
     query = sqlalchemy.text("""UPDATE "user"
