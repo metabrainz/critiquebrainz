@@ -92,4 +92,10 @@ ALTER TABLE revision
   REFERENCES review(id)
   ON DELETE CASCADE;
 
+ALTER TABLE "user"
+  ADD CONSTRAINT user_license_choice_fkey
+  FOREIGN KEY (license_choice)
+  REFERENCES license(id)
+  ON DELETE CASCADE;
+
 COMMIT;
