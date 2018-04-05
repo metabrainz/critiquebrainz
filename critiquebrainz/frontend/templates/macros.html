@@ -30,7 +30,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False, source_credit=False, size=250) %}
+{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False, source_credit=False, size=250, release_group_page=False) %}
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
   {% if entity_type == 'event' %}
     <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
@@ -53,12 +53,26 @@
         {{ _('Release Group') }}
       </span>
     {% endif %}
+    <div id="mb-call-to-act" class="spotify-player" style="display:none;">
+      <span class="text-muted">
+        {{ _('We don\'t have a cover art for this release group.') }}
+      </span>
+      <div style="text-align:center;font-weight:bold;">
+        <a style="font-size:16px"; href='https://musicbrainz.org/release-group/{{ entity_id }}/set-cover-art' rel='nofollow'>
+          {{ _('Add Cover Art!') }}
+        </a>
+      </div>
+    </div>
     <script>
       $('img').last()
-          .on('error', function () {
-            $(this).attr('src', '{{ get_static_path('images/placeholder_disc.svg') }}');
-          })
-          .attr('src', 'https://coverartarchive.org/release-group/{{ entity_id }}/front-{{ size * 2 }}');
+        .on('error', function () {
+          $(this).attr('src', '{{ get_static_path('images/placeholder_disc.svg') }}');
+          if ('{{ release_group_page }}' == 'True')
+            $("#mb-call-to-act").css('display','block');
+          else
+            $("#mb-call-to-cat").css('display','none');
+        })
+        .attr('src', 'https://coverartarchive.org/release-group/{{ entity_id }}/front-{{ size * 2 }}');
     </script>
   {% endif %}
 {% endmacro %}
@@ -70,7 +84,7 @@
 {% endmacro %}
 
 {% macro spotify_player(release_group_id, spotify_mappings, show_add_message=False) -%}
-  <div class="spotify-player">
+  <div class="spotify-player" style="display:block">
     {% if spotify_mappings %}
       <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
       <em>
