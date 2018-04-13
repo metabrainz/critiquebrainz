@@ -21,8 +21,23 @@
       <div id="stats" class="panel panel-default">
         <div class="panel-heading"><strong>{{ _('Statistics') }}</strong></div>
         <div class="panel-body">
-          {{ _('Reviews: %(reviews_count)s', reviews_count = reviews_total) }}
-          <br/>{{ _('Users: %(users_count)s', users_count = users_total) }}
+           <table class="table table-collapsed">
+            <thead>
+              <tr>
+                <th>{{ _('Description') }}</th>
+                <th>{{ _('Number') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ _('Number of Reviews') }}</td>
+                <td>{{ _('%(review_count)s', review_count=reviews_total) }}</td>
+              </tr>
+              <tr>
+                <td>{{ _('Number of Users') }}</td>
+                <td>{{ _('%(user_count)s', user_count=users_total) }}</td>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
