@@ -208,32 +208,38 @@ def public(location, rotate=False):
     # Creating a directory where all dumps will go
     dump_dir = os.path.join(location, time_now.strftime('%Y%m%d-%H%M%S'))
     create_path(dump_dir)
-    temp_dir = tempfile.mkdtemp()
 
-    # Preparing meta files
-    with open(os.path.join(temp_dir, 'TIMESTAMP'), 'w') as f:
-        f.write(time_now.isoformat(' '))
-    with open(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), 'w') as f:
-        f.write(str(db.SCHEMA_VERSION))
+    # Prepare meta files
+    meta_files_dir = tempfile.mkdtemp()
+    prepare_meta_files(meta_files_dir, time_now=time_now)
 
     # BASE ARCHIVE
     # Contains all license independent data (licenses, users)
-    base_archive_path = create_base_archive(dump_dir, temp_dir)
+    base_archive_path = create_base_archive(
+        location=dump_dir,
+        meta_files_dir=meta_files_dir,
+    )
     print(base_archive_path)
 
     # 1. COMBINED
     # Archiving all reviews (any license)
-    review_dump_path = create_reviews_archive(dump_dir, temp_dir)
+    review_dump_path = create_reviews_archive(
+        location=dump_dir,
+        meta_files_dir=meta_files_dir,
+    )
     print(review_dump_path)
 
     # 2. SEPARATE
     # Creating separate archives for each license
     for license in db_license.list_licenses():
-        review_dump_path = create_reviews_archive(dump_dir, temp_dir, license_id=license['id'])
+        review_dump_path = create_reviews_archive(
+            location=dump_dir,
+            meta_files_dir=meta_files_dir,
+            license_id=license['id'],
+        )
         print(review_dump_path)
 
-    shutil.rmtree(temp_dir)  # Cleanup
-
+    shutil.rmtree(meta_files_dir)  # Cleanup
     if rotate:
         print("Removing old dumps (except two latest)...")
         remove_old_archives(location, "[0-9]+-[0-9]+", is_dir=True)
@@ -241,10 +247,45 @@ def public(location, rotate=False):
     print("Done!")
 
 
-def create_base_archive(dump_dir, temp_dir):
-    """Creates a dump of all license-independent information: (users, license)."""
+def prepare_meta_files(meta_files_dir, time_now=None):
+    """Prepares the files containing meta information, namely the TIMESTAMP and the SCHEMA_SEQUENCE file.
 
-    with tarfile.open(os.path.join(dump_dir, "cbdump.tar.bz2"), "w:bz2") as tar:
+    Args:
+        meta_files_dir: Directory where the files needs to be created.
+        time_now (optional): Specifies the timestamp to be copied to the TIMESTAMP file.
+    """
+    if not time_now:
+        time_now = datetime.today()
+    with open(os.path.join(meta_files_dir, 'TIMESTAMP'), 'w') as f:
+        f.write(time_now.isoformat(' '))
+    with open(os.path.join(meta_files_dir, 'SCHEMA_SEQUENCE'), 'w') as f:
+        f.write(str(db.SCHEMA_VERSION))
+
+
+def add_meta_files(tarfile, meta_files_dir):
+    """Adds the meta files to the specified tarfile.
+
+    Args:
+        tarfile: The tarfile object where the files needs to be added.
+        meta_files_dir: The directory containing the meta files.
+    """
+    tarfile.add(os.path.join(meta_files_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
+    tarfile.add(os.path.join(meta_files_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
+
+
+def create_base_archive(*, location, meta_files_dir=None):
+    """Creates a dump of all license-independent information: (users, license).
+
+    Args:
+        location: Path of the directory where the archive needs to be created.
+        meta_files_dir (optional): Path of the directory containing the meta files to be copied
+            into the archive (TIMESTAMP and SCHEMA_VERSION). If not specified, the meta files are
+            generated and added to the archive.
+    Returns:
+        Complete path to the created archive.
+    """
+    with tarfile.open(os.path.join(location, "cbdump.tar.bz2"), "w:bz2") as tar:
+        temp_dir = tempfile.mkdtemp()
         base_archive_dir = os.path.join(temp_dir, 'cbdump')
         create_path(base_archive_dir)
 
@@ -260,22 +301,37 @@ def create_base_archive(dump_dir, temp_dir):
                     with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
                         cursor.copy_to(f, 'license', columns=_TABLES["license"])
                 except Exception:
-                    print('Error while copying tables')
+                    print('Error while copying tables during creation of the base archive.')
                     transaction.rollback()
         tar.add(base_archive_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
         tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"), arcname='COPYING')
-        tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
-        tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
+        # Copy meta files
+        if not meta_files_dir:
+            prepare_meta_files(temp_dir)
+            meta_files_dir = temp_dir
+        add_meta_files(tar, meta_files_dir)
 
-        return " + %s/cbdump.tar.bz2" % dump_dir
+        shutil.rmtree(temp_dir)  # Cleanup
+        return " + %s/cbdump.tar.bz2" % location
 
 
-def create_reviews_archive(dump_dir, temp_dir, license_id=None):
+def create_reviews_archive(*, location, meta_files_dir=None, license_id=None):
     """Creates a dump of reviews filtered on the given license_id, their revisions and
        the avg. rating tables.
+
+    Args:
+        location: Path of the directory where the archive needs to be created.
+        meta_files_dir (optional): Path of the directory containing the meta files to be copied
+            into the archive (TIMESTAMP and SCHEMA_VERSION). If not specified, the meta files are
+            generated and added to the archive.
+        license_id (optional): The ID of the license whose reviews (and related information)
+            is to be added to the dump. All reviews are copied (irrespective of their
+            license) if license_id is None.
+    Returns:
+        Complete path to the created archive.
     """
     if license_id:
         license_where_clause = "AND license_id = '{}'".format(license_id)
@@ -307,8 +363,9 @@ def create_reviews_archive(dump_dir, temp_dir, license_id=None):
         license_where_clause=license_where_clause,
     )
 
-    with tarfile.open(os.path.join(dump_dir, archive_name), "w:bz2") as tar:
+    with tarfile.open(os.path.join(location, archive_name), "w:bz2") as tar:
         # Dumping tables
+        temp_dir = tempfile.mkdtemp()
         reviews_tables_dir = os.path.join(temp_dir, safe_name)
         create_path(reviews_tables_dir)
         with db.engine.connect() as connection:
@@ -324,7 +381,7 @@ def create_reviews_archive(dump_dir, temp_dir, license_id=None):
                     with open(os.path.join(reviews_tables_dir, 'avg_rating'), 'w') as f:
                         cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
                 except Exception:
-                    print("Error while copying tables")
+                    print("Error while copying tables during the creation of the reviews archive")
                     transaction.rollback()
 
         tar.add(reviews_tables_dir, arcname='cbdump')
@@ -334,10 +391,14 @@ def create_reviews_archive(dump_dir, temp_dir, license_id=None):
                     arcname='COPYING')
         else:
             tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"), arcname='COPYING')
-        tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
-        tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
-    return " + {dump_dir}/{archive_name}".format(dump_dir=dump_dir, archive_name=archive_name)
+        if not meta_files_dir:
+            prepare_meta_files(temp_dir)
+            meta_files_dir = temp_dir
+        add_meta_files(tar, meta_files_dir)
+        shutil.rmtree(temp_dir)  # Cleanup
+
+    return " + {location}/{archive_name}".format(location=location, archive_name=archive_name)
 
 
 @cli.command(name="import")
