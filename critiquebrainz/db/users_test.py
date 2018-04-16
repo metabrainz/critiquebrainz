@@ -189,3 +189,8 @@ class UserTestCase(DataTestCase):
         tokens = db_users.tokens(self.user1.id)
         self.assertEqual(tokens[0]["client_name"], "Some Application")
         self.assertEqual(tokens[0]["refresh_token"], "Test Refresh Token")
+
+
+    def test_user_followers(self):
+        db_users.add_follower(self.user1.id, self.user2.id)
+        self.assertIn(self.user2.id, db_user.get_followers(self.user1.id))
