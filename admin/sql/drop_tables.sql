@@ -1,4 +1,6 @@
 BEGIN;
+DROP TABLE IF EXISTS comment_revision;
+DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS vote;
 DROP TABLE IF EXISTS spam_report;
 DROP TABLE IF EXISTS revision;
