@@ -225,7 +225,7 @@ def create():
         return redirect(url_for('user.reviews', user_id=current_user.id))
 
     # Checking if the user already wrote a review for this entity
-    reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id)
+    reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id, blurb=False)
     review = reviews[0] if count is not 0 else None
 
     if review:

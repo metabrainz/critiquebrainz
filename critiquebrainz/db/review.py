@@ -236,7 +236,7 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
 
 def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
            language=DEFAULT_LANG, license_id=DEFAULT_LICENSE_ID,
-           source=None, source_url=None):
+           source=None, source_url=None, blurb=False):
     """Create a new review.
 
     Optionally, if a review is being imported from external source which needs
@@ -255,6 +255,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
         license_id (str): ID of the license.
         source (str): Name of the source of the review.
         source_url (str): URL pointing to the source of the review.
+        blurb (boolean): Whether the review is a blurb (short review)
 
     Returns:
         Dictionary with the following structure
@@ -278,6 +279,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "rating": int,
             "license": dict,
             "published_on": datetime,
+            "blurb": bool,
         }
     """
     if text is None and rating is None:
@@ -291,8 +293,8 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url, published_on)
-            VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url, :published_on)
+            INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url, published_on, blurb)
+            VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url, :published_on, :blurb)
          RETURNING id;
         """), {  # noqa: E501
             "id": str(uuid.uuid4()),
@@ -307,6 +309,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "source": source,
             "source_url": source_url,
             "published_on": published_on,
+            "blurb": blurb,
         })
         review_id = result.fetchone()[0]
         # TODO(roman): It would be better to create review and revision in one transaction
@@ -319,7 +322,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
 def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                  entity_type=None, license_id=None, user_id=None,
                  language=None, exclude=None, sort=None, limit=20,
-                 offset=None):
+                 offset=None, blurb=None):
     """Get a list of reviews.
 
     This function provides several filters that can be used to select a subset of reviews.
@@ -377,6 +380,10 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
     if language is not None:
         filters.append("language = :language")
         filter_data["language"] = language
+
+    if blurb is not None:
+        filters.append("blurb = :blurb")
+        filter_data["blurb"] = blurb
 
     filterstr = " AND ".join(filters)
     if filterstr:

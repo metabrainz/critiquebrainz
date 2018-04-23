@@ -64,6 +64,7 @@ CREATE TABLE oauth_token (
 ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_access_token_key UNIQUE (access_token);
 ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_refresh_token_key UNIQUE (refresh_token);
 
+
 CREATE TABLE review (
     id              UUID         NOT NULL DEFAULT uuid_generate_v4(),
     entity_id       UUID         NOT NULL,
@@ -76,17 +77,19 @@ CREATE TABLE review (
     language        VARCHAR(3)   NOT NULL,
     published_on    TIMESTAMP,
     source          VARCHAR,
-    source_url      VARCHAR
+    source_url      VARCHAR,
+    blurb           BOOLEAN
 );
 ALTER TABLE review ADD CONSTRAINT review_entity_id_user_id_key UNIQUE (entity_id, user_id);
 ALTER TABLE review ADD CONSTRAINT published_on_null_for_drafts_and_not_null_for_published_reviews
     CHECK ((is_draft = 't' AND published_on IS NULL) OR (is_draft = 'f' And published_on IS NOT NULL));
 
+
 CREATE TABLE revision (
     id          SERIAL      NOT NULL,
     review_id   UUID,
     "timestamp" TIMESTAMP   NOT NULL,
-    text        VARCHAR,     
+    text        VARCHAR,
     rating      SMALLINT CHECK (rating >= 0 AND rating <= 100)
 );
 ALTER TABLE revision ADD CONSTRAINT revision_text_rating_both_not_null_together
