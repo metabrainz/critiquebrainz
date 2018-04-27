@@ -1,6 +1,6 @@
 """
-Methods here define logs for various activities that the moderators can take
-via the moderator interface. A new log entry is created for every action.
+Methods here define logs for various activities that the administrators can take
+via the administrator interface. A new log entry is created for every action.
 """
 from datetime import datetime
 import sqlalchemy

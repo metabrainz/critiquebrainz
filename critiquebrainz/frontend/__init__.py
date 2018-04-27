@@ -121,7 +121,7 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.login import login_bp
     from critiquebrainz.frontend.views.oauth import oauth_bp
     from critiquebrainz.frontend.views.reports import reports_bp
-    from critiquebrainz.frontend.views.moderators import moderators_bp
+    from critiquebrainz.frontend.views.administrators import administrators_bp
     from critiquebrainz.frontend.views.log import log_bp
 
     app.register_blueprint(frontend_bp)
@@ -140,7 +140,7 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(oauth_bp, url_prefix='/oauth')
     app.register_blueprint(reports_bp, url_prefix='/reports')
     app.register_blueprint(log_bp, url_prefix='/log')
-    app.register_blueprint(moderators_bp, url_prefix='/moderators')
+    app.register_blueprint(administrators_bp, url_prefix='/administrators')
 
     return app
 
