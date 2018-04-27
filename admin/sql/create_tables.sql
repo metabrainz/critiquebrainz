@@ -63,6 +63,8 @@ CREATE TABLE review (
     source_url      VARCHAR
 );
 ALTER TABLE review ADD CONSTRAINT review_entity_id_user_id_key UNIQUE (entity_id, user_id);
+ALTER TABLE review ADD CONSTRAINT published_on_null_for_drafts_and_not_null_for_published_reviews
+    CHECK ((is_draft = 't' AND published_on IS NULL) OR (is_draft = 'f' And published_on IS NOT NULL))
 
 CREATE TABLE revision (
     id          SERIAL      NOT NULL,

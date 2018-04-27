@@ -14,6 +14,7 @@
           <th>{{ _('Status') }}</th>
         {% endif %}
         <th>{{ _('Created on') }}</th>
+        <th>{{ _('Published on')}} </th>
         <th>{{ _('Votes (+/-)') }}</th>
         {% if current_user.is_authenticated and current_user == user %}
           <th><!-- Buttons --></th>
@@ -70,7 +71,12 @@
               {% endif %}
             </td>
           {% endif %}
-          <td>{{ review.published_on | date }}</td>
+          <td>{{ review.created | date }}</td>
+          {% if review.is_draft %}
+            <td> Not published yet! </td>
+          {% else %}
+            <td>{{ review.published_on | date }}</td>
+          {% endif %}
           <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
           {% if current_user.is_authenticated and current_user == user %}
             <td>

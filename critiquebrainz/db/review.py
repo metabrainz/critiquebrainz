@@ -425,6 +425,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                "user".created as user_created,
                "user".musicbrainz_id,
                review.published_on,
+               MIN(revision.timestamp) as created,
                SUM(
                    CASE WHEN vote='t' THEN 1 ELSE 0 END
                ) AS votes_positive_count,
