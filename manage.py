@@ -101,7 +101,7 @@ def init_db(skip_create_db=False, test_db=False, force=False):
     click.echo("Initializing the database...")
 
     if force:
-        click.echo("Dropping exisiting tables and types...")
+        click.echo("Dropping existing tables and types...")
         data_utils.drop_tables()
         data_utils.drop_types()
         click.echo("Done!")
