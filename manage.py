@@ -89,7 +89,7 @@ def clear_memcached():
 @click.option("--test-db", "-t", is_flag=True,
               help="Initialize the test database.")
 @click.option("--force", "-f", is_flag=True,
-              help="Drop existing database and user.")
+              help="Drop existing tables and types.")
 @cli.command()
 def init_db(skip_create_db=False, test_db=False, force=False):
     """Initialize the database.
@@ -101,7 +101,7 @@ def init_db(skip_create_db=False, test_db=False, force=False):
     click.echo("Initializing the database...")
 
     if force:
-        click.echo("Dropping Database")
+        click.echo("Dropping exisiting tables and types...")
         data_utils.drop_tables()
         data_utils.drop_types()
         click.echo("Done!")
