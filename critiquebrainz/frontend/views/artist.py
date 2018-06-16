@@ -45,7 +45,7 @@ def entity(mbid):
         reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
             entity_id=release_group['id'],
             entity_type='release_group',
-            sort='created', limit=1,
+            sort='published_on', limit=1,
         )
         release_group['review_count'] = review_count
 

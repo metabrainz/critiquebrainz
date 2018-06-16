@@ -66,8 +66,8 @@ def get_by_id(review_id):
             "popularity": int,
             "rating": int,
             "text": str,
-            "created": datetime,
             "license": dict,
+            "published_on": datetime,
         }
     """
     with db.engine.connect() as connection:
@@ -83,6 +83,7 @@ def get_by_id(review_id):
                    review.language,
                    review.source,
                    review.source_url,
+                   review.published_on,
                    revision.id AS last_revision_id,
                    revision.timestamp,
                    revision.text,
@@ -93,23 +94,13 @@ def get_by_id(review_id):
                    "user".show_gravatar,
                    "user".musicbrainz_id,
                    "user".is_blocked,
-                   created_time.created,
                    license.full_name,
                    license.info_url
               FROM review
               JOIN revision ON revision.review_id = review.id
               JOIN "user" ON "user".id = review.user_id
               JOIN license ON license.id = license_id
-              JOIN (
-                    SELECT review.id,
-                           timestamp AS created
-                      FROM review
-                      JOIN revision ON review.id = revision.review_id
-                     WHERE review.id = :review_id
-                  ORDER BY revision.timestamp ASC
-                     LIMIT 1
-                   ) AS created_time
-                ON created_time.id = review.id
+             WHERE review.id = :review_id
           ORDER BY timestamp DESC
         """), {
             "review_id": review_id,
@@ -220,6 +211,10 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
     if is_draft is not None:
         if not drafted and is_draft:  # If trying to convert published review into draft
             raise db_exceptions.BadDataException("Converting published reviews back to drafts is not allowed.")
+        if drafted and not is_draft:
+            published_on = datetime.now()
+            updates.append("published_on = :published_on")
+            updated_info["published_on"] = published_on
         updates.append("is_draft = :is_draft")
         updated_info["is_draft"] = is_draft
 
@@ -281,19 +276,23 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "popularity": int,
             "text": str,
             "rating": int,
-            "created": datetime,
             "license": dict,
+            "published_on": datetime,
         }
     """
     if text is None and rating is None:
         raise db_exceptions.BadDataException("Text part and rating part of a review can not be None simultaneously")
     if language not in supported_languages:
         raise ValueError("Language: {} is not supported".format(language))
+    if is_draft:
+        published_on = None
+    else:
+        published_on = datetime.now()
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url)
-            VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url)
+            INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url, published_on)
+            VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url, :published_on)
          RETURNING id;
         """), {  # noqa: E501
             "id": str(uuid.uuid4()),
@@ -307,6 +306,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "license_id": license_id,
             "source": source,
             "source_url": source_url,
+            "published_on": published_on,
         })
         review_id = result.fetchone()[0]
         # TODO(roman): It would be better to create review and revision in one transaction
@@ -329,7 +329,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         entity_type (str): Type of the entity that has been reviewed.
         user_id (uuid): ID of the author.
         sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
-                    or "created" (order by creation time), or "random" (order randomly).
+                    or "published_on" (order by publish time), or "random" (order randomly).
         limit (int): Maximum number of reviews to return.
         offset (int): Offset that can be used in conjunction with the limit.
         language (str): Language code of reviews.
@@ -397,9 +397,9 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
         order_by_clause = """
             ORDER BY popularity DESC
         """
-    elif sort == "created":
+    elif sort == "published_on":
         order_by_clause = """
-            ORDER BY created DESC
+            ORDER BY review.published_on DESC
         """
     elif sort == "random":
         order_by_clause = """
@@ -424,6 +424,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
                "user".email,
                "user".created as user_created,
                "user".musicbrainz_id,
+               review.published_on,
                MIN(revision.timestamp) as created,
                SUM(
                    CASE WHEN vote='t' THEN 1 ELSE 0 END
