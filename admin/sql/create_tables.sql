@@ -98,7 +98,8 @@ CREATE TABLE "user" (
     created        TIMESTAMP   NOT NULL,
     musicbrainz_id VARCHAR,
     show_gravatar  BOOLEAN     NOT NULL DEFAULT False,
-    is_blocked     BOOLEAN     NOT NULL DEFAULT False
+    is_blocked     BOOLEAN     NOT NULL DEFAULT False,
+    license_choice VARCHAR
 );
 ALTER TABLE "user" ADD CONSTRAINT user_musicbrainz_id_key UNIQUE (musicbrainz_id);
 

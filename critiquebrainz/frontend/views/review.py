@@ -19,6 +19,7 @@ from critiquebrainz.utils import side_by_side_diff
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.moderation_log as db_moderation_log
+import critiquebrainz.db.users as db_users
 from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
 
 
@@ -223,7 +224,7 @@ def create():
         flash.error(gettext("You have already published a review for this entity!"))
         return redirect(url_for('review.entity', id=review["id"]))
 
-    form = ReviewCreateForm(default_language=get_locale())
+    form = ReviewCreateForm(default_license_id=current_user.license_choice, default_language=get_locale())
 
     if form.validate_on_submit():
         if current_user.is_review_limit_exceeded:
@@ -236,6 +237,10 @@ def create():
         review = db_review.create(user_id=current_user.id, entity_id=entity_id, entity_type=entity_type,
                                   text=form.text.data, rating=form.rating.data, license_id=form.license_choice.data,
                                   language=form.language.data, is_draft=is_draft)
+        if form.remember_license.data:
+            db_users.update(current_user.id, user_new_info={
+                "license_choice": form.license_choice.data,
+            })
         if is_draft:
             flash.success(gettext("Review has been saved!"))
         else:

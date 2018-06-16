@@ -46,6 +46,16 @@
           <br /><small class="text-warning"><em>{{ _('You cannot change the license after the review is published.') }}</em></small>
         </div>
       </div>
+      {% if not current_user.license_choice %}
+        <div class="form-group">
+          <div class="col-sm-12">
+            <div class="checkbox">
+              {{ form.remember_license }}
+            </div>
+            <label class="col-sm-4"> {{ _('Remember this license choice for future reviews') }} </label>
+          </div>
+        </div>
+      {% endif %}
     {% endif %}
     {% block license_agreement_input %}{% endblock %}
   </form>

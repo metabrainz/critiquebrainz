@@ -54,6 +54,7 @@ _TABLES = {
         "musicbrainz_id",
         "show_gravatar",
         "is_blocked",
+        "license_choice",
         "spam_reports",
         "clients",
         "grants",
