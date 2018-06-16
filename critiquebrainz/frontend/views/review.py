@@ -13,6 +13,7 @@ from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
+from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.frontend.views import get_avg_rating
 from critiquebrainz.utils import side_by_side_diff
@@ -20,6 +21,7 @@ import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.moderation_log as db_moderation_log
 import critiquebrainz.db.users as db_users
+import critiquebrainz.db.comment as db_comment
 from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
 
 
@@ -112,9 +114,15 @@ def entity(id, rev=None):
     )
     other_reviews = user_all_reviews[:3]
     avg_rating = get_avg_rating(review["entity_id"], review["entity_type"])
+
+    comments, count = db_comment.list_comments(review_id=id)
+    for comment in comments:
+        comment["text_html"] = markdown(comment["last_revision"]["text"], safe_mode="escape")
+    comment_form = CommentEditForm(review_id=id)
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
                            spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
-                           vote=vote, other_reviews=other_reviews, avg_rating=avg_rating)
+                           vote=vote, other_reviews=other_reviews, avg_rating=avg_rating,
+                           comment_count=count, comments=comments, comment_form=comment_form)
 
 
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')

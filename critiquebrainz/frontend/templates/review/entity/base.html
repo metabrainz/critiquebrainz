@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import review_credit, cover_art, show_avg_rating with context %}
+{% from 'macros.html' import review_credit, cover_art, show_avg_rating, comment_credit with context %}
 
 {% block content %}
 <div id="review-entity">
@@ -44,7 +44,7 @@
           <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text_html|safe }}</p>
         {% endif %}
       {% endif %}
-      
+
       <hr />
 
       {% if not review.is_draft %}
@@ -141,6 +141,35 @@
         </div>
       {% endif %}
 
+      {% if comments %}
+        <hr/>
+        <h3> Comments ({{ comment_count }})</h3>
+        <div id="comment-list">
+          {% for comment in comments %}
+          <div id="{{ comment.id }}">
+            <hr/>
+            <p>
+              {{ comment_credit(comment, user_picture_size=24) }}
+              <span style="float:right;">
+                <small><em class="text-muted"> {{comment.created | date}} </em></small>
+              </span>
+            </p>
+            <p> {{ comment.text_html|safe }} </p>
+          </div>
+          {% endfor %}
+          <hr/>
+        </div>
+      {% endif %}
+
+      {% if current_user.is_authenticated %}
+        <form id="comment-editor" method="POST" class="form-horizontal" role="form" action="{{ url_for('comment.create') }}">
+          {{ comment_form.hidden_tag() }}
+          {{ comment_form.text(id="comment-text") }}
+        </form>
+        <hr/>
+        <button id="btn-comment-publish" class="btn btn-primary">{{ _('Add comment') }}</button>
+      {% endif %}
+
      </div>
   </div>
 </div>
@@ -149,4 +178,17 @@
 {% block scripts %}
   {{ super() }}
   <script src="{{ get_static_path('rating.js') }}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
+  <script>
+    $(document).ready(function() {
+      reviewContentEditor = new SimpleMDE({
+        element: $('#comment-text')[0],
+        spellChecker: false
+      });
+    });
+    $("#btn-comment-publish").click(function(){
+        $("#comment-editor").submit();
+    });
+  </script>
 {% endblock %}
