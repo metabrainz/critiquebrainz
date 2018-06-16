@@ -95,7 +95,7 @@ ALTER TABLE revision
 ALTER TABLE "user"
   ADD CONSTRAINT user_license_choice_fkey
   FOREIGN KEY (license_choice)
-  REFERENCES license(id)
+  REFERENCES license(id);
 
 ALTER TABLE comment
   ADD CONSTRAINT comment_review_fkey
