@@ -1,4 +1,6 @@
 BEGIN;
+ALTER TABLE comment ADD CONSTRAINT comment_pkey PRIMARY KEY (id);
+ALTER TABLE comment_revision ADD CONSTRAINT comment_revision_pkey PRIMARY KEY (id);
 ALTER TABLE license ADD CONSTRAINT license_pkey PRIMARY KEY (id);
 ALTER TABLE moderation_log ADD CONSTRAINT moderation_log_pkey PRIMARY KEY (id);
 ALTER TABLE oauth_client ADD CONSTRAINT oauth_client_pkey PRIMARY KEY (client_id);
