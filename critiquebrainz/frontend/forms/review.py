@@ -9,6 +9,8 @@ from critiquebrainz.db.review import supported_languages
 
 MIN_REVIEW_LENGTH = 25
 MAX_REVIEW_LENGTH = 100000
+MIN_BLURB_LENGTH = 10
+MAX_BLURB_LENGTH = 280
 
 
 class StateAndLength(validators.Length):
@@ -27,6 +29,14 @@ for language_code in supported_languages:
         languages.append((language_code, Locale(language_code).language_name))
     except UnknownLocaleError:
         languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+
+
+class BlurbEditForm(Form):
+    state = StringField(widget=HiddenInput(), default='publish')
+    text = TextAreaField(lazy_gettext("Text"), [
+        StateAndLength(min=MIN_BLURB_LENGTH, max=MAX_BLURB_LENGTH,
+                       message=lazy_gettext("Text length needs to be between %(min)d and %(max)d characters.",
+                                            min=MIN_BLURB_LENGTH, max=MAX_BLURB_LENGTH))])
 
 
 class ReviewEditForm(Form):
