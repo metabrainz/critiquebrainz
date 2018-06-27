@@ -15,13 +15,13 @@ from critiquebrainz.db.user import User
 class UserTestCase(DataTestCase):
     def setUp(self):
         super(UserTestCase, self).setUp()
-        self.user1 = User(db_users.get_or_create(1, 'tester_1', new_user_data={
+        self.user1 = User(db_users.get_or_create('tester_1', new_user_data={
             "display_name": "test",
         }))
-        self.user2 = User(db_users.get_or_create(2, "тестер", new_user_data={
+        self.user2 = User(db_users.get_or_create("тестер", new_user_data={
             "display_name": "test1",
         }))
-        self.author = User(db_users.get_or_create(3, "author1", new_user_data={
+        self.author = User(db_users.get_or_create("author1", new_user_data={
             "display_name": "Author1",
         }))
         license = db_license.create(
@@ -67,7 +67,7 @@ class UserTestCase(DataTestCase):
         users = db_users.list_users(0, 10)
         self.assertEqual(len(users), 0)
 
-        db_users.get_or_create(4, "user_1", new_user_data={
+        db_users.get_or_create("user_1", new_user_data={
             "display_name": "test2",
         })
         users = db_users.list_users(1, 1)
@@ -78,7 +78,7 @@ class UserTestCase(DataTestCase):
         count = db_users.total_count()
         self.assertEqual(count, 3)
 
-        db_users.get_or_create(4, "user1", new_user_data={
+        db_users.get_or_create("user1", new_user_data={
             "display_name": "user_1",
         })
         count = db_users.total_count()
@@ -189,7 +189,3 @@ class UserTestCase(DataTestCase):
         tokens = db_users.tokens(self.user1.id)
         self.assertEqual(tokens[0]["client_name"], "Some Application")
         self.assertEqual(tokens[0]["refresh_token"], "Test Refresh Token")
-
-    def test_get_by_mb_row_id(self):
-        user = db_users.get_by_mb_row_id(1)
-        self.assertEqual(str(user['id']), self.user1.id)

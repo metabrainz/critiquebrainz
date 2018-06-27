@@ -11,10 +11,10 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def setUp(self):
         super(ReviewViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
+        self.user = User(db_users.get_or_create("Tester", new_user_data={
             "display_name": "test user",
         }))
-        self.another_user = User(db_users.get_or_create(2, "Hacker!", new_user_data={
+        self.another_user = User(db_users.get_or_create("Hacker!", new_user_data={
             "display_name": "test hacker",
         }))
         self.license = db_license.create(

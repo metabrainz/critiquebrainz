@@ -8,7 +8,7 @@ from critiquebrainz.db.user import User
 class OAuthClientTestCase(DataTestCase):
     def setUp(self):
         super(OAuthClientTestCase, self).setUp()
-        self.user = User(db_users.get_or_create(1, "Author", new_user_data={
+        self.user = User(db_users.get_or_create("Author", new_user_data={
             "display_name": "Author",
         }))
         self.application = dict(

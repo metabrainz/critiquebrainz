@@ -37,19 +37,6 @@ def gravatar_url(source, default="identicon", rating="pg"):
     )
 
 
-USER_GET_COLUMNS = [
-    'id',
-    'display_name',
-    'email',
-    'created',
-    'musicbrainz_id',
-    'musicbrainz_row_id',
-    'show_gravatar',
-    'license_choice',
-    'is_blocked',
-]
-
-
 def get_many_by_mb_username(usernames):
     """Get information about users.
 
@@ -66,10 +53,16 @@ def get_many_by_mb_username(usernames):
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT {columns}
+            SELECT id,
+                   display_name,
+                   email,
+                   created,
+                   musicbrainz_id,
+                   show_gravatar,
+                   license_choice
               FROM "user"
              WHERE musicbrainz_id ILIKE ANY(:musicbrainz_usernames)
-        """.format(columns=','.join(USER_GET_COLUMNS))), {
+        """), {
             'musicbrainz_usernames': usernames,
         })
         row = result.fetchall()
@@ -105,10 +98,17 @@ def get_by_id(user_id):
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT {columns}
+            SELECT id,
+                   display_name,
+                   email,
+                   created,
+                   musicbrainz_id,
+                   show_gravatar,
+                   is_blocked,
+                   license_choice
               FROM "user"
              WHERE id = :user_id
-        """.format(columns=','.join(USER_GET_COLUMNS))), {
+        """), {
             "user_id": user_id
         })
         row = result.fetchone()
@@ -125,7 +125,6 @@ def create(**user_data):
     Args:
         display_name(str): display_name of the user.
         musicbrainz_username(str, optional): musicbrainz username of user.
-        musicbrainz_row_id (int): the MusicBrainz row ID of the user,
         email(str, optional): email of the user.
         show_gravatar(bool, optional): whether to show gravatar(default: false).
         is_blocked(bool, optional): whether user is blocked(default: false).
@@ -150,16 +149,13 @@ def create(**user_data):
     show_gravatar = user_data.pop('show_gravatar', False)
     is_blocked = user_data.pop('is_blocked', False)
     license_choice = user_data.pop('license_choice', None)
-    musicbrainz_row_id = user_data.pop('musicbrainz_row_id', None)
     if user_data:
         raise TypeError('Unexpected **user_data: %r' % user_data)
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar,
-                                is_blocked, license_choice, musicbrainz_row_id)
-                 VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar,
-                        :is_blocked, :license_choice, :musicbrainz_row_id)
+            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar, is_blocked, license_choice)
+                 VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar, :is_blocked, :license_choice)
               RETURNING id
         """), {
             "id": str(uuid.uuid4()),
@@ -170,7 +166,6 @@ def create(**user_data):
             "show_gravatar": show_gravatar,
             "is_blocked": is_blocked,
             "license_choice": license_choice,
-            "musicbrainz_row_id": musicbrainz_row_id,
         })
         new_id = result.fetchone()[0]
     return get_by_id(new_id)
@@ -197,11 +192,18 @@ def get_by_mbid(musicbrainz_username):
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT {columns}
-              FROM "user"
-             WHERE musicbrainz_id = :musicbrainz_username
-        """.format(columns=','.join(USER_GET_COLUMNS))), {
-            "musicbrainz_username": musicbrainz_username,
+            SELECT id,
+                   display_name,
+                   email,
+                   created,
+                   musicbrainz_id,
+                   show_gravatar,
+                   is_blocked,
+                   license_choice
+            FROM "user"
+            WHERE musicbrainz_id = :musicbrainz_username
+        """), {
+            "musicbrainz_username": musicbrainz_username
         })
         row = result.fetchone()
         if not row:
@@ -211,11 +213,10 @@ def get_by_mbid(musicbrainz_username):
     return row
 
 
-def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
+def get_or_create(musicbrainz_username, new_user_data):
     """Get user from display_name and musicbrainz_username.
 
     Args:
-        musicbrainz_row_id (int): the musicbrainz row ID of the user
         musicbrainz_username(str): MusicBrainz username of the user.
         new_user_data(dict): Dictionary containing the user data which may
                              contain the following keys:
@@ -240,15 +241,10 @@ def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
             "license_choice": (str)
         }
     """
-    user = get_by_mb_row_id(musicbrainz_row_id, musicbrainz_username)
+    user = get_by_mbid(musicbrainz_username)
     if not user:
         display_name = new_user_data.pop("display_name")
-        user = create(
-            musicbrainz_row_id=musicbrainz_row_id,
-            display_name=display_name,
-            musicbrainz_username=musicbrainz_username,
-            **new_user_data
-        )
+        user = create(display_name=display_name, musicbrainz_username=musicbrainz_username, **new_user_data)
     return user
 
 
@@ -284,17 +280,23 @@ def list_users(limit=None, offset=0):
             "musicbrainz_username": (str),
             "show_gravatar": (bool),
             "is_blocked": (bool),
-            "license_choice": (str),
-            "musicbrainz_row_id": (int),
+            "license_choice": (str)
         }
     """
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT {columns}
+            SELECT id,
+                   display_name,
+                   email,
+                   created,
+                   musicbrainz_id,
+                   show_gravatar,
+                   is_blocked,
+                   license_choice
               FROM "user"
              LIMIT :limit
             OFFSET :offset
-        """.format(columns=','.join(USER_GET_COLUMNS))), {
+        """), {
             "limit": limit,
             "offset": offset
         })
@@ -649,36 +651,3 @@ def tokens(user_id):
 
         rows = result.fetchall()
     return [dict(row) for row in rows]
-
-
-def get_by_mb_row_id(musicbrainz_row_id, musicbrainz_id=None):
-    """ Get user with specified MusicBrainz row ID.
-
-    Note: this function optionally takes a MusicBrainz username to fall back on
-    if no user with specified MusicBrainz row ID is found.
-
-    Args:
-        musicbrainz_row_id (int): the MusicBrainz row ID of the user
-        musicbrainz_id (str): the MusicBrainz username of the user
-
-    Returns:
-        a dict representing the user if found, else None
-    """
-    filter_str = ""
-    filter_data = {}
-    if musicbrainz_id:
-        filter_str = "OR (LOWER(musicbrainz_id) = LOWER(:musicbrainz_id) AND musicbrainz_row_id IS NULL)"
-        filter_data["musicbrainz_id"] = musicbrainz_id
-
-    filter_data["musicbrainz_row_id"] = musicbrainz_row_id
-    with db.engine.connect() as connection:
-        result = connection.execute(sqlalchemy.text("""
-            SELECT {columns}
-              FROM "user"
-             WHERE musicbrainz_row_id = :musicbrainz_row_id
-             {optional_filter}
-        """.format(columns=','.join(USER_GET_COLUMNS), optional_filter=filter_str)), filter_data)
-
-        if result.rowcount:
-            return result.fetchone()
-        return None
