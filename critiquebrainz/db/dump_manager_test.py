@@ -10,7 +10,7 @@ import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
 
 utils.with_request_context = utils.with_test_request_context  # noqa
-from critiquebrainz.data import dump_manager # pylint:disable=wrong-import-position
+from critiquebrainz.data import dump_manager  # pylint:disable=wrong-import-position
 
 
 def get_archives(root_dir):
@@ -60,7 +60,7 @@ class DumpManagerTestCase(DataTestCase):
         self.assertIn(f'cbdump-reviews-{self.license["id"]}.tar.bz2', archives)
 
     def test_importer(self):
-        user = User(db_users.get_or_create("Tester", new_user_data={
+        user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": "test user",
         }))
         review = db_review.create(

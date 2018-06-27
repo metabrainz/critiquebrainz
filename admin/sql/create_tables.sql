@@ -108,16 +108,18 @@ CREATE TABLE spam_report (
 );
 
 CREATE TABLE "user" (
-    id             UUID        NOT NULL DEFAULT uuid_generate_v4(),
-    display_name   VARCHAR     NOT NULL,
-    email          VARCHAR,
-    created        TIMESTAMP   NOT NULL,
-    musicbrainz_id VARCHAR,
-    show_gravatar  BOOLEAN     NOT NULL DEFAULT False,
-    is_blocked     BOOLEAN     NOT NULL DEFAULT False,
-    license_choice VARCHAR
+    id                  UUID        NOT NULL DEFAULT uuid_generate_v4(),
+    display_name        VARCHAR     NOT NULL,
+    email               VARCHAR,
+    created             TIMESTAMP   NOT NULL,
+    musicbrainz_id      VARCHAR,
+    musicbrainz_row_id  INTEGER,
+    show_gravatar       BOOLEAN     NOT NULL DEFAULT False,
+    is_blocked          BOOLEAN     NOT NULL DEFAULT False,
+    license_choice      VARCHAR
 );
 ALTER TABLE "user" ADD CONSTRAINT user_musicbrainz_id_key UNIQUE (musicbrainz_id);
+ALTER TABLE "user" ADD CONSTRAINT user_musicbrainz_row_id_key UNIQUE (musicbrainz_row_id);
 
 CREATE TABLE vote (
     user_id     UUID        NOT NULL,

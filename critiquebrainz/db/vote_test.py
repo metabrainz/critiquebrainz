@@ -13,13 +13,13 @@ class VoteTestCase(DataTestCase):
 
     def setUp(self):
         super(VoteTestCase, self).setUp()
-        author = User(db_users.get_or_create('0', new_user_data={
+        author = User(db_users.get_or_create(0, '0', new_user_data={
             "display_name": "Author",
         }))
-        self.user_1 = User(db_users.get_or_create('1', new_user_data={
+        self.user_1 = User(db_users.get_or_create(1, '1', new_user_data={
             "display_name": "Tester #1",
         }))
-        self.user_2 = User(db_users.get_or_create('2', new_user_data={
+        self.user_2 = User(db_users.get_or_create(2, '2', new_user_data={
             "display_name": "Tester #2",
         }))
         license = db_license.create(
