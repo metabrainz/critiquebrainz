@@ -36,6 +36,7 @@ def gravatar_url(source, default="identicon", rating="pg"):
         rating=rating,
     )
 
+
 USER_GET_COLUMNS = [
     'id',
     'display_name',
@@ -155,8 +156,10 @@ def create(**user_data):
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar, is_blocked, license_choice, musicbrainz_row_id)
-                 VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar, :is_blocked, :license_choice, :musicbrainz_row_id)
+            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar,
+                                is_blocked, license_choice, musicbrainz_row_id)
+                 VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar,
+                        :is_blocked, :license_choice, :musicbrainz_row_id)
               RETURNING id
         """), {
             "id": str(uuid.uuid4()),
@@ -241,11 +244,11 @@ def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
     if not user:
         display_name = new_user_data.pop("display_name")
         user = create(
-                musicbrainz_row_id=musicbrainz_row_id,
-                display_name=display_name,
-                musicbrainz_username=musicbrainz_username,
-                **new_user_data
-            )
+            musicbrainz_row_id=musicbrainz_row_id,
+            display_name=display_name,
+            musicbrainz_username=musicbrainz_username,
+            **new_user_data
+        )
     return user
 
 
@@ -646,6 +649,7 @@ def tokens(user_id):
 
         rows = result.fetchall()
     return [dict(row) for row in rows]
+
 
 def get_by_mb_row_id(musicbrainz_row_id, musicbrainz_id=None):
     """ Get user with specified MusicBrainz row ID.

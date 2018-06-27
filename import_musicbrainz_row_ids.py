@@ -1,9 +1,9 @@
+from sqlalchemy import text
+import critiquebrainz.db.users as db_users
 from critiquebrainz.frontend.external import musicbrainz_db
 from critiquebrainz.frontend import create_app
 from critiquebrainz import db
-from sqlalchemy import text
 
-import critiquebrainz.db.users as db_users
 
 def fix_exceptions():
     pass
@@ -48,8 +48,8 @@ def import_musicbrainz_row_ids(dry_run=True):
                                 'id': user['id'],
                             })
                 else:
-                    print('%s not found!' %  name)
-                    not_found += 1;
+                    print('%s not found!' % name)
+                    not_found += 1
                     if not dry_run:
                         print('Deleting user %s' % user['musicbrainz_username'])
                         db_users.delete(user['id'])
@@ -65,7 +65,7 @@ def import_musicbrainz_row_ids(dry_run=True):
 def main(dry_run=True):
     app = create_app()
     with app.app_context():
-        import_musicbrainz_row_ids(dry_run=False)
+        import_musicbrainz_row_ids(dry_run=dry_run)
 
 
 if __name__ == '__main__':

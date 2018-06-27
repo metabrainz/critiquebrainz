@@ -10,7 +10,7 @@ import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
 
 utils.with_request_context = utils.with_test_request_context  # noqa
-from critiquebrainz.data import dump_manager # pylint:disable=wrong-import-position
+from critiquebrainz.data import dump_manager  # pylint:disable=wrong-import-position
 
 
 def get_archives(root_dir):
