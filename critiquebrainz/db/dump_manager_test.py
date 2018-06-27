@@ -60,7 +60,7 @@ class DumpManagerTestCase(DataTestCase):
         self.assertIn(f'cbdump-reviews-{self.license["id"]}.tar.bz2', archives)
 
     def test_importer(self):
-        user = User(db_users.get_or_create("Tester", new_user_data={
+        user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": "test user",
         }))
         review = db_review.create(

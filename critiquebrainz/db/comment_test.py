@@ -35,10 +35,10 @@ class CommentTestCase(DataTestCase):
         # review
 
         # create user
-        self.user = User(db_users.get_or_create("Tester", new_user_data={
+        self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": "test user",
         }))
-        self.user_2 = User(db_users.get_or_create("Tester 2", new_user_data={
+        self.user_2 = User(db_users.get_or_create(2, "Tester 2", new_user_data={
             "display_name": "test user 2",
         }))
 

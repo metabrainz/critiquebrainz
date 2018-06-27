@@ -11,7 +11,7 @@ class OAuthGrantTestCase(DataTestCase):
 
     def setUp(self):
         super(OAuthGrantTestCase, self).setUp()
-        self.user = User(db_users.get_or_create('tester_1', new_user_data={
+        self.user = User(db_users.get_or_create(1, 'tester_1', new_user_data={
             "display_name": "test",
         }))
         db_oauth_client.create(

@@ -12,7 +12,7 @@ class ProfileViewsTestCase(FrontendTestCase):
             id="CC BY-SA 3.0",
             full_name="Created so we can fill the form correctly.",
         )
-        self.user = User(db_users.get_or_create("aef06569-098f-4218-a577-b413944d9493", new_user_data={
+        self.user = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
             "display_name": "Tester",
         }))
 
