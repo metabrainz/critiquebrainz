@@ -680,5 +680,5 @@ def get_by_mb_row_id(musicbrainz_row_id, musicbrainz_id=None):
         """.format(columns=','.join(USER_GET_COLUMNS), optional_filter=filter_str)), filter_data)
 
         if result.rowcount:
-            return result.fetchone()
+            return dict(result.fetchone())
         return None
