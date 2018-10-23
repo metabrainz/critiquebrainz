@@ -46,6 +46,21 @@ def delete(*, id):
         })
 
 
+def get_licenses_list(connection):
+    """
+        helper function for list_licenses() that extends support for execution within a transaction by directly receiving the
+        connection object
+    """
+    query = sqlalchemy.text("""
+        SELECT id,
+               info_url,
+               full_name
+          FROM license
+    """)
+    results = connection.execute(query)
+    return [dict(row) for row in results.fetchall()]
+
+
 def list_licenses():
     """Get a list of licenses.
 
@@ -58,10 +73,4 @@ def list_licenses():
         }
     """
     with db.engine.connect() as connection:
-        results = connection.execute(sqlalchemy.text("""
-            SELECT id,
-                   info_url,
-                   full_name
-              FROM license
-        """))
-        return [dict(row) for row in results.fetchall()]
+        return get_licenses_list(connection)

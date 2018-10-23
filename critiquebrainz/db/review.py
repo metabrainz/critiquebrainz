@@ -28,10 +28,13 @@ for lang in list(pycountry.languages):
         supported_languages.append(lang.iso639_1_code)
 
 
-# TODO(roman): Rename this function. It doesn't convert a review to dictionary.
+# TODO(code-master5): Rename this function. It doesn't convert a review to dictionary.
 # Review that is passed to it is already a dictionary.
-def to_dict(review, confidential=False):
-    review["user"] = User(db_users.get_by_id(review.pop("user_id")))
+def to_dict(review, confidential=False, connection=None):
+    if connection is not None:
+        review["user"] = User(db_users.get_user_by_id(connection, review.pop("user_id")))
+    else:
+        review["user"] = User(db_users.get_by_id(review.pop("user_id")))
     review["user"] = review["user"].to_dict(confidential=confidential)
     review["id"] = str(review["id"])
     review["entity_id"] = str(review["entity_id"])
@@ -316,32 +319,12 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
 
 
 # pylint: disable=too-many-branches
-def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
-                 entity_type=None, license_id=None, user_id=None,
-                 language=None, exclude=None, sort=None, limit=20,
-                 offset=None):
-    """Get a list of reviews.
-
-    This function provides several filters that can be used to select a subset of reviews.
-
-    Args:
-        entity_id (uuid): ID of the entity that has been reviewed.
-        entity_type (str): Type of the entity that has been reviewed.
-        user_id (uuid): ID of the author.
-        sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
-                    or "published_on" (order by publish time), or "random" (order randomly).
-        limit (int): Maximum number of reviews to return.
-        offset (int): Offset that can be used in conjunction with the limit.
-        language (str): Language code of reviews.
-        license_id (str): License ID that reviews are associated with.
-        inc_drafts (bool): True if reviews marked as drafts should be included, False if not.
-        inc_hidden (bool): True if reviews marked as hidden should be included, False if not.
-        exclude (list): List of reviews (their IDs) to exclude from results.
-
-    Returns:
-        Tuple with two values:
-        1. list of reviews as dictionaries,
-        2. total number of reviews that match the specified filters.
+def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_id=None,
+                     entity_type=None, license_id=None, user_id=None, language=None,
+                     exclude=None, sort=None, limit=20, offset=None):
+    """
+        helper function for list_reviews() that extends support for execution within a transaction by directly receiving the
+        connection object
     """
     filters = []
     filter_data = {}
@@ -388,9 +371,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
             {filterstr}
         """.format(filterstr=filterstr))
 
-    with db.engine.connect() as connection:
-        result = connection.execute(query, filter_data)
-        count = result.fetchone()[0]
+    result = connection.execute(query, filter_data)
+    count = result.fetchone()[0]
     order_by_clause = str()
 
     if sort == "popularity":
@@ -469,31 +451,64 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None,
     filter_data["limit"] = limit
     filter_data["offset"] = offset
 
-    with db.engine.connect() as connection:
-        results = connection.execute(query, filter_data)
-        rows = results.fetchall()
-        rows = [dict(row) for row in rows]
-        # Organise last revision info in reviews
-        if rows:
-            for row in rows:
-                row["rating"] = RATING_SCALE_1_5.get(row["rating"])
-                row["last_revision"] = {
-                    "id": row.pop("latest_revision_id"),
-                    "timestamp": row.pop("latest_revision_timestamp"),
-                    "text": row["text"],
-                    "rating": row["rating"],
-                    "review_id": row["id"],
-                }
-                row["user"] = User({
-                    "id": row["user_id"],
-                    "display_name": row.pop("display_name"),
-                    "show_gravatar": row.pop("show_gravatar"),
-                    "is_blocked": row.pop("is_blocked"),
-                    "musicbrainz_username": row.pop("musicbrainz_id"),
-                    "email": row.pop("email"),
-                    "created": row.pop("user_created"),
-                })
+    results = connection.execute(query, filter_data)
+    rows = results.fetchall()
+    rows = [dict(row) for row in rows]
+
+    # Organise last revision info in reviews
+    if rows:
+        for row in rows:
+            row["rating"] = RATING_SCALE_1_5.get(row["rating"])
+            row["last_revision"] = {
+                "id": row.pop("latest_revision_id"),
+                "timestamp": row.pop("latest_revision_timestamp"),
+                "text": row["text"],
+                "rating": row["rating"],
+                "review_id": row["id"],
+            }
+            row["user"] = User({
+                "id": row["user_id"],
+                "display_name": row.pop("display_name"),
+                "show_gravatar": row.pop("show_gravatar"),
+                "is_blocked": row.pop("is_blocked"),
+                "musicbrainz_username": row.pop("musicbrainz_id"),
+                "email": row.pop("email"),
+                "created": row.pop("user_created"),
+            })
+
     return rows, count
+
+
+def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_type=None,
+                 license_id=None, user_id=None, language=None, exclude=None,
+                 sort=None, limit=20, offset=None):
+    """Get a list of reviews.
+
+    This function provides several filters that can be used to select a subset of reviews.
+
+    Args:
+        entity_id (uuid): ID of the entity that has been reviewed.
+        entity_type (str): Type of the entity that has been reviewed.
+        user_id (uuid): ID of the author.
+        sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
+                    or "published_on" (order by publish time), or "random" (order randomly).
+        limit (int): Maximum number of reviews to return.
+        offset (int): Offset that can be used in conjunction with the limit.
+        language (str): Language code of reviews.
+        license_id (str): License ID that reviews are associated with.
+        inc_drafts (bool): True if reviews marked as drafts should be included, False if not.
+        inc_hidden (bool): True if reviews marked as hidden should be included, False if not.
+        exclude (list): List of reviews (their IDs) to exclude from results.
+
+    Returns:
+        Tuple with two values:
+        1. list of reviews as dictionaries,
+        2. total number of reviews that match the specified filters.
+    """
+    with db.engine.connect() as connection:
+        return get_reviews_list(connection, inc_drafts=inc_drafts, inc_hidden=inc_hidden, entity_id=entity_id,
+                                entity_type=entity_type, license_id=license_id, user_id=user_id,
+                                language=language, exclude=exclude, sort=sort, limit=limit, offset=offset)
 
 
 def get_popular(limit=None):
@@ -613,6 +628,20 @@ def delete(review_id):
         db_avg_rating.update(review["entity_id"], review["entity_type"])
 
 
+def get_distinct_entities(connection):
+    """
+        helper function for distinct_entities() that extends support for execution within a transaction by directly receiving the
+        connection object
+    """
+    query = sqlalchemy.text("""
+        SELECT DISTINCT entity_id
+          FROM review
+    """)
+
+    results = connection.execute(query)
+    return {row[0] for row in results.fetchall()}
+
+
 def distinct_entities():
     """Get a set of ID(s) of entities reviewed.
 
@@ -623,12 +652,9 @@ def distinct_entities():
     # function assumes that IDs are unique between entity types. But it would
     # be better to remove that assumption before we support reviewing entities
     # from other sources (like BookBrainz).
+
     with db.engine.connect() as connection:
-        results = connection.execute(sqlalchemy.text("""
-            SELECT DISTINCT entity_id
-              FROM review
-        """))
-        return {row[0] for row in results.fetchall()}
+        return get_distinct_entities(connection)
 
 
 def reviewed_entities(*, entity_ids, entity_type):

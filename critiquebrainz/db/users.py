@@ -84,6 +84,28 @@ def get_many_by_mb_username(usernames):
         return users
 
 
+def get_user_by_id(connection, user_id):
+    """
+        helper function for get_by_id() that extends support for execution within a transaction by directly receiving the
+        connection object
+    """
+    query = sqlalchemy.text("""
+        SELECT {columns}
+          FROM "user"
+         WHERE id = :user_id
+    """.format(columns=','.join(USER_GET_COLUMNS)))
+
+    result = connection.execute(query, {
+        "user_id": user_id
+        })
+    row = result.fetchone()
+    if not row:
+        return None
+    row = dict(row)
+    row['musicbrainz_username'] = row.pop('musicbrainz_id')
+    return row
+
+
 def get_by_id(user_id):
     """Get user from user_id (UUID).
 
@@ -104,19 +126,7 @@ def get_by_id(user_id):
         }
     """
     with db.engine.connect() as connection:
-        result = connection.execute(sqlalchemy.text("""
-            SELECT {columns}
-              FROM "user"
-             WHERE id = :user_id
-        """.format(columns=','.join(USER_GET_COLUMNS))), {
-            "user_id": user_id
-        })
-        row = result.fetchone()
-        if not row:
-            return None
-        row = dict(row)
-        row['musicbrainz_username'] = row.pop('musicbrainz_id')
-    return row
+        return get_user_by_id(connection, user_id)
 
 
 def create(**user_data):
