@@ -144,43 +144,46 @@ def json(location, rotate=False):
     current_app.json_encoder = DumpJSONEncoder
 
     print("Creating new archives...")
-    for license in db_license.list_licenses():
-        safe_name = slugify(license["id"])
-        with tarfile.open(os.path.join(location, "critiquebrainz-%s-%s-json.tar.bz2" %
-                                       (datetime.today().strftime('%Y%m%d'), safe_name)), "w:bz2") as tar:
-            temp_dir = tempfile.mkdtemp()
-            license_dir = os.path.join(temp_dir, safe_name)
-            create_path(license_dir)
+    with db.engine.begin() as connection:
+        for license in db_license.get_licenses_list(connection):
+            safe_name = slugify(license["id"])
+            with tarfile.open(os.path.join(location, "critiquebrainz-%s-%s-json.tar.bz2" %
+                                           (datetime.today().strftime('%Y%m%d'), safe_name)), "w:bz2") as tar:
+                temp_dir = tempfile.mkdtemp()
+                license_dir = os.path.join(temp_dir, safe_name)
+                create_path(license_dir)
 
-            # Finding entities that have reviews with current license
-            entities = db_review.distinct_entities()
-            for entity in entities:
-                entity = str(entity)
-                # Creating directory structure and dumping reviews
-                dir_part = os.path.join(entity[0:1], entity[0:2])
-                reviews = db_review.list_reviews(entity_id=entity, license_id=license["id"], limit=None)[0]
-                if reviews:
-                    rg_dir = '%s/%s' % (license_dir, dir_part)
-                    create_path(rg_dir)
-                    f = open('%s/%s.json' % (rg_dir, entity), 'w+')
-                    f.write(jsonify(reviews=[db_review.to_dict(r) for r in reviews]).data.decode("utf-8"))
-                    f.close()
+                # Finding entities that have reviews with current license
+                entities = db_review.get_distinct_entities(connection)
+                for entity in entities:
+                    entity = str(entity)
+                    # Creating directory structure and dumping reviews
+                    dir_part = os.path.join(entity[0:1], entity[0:2])
+                    reviews = db_review.get_reviews_list(connection, entity_id=entity, license_id=license["id"], limit=None)[0]
+                    if reviews:
+                        rg_dir = '%s/%s' % (license_dir, dir_part)
+                        create_path(rg_dir)
+                        f = open('%s/%s.json' % (rg_dir, entity), 'w+')
+                        f.write(jsonify(reviews=[db_review.to_dict(r, connection=connection) for r in reviews])
+                                .data.decode("utf-8"))
+                        f.close()
 
-            tar.add(license_dir, arcname='reviews')
+                tar.add(license_dir, arcname='reviews')
 
-            # Copying legal text
-            tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"), arcname='COPYING')
+                # Copying legal text
+                tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"),
+                        arcname='COPYING')
 
-            print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
+                print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
 
-            shutil.rmtree(temp_dir)  # Cleanup
+                shutil.rmtree(temp_dir)  # Cleanup
 
-    if rotate:
-        print("Removing old sets of archives (except two latest)...")
-        remove_old_archives(location, "critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2",
-                            is_dir=False, sort_key=os.path.getmtime)
+        if rotate:
+            print("Removing old sets of archives (except two latest)...")
+            remove_old_archives(location, "critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2",
+                                is_dir=False, sort_key=os.path.getmtime)
 
-    print("Done!")
+        print("Done!")
 
 
 @cli.command()
