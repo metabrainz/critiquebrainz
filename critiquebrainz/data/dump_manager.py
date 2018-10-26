@@ -209,31 +209,35 @@ def public(location, rotate=False):
     meta_files_dir = tempfile.mkdtemp()
     prepare_meta_files(meta_files_dir, time_now=time_now)
 
-    # BASE ARCHIVE
-    # Contains all license independent data (licenses, users)
-    base_archive_path = create_base_archive(
-        location=dump_dir,
-        meta_files_dir=meta_files_dir,
-    )
-    print(base_archive_path)
-
-    # 1. COMBINED
-    # Archiving all reviews (any license)
-    review_dump_path = create_reviews_archive(
-        location=dump_dir,
-        meta_files_dir=meta_files_dir,
-    )
-    print(review_dump_path)
-
-    # 2. SEPARATE
-    # Creating separate archives for each license
-    for license in db_license.list_licenses():
-        review_dump_path = create_reviews_archive(
+    with db.engine.begin() as connection:
+        # BASE ARCHIVE
+        # Contains all license independent data (licenses, users)
+        base_archive_path = create_base_archive(
+            connection,
             location=dump_dir,
             meta_files_dir=meta_files_dir,
-            license_id=license['id'],
+        )
+        print(base_archive_path)
+
+        # 1. COMBINED
+        # Archiving all reviews (any license)
+        review_dump_path = create_reviews_archive(
+            connection,
+            location=dump_dir,
+            meta_files_dir=meta_files_dir,
         )
         print(review_dump_path)
+
+        # 2. SEPARATE
+        # Creating separate archives for each license
+        for license in db_license.get_licenses_list(connection):
+            review_dump_path = create_reviews_archive(
+                connection,
+                location=dump_dir,
+                meta_files_dir=meta_files_dir,
+                license_id=license['id'],
+            )
+            print(review_dump_path)
 
     shutil.rmtree(meta_files_dir)  # Cleanup
     if rotate:
@@ -269,10 +273,11 @@ def add_meta_files(tarfile, meta_files_dir):
     tarfile.add(os.path.join(meta_files_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
 
-def create_base_archive(*, location, meta_files_dir=None):
+def create_base_archive(connection, *, location, meta_files_dir=None):
     """Creates a dump of all license-independent information: (users, license).
 
     Args:
+        connection (sqlalchemy.engine.Connection): an sqlalchemy connection to the database for executing database queries
         location: Path of the directory where the archive needs to be created.
         meta_files_dir (optional): Path of the directory containing the meta files to be copied
             into the archive (TIMESTAMP and SCHEMA_VERSION). If not specified, the meta files are
@@ -288,17 +293,16 @@ def create_base_archive(*, location, meta_files_dir=None):
         # Dumping tables
         base_archive_tables_dir = os.path.join(base_archive_dir, 'cbdump')
         create_path(base_archive_tables_dir)
-        with db.engine.connect() as connection:
-            with connection.begin() as transaction:
-                cursor = connection.connection.cursor()
-                try:
-                    with open(os.path.join(base_archive_tables_dir, 'user_sanitised'), 'w') as f:
-                        cursor.copy_to(f, '"user"', columns=('id', 'created', 'display_name', 'musicbrainz_id'))
-                    with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
-                        cursor.copy_to(f, 'license', columns=_TABLES["license"])
-                except Exception:
-                    print('Error while copying tables during creation of the base archive.')
-                    transaction.rollback()
+
+        cursor = connection.connection.cursor()
+        try:
+            with open(os.path.join(base_archive_tables_dir, 'user_sanitised'), 'w') as f:
+                cursor.copy_to(f, '"user"', columns=('id', 'created', 'display_name', 'musicbrainz_id'))
+            with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
+                cursor.copy_to(f, 'license', columns=_TABLES["license"])
+        except Exception as e:
+            print('Error "{}" occurred while copying tables during creation of the base archive!'.format(e))
+            raise
         tar.add(base_archive_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
@@ -314,11 +318,12 @@ def create_base_archive(*, location, meta_files_dir=None):
         return " + %s/cbdump.tar.bz2" % location
 
 
-def create_reviews_archive(*, location, meta_files_dir=None, license_id=None):
+def create_reviews_archive(connection, *, location, meta_files_dir=None, license_id=None):
     """Creates a dump of reviews filtered on the given license_id, their revisions and
        the avg. rating tables.
 
     Args:
+        connection (sqlalchemy.engine.Connection): an sqlalchemy connection to the database for executing database queries
         location: Path of the directory where the archive needs to be created.
         meta_files_dir (optional): Path of the directory containing the meta files to be copied
             into the archive (TIMESTAMP and SCHEMA_VERSION). If not specified, the meta files are
@@ -364,22 +369,20 @@ def create_reviews_archive(*, location, meta_files_dir=None, license_id=None):
         temp_dir = tempfile.mkdtemp()
         reviews_tables_dir = os.path.join(temp_dir, safe_name)
         create_path(reviews_tables_dir)
-        with db.engine.connect() as connection:
-            with connection.begin() as transaction:
-                cursor = connection.connection.cursor()
-                try:
-                    with open(os.path.join(reviews_tables_dir, 'review'), 'w') as f:
-                        cursor.copy_to(f, REVIEW_SQL)
 
-                    with open(os.path.join(reviews_tables_dir, 'revision'), 'w') as f:
-                        cursor.copy_to(f, REVISION_SQL)
+        cursor = connection.connection.cursor()
+        try:
+            with open(os.path.join(reviews_tables_dir, 'review'), 'w') as f:
+                cursor.copy_to(f, REVIEW_SQL)
 
-                    with open(os.path.join(reviews_tables_dir, 'avg_rating'), 'w') as f:
-                        cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
-                except Exception:
-                    print("Error while copying tables during the creation of the reviews archive")
-                    transaction.rollback()
+            with open(os.path.join(reviews_tables_dir, 'revision'), 'w') as f:
+                cursor.copy_to(f, REVISION_SQL)
 
+            with open(os.path.join(reviews_tables_dir, 'avg_rating'), 'w') as f:
+                cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
+        except Exception as e:
+            print("Error {} occurred while copying tables during the creation of the reviews archive!".format(e))
+            raise
         tar.add(reviews_tables_dir, arcname='cbdump')
 
         if not license_id:
