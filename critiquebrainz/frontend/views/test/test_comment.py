@@ -16,48 +16,65 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+from flask import current_app
+from critiquebrainz.frontend.testing import FrontendTestCase
 import critiquebrainz.db.comment as db_comment
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
-
 from critiquebrainz.db.user import User
-from critiquebrainz.frontend.testing import FrontendTestCase
+
+
+def mock_get_entity_by_id(id, type='release_group'):
+    # pylint: disable=unused-argument
+    return {
+        'id': 'e7aad618-fa86-3983-9e77-405e21796eca',
+        'title': 'Test Entity',
+    }
 
 
 class CommentViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(CommentViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
-            "display_name": u"Tester",
+        self.reviewer = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
+            "display_name": u"Reviewer",
+        }))
+        self.commenter = User(db_users.get_or_create(2, "9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
+            "display_name": u"Commenter",
         }))
         self.license = db_license.create(
             id="CC BY-SA 3.0",
-            full_name="Created so we can fill the form correctly.",
+            full_name="Test License.",
         )
         self.review = db_review.create(
-            user_id=self.user.id,
+            user_id=self.reviewer.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
-            text="Testing",
+            text="Test Review.",
             rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
+        current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
 
     def test_create(self):
-        self.temporary_login(self.user)
+        self.temporary_login(self.commenter)
         payload = {
             'review_id': self.review['id'],
-            'text': 'Hello, this is a comment!',
+            'text': 'Test Comment.',
             'state': 'publish',
         }
-        r = self.client.post(
+        response = self.client.post(
             '/comments/create',
             data=payload,
         )
 
-        self.assertRedirects(r, '/review/%s' % self.review['id'])
+        self.assertRedirects(response, '/review/%s' % self.review['id'])
         count = db_comment.count_comments(review_id=self.review['id'])
         self.assertEqual(count, 1)
+
+        response = self.client.get('/review/%s' % self.review['id'])
+        self.assert200(response)
+        # Test if the rendered html contains commenter's display name
+        self.assertIn(self.commenter.display_name, str(response.data))
