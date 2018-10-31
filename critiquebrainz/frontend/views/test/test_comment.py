@@ -60,6 +60,30 @@ class CommentViewsTestCase(FrontendTestCase):
 
     def test_create(self):
         self.temporary_login(self.commenter)
+
+        # empty comment should be rejected
+        payload = {
+            'review_id': self.review['id'],
+            'text': '',
+            'state': 'publish',
+        }
+        response = self.client.post(
+            '/comments/create',
+            data=payload,
+        )
+
+        self.assertRedirects(response, '/review/%s' % self.review['id'])
+        count = db_comment.count_comments(review_id=self.review['id'])
+        self.assertEqual(count, 0)
+
+        response = self.client.get('/review/%s' % self.review['id'])
+        self.assert200(response)
+        # Test that the rendered html should contain error message
+        self.assertIn('Comment must not be empty!', str(response.data))
+        # Test that the rendered html should contain commenter's display name only once (just above comment form)
+        self.assertEqual(str(response.data).count(self.commenter.display_name), 1)
+
+        # comment with some text should be accepted
         payload = {
             'review_id': self.review['id'],
             'text': 'Test Comment.',
@@ -76,5 +100,7 @@ class CommentViewsTestCase(FrontendTestCase):
 
         response = self.client.get('/review/%s' % self.review['id'])
         self.assert200(response)
-        # Test if the rendered html contains commenter's display name
-        self.assertIn(self.commenter.display_name, str(response.data))
+        # Test that the rendered html should contain success message
+        self.assertIn('Comment has been saved!', str(response.data))
+        # Test that the rendered html should contain commenter's display name twice (above posted comment and comment form)
+        self.assertEqual(str(response.data).count(self.commenter.display_name), 2)
