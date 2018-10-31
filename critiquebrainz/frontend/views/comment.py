@@ -31,10 +31,12 @@ comment_bp = Blueprint('comment', __name__)
 def create():
     form = CommentEditForm()
     if form.validate_on_submit():
-        comment = db_comment.create(
+        db_comment.create(
             review_id=form.review_id.data,
             user_id=current_user.id,
             text=form.text.data,
         )
         flash.success('Comment has been saved!')
-    return redirect(url_for('review.entity', id=comment['review_id']))
+    else:
+        flash.error('Comment must not be empty!')
+    return redirect(url_for('review.entity', id=form.review_id.data))
