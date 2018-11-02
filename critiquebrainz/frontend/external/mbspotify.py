@@ -60,10 +60,9 @@ def add_mapping(mbid, spotify_uri, user_id):
         Returns two values. First one is a boolean that indicates whether the submission has been successful.
         The second is an exception in case errors occur. If there are no errors, this value is None.
     """
-    if _base_url is None or _key is None:
-        return False, None
-
     try:
+        if _base_url is None or _key is None:
+            raise ValueError("Missing MBSPOTIFY_BASE_URI or MBSPOTIFY_ACCESS_KEY.")
         session = requests.Session()
         session.mount(_base_url, HTTPAdapter(max_retries=2))
         resp = session.post(_base_url + 'mapping/add?key=' + _key,
@@ -71,7 +70,7 @@ def add_mapping(mbid, spotify_uri, user_id):
                             data=json.dumps({'mbid': str(mbid), 'spotify_uri': spotify_uri, 'user': str(user_id)}))
         cache.delete(mbid, _CACHE_NAMESPACE)
         return resp.status_code == 200, None
-    except RequestException as e:
+    except (RequestException, ValueError) as e:
         return False, e
 
 
