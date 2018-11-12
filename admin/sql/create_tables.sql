@@ -13,7 +13,7 @@ CREATE TABLE comment_revision (
     id          SERIAL      NOT NULL,
     comment_id  UUID        NOT NULL,
     "timestamp" TIMESTAMP   NOT NULL DEFAULT NOW(),
-    text        VARCHAR
+    text        VARCHAR     NOT NULL CHECK (text <> '')
 );
 
 CREATE TABLE license (
