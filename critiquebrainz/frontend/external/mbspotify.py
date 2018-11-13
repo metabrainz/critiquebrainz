@@ -67,7 +67,7 @@ def add_mapping(mbid, spotify_uri, user_id):
         session.mount(_base_url, HTTPAdapter(max_retries=2))
         resp = session.post(_base_url + 'mapping/add?key=' + _key,
                             headers={'Content-Type': 'application/json'},
-                            data=json.dumps({'mbid': str(mbid), 'spotify_uri': spotify_uri, 'user': str(user_id)}))
+                            data=json.dumps({'mbid': str(mbid), 'spotify_uri': str(spotify_uri), 'user': str(user_id)}))
         cache.delete(mbid, _CACHE_NAMESPACE)
         return resp.status_code == 200, None
     except (RequestException, ValueError) as e:
@@ -75,15 +75,21 @@ def add_mapping(mbid, spotify_uri, user_id):
 
 
 def vote(mbid, spotify_uri, user_id):
-    """Submit report about incorrect Spotify mapping."""
-    if _base_url is None or _key is None:
-        return
+    """Submit report about incorrect Spotify mapping.
 
-    # TODO(roman): Catch errors during voting.
-    requests.post(_base_url + 'mapping/vote?key=' + _key, headers={'Content-Type': 'application/json'},
-                  data=json.dumps({
-                      'mbid': str(mbid),
-                      'user': str(user_id),
-                      'spotify_uri': str(spotify_uri),
-                  }))
-    cache.delete(mbid, _CACHE_NAMESPACE)
+    Returns:
+        Returns two values. First one is a boolean that indicates whether the submission has been successful.
+        The second is an exception in case errors occur. If there are no errors, this value is None.
+    """
+    try:
+        if _base_url is None or _key is None:
+            raise ValueError("Missing MBSPOTIFY_BASE_URI or MBSPOTIFY_ACCESS_KEY.")
+        session = requests.Session()
+        session.mount(_base_url, HTTPAdapter(max_retries=2))
+        resp = session.post(_base_url + 'mapping/vote?key=' + _key,
+                            headers={'Content-Type': 'application/json'},
+                            data=json.dumps({'mbid': str(mbid), 'spotify_uri': str(spotify_uri), 'user': str(user_id)}))
+        cache.delete(mbid, _CACHE_NAMESPACE)
+        return resp.status_code == 200, None
+    except (RequestException, ValueError) as e:
+        return False, e
