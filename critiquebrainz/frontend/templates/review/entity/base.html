@@ -157,11 +157,11 @@
             <p> {{ comment.text_html|safe }} </p>
           </div>
           {% endfor %}
-          <hr/>
         </div>
       {% endif %}
 
       {% if current_user.is_authenticated %}
+        <hr/>
         <form id="comment-editor" method="POST" class="form-horizontal" role="form" action="{{ url_for('comment.create') }}">
           {{ comment_form.hidden_tag() }}
           {{ comment_form.text(id="comment-text") }}
