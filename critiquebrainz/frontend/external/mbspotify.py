@@ -65,7 +65,8 @@ def add_mapping(mbid, spotify_uri, user_id):
             raise ValueError("Missing MBSPOTIFY_BASE_URI or MBSPOTIFY_ACCESS_KEY.")
         session = requests.Session()
         session.mount(_base_url, HTTPAdapter(max_retries=2))
-        resp = session.post(_base_url + 'mapping/add?key=' + _key,
+        resp = session.post(_base_url + 'mapping/add',
+                            params={'key': _key},
                             headers={'Content-Type': 'application/json'},
                             data=json.dumps({'mbid': str(mbid), 'spotify_uri': str(spotify_uri), 'user': str(user_id)}))
         cache.delete(mbid, _CACHE_NAMESPACE)
@@ -86,7 +87,8 @@ def vote(mbid, spotify_uri, user_id):
             raise ValueError("Missing MBSPOTIFY_BASE_URI or MBSPOTIFY_ACCESS_KEY.")
         session = requests.Session()
         session.mount(_base_url, HTTPAdapter(max_retries=2))
-        resp = session.post(_base_url + 'mapping/vote?key=' + _key,
+        resp = session.post(_base_url + 'mapping/vote',
+                            params={'key': _key},
                             headers={'Content-Type': 'application/json'},
                             data=json.dumps({'mbid': str(mbid), 'spotify_uri': str(spotify_uri), 'user': str(user_id)}))
         cache.delete(mbid, _CACHE_NAMESPACE)
