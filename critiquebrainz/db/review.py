@@ -152,6 +152,7 @@ def set_hidden_state(review_id, *, is_hidden):
         review_id (uuid): ID of the review the state of which needs to be changed.
         is_hidden (bool): True if review has to be hidden, False if not.
     """
+    review = get_by_id(review_id)
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE review
@@ -161,6 +162,10 @@ def set_hidden_state(review_id, *, is_hidden):
             "review_id": review_id,
             "is_hidden": is_hidden,
         })
+
+    # update the average rating
+    if review["rating"] is not None:
+        db_avg_rating.update(review["entity_id"], review["entity_type"])
 
 
 def get_count(*, is_draft=False, is_hidden=False):
