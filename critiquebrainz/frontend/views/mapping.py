@@ -175,15 +175,16 @@ def parse_spotify_id(spotify_ref):
       - Spotify URI (spotify:album:6IH6co1QUS7uXoyPDv0rIr)
       - HTTP link (http://open.spotify.com/album/6IH6co1QUS7uXoyPDv0rIr)
     """
-    # Spotify URI
-    if spotify_ref.startswith('spotify:album:'):
-        return spotify_ref[14:]
-
-    # Link to Spotify
-    # TODO(roman): Improve checking there.
-    if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
-        if spotify_ref.endswith('/'):
-            spotify_ref = spotify_ref[:-1]
-        return os.path.split(urllib.parse.urlparse(spotify_ref).path)[-1]
-
-    # TODO(roman): Raise exception if failed to parse!
+    try:
+        if spotify_ref.startswith('spotify:album:'):
+            # Spotify URI
+            return spotify_ref[14:]
+        elif spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
+            # Link to Spotify
+            if spotify_ref.endswith('/'):
+                spotify_ref = spotify_ref[:-1]
+            return os.path.split(urllib.parse.urlparse(spotify_ref).path)[-1]
+    except Exception as err:
+        current_app.logger.error('Error "{}" occurred while parsing Spotify ID!'.format(e))
+        # Raise exception if failed to parse!
+        raise
