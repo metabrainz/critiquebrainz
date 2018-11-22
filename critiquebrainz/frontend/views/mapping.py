@@ -152,8 +152,12 @@ def spotify_report():
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     if request.method == 'POST':
-        mbspotify.vote(release_group_id, spotify_uri, current_user.id)
-        flash.success(gettext("Incorrect Spotify mapping has been reported. Thank you!"))
+        res, error = mbspotify.vote(release_group_id, spotify_uri, current_user.id)
+        if res:
+            flash.success(gettext("Incorrect Spotify mapping has been reported. Thank you!"))
+        else:
+            flash.error(gettext("Could not report incorrect Spotify mapping!"))
+            current_app.logger.error("Failed to report incorrect Spotify mapping! Error: {}".format(error))
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     try:
