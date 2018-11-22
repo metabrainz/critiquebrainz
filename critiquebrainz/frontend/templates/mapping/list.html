@@ -17,7 +17,9 @@
      album = '<a href="%s">%s</a>'|safe % (url_for('release_group.entity', id=release_group.id), release_group.title),
      artist = artist|join()) }}
 
-    {% if release_group['first-release-date'] %}
+    {% if release_group['first-release-year'] %}
+      <small>{{ release_group['first-release-year'] }}</small>
+    {% elif release_group['first-release-date'] %}
       <small>{{ release_group['first-release-date'][:4] }}</small>
     {% endif %}
   </h2>

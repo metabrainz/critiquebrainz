@@ -27,7 +27,6 @@ mapping_bp = Blueprint('mapping', __name__)
 def spotify_list(release_group_id):
     """This view lists all Spotify albums mapped to a specified release group."""
     spotify_mappings = mbspotify.mappings(str(release_group_id))
-
     # Converting Spotify URIs to IDs
     spotify_ids = []
     for mapping in spotify_mappings:
@@ -41,7 +40,7 @@ def spotify_list(release_group_id):
     else:
         spotify_albums = []
     try:
-        release_group = mb_release_group.get_release_group_by_id(release_group_id)
+        release_group = mb_release_group.get_release_group_by_id(str(release_group_id))
     except mb_exceptions.NoDataFoundException:
         raise NotFound("Can't find release group with a specified ID.")
     return render_template('mapping/list.html', spotify_albums=spotify_albums,
