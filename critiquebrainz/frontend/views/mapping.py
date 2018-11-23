@@ -79,9 +79,11 @@ def spotify():
     except ExternalServiceException as e:
         raise ServiceUnavailable(e)
 
+    search_results = [full_response[id] for id in albums_ids if id in full_response]
+
     return render_template('mapping/spotify.html', release_group=release_group,
-                           search_results=[full_response[id] for id in albums_ids if id in full_response],
-                           page=page, limit=limit, count=response.get('total'))
+                           search_results=search_results, page=page, limit=limit,
+                           count=response.get('total'))
 
 
 @mapping_bp.route('/spotify/confirm', methods=['GET', 'POST'])
@@ -134,15 +136,20 @@ def spotify_report():
     Shows confirmation page before submitting report to mbspotify.
     """
     release_group_id = request.args.get('release_group_id')
+    if not release_group_id:
+        raise BadRequest("Didn't provide `release_group_id`!")
+
     spotify_id = request.args.get('spotify_id')
+    if not spotify_id:
+        raise BadRequest("Didn't provide `spotify_id`!")
+
     spotify_uri = "spotify:album:" + spotify_id
 
     # Checking if release group exists
     try:
         release_group = mb_release_group.get_release_group_by_id(release_group_id)
     except mb_exceptions.NoDataFoundException:
-        flash.error(gettext("Can't find release group with that ID!"))
-        return redirect(url_for('.spotify_list', release_group_id=release_group_id))
+        raise NotFound("Can't find release group with a specified ID.")
 
     # Checking if release group is mapped to Spotify
     spotify_mappings = mbspotify.mappings(str(release_group_id))
