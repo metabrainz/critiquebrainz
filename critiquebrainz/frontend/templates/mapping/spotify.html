@@ -51,10 +51,10 @@
       <div class="col-md-12">
         <ul class="pager">
           {% if page > 1 %}
-            <li class="previous"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
+            <li class="previous"><a href="{{ url_for('mapping.spotify_add', release_group_id=release_group.id, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
           {% endif %}
           {% if page-1 < count//limit %}
-            <li class="next"><a href="{{ url_for('mapping.spotify', release_group_id=release_group.id, page=page + 1) }}">{{ _('Next') }} &rarr;</a></li>
+            <li class="next"><a href="{{ url_for('mapping.spotify_add', release_group_id=release_group.id, page=page + 1) }}">{{ _('Next') }} &rarr;</a></li>
           {% endif %}
         </ul>
       </div>

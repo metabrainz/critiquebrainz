@@ -99,7 +99,7 @@
         {{ _('We don\'t have a mapping between this release group and Spotify. Please help us find the right album.') }}
       </span>
       <div style="text-align:center;font-weight:bold;">
-        <a style="font-size:16px;" href="{{ url_for('mapping.spotify', release_group_id=release_group_id) }}" rel="nofollow">
+        <a style="font-size:16px;" href="{{ url_for('mapping.spotify_add', release_group_id=release_group_id) }}" rel="nofollow">
           {{ _('Match this!') }}
         </a>
       </div>

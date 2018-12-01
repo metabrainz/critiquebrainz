@@ -48,7 +48,7 @@ def spotify_list(release_group_id):
 
 
 @mapping_bp.route('/spotify/add')
-def spotify():
+def spotify_add():
     release_group_id = request.args.get('release_group_id')
     if not release_group_id:
         return redirect(url_for('frontend.index'))
@@ -60,7 +60,7 @@ def spotify():
 
     page = int(request.args.get('page', default=1))
     if page < 1:
-        return redirect(url_for('.spotify'))
+        return redirect(url_for('.spotify_add'))
     limit = 16
     offset = (page - 1) * limit
 
@@ -102,18 +102,18 @@ def spotify_confirm():
     spotify_ref = request.args.get('spotify_ref', default=None)
     if not spotify_ref:
         flash.error(gettext("You need to select an album from Spotify!"))
-        return redirect(url_for('.spotify', release_group_id=release_group_id))
+        return redirect(url_for('.spotify_add', release_group_id=release_group_id))
 
     spotify_id = parse_spotify_id(spotify_ref)
     if not spotify_id:
         flash.error(gettext("You need to specify a correct link to this album on Spotify!"))
-        return redirect(url_for('.spotify', release_group_id=release_group_id))
+        return redirect(url_for('.spotify_add', release_group_id=release_group_id))
 
     try:
         album = spotify_api.get_album(spotify_id)
     except ExternalServiceException:
         flash.error(gettext("You need to specify existing album from Spotify!"))
-        return redirect(url_for('.spotify', release_group_id=release_group_id))
+        return redirect(url_for('.spotify_add', release_group_id=release_group_id))
 
     if request.method == 'POST':
         # TODO(roman): Check values that are returned by add_mapping (also take a look at related JS).

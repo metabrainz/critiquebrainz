@@ -66,5 +66,5 @@
         </tbody>
       </table>
   {% endif %}
-  <b><a class="btn btn-primary btn-default" href="{{ url_for('mapping.spotify', release_group_id=release_group.id) }}">{{ _('+ Add new mapping') }}</a></b>
+  <b><a class="btn btn-primary btn-default" href="{{ url_for('mapping.spotify_add', release_group_id=release_group.id) }}">{{ _('+ Add new mapping') }}</a></b>
 {% endblock %}
