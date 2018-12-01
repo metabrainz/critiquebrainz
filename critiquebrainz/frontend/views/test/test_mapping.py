@@ -17,11 +17,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from unittest.mock import MagicMock
-from critiquebrainz.frontend.testing import FrontendTestCase
-from critiquebrainz.db.user import User
+from flask import url_for
 import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 from critiquebrainz.frontend.external import mbspotify
 import critiquebrainz.frontend.external.spotify as spotify_api
+from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 
@@ -34,7 +36,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         }))
 
         self.test_spotify_id = "6IH6co1QUS7uXoyPDv0rIr"
-        self.test_release_groups = {
+        self.test_release_group = {
             'id': '6b3cd75d-7453-39f3-86c4-1441f360e121',
             'title': 'Test Release Group',
             'first-release-year': 1970,
@@ -42,41 +44,98 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
                 'name': 'Test Artist'
             }]
         }
-        self.test_spotify_response = {
+        self.test_spotify_get_multiple_albums_response = {
             '6IH6co1QUS7uXoyPDv0rIr': {
                 'type': 'album',
+                'album_type': 'album',
                 'id': '6IH6co1QUS7uXoyPDv0rIr',
                 'name': 'Test Album',
                 'release_date': '1970-01-01',
                 'external_urls': {
                     'spotify': 'https://open.spotify.com/album/6IH6co1QUS7uXoyPDv0rIr'
                 },
-                'artists': [{'name': 'Test Artist', }]
+                'artists': [{'name': 'Test Artist'}],
+                'tracks': {
+                    'items':[{
+                        'artists': [{
+                            'name': 'Test Artist'
+                        }]
+                    }]
+                },
+                'uri': 'spotify:album:6IH6co1QUS7uXoyPDv0rIr'
             }
         }
 
-    def test_false_release_group_mapping_list(self):
-        # test mapping for non-existent release group, should return 404
+        self.test_spotify_search_response = {
+            'albums': {
+                'items': [{
+                    'id': "6IH6co1QUS7uXoyPDv0rIr"
+                }],
+                'total': 1
+            }
+        }
+
+    def test_spotify_list(self):
+        # test for non-existent release group
         mbspotify.mappings = MagicMock(return_value=[])
         mb_release_group.get_release_group_by_id = MagicMock(side_effect=mb_exceptions.NoDataFoundException)
         response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
         self.assert404(response, "Can't find release group with a specified ID.")
 
-    def test_release_group_mapping_list(self):
+        # test for release group with no mappings
+        mb_release_group.get_release_group_by_id = MagicMock(return_value=self.test_release_group)
+        response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
+        self.assert200(response)
+        self.assertIn("No mappings", str(response.data))
+
         # test release group with mappings
         mbspotify.mappings = MagicMock(return_value=['spotify:album:6IH6co1QUS7uXoyPDv0rIr'])
-        spotify_api.get_multiple_albums = MagicMock(return_value=self.test_spotify_response)
-        mb_release_group.get_release_group_by_id = MagicMock(return_value=self.test_release_group)
+        spotify_api.get_multiple_albums = MagicMock(return_value=self.test_spotify_get_multiple_albums_response)
         response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
         self.assert200(response)
         self.assertIn(self.test_spotify_id, str(response.data))
         self.assertIn("Test Album", str(response.data))
         self.assertIn("1970-01-01", str(response.data))
 
-    def test_release_group_no_mappings(self):
-        # testing for release group with no mappings
-        mbspotify.mappings = MagicMock(return_value=[])
-        mb_release_group.get_release_group_by_id = MagicMock(return_value=self.test_release_groups)
+        # test spotify service unavailable
+        spotify_api.get_multiple_albums = MagicMock(side_effect=ExternalServiceException)
         response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
+        self.assertStatus(response, 503)
+
+    def test_spotify_add(self):
+        # test `release_group_id` variable not supplied
+        response = self.client.get("/mapping/spotify/add")
+        self.assertRedirects(response, url_for('frontend.index'))
+
+        # test for non-existent release group
+        mb_release_group.get_release_group_by_id = MagicMock(side_effect=mb_exceptions.NoDataFoundException)
+        response = self.client.get("/mapping/spotify/add",
+                                   query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"},
+                                   follow_redirects=True)
+        self.assertIn("Only existing release groups can be mapped to Spotify!", str(response.data))
+
+        # test Spotify service unavailable
+        mb_release_group.get_release_group_by_id = MagicMock(return_value=self.test_release_group)
+        spotify_api.search = MagicMock(side_effect=ExternalServiceException)
+        response = self.client.get("/mapping/spotify/add",
+                                   query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"})
+        self.assertStatus(response, 503)
+
+        # test when response has no albums for given id
+        spotify_api.search = MagicMock(return_value=self.test_spotify_search_response)
+
+        spotify_api.get_multiple_albums = MagicMock(return_value={})
+        response = self.client.get("/mapping/spotify/add",
+                                   query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"})
         self.assert200(response)
-        self.assertIn("No mappings", str(response.data))
+        self.assertIn("No similar albums found", str(response.data))
+
+        # test when response has 1 album
+        spotify_api.get_multiple_albums = MagicMock(return_value=self.test_spotify_get_multiple_albums_response)
+        response = self.client.get("/mapping/spotify/add",
+                                   query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"})
+        self.assert200(response)
+        self.assertIn("Listen on Spotify", str(response.data))
+        self.assertIn("1970", str(response.data))
+        self.assertIn("Test Album", str(response.data))
+        self.assertIn("Test Artist", str(response.data))
