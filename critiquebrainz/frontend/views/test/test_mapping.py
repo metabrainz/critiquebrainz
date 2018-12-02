@@ -27,6 +27,7 @@ from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 
+
 class SpotifyMappingViewsTestCase(FrontendTestCase):
 
     def setUp(self):
@@ -56,7 +57,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
                 },
                 'artists': [{'name': 'Test Artist'}],
                 'tracks': {
-                    'items':[{
+                    'items': [{
                         'artists': [{
                             'name': 'Test Artist'
                         }]
@@ -112,6 +113,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         response = self.client.get("/mapping/spotify/add",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"},
                                    follow_redirects=True)
+        self.assert200(response)
         self.assertIn("Only existing release groups can be mapped to Spotify!", str(response.data))
 
         # test Spotify service unavailable
@@ -153,6 +155,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         response = self.client.get("/mapping/spotify/confirm",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"},
                                    follow_redirects=True)
+        self.assert200(response)
         self.assertIn("Only existing release groups can be mapped to Spotify!", str(response.data))
 
         # test `spotify_ref` variable not supplied
@@ -160,6 +163,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         response = self.client.get("/mapping/spotify/confirm",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"},
                                    follow_redirects=True)
+        self.assert200(response)
         self.assertIn("You need to select an album from Spotify!", str(response.data))
 
         # test when wrong type of `spotify_ref` is supplied
@@ -169,6 +173,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
                                        "spotify_ref": "Unsupported Spotify URI"
                                    },
                                    follow_redirects=True)
+        self.assert200(response)
         self.assertIn("You need to specify a correct link to this album on Spotify!", str(response.data))
 
         # test Spotify service unavailable or uri supplied is not available on Spotify
@@ -179,6 +184,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
                                        "spotify_ref": "spotify:album:6IH6co1QUS7uXoyPDv0rIr"
                                    },
                                    follow_redirects=True)
+        self.assert200(response)
         self.assertIn("You need to specify existing album from Spotify!", str(response.data))
 
         # test when uri supplied is available on Spotify
@@ -194,9 +200,9 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assertIn("Are you sure you want to create this mapping?", str(response.data))
 
         # test POST for spotify_confirm
+        mbspotify.add_mapping = MagicMock(return_value=(False, None))
 
         # test when failed to add mapping while posting uri
-        mbspotify.add_mapping = MagicMock(return_value=(False, None))
         response = self.client.post("/mapping/spotify/confirm",
                                     query_string={
                                         "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
@@ -216,3 +222,89 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
                                     follow_redirects=True)
         self.assert200(response)
         self.assertIn("Spotify mapping has been added!", str(response.data))
+
+    def test_spotify_report(self):
+        self.temporary_login(self.user)
+
+        # test `release_group_id` variable not supplied
+        response = self.client.get("/mapping/spotify/report",
+                                   follow_redirects=True)
+        self.assert400(response, "Didn't provide `release_group_id`!")
+
+        # test `spotify_id` variable not supplied
+        response = self.client.get("/mapping/spotify/report",
+                                   query_string={
+                                       "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"
+                                   },
+                                   follow_redirects=True)
+        self.assert400(response, "Didn't provide `spotify_id`!")
+
+        # test for non-existent release group
+        mb_release_group.get_release_group_by_id = MagicMock(side_effect=mb_exceptions.NoDataFoundException)
+        response = self.client.get("/mapping/spotify/report",
+                                   query_string={
+                                       "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
+                                       "spotify_id": "6IH6co1QUS7uXoyPDv0rIr"
+                                   },
+                                   follow_redirects=True)
+        self.assert404(response, "Can't find release group with a specified ID.")
+
+        # test release group not mapped to supplied spotify uri
+        mb_release_group.get_release_group_by_id = MagicMock(return_value=self.test_release_group)
+        mbspotify.mappings = MagicMock(return_value=[])
+        response = self.client.get("/mapping/spotify/report",
+                                   query_string={
+                                       "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
+                                       "spotify_id": "6IH6co1QUS7uXoyPDv0rIr"
+                                   },
+                                   follow_redirects=True)
+        self.assert200(response)
+        self.assertIn("This album is not mapped to Spotify yet!", str(response.data))
+
+        # test when release group is mapped to supplied spotify uri, but, album for supplied uri doesn't exist
+        mbspotify.mappings = MagicMock(return_value=["spotify:album:6IH6co1QUS7uXoyPDv0rIr"])
+        spotify_api.get_album = MagicMock(side_effect=ExternalServiceException)
+        spotify_api.get_multiple_albums = MagicMock(return_value=self.test_spotify_get_multiple_albums_response)
+        response = self.client.get("/mapping/spotify/report",
+                                   query_string={
+                                       "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
+                                       "spotify_id": "6IH6co1QUS7uXoyPDv0rIr"
+                                   },
+                                   follow_redirects=True)
+        # self.assertRedirects(response, url_for('mapping.spotify_list', release_group_id=self.test_release_group['id']))
+        self.assert200(response)
+        self.assertIn("You need to specify existing album from Spotify!", str(response.data))
+
+        # test confirmation page for reporting
+        spotify_api.get_album = MagicMock(return_value=self.test_spotify_get_multiple_albums_response[self.test_spotify_id])
+        response = self.client.get("/mapping/spotify/report",
+                                   query_string={
+                                       "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
+                                       "spotify_id": "6IH6co1QUS7uXoyPDv0rIr"
+                                   },
+                                   follow_redirects=True)
+        self.assert200(response)
+        self.assertIn("Are you sure you want to report incorrect mapping?", str(response.data))
+
+        # test POST for spotify_report
+        # test when successfully added mapping
+        mbspotify.vote = MagicMock(return_value=(True, None))
+        response = self.client.post("/mapping/spotify/report",
+                                    query_string={
+                                        "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
+                                        "spotify_id": "6IH6co1QUS7uXoyPDv0rIr"
+                                    },
+                                    follow_redirects=True)
+        self.assert200(response)
+        self.assertIn("Incorrect Spotify mapping has been reported. Thank you!", str(response.data))
+
+        # test when failed to vote for incorrect mapping
+        mbspotify.vote = MagicMock(return_value=(False, None))
+        response = self.client.post("/mapping/spotify/report",
+                                    query_string={
+                                        "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
+                                        "spotify_id": "6IH6co1QUS7uXoyPDv0rIr"
+                                    },
+                                    follow_redirects=True)
+        self.assert200(response)
+        self.assertIn("Could not report incorrect Spotify mapping!", str(response.data))

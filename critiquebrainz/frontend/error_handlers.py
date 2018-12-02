@@ -1,11 +1,13 @@
 # pylint: disable=unused-variable
 from flask import render_template, g
 
+
 def get_sentry_event_id():
     try:
         return g.sentry_event_id
     except AttributeError:
         return None
+
 
 def init_error_handlers(app):
 
