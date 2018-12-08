@@ -7,6 +7,7 @@ import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_relea
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 import critiquebrainz.db.review as db_review
+from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
 
 
@@ -34,6 +35,7 @@ def entity(id):
         spotify_mappings = None
     else:
         spotify_mappings = mbspotify.mappings(release_group['id'])
+
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated:
@@ -42,10 +44,7 @@ def entity(id):
             entity_type='release_group',
             user_id=current_user.id,
         )
-        if my_count != 0:
-            my_review = my_reviews[0]
-        else:
-            my_review = None
+        my_review = my_reviews[0] if my_count else None
     else:
         my_review = None
     reviews, count = db_review.list_reviews(
@@ -57,6 +56,10 @@ def entity(id):
     )
     avg_rating = get_avg_rating(release_group['id'], "release_group")
 
+    rating_form = RatingEditForm(entity_id=id, entity_type='release_group')
+    rating_form.rating.data = my_review['rating'] if my_review else None
+
     return render_template('release_group/entity.html', id=release_group['id'], release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
-                           soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count, avg_rating=avg_rating)
+                           soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count, avg_rating=avg_rating,
+                           rating_form=rating_form, current_user=current_user)

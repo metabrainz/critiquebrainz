@@ -57,6 +57,7 @@
     {% endif %}
 
     <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
+
       {% if current_user.is_authenticated %}
       <h4 style="margin-bottom:0;">{{ _('Rate this event:') }}</h4>
         <form id="rating-form" method="POST" class="form-horizontal" role="form" action="{{ url_for('rate.rate') }}">
@@ -70,9 +71,7 @@
       {% else %}
         {{ _('<h4><a href="%(link)s">Sign in</a> to rate</h4>', link=url_for('login.index', next=url_for('event.entity', id=id))) }}
       {% endif %}
-    </div>
-    
-    <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
+
       <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
       {% if not reviews %}
         <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>

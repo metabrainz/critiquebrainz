@@ -47,6 +47,19 @@
     {{ show_embedded_player(soundcloud_url, id, spotify_mappings, spotify_show_add_message=True) }}
   </div>
   <div class="col-md-6">
+    {% if current_user.is_authenticated %}
+    <h4 style="margin-bottom:0;">{{ _('Rate this release group:') }}</h4>
+      <form id="rating-form" method="POST" class="form-horizontal" role="form" action="{{ url_for('rate.rate') }}">
+        {{ rating_form.hidden_tag() }}
+        <div class="form-group">
+          <div class="col-sm-12">
+            <div id="ratestars" style="margin: 0; padding: 0;">{{ rating_form.rating(class="rating", id="rating") }}</div>
+          </div>
+        </div>
+      </form>
+    {% else %}
+      {{ _('<h4><a href="%(link)s">Sign in</a> to rate</h4>', link=url_for('login.index', next=url_for('release_group.entity', id=id))) }}
+    {% endif %}
     <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
     {% if not reviews %}
       <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
@@ -176,4 +189,19 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <script>
+    $(document).ready(function() {
+      $("#ratestars").click(function(e){
+        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+        if (e.target.tagName === 'I') {
+          $("#rating-form").submit();
+        }
+      });
+    });
+  </script>
+  <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}
