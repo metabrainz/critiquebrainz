@@ -1,11 +1,10 @@
 from itertools import groupby
 from operator import itemgetter
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, request
 from flask_login import current_user
 from flask_babel import gettext
 from werkzeug.exceptions import NotFound
 import critiquebrainz.db.review as db_review
-from critiquebrainz.frontend import flash
 import critiquebrainz.frontend.external.musicbrainz_db.event as mb_event
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.forms.rate import RatingEditForm
@@ -28,17 +27,27 @@ def entity(id):
         event['artists_grouped'] = groupby(artists_sorted, itemgetter('type'))
 
     if current_user.is_authenticated:
-        my_reviews, my_count = db_review.list_reviews(entity_id=event['id'], entity_type='event', user_id=current_user.id)
+        my_reviews, my_count = db_review.list_reviews(
+            entity_id=event['id'],
+            entity_type='event',
+            user_id=current_user.id
+        )
         my_review = my_reviews[0] if my_count else None
     else:
         my_review = None
 
     rating_form = RatingEditForm(entity_id=id, entity_type='event')
     rating_form.rating.data = my_review['rating'] if my_review else None
+
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
-    reviews, count = db_review.list_reviews(entity_id=event['id'], entity_type='event', sort='popularity',
-                                            limit=limit, offset=offset)
+    reviews, count = db_review.list_reviews(
+        entity_id=event['id'],
+        entity_type='event',
+        sort='popularity',
+        limit=limit,
+        offset=offset
+    )
     avg_rating = get_avg_rating(event['id'], "event")
 
     return render_template('event/entity.html', id=event['id'], event=event, reviews=reviews,

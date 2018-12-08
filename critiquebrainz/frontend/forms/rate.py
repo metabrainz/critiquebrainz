@@ -27,7 +27,7 @@ class RatingEditForm(Form):
     entity_id = StringField(widget=HiddenInput())
     entity_type = StringField(widget=HiddenInput())
 
-    def __init__(self, entity_id = None, entity_type=None, **kwargs):
+    def __init__(self, entity_id=None, entity_type=None, **kwargs):
         kwargs['entity_id'] = entity_id
         kwargs['entity_type'] = entity_type
         Form.__init__(self, **kwargs)
