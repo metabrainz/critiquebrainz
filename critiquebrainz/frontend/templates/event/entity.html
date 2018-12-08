@@ -9,128 +9,160 @@
 {% endblock %}
 
 {% block content %}
-<div class="clearfix">
-  <h2 class="pull-left">
-    {{ event.name }}
-  </h2>
+  <div class="clearfix">
+    <h2 class="pull-left">
+      {{ event.name }}
+    </h2>
 
-  {% if not my_review %}
-    <a id="write-review" href="{{ url_for('review.create', event=id) }}"
-       role="button" class="btn btn-success pull-right">
-      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
-    </a>
-  {% else %}
-    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
-       role="button" class="btn btn-primary pull-right">
-      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
-    </a>
-  {% endif %}
-</div>
-
-{% if event['place-rels'] %}
-  {% set place = event['place-rels'][0]['place'] %}
-  {% if place['coordinates'] %}
-    {% set lat = place['coordinates']['latitude'] | float %}
-    {% set long = place['coordinates']['longitude'] | float %}
-  {% endif %}
-{% endif %}
-
-<div id="event-details" class="row">
-  {% if lat %}
-    <div class="col-md-4">
-      <div id="map"></div>
-      <script src="{{ get_static_path('leaflet.js') }}"></script>
-      <script>
-        var map = L.map('map').setView(['{{ lat }}', '{{ long }}'], 14);
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="http://openstreetmap.org">OSM</a>, ' +
-                       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        }).addTo(map);
-        var popup = L.popup()
-            .setContent("<b>" + {{ _("Held at") | tojson }} + "</b><br> " + {{ place["name"] | tojson }});
-        var marker = L.marker(['{{ lat }}', '{{ long }}'])
-            .addTo(map)
-            .bindPopup(popup)
-            .openPopup();
-      </script>
-    </div>
-  {% endif %}
-
-  <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
-    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
-    {% if not reviews %}
-      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% if my_review and my_review.text %}
+      <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
+         role="button" class="btn btn-primary pull-right">
+        <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
+      </a>
     {% else %}
-      <table class="table table-condensed table-hover">
-        <thead>
-          <tr>
-            <th></th>
-            <th>{{ _('Published on') }}</th>
-            <th>{{ _('Votes (+/-)') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for review in reviews %}
-            <tr data-review-id="{{ review.id }}">
-              <td>
-                <a href="{{ url_for('review.entity', id=review.id) }}">
-                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
-                </a>
-              </td>
-              <td>{{ review.published_on | date }}</td>
-              <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <ul class="pagination">
-        {% set pages = count//limit %}
-        {% if count%limit %}
-          {% set pages = pages+1 %}
-        {% endif %}
-        {% if pages>1 %}
-          {% for p in range(pages) %}
-            {% set p_offset = p*limit %}
-            <li {% if offset == p_offset %}class="active"{% endif %}>
-              <a href="{{ url_for('event.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
-            </li>
-          {% endfor %}
-        {% endif %}
-      </ul>
+      <a id="write-review" href="{{ url_for('review.create', event=id) }}"
+         role="button" class="btn btn-success pull-right">
+        <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
+      </a>
     {% endif %}
   </div>
 
-  <div class="col-md-3">
-    <h4>{{ _('Event information') }}</h4>
+  {% if event['place-rels'] %}
+    {% set place = event['place-rels'][0]['place'] %}
+    {% if place['coordinates'] %}
+      {% set lat = place['coordinates']['latitude'] | float %}
+      {% set long = place['coordinates']['longitude'] | float %}
+    {% endif %}
+  {% endif %}
 
-    {% if avg_rating %}
-      <div class="avg-rating">
-        {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
+  <div id="event-details" class="row">
+    {% if lat %}
+      <div class="col-md-4">
+        <div id="map"></div>
+        <script src="{{ get_static_path('leaflet.js') }}"></script>
+        <script>
+          var map = L.map('map').setView(['{{ lat }}', '{{ long }}'], 14);
+          L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OSM</a>, ' +
+                         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          }).addTo(map);
+          var popup = L.popup()
+              .setContent("<b>" + {{ _("Held at") | tojson }} + "</b><br> " + {{ place["name"] | tojson }});
+          var marker = L.marker(['{{ lat }}', '{{ long }}'])
+              .addTo(map)
+              .bindPopup(popup)
+              .openPopup();
+        </script>
       </div>
     {% endif %}
+
+    <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
+      {% if current_user.is_authenticated %}
+      <h4 style="margin-bottom:0;">{{ _('Rate this event:') }}</h4>
+        <form id="rating-form" method="POST" class="form-horizontal" role="form">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            <div class="col-sm-12">
+              <div id="ratestars" style="margin: 0; padding: 0;">{{ form.rating(class="rating", id="rating") }}</div>
+            </div>
+          </div>
+        </form>
+      {% else %}
+        {{ _('<h4><a href="%(link)s">Sign in</a> to rate</h4>', link=url_for('login.index', next=url_for('event.entity', id=id))) }}
+      {% endif %}
+    </div>
     
-    {% if 'release_group-rels' in event %}
-      {% for rg in event['release_group-rels'] %}
-          <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['release_group']['id']) }}">{{ rg['release_group']['title'] }}</a></p>
-      {% endfor %}
-    {% endif %}
-
-    {% if 'artist-rels' in event %}
-      {% for type, artists in event['artists_grouped'] %}
-        <b>{{ type | title }}</b>
-        <ul class="list-unstyled">
-          {% for artist in artists %}
-            <li><a href="{{ url_for('artist.entity', mbid=artist['target']) }}">{{ artist['artist']['name'] }}</a></li>
-          {% endfor %}
+    <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
+      <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+      {% if not reviews %}
+        <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+      {% else %}
+        <table class="table table-condensed table-hover">
+          <thead>
+            <tr>
+              <th></th>
+              <th>{{ _('Published on') }}</th>
+              <th>{{ _('Votes (+/-)') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for review in reviews %}
+              <tr data-review-id="{{ review.id }}">
+                <td>
+                  <a href="{{ url_for('review.entity', id=review.id) }}">
+                    {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                  </a>
+                </td>
+                <td>{{ review.published_on | date }}</td>
+                <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <ul class="pagination">
+          {% set pages = count//limit %}
+          {% if count%limit %}
+            {% set pages = pages+1 %}
+          {% endif %}
+          {% if pages>1 %}
+            {% for p in range(pages) %}
+              {% set p_offset = p*limit %}
+              <li {% if offset == p_offset %}class="active"{% endif %}>
+                <a href="{{ url_for('event.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+              </li>
+            {% endfor %}
+          {% endif %}
         </ul>
-      {% endfor %}
-    {% endif %}
+      {% endif %}
+    </div>
 
-    <div class="external-links">
-      <hr>
-      <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
-      <a href="https://musicbrainz.org/event/{{ event.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+    <div class="col-md-3">
+      <h4>{{ _('Event information') }}</h4>
+
+      {% if avg_rating %}
+        <div class="avg-rating">
+          {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
+        </div>
+      {% endif %}
+      
+      {% if 'release_group-rels' in event %}
+        {% for rg in event['release_group-rels'] %}
+            <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['release_group']['id']) }}">{{ rg['release_group']['title'] }}</a></p>
+        {% endfor %}
+      {% endif %}
+
+      {% if 'artist-rels' in event %}
+        {% for type, artists in event['artists_grouped'] %}
+          <b>{{ type | title }}</b>
+          <ul class="list-unstyled">
+            {% for artist in artists %}
+              <li><a href="{{ url_for('artist.entity', mbid=artist['target']) }}">{{ artist['artist']['name'] }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endfor %}
+      {% endif %}
+
+      <div class="external-links">
+        <hr>
+        <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
+        <a href="https://musicbrainz.org/event/{{ event.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      </div>
     </div>
   </div>
-</div>
+{% endblock %}
+
+{% block scripts %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <script>
+    $(document).ready(function() {
+      console.log("We're here...");
+      $("#ratestars").click(function(e){
+        // only submit form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+        if (e.target.tagName === 'I') {
+          $("#rating-form").submit();
+        }
+      });
+    });
+  </script>
+  <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}
