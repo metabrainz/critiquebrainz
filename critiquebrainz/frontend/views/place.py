@@ -20,7 +20,8 @@ def entity(id):
         raise NotFound(gettext("Sorry, we couldn't find a place with that MusicBrainz ID."))
 
     if current_user.is_authenticated:
-        my_reviews, my_count = db_review.list_reviews(entity_id=place['id'],
+        my_reviews, my_count = db_review.list_reviews(
+            entity_id=place['id'],
             entity_type='place',
             user_id=current_user.id
         )

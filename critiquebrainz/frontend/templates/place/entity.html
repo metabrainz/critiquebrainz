@@ -49,7 +49,8 @@
 
     <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
       {% if current_user.is_authenticated %}
-      <h4 style="margin-bottom:0;">{{ _('Rate this place:') }}</h4>
+        <h4 style="margin-bottom:0;">{{ _('Rate this place:') }}</h4>
+        <br/>
         <form id="rating-form" method="POST" class="form-horizontal" role="form" action="{{ url_for('rate.rate') }}">
           {{ rating_form.hidden_tag() }}
           <div class="form-group">
@@ -61,7 +62,7 @@
       {% else %}
         {{ _('<h4><a href="%(link)s">Sign in</a> to rate</h4>', link=url_for('login.index', next=url_for('place.entity', id=id))) }}
       {% endif %}
-
+      <br/><br/>
       <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
       {% if not reviews %}
         <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
