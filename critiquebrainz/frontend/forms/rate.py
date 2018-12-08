@@ -18,12 +18,16 @@
 
 from flask_wtf import Form
 from flask_babel import lazy_gettext
-from wtforms import validators, IntegerField
-from wtforms.widgets import Input
+from wtforms import validators, IntegerField, StringField
+from wtforms.widgets import Input, HiddenInput
 
 
-class RatingForm(Form):
+class RatingEditForm(Form):
     rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
+    entity_id = StringField(widget=HiddenInput())
+    entity_type = StringField(widget=HiddenInput())
 
-    def __init__(self, **kwargs):
+    def __init__(self, entity_id = None, entity_type=None, **kwargs):
+        kwargs['entity_id'] = entity_id
+        kwargs['entity_type'] = entity_type
         Form.__init__(self, **kwargs)

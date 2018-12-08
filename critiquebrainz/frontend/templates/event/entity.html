@@ -59,11 +59,11 @@
     <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
       {% if current_user.is_authenticated %}
       <h4 style="margin-bottom:0;">{{ _('Rate this event:') }}</h4>
-        <form id="rating-form" method="POST" class="form-horizontal" role="form">
-          {{ form.hidden_tag() }}
+        <form id="rating-form" method="POST" class="form-horizontal" role="form" action="{{ url_for('rate.rate') }}">
+          {{ rating_form.hidden_tag() }}
           <div class="form-group">
             <div class="col-sm-12">
-              <div id="ratestars" style="margin: 0; padding: 0;">{{ form.rating(class="rating", id="rating") }}</div>
+              <div id="ratestars" style="margin: 0; padding: 0;">{{ rating_form.rating(class="rating", id="rating") }}</div>
             </div>
           </div>
         </form>
@@ -157,7 +157,7 @@
     $(document).ready(function() {
       console.log("We're here...");
       $("#ratestars").click(function(e){
-        // only submit form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
         if (e.target.tagName === 'I') {
           $("#rating-form").submit();
         }
