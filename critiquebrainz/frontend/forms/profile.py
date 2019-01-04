@@ -1,10 +1,10 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext
 from wtforms import StringField, BooleanField, RadioField, validators
 from wtforms.fields.html5 import EmailField
 
 
-class ProfileEditForm(Form):
+class ProfileEditForm(FlaskForm):
     display_name = StringField(lazy_gettext("Display name"), [
         validators.DataRequired(message=lazy_gettext("Display name field is empty.")),
         validators.Length(min=3, message=lazy_gettext("Display name needs to be at least 3 characters long.")),
