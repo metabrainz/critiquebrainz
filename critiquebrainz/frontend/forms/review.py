@@ -1,4 +1,4 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext, Locale
 from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
@@ -29,7 +29,7 @@ for language_code in supported_languages:
         languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
 
 
-class ReviewEditForm(Form):
+class ReviewEditForm(FlaskForm):
     state = StringField(widget=HiddenInput(), default='draft', validators=[validators.DataRequired()])
     text = TextAreaField(lazy_gettext("Text"), [
         validators.Optional(),
@@ -49,7 +49,7 @@ class ReviewEditForm(Form):
     def __init__(self, default_license_id='CC BY-SA 3.0', default_language='en', **kwargs):
         kwargs.setdefault('license_choice', default_license_id)
         kwargs.setdefault('language', default_language)
-        Form.__init__(self, **kwargs)
+        FlaskForm.__init__(self, **kwargs)
 
     def validate(self):
         if not super(ReviewEditForm, self).validate():
@@ -66,5 +66,5 @@ class ReviewCreateForm(ReviewEditForm):
     ])
 
 
-class ReviewReportForm(Form):
+class ReviewReportForm(FlaskForm):
     reason = TextAreaField(validators=[validators.DataRequired()])

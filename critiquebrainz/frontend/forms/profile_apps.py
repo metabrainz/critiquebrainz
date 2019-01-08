@@ -1,9 +1,9 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext
 from wtforms import StringField, validators
 
 
-class ApplicationForm(Form):
+class ApplicationForm(FlaskForm):
     name = StringField(lazy_gettext('Application name'), [
         validators.DataRequired(message=lazy_gettext("Application name field is empty.")),
         validators.Length(min=3, message=lazy_gettext("Application name needs to be at least 3 characters long.")),
