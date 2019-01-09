@@ -27,7 +27,6 @@ mapping_bp = Blueprint('mapping', __name__)
 def spotify_list(release_group_id):
     """This view lists all Spotify albums mapped to a specified release group."""
     spotify_mappings = mbspotify.mappings(str(release_group_id))
-
     # Converting Spotify URIs to IDs
     spotify_ids = []
     for mapping in spotify_mappings:
@@ -41,7 +40,7 @@ def spotify_list(release_group_id):
     else:
         spotify_albums = []
     try:
-        release_group = mb_release_group.get_release_group_by_id(release_group_id)
+        release_group = mb_release_group.get_release_group_by_id(str(release_group_id))
     except mb_exceptions.NoDataFoundException:
         raise NotFound("Can't find release group with a specified ID.")
     return render_template('mapping/list.html', spotify_albums=spotify_albums,
@@ -49,7 +48,7 @@ def spotify_list(release_group_id):
 
 
 @mapping_bp.route('/spotify/add')
-def spotify():
+def spotify_add():
     release_group_id = request.args.get('release_group_id')
     if not release_group_id:
         return redirect(url_for('frontend.index'))
@@ -61,7 +60,7 @@ def spotify():
 
     page = int(request.args.get('page', default=1))
     if page < 1:
-        return redirect(url_for('.spotify'))
+        return redirect(url_for('.spotify_add'))
     limit = 16
     offset = (page - 1) * limit
 
@@ -80,9 +79,11 @@ def spotify():
     except ExternalServiceException as e:
         raise ServiceUnavailable(e)
 
+    search_results = [full_response[id] for id in albums_ids if id in full_response]
+
     return render_template('mapping/spotify.html', release_group=release_group,
-                           search_results=[full_response[id] for id in albums_ids if id in full_response],
-                           page=page, limit=limit, count=response.get('total'))
+                           search_results=search_results, page=page, limit=limit,
+                           count=response.get('total'))
 
 
 @mapping_bp.route('/spotify/confirm', methods=['GET', 'POST'])
@@ -101,18 +102,21 @@ def spotify_confirm():
     spotify_ref = request.args.get('spotify_ref', default=None)
     if not spotify_ref:
         flash.error(gettext("You need to select an album from Spotify!"))
-        return redirect(url_for('.spotify', release_group_id=release_group_id))
+        return redirect(url_for('.spotify_add', release_group_id=release_group_id))
 
-    spotify_id = parse_spotify_id(spotify_ref)
-    if not spotify_id:
+    try:
+        spotify_id = parse_spotify_id(spotify_ref)
+    except UnsupportedSpotifyReferenceTypeException:
         flash.error(gettext("You need to specify a correct link to this album on Spotify!"))
-        return redirect(url_for('.spotify', release_group_id=release_group_id))
+        return redirect(url_for('.spotify_add', release_group_id=release_group_id))
+    except Exception:
+        raise BadRequest("Could not parse Spotify ID!")
 
     try:
         album = spotify_api.get_album(spotify_id)
     except ExternalServiceException:
         flash.error(gettext("You need to specify existing album from Spotify!"))
-        return redirect(url_for('.spotify', release_group_id=release_group_id))
+        return redirect(url_for('.spotify_add', release_group_id=release_group_id))
 
     if request.method == 'POST':
         # TODO(roman): Check values that are returned by add_mapping (also take a look at related JS).
@@ -135,15 +139,20 @@ def spotify_report():
     Shows confirmation page before submitting report to mbspotify.
     """
     release_group_id = request.args.get('release_group_id')
+    if not release_group_id:
+        raise BadRequest("Didn't provide `release_group_id`!")
+
     spotify_id = request.args.get('spotify_id')
+    if not spotify_id:
+        raise BadRequest("Didn't provide `spotify_id`!")
+
     spotify_uri = "spotify:album:" + spotify_id
 
     # Checking if release group exists
     try:
         release_group = mb_release_group.get_release_group_by_id(release_group_id)
     except mb_exceptions.NoDataFoundException:
-        flash.error(gettext("Can't find release group with that ID!"))
-        return redirect(url_for('.spotify_list', release_group_id=release_group_id))
+        raise NotFound("Can't find release group with a specified ID.")
 
     # Checking if release group is mapped to Spotify
     spotify_mappings = mbspotify.mappings(str(release_group_id))
@@ -169,22 +178,33 @@ def spotify_report():
     return render_template('mapping/report.html', release_group=release_group, spotify_album=album)
 
 
+class UnsupportedSpotifyReferenceTypeException(Exception):
+    """Exception for Unsupported Spotify Reference Types."""
+    pass
+
+
 def parse_spotify_id(spotify_ref):
     """Extracts Spotify ID out of reference to an album on Spotify.
 
     Supported reference types:
       - Spotify URI (spotify:album:6IH6co1QUS7uXoyPDv0rIr)
       - HTTP link (http://open.spotify.com/album/6IH6co1QUS7uXoyPDv0rIr)
+
+    Returns:
+        parsed spotify id (ex. "6IH6co1QUS7uXoyPDv0rIr") if supported reference types are provided, else raises Exception
     """
-    # Spotify URI
-    if spotify_ref.startswith('spotify:album:'):
-        return spotify_ref[14:]
-
-    # Link to Spotify
-    # TODO(roman): Improve checking there.
-    if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
-        if spotify_ref.endswith('/'):
-            spotify_ref = spotify_ref[:-1]
-        return os.path.split(urllib.parse.urlparse(spotify_ref).path)[-1]
-
-    # TODO(roman): Raise exception if failed to parse!
+    try:
+        if spotify_ref.startswith('spotify:album:'):
+            # Spotify URI
+            return spotify_ref[14:]
+        elif spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
+            # Link to Spotify
+            if spotify_ref.endswith('/'):
+                spotify_ref = spotify_ref[:-1]
+            return os.path.split(urllib.parse.urlparse(spotify_ref).path)[-1]
+        else:
+            raise UnsupportedSpotifyReferenceTypeException("Unsupported Spotify Reference Type!")
+    except Exception as e:
+        current_app.logger.error('Error "{}" occurred while parsing Spotify ID!'.format(e))
+        # Raise exception if failed to parse!
+        raise

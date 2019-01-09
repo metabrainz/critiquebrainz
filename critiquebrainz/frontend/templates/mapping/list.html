@@ -17,7 +17,9 @@
      album = '<a href="%s">%s</a>'|safe % (url_for('release_group.entity', id=release_group.id), release_group.title),
      artist = artist|join()) }}
 
-    {% if release_group['first-release-date'] %}
+    {% if release_group['first-release-year'] %}
+      <small>{{ release_group['first-release-year'] }}</small>
+    {% elif release_group['first-release-date'] %}
       <small>{{ release_group['first-release-date'][:4] }}</small>
     {% endif %}
   </h2>
@@ -64,5 +66,5 @@
         </tbody>
       </table>
   {% endif %}
-  <b><a class="btn btn-primary btn-default" href="{{ url_for('mapping.spotify', release_group_id=release_group.id) }}">{{ _('+ Add new mapping') }}</a></b>
+  <b><a class="btn btn-primary btn-default" href="{{ url_for('mapping.spotify_add', release_group_id=release_group.id) }}">{{ _('+ Add new mapping') }}</a></b>
 {% endblock %}
