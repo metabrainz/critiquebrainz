@@ -1,6 +1,6 @@
 # critiquebrainz - Repository for Creative Commons licensed reviews
 #
-# Copyright (C) 2018 MetaBrainz Foundation Inc.
+# Copyright (C) 2018 Bimalkant Lauhny.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

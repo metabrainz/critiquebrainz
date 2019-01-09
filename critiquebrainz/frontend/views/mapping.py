@@ -104,10 +104,13 @@ def spotify_confirm():
         flash.error(gettext("You need to select an album from Spotify!"))
         return redirect(url_for('.spotify_add', release_group_id=release_group_id))
 
-    spotify_id = parse_spotify_id(spotify_ref)
-    if not spotify_id:
+    try:
+        spotify_id = parse_spotify_id(spotify_ref)
+    except UnsupportedSpotifyReferenceTypeException:
         flash.error(gettext("You need to specify a correct link to this album on Spotify!"))
         return redirect(url_for('.spotify_add', release_group_id=release_group_id))
+    except Exception:
+        raise BadRequest("Could not parse Spotify ID!")
 
     try:
         album = spotify_api.get_album(spotify_id)
@@ -175,6 +178,11 @@ def spotify_report():
     return render_template('mapping/report.html', release_group=release_group, spotify_album=album)
 
 
+class UnsupportedSpotifyReferenceTypeException(Exception):
+    """Exception for Unsupported Spotify Reference Types."""
+    pass
+
+
 def parse_spotify_id(spotify_ref):
     """Extracts Spotify ID out of reference to an album on Spotify.
 
@@ -183,7 +191,7 @@ def parse_spotify_id(spotify_ref):
       - HTTP link (http://open.spotify.com/album/6IH6co1QUS7uXoyPDv0rIr)
 
     Returns:
-        parsed spotify id (ex. "6IH6co1QUS7uXoyPDv0rIr") if supported reference types are provided, else None
+        parsed spotify id (ex. "6IH6co1QUS7uXoyPDv0rIr") if supported reference types are provided, else raises Exception
     """
     try:
         if spotify_ref.startswith('spotify:album:'):
@@ -195,8 +203,8 @@ def parse_spotify_id(spotify_ref):
                 spotify_ref = spotify_ref[:-1]
             return os.path.split(urllib.parse.urlparse(spotify_ref).path)[-1]
         else:
-            return None
-    except Exception as err:
-        current_app.logger.error('Error "{}" occurred while parsing Spotify ID!'.format(err))
+            raise UnsupportedSpotifyReferenceTypeException("Unsupported Spotify Reference Type!")
+    except Exception as e:
+        current_app.logger.error('Error "{}" occurred while parsing Spotify ID!'.format(e))
         # Raise exception if failed to parse!
         raise
