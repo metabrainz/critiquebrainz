@@ -3,6 +3,11 @@ from flask import render_template, g
 
 
 def get_sentry_event_id():
+    """Makes sentry_event_id optional for error handlers
+
+    Returns:
+        sentry_event_id if available else None
+    """
     try:
         return g.sentry_event_id
     except AttributeError:
