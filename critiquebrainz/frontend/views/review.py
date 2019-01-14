@@ -363,7 +363,7 @@ def vote_submit(review_id):
     if review["user"] == current_user:
         flash.error(gettext("You cannot rate your own review."))
         return redirect(url_for('.entity', id=review_id))
-    if current_user.is_vote_limit_exceeded is True and current_user.has_voted(review) is False:
+    if current_user.is_vote_limit_exceeded and not db_users.has_voted(current_user.id, review_id):
         flash.error(gettext("You have exceeded your limit of votes per day."))
         return redirect(url_for('.entity', id=review_id))
     if current_user.is_blocked:
