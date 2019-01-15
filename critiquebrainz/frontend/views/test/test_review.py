@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import patch, MagicMock
 from flask import current_app
 from critiquebrainz.frontend.testing import FrontendTestCase
 import critiquebrainz.db.review as db_review
@@ -142,6 +142,13 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.assertIn("You cannot rate your own review.", str(response.data))
 
         self.temporary_login(self.hacker)
+
+        # pylint: disable=unused-variable
+        with patch.object(User, 'is_vote_limit_exceeded') as mock_is_vote_limit_exceeded:
+            mock_is_vote_limit_exceeded = MagicMock(return_value=True)
+            response = self.client.post("/review/%s/vote" % review["id"], follow_redirects=True)
+            self.assertIn("You have exceeded your limit of votes per day.", str(response.data))
+
         response = self.client.post("/review/%s/vote" % review["id"], data=dict(yes=True),
                                     follow_redirects=True)
         self.assertIn("You have rated this review!", str(response.data))
