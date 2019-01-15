@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 from critiquebrainz.frontend.testing import FrontendTestCase
 from critiquebrainz.frontend.external import musicbrainz
 
+
 class SearchViewsTestCase(FrontendTestCase):
 
     def setUp(self):
