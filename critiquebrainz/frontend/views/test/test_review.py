@@ -143,9 +143,8 @@ class ReviewViewsTestCase(FrontendTestCase):
 
         self.temporary_login(self.hacker)
 
-        # pylint: disable=unused-variable
         with patch.object(User, 'is_vote_limit_exceeded') as mock_is_vote_limit_exceeded:
-            mock_is_vote_limit_exceeded = MagicMock(return_value=True)
+            mock_is_vote_limit_exceeded = MagicMock(return_value=True)  # pylint: disable=unused-variable
             response = self.client.post("/review/%s/vote" % review["id"], follow_redirects=True)
             self.assertIn("You have exceeded your limit of votes per day.", str(response.data))
 
