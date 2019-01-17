@@ -74,6 +74,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get("/review/aef06569-098f-4218-a577-b413944d9493")
         self.assert404(response)
 
+    # pylint: disable=unused-variable
     def test_create(self):
         data = dict(
             release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
@@ -85,6 +86,14 @@ class ReviewViewsTestCase(FrontendTestCase):
         )
 
         self.temporary_login(self.user)
+        # test for review limit exceeded message
+        with patch.object(User, 'is_review_limit_exceeded') as mock_is_review_limit_exceeded:
+            mock_is_review_limit_exceeded = MagicMock(return_value=True)
+            response = self.client.post('/review/write', data=data,
+                                        query_string=data, follow_redirects=True)
+            self.assertIn("You have exceeded your limit of reviews per day.", str(response.data))
+
+        # test create review when review limit is not exceeded
         response = self.client.post('/review/write', data=data,
                                     query_string=data, follow_redirects=True)
         self.assert200(response)
