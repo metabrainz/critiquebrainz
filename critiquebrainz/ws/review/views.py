@@ -566,7 +566,7 @@ def review_vote_put_handler(review_id, user):
         raise InvalidRequest(desc='You cannot rate your own review.')
     if review["text"] is None:
         raise InvalidRequest(desc='Voting on reviews without text is not allowed.')
-    if user.is_vote_limit_exceeded is True and db_users.has_voted(user.id, review_id) is False:
+    if user.is_vote_limit_exceeded and not db_users.has_voted(user.id, review_id):
         raise LimitExceeded('You have exceeded your limit of votes per day.')
 
     db_vote.submit(
