@@ -1,6 +1,6 @@
 # critiquebrainz - Repository for Creative Commons licensed reviews
 #
-# Copyright (C) 2018 MetaBrainz Foundation Inc.
+# Copyright (C) 2018 Bimalkant Lauhny.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,35 +37,30 @@ def rate():
         reviews, review_count = db_review.list_reviews(
             entity_id=form.entity_id.data,
             entity_type=form.entity_type.data,
-            user_id=current_user.id
+            user_id=current_user.id,
         )
         review = reviews[0] if review_count else None
-        if review:
-            # if there is already a review
-            if form.rating.data or review['text']:
-                # if either rating is positive or review-text has some content, then update review to set the rating
-                db_review.update(
-                    review_id=review['id'],
-                    drafted=review['is_draft'],
-                    text=review['text'],
-                    rating=form.rating.data if form.rating.data else None
-                )
-            else:
-                # if user has cleared the rating and there was no review-text, then delete the review
-                # this is because both the rating and review-text can't be None at the same time
-                db_review.delete(review['id'])
-        else:
-            # if there is no review
-            if form.rating.data:
-                # if user has submitted some positive rating, then create a new review to set the rating
-                db_review.create(
-                    user_id=current_user.id,
-                    entity_id=form.entity_id.data,
-                    entity_type=form.entity_type.data,
-                    rating=form.rating.data,
-                    is_draft=False
-                )
-        flash.success("We have updated your rating for this event!")
+
+        if not review and form.rating.data is None:
+            raise BadRequest("Cannot create a review with no rating and no text!")
+        elif not review and form.rating.data is not None:
+            db_review.create(
+                user_id=current_user.id,
+                entity_id=form.entity_id.data,
+                entity_type=form.entity_type.data,
+                rating=form.rating.data,
+                is_draft=False,
+            )
+        elif review and review['text'] is None and form.rating.data is None:
+            db_review.delete(review['id'])
+        elif review and review['rating'] != form.rating.data:
+            db_review.update(
+                review_id=review['id'],
+                drafted=review['is_draft'],
+                text=review['text'],
+                rating=form.rating.data,
+            )
+        flash.success("We have updated your rating for this entity!")
     else:
         flash.error("Error! Could not update the rating...")
     return redirect(url_for('{}.entity'.format(form.entity_type.data), id=form.entity_id.data))
