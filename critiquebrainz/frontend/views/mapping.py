@@ -71,12 +71,14 @@ def spotify_add():
     try:
         response = spotify_api.search(query, item_types='album', limit=limit, offset=offset).get('albums')
     except ExternalServiceException as e:
+        current_app.logger.error("Error while searching Spotify API: %s", str(e), exc_info=True)
         raise ServiceUnavailable(e)
 
     albums_ids = [x['id'] for x in response['items']]
     try:
         full_response = spotify_api.get_multiple_albums(albums_ids)
     except ExternalServiceException as e:
+        current_app.logger.error("Error while getting albums from Spotify: %s", str(e), exc_info=True)
         raise ServiceUnavailable(e)
 
     search_results = [full_response[id] for id in albums_ids if id in full_response]
