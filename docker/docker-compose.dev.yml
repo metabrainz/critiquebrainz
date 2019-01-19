@@ -17,6 +17,7 @@ services:
     build:
       context: ./pg_custom/
       dockerfile: Dockerfile
+    command: postgres -F
     environment:
       POSTGRES_USER: critiquebrainz
       POSTGRES_PASSWORD: critiquebrainz
