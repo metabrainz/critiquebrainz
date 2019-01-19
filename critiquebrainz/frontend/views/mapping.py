@@ -122,12 +122,12 @@ def spotify_confirm():
 
     if request.method == 'POST':
         # TODO(roman): Check values that are returned by add_mapping (also take a look at related JS).
-        res, error = mbspotify.add_mapping(release_group_id, 'spotify:album:%s' % spotify_id, current_user.id)
-        if res:
+        try:
+            mbspotify.add_mapping(release_group_id, 'spotify:album:%s' % spotify_id, current_user.id)
             flash.success(gettext("Spotify mapping has been added!"))
-        else:
+        except Exception as e:
             flash.error(gettext("Could not add Spotify mapping!"))
-            current_app.logger.error("Failed to create new Spotify mapping! Error: {}".format(error))
+            current_app.logger.error("Failed to create new Spotify mapping! Error: {}".format(e), exc_info=True)
         return redirect(url_for('.spotify_list', release_group_id=release_group_id))
 
     return render_template('mapping/confirm.html', release_group=release_group, spotify_album=album)
