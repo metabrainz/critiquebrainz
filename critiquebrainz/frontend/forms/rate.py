@@ -16,13 +16,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext
 from wtforms import validators, IntegerField, StringField
 from wtforms.widgets import Input, HiddenInput
 
 
-class RatingEditForm(Form):
+class RatingEditForm(FlaskForm):
     rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
     entity_id = StringField(widget=HiddenInput())
     entity_type = StringField(widget=HiddenInput())
