@@ -30,4 +30,4 @@ class RatingEditForm(FlaskForm):
     def __init__(self, entity_id=None, entity_type=None, **kwargs):
         kwargs['entity_id'] = entity_id
         kwargs['entity_type'] = entity_type
-        Form.__init__(self, **kwargs)
+        FlaskForm.__init__(self, **kwargs)
