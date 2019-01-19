@@ -18,6 +18,7 @@
 
 from flask import Blueprint, redirect, url_for
 from flask_login import current_user, login_required
+from flask_babel import gettext
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.comment import CommentEditForm
 
@@ -40,3 +41,13 @@ def create():
     else:
         flash.error('Comment must not be empty!')
     return redirect(url_for('review.entity', id=form.review_id.data))
+
+@comment_bp.route('/<uuid:id>/delete', methods=['POST'])
+@login_required
+def delete(id):
+    comment = db_comment.get_by_id(id)
+    if comment["user"] != current_user:
+        raise Unauthorized(gettext("Only the author can delete this comment."))
+    db_comment.delete(comment["id"])
+    flash.success(gettext("Comment has been deleted."))
+    return redirect(url_for('review.entity', id=comment["review_id"]))
