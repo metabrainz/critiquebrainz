@@ -16,13 +16,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from flask import current_app
+from flask import current_app, url_for
 from critiquebrainz.frontend.testing import FrontendTestCase
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
 import critiquebrainz.db.comment as db_comment
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
-import critiquebrainz.db.users as db_users
-from critiquebrainz.db.user import User
 
 
 def mock_get_entity_by_id(id, type='release_group'):
@@ -68,7 +68,7 @@ class CommentViewsTestCase(FrontendTestCase):
             'state': 'publish',
         }
         response = self.client.post(
-            '/comments/create',
+            url_for('comment.create'),
             data=payload,
         )
 
@@ -90,7 +90,7 @@ class CommentViewsTestCase(FrontendTestCase):
             'state': 'publish',
         }
         response = self.client.post(
-            '/comments/create',
+            url_for('comment.create'),
             data=payload,
         )
 

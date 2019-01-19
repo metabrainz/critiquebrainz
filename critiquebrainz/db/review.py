@@ -196,7 +196,7 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
         review_id (uuid): ID of the review.
         drafted (bool): Whether the review is currently set as a draft.
         license_id (str): ID of a license that needs to be associated with this review.
-        is_draft (bool): Whether to publish review (False) or keep it as a graft (True).
+        is_draft (bool): Whether to publish review (False) or keep it as a draft (True).
         text (str): Updated text part of a review.
         rating (int): Updated rating part of a review.
     """
