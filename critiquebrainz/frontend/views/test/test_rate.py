@@ -1,6 +1,6 @@
 # critiquebrainz - Repository for Creative Commons licensed reviews
 #
-# Copyright (C) 2018 MetaBrainz Foundation Inc.
+# Copyright (C) 2018 Bimalkant Lauhny.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ class RateViewsTestCase(FrontendTestCase):
 
         response = self.client.get('/release-group/{}'.format(self.test_entity['id']))
         self.assert200(response)
-        self.assertIn('We have updated your rating for this event!', str(response.data))
+        self.assertIn('We have updated your rating for this entity!', str(response.data))
 
         # Test after rating is cleared for review with NO text
         payload = {

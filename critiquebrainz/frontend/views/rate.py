@@ -62,6 +62,7 @@ def rate():
                 text=review['text'],
                 rating=form.rating.data,
             )
+        # TODO(code-master5): Make this message specify the entity
         flash.success("We have updated your rating for this entity!")
     else:
         flash.error("Error! Could not update the rating...")
