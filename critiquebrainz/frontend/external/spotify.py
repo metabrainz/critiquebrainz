@@ -107,7 +107,7 @@ def _get(query: str) -> dict:
         "Authorization": f"Bearer {_fetch_access_token()}"
     })
     if resp.status_code != HTTPStatus.OK:
-        logging.warning("Unexpected response from the Spotify API", extra={
+        app.logger.error("Unexpected response from the Spotify API", extra={
             "query": query,
             "response": resp.__getstate__(),
         })
