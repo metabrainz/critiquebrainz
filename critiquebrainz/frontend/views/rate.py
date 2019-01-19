@@ -17,6 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from flask import Blueprint, redirect, url_for
+from werkzeug.exceptions import BadRequest
 from flask_login import current_user, login_required
 from flask_babel import gettext
 import critiquebrainz.db.review as db_review
@@ -24,6 +25,7 @@ from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 
 rate_bp = Blueprint('rate', __name__)
+
 
 @rate_bp.route('/', methods=['POST'])
 @login_required
