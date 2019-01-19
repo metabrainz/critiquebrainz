@@ -10,6 +10,7 @@ from requests.adapters import HTTPAdapter
 from flask_babel import lazy_gettext
 from brainzutils import cache
 from critiquebrainz.frontend import flash
+from flask import current_app
 
 _base_url = ""
 _key = ""
@@ -67,6 +68,7 @@ def add_mapping(mbid, spotify_uri, user_id):
                         params={'key': _key},
                         headers={'Content-Type': 'application/json'},
                         data=json.dumps(data),)
+    current_app.logger.error("STATUS of mbspotify response: %s and response: %s", resp.status_code, resp.text)
     cache.delete(mbid, _CACHE_NAMESPACE)
 
 
