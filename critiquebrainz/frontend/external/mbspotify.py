@@ -61,10 +61,12 @@ def add_mapping(mbid, spotify_uri, user_id):
         raise ValueError("Missing MBSPOTIFY_BASE_URI or MBSPOTIFY_ACCESS_KEY.")
     session = requests.Session()
     session.mount(_base_url, HTTPAdapter(max_retries=2))
+    data = {'mbid': str(mbid), 'spotify_uri': str(spotify_uri), 'user': str(user_id)}
+    current_app.logger.error("DATA SENT TO MBSPOTIFY: %s", json.dumps(data, indent=4))
     resp = session.post(_base_url + 'mapping/add',
                         params={'key': _key},
                         headers={'Content-Type': 'application/json'},
-                        data=json.dumps({'mbid': str(mbid), 'spotify_uri': str(spotify_uri), 'user': str(user_id)}))
+                        data=json.dumps(data),)
     cache.delete(mbid, _CACHE_NAMESPACE)
 
 
