@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating with context %}
+{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating, entity_rate_form with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -43,10 +43,12 @@
 
 <div id="release-group-details" class="row">
   <div class="col-md-3">
-    {{ cover_art(id, 'release_group', attributes='class=cover-art', source_credit=True) }}
+    {{ cover_art(id, 'release_group', attributes='class=cover-art', source_credit=True, release_group_page=True) }}
     {{ show_embedded_player(soundcloud_url, id, spotify_mappings, spotify_show_add_message=True) }}
   </div>
   <div class="col-md-6">
+    {{ entity_rate_form('release_group', 'release group') }}
+    <br/><br/>
     <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
     {% if not reviews %}
       <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
@@ -67,7 +69,7 @@
                   {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
                 </a>
               </td>
-              <td>{{ review.created | date }}</td>
+              <td>{{ review.published_on | date }}</td>
               <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
             </tr>
           {% endfor %}
@@ -176,4 +178,19 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <script>
+    $(document).ready(function() {
+      $("#ratestars").click(function(e){
+        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+        if (e.target.tagName === 'I') {
+          $("#rating-form").submit();
+        }
+      });
+    });
+  </script>
+  <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}

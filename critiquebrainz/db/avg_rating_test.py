@@ -12,10 +12,10 @@ class AvgRatingTestCase(DataTestCase):
     def setUp(self):
         super(AvgRatingTestCase, self).setUp()
 
-        self.user = User(db_users.get_or_create("Tester", new_user_data={
+        self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": "test user",
         }))
-        self.user_2 = User(db_users.get_or_create("Tester 2", new_user_data={
+        self.user_2 = User(db_users.get_or_create(2, "Tester 2", new_user_data={
             "display_name": "test user 2",
         }))
         self.license = db_license.create(
@@ -43,8 +43,9 @@ class AvgRatingTestCase(DataTestCase):
         self.assertEqual(avg_rating["count"], 1)
 
     def test_update(self):
-        """Test if rating and count are updated when review is updated or deleted"""
+        """Test if rating and count are updated when review is updated, deleted or hidden"""
 
+        # Check avg_rating when review is created
         review = db_review.create(
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
@@ -69,13 +70,26 @@ class AvgRatingTestCase(DataTestCase):
         self.assertEqual(avg_rating["rating"], 4.5)
         self.assertEqual(avg_rating["count"], 2)
 
+        # Check if avg_rating is updated after review_2 is hidden
+        db_review.set_hidden_state(review_2["id"], is_hidden=True)
+        avg_rating = db_avg_rating.get(review["entity_id"], review["entity_type"])
+        self.assertEqual(avg_rating["rating"], 5.0)
+        self.assertEqual(avg_rating["count"], 1)
+
+        # Check if avg_rating is updated after review_2 is revealed
+        db_review.set_hidden_state(review_2["id"], is_hidden=False)
+        avg_rating = db_avg_rating.get(review["entity_id"], review["entity_type"])
+        self.assertEqual(avg_rating["rating"], 4.5)
+        self.assertEqual(avg_rating["count"], 2)
+
+        # Check if avg_rating is updated after change in rating
         db_review.update(
             review_id=review_2["id"],
             drafted=review_2["is_draft"],
             text=u"Testing rating update",
             rating=None,
         )
-        # Check if avg_rating is updated after change in rating
+
         avg_rating = db_avg_rating.get(review["entity_id"], review["entity_type"])
         self.assertEqual(avg_rating["rating"], 5.0)
         self.assertEqual(avg_rating["count"], 1)

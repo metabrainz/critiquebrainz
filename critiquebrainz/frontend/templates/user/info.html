@@ -19,7 +19,7 @@
         <dt>{{ _('User type') }}</dt><dd>{{ user.user_type.label }}</dd>
         <dt>{{ _('Karma') }}</dt><dd>{{ user.karma }}</dd>
         {% if current_user.is_authenticated and current_user == user %}
-          <dt>{{ _('Email') }}</dt><dd>{{ current_user.email }}</dd>
+          <dt>{{ _('Email') }}</dt><dd>{{ current_user.email }} (visible to just you) </dd>
         {% endif %}
       </dl>
       {% if current_user.is_authenticated and current_user == user %}

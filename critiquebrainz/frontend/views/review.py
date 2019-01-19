@@ -5,6 +5,7 @@ from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
 from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
+from langdetect import detect
 from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.db.moderation_log import ACTION_HIDE_REVIEW
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
@@ -12,14 +13,16 @@ from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
+from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.frontend.views import get_avg_rating
 from critiquebrainz.utils import side_by_side_diff
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.moderation_log as db_moderation_log
+import critiquebrainz.db.users as db_users
+import critiquebrainz.db.comment as db_comment
 from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
-from langdetect import detect
 
 
 review_bp = Blueprint('review', __name__)
@@ -111,9 +114,15 @@ def entity(id, rev=None):
     )
     other_reviews = user_all_reviews[:3]
     avg_rating = get_avg_rating(review["entity_id"], review["entity_type"])
+
+    comments, count = db_comment.list_comments(review_id=id)
+    for comment in comments:
+        comment["text_html"] = markdown(comment["last_revision"]["text"], safe_mode="escape")
+    comment_form = CommentEditForm(review_id=id)
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
                            spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
-                           vote=vote, other_reviews=other_reviews, avg_rating=avg_rating)
+                           vote=vote, other_reviews=other_reviews, avg_rating=avg_rating,
+                           comment_count=count, comments=comments, comment_form=comment_form)
 
 
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')
@@ -223,7 +232,7 @@ def create():
         flash.error(gettext("You have already published a review for this entity!"))
         return redirect(url_for('review.entity', id=review["id"]))
 
-    form = ReviewCreateForm(default_language=get_locale())
+    form = ReviewCreateForm(default_license_id=current_user.license_choice, default_language=get_locale())
 
     if form.validate_on_submit():
         if current_user.is_review_limit_exceeded:
@@ -236,6 +245,10 @@ def create():
         review = db_review.create(user_id=current_user.id, entity_id=entity_id, entity_type=entity_type,
                                   text=form.text.data, rating=form.rating.data, license_id=form.license_choice.data,
                                   language=form.language.data, is_draft=is_draft)
+        if form.remember_license.data:
+            db_users.update(current_user.id, user_new_info={
+                "license_choice": form.license_choice.data,
+            })
         if is_draft:
             flash.success(gettext("Review has been saved!"))
         else:
@@ -350,7 +363,7 @@ def vote_submit(review_id):
     if review["user"] == current_user:
         flash.error(gettext("You cannot rate your own review."))
         return redirect(url_for('.entity', id=review_id))
-    if current_user.is_vote_limit_exceeded is True and current_user.has_voted(review) is False:
+    if current_user.is_vote_limit_exceeded and not db_users.has_voted(current_user.id, review_id):
         flash.error(gettext("You have exceeded your limit of votes per day."))
         return redirect(url_for('.entity', id=review_id))
     if current_user.is_blocked:

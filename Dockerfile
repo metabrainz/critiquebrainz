@@ -1,5 +1,7 @@
 FROM metabrainz/python:3.6
 
+ARG DEPLOY_ENV
+
 RUN apt-get update \
      && apt-get install -y --no-install-recommends \
                         build-essential \
@@ -60,9 +62,9 @@ RUN useradd --create-home --shell /bin/bash critiquebrainz
 # Just need to copy the configuration.
 COPY ./docker/prod/consul-template.conf /etc/consul-template.conf
 
-COPY ./docker/prod/uwsgi/uwsgi.service /etc/service/uwsgi/run
+COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.service /etc/service/uwsgi/run
 RUN chmod 755 /etc/service/uwsgi/run
-COPY ./docker/prod/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
+COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
 
 # cron jobs
 ADD ./docker/prod/cron/jobs /tmp/crontab

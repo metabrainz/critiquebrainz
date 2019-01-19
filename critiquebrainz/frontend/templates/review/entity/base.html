@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import review_credit, cover_art, show_avg_rating with context %}
+{% from 'macros.html' import review_credit, cover_art, show_avg_rating, comment_credit with context %}
 
 {% block content %}
 <div id="review-entity">
@@ -17,7 +17,7 @@
       {% if review.is_draft %}
         <div class="alert alert-warning" role="alert">{{ _('<b>This review has not been published yet!</b> Only you can see it.') }}</div>
       {% else %}
-        <em class="text-muted">{{ _('Published on %(date)s', date = review.created|date) }}</em><br />
+        <em class="text-muted">{{ _('Published on %(date)s', date = review.published_on|date) }}</em><br />
         {% if review.text %}
           <em class="text-muted">{{ _('Written in %(language)s', language = review.language|language_name) }}</em><br />
           {% set votes_total = review.votes.positive + review.votes.negative %}
@@ -44,7 +44,7 @@
           <p style="word-wrap: break-word; white-space: pre-wrap;">{{ review.text_html|safe }}</p>
         {% endif %}
       {% endif %}
-      
+
       <hr />
 
       {% if not review.is_draft %}
@@ -64,10 +64,21 @@
         {% endif %}
       </small>
 
-      <hr />
-
+      <hr/>
+      <div class="row">
+        <div class="col-md-5">
+          {% if not current_user.is_authenticated and review.text %}
+            {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
+          {% endif %}
+        </div>
+        <div class="col-md-4 col-md-offset-3">
+          <a id="old-revisions" href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
+        </div>
+      </div>
+      
       <div>
         {% if current_user.is_authenticated %}
+          <hr/>      
           {% if current_user != review.user %}
             <div class="row">
               <div class="col-md-8">
@@ -101,21 +112,7 @@
                class="btn btn-danger btn-sm pull-right">
               <span class="glyphicon glyphicon-remove"></span> {{ _('Delete this review') }}
             </a>
-            <!-- Used to display older revisions link properly -->
-            <div class="clearfix" style="margin-bottom: 8px;"></div>
           {% endif %}
-          <a id="old-revisions" href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
-        {% else %}
-          <div class="row">
-            <div class="col-md-5">
-              {% if review.text %}
-                {{ _('<a href="%(link)s">Sign in</a> to rate this review', link=url_for('login.index', next=url_for('review.entity', id=review.id))) }}
-              {% endif %}
-            </div>
-            <div class="col-md-4 col-md-offset-3">
-              <a id="old-revisions" href="{{ url_for('review.revisions', id=review.id) }}">{{ _('View older revisions') }}</a>
-            </div>
-          </div>
         {% endif %}
       </div>
 
@@ -135,10 +132,39 @@
               </div>
               {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
               <div class="album">{% include 'entity_review.html' %}</div>
-              {{ review.created | date }}
+              {{ review.published_on | date }}
             </div>
           {% endfor %}
         </div>
+      {% endif %}
+
+      {% if comments %}
+        <hr/>
+        <h3> Comments ({{ comment_count }})</h3>
+        <div id="comment-list">
+          {% for comment in comments %}
+          <div id="{{ comment.id }}">
+            <hr/>
+            <p>
+              {{ comment_credit(comment, user_picture_size=24) }}
+              <span style="float:right;">
+                <small><em class="text-muted"> {{comment.created | date}} </em></small>
+              </span>
+            </p>
+            <p> {{ comment.text_html|safe }} </p>
+          </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if current_user.is_authenticated %}
+        <hr/>
+        <form id="comment-editor" method="POST" class="form-horizontal" role="form" action="{{ url_for('comment.create') }}">
+          {{ comment_form.hidden_tag() }}
+          {{ comment_form.text(id="comment-text") }}
+        </form>
+        <hr/>
+        <button id="btn-comment-publish" class="btn btn-primary">{{ _('Add comment') }}</button>
       {% endif %}
 
      </div>
@@ -149,4 +175,17 @@
 {% block scripts %}
   {{ super() }}
   <script src="{{ get_static_path('rating.js') }}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
+  <script>
+    $(document).ready(function() {
+      reviewContentEditor = new SimpleMDE({
+        element: $('#comment-text')[0],
+        spellChecker: false
+      });
+    });
+    $("#btn-comment-publish").click(function(){
+        $("#comment-editor").submit();
+    });
+  </script>
 {% endblock %}

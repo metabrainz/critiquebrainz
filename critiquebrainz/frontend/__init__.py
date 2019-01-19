@@ -1,7 +1,12 @@
 import logging
 import os
+import sys
+from time import sleep
 from brainzutils.flask import CustomFlask
 from flask import send_from_directory
+
+deploy_env = os.environ.get('DEPLOY_ENV', '')
+CONSUL_CONFIG_FILE_RETRY_COUNT = 10
 
 
 def create_app(debug=None, config_path=None):
@@ -15,10 +20,24 @@ def create_app(debug=None, config_path=None):
         os.path.dirname(os.path.realpath(__file__)),
         '..', '..', 'default_config.py'
     ))
-    app.config.from_pyfile(os.path.join(
+
+    config_file = os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
         '..', '..', 'consul_config.py'
-    ), silent=True)
+    )
+    if deploy_env:
+        print("Checking if consul template generated config file exists: {}".format(config_file))
+        for _ in range(CONSUL_CONFIG_FILE_RETRY_COUNT):
+            if not os.path.exists(config_file):
+                sleep(1)
+
+        if not os.path.exists(config_file):
+            print("No configuration file generated yet. Retried {} times, exiting.".format(CONSUL_CONFIG_FILE_RETRY_COUNT))
+            sys.exit(-1)
+
+        print("Loading consul config file {}".format(config_file))
+    app.config.from_pyfile(config_file, silent=True)
+
     app.config.from_pyfile(os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
         '..', '..', 'custom_config.py'
@@ -93,6 +112,8 @@ def create_app(debug=None, config_path=None):
     )
 
     # Template utilities
+    # TODO (code-master5): disabled no-member warnings just as a workaround to deal with failing tests till the
+    # issue [https://github.com/PyCQA/pylint/issues/2563] with pylint is resolved
     app.jinja_env.add_extension('jinja2.ext.do')
     from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, parameterize
     from critiquebrainz.frontend.external.musicbrainz_db.entities import get_entity_by_id
@@ -123,6 +144,8 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.reports import reports_bp
     from critiquebrainz.frontend.views.moderators import moderators_bp
     from critiquebrainz.frontend.views.log import log_bp
+    from critiquebrainz.frontend.views.comment import comment_bp
+    from critiquebrainz.frontend.views.rate import rate_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
@@ -141,6 +164,8 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(reports_bp, url_prefix='/reports')
     app.register_blueprint(log_bp, url_prefix='/log')
     app.register_blueprint(moderators_bp, url_prefix='/moderators')
+    app.register_blueprint(comment_bp, url_prefix='/comments')
+    app.register_blueprint(rate_bp, url_prefix='/rate')
 
     return app
 

@@ -10,6 +10,7 @@ services:
       POSTGRES_USER: critiquebrainz
       POSTGRES_PASSWORD: critiquebrainz
       POSTGRES_DB: critiquebrainz
+    command: postgres -F
     network_mode: bridge
 
   critiquebrainz_redis:

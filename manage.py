@@ -88,8 +88,10 @@ def clear_memcached():
               help="Skip database creation step.")
 @click.option("--test-db", "-t", is_flag=True,
               help="Initialize the test database.")
+@click.option("--force", "-f", is_flag=True,
+              help="Drop existing tables and types.")
 @cli.command()
-def init_db(skip_create_db=False, test_db=False):
+def init_db(skip_create_db=False, test_db=False, force=False):
     """Initialize the database.
 
     * Creates the database.
@@ -97,6 +99,12 @@ def init_db(skip_create_db=False, test_db=False):
     * Adds fixtures required to run the app.
     """
     click.echo("Initializing the database...")
+
+    if force:
+        click.echo("Dropping existing tables and types...")
+        data_utils.drop_tables()
+        data_utils.drop_types()
+        click.echo("Done!")
 
     if test_db:
         db_uri = frontend.create_app(config_path=os.path.join(

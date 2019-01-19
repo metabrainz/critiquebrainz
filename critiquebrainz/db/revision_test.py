@@ -11,13 +11,13 @@ class RevisionTestCase(DataTestCase):
 
     def setUp(self):
         super(RevisionTestCase, self).setUp()
-        self.author = User(db_users.get_or_create('Author', new_user_data={
+        self.author = User(db_users.get_or_create(1, 'Author', new_user_data={
             "display_name": '0',
         }))
-        self.user_1 = User(db_users.get_or_create('Tester #1', new_user_data={
+        self.user_1 = User(db_users.get_or_create(2, 'Tester #1', new_user_data={
             "display_name": '1',
         }))
-        self.user_2 = User(db_users.get_or_create('Tester #2', new_user_data={
+        self.user_2 = User(db_users.get_or_create(3, 'Tester #2', new_user_data={
             "display_name": '2',
         }))
         self.license = db_license.create(
