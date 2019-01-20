@@ -88,7 +88,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.temporary_login(self.user)
         # test for review limit exceeded message
         with patch.object(User, 'is_review_limit_exceeded') as mock_is_review_limit_exceeded:
-            mock_is_review_limit_exceeded = MagicMock(return_value=True)
+            mock_is_review_limit_exceeded.return_value = True
             response = self.client.post('/review/write', data=data,
                                         query_string=data, follow_redirects=True)
             self.assertIn("You have exceeded your limit of reviews per day.", str(response.data))
@@ -143,7 +143,6 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.post("/review/%s/delete" % review["id"], follow_redirects=True)
         self.assert200(response)
 
-    # pylint: disable=unused-variable
     def test_vote_submit_delete(self):
         review = self.create_dummy_review()
 
@@ -154,7 +153,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.temporary_login(self.hacker)
 
         with patch.object(User, 'is_vote_limit_exceeded') as mock_is_vote_limit_exceeded:
-            mock_is_vote_limit_exceeded = MagicMock(return_value=True)
+            mock_is_vote_limit_exceeded.return_value = True
             response = self.client.post("/review/%s/vote" % review["id"], follow_redirects=True)
             self.assertIn("You have exceeded your limit of votes per day.", str(response.data))
 
