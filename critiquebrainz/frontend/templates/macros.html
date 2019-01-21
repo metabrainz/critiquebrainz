@@ -30,7 +30,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False, source_credit=False, size=250) %}
+{% macro cover_art(entity_id, entity_type, attributes='', overlay_type=False, source_credit=False, size=250, release_group_page=False) %}
   {# Note: when passing in `attributes`, don't quote attribute values; they will be added automatically #}
   {% if entity_type == 'event' %}
     <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
@@ -53,12 +53,26 @@
         {{ _('Release Group') }}
       </span>
     {% endif %}
+    <div id="mb-call-to-act" class="spotify-player" style="display:none;">
+      <span class="text-muted">
+        {{ _('We don\'t have cover art for this release group.') }}
+      </span>
+      <div style="text-align:center;font-weight:bold;">
+        <a style="font-size:16px"; href='https://musicbrainz.org/doc/How_to_Add_Cover_Art' rel='nofollow'>
+          {{ _('See how to add cover art!') }}
+        </a>
+      </div>
+    </div>
     <script>
       $('img').last()
-          .on('error', function () {
-            $(this).attr('src', '{{ get_static_path('images/placeholder_disc.svg') }}');
-          })
-          .attr('src', 'https://coverartarchive.org/release-group/{{ entity_id }}/front-{{ size * 2 }}');
+        .on('error', function () {
+          $(this).attr('src', '{{ get_static_path('images/placeholder_disc.svg') }}');
+          if ('{{ release_group_page }}' == 'True')
+            $("#mb-call-to-act").css('display','block');
+          else
+            $("#mb-call-to-cat").css('display','none');
+        })
+        .attr('src', 'https://coverartarchive.org/release-group/{{ entity_id }}/front-{{ size * 2 }}');
     </script>
   {% endif %}
 {% endmacro %}
@@ -70,7 +84,7 @@
 {% endmacro %}
 
 {% macro spotify_player(release_group_id, spotify_mappings, show_add_message=False) -%}
-  <div class="spotify-player">
+  <div class="spotify-player" style="display:block">
     {% if spotify_mappings %}
       <iframe src="https://embed.spotify.com/?uri={{ spotify_mappings[0] }}&theme=white" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
       <em>
@@ -85,7 +99,7 @@
         {{ _('We don\'t have a mapping between this release group and Spotify. Please help us find the right album.') }}
       </span>
       <div style="text-align:center;font-weight:bold;">
-        <a style="font-size:16px;" href="{{ url_for('mapping.spotify', release_group_id=release_group_id) }}" rel="nofollow">
+        <a style="font-size:16px;" href="{{ url_for('mapping.spotify_add', release_group_id=release_group_id) }}" rel="nofollow">
           {{ _('Match this!') }}
         </a>
       </div>
@@ -125,4 +139,28 @@
 {% macro show_avg_rating(rating, count) %}
   <i class="glyphicon glyphicon-star"></i>
   <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ _('based on %(number)s ratings', number=count) }}</em>
+{% endmacro %}
+
+{% macro comment_credit(comment, user_picture_size) %}
+  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (comment.user.avatar, user_picture_size)
+              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=comment.user.id), comment.user.display_name) %}
+  {{ _('%(user)s', user=user_string) }}
+{% endmacro %}
+
+
+{% macro entity_rate_form(entity_type, entity_type_readable) %}
+  {% if current_user.is_authenticated %}
+    <h4 style="margin-bottom:0;">{{ _('Rate this {}:'.format(entity_type_readable)) }}</h4>
+    <br/>
+    <form id="rating-form" method="POST" class="form-horizontal" role="form" action="{{ url_for('rate.rate') }}">
+      {{ rating_form.hidden_tag() }}
+      <div class="form-group">
+        <div class="col-sm-12">
+          <div id="ratestars" style="margin: 0; padding: 0;">{{ rating_form.rating(class="rating", id="rating") }}</div>
+        </div>
+      </div>
+    </form>
+  {% else %}
+    {{ _('<h4><a href="%(link)s">Sign in</a> to rate!</h4>', link=url_for('login.index', next=url_for('{}.entity'.format(entity_type), id=id))) }}
+  {% endif %}
 {% endmacro %}

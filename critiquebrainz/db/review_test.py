@@ -13,10 +13,10 @@ class ReviewTestCase(DataTestCase):
         super(ReviewTestCase, self).setUp()
 
         # Review needs user
-        self.user = User(db_users.get_or_create("Tester", new_user_data={
+        self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": "test user",
         }))
-        self.user_2 = User(db_users.get_or_create("Tester 2", new_user_data={
+        self.user_2 = User(db_users.get_or_create(2, "Tester 2", new_user_data={
             "display_name": "test user 2",
         }))
 
@@ -196,7 +196,7 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
-        reviews, count = db_review.list_reviews(sort="created")
+        reviews, count = db_review.list_reviews(sort="published_on")
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
@@ -219,6 +219,21 @@ class ReviewTestCase(DataTestCase):
 
         reviews = db_review.get_popular()
         self.assertEqual(len(reviews), 1)
+
+        review = db_review.create(
+            user_id=self.user.id,
+            entity_id="e7aad618-fa86-3983-9e77-405e21796ece",
+            entity_type="release_group",
+            text="Not Awesome",
+            is_draft=False,
+            license_id=self.license["id"],
+            language="en",
+        )
+        db_review.set_hidden_state(review["id"], is_hidden=True)
+
+        reviews = db_review.get_popular()
+        self.assertEqual(len(reviews), 1)
+        self.assertEqual(reviews[0]["is_hidden"], False)
 
     def test_set_hidden_state(self):
         review = db_review.create(

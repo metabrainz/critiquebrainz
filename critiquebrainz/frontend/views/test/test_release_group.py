@@ -17,7 +17,7 @@ class ReleaseGroupViewsTestCase(FrontendTestCase):
             'title': 'Collision Course',
             'first-release-year': 2004,
         }
-        self.user = User(db_users.get_or_create("Tester", new_user_data={
+        self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": "test user",
         }))
         self.license = db_license.create(

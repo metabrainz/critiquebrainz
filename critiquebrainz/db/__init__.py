@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.pool import NullPool
 
 # This value must be incremented after schema changes on exported tables!
-SCHEMA_VERSION = 8
+SCHEMA_VERSION = 13
 VALID_RATING_VALUES = [None, 1, 2, 3, 4, 5]
 REVIEW_RATING_MAX = 5
 REVIEW_RATING_MIN = 1

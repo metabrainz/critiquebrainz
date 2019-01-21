@@ -44,6 +44,12 @@
             </div>
           {% endfor %}
           <br /><small class="text-warning"><em>{{ _('You cannot change the license after the review is published.') }}</em></small>
+          {% if not current_user.license_choice %}
+              <br /><br />
+              <div class="checkbox">
+                <label>{{ form.remember_license }}{{ form.remember_license.label.text }}</label>
+              </div>
+          {% endif %}
         </div>
       </div>
     {% endif %}

@@ -1,6 +1,5 @@
 from time import gmtime, strftime
 from datetime import datetime
-from functools import wraps
 import subprocess
 import tempfile
 import tarfile
@@ -12,9 +11,9 @@ from flask import current_app, jsonify
 from flask.json import JSONEncoder
 import sqlalchemy
 import click
-from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri
+from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri, with_request_context
 from critiquebrainz.db import license as db_license, review as db_review
-from critiquebrainz import frontend, db
+from critiquebrainz import db
 
 
 cli = click.Group()
@@ -31,6 +30,7 @@ _TABLES = {
         "is_hidden",
         "license_id",
         "language",
+        "published_on",
         "source",
         "source_url",
     ),
@@ -54,6 +54,7 @@ _TABLES = {
         "musicbrainz_id",
         "show_gravatar",
         "is_blocked",
+        "license_choice",
         "spam_reports",
         "clients",
         "grants",
@@ -66,14 +67,6 @@ _TABLES = {
         "count",
     ),
 }
-
-
-def with_request_context(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        with frontend.create_app().test_request_context():
-            return f(*args, **kwargs)
-    return decorated
 
 
 def has_data(table_name):
@@ -151,43 +144,46 @@ def json(location, rotate=False):
     current_app.json_encoder = DumpJSONEncoder
 
     print("Creating new archives...")
-    for license in db_license.list_licenses():
-        safe_name = slugify(license["id"])
-        with tarfile.open(os.path.join(location, "critiquebrainz-%s-%s-json.tar.bz2" %
-                                       (datetime.today().strftime('%Y%m%d'), safe_name)), "w:bz2") as tar:
-            temp_dir = tempfile.mkdtemp()
-            license_dir = os.path.join(temp_dir, safe_name)
-            create_path(license_dir)
+    with db.engine.begin() as connection:
+        for license in db_license.get_licenses_list(connection):
+            safe_name = slugify(license["id"])
+            with tarfile.open(os.path.join(location, "critiquebrainz-%s-%s-json.tar.bz2" %
+                                           (datetime.today().strftime('%Y%m%d'), safe_name)), "w:bz2") as tar:
+                temp_dir = tempfile.mkdtemp()
+                license_dir = os.path.join(temp_dir, safe_name)
+                create_path(license_dir)
 
-            # Finding entities that have reviews with current license
-            entities = db_review.distinct_entities()
-            for entity in entities:
-                entity = str(entity)
-                # Creating directory structure and dumping reviews
-                dir_part = os.path.join(entity[0:1], entity[0:2])
-                reviews = db_review.list_reviews(entity_id=entity, license_id=license["id"], limit=None)[0]
-                if reviews:
-                    rg_dir = '%s/%s' % (license_dir, dir_part)
-                    create_path(rg_dir)
-                    f = open('%s/%s.json' % (rg_dir, entity), 'w+')
-                    f.write(jsonify(reviews=[db_review.to_dict(r) for r in reviews]).data.decode("utf-8"))
-                    f.close()
+                # Finding entities that have reviews with current license
+                entities = db_review.get_distinct_entities(connection)
+                for entity in entities:
+                    entity = str(entity)
+                    # Creating directory structure and dumping reviews
+                    dir_part = os.path.join(entity[0:1], entity[0:2])
+                    reviews = db_review.get_reviews_list(connection, entity_id=entity, license_id=license["id"], limit=None)[0]
+                    if reviews:
+                        rg_dir = '%s/%s' % (license_dir, dir_part)
+                        create_path(rg_dir)
+                        f = open('%s/%s.json' % (rg_dir, entity), 'w+')
+                        f.write(jsonify(reviews=[db_review.to_dict(r, connection=connection) for r in reviews])
+                                .data.decode("utf-8"))
+                        f.close()
 
-            tar.add(license_dir, arcname='reviews')
+                tar.add(license_dir, arcname='reviews')
 
-            # Copying legal text
-            tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"), arcname='COPYING')
+                # Copying legal text
+                tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"),
+                        arcname='COPYING')
 
-            print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
+                print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
 
-            shutil.rmtree(temp_dir)  # Cleanup
+                shutil.rmtree(temp_dir)  # Cleanup
 
-    if rotate:
-        print("Removing old sets of archives (except two latest)...")
-        remove_old_archives(location, "critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2",
-                            is_dir=False, sort_key=os.path.getmtime)
+        if rotate:
+            print("Removing old sets of archives (except two latest)...")
+            remove_old_archives(location, "critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2",
+                                is_dir=False, sort_key=os.path.getmtime)
 
-    print("Done!")
+        print("Done!")
 
 
 @cli.command()
@@ -205,119 +201,203 @@ def public(location, rotate=False):
     print("Creating public database dump...")
     time_now = datetime.today()
 
-    connection = db.engine.raw_connection()
-    cursor = connection.cursor()
-
     # Creating a directory where all dumps will go
     dump_dir = os.path.join(location, time_now.strftime('%Y%m%d-%H%M%S'))
     create_path(dump_dir)
 
-    temp_dir = tempfile.mkdtemp()
+    # Prepare meta files
+    meta_files_dir = tempfile.mkdtemp()
+    prepare_meta_files(meta_files_dir, time_now=time_now)
 
-    # Preparing meta files
-    with open(os.path.join(temp_dir, 'TIMESTAMP'), 'w') as f:
+    with db.engine.begin() as connection:
+        # BASE ARCHIVE
+        # Contains all license independent data (licenses, users)
+        base_archive_path = create_base_archive(
+            connection,
+            location=dump_dir,
+            meta_files_dir=meta_files_dir,
+        )
+        print(base_archive_path)
+
+        # 1. COMBINED
+        # Archiving all reviews (any license)
+        review_dump_path = create_reviews_archive(
+            connection,
+            location=dump_dir,
+            meta_files_dir=meta_files_dir,
+        )
+        print(review_dump_path)
+
+        # 2. SEPARATE
+        # Creating separate archives for each license
+        for license in db_license.get_licenses_list(connection):
+            review_dump_path = create_reviews_archive(
+                connection,
+                location=dump_dir,
+                meta_files_dir=meta_files_dir,
+                license_id=license['id'],
+            )
+            print(review_dump_path)
+
+    shutil.rmtree(meta_files_dir)  # Cleanup
+    if rotate:
+        print("Removing old dumps (except two latest)...")
+        remove_old_archives(location, "[0-9]+-[0-9]+", is_dir=True)
+
+    print("Done!")
+
+
+def prepare_meta_files(meta_files_dir, time_now=None):
+    """Prepares the files containing meta information, namely the TIMESTAMP and the SCHEMA_SEQUENCE file.
+
+    Args:
+        meta_files_dir: Directory where the files needs to be created.
+        time_now (optional): Specifies the timestamp to be copied to the TIMESTAMP file.
+    """
+    if not time_now:
+        time_now = datetime.today()
+    with open(os.path.join(meta_files_dir, 'TIMESTAMP'), 'w') as f:
         f.write(time_now.isoformat(' '))
-    with open(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), 'w') as f:
+    with open(os.path.join(meta_files_dir, 'SCHEMA_SEQUENCE'), 'w') as f:
         f.write(str(db.SCHEMA_VERSION))
 
-    # BASE ARCHIVE
-    # Archiving stuff that is independent from licenses (users, licenses)
-    with tarfile.open(os.path.join(dump_dir, "cbdump.tar.bz2"), "w:bz2") as tar:
+
+def add_meta_files(tarfile, meta_files_dir):
+    """Adds the meta files to the specified tarfile.
+
+    Args:
+        tarfile: The tarfile object where the files needs to be added.
+        meta_files_dir: The directory containing the meta files.
+    """
+    tarfile.add(os.path.join(meta_files_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
+    tarfile.add(os.path.join(meta_files_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
+
+
+def create_base_archive(connection, *, location, meta_files_dir=None):
+    """Creates a dump of all license-independent information: (users, license).
+
+    Args:
+        connection (sqlalchemy.engine.Connection): an sqlalchemy connection to the database for executing database queries
+        location: Path of the directory where the archive needs to be created.
+        meta_files_dir (optional): Path of the directory containing the meta files to be copied
+            into the archive (TIMESTAMP and SCHEMA_VERSION). If not specified, the meta files are
+            generated and added to the archive.
+    Returns:
+        Complete path to the created archive.
+    """
+    with tarfile.open(os.path.join(location, "cbdump.tar.bz2"), "w:bz2") as tar:
+        temp_dir = tempfile.mkdtemp()
         base_archive_dir = os.path.join(temp_dir, 'cbdump')
         create_path(base_archive_dir)
 
         # Dumping tables
         base_archive_tables_dir = os.path.join(base_archive_dir, 'cbdump')
         create_path(base_archive_tables_dir)
-        with open(os.path.join(base_archive_tables_dir, 'user_sanitised'), 'w') as f:
-            cursor.copy_to(f, '"user"', columns=('id', 'created', 'display_name', 'musicbrainz_id'))
-        with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
-            cursor.copy_to(f, 'license', columns=_TABLES["license"])
+
+        cursor = connection.connection.cursor()
+        try:
+            with open(os.path.join(base_archive_tables_dir, 'user_sanitised'), 'w') as f:
+                cursor.copy_to(f, '"user"', columns=('id', 'created', 'display_name', 'musicbrainz_id'))
+            with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
+                cursor.copy_to(f, 'license', columns=_TABLES["license"])
+        except Exception as e:
+            print('Error "{}" occurred while copying tables during creation of the base archive!'.format(e))
+            raise
         tar.add(base_archive_tables_dir, arcname='cbdump')
 
         # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
         tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"), arcname='COPYING')
-        tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
-        tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
+        # Copy meta files
+        if not meta_files_dir:
+            prepare_meta_files(temp_dir)
+            meta_files_dir = temp_dir
+        add_meta_files(tar, meta_files_dir)
 
-        print(" + %s/cbdump.tar.bz2" % dump_dir)
+        shutil.rmtree(temp_dir)  # Cleanup
+        return " + %s/cbdump.tar.bz2" % location
 
-    # REVIEWS
-    # Archiving review tables (review, revision)
 
-    # 1. COMBINED
-    # Archiving all reviews (any license)
-    REVISION_COMBINED_SQL = """
-        SELECT {columns} FROM revision JOIN review
+def create_reviews_archive(connection, *, location, meta_files_dir=None, license_id=None):
+    """Creates a dump of reviews filtered on the given license_id, their revisions and
+       the avg. rating tables.
+
+    Args:
+        connection (sqlalchemy.engine.Connection): an sqlalchemy connection to the database for executing database queries
+        location: Path of the directory where the archive needs to be created.
+        meta_files_dir (optional): Path of the directory containing the meta files to be copied
+            into the archive (TIMESTAMP and SCHEMA_VERSION). If not specified, the meta files are
+            generated and added to the archive.
+        license_id (optional): The ID of the license whose reviews (and related information)
+            is to be added to the dump. All reviews are copied (irrespective of their
+            license) if license_id is None.
+    Returns:
+        Complete path to the created archive.
+    """
+    if license_id:
+        license_where_clause = "AND license_id = '{}'".format(license_id)
+        safe_name = slugify(license_id)
+        archive_name = "cbdump-reviews-{}.tar.bz2".format(safe_name)
+    else:
+        license_where_clause = ''
+        archive_name = "cbdump-reviews-all.tar.bz2"
+        safe_name = 'cb-reviews-all'
+
+    REVIEW_SQL = """(
+        SELECT {columns}
+          FROM review
+         WHERE is_hidden = false
+           AND is_draft = false
+               {license_where_clause}
+    )""".format(columns=', '.join(_TABLES["review"]), license_where_clause=license_where_clause)
+
+    REVISION_SQL = """(
+        SELECT {columns}
+          FROM revision
+          JOIN review
             ON review.id = revision.review_id
-         WHERE review.is_hidden = false AND review.is_draft = false
-    """.format(columns=', '.join(['revision.' + col for col in _TABLES["revision"]]))
-    with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-all.tar.bz2"), "w:bz2") as tar:
+         WHERE review.is_hidden = false
+           AND review.is_draft = false
+               {license_where_clause}
+    )""".format(
+        columns=', '.join(['revision.' + column for column in _TABLES['revision']]),
+        license_where_clause=license_where_clause,
+    )
 
+    with tarfile.open(os.path.join(location, archive_name), "w:bz2") as tar:
         # Dumping tables
-        reviews_combined_tables_dir = os.path.join(temp_dir, 'cbdump-reviews-all')
-        create_path(reviews_combined_tables_dir)
+        temp_dir = tempfile.mkdtemp()
+        reviews_tables_dir = os.path.join(temp_dir, safe_name)
+        create_path(reviews_tables_dir)
 
-        with open(os.path.join(reviews_combined_tables_dir, 'review'), 'w') as f:
-            cursor.copy_to(f, "(SELECT {columns} FROM review WHERE is_hidden = false AND is_draft = false)"
-                           .format(columns=', '.join(_TABLES["review"])))
+        cursor = connection.connection.cursor()
+        try:
+            with open(os.path.join(reviews_tables_dir, 'review'), 'w') as f:
+                cursor.copy_to(f, REVIEW_SQL)
 
-        with open(os.path.join(reviews_combined_tables_dir, 'revision'), 'w') as f:
-            cursor.copy_to(f, "({sql})".format(sql=REVISION_COMBINED_SQL))
+            with open(os.path.join(reviews_tables_dir, 'revision'), 'w') as f:
+                cursor.copy_to(f, REVISION_SQL)
 
-        with open(os.path.join(reviews_combined_tables_dir, 'avg_rating'), 'w') as f:
-            cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
-
-        tar.add(reviews_combined_tables_dir, arcname='cbdump')
-
-        # Including additional information about this archive
-        # Copying the most restrictive license there (CC BY-NC-SA 3.0)
-        tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"), arcname='COPYING')
-        tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
-        tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
-
-        print(" + %s/cbdump-reviews-all.tar.bz2" % dump_dir)
-
-    # 2. SEPARATE
-    # Creating separate archives for each license
-    for license in db_license.list_licenses():
-        safe_name = slugify(license["id"])
-        with tarfile.open(os.path.join(dump_dir, "cbdump-reviews-%s.tar.bz2" % safe_name), "w:bz2") as tar:
-            # Dumping tables
-            tables_dir = os.path.join(temp_dir, safe_name)
-            create_path(tables_dir)
-            with open(os.path.join(tables_dir, 'review'), 'w') as f:
-                cursor.copy_to(f, """(
-                    SELECT {columns}
-                      FROM review
-                     WHERE is_hidden = false
-                       AND is_draft = false
-                       AND license_id = '{license_id}'
-                )""".format(columns=', '.join(_TABLES["review"]), license_id=license["id"]))
-            with open(os.path.join(tables_dir, 'revision'), 'w') as f:
-                cursor.copy_to(f, """({REVISION_COMBINED_SQL} AND review.license_id='{license_id}')"""
-                               .format(REVISION_COMBINED_SQL=REVISION_COMBINED_SQL, license_id=license["id"]))
-            with open(os.path.join(tables_dir, 'avg_rating'), 'w') as f:
+            with open(os.path.join(reviews_tables_dir, 'avg_rating'), 'w') as f:
                 cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
+        except Exception as e:
+            print("Error {} occurred while copying tables during the creation of the reviews archive!".format(e))
+            raise
+        tar.add(reviews_tables_dir, arcname='cbdump')
 
-            tar.add(tables_dir, arcname='cbdump')
-
-            # Including additional information about this archive
+        if not license_id:
+            tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"),
+                    arcname='COPYING')
+        else:
             tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"), arcname='COPYING')
-            tar.add(os.path.join(temp_dir, 'TIMESTAMP'), arcname='TIMESTAMP')
-            tar.add(os.path.join(temp_dir, 'SCHEMA_SEQUENCE'), arcname='SCHEMA_SEQUENCE')
 
-        print(" + %s/cbdump-reviews-%s.tar.bz2" % (dump_dir, safe_name))
+        if not meta_files_dir:
+            prepare_meta_files(temp_dir)
+            meta_files_dir = temp_dir
+        add_meta_files(tar, meta_files_dir)
+        shutil.rmtree(temp_dir)  # Cleanup
 
-    shutil.rmtree(temp_dir)  # Cleanup
-    connection.close()
-
-    if rotate:
-        print("Removing old dumps (except two latest)...")
-        remove_old_archives(location, "[0-9]+-[0-9]+", is_dir=True)
-
-    print("Done!")
+    return " + {location}/{archive_name}".format(location=location, archive_name=archive_name)
 
 
 @cli.command(name="import")

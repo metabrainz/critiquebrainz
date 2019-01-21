@@ -17,6 +17,8 @@ class User(AdminMixin):
         self.musicbrainz_username = user.get('musicbrainz_username')
         self.show_gravatar = user.get('show_gravatar', False)
         self.is_blocked = user.get('is_blocked', False)
+        self.license_choice = user.get('license_choice', None)
+        self.musicbrainz_row_id = user.get('musicbrainz_row_id', None)
 
     @property
     def avatar(self):
@@ -110,6 +112,7 @@ class User(AdminMixin):
                 avatar=self.avatar,
                 show_gravatar=self.show_gravatar,
                 musicbrainz_username=self.musicbrainz_username,
+                license_choice=self.license_choice,
             ))
 
         if 'user_type' in includes:

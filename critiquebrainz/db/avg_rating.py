@@ -23,7 +23,8 @@ def update(entity_id, entity_type):
                            SELECT id
                              FROM review
                             WHERE entity_id = :entity_id
-                              AND entity_type = :entity_type)
+                              AND entity_type = :entity_type
+                              AND is_hidden = 'f')
               GROUP BY review_id
             )
             SELECT SUM(rating),

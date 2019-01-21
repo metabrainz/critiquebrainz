@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import patch, MagicMock
 from flask import current_app
 from critiquebrainz.frontend.testing import FrontendTestCase
 import critiquebrainz.db.review as db_review
@@ -30,10 +30,10 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(ReviewViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create("aef06569-098f-4218-a577-b413944d9493", new_user_data={
+        self.user = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
             "display_name": u"Tester",
         }))
-        self.hacker = User(db_users.get_or_create("9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
+        self.hacker = User(db_users.get_or_create(2, "9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
             "display_name": u"Hacker!",
         }))
         self.license = db_license.create(
@@ -134,6 +134,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.post("/review/%s/delete" % review["id"], follow_redirects=True)
         self.assert200(response)
 
+    # pylint: disable=unused-variable
     def test_vote_submit_delete(self):
         review = self.create_dummy_review()
 
@@ -142,6 +143,12 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.assertIn("You cannot rate your own review.", str(response.data))
 
         self.temporary_login(self.hacker)
+
+        with patch.object(User, 'is_vote_limit_exceeded') as mock_is_vote_limit_exceeded:
+            mock_is_vote_limit_exceeded = MagicMock(return_value=True)
+            response = self.client.post("/review/%s/vote" % review["id"], follow_redirects=True)
+            self.assertIn("You have exceeded your limit of votes per day.", str(response.data))
+
         response = self.client.post("/review/%s/vote" % review["id"], data=dict(yes=True),
                                     follow_redirects=True)
         self.assertIn("You have rated this review!", str(response.data))

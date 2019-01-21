@@ -20,7 +20,7 @@ def index():
         review['preview'] = ''.join(BeautifulSoup(preview, "html.parser").findAll(text=True))
 
     # Recent reviews
-    recent_reviews, _ = db_review.list_reviews(sort='created', limit=9)
+    recent_reviews, _ = db_review.list_reviews(sort='published_on', limit=9)
 
     # Statistics
     review_count = format_number(db_review.get_count(is_draft=False))
