@@ -50,43 +50,42 @@ def get_album(spotify_id: str) -> dict:
     return album
 
 
-def get_multiple_albums(spotify_ids: List[str]) -> List[dict]:
+def get_multiple_albums(spotify_ids: List[str]) -> dict:
     """Get information about multiple albums.
 
     Args:
         spotify_ids: List of Spotify IDs of albums.
 
     Returns:
-        List of album objects from Spotify. More info about this type of objects
+        Dict of album objects from Spotify. More info about this type of objects
         is available at https://developer.spotify.com/web-api/object-model/#album-object.
     """
     if not spotify_ids:
-        return []
+        return {}
     spotify_ids = list(spotify_ids)
     cache_namespace = "spotify_albums"
     albums = cache.get_many(spotify_ids, cache_namespace)
 
-    # Checking which albums weren't in cache
+    # fetch album for only those ids that are not in cache
     for album_id, data in albums.items():
         if data is not None and album_id in spotify_ids:
             spotify_ids.remove(album_id)
 
     if spotify_ids:
-        resp = _get(f"albums?ids={','.join(spotify_ids)}")
-        if "albums" not in resp:
+        response = _get(f"albums?ids={','.join(spotify_ids)}")
+        if "albums" not in response:
             logging.error("Album data is missing from a Spotify response", extra={
                 "spotify_ids": spotify_ids,
-                "response": resp,
+                "response": response,
             })
             raise SpotifyUnexpectedResponseException("Album data is missing")
 
         received_albums = {}
-        for album in resp["albums"]:
+        for album in response["albums"]:
             if album is not None:
                 received_albums[album['id']] = album
         cache.set_many(received_albums, namespace=cache_namespace, time=_DEFAULT_CACHE_EXPIRATION)
         albums.update(received_albums)
-
     return albums
 
 
@@ -94,7 +93,7 @@ def _get(query: str) -> dict:
     """Make a GET request to the Spotify Web API.
 
     This function adds appropriate authorization header to make sure that
-    request goes through.
+    request goes through. Gets a fresh access token if expired.
 
     Args:
         query (str): Query string that would be added to the base URL.
@@ -103,41 +102,46 @@ def _get(query: str) -> dict:
     Returns:
         Parsed JSON response as a dictionary containing the information.
     """
-    resp = requests.get(_BASE_URL + query, headers={
-        "Authorization": f"Bearer {_fetch_access_token()}"
-    })
-    if resp.status_code != HTTPStatus.OK:
+    RETRY_COUNTS = 5
+    refresh = False
+    for _ in range(RETRY_COUNTS):
+        response = requests.get(_BASE_URL + query, headers={
+            "Authorization": f"Bearer {_fetch_access_token(refresh=refresh)}"
+        })
+        if response.status_code != HTTPStatus.OK:
+            refresh = True if response.status_code == HTTPStatus.UNAUTHORIZED else False
+        else:
+            break
+    else:
         app.logger.error("Unexpected response from the Spotify API", extra={
             "query": query,
-            "response": resp.__getstate__(),
+            "response": response.__getstate__(),
         })
         raise SpotifyUnexpectedResponseException("Unexpected response from the Spotify API")
-    return resp.json()
+    return response.json()
 
 
-def _fetch_access_token() -> str:
+def _fetch_access_token(refresh=False) -> str:
     """Get an access token from the OAuth credentials.
 
     https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow
     """
     key = cache.gen_key("spotify_oauth_access_token")
     access_token = cache.get(key)
-
-    client_id = app.config.get("SPOTIFY_CLIENT_ID")
-    client_secret = app.config.get("SPOTIFY_CLIENT_SECRET")
-    auth_value = b64encode(bytes(f"{client_id}:{client_secret}", "utf-8")).decode("utf-8")
-
-    if not access_token:
-        resp = requests.post(
+    if refresh or not access_token:
+        client_id = app.config.get("SPOTIFY_CLIENT_ID")
+        client_secret = app.config.get("SPOTIFY_CLIENT_SECRET")
+        auth_value = b64encode(bytes(f"{client_id}:{client_secret}", "utf-8")).decode("utf-8")
+        response = requests.post(
             "https://accounts.spotify.com/api/token",
             data={"grant_type": "client_credentials"},
             headers={"Authorization": f"Basic {auth_value}"},
         ).json()
-        access_token = resp.get("access_token")
+        access_token = response.get("access_token")
         if not access_token:
             raise SpotifyException("Could not fetch access token for Spotify API")
         # Making the token stored in cache expire at the same time as the actual token
-        cache.set(key=key, val=access_token, time=resp.get("expires_in", 10))
+        cache.set(key=key, val=access_token, time=response.get("expires_in", 10))
     return access_token
 
 
