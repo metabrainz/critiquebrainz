@@ -56,51 +56,110 @@ class CommentViewsTestCase(FrontendTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
-        current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
+        current_app.jinja_env.filters["entity_details"] = mock_get_entity_by_id
+
+    def create_dummy_comment(self):
+        return db_comment.create(
+            user_id=self.commenter.id,
+            text="Dummy Comment",
+            review_id=self.review["id"],
+        )
 
     def test_create(self):
         self.temporary_login(self.commenter)
 
+        comment_count = db_comment.count_comments(review_id=self.review["id"])
         # empty comment should be rejected
         payload = {
-            'review_id': self.review['id'],
-            'text': '',
-            'state': 'publish',
+            "review_id": self.review["id"],
+            "text": "",
+            "state": "publish",
         }
         response = self.client.post(
-            url_for('comment.create'),
+            url_for("comment.create"),
             data=payload,
         )
-
-        self.assertRedirects(response, '/review/%s' % self.review['id'])
-        count = db_comment.count_comments(review_id=self.review['id'])
-        self.assertEqual(count, 0)
-
-        response = self.client.get('/review/%s' % self.review['id'])
+        self.assertRedirects(response, url_for("review.entity", id=self.review["id"]))
+        self.assertEqual(comment_count, db_comment.count_comments(review_id=self.review["id"]))
+        response = self.client.get(url_for("review.entity", id=self.review["id"]))
         self.assert200(response)
         # Test that the rendered html should contain error message
-        self.assertIn('Comment must not be empty!', str(response.data))
-        # Test that the rendered html should contain commenter's display name only once (just above comment form)
-        self.assertEqual(str(response.data).count(self.commenter.display_name), 1)
+        self.assertIn("Please provide some text for comment!", str(response.data))
 
-        # comment with some text should be accepted
-        payload = {
-            'review_id': self.review['id'],
-            'text': 'Test Comment.',
-            'state': 'publish',
-        }
+        # add some text to comment
+        payload["text"] = "Test Comment."
+
+        # get a 404 if review_id doesn't exist
+        payload["review_id"] = "1bee4a96-fb52-43eb-a9c2-d4b03d11890d"
         response = self.client.post(
-            url_for('comment.create'),
+            url_for("comment.create"),
+            data=payload,
+            follow_redirects=True,
+        )
+        self.assert404(response)
+
+        # comment with correct review_id
+        payload["review_id"] = self.review["id"]
+
+        # blocked user should not be allowed to comment
+        db_users.block(self.commenter.id)
+        response = self.client.post(
+            url_for("comment.create"),
+            data=payload,
+            follow_redirects=True,
+        )
+        self.assertIn("You are not allowed to write new comments", str(response.data))
+        db_users.unblock(self.commenter.id)
+
+        # comment with some text and a valid review_id must be saved
+        response = self.client.post(
+            url_for("comment.create"),
             data=payload,
         )
+        self.assertRedirects(response, url_for("review.entity", id=self.review["id"]))
+        self.assertEqual(comment_count+1, db_comment.count_comments(review_id=self.review["id"]))
 
-        self.assertRedirects(response, '/review/%s' % self.review['id'])
-        count = db_comment.count_comments(review_id=self.review['id'])
-        self.assertEqual(count, 1)
-
-        response = self.client.get('/review/%s' % self.review['id'])
+        response = self.client.get(url_for("review.entity", id=self.review["id"]))
         self.assert200(response)
         # Test that the rendered html should contain success message
-        self.assertIn('Comment has been saved!', str(response.data))
-        # Test that the rendered html should contain commenter's display name twice (above posted comment and comment form)
-        self.assertEqual(str(response.data).count(self.commenter.display_name), 2)
+        self.assertIn("Comment has been saved!", str(response.data))
+
+    def test_delete(self):
+        # create a temporary comment by commenter
+        comment = self.create_dummy_comment()
+        comment_count = db_comment.count_comments(review_id=self.review["id"])
+
+        self.temporary_login(self.reviewer)
+
+        # Other users should not be able to delete the comment by commenter
+        response = self.client.post(
+            url_for("comment.delete", id=comment["id"]),
+            follow_redirects=True,
+        )
+        self.assert401(response, "Only the author can delete this comment.")
+
+        self.temporary_login(self.commenter)
+
+        # should return 404 on trying to delete non-existent comment
+        response = self.client.post(
+            url_for("comment.delete", id="false-comment"),
+            follow_redirects=True
+        )
+        self.assert404(response)
+
+        # GET request to by commenter to comment.delete should redirect to delete_comment template
+        response = self.client.get(
+            url_for("comment.delete", id=comment["id"]),
+            follow_redirects=True,
+        )
+        self.assert200(response)
+        self.assertIn("Are you sure you want to delete your comment on", str(response.data))
+
+        # POST request by commenter to comment.delete should delete the comment
+        response = self.client.post(
+            url_for("comment.delete", id=comment["id"]),
+            follow_redirects=True,
+        )
+        self.assert200(response)
+        self.assertEqual(comment_count-1, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertIn("Comment has been deleted.", str(response.data))
