@@ -16,38 +16,62 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from flask import Blueprint, redirect, url_for
+from flask import Blueprint, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
 from flask_babel import gettext
+from werkzeug.exceptions import Unauthorized, NotFound
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.comment import CommentEditForm
-
+from critiquebrainz.frontend.views.review import get_review_or_404
+from critiquebrainz.db import exceptions as db_exceptions
 import critiquebrainz.db.comment as db_comment
 
+
 comment_bp = Blueprint('comment', __name__)
+
+
+def get_comment_or_404(comment_id):
+    """Get a comment using comment ID or raise error 404."""
+    try:
+        return db_comment.get_by_id(comment_id)
+    except db_exceptions.NoDataFoundException:
+        raise NotFound(gettext("Can't find a comment with ID: %(comment_id)s", comment_id=comment_id))
 
 
 @comment_bp.route('/create', methods=['POST'])
 @login_required
 def create():
+    # TODO (code-master5): comment limit, revision and drafts, edit functionality
     form = CommentEditForm()
     if form.validate_on_submit():
+        get_review_or_404(form.review_id.data)
+        if current_user.is_blocked:
+            flash.error(gettext("You are not allowed to write new comments because your "
+                                "account has been blocked by a moderator."))
+            return redirect(url_for('review.entity', id=form.review_id.data))
+        # should be able to comment only if review exists
         db_comment.create(
             review_id=form.review_id.data,
             user_id=current_user.id,
             text=form.text.data,
         )
-        flash.success('Comment has been saved!')
-    else:
-        flash.error('Comment must not be empty!')
+        flash.success(gettext("Comment has been saved!"))
+    elif not form.text.data:
+        # comment must have some text
+        flash.error(gettext("Please provide some text for comment!"))
     return redirect(url_for('review.entity', id=form.review_id.data))
 
-@comment_bp.route('/<uuid:id>/delete', methods=['POST'])
+
+@comment_bp.route('/<uuid:id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete(id):
-    comment = db_comment.get_by_id(id)
+    comment = get_comment_or_404(id)
+    # if comment exists, review must exist
+    review = get_review_or_404(comment["review_id"])
     if comment["user"] != current_user:
         raise Unauthorized(gettext("Only the author can delete this comment."))
-    db_comment.delete(comment["id"])
-    flash.success(gettext("Comment has been deleted."))
-    return redirect(url_for('review.entity', id=comment["review_id"]))
+    if request.method == 'POST':
+        db_comment.delete(comment["id"])
+        flash.success(gettext("Comment has been deleted."))
+        return redirect(url_for('review.entity', id=comment["review_id"]))
+    return render_template('review/delete_comment.html', review=review, comment=comment)
