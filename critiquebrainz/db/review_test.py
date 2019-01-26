@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+from brainzutils import cache
 from critiquebrainz.data.testing import DataTestCase
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
@@ -25,6 +27,9 @@ class ReviewTestCase(DataTestCase):
             id=u'Test',
             full_name=u"Test License",
         )
+
+        # disable caching
+        cache.get = MagicMock(return_value=None)
 
     def test_review_creation(self):
         review = db_review.create(
@@ -208,32 +213,35 @@ class ReviewTestCase(DataTestCase):
         reviews = db_review.get_popular()
         self.assertEqual(len(reviews), 0)
 
-        db_review.create(
+        # popular reviews should not contain reviews saved as drafts
+        review = db_review.create(
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             user_id=self.user.id,
-            text="Awesome",
-            is_draft=False,
+            text="A draft",
+            is_draft=True,
             license_id=self.license["id"],
         )
 
         reviews = db_review.get_popular()
-        self.assertEqual(len(reviews), 1)
+        self.assertEqual(len(reviews), 0)
 
-        review = db_review.create(
-            user_id=self.user.id,
-            entity_id="e7aad618-fa86-3983-9e77-405e21796ece",
-            entity_type="release_group",
-            text="Not Awesome",
+        # publishing the drafted review; now it should be in popular reviews
+        db_review.update(
+            review_id=review["id"],
+            drafted=True,
+            text=review["text"],
+            rating=review["rating"],
             is_draft=False,
-            license_id=self.license["id"],
-            language="en",
         )
+        reviews = db_review.get_popular()
+        self.assertEqual(len(reviews), 1)
+        self.assertEqual(reviews[0]["is_draft"], False)
+
+        # A hidden review should not be in popular reviews
         db_review.set_hidden_state(review["id"], is_hidden=True)
-
         reviews = db_review.get_popular()
-        self.assertEqual(len(reviews), 1)
-        self.assertEqual(reviews[0]["is_hidden"], False)
+        self.assertEqual(len(reviews), 0)
 
     def test_set_hidden_state(self):
         review = db_review.create(
