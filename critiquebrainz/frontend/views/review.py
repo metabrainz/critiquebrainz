@@ -34,7 +34,7 @@ def get_review_or_404(review_id):
     try:
         review = db_review.get_by_id(review_id)
     except db_exceptions.NoDataFoundException:
-        raise NotFound("Can't find a review with ID: {review_id}".format(review_id=review_id))
+        raise NotFound(gettext("Can't find a review with ID: %(review_id)s!", review_id=review_id))
     return review
 
 
@@ -95,7 +95,8 @@ def entity(id, rev=None):
         raise NotFound(gettext("The revision you are looking for does not exist."))
 
     revision = db_revision.get(id, offset=count - rev)[0]
-    if not review["is_draft"] and current_user.is_authenticated:  # if user is logged in, get their vote for this review
+    if not review["is_draft"] and current_user.is_authenticated:
+        # if user is logged in, get their vote for this review
         try:
             vote = db_vote.get(user_id=current_user.id, revision_id=revision['id'])
         except db_exceptions.NoDataFoundException:
@@ -107,7 +108,9 @@ def entity(id, rev=None):
     else:
         review["text_html"] = markdown(revision['text'], safe_mode="escape")
 
-    user_all_reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
+    review["rating"] = revision["rating"]
+
+    user_all_reviews, _ = db_review.list_reviews(
         user_id=review["user_id"],
         sort="random",
         exclude=[review["id"]],
