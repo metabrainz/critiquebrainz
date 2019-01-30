@@ -38,7 +38,7 @@ def spotify_list(release_group_id):
         except ExternalServiceException as e:
             raise ServiceUnavailable(e)
     else:
-        spotify_albums = []
+        spotify_albums = {}
     try:
         release_group = mb_release_group.get_release_group_by_id(str(release_group_id))
     except mb_exceptions.NoDataFoundException:
