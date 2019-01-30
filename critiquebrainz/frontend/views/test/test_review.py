@@ -41,6 +41,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             full_name="Created so we can fill the form correctly.",
         )
         self.review_text = "Testing! This text should be on the page."
+        self.review_rating = 3
         mb_release.browse_releases = MagicMock()
         current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
 
@@ -50,6 +51,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             entity_type="release_group",
             user_id=self.user.id,
             text=self.review_text,
+            rating=self.review_rating,
             is_draft=is_draft,
             license_id=self.license["id"],
         )
@@ -61,9 +63,37 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def test_entity(self):
         review = self.create_dummy_review()
+
+        # test review
         response = self.client.get("/review/%s" % review["id"])
         self.assert200(response)
         self.assertIn(self.review_text, str(response.data))
+        old_text = review["text"]
+
+        # test revisions
+        updated_text = "The text has now been updated"
+        updated_rating = 4
+        db_review.update(
+            review_id=review["id"],
+            drafted=False,
+            text=updated_text,
+            rating=updated_rating,
+            language=review["language"],
+            is_draft=review["is_draft"],
+        )
+
+        # test updated text and rating
+        response = self.client.get("/review/{}/revisions/2".format(review["id"]))
+        self.assert200(response)
+        self.assertIn(updated_text, str(response.data))
+        rating_html = 'input type="number" class="rating" id="rating" value={}'
+        self.assertIn(rating_html.format(4), str(response.data))
+
+        # test text and rating for older revision
+        response = self.client.get("/review/{}/revisions/1".format(review["id"]))
+        self.assert200(response)
+        self.assertIn(old_text, str(response.data))
+        self.assertIn(rating_html.format(3), str(response.data))
 
     def test_draft_review(self):
         review = self.create_dummy_review(is_draft=True)
