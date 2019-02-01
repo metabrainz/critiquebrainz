@@ -452,11 +452,14 @@ def hide(id):
     return render_template('log/action.html', review=review, form=form, action=ACTION_HIDE_REVIEW)
 
 
-@review_bp.route('/<uuid:id>/unhide', methods=['POST'])
+@review_bp.route('/<uuid:id>/unhide')
 @login_required
 @admin_view
 def unhide(id):
     review = get_review_or_404(id)
+    if not review["is_hidden"]:
+        flash.info(gettext("Review is not hidden."))
+        return redirect(url_for('.entity', id=review["id"]))
     db_review.set_hidden_state(review["id"], is_hidden=False)
     flash.success(gettext("Review is not hidden anymore."))
     return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
