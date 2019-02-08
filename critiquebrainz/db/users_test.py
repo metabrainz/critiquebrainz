@@ -6,6 +6,7 @@ from critiquebrainz.db.users import gravatar_url, get_many_by_mb_username
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.vote as db_vote
+import critiquebrainz.db.comment as db_comment
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.oauth_token as db_oauth_token
@@ -133,6 +134,26 @@ class UserTestCase(DataTestCase):
         two_days_from_now = date.today() + timedelta(days=2)
         reviews = db_users.get_reviews(self.author.id, from_date=two_days_from_now)
         self.assertEqual(len(reviews), 0)
+
+    def test_get_comments(self):
+        db_comment.create(
+            user_id=self.user1.id,
+            text="This is a test comment.",
+            review_id=self.review_id,
+        )
+
+        result_comments = db_users.get_comments(user_id=self.user2.id)
+        self.assertEqual(len(result_comments), 0)
+
+        result_comments = db_users.get_comments(user_id=self.user1.id)
+        self.assertEqual(len(result_comments), 1)
+
+        two_days_from_now = date.today() + timedelta(days=2)
+        result_comments = db_users.get_comments(
+            user_id=self.user1.id,
+            from_date=two_days_from_now,
+        )
+        self.assertEqual(len(result_comments), 0)
 
     def test_update(self):
         db_users.update(self.user1.id, user_new_info={
