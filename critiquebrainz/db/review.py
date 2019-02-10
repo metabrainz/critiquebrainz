@@ -696,7 +696,9 @@ def get_top_contributors(limit=10):
             "user".musicbrainz_id,
             "user".is_blocked
         FROM review JOIN "user" 
-        ON review.user_id = "user".id 
+        ON review.user_id = "user".id
+        WHERE review.published_on > current_date - interval '7 days'
+        AND review.is_draft <> TRUE
         GROUP BY review.user_id, "user".id
         ORDER BY qtd DESC
         LIMIT :limit
