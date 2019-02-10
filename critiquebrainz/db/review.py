@@ -684,3 +684,26 @@ def reviewed_entities(*, entity_ids, entity_type):
         })
         reviewed_ids = [str(row[0]) for row in results.fetchall()]
     return reviewed_ids
+
+def get_top_contributors(limit=10):
+    query = sqlalchemy.text("""
+        SELECT review.user_id,
+            COUNT(*) as qtd,
+            "user".email,
+            "user".created as user_created,
+            "user".display_name,
+            "user".show_gravatar,
+            "user".musicbrainz_id,
+            "user".is_blocked
+        FROM review JOIN "user" 
+        ON review.user_id = "user".id 
+        GROUP BY review.user_id, "user".id
+        ORDER BY qtd DESC
+        LIMIT :limit
+    """)
+    with db.engine.connect() as connection:
+        results = connection.execute(query, {"limit": limit})
+        rows = results.fetchall()
+        return rows
+
+
