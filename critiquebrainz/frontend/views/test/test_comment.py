@@ -84,7 +84,7 @@ class CommentViewsTestCase(FrontendTestCase):
         response = self.client.get(url_for("review.entity", id=self.review["id"]))
         self.assert200(response)
         # Test that the rendered html should contain error message
-        self.assertIn("Please provide some text for comment!", str(response.data))
+        self.assertIn("Comment must not be empty!", str(response.data))
 
         # add some text to comment
         payload["text"] = "Test Comment."

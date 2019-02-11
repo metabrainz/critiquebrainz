@@ -147,18 +147,19 @@
               <hr/>
               <p>
                 {{ comment_credit(comment, user_picture_size=24) }}
+                {% if current_user.is_authenticated and current_user == comment.user %}
+                  <a href="{{ url_for('comment.delete', id=comment.id) }}"
+                     class="btn btn-danger btn-xs"
+                     title="{{ _('Delete your comment') }}">
+                      <span class="glyphicon glyphicon-trash"></span>
+                  </a>
+                {% endif %}
                 <span style="float:right;">
                   <small><em class="text-muted"> {{comment.created | date}} </em></small>
                 </span>
               </p>
               <p> {{ comment.text_html|safe }} </p>
             </div>
-            {% if current_user.is_authenticated and current_user == comment.user %}
-              <a href="{{ url_for('comment.delete', id=comment.id) }}"
-                 class="btn btn-danger btn-sm">
-                <span class="glyphicon glyphicon-remove"></span> {{ _('Delete comment') }}
-              </a>
-            {% endif %}
           {% endfor %}
         </div>
       {% endif %}

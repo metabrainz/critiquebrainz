@@ -19,6 +19,7 @@
 from flask import Blueprint, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
 from flask_babel import gettext
+from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.comment import CommentEditForm
@@ -58,7 +59,7 @@ def create():
         flash.success(gettext("Comment has been saved!"))
     elif not form.text.data:
         # comment must have some text
-        flash.error(gettext("Please provide some text for comment!"))
+        flash.error(gettext("Comment must not be empty!"))
     return redirect(url_for('review.entity', id=form.review_id.data))
 
 
@@ -74,4 +75,6 @@ def delete(id):
         db_comment.delete(comment["id"])
         flash.success(gettext("Comment has been deleted."))
         return redirect(url_for('review.entity', id=comment["review_id"]))
+    if comment:
+        comment["text_html"] = markdown(comment["last_revision"]["text"], safe_mode="escape")
     return render_template('review/delete_comment.html', review=review, comment=comment)
