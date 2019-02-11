@@ -232,13 +232,13 @@ def create():
         flash.error(gettext("You have already published a review for this entity!"))
         return redirect(url_for('review.entity', id=review["id"]))
 
+    if current_user.is_review_limit_exceeded:
+        flash.error(gettext("You have exceeded your limit of reviews per day."))
+        return redirect(url_for('user.reviews', user_id=current_user.id))
+
     form = ReviewCreateForm(default_license_id=current_user.license_choice, default_language=get_locale())
 
     if form.validate_on_submit():
-        if current_user.is_review_limit_exceeded:
-            flash.error(gettext("You have exceeded your limit of reviews per day."))
-            return redirect(url_for('user.reviews', user_id=current_user.id))
-
         is_draft = form.state.data == 'draft'
         if form.text.data == '':
             form.text.data = None
