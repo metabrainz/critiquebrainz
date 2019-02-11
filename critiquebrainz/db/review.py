@@ -686,26 +686,31 @@ def reviewed_entities(*, entity_ids, entity_type):
     return reviewed_ids
 
 def get_top_contributors(limit=10):
+    """Get a list of users with more review in a week.
+
+    Args:
+        limit (int): Maximum number of users to return.
+
+    Returns:
+        Ordered list by desceding order of users with more reviews in a week.
+    """
     query = sqlalchemy.text("""
         SELECT review.user_id,
-            COUNT(*) as qtd,
-            "user".email,
-            "user".created as user_created,
-            "user".display_name,
-            "user".show_gravatar,
-            "user".musicbrainz_id,
-            "user".is_blocked
-        FROM review JOIN "user" 
-        ON review.user_id = "user".id
-        WHERE review.published_on > current_date - interval '7 days'
-        AND review.is_draft <> TRUE
-        GROUP BY review.user_id, "user".id
-        ORDER BY qtd DESC
-        LIMIT :limit
+               COUNT(*) as qtd,
+               "user".email,
+               "user".created as user_created,
+               "user".display_name,
+               "user".show_gravatar,
+               "user".musicbrainz_id,
+               "user".is_blocked
+          FROM review 
+          JOIN "user" ON review.user_id = "user".id
+         WHERE review.published_on > current_date - interval '7 days'
+           AND review.is_draft <> TRUE
+      GROUP BY review.user_id, "user".id
+      ORDER BY qtd DESC
+         LIMIT :limit
     """)
     with db.engine.connect() as connection:
         results = connection.execute(query, {"limit": limit})
-        rows = results.fetchall()
-        return rows
-
-
+        return results.fetchall()
