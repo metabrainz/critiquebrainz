@@ -685,6 +685,7 @@ def reviewed_entities(*, entity_ids, entity_type):
         reviewed_ids = [str(row[0]) for row in results.fetchall()]
     return reviewed_ids
 
+
 def get_top_contributors(limit=10):
     """Get a list of users with more review in a week.
 
@@ -703,7 +704,7 @@ def get_top_contributors(limit=10):
                "user".show_gravatar,
                "user".musicbrainz_id,
                "user".is_blocked
-          FROM review 
+          FROM review
           JOIN "user" ON review.user_id = "user".id
          WHERE review.published_on > current_date - interval '7 days'
            AND review.is_draft <> TRUE
