@@ -16,7 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from datetime import date
+from datetime import date, timedelta
 import sqlalchemy
 from brainzutils import cache
 from critiquebrainz import db
@@ -26,7 +26,7 @@ _CACHE_NAMESPACE = "cb_statistics"
 _DEFAULT_CACHE_EXPIRATION = 1 * 60 * 60  # seconds (1 hour)
 
 
-def get_top_users(from_date=date(1970, 1, 1), to_date=date.today(), review_weight=1,
+def get_top_users(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1), review_weight=1,
                   comment_weight=1, vote_weight=1, limit=10):
     """ Gets list of top contributors based on number of reviews, votes and comments
         along with their final scores.
