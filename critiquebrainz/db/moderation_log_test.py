@@ -106,3 +106,16 @@ class ModerationLogTestCase(DataTestCase):
         self.assertEqual(str(logs[0]["admin"]["id"]), self.admin.id)
         self.assertEqual(str(logs[0]["user"]["id"]), self.user.id)
         self.assertEqual(str(logs[0]["action"]), AdminActions.ACTION_BLOCK_USER.value)
+
+        # test logs for unblocking user
+        db_moderation_log.create(
+            admin_id=self.admin.id,
+            reason="User to be unblocked",
+            user_id=self.user.id,
+            action=AdminActions.ACTION_UNBLOCK_USER,
+        )
+        logs, count = db_moderation_log.list_logs(admin_id=self.admin.id)
+        self.assertEqual(count, 4)
+        self.assertEqual(str(logs[0]["admin"]["id"]), self.admin.id)
+        self.assertEqual(str(logs[0]["user"]["id"]), self.user.id)
+        self.assertEqual(str(logs[0]["action"]), AdminActions.ACTION_UNBLOCK_USER.value)

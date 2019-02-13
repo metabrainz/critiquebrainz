@@ -14,6 +14,7 @@ class AdminActions(Enum):
     ACTION_HIDE_REVIEW = "hide_review"
     ACTION_UNHIDE_REVIEW = "unhide_review"
     ACTION_BLOCK_USER = "block_user"
+    ACTION_UNBLOCK_USER = "unblock_user"
 
 
 def create(*, admin_id, review_id=None, user_id=None,
