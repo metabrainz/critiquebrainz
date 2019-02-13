@@ -86,14 +86,15 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get("/review/{}/revisions/2".format(review["id"]))
         self.assert200(response)
         self.assertIn(updated_text, str(response.data))
-        rating_html = 'input type="number" class="rating" id="rating" value={}'
-        self.assertIn(rating_html.format(4), str(response.data))
+        review_context = self.get_context_variable('review')
+        self.assertEqual(review_context['rating'], 4)
 
         # test text and rating for older revision
         response = self.client.get("/review/{}/revisions/1".format(review["id"]))
         self.assert200(response)
         self.assertIn(old_text, str(response.data))
-        self.assertIn(rating_html.format(3), str(response.data))
+        review_context = self.get_context_variable('review')
+        self.assertEqual(review_context['rating'], 3)
 
     def test_draft_review(self):
         review = self.create_dummy_review(is_draft=True)
