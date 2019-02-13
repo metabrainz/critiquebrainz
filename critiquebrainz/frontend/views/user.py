@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from werkzeug.exceptions import NotFound
 from flask_babel import gettext
 from flask_login import login_required, current_user
-from critiquebrainz.db.moderation_log import ACTION_BLOCK_USER
+from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.user import User
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
@@ -60,21 +60,32 @@ def block(user_id):
     form = AdminActionForm()
     if form.validate_on_submit():
         db_users.block(user['id'])
-        db_moderation_log.create(admin_id=current_user.id, action=ACTION_BLOCK_USER,
+        db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_BLOCK_USER,
                                  reason=form.reason.data, user_id=user['id'])
         flash.success(gettext("This user account has been blocked."))
         return redirect(url_for('user.reviews', user_id=user['id']))
 
-    return render_template('log/action.html', user=user, form=form, action=ACTION_BLOCK_USER)
+    return render_template('log/action.html', user=user, form=form, action=AdminActions.ACTION_BLOCK_USER.value)
 
 
-@user_bp.route('/<uuid:user_id>/unblock')
+@user_bp.route('/<uuid:user_id>/unblock', methods=['GET', 'POST'])
 @login_required
 @admin_view
 def unblock(user_id):
     user = db_users.get_by_id(user_id)
     if not user:
         raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
-    db_users.unblock(user['id'])
-    flash.success(gettext("This user account has been unblocked."))
-    return redirect(url_for('user.reviews', user_id=user['id']))
+
+    if not user['is_blocked']:
+        flash.info(gettext("This account is not blocked."))
+        return redirect(url_for('user.reviews', user_id=user['id']))
+
+    form = AdminActionForm()
+    if form.validate_on_submit():
+        db_users.unblock(user['id'])
+        db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_UNBLOCK_USER,
+                                 reason=form.reason.data, user_id=user['id'])
+        flash.success(gettext("This user account has been unblocked."))
+        return redirect(url_for('user.reviews', user_id=user['id']))
+
+    return render_template('log/action.html', user=user, form=form, action=AdminActions.ACTION_UNBLOCK_USER.value)

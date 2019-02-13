@@ -47,21 +47,13 @@
 
       {% if current_user.is_authenticated and current_user != review.user and current_user.is_admin() %}
         <hr />
-        {% if review.is_hidden %}
-          <div>
-            <a href="{{ url_for('review.unhide', id=review.id) }}"
-               class="btn btn-warning btn-sm">
-              <span class="glyphicon glyphicon-ok"></span> {{ _('Unhide this review') }}
-            </a>
-          </div>
-        {% else %}
-          <div>
-            <a href="{{ url_for('review.hide', id=review.id) }}"
-               class="btn btn-danger btn-sm">
-              <span class="glyphicon glyphicon-remove"></span> {{ _('Hide this review') }}
-            </a>
-          </div>
-        {% endif %}
+        <div>
+          <a href="{{ url_for('review.unhide' if review.is_hidden else 'review.hide', id=review.id) }}"
+             class="btn {{ 'btn-warning' if review.is_hidden else 'btn-danger'}} btn-sm">
+            <span class="glyphicon {{ 'glyphicon-ok' if review.is_hidden else 'glyphicon-remove' }}"></span>
+            {{ _('Unhide this review' if review.is_hidden else 'Hide this review') }}
+          </a>
+        </div>
       {% endif %}
 
       <hr />
