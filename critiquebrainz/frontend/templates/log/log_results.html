@@ -18,7 +18,12 @@
             _('%(admin)s archived a %(review)s written by %(user)s',
             admin=link_user(log.admin), review=link_review(log.review), user=link_user(log.review.user))
           }}
-         {% elif log.action == "block_user" %}
+        {% elif log.action == "unhide_review" %}
+          {{
+            _('%(admin)s restored an archived %(review)s written by %(user)s',
+            admin=link_user(log.admin), review=link_review(log.review), user=link_user(log.review.user))
+          }}
+        {% elif log.action == "block_user" %}
           {{
             _('%(admin)s blocked %(user)s',
             admin=link_user(log.admin), user=link_user(log.user))

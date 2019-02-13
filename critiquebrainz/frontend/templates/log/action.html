@@ -4,7 +4,11 @@
   {% set release_group = review.entity_id | entity_details %}
   {% set rg_title = release_group.title | default(_('[Unknown release group]')) %}
   {# TODO(dufferzafar): Handle multiple actions for a same entity type #}
-  {% set title = _('Hide %(user)s\'s review of "%(rg)s"', rg=rg_title, user=review.user.display_name) %}
+  {% if action == "hide_review" %}
+    {% set title = _('Hide %(user)s\'s review of "%(rg)s"', rg=rg_title, user=review.user.display_name) %}
+  {% else %}
+    {% set title = _('Unhide %(user)s\'s review of "%(rg)s"', rg=rg_title, user=review.user.display_name) %}
+  {% endif %}
   {% set cancel_url = url_for('review.entity', id=review.id) %}
 {% elif user is defined %}
   {% set title = _('Block %(user)s', user=user.display_name) %}

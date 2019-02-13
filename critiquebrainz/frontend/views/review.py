@@ -7,7 +7,7 @@ from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
 from langdetect import detect
 from critiquebrainz.db.review import ENTITY_TYPES
-from critiquebrainz.db.moderation_log import ACTION_HIDE_REVIEW
+from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud
@@ -441,7 +441,7 @@ def hide(id):
     form = AdminActionForm()
     if form.validate_on_submit():
         db_review.set_hidden_state(review["id"], is_hidden=True)
-        db_moderation_log.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
+        db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_HIDE_REVIEW,
                                  reason=form.reason.data, review_id=review["id"])
         review_reports, count = db_spam_report.list_reports(review_id=review["id"])  # pylint: disable=unused-variable
         for report in review_reports:
@@ -449,10 +449,10 @@ def hide(id):
         flash.success(gettext("Review has been hidden."))
         return redirect(url_for('.entity', id=review["id"]))
 
-    return render_template('log/action.html', review=review, form=form, action=ACTION_HIDE_REVIEW)
+    return render_template('log/action.html', review=review, form=form, action=AdminActions.ACTION_HIDE_REVIEW.value)
 
 
-@review_bp.route('/<uuid:id>/unhide')
+@review_bp.route('/<uuid:id>/unhide', methods=['GET', 'POST'])
 @login_required
 @admin_view
 def unhide(id):
@@ -460,6 +460,13 @@ def unhide(id):
     if not review["is_hidden"]:
         flash.info(gettext("Review is not hidden."))
         return redirect(url_for('.entity', id=review["id"]))
-    db_review.set_hidden_state(review["id"], is_hidden=False)
-    flash.success(gettext("Review is not hidden anymore."))
-    return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
+
+    form = AdminActionForm()
+    if form.validate_on_submit():
+        db_review.set_hidden_state(review["id"], is_hidden=False)
+        db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_UNHIDE_REVIEW,
+                                 reason=form.reason.data, review_id=review["id"])
+        flash.success(gettext("Review is not hidden anymore."))
+        return redirect(url_for('.entity', id=review["id"]))
+
+    return render_template('log/action.html', review=review, form=form, action=AdminActions.ACTION_UNHIDE_REVIEW.value)
