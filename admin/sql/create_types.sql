@@ -1,6 +1,8 @@
 CREATE TYPE action_types AS ENUM (
     'hide_review',
-    'block_user'
+    'unhide_review',
+    'block_user',
+    'unblock_user'
 );
 
 CREATE TYPE entity_types AS ENUM (
