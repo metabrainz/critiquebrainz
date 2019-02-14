@@ -42,11 +42,7 @@ class UserViewsTestCase(FrontendTestCase):
         response = self.client.get("/user/{user_id}/block".format(user_id="random-user-id"))
         self.assert404(response, "Can't find a user with ID: random-user-id")
 
-        # only moderator can block a user
-        response = self.client.get("/user/{user_id}/block".format(user_id=self.user.id))
-        self.assert401(response, "You must be an administrator to view this page.")
-
-        # make self.admin as admin
+        # make self.admin a moderator
         User.is_admin = MagicMock(return_value=True)
 
         # admin blocks tester
