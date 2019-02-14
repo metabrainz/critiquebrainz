@@ -45,7 +45,7 @@
         {% endif %}
       {% endif %}
 
-      {% if current_user.is_authenticated and current_user != review.user and current_user.is_admin() %}
+      {% if current_user.is_authenticated and current_user.is_admin() %}
         <hr />
         <div>
           <a href="{{ url_for('review.unhide' if review.is_hidden else 'review.hide', id=review.id) }}"
