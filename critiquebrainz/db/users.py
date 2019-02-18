@@ -449,12 +449,12 @@ def reviews(user_id):
     return [dict(row) for row in rows]
 
 
-def get_votes(user_id, from_date='1-1-1970'):
+def get_votes(user_id, from_date=datetime.utcfromtimestamp(0)):
     """Get votes by a user from a specified time.
 
     Args:
         user_id(uuid): ID of the user.
-        from_date(datetime/str): Date from which votes submitted by user are to be returned.
+        from_date(datetime): Date from which votes submitted by user are to be returned.
 
     Returns:
         List of votes submitted by the user from the time specified
@@ -479,12 +479,12 @@ def get_votes(user_id, from_date='1-1-1970'):
     return [dict(row) for row in rows]
 
 
-def get_reviews(user_id, from_date='1-1-1970'):
+def get_reviews(user_id, from_date=datetime.utcfromtimestamp(0)):
     """Get reviews by a user from a specified time.
 
     Args:
         user_id(uuid): ID of the user.
-        from_date(datetime/str): Date from which reviews submitted by user are to be returned.
+        from_date(datetime): Date from which reviews submitted by user are to be returned.
 
     Returns:
         List of reviews by the user from the time specified
@@ -532,12 +532,12 @@ def get_reviews(user_id, from_date='1-1-1970'):
     return [dict(row) for row in rows]
 
 
-def get_comments(user_id, from_date='1-1-1970'):
+def get_comments(user_id, from_date=datetime.utcfromtimestamp(0)):
     """Get comments on reviews by a user from a specified time.
 
     Args:
         user_id(uuid): ID of the user.
-        from_date(datetime/str): Date from which comments on reviews submitted by user are to be returned.
+        from_date(datetime): Date from which comments on reviews submitted by user are to be returned.
 
     Returns:
         List of reviews by the user from the time specified
