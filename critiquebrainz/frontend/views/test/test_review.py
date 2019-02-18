@@ -236,3 +236,65 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get("/review/%s" % review["id"])
         self.assert200(response)
         self.assertIn("A great place.", str(response.data))
+
+    def test_hide_unhide(self):
+        # create a review by self.user and check it's not hidden
+        review = self.create_dummy_review()
+        self.assertEqual(review["is_hidden"], False)
+
+        # make self.hacker as current user
+        self.temporary_login(self.hacker)
+
+        # check that hide button is not visible to non-admin user
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert200(response)
+        self.assertNotIn("Hide this review", str(response.data))
+
+        # make self.hacker as admin
+        User.is_admin = MagicMock(return_value=True)
+
+        # check that hide button is visible to admin
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert200(response)
+        self.assertIn("Hide this review", str(response.data))
+
+        # hide the review
+        response = self.client.post(
+            "review/{}/hide".format(review["id"]),
+            data=dict(reason="Test hiding review."),
+            follow_redirects=True,
+        )
+        self.assertIn("Review has been hidden.", str(response.data))
+        review = db_review.get_by_id(review["id"])
+        self.assertEqual(review["is_hidden"], True)
+
+        # hiding already hidden review flashes message
+        response = self.client.post(
+            "review/{}/hide".format(review["id"]),
+            data=dict(reason="Test hiding already hidden review."),
+            follow_redirects=True,
+        )
+        self.assertIn("Review is already hidden.", str(response.data))
+
+        # check that unhide button is visible to admin
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert200(response)
+        self.assertIn("Unhide this review", str(response.data))
+
+        # unhide review
+        response = self.client.post(
+            "review/{}/unhide".format(review["id"]),
+            data=dict(reason="Test unhiding a hidden review."),
+            follow_redirects=True,
+        )
+        self.assertIn("Review is not hidden anymore.", str(response.data))
+        review = db_review.get_by_id(review["id"])
+        self.assertEqual(review["is_hidden"], False)
+
+        # unhide a non-hidden review
+        response = self.client.post(
+            "review/{}/unhide".format(review["id"]),
+            data=dict(reason="Test unhiding an already visible review."),
+            follow_redirects=True,
+        )
+        self.assertIn("Review is not hidden.", str(response.data))

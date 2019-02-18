@@ -14,7 +14,8 @@
           </a>
         {% elif current_user.is_admin() %}
           <a href="{{ url_for('user.unblock' if user.is_blocked else 'user.block', user_id=user.id) }}"
-             class="btn btn-primary pull-right" style="margin-top: 20px;">
+             class="btn {{ 'btn-warning' if user.is_blocked else 'btn-danger'}} pull-right" style="margin-top: 20px;">
+             <span class="glyphicon {{ 'glyphicon-ok' if user.is_blocked else 'glyphicon-remove' }}"></span>
             {{ ('Unblock User' if user.is_blocked else 'Block User') }}
           </a>
         {% endif %}

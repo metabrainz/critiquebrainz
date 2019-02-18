@@ -11,4 +11,3 @@ ALTER TABLE review ADD CONSTRAINT published_on_null_for_drafts_and_not_null_for_
     CHECK ((is_draft = 't' AND published_on IS NULL) OR (is_draft = 'f' AND published_on IS NOT NULL));
 
 COMMIT;
-
