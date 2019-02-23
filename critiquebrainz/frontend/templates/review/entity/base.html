@@ -149,44 +149,7 @@
         </div>
       {% endif %}
 
-      {% if comments %}
-        <hr/>
-        <h3> Comments ({{ comment_count }})</h3>
-        <div id="comment-list">
-          {% for comment in comments %}
-            <div id="{{ comment.id }}">
-              <hr/>
-              <p>
-                {{ comment_credit(comment, user_picture_size=24) }}
-                {% if current_user.is_authenticated and current_user == comment.user %}
-                  <a href="{{ url_for('comment.delete', id=comment.id) }}"
-                     class="btn btn-danger btn-xs"
-                     title="{{ _('Delete your comment') }}">
-                      <span class="glyphicon glyphicon-trash"></span>
-                  </a>
-                {% endif %}
-                <span style="float:right;">
-                  <small><em class="text-muted"> {{comment.created | date}} </em></small>
-                </span>
-              </p>
-              <p> {{ comment.text_html|safe }} </p>
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      {% if current_user.is_authenticated %}
-        <hr/>
-        <form method="POST" class="form-horizontal" role="form" action="{{ url_for('comment.create') }}">
-          <div class="form-group">
-            {{ comment_form.hidden_tag() }}
-            {{ comment_form.text(id="comment-text") }}
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary">{{ _('Add comment') }}</button>
-          </div>
-        </form>
-      {% endif %}
+      <div id="comments-section">{% include 'review/entity/comments.html' %}</div>
 
      </div>
   </div>
@@ -196,14 +159,4 @@
 {% block scripts %}
   {{ super() }}
   <script src="{{ get_static_path('rating.js') }}"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
-  <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
-  <script>
-    $(document).ready(function() {
-      reviewContentEditor = new SimpleMDE({
-        element: $('#comment-text')[0],
-        spellChecker: false
-      });
-    });
-  </script>
 {% endblock %}
