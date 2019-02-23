@@ -28,17 +28,6 @@
           </div>
           <p class="comment-content-mark" style="display: none;">{{ comment.last_revision.text }}</p>
         </div>
-        <div class="comment-edit-form" style="display: none;">
-          <form method="POST" class="form-horizontal" role="form" action="{{ url_for('comment.edit', id=comment.id) }}">
-            <div class="form-group">
-              {{ comment_form.hidden_tag() }}
-              {{ comment_form.text(class="comment-text") }}
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary">{{ _('Update comment') }}</button>
-            </div>
-          </form>
-        </div>
       </div>
     {% endfor %}
   </div>
@@ -65,29 +54,52 @@
   <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
   <script>
     $(document).ready(function() {
-      simplemde = {};
-      simplemde["commentAddForm"] = new SimpleMDE({
+      commentMdes = {};
+      commentMdes["commentAddForm"] = new SimpleMDE({
         element: $("#comment-add-form").find(".comment-text")[0],
         spellChecker: false
       });
 
       $(".comment-edit-button").click(function() {
-
         let commentDiv = $(this).closest(".comment-container"),
-            commentEditForm = commentDiv.find(".comment-edit-form"),
-            commentText = commentEditForm.find(".comment-text")[0],
-            commentContentDiv = commentDiv.find(".comment-content"),
-            commentContentText = commentContentDiv.find(".comment-content-mark").text(),
             commentDivId = commentDiv.attr("id");
-        commentEditForm.toggle();
+
+        let commentUpdateForm = commentDiv.find(".comment-update-form");
+        if (commentUpdateForm.length === 0) {
+            // update button is clicked first time for this comment,
+            // define new commentUpdateForm, and append it to comment div
+            let commentUpdateFormHtml = $(`
+              <div class="comment-update-form" style="display: none;">
+                <form method="POST" class="form-horizontal" role="form" action="{{ url_for('comment.edit', id='commentDivId') }}">
+                  <div class="form-group">
+                    {{ comment_form.hidden_tag() }}
+                    {{ comment_form.text(class="comment-text") }}
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary">{{ _('Update comment') }}</button>
+                  </div>
+                </form>
+              </div>
+            `.replace('commentDivId', commentDivId));
+            commentDiv.append(commentUpdateFormHtml);
+            commentUpdateForm = commentDiv.find(".comment-update-form");
+        }
+        commentUpdateForm.toggle();
+        let commentText = commentUpdateForm.find(".comment-text")[0],
+            commentContentDiv = commentDiv.find(".comment-content"),
+            commentContentText = commentContentDiv.find(".comment-content-mark").text();
+
+        // hide/show old comment text
         commentContentDiv.toggle();
-        if (!simplemde[commentDivId]) {
-          simplemde[commentDivId] = new SimpleMDE({
+
+        if (!commentMdes[commentDivId]) {
+          // if no simplemde object is created for this comment, create it
+          commentMdes[commentDivId] = new SimpleMDE({
             element: commentText,
             spellChecker: false
           });
         }
-        simplemde[commentDivId].value(commentContentText);
+        commentMdes[commentDivId].value(commentContentText);
       });
     });
   </script>
