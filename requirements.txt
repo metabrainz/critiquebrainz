@@ -12,8 +12,8 @@ mbdata==2017.6.2
 musicbrainzngs==0.6
 pytest==3.2.0
 pytest-cov==2.5.1
-pylint==1.8.1
-flake8==3.4.1
+pylint==2.3.0
+flake8==3.7.7
 psycopg2==2.7.3
 pycountry==1.20
 python-dateutil==2.6.1
