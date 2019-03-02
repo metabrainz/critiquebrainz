@@ -111,7 +111,7 @@ def with_test_request_context(f):
     def decorated(*args, **kwargs):
         with frontend.create_app(
                 config_path=os.path.join(
-                os.path.dirname(os.path.realpath(__file__)),
-                '..', 'test_config.py')).test_request_context():
+                    os.path.dirname(os.path.realpath(__file__)),
+                    '..', 'test_config.py')).test_request_context():
             return f(*args, **kwargs)
     return decorated
