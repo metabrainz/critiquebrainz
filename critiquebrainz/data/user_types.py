@@ -18,19 +18,19 @@ blocked = UserType(
 
 spammer = UserType(
     label='Spammer',
-    karma=lambda x: (x >= -20 and x < -10),
+    karma=lambda x: (-20 <= x < -10),
     reviews_per_day=1,
     votes_per_day=0)
 
 noob = UserType(
     label='Noob',
-    karma=lambda x: (x >= -10 and x < 50),
+    karma=lambda x: (-10 <= x < 50),
     reviews_per_day=5,
     votes_per_day=10)
 
 apprentice = UserType(
     label='Apprentice',
-    karma=lambda x: (x >= 50 and x < 1000),
+    karma=lambda x: (50 <= x < 1000),
     reviews_per_day=20,
     votes_per_day=50)
 
