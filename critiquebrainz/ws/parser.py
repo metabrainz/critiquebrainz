@@ -11,9 +11,9 @@ class Parser:
     def get_dict(cls, src):
         if src == 'uri':
             return request.args
-        elif src == 'form':
+        if src == 'form':
             return request.form
-        elif src == 'json':
+        if src == 'json':
             return request.json
 
     @classmethod

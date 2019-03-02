@@ -59,11 +59,11 @@ def edit(client_id):
         )
         flash.success(gettext("You have updated an application!"))
         return redirect(url_for('.index'))
-    else:
-        form.name.data = application["name"]
-        form.desc.data = application["desc"]
-        form.website.data = application["website"]
-        form.redirect_uri.data = application["redirect_uri"]
+
+    form.name.data = application["name"]
+    form.desc.data = application["desc"]
+    form.website.data = application["website"]
+    form.redirect_uri.data = application["redirect_uri"]
     return render_template('profile/applications/edit.html', form=form)
 
 

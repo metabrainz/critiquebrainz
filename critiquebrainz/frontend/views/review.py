@@ -52,9 +52,9 @@ def browse():
     if not reviews:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count / limit))))
-        else:
-            if not entity_type:
-                raise NotFound(gettext("No reviews to display."))
+
+        if not entity_type:
+            raise NotFound(gettext("No reviews to display."))
 
     # Loading info about entities for reviews
     entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
