@@ -228,7 +228,7 @@ def create():
 
     # Checking if the user already wrote a review for this entity
     reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id)
-    review = reviews[0] if count is not 0 else None
+    review = reviews[0] if count != 0 else None
 
     if review:
         flash.error(gettext("You have already published a review for this entity!"))
