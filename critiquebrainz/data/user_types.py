@@ -1,4 +1,4 @@
-class UserType(object):
+class UserType:
 
     def __init__(self, label, karma, reviews_per_day, votes_per_day):
         self.label = label

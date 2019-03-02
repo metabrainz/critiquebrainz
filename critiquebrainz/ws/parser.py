@@ -5,7 +5,7 @@ from critiquebrainz.utils import validate_uuid
 from critiquebrainz.ws.exceptions import MissingDataError, ParserError
 
 
-class Parser(object):
+class Parser:
 
     @classmethod
     def get_dict(cls, src):

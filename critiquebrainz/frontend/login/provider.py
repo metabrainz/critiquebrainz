@@ -7,7 +7,7 @@ import critiquebrainz.db.users as db_users
 from critiquebrainz.utils import generate_string
 
 
-class BaseAuthentication(object):
+class BaseAuthentication:
 
     def get_authentication_uri(self, **kwargs):
         """Prepare and return uri to authentication service login form.
