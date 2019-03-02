@@ -147,7 +147,6 @@ def _fetch_access_token(refresh=False) -> str:
 
 class SpotifyException(ExternalServiceException):
     """Exception related to errors related to the Spotify API."""
-    pass
 
 
 class SpotifyUnexpectedResponseException(SpotifyException):
