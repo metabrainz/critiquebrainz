@@ -109,7 +109,7 @@ def _get(query: str) -> dict:
             "Authorization": f"Bearer {_fetch_access_token(refresh=refresh)}"
         })
         if response.status_code != HTTPStatus.OK:
-            refresh = True if response.status_code == HTTPStatus.UNAUTHORIZED else False
+            refresh = response.status_code == HTTPStatus.UNAUTHORIZED
         else:
             break
     else:
