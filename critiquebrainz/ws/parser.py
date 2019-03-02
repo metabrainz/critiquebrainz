@@ -53,8 +53,8 @@ class Parser:
             return None
         if _i.isdigit() is False:
             raise ParserError(key, 'NaN')
-        else:
-            _i = int(_i)
+
+        _i = int(_i)
         if max is not None and _i > max:
             raise ParserError(key, 'too large (max=%d)' % max)
         if min is not None and _i < min:

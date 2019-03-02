@@ -45,7 +45,8 @@ def rate():
 
         if not review and form.rating.data is None:
             raise BadRequest("Cannot create a review with no rating and no text!")
-        elif not review and form.rating.data is not None:
+
+        if not review and form.rating.data is not None:
             db_review.create(
                 user_id=current_user.id,
                 entity_id=form.entity_id.data,
