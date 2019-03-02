@@ -182,7 +182,6 @@ def spotify_report():
 
 class UnsupportedSpotifyReferenceTypeException(Exception):
     """Exception for Unsupported Spotify Reference Types."""
-    pass
 
 
 def parse_spotify_id(spotify_ref):
