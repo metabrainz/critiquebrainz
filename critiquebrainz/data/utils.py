@@ -43,8 +43,8 @@ def slugify(string):
     Also strips leading and trailing whitespace.
     """
     string = unicodedata.normalize('NFKD', string).encode('ascii', 'ignore').decode('ascii')
-    string = re.sub('[^\w\s-]', '', string).strip().lower()
-    return re.sub('[-\s]+', '-', string)
+    string = re.sub(r'[^\w\s-]', '', string).strip().lower()
+    return re.sub(r'[-\s]+', '-', string)
 
 
 def create_path(path):

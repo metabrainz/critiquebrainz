@@ -180,7 +180,7 @@ def json(location, rotate=False):
 
         if rotate:
             print("Removing old sets of archives (except two latest)...")
-            remove_old_archives(location, "critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2",
+            remove_old_archives(location, r"critiquebrainz-[0-9]+-[-\w]+-json.tar.bz2",
                                 is_dir=False, sort_key=os.path.getmtime)
 
         print("Done!")

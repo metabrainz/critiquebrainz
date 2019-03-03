@@ -85,7 +85,7 @@ class Parser:
         _e = cls.get_key(src, key, optional)
         if not _e:
             return None
-        if not re.match("[^@]+@[^@]+\.[^@]+", _e):
+        if not re.match("[^@]+@[^@]+\\.[^@]+", _e):
             raise ParserError(key, 'not valid email')
         return _e
 
