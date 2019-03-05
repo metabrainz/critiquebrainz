@@ -84,8 +84,6 @@ def delete(id):
 @login_required
 def edit(id):
     comment = get_comment_or_404(id)
-    # if comment exists, review must exist
-    review = get_review_or_404(comment["review_id"])
     if comment["user"] != current_user:
         raise Unauthorized(gettext("Only the author can edit this comment."))
     if current_user.is_blocked:
