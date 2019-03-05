@@ -1,0 +1,13 @@
+Hi CritiqueBrainz moderator!
+
+{{username}} has just reported a spam review.
+
+Details:
+* Review link: {{review_link}}
+* Reviewed By: {{review_author}}
+* Reason for reporting spam: {{reason}}
+
+Please take a look at CritiqueBrainz reports page for more information.
+
+Best,
+The CritiqueBrainz Team

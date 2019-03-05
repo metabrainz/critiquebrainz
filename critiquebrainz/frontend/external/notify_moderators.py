@@ -1,5 +1,5 @@
 from brainzutils.mail import send_mail
-from flask import current_app
+from flask import current_app, render_template, url_for
 from critiquebrainz.db import users as db_users
 
 
@@ -15,16 +15,14 @@ def mail_review_report(user, reason, review):
     for mod_data in mods_data:
         if mod_data["email"]:
             mod_emails.append(mod_data["email"])
-    text = ("Hi CritiqueBrainz moderator!"
-            "{username} has just reported a spam review by {review_author}"
-            "Reason for report: {reason}."
-            "Please take a look at reports page for more information.\n"
-            "- The CritiqueBrainz Team").format(
-                username=user.display_name,
-                review_author=review["user"].display_name,
-                reason=reason,
-            )
     if mod_emails:
+        text = render_template(
+            "critiquebrainz/frontend/templates/review_report.txt",
+            username=user.display_name,
+            review_link=url_for("review.entity", id=review["id"]),
+            review_author=review["user"].display_name,
+            reason=reason,
+        )
         send_mail(
             subject="CritiqueBrainz Spam Review Report",
             text=text,
