@@ -149,7 +149,11 @@
         </div>
       {% endif %}
 
-      <div id="comments-section">{% include 'review/entity/comments.html' %}</div>
+      <hr/>
+      <div id="comments-section">
+        <h3> Comments ({{ comment_count }})</h3>
+        {% include 'review/entity/comments.html' %}
+      </div>
 
      </div>
   </div>
