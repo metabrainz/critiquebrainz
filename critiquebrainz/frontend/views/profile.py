@@ -22,11 +22,11 @@ def edit():
         })
         flash.success(gettext("Profile updated."))
         return redirect(url_for('user.reviews', user_id=current_user.id))
-    else:
-        form.display_name.data = current_user.display_name
-        form.email.data = current_user.email
-        form.show_gravatar.data = current_user.show_gravatar
-        form.license_choice.data = current_user.license_choice
+
+    form.display_name.data = current_user.display_name
+    form.email.data = current_user.email
+    form.show_gravatar.data = current_user.show_gravatar
+    form.license_choice.data = current_user.license_choice
     return render_template('profile/edit.html', form=form)
 
 

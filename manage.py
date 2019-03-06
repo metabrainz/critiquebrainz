@@ -155,7 +155,7 @@ def init_postgres(db_uri):
             raise Exception('Failed to create PostgreSQL user!')
 
     # Checking if database exists
-    exit_code = subprocess.call('sudo -u postgres psql -c "\q" %s' % db, shell=True)
+    exit_code = subprocess.call('sudo -u postgres psql -c "\\q" %s' % db, shell=True)
     if exit_code != 0:
         exit_code = subprocess.call('sudo -u postgres createdb -O %s %s' % (username, db), shell=True)
         if exit_code != 0:

@@ -60,11 +60,11 @@ def review_entity_handler(review_id):
             "license": {
               "full_name": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
               "id": "CC BY-NC-SA 3.0",
-              "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
+              "info_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/"
             },
             "popularity": 0,
             "source": "BBC",
-            "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
+            "source_url": "http://www.bbc.co.uk/music/reviews/3vfd",
             "text": "TEXT CONTENT OF REVIEW",
             "rating": 5,
             "user": {
@@ -307,11 +307,11 @@ def review_list_handler():
               "license": {
                 "full_name": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
                 "id": "CC BY-NC-SA 3.0",
-                "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
+                "info_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/"
               },
               "popularity": 0,
               "source": "BBC",
-              "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
+              "source_url": "http://www.bbc.co.uk/music/reviews/vh54",
               "text": "TEXT CONTENT OF REVIEW",
               "rating": 5,
               "user": {

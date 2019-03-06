@@ -182,7 +182,6 @@ def spotify_report():
 
 class UnsupportedSpotifyReferenceTypeException(Exception):
     """Exception for Unsupported Spotify Reference Types."""
-    pass
 
 
 def parse_spotify_id(spotify_ref):
@@ -199,13 +198,14 @@ def parse_spotify_id(spotify_ref):
         if spotify_ref.startswith('spotify:album:'):
             # Spotify URI
             return spotify_ref[14:]
-        elif spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
+
+        if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
             # Link to Spotify
             if spotify_ref.endswith('/'):
                 spotify_ref = spotify_ref[:-1]
             return os.path.split(urllib.parse.urlparse(spotify_ref).path)[-1]
-        else:
-            raise UnsupportedSpotifyReferenceTypeException("Unsupported Spotify Reference Type!")
+
+        raise UnsupportedSpotifyReferenceTypeException("Unsupported Spotify Reference Type!")
     except Exception as e:
         current_app.logger.error('Error "{}" occurred while parsing Spotify ID!'.format(e))
         # Raise exception if failed to parse!

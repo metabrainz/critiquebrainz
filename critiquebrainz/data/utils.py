@@ -43,8 +43,8 @@ def slugify(string):
     Also strips leading and trailing whitespace.
     """
     string = unicodedata.normalize('NFKD', string).encode('ascii', 'ignore').decode('ascii')
-    string = re.sub('[^\w\s-]', '', string).strip().lower()
-    return re.sub('[-\s]+', '-', string)
+    string = re.sub(r'[^\w\s-]', '', string).strip().lower()
+    return re.sub(r'[-\s]+', '-', string)
 
 
 def create_path(path):
@@ -110,8 +110,8 @@ def with_test_request_context(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         with frontend.create_app(
-            config_path=os.path.join(
-                os.path.dirname(os.path.realpath(__file__)),
-                '..', 'test_config.py')).test_request_context():
+                config_path=os.path.join(
+                    os.path.dirname(os.path.realpath(__file__)),
+                    '..', 'test_config.py')).test_request_context():
             return f(*args, **kwargs)
     return decorated
