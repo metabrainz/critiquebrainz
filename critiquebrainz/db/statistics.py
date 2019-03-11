@@ -26,6 +26,151 @@ _CACHE_NAMESPACE = "cb_statistics"
 _DEFAULT_CACHE_EXPIRATION = 1 * 60 * 60  # seconds (1 hour)
 
 
+def merge_rows(list_1, list_2, key):
+    """ Merges two lists of dicts based on key in dicts
+
+    Args:
+        list_1(list[dict(),]): A list of dictionaries
+        list_2(list[dict(),]): A list of dictionaries
+        key(string): key using which lists would be merged
+
+    Returns:
+        List of dictionaries updated after merging two lists
+    """
+
+    merged = dict()
+    for row in list_1 + list_2:
+        if row[key] in merged:
+            merged[row[key]].update(row)
+        else:
+            merged[row[key]] = row
+    return list(merged.values())
+
+
+def get_users_with_review_count(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1)):
+    """ Gets list of users with number of reviews they've submitted
+
+    Args:
+        from_date(datetime): Date from which contributions by users are to be considered.
+        to_date(datetime): Date upto which contributions by users are to be considered.
+
+    Returns:
+        List of dictionaries where each dictionary has the following structure:
+        {
+            "id": (uuid),
+            "display_name": (str),
+            "review_count": (int),
+        }
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT id,
+                   display_name,
+                   COALESCE(rc, 0) AS review_count
+              FROM "user"
+         LEFT JOIN (SELECT user_id,
+                           count(*) AS rc
+                      FROM review
+                     WHERE published_on >= :from_date AND published_on <= :to_date
+                       AND review.is_draft = 'f'
+                       AND review.is_hidden = 'f'
+                  GROUP BY user_id) AS num_review
+                ON "user".id = num_review.user_id
+        """), {
+            "from_date": from_date,
+            "to_date": to_date,
+        })
+
+        reviewers = result.fetchall()
+        if not reviewers:
+            raise db_exceptions.NoDataFoundException("Can't get users with review count!")
+        reviewers = [dict(reviewer) for reviewer in reviewers]
+        return reviewers
+
+
+def get_users_with_vote_count(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1)):
+    """ Gets list of users with number of votes they've submitted
+
+    Args:
+        from_date(datetime): Date from which contributions by users are to be considered.
+        to_date(datetime): Date upto which contributions by users are to be considered.
+
+    Returns:
+        List of dictionaries where each dictionary has the following structure:
+        {
+            "id": (uuid),
+            "display_name": (str),
+            "vote_count": (int),
+        }
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT id,
+                   display_name,
+                   COALESCE(vc, 0) AS vote_count
+              FROM "user"
+         LEFT JOIN (SELECT user_id,
+                           count(*) AS vc
+                      FROM vote
+                     WHERE rated_at >= :from_date AND rated_at <= :to_date
+                  GROUP BY user_id) AS num_votes
+                ON "user".id = num_votes.user_id
+        """), {
+            "from_date": from_date,
+            "to_date": to_date,
+        })
+
+        voters = result.fetchall()
+        if not voters:
+            raise db_exceptions.NoDataFoundException("Can't get users with vote count!")
+        voters = [dict(voter) for voter in voters]
+        return voters
+
+
+def get_users_with_comment_count(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1)):
+    """ Gets list of users with number of comments they've submitted
+
+    Args:
+        from_date(datetime): Date from which contributions by users are to be considered.
+        to_date(datetime): Date upto which contributions by users are to be considered.
+
+    Returns:
+        List of dictionaries where each dictionary has the following structure:
+        {
+            "id": (uuid),
+            "display_name": (str),
+            "comment_count": (int),
+        }
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT id,
+                   display_name,
+                   COALESCE(cc, 0) AS comment_count
+              FROM "user"
+         LEFT JOIN (SELECT user_id,
+                           count(*) AS cc
+                      FROM comment
+                 LEFT JOIN (SELECT comment_id,
+                                   min(timestamp) AS commented_at
+                              FROM comment_revision
+                          GROUP BY comment_id) AS comment_create
+                        ON comment.id = comment_create.comment_id
+                     WHERE commented_at >= :from_date AND commented_at <= :to_date
+                  GROUP BY user_id) AS num_comment
+                ON "user".id = num_comment.user_id
+        """), {
+            "from_date": from_date,
+            "to_date": to_date,
+        })
+
+        commenters = result.fetchall()
+        if not commenters:
+            raise db_exceptions.NoDataFoundException("Can't get users with comment count!")
+        commenters = [dict(commenter) for commenter in commenters]
+        return commenters
+
+
 def get_top_users(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1), review_weight=1,
                   comment_weight=1, vote_weight=1, limit=10):
     """ Gets list of top contributors based on number of reviews, votes and comments
@@ -52,83 +197,24 @@ def get_top_users(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1),
             "score": (int),
         }
     """
-    with db.engine.connect() as connection:
-        result = connection.execute(sqlalchemy.text("""
-            WITH score_table AS (
-                 SELECT id,
-                        display_name,
-                        COALESCE(rc, 0) AS review_count,
-                        COALESCE(cc, 0) AS comment_count,
-                        COALESCE(vc, 0) AS vote_count,
-                        (
-                            COALESCE(rc, 0)*:review_weight +
-                            COALESCE(cc, 0)*:comment_weight +
-                            COALESCE(vc, 0)*:vote_weight
-                        ) AS score
-                   FROM "user"
-              LEFT JOIN (
-                         SELECT user_id,
-                                count(*) AS rc
-                           FROM review
-                      LEFT JOIN (
-                                 SELECT review_id,
-                                        min(timestamp) AS reviewed_at
-                                   FROM revision
-                               GROUP BY review_id
-                                ) AS review_create
-                             ON review.id = review_create.review_id
-                          WHERE reviewed_at >= :from_date AND reviewed_at <= :to_date
-                            AND review.is_draft = 'f'
-                            AND review.is_hidden = 'f'
-                       GROUP BY user_id
-                        ) AS num_review
-                     ON "user".id = num_review.user_id
-              LEFT JOIN (
-                         SELECT user_id,
-                                count(*) AS cc
-                           FROM comment
-                      LEFT JOIN (
-                                 SELECT comment_id,
-                                        min(timestamp) AS commented_at
-                                   FROM comment_revision
-                               GROUP BY comment_id
-                                ) AS comment_create
-                             ON comment.id = comment_create.comment_id
-                          WHERE commented_at >= :from_date AND commented_at <= :to_date
-                            AND comment.is_draft = 'f'
-                            AND comment.is_hidden = 'f'
-                       GROUP BY user_id
-                                ) AS num_comment
-                     ON "user".id = num_comment.user_id
-              LEFT JOIN (
-                         SELECT user_id,
-                                count(*) AS vc
-                           FROM (
-                                 SELECT user_id
-                                   FROM vote
-                                  WHERE rated_at >= :from_date AND rated_at <= :to_date
-                                ) AS vote_before
-                       GROUP BY user_id
-                        ) AS num_vote
-                     ON "user".id = num_vote.user_id
-            ) SELECT * FROM score_table
-                      WHERE score != 0
-                   ORDER BY score DESC
-                      LIMIT :limit
-        """), {
-            "from_date": from_date,
-            "to_date": to_date,
-            "review_weight": review_weight,
-            "comment_weight": comment_weight,
-            "vote_weight": vote_weight,
-            "limit": limit,
-        })
 
-        top_scorers = result.fetchall()
-        if not top_scorers:
-            raise db_exceptions.NoDataFoundException("Can't get top users!")
-        rows = [dict(row) for row in top_scorers]
-        return rows
+    reviewers = get_users_with_review_count(from_date=from_date, to_date=to_date)
+    commenters = get_users_with_comment_count(from_date=from_date, to_date=to_date)
+    voters = get_users_with_vote_count(from_date=from_date, to_date=to_date)
+
+    # merge based on user_id
+    top_scorers = merge_rows(merge_rows(reviewers, commenters, "id"), voters, "id")
+
+    # add 'score' for each user
+    for user in top_scorers:
+        user["id"] = str(user["id"])
+        user["score"] = user["review_count"]*review_weight + user["comment_count"]*comment_weight + user["vote_count"]*vote_weight
+
+    # sort top_users by 'score' in descending order and keep only top 'limit' users
+    top_scorers = sorted(top_scorers, key=lambda row: row["score"], reverse=True)[:limit]
+    if top_scorers[0]["score"] == 0:
+        top_scorers = []
+    return top_scorers
 
 
 def get_top_users_overall():
@@ -158,9 +244,6 @@ def get_top_users_overall():
                 comment_weight=2,
                 vote_weight=1,
             )
-
-            for user in results:
-                user["id"] = str(user["id"])
 
             top_users = {
                 "users": results,
