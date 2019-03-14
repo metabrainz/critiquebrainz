@@ -469,6 +469,7 @@ def importer(archive):
         import_data(os.path.join(temp_dir, 'cbdump', 'review'), 'review')
         import_data(os.path.join(temp_dir, 'cbdump', 'revision'), 'revision')
         import_data(os.path.join(temp_dir, 'cbdump', 'avg_rating'), 'avg_rating')
+        import_data(os.path.join(temp_dir, 'cbdump', 'vote'), 'vote')
 
         shutil.rmtree(temp_dir)  # Cleanup
         print("Done!")
