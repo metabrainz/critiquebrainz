@@ -66,6 +66,12 @@ _TABLES = {
         "rating",
         "count",
     ),
+    "vote": (
+        "user_id",
+        "revision_id",
+        "vote",
+        "rated_at",
+    ),
 }
 
 
@@ -364,6 +370,23 @@ def create_reviews_archive(connection, *, location, meta_files_dir=None, license
         license_where_clause=license_where_clause,
     )
 
+    VOTE_SQL = """(
+        SELECT {columns}
+          FROM vote
+          JOIN ( SELECT revision.id
+                   FROM revision
+                   JOIN review
+                     ON review.id = revision.review_id
+                  WHERE review.is_hidden = false
+                    AND review.is_draft = false
+                        {license_where_clause}
+                ) AS rev
+            ON vote.revision_id = rev.id
+    )""".format(
+        columns=', '.join(['vote.' + column for column in _TABLES['vote']]),
+        license_where_clause=license_where_clause,
+    )
+
     with tarfile.open(os.path.join(location, archive_name), "w:bz2") as tar:
         # Dumping tables
         temp_dir = tempfile.mkdtemp()
@@ -380,6 +403,10 @@ def create_reviews_archive(connection, *, location, meta_files_dir=None, license
 
             with open(os.path.join(reviews_tables_dir, 'avg_rating'), 'w') as f:
                 cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
+
+            with open(os.path.join(reviews_tables_dir, 'vote'), 'w') as f:
+                cursor.copy_to(f, VOTE_SQL)
+
         except Exception as e:
             print("Error {} occurred while copying tables during the creation of the reviews archive!".format(e))
             raise
