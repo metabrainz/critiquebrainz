@@ -61,3 +61,14 @@ class VoteTestCase(DataTestCase):
             "revision_id": self.review["last_revision"]["id"],
             "vote": False,
         })
+
+    def test_get_count(self):
+        self.assertEqual(vote.get_count(), 0)
+        vote.submit(self.user_1.id, self.review["last_revision"]["id"], True)
+        self.assertEqual(vote.get_count(), 1)
+
+    def test_delete(self):
+        vote.submit(self.user_1.id, self.review["last_revision"]["id"], True)
+        self.assertEqual(vote.get_count(), 1)
+        vote.delete(self.user_1.id, self.review["last_revision"]["id"])
+        self.assertEqual(vote.get_count(), 0)
