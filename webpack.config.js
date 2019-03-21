@@ -1,20 +1,22 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-var ManifestPlugin = require('webpack-manifest-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+
+const frontEndStaticDir = path.resolve(__dirname, 'critiquebrainz/frontend/static');
 
 module.exports = {
   entry: {
-    main: path.resolve(__dirname, 'critiquebrainz/frontend/static/scripts/main.js'),
-    common: path.resolve(__dirname, 'critiquebrainz/frontend/static/scripts/common.js'),
-    leaflet: path.resolve(__dirname, 'critiquebrainz/frontend/static/scripts/leaflet.js'),
-    rating: path.resolve(__dirname, 'critiquebrainz/frontend/static/scripts/rating.js'),
-    spotify: path.resolve(__dirname, 'critiquebrainz/frontend/static/scripts/spotify.js'),
-    "wysiwyg-editor": path.resolve(__dirname, 'critiquebrainz/frontend/static/scripts/wysiwyg-editor.js'),
+    'main': path.resolve(frontEndStaticDir, 'scripts/main.js'),
+    'common': path.resolve(frontEndStaticDir, 'scripts/common.js'),
+    'leaflet': path.resolve(frontEndStaticDir, 'scripts/leaflet.js'),
+    'rating': path.resolve(frontEndStaticDir, 'scripts/rating.js'),
+    'spotify': path.resolve(frontEndStaticDir, 'scripts/spotify.js'),
+    'wysiwyg-editor': path.resolve(frontEndStaticDir, 'scripts/wysiwyg-editor.js'),
   },
   output: {
     path: path.resolve(__dirname, 'critiquebrainz/frontend/static/build/'),
-    filename: '[name].[hash].js',
+    filename: '[name].[contenthash].js',
   },
   module: {
     rules: [
@@ -52,12 +54,15 @@ module.exports = {
     }
     ]
   },
+  optimization: {
+    runtimeChunk: 'single'
+  },
   plugins: [
-  new MiniCssExtractPlugin({
-    filename: '[name].[hash].css',
-    chunkFilename: '[id].css'
-  }),
-  new CleanWebpackPlugin(),
-  new ManifestPlugin()
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].css'
+    }),
+    new CleanWebpackPlugin(),
+    new ManifestPlugin()
   ]
 };
