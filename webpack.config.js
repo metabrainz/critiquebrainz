@@ -54,9 +54,6 @@ module.exports = {
     }
     ]
   },
-  optimization: {
-    runtimeChunk: 'single'
-  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
