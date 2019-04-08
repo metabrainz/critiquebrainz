@@ -37,6 +37,7 @@ services:
       - db_test
       - critiquebrainz_redis
       - musicbrainz_db
+      - static_builder
 
   critiquebrainz_redis:
     image: redis:4.0-alpine
@@ -50,3 +51,12 @@ services:
       MB_IMPORT_DUMPS: "true"
     ports:
       - "5430:5432"
+
+  static_builder:
+    build:
+      context: ..
+      dockerfile: Dockerfile.webpack
+    command: npm run dev
+    volumes:
+      - ..:/code:z
+      - ../critiquebrainz/frontend/static:/static:z
