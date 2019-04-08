@@ -6,7 +6,8 @@
     "url": "https://github.com/metabrainz/critiquebrainz.git"
   },
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "dev": "webpack --watch --mode development"
   },
   "dependencies": {
     "bootstrap": "3.3.7",
