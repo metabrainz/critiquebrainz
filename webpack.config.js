@@ -19,7 +19,7 @@ module.exports = (env, argv) => {
     },
     output: {
       path: path.resolve(__dirname, 'critiquebrainz/frontend/static/build/'),
-      filename: '[name].[contenthash].js',
+      filename: isProd ? '[name].[contenthash].js' : '[name].js',
     },
     module: {
       rules: [
@@ -59,7 +59,7 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css',
+        filename: isProd ? '[name].[contenthash].css' : '[name].css',
         chunkFilename: '[name].[contenthash].css'
       }),
       new CleanWebpackPlugin(),
