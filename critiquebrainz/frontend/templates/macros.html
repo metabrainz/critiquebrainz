@@ -107,6 +107,16 @@
   </div>
 {%- endmacro %}
 
+{% macro show_external_reviews(reviews) %}
+  {% if reviews %}
+    {% for review in reviews %}
+      <li class="clearfix">
+        <a href="{{ review.url.url }}">{{ review.url.url }}</a>
+      </li>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
 {% macro show_tags(tags) %}
   {% if tags %}
     {% for tag in tags %}
