@@ -59,4 +59,3 @@ services:
     command: npm run dev
     volumes:
       - ..:/code:z
-      - ../critiquebrainz/frontend/static:/static:z

@@ -18,7 +18,7 @@ module.exports = (env, argv) => {
       'wysiwyg-editor': path.resolve(frontEndStaticDir, 'scripts/wysiwyg-editor.js'),
     },
     output: {
-      path: path.resolve(__dirname, 'critiquebrainz/frontend/static/build/'),
+      path: path.resolve(frontEndStaticDir, 'build/'),
       filename: isProd ? '[name].[contenthash].js' : '[name].js',
     },
     module: {
