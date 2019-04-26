@@ -1,4 +1,4 @@
-git+https://github.com/metabrainz/brainzutils-python.git@v1.7.0
+git+https://github.com/paramsingh/brainzutils-python.git@upgrade-dependencies
 beautifulsoup4==4.6.0
 coverage==4.4.1
 click==6.7
@@ -18,8 +18,6 @@ psycopg2==2.7.3
 pycountry==1.20
 python-dateutil==2.6.1
 rauth==0.7.3
-requests==2.18.3
-SQLAlchemy==1.1.13
 transifex-client==0.12.4
 WTForms==2.1
 langdetect==1.0.7
