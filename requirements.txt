@@ -1,4 +1,4 @@
-git+https://github.com/paramsingh/brainzutils-python.git@upgrade-dependencies
+git+https://github.com/metabrainz/brainzutils-python.git@v1.9.0
 beautifulsoup4==4.6.0
 coverage==4.4.1
 click==6.7
