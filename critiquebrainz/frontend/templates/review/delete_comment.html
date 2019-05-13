@@ -10,20 +10,22 @@
 {% endif %}
 
 {% block title %}
-  {{ _('Edit review of "%(entity)s"', entity=entity_title) }} - CritiqueBrainz
+  {{ _('Edit comment on %(user)s\'s review of "%(entity)s"', entity=entity_title, user=review['user'].display_name) }} - CritiqueBrainz
 {% endblock %}
 
 {% block content %}
-  <h2>{{ _('Deleting review') }}</h2>
+  <h2>{{ _('Deleting comment!') }}</h2>
   <hr />
   <form method="POST" role="form">
     <div class="form-group">
-      <p class="lead">{{ _('Are you sure you want to delete your review of "%(entity)s"?', entity=entity_title) }}</p>
+      <p class="lead">{{ _('Are you sure you want to delete your comment on %(user)s\'s review of "%(entity)s"?', entity=entity_title, user=review['user'].display_name) }}</p>
+      <p><b>You're deleting:</b></p>
+      <blockquote><p><i>{{ comment.text_html|safe }}</i></p></blockquote>
       <p class="text-warning">{{ _('There is no way to undo this action!') }}</p>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-danger">{{ _('Delete review') }}</button>
-      <a href="{{ request.referrer or url_for('.entity', id=review.id) }}" class="btn btn-default">{{ _('Cancel') }}</a>
+      <button type="submit" class="btn btn-danger">{{ _('Delete comment') }}</button>
+      <a href="{{ request.referrer or url_for('review.entity', id=review.id) }}" class="btn btn-default">{{ _('Cancel') }}</a>
     </div>
   </form>
 {% endblock %}

@@ -14,5 +14,5 @@ def entity(id):
         group_id = release_data['release-group']['id']
         url = '/release-group/' + str(group_id)
         return redirect(url, 301)
-    else:
-        raise NotFound(gettext("Sorry, we couldn't find a release with that MusicBrainz ID."))
+
+    raise NotFound(gettext("Sorry, we couldn't find a release with that MusicBrainz ID."))

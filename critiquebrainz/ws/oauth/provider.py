@@ -13,7 +13,7 @@ import critiquebrainz.db.oauth_grant as db_oauth_grant
 from critiquebrainz.db.user import User
 
 
-class CritiqueBrainzAuthorizationProvider(object):
+class CritiqueBrainzAuthorizationProvider:
 
     def init_app(self, app):
         self.token_length = app.config['OAUTH_TOKEN_LENGTH']

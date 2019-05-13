@@ -73,6 +73,18 @@ class User(AdminMixin):
     def reviews_today_count(self):
         return self.reviews_since_count(date.today())
 
+    def comments_since(self, date):
+        return db_users.get_comments(self.id, from_date=date)
+
+    def comments_since_count(self, date):
+        return len(db_users.get_comments(self.id, from_date=date))
+
+    def comments_today(self):
+        return self.comments_since(date.today())
+
+    def comments_today_count(self):
+        return self.comments_since_count(date.today())
+
     @property
     def user_type(self):
         def get_user_type(user):
@@ -93,6 +105,9 @@ class User(AdminMixin):
             votes_today=self.votes_today_count(),
             votes_last_7_days=self.votes_since_count(today - timedelta(days=7)),
             votes_this_month=self.votes_since_count(date(today.year, today.month, 1)),
+            comments_today=self.comments_today_count(),
+            comments_last_7_days=self.comments_since_count(today - timedelta(days=7)),
+            comments_this_month=self.comments_since_count(date(today.year, today.month, 1)),
         )
 
     def to_dict(self, includes=None, confidential=False):
@@ -131,6 +146,9 @@ class User(AdminMixin):
                 votes_today=self.votes_today_count(),
                 votes_last_7_days=self.votes_since_count(today - timedelta(days=7)),
                 votes_this_month=self.votes_since_count(date(today.year, today.month, 1)),
+                comments_today=self.comments_today_count(),
+                comments_last_7_days=self.comments_since_count(today - timedelta(days=7)),
+                comments_this_month=self.comments_since_count(date(today.year, today.month, 1)),
             )
 
         return response

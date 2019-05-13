@@ -7,7 +7,7 @@ from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
 from langdetect import detect
 from critiquebrainz.db.review import ENTITY_TYPES
-from critiquebrainz.db.moderation_log import ACTION_HIDE_REVIEW
+from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud
@@ -34,7 +34,7 @@ def get_review_or_404(review_id):
     try:
         review = db_review.get_by_id(review_id)
     except db_exceptions.NoDataFoundException:
-        raise NotFound("Can't find a review with ID: {review_id}".format(review_id=review_id))
+        raise NotFound(gettext("Can't find a review with ID: %(review_id)s!", review_id=review_id))
     return review
 
 
@@ -48,13 +48,13 @@ def browse():
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
-    reviews, count = db_review.list_reviews(sort='created', limit=limit, offset=offset, entity_type=entity_type)
+    reviews, count = db_review.list_reviews(sort='published_on', limit=limit, offset=offset, entity_type=entity_type)
     if not reviews:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count / limit))))
-        else:
-            if not entity_type:
-                raise NotFound(gettext("No reviews to display."))
+
+        if not entity_type:
+            raise NotFound(gettext("No reviews to display."))
 
     # Loading info about entities for reviews
     entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
@@ -78,8 +78,7 @@ def entity(id, rev=None):
         if not current_user.is_admin():
             raise Forbidden(gettext("Review has been hidden. "
                                     "You need to be an administrator to view it."))
-        else:
-            flash.warn(gettext("Review has been hidden."))
+        flash.warn(gettext("Review has been hidden."))
 
     spotify_mappings = None
     soundcloud_url = None
@@ -95,7 +94,8 @@ def entity(id, rev=None):
         raise NotFound(gettext("The revision you are looking for does not exist."))
 
     revision = db_revision.get(id, offset=count - rev)[0]
-    if not review["is_draft"] and current_user.is_authenticated:  # if user is logged in, get their vote for this review
+    if not review["is_draft"] and current_user.is_authenticated:
+        # if user is logged in, get their vote for this review
         try:
             vote = db_vote.get(user_id=current_user.id, revision_id=revision['id'])
         except db_exceptions.NoDataFoundException:
@@ -107,7 +107,9 @@ def entity(id, rev=None):
     else:
         review["text_html"] = markdown(revision['text'], safe_mode="escape")
 
-    user_all_reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
+    review["rating"] = revision["rating"]
+
+    user_all_reviews, _ = db_review.list_reviews(
         user_id=review["user_id"],
         sort="random",
         exclude=[review["id"]],
@@ -226,19 +228,19 @@ def create():
 
     # Checking if the user already wrote a review for this entity
     reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id)
-    review = reviews[0] if count is not 0 else None
+    review = reviews[0] if count != 0 else None
 
     if review:
         flash.error(gettext("You have already published a review for this entity!"))
         return redirect(url_for('review.entity', id=review["id"]))
 
+    if current_user.is_review_limit_exceeded:
+        flash.error(gettext("You have exceeded your limit of reviews per day."))
+        return redirect(url_for('user.reviews', user_id=current_user.id))
+
     form = ReviewCreateForm(default_license_id=current_user.license_choice, default_language=get_locale())
 
     if form.validate_on_submit():
-        if current_user.is_review_limit_exceeded:
-            flash.error(gettext("You have exceeded your limit of reviews per day."))
-            return redirect(url_for('user.reviews', user_id=current_user.id))
-
         is_draft = form.state.data == 'draft'
         if form.text.data == '':
             form.text.data = None
@@ -438,7 +440,7 @@ def hide(id):
     form = AdminActionForm()
     if form.validate_on_submit():
         db_review.set_hidden_state(review["id"], is_hidden=True)
-        db_moderation_log.create(admin_id=current_user.id, action=ACTION_HIDE_REVIEW,
+        db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_HIDE_REVIEW,
                                  reason=form.reason.data, review_id=review["id"])
         review_reports, count = db_spam_report.list_reports(review_id=review["id"])  # pylint: disable=unused-variable
         for report in review_reports:
@@ -446,14 +448,24 @@ def hide(id):
         flash.success(gettext("Review has been hidden."))
         return redirect(url_for('.entity', id=review["id"]))
 
-    return render_template('log/action.html', review=review, form=form, action=ACTION_HIDE_REVIEW)
+    return render_template('log/action.html', review=review, form=form, action=AdminActions.ACTION_HIDE_REVIEW.value)
 
 
-@review_bp.route('/<uuid:id>/unhide', methods=['POST'])
+@review_bp.route('/<uuid:id>/unhide', methods=['GET', 'POST'])
 @login_required
 @admin_view
 def unhide(id):
     review = get_review_or_404(id)
-    db_review.set_hidden_state(review["id"], is_hidden=False)
-    flash.success(gettext("Review is not hidden anymore."))
-    return redirect(request.referrer or url_for('user.reviews', user_id=current_user.id))
+    if not review["is_hidden"]:
+        flash.info(gettext("Review is not hidden."))
+        return redirect(url_for('.entity', id=review["id"]))
+
+    form = AdminActionForm()
+    if form.validate_on_submit():
+        db_review.set_hidden_state(review["id"], is_hidden=False)
+        db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_UNHIDE_REVIEW,
+                                 reason=form.reason.data, review_id=review["id"])
+        flash.success(gettext("Review is not hidden anymore."))
+        return redirect(url_for('.entity', id=review["id"]))
+
+    return render_template('log/action.html', review=review, form=form, action=AdminActions.ACTION_UNHIDE_REVIEW.value)

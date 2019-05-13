@@ -588,6 +588,7 @@ def get_popular(limit=None):
                     )
                    AND latest_revision.text IS NOT NULL
                    AND review.is_hidden = 'f'
+                   AND review.is_draft = 'f'
               GROUP BY review.id, latest_revision.id
               ORDER BY popularity
                  LIMIT :limit

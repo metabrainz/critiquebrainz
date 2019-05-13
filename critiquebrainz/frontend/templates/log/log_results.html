@@ -15,12 +15,22 @@
         {{ log.timestamp.strftime('%I:%M %p') }} -
         {% if log.action == "hide_review" %}
           {{
-            _('%(admin)s archived a %(review)s written by %(user)s',
+            _('%(admin)s hid a %(review)s written by %(user)s',
             admin=link_user(log.admin), review=link_review(log.review), user=link_user(log.review.user))
           }}
-         {% elif log.action == "block_user" %}
+        {% elif log.action == "unhide_review" %}
+          {{
+            _('%(admin)s unhid a %(review)s written by %(user)s',
+            admin=link_user(log.admin), review=link_review(log.review), user=link_user(log.review.user))
+          }}
+        {% elif log.action == "block_user" %}
           {{
             _('%(admin)s blocked %(user)s',
+            admin=link_user(log.admin), user=link_user(log.user))
+          }}
+        {% elif log.action == "unblock_user" %}
+          {{
+            _('%(admin)s unblocked %(user)s',
             admin=link_user(log.admin), user=link_user(log.user))
           }}
         {% endif %}

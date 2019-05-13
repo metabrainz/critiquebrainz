@@ -3,12 +3,18 @@ Methods here define logs for various activities that the moderators can take
 via the moderator interface. A new log entry is created for every action.
 """
 from datetime import datetime
+from enum import Enum
 import sqlalchemy
 from critiquebrainz import db
 
 
-ACTION_HIDE_REVIEW = "hide_review"
-ACTION_BLOCK_USER = "block_user"
+class AdminActions(Enum):
+    """ Enum for Admin Actions """
+
+    ACTION_HIDE_REVIEW = "hide_review"
+    ACTION_UNHIDE_REVIEW = "unhide_review"
+    ACTION_BLOCK_USER = "block_user"
+    ACTION_UNBLOCK_USER = "unblock_user"
 
 
 def create(*, admin_id, review_id=None, user_id=None,
@@ -19,12 +25,12 @@ def create(*, admin_id, review_id=None, user_id=None,
         admin_id (uuid): ID of the admin.
         user_id (uuid): ID of the user blocked.
         review_id (uuid): ID of the review hidden.
-        action (str): str("hide_review", "block_user").
+        action (AdminAction): a member of enum AdminActions.
         reason (str): Reason for blocking a user or hiding a review.
     """
     if not review_id and not user_id:
         raise ValueError("No review ID or user ID specified.")
-    if action != ACTION_BLOCK_USER and action != ACTION_HIDE_REVIEW:
+    if action not in AdminActions:
         raise ValueError("Please specify a valid action.")
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""
@@ -34,7 +40,7 @@ def create(*, admin_id, review_id=None, user_id=None,
             "admin_id": admin_id,
             "user_id": user_id,
             "review_id": review_id,
-            "action": action,
+            "action": action.value,
             "timestamp": datetime.now(),
             "reason": reason,
         })

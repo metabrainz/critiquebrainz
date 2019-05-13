@@ -41,6 +41,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             full_name="Created so we can fill the form correctly.",
         )
         self.review_text = "Testing! This text should be on the page."
+        self.review_rating = 3
         mb_release.browse_releases = MagicMock()
         current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
 
@@ -50,6 +51,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             entity_type="release_group",
             user_id=self.user.id,
             text=self.review_text,
+            rating=self.review_rating,
             is_draft=is_draft,
             license_id=self.license["id"],
         )
@@ -61,9 +63,38 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def test_entity(self):
         review = self.create_dummy_review()
+
+        # test review
         response = self.client.get("/review/%s" % review["id"])
         self.assert200(response)
         self.assertIn(self.review_text, str(response.data))
+        old_text = review["text"]
+
+        # test revisions
+        updated_text = "The text has now been updated"
+        updated_rating = 4
+        db_review.update(
+            review_id=review["id"],
+            drafted=False,
+            text=updated_text,
+            rating=updated_rating,
+            language=review["language"],
+            is_draft=review["is_draft"],
+        )
+
+        # test updated text and rating
+        response = self.client.get("/review/{}/revisions/2".format(review["id"]))
+        self.assert200(response)
+        self.assertIn(updated_text, str(response.data))
+        review_context = self.get_context_variable('review')
+        self.assertEqual(review_context['rating'], 4)
+
+        # test text and rating for older revision
+        response = self.client.get("/review/{}/revisions/1".format(review["id"]))
+        self.assert200(response)
+        self.assertIn(old_text, str(response.data))
+        review_context = self.get_context_variable('review')
+        self.assertEqual(review_context['rating'], 3)
 
     def test_draft_review(self):
         review = self.create_dummy_review(is_draft=True)
@@ -74,6 +105,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get("/review/aef06569-098f-4218-a577-b413944d9493")
         self.assert404(response)
 
+    # pylint: disable=unused-variable
     def test_create(self):
         data = dict(
             release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
@@ -85,6 +117,14 @@ class ReviewViewsTestCase(FrontendTestCase):
         )
 
         self.temporary_login(self.user)
+        # test for review limit exceeded message
+        with patch.object(User, 'is_review_limit_exceeded') as mock_is_review_limit_exceeded:
+            mock_is_review_limit_exceeded.return_value = True
+            response = self.client.post('/review/write', data=data,
+                                        query_string=data, follow_redirects=True)
+            self.assertIn("You have exceeded your limit of reviews per day.", str(response.data))
+
+        # test create review when review limit is not exceeded
         response = self.client.post('/review/write', data=data,
                                     query_string=data, follow_redirects=True)
         self.assert200(response)
@@ -134,7 +174,6 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.post("/review/%s/delete" % review["id"], follow_redirects=True)
         self.assert200(response)
 
-    # pylint: disable=unused-variable
     def test_vote_submit_delete(self):
         review = self.create_dummy_review()
 
@@ -145,7 +184,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.temporary_login(self.hacker)
 
         with patch.object(User, 'is_vote_limit_exceeded') as mock_is_vote_limit_exceeded:
-            mock_is_vote_limit_exceeded = MagicMock(return_value=True)
+            mock_is_vote_limit_exceeded.return_value = True
             response = self.client.post("/review/%s/vote" % review["id"], follow_redirects=True)
             self.assertIn("You have exceeded your limit of votes per day.", str(response.data))
 
@@ -197,3 +236,65 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get("/review/%s" % review["id"])
         self.assert200(response)
         self.assertIn("A great place.", str(response.data))
+
+    def test_hide_unhide(self):
+        # create a review by self.user and check it's not hidden
+        review = self.create_dummy_review()
+        self.assertEqual(review["is_hidden"], False)
+
+        # make self.hacker as current user
+        self.temporary_login(self.hacker)
+
+        # check that hide button is not visible to non-admin user
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert200(response)
+        self.assertNotIn("Hide this review", str(response.data))
+
+        # make self.hacker as admin
+        User.is_admin = MagicMock(return_value=True)
+
+        # check that hide button is visible to admin
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert200(response)
+        self.assertIn("Hide this review", str(response.data))
+
+        # hide the review
+        response = self.client.post(
+            "review/{}/hide".format(review["id"]),
+            data=dict(reason="Test hiding review."),
+            follow_redirects=True,
+        )
+        self.assertIn("Review has been hidden.", str(response.data))
+        review = db_review.get_by_id(review["id"])
+        self.assertEqual(review["is_hidden"], True)
+
+        # hiding already hidden review flashes message
+        response = self.client.post(
+            "review/{}/hide".format(review["id"]),
+            data=dict(reason="Test hiding already hidden review."),
+            follow_redirects=True,
+        )
+        self.assertIn("Review is already hidden.", str(response.data))
+
+        # check that unhide button is visible to admin
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert200(response)
+        self.assertIn("Unhide this review", str(response.data))
+
+        # unhide review
+        response = self.client.post(
+            "review/{}/unhide".format(review["id"]),
+            data=dict(reason="Test unhiding a hidden review."),
+            follow_redirects=True,
+        )
+        self.assertIn("Review is not hidden anymore.", str(response.data))
+        review = db_review.get_by_id(review["id"])
+        self.assertEqual(review["is_hidden"], False)
+
+        # unhide a non-hidden review
+        response = self.client.post(
+            "review/{}/unhide".format(review["id"]),
+            data=dict(reason="Test unhiding an already visible review."),
+            follow_redirects=True,
+        )
+        self.assertIn("Review is not hidden.", str(response.data))

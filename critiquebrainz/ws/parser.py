@@ -5,15 +5,15 @@ from critiquebrainz.utils import validate_uuid
 from critiquebrainz.ws.exceptions import MissingDataError, ParserError
 
 
-class Parser(object):
+class Parser:
 
     @classmethod
     def get_dict(cls, src):
         if src == 'uri':
             return request.args
-        elif src == 'form':
+        if src == 'form':
             return request.form
-        elif src == 'json':
+        if src == 'json':
             return request.json
 
     @classmethod
@@ -53,8 +53,8 @@ class Parser(object):
             return None
         if _i.isdigit() is False:
             raise ParserError(key, 'NaN')
-        else:
-            _i = int(_i)
+
+        _i = int(_i)
         if max is not None and _i > max:
             raise ParserError(key, 'too large (max=%d)' % max)
         if min is not None and _i < min:
@@ -85,7 +85,7 @@ class Parser(object):
         _e = cls.get_key(src, key, optional)
         if not _e:
             return None
-        if not re.match("[^@]+@[^@]+\.[^@]+", _e):
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", _e):
             raise ParserError(key, 'not valid email')
         return _e
 
