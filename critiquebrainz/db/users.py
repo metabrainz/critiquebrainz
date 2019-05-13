@@ -449,7 +449,7 @@ def reviews(user_id):
     return [dict(row) for row in rows]
 
 
-def get_votes(user_id, from_date='1-1-1970'):
+def get_votes(user_id, from_date=datetime.utcfromtimestamp(0)):
     """Get votes by a user from a specified time.
 
     Args:
@@ -479,7 +479,7 @@ def get_votes(user_id, from_date='1-1-1970'):
     return [dict(row) for row in rows]
 
 
-def get_reviews(user_id, from_date='1-1-1970'):
+def get_reviews(user_id, from_date=datetime.utcfromtimestamp(0)):
     """Get reviews by a user from a specified time.
 
     Args:
@@ -521,6 +521,51 @@ def get_reviews(user_id, from_date='1-1-1970'):
                       FROM revision
                   GROUP BY review_id) AS review_create
                 ON review.id = review_id
+             WHERE user_id = :user_id
+               AND creation_time > :from_date
+        """), {
+            "user_id": user_id,
+            "from_date": from_date
+        })
+
+        rows = result.fetchall()
+    return [dict(row) for row in rows]
+
+
+def get_comments(user_id, from_date=datetime.utcfromtimestamp(0)):
+    """Get comments on reviews by a user from a specified time.
+
+    Args:
+        user_id(uuid): ID of the user.
+        from_date(datetime): Date from which comments on reviews submitted by user are to be returned.
+
+    Returns:
+        List of reviews by the user from the time specified
+        {
+            "id": (uuid),
+            "review_id": (uuid),
+            "user_id": (uuid),
+            "edits": (int),
+            "is_draft": (bool),
+            "is_hidden": (bool),
+            "creation_time": (str),
+        }
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT id,
+                   review_id,
+                   user_id,
+                   edits,
+                   is_draft,
+                   is_hidden,
+                   creation_time
+              FROM comment
+         LEFT JOIN (SELECT comment_id,
+                           min(timestamp) AS creation_time
+                      FROM comment_revision
+                  GROUP BY comment_id) AS comment_create
+                ON comment.id = comment_id
              WHERE user_id = :user_id
                AND creation_time > :from_date
         """), {

@@ -37,7 +37,7 @@ def user_me_handler(user):
             "karma": 0,
             "musicbrainz_username": "username/id associated with musicbrainz",
             "id": "your-unique-user-id",
-            "avatar": "https:\/\/gravatar.com\/your-gravatar-link"
+            "avatar": "https://gravatar.com/your-gravatar-link"
           }
         }
 
@@ -81,10 +81,10 @@ def user_applications_handler(user):
         {
           "applications": [
             {
-              "website": "https:\/\/your-website.com",
+              "website": "https://your-website.com",
               "user_id": "your-unique-user-id",
               "name": "Name of your Application",
-              "redirect_uri": "https:\/\/your-call-back.com/uri",
+              "redirect_uri": "https://your-call-back.com/uri",
               "client_id": "your Oauth client ID",
               "client_secret": "your super-secret Oauth client secret",
               "desc": "Application description set by you."
@@ -120,10 +120,10 @@ def user_tokens_handler(user):
             {
               "scopes": "user",
               "client": {
-                "website": "https:\/\/your-website.com",
+                "website": "https://your-website.com",
                 "user_id": "your-unique-user-id",
                 "name": "Name of your Application",
-                "redirect_uri": "https:\/\/your-call-back.com/uri",
+                "redirect_uri": "https://your-call-back.com/uri",
                 "client_id": "your Oauth client ID",
                 "client_secret": "your super-secret Oauth client secret",
                 "desc": "Application description set by you."
