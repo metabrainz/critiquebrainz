@@ -42,7 +42,7 @@ services:
     image: redis:4.0-alpine
 
   musicbrainz_db:
-    image: metabrainz/musicbrainz-test-database:schema-change-2017-q2
+    image: metabrainz/musicbrainz-test-database:beta
     volumes:
       - ../data/mbdata:/var/lib/postgresql/data/pgdata:z
     environment:
