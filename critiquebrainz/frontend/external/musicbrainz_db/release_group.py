@@ -93,6 +93,7 @@ def fetch_multiple_release_groups(mbids, *, includes=None):
                 db=db,
                 entity_model=models.ReleaseGroup,
                 tag_model=models.ReleaseGroupTag,
+                foreign_tag_id=models.ReleaseGroupTag.release_group_id,
                 entity_ids=release_group_ids,
             )
             for release_group_id, tags in release_group_tags:
