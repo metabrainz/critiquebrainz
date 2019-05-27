@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_avg_rating, entity_rate_form with context %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_external_reviews with context %}
 
 {% block title %}{{ event.name }} - CritiqueBrainz{% endblock %}
 
@@ -126,6 +126,13 @@
             {% endfor %}
           </ul>
         {% endfor %}
+      {% endif %}
+
+      {% if external_reviews %}
+        <b>{{ _('External reviews') }}</b>
+        <ul class="list-unstyled external-links">
+          {{ show_external_reviews(external_reviews) }}
+        </ul>
       {% endif %}
 
       <div class="external-links">

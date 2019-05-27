@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating, entity_rate_form with context %}
+{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating, entity_rate_form, show_external_reviews with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -148,6 +148,12 @@
     <p>
       {% if release_group['first-release-date'] %}{{ _('First release in %(year)s', year=release_group['first-release-date'][:4]) }}{% endif %}
     </p>
+    {% if external_reviews %}
+      <b>{{ _('External reviews') }}</b>
+      <ul class="list-unstyled external-links">
+        {{ show_external_reviews(external_reviews) }}
+      </ul>
+    {% endif %}
     {% if release_group['external-urls'] %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">

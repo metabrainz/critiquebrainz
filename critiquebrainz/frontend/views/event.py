@@ -40,6 +40,11 @@ def entity(id):
     except mb_exceptions.NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find an event with that MusicBrainz ID."))
 
+    if 'url-rels' in event:
+        external_reviews = list(filter(lambda rel: rel['type'] == 'review', event['url-rels']))
+    else:
+        external_reviews = []
+
     if 'artist-rels' in event and event['artist-rels']:
         artists_sorted = sorted(event['artist-rels'], key=itemgetter('type'))
         event['artists_grouped'] = groupby(artists_sorted, itemgetter('type'))
@@ -69,5 +74,5 @@ def entity(id):
     avg_rating = get_avg_rating(event['id'], "event")
 
     return render_template('event/entity.html', id=event['id'], event=event, reviews=reviews,
-                           rating_form=rating_form, my_review=my_review, limit=limit, offset=offset,
-                           count=count, avg_rating=avg_rating, current_user=current_user)
+                           rating_form=rating_form, my_review=my_review, external_reviews=external_reviews,
+                           limit=limit, offset=offset, count=count, avg_rating=avg_rating, current_user=current_user)
