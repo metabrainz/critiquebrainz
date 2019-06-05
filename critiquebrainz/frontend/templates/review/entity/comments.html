@@ -67,6 +67,7 @@
             // update button is clicked first time for this comment,
             // define new commentUpdateForm, and append it to comment div
             let commentUpdateFormHtml = $(`
+              <br>
               <div class="comment-update-form" style="display: none;">
                 <form method="POST" class="form-horizontal" role="form" action="{{ url_for('comment.edit', id='commentDivId') }}">
                   <div class="form-group">
