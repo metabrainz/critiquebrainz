@@ -64,5 +64,66 @@
       </td>
     </tr>
 
+  {% elif type=="work" %}
+    <tr>
+      <td>
+        <a href="{{ url_for('work.entity', id=result.id) }}">{{ result['title'] }}</a>
+      </td>
+      <td>
+        {% if result['artist-relation-list'] %}
+          <a href="{{ url_for('artist.entity', mbid=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+          {% set count = result['artist-relation-list'] | length %}
+          {% if count > 1 %}
+            + {{ count - 1 }} {{ _("more") }}
+          {% endif %}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>
+        {{ result['type'] or '-' }}
+      </td>
+      <td>
+        {{ result['language'] or '-' }}
+      </td>
+    </tr>
+
+  {% elif type=="label" %}
+    <tr>
+      <td>
+        <a href="{{ url_for('label.entity', id=result.id) }}">{{ result['name'] }}</a>
+      </td>
+      <td>
+        {{ result['type'] or '-' }}
+      </td>
+      <td>
+        {{ result['country'] or '-' }}
+      </td>
+    </tr>
+
+  {% elif type=="recording" %}
+    <tr>
+      <td>
+        <a href="{{ url_for('recording.entity', id=result.id) }}">{{ result['title'] }}</a>
+      </td>
+      <td>
+        {% if result['length'] %}
+          {{ result['length'] | track_length }}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>
+        <a href="{{ url_for('artist.entity', mbid=result['artist-credit'][0].artist.id) }}">{{ result['artist-credit'][0]['artist']['name'] or '-' }}</a>
+      </td>
+      <td>
+        {% if result['release-list'] %}
+          <a href="{{ url_for('release.entity', id=result['release-list'][0].id) }}">{{ result['release-list'][0].title or '-' }}</a>
+        {% else %}
+          -
+        {% endif %}
+      </td>
+    </tr>
+
   {% endif %}
 {% endfor %}

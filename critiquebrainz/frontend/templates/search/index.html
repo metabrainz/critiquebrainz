@@ -23,10 +23,13 @@
     <label for="type-selector" class="col-sm-2 control-label">{{ _('Type') }}</label>
     <div class="col-sm-2">
       <select id="type-selector" name="type" class="form-control">
-        <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>{{ _('Artist') }}</option>
         <option value="release-group" {% if type=="release-group" %}selected="selected"{% endif %}>{{ _('Release group') }}</option>
+        <option value="recording" {% if type=="recording" %}selected="selected"{% endif %}>{{ _('Recording') }}</option>
+        <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>{{ _('Artist') }}</option>
         <option value="event" {% if type=="event" %}selected="selected"{% endif %}>{{ _('Event') }}</option>
+        <option value="label" {% if type=="label" %}selected="selected"{% endif %}>{{ _('Label') }}</option>
         <option value="place" {% if type=="place" %}selected="selected"{% endif %}>{{ _('Place') }}</option>
+        <option value="work" {% if type=="work" %}selected="selected"{% endif %}>{{ _('Work') }}</option>
       </select>
     </div>
   </div>
@@ -69,6 +72,26 @@
           <th>{{ _('Release group') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Type') }}</th>
+        </tr>
+      {% elif type=="work" %}
+        <tr>
+          <th>{{ _('Title') }}</th>
+          <th>{{ _('Artists') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Language') }}</th>
+        </tr>
+      {% elif type=="recording" %}
+        <tr>
+          <th>{{ _('Title') }}</th>
+          <th>{{ _('Length') }}</th>
+          <th>{{ _('Artist') }}</th>
+          <th>{{ _('Release group') }}</th>
+        </tr>
+      {% elif type=="label" %}
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Country') }}</th>
         </tr>
       {% endif %}
       </thead>

@@ -44,3 +44,21 @@ def search_places(query='', limit=None, offset=None):
     """Search for places."""
     api_resp = musicbrainzngs.search_places(query=query, limit=limit, offset=offset)
     return api_resp.get('place-count'), api_resp.get('place-list')
+
+
+def search_works(query='', limit=None, offset=None):
+    """Search for works."""
+    api_resp = musicbrainzngs.search_works(query=query, limit=limit, offset=offset)
+    return api_resp.get('work-count'), api_resp.get('work-list')
+
+
+def search_labels(query='', limit=None, offset=None):
+    """Search for labels."""
+    api_resp = musicbrainzngs.search_labels(query=query, limit=limit, offset=offset)
+    return api_resp.get('label-count'), api_resp.get('label-list')
+
+
+def search_recordings(query='', limit=None, offset=None):
+    """Search for recordings."""
+    api_resp = musicbrainzngs.search_recordings(query=query, limit=limit, offset=offset)
+    return api_resp.get('recording-count'), api_resp.get('recording-list')
