@@ -1,0 +1,24 @@
+{% extends 'review/entity/base.html' %}
+
+{% set recording = review.entity_id | entity_details(type='recording') %}
+
+{% block title %}
+  {% set recording_title = recording.name | default(_('[Unknown recording]')) %}
+  {{ _('Review of "%(recording)s" by %(user)s', recording=recording_title, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block entity_title %}
+  <h2 id="title">
+    {% if recording %}
+      {% set recording_name = '<a href="%s">' | safe % url_for('recording.entity', id=review.entity_id) ~ recording.name ~ '</a>'|safe %}
+    {% else %}
+      {% set recording_name =  _('[Unknown recording]') %}
+    {% endif %}
+
+    {{ _('%(recording)s', recording=recording_name) }}
+
+    {% if recording['life-span'] %}
+      <small>{{ recording['life-span']['begin'][:4] }}</small>
+    {% endif %}
+  </h2>
+{% endblock %}
