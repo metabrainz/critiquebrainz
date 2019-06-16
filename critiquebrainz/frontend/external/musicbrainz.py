@@ -55,3 +55,9 @@ def search_labels(query='', limit=None, offset=None):
     """Search for labels."""
     api_resp = musicbrainzngs.search_labels(query=query, limit=limit, offset=offset)
     return api_resp.get('label-count'), api_resp.get('label-list')
+
+
+def search_recordings(query='', limit=None, offset=None):
+    """Search for recordings."""
+    api_resp = musicbrainzngs.search_recordings(query=query, limit=limit, offset=offset)
+    return api_resp.get('recording-count'), api_resp.get('recording-list')

@@ -131,6 +131,36 @@
     </td>
     <td>
       <input type="radio" name="label" value="{{ result['id'] }}">
+      <input type="radio" name="artist" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
+{% elif type=="recording" %}
+  <tr>
+    <td>
+      <a href="{{ url_for('recording.entity', id=result.id) }}" target="_blank">{{ result['name'] }}</a>
+    </td>
+    <td>
+      {% if result['length'] %}
+        {{ result['length'] | track_length }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      <a href="{{ url_for('artist.entity', mbid=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit'][0]['artist']['name'] or '-' }}</a>
+    </td>
+    <td>
+      {% if result['release-list'] %}
+        <td>
+          <a href="{{ url_for('release.entity', id=result['release-list'][0].id) }}" target="_blank">{{ result['release-list'][0].title or '-' }}</a>
+        </td>
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      <input type="radio" name="recording" value="{{ result['id'] }}">
     </td>
   </tr>
 
