@@ -70,8 +70,10 @@ def create_app(debug=None, config_path=None):
     add_robots(app)
 
     # MusicBrainz Database
+    from brainzutils import musicbrainz_db as brainzutils_db
     from critiquebrainz.frontend.external import musicbrainz_db
     musicbrainz_db.init_db_engine(app.config.get('MB_DATABASE_URI'))
+    brainzutils_db.init_db_engine(app.config.get('MB_DATABASE_URI'))
 
     # Redis (cache)
     from brainzutils import cache
