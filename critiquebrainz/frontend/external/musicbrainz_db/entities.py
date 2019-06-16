@@ -1,6 +1,8 @@
 from critiquebrainz.frontend.external.musicbrainz_db.release_group import fetch_multiple_release_groups, get_release_group_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.place import fetch_multiple_places, get_place_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.event import fetch_multiple_events, get_event_by_id
+from critiquebrainz.frontend.external.musicbrainz_db.artist import get_artist_by_id
+from brainzutils.musicbrainz_db.artist import fetch_multiple_artists
 
 
 def get_multiple_entities(entities):
@@ -20,11 +22,15 @@ def get_multiple_entities(entities):
     """
     entities_info = {}
     release_group_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'release_group', entities)]
+    artist_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'artist', entities)]
     place_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'place', entities)]
     event_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'event', entities)]
     entities_info.update(fetch_multiple_release_groups(
         release_group_mbids,
         includes=['artists'],
+    ))
+    entities_info.update(fetch_multiple_artists(
+        artist_mbids,
     ))
     entities_info.update(fetch_multiple_places(
         place_mbids,
@@ -39,6 +45,8 @@ def get_entity_by_id(id, type='release_group'):
     """A wrapper to call the correct get_*_by_id function."""
     if type == 'release_group':
         entity = get_release_group_by_id(str(id))
+    elif type == 'artist':
+        entity = get_artist_by_id(str(id))
     elif type == 'place':
         entity = get_place_by_id(str(id))
     elif type == 'event':
