@@ -20,6 +20,7 @@ ENTITY_TYPES = [
     "place",
     "release_group",
     "artist",
+    "label",
 ]
 
 

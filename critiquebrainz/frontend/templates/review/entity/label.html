@@ -1,0 +1,24 @@
+{% extends 'review/entity/base.html' %}
+
+{% set label = review.entity_id | entity_details(type='label') %}
+
+{% block title %}
+  {% set label_title = label.name | default(_('[Unknown label]')) %}
+  {{ _('Review of "%(label)s" by %(user)s', label=label_title, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block entity_title %}
+  <h2 id="title">
+    {% if label %}
+      {% set label_name = '<a href="%s">' | safe % url_for('label.entity', id=review.entity_id) ~ label.name ~ '</a>'|safe %}
+    {% else %}
+      {% set label_name =  _('[Unknown label]') %}
+    {% endif %}
+
+    {{ _('%(label)s', label=label_name) }}
+
+    {% if label['life-span'] %}
+      <small>{{ label['life-span']['begin'][:4] }}</small>
+    {% endif %}
+  </h2>
+{% endblock %}

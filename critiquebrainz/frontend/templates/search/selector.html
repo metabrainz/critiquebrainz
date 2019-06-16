@@ -175,12 +175,12 @@
             <th>{{ _('Name') }}</th>
             <th>{{ _('Type') }}</th>
             <th>{{ _('Country') }}</th>
+            <th></th>
           </tr>
         {% endif %}
         </thead>
         <tbody id="results">{% include 'search/selector_results.html' %}</tbody>
       </table>
-
       <div class="row">
         {% if count > limit %}
           <div class="col-md-6">
