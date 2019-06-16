@@ -18,6 +18,9 @@
       <li {% if type=="place" %}class="active"{% endif %}>
         <a href="#place" data-toggle="tab">Place</a>
       </li>
+      <li {% if type=="recording" %}class="active"{% endif %}>
+        <a href="#recording" data-toggle="tab">{{ _('Recording') }}</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -101,6 +104,26 @@
         </form>
       </div>
 
+      <div id="recording" class="tab-pane {% if type=="recording" %}active{% endif %}">
+        <h3>{{ _('Recording selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Recording') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="recording" type="text"
+                      value="{{ request.args.get('recording', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="recording" />
+        </form>
+      </div>
+      
     </div>
   </div>
 
@@ -109,6 +132,7 @@
   or request.args.get('release_group', default=False)
   or request.args.get('event', default=False)
   or request.args.get('place', default=False)
+  or request.args.get('recording', default=False)
 %}
   <hr />
   {% if not results %}
@@ -145,6 +169,13 @@
             <th>{{ _('Type') }}</th>
             <th>{{ _('Location') }}</th>
             <th></th>
+          </tr>
+        {% elif type=="recording" %}
+          <tr>
+            <th>{{ _('Title') }}</th>
+            <th>{{ _('Length') }}</th>
+            <th>{{ _('Artist') }}</th>
+            <th>{{ _('Release group') }}</th>
           </tr>
         {% endif %}
         </thead>

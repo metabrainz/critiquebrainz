@@ -113,7 +113,7 @@
               <tr>
                 <td>{{ track.number }}</td>
                 <td>
-                  <a href="http://acousticbrainz.org/{{ track.recording_id }}" title="View on AcousticBrainz">
+                  <a href="{{ url_for('recording.entity', id=track.recording_id) }}">
                     {{ track.recording_title }}
                   </a>
                 </td>
