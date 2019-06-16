@@ -53,6 +53,13 @@
         {{ _('Artist') }}
       </span>
     {% endif %}
+  {% elif entity_type == 'recording'  %}
+    <img src="{{ get_static_path('images/placeholder_disc.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type recording">
+        {{ _('Recording') }}
+      </span>
+    {% endif %}
   {% else %} {# release-group #}
     <img {{ attributes }} />
     {% if overlay_type %}

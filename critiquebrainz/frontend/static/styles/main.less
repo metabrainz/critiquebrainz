@@ -11,6 +11,7 @@
 // Entity colors
 @rg-color: @blue;
 @artist-color: @blue;
+@recording-color: @blue;
 @event-color: @green;
 @place-color: @yellow;
 
@@ -127,6 +128,8 @@ ul.sharing {
     }
     &.artist {
       background-color: fade(@artist-color, 70%);
+    &.recording {
+      background-color: fade(@recording-color, 70%);
     }
     &.place {
       background-color: fade(@place-color, 70%);
@@ -489,6 +492,8 @@ a#edit-review { margin-top: 20px; }
           }
           &.artist {
             background-color: fade(@artist-color, 70%);
+          &.recording {
+            background-color: fade(@recording-color, 70%);
           }
           &.place {
             background-color: fade(@place-color, 70%);
