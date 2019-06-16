@@ -138,7 +138,7 @@
 {% elif type=="recording" %}
   <tr>
     <td>
-      <a href="{{ url_for('recording.entity', id=result.id) }}" target="_blank">{{ result['name'] }}</a>
+      <a href="{{ url_for('recording.entity', id=result.id) }}" target="_blank">{{ result['title'] }}</a>
     </td>
     <td>
       {% if result['length'] %}
@@ -152,9 +152,7 @@
     </td>
     <td>
       {% if result['release-list'] %}
-        <td>
-          <a href="{{ url_for('release.entity', id=result['release-list'][0].id) }}" target="_blank">{{ result['release-list'][0].title or '-' }}</a>
-        </td>
+        <a href="{{ url_for('release.entity', id=result['release-list'][0].id) }}" target="_blank">{{ result['release-list'][0].title or '-' }}</a>
       {% else %}
         -
       {% endif %}
