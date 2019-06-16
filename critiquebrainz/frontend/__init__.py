@@ -135,6 +135,7 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.artist import artist_bp
     from critiquebrainz.frontend.views.release_group import release_group_bp
     from critiquebrainz.frontend.views.release import release_bp
+    from critiquebrainz.frontend.views.work import work_bp
     from critiquebrainz.frontend.views.event import event_bp
     from critiquebrainz.frontend.views.mapping import mapping_bp
     from critiquebrainz.frontend.views.user import user_bp
@@ -155,6 +156,7 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(artist_bp, url_prefix='/artist')
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
     app.register_blueprint(release_bp, url_prefix='/release')
+    app.register_blueprint(work_bp, url_prefix='/work')
     app.register_blueprint(event_bp, url_prefix='/event')
     app.register_blueprint(place_bp, url_prefix='/place')
     app.register_blueprint(mapping_bp, url_prefix='/mapping')

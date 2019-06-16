@@ -15,6 +15,9 @@
       <li {% if type=="place" %}class="active"{% endif %}>
         <a href="#place" data-toggle="tab">Place</a>
       </li>
+      <li {% if type=="work" %}class="active"{% endif %}>
+        <a href="#work" data-toggle="tab">{{ _('Work') }}</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -85,6 +88,26 @@
         </form>
       </div>
 
+      <div id="work" class="tab-pane {% if type=="work" %}active{% endif %}">
+        <h3>{{ _('Work selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Work') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="work" type="text"
+                      value="{{ request.args.get('work', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="work" />
+        </form>
+      </div>
+
     </div>
   </div>
 
@@ -93,6 +116,7 @@
   or request.args.get('release_group', default=False)
   or request.args.get('event', default=False)
   or request.args.get('place', default=False)
+  or request.args.get('work', default=False)
 %}
   <hr />
   {% if not results %}
@@ -121,6 +145,13 @@
             <th>{{ _('Type') }}</th>
             <th>{{ _('Location') }}</th>
             <th></th>
+          </tr>
+        {% elif type=="work" %}
+          <tr>
+            <th>{{ _('Title') }}</th>
+            <th>{{ _('Artists') }}</th>
+            <th>{{ _('Type') }}</th>
+            <th>{{ _('Language') }}</th>
           </tr>
         {% endif %}
         </thead>
