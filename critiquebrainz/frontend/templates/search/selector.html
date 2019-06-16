@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ _('Entity selection') }} - CritiqueBrainz{% endblock %}
-{% set type = request.args.get('type', default='release-group') %}
+{% set type = request.args.get('type', default='artist') %}
 
 {% block content %}
   <div id="content">
     <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+      <li {% if type=="artist" %}class="active"{% endif %}>
+        <a href="#artist" data-toggle="tab">{{ _('Artist') }}</a>
+      </li>
       <li {% if type=="release-group" %}class="active"{% endif %}>
         <a href="#release-group" data-toggle="tab">{{ _('Release Group') }}</a>
       </li>
@@ -18,16 +21,29 @@
     </ul>
 
     <div class="tab-content">
+      <div id="artist" class="tab-pane {% if type=="artist" %}active{% endif %}">
+        <h3>{{ _('Artist selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Artist') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="artist" type="text"
+                      value="{{ request.args.get('artist', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="artist" />
+        </form>
+      </div>
+    
       <div id="release-group" class="tab-pane {% if type=="release-group" %}active{% endif %}">
         <h3>{{ _('Release group selection') }}</h3>
         <form method="GET" class="form-horizontal" role="form">
-          <div class="form-group">
-            <label for="input-artist" class="col-sm-2 control-label">{{ _('Artist') }}</label>
-            <div class="col-sm-4">
-              <input id="input-artist" class="form-control" name="artist" type="text"
-                     value="{{ request.args.get('artist', default='') }}">
-            </div>
-          </div>
           <div class="form-group">
             <label for="input-release-group" class="col-sm-2 control-label">{{ _('Release group') }}</label>
             <div class="col-sm-4">
@@ -106,6 +122,14 @@
             <th>{{ _('Artist') }}</th>
             <th>{{ _('Release group') }}</th>
             <th>{{ _('Type') }}</th>
+            <th></th>
+          </tr>
+        {% elif type == "artist"  %}
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Type') }}</th>
+            <th>{{ _('Gender') }}</th>
+            <th>{{ _('Area') }}</th>
             <th></th>
           </tr>
         {% elif type == "event"  %}

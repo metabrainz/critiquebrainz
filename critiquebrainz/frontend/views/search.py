@@ -44,17 +44,18 @@ def more():
 
 @search_bp.route('/selector')
 def selector():
-    artist = request.args.get('artist')
     release_group = request.args.get('release_group')
+    artist = request.args.get('artist')
     event = request.args.get('event')
     place = request.args.get('place')
     type = request.args.get('type')
     next = request.args.get('next')
     if not next:
         return redirect(url_for('frontend.index'))
-    if artist or release_group:
-        count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
-                                                           limit=RESULTS_LIMIT)
+    if release_group:
+        count, results = musicbrainz.search_release_groups(release_group, limit=RESULTS_LIMIT)
+    elif artist:
+        count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT)
     elif event:
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT)
     elif place:
@@ -77,8 +78,10 @@ def selector_more():
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
     if type == 'release-group':
-        count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
+        count, results = musicbrainz.search_release_groups(release_group,
                                                            limit=RESULTS_LIMIT, offset=offset)
+    elif type == 'artist':
+        count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'event':
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'place':
