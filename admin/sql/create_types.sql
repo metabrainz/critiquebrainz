@@ -11,5 +11,6 @@ CREATE TYPE entity_types AS ENUM (
     'place',
     'work',
     'artist',
-    'label'
+    'label',
+    'recording'
 );
