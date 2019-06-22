@@ -12,7 +12,7 @@ def get_recording_by_id(mbid):
         Dictionary containing the recording information
     """
     key = cache.gen_key(mbid)
-    recording = False
+    recording = cache.get(key)
     if not recording:
         recording = fetch_multiple_recordings(
             [mbid],
