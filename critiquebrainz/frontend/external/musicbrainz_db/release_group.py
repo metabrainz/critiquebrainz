@@ -1,7 +1,7 @@
 from brainzutils import cache
+from brainzutils.musicbrainz_db.release_group import fetch_multiple_release_groups, get_release_groups_for_artist
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 import critiquebrainz.frontend.external.relationships.release_group as release_group_rel
-from brainzutils.musicbrainz_db.release_group import fetch_multiple_release_groups, get_release_groups_for_artist
 
 
 def get_release_group_by_id(mbid):
