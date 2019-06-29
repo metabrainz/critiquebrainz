@@ -19,7 +19,6 @@ services:
       - ../data/mbdata:/var/lib/postgresql/data/pgdata:z
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
-      MB_IMPORT_DUMPS: "true"
     ports:
       - "5430:5432"
     network_mode: bridge
