@@ -13,6 +13,17 @@ services:
     command: postgres -F
     network_mode: bridge
 
+  musicbrainz_db:
+    image: metabrainz/musicbrainz-test-database:beta
+    volumes:
+      - ../data/mbdata:/var/lib/postgresql/data/pgdata:z
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      MB_IMPORT_DUMPS: "true"
+    ports:
+      - "5430:5432"
+    network_mode: bridge
+
   critiquebrainz_redis:
     image: redis:4.0-alpine
     network_mode: bridge
@@ -23,14 +34,6 @@ services:
       dockerfile: ./docker/Dockerfile.test
     links:
       - db_test
+      - musicbrainz_db
       - critiquebrainz_redis
-    network_mode: bridge
-  
-  musicbrainz_db:
-    image: metabrainz/musicbrainz-test-database:beta
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-      MB_IMPORT_DUMPS: "false"
-    ports:
-      - "5430:5432"
     network_mode: bridge
