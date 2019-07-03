@@ -14,9 +14,7 @@ services:
     network_mode: bridge
 
   musicbrainz_db:
-    image: metabrainz/musicbrainz-test-database:beta
-    volumes:
-      - ../data/mbdata:/var/lib/postgresql/data/pgdata:z
+    image: ferbncode/musicbrainz-test-database:latest
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
