@@ -16,15 +16,16 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from flask import Blueprint, render_template, request
-from flask_login import current_user
-from flask_babel import gettext
+from flask import Blueprint, render_template
+# from flask import request
+# from flask_login import current_user
 from werkzeug.exceptions import NotFound
+from flask_babel import gettext
 import critiquebrainz.frontend.external.musicbrainz_db.label as mb_label
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
-import critiquebrainz.db.review as db_review
-from critiquebrainz.frontend.forms.rate import RatingEditForm
-from critiquebrainz.frontend.views import get_avg_rating
+# import critiquebrainz.db.review as db_review
+# from critiquebrainz.frontend.forms.rate import RatingEditForm
+# from critiquebrainz.frontend.views import get_avg_rating
 
 
 label_bp = Blueprint('label', __name__)

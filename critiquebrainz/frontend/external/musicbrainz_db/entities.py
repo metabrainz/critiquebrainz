@@ -9,6 +9,7 @@ from critiquebrainz.frontend.external.musicbrainz_db.event import get_event_by_i
 from critiquebrainz.frontend.external.musicbrainz_db.label import get_label_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.artist import get_artist_by_id
 
+
 def get_multiple_entities(entities):
     """Fetch multiple entities using their MBIDs.
 
