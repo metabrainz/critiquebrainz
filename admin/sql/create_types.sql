@@ -9,5 +9,5 @@ CREATE TYPE entity_types AS ENUM (
     'release_group',
     'event',
     'place',
-    'work',
+    'work'
 );

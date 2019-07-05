@@ -46,6 +46,7 @@ def more():
 
 @search_bp.route('/selector')
 def selector():
+    artist = request.args.get('artist')
     release_group = request.args.get('release_group')
     event = request.args.get('event')
     place = request.args.get('place')
@@ -68,7 +69,7 @@ def selector():
     return render_template('search/selector.html', next=next, type=type,
                            results=results, count=count, limit=RESULTS_LIMIT,
                            artist=artist, release_group=release_group, event=event,
-                           recording=recording, work=work, place=place)
+                           work=work, place=place)
 
 
 @search_bp.route('/selector/more')

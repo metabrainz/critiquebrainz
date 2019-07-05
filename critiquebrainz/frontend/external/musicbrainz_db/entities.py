@@ -1,8 +1,8 @@
+from brainzutils.musicbrainz_db.work import fetch_multiple_works
 from critiquebrainz.frontend.external.musicbrainz_db.release_group import fetch_multiple_release_groups, get_release_group_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.place import fetch_multiple_places, get_place_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.event import fetch_multiple_events, get_event_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.work import get_work_by_id
-from brainzutils.musicbrainz_db.work import fetch_multiple_works
 
 
 def get_multiple_entities(entities):
