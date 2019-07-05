@@ -18,6 +18,6 @@ def get_recording_by_id(mbid):
             [mbid],
             includes=['artist', 'work-rels', 'url-rels'],
         ).get(mbid)
-        recording.update({ 'length': recording['length'] * 1000.0 })
+        recording.update({'length': recording['length'] * 1000.0})
         cache.set(key=key, val=recording, time=DEFAULT_CACHE_EXPIRATION)
     return recording
