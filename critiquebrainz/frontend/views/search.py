@@ -46,6 +46,7 @@ def more():
 
 @search_bp.route('/selector')
 def selector():
+    artist = request.args.get('artist')
     release_group = request.args.get('release_group')
     artist = request.args.get('artist')
     recording = request.args.get('recording')
