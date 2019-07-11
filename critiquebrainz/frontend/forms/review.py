@@ -15,8 +15,8 @@ class StateAndLength(validators.Length):
     def __call__(self, form, field):
         if form.state.data == "draft":
             return
-        l = len(field.data) if field.data else 0
-        if l < self.min or self.max != -1 and l > self.max:
+        length = len(field.data) if field.data else 0
+        if length < self.min or self.max != -1 and length > self.max:
             raise ValidationError(self.message)
 
 

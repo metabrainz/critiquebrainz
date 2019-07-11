@@ -60,11 +60,11 @@ def review_entity_handler(review_id):
             "license": {
               "full_name": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
               "id": "CC BY-NC-SA 3.0",
-              "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
+              "info_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/"
             },
             "popularity": 0,
             "source": "BBC",
-            "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/3vfd",
+            "source_url": "http://www.bbc.co.uk/music/reviews/3vfd",
             "text": "TEXT CONTENT OF REVIEW",
             "rating": 5,
             "user": {
@@ -307,11 +307,11 @@ def review_list_handler():
               "license": {
                 "full_name": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
                 "id": "CC BY-NC-SA 3.0",
-                "info_url": "https:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/"
+                "info_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/"
               },
               "popularity": 0,
               "source": "BBC",
-              "source_url": "http:\/\/www.bbc.co.uk\/music\/reviews\/vh54",
+              "source_url": "http://www.bbc.co.uk/music/reviews/vh54",
               "text": "TEXT CONTENT OF REVIEW",
               "rating": 5,
               "user": {
@@ -332,7 +332,7 @@ def review_list_handler():
     :json uuid entity_id: UUID of the release group that is being reviewed
     :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc. **(optional)**
     :query user_id: user's UUID **(optional)**
-    :query sort: ``popularity`` or ``created`` **(optional)**
+    :query sort: ``popularity`` or ``published_on`` **(optional)**
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
@@ -350,7 +350,7 @@ def review_list_handler():
 
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     # TODO: "rating" sort value is deprecated and needs to be removed.
-    sort = Parser.string('uri', 'sort', valid_values=['popularity', 'created', 'rating'], optional=True)
+    sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating'], optional=True)
     if sort == 'rating':
         sort = 'popularity'
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50

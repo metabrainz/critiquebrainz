@@ -1,4 +1,4 @@
-git+https://github.com/metabrainz/brainzutils-python.git@v1.7.0
+git+https://github.com/metabrainz/brainzutils-python.git@v1.12.1
 beautifulsoup4==4.6.0
 coverage==4.4.1
 click==6.7
@@ -8,18 +8,15 @@ Flask-SQLAlchemy==2.2
 Flask-Testing==0.6.2
 Flask-WTF==0.14.2
 Markdown==2.6.8
-mbdata==2017.6.2
 musicbrainzngs==0.6
 pytest==3.2.0
 pytest-cov==2.5.1
-pylint==1.8.1
-flake8==3.4.1
+pylint==2.3.0
+flake8==3.7.7
 psycopg2==2.7.3
 pycountry==1.20
 python-dateutil==2.6.1
 rauth==0.7.3
-requests==2.18.3
-SQLAlchemy==1.1.13
 transifex-client==0.12.4
 WTForms==2.1
 langdetect==1.0.7

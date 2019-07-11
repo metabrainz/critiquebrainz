@@ -59,20 +59,21 @@ def _relationship_link_helper(relation, query, source_attr, target_attr, target_
             setdefault(relation_type, []).append(link)
 
 
-def get_tags(*, db, entity_model, tag_model, entity_ids):
+def get_tags(*, db, entity_model, tag_model, foreign_tag_id, entity_ids):
     """Get tags associated with entities.
 
     Args:
         db (Session object): Session object.
         entity_model (mbdata.models): Model of the entity.
         tag_model (mbdata.models): Tag of the model.
+        foreign_tag_id (tag_model.foreign_key): Foreign ID that joins the tag model and entity model
         entity_ids (list): IDs of the entity whose tags are to be fetched
 
     Returns:
         List of tuples containing the entity_ids and the list of associated tags.
     """
     tags = db.query(entity_model.id, func.array_agg(Tag.name)).\
-        join(tag_model).\
+        join(tag_model, entity_model.id == foreign_tag_id).\
         join(Tag).\
         filter(entity_model.id.in_(entity_ids)).\
         group_by(entity_model.id).\

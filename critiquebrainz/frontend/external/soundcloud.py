@@ -1,5 +1,5 @@
 import re
-import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
+import brainzutils.musicbrainz_db.release as mb_release
 
 
 def get_url(mbid):

@@ -4,4 +4,3 @@ class ExternalServiceException(Exception):
     Should be used when an error occurs with one fo the external services that
     the CritiqueBrainz frontend interacts with.
     """
-    pass

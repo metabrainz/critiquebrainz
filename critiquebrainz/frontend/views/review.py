@@ -48,13 +48,13 @@ def browse():
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
-    reviews, count = db_review.list_reviews(sort='created', limit=limit, offset=offset, entity_type=entity_type)
+    reviews, count = db_review.list_reviews(sort='published_on', limit=limit, offset=offset, entity_type=entity_type)
     if not reviews:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count / limit))))
-        else:
-            if not entity_type:
-                raise NotFound(gettext("No reviews to display."))
+
+        if not entity_type:
+            raise NotFound(gettext("No reviews to display."))
 
     # Loading info about entities for reviews
     entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
@@ -78,8 +78,7 @@ def entity(id, rev=None):
         if not current_user.is_admin():
             raise Forbidden(gettext("Review has been hidden. "
                                     "You need to be an administrator to view it."))
-        else:
-            flash.warn(gettext("Review has been hidden."))
+        flash.warn(gettext("Review has been hidden."))
 
     spotify_mappings = None
     soundcloud_url = None
@@ -229,7 +228,7 @@ def create():
 
     # Checking if the user already wrote a review for this entity
     reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id)
-    review = reviews[0] if count is not 0 else None
+    review = reviews[0] if count != 0 else None
 
     if review:
         flash.error(gettext("You have already published a review for this entity!"))

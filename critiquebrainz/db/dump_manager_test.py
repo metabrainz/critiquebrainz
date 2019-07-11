@@ -7,6 +7,7 @@ from critiquebrainz.data import utils
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.review as db_review
+import critiquebrainz.db.vote as db_vote
 from critiquebrainz.db.user import User
 
 utils.with_request_context = utils.with_test_request_context  # noqa
@@ -60,11 +61,16 @@ class DumpManagerTestCase(DataTestCase):
         self.assertIn(f'cbdump-reviews-{self.license["id"]}.tar.bz2', archives)
 
     def test_importer(self):
-        user = User(db_users.get_or_create(1, "Tester", new_user_data={
-            "display_name": "test user",
+        user_1 = User(db_users.get_or_create(1, "Tester_1", new_user_data={
+            "display_name": "test user_1",
         }))
+        user_2 = User(db_users.get_or_create(2, "Tester_2", new_user_data={
+            "display_name": "test user_2",
+        }))
+
+        # user_1 adds a review
         review = db_review.create(
-            user_id=user.id,
+            user_id=user_1.id,
             entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
             entity_type="release_group",
             text="Testing",
@@ -72,18 +78,23 @@ class DumpManagerTestCase(DataTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
+        # user_2 votes on review by user_1
+        db_vote.submit(user_2.id, review["last_revision"]["id"], True)
 
         # Make dumps and delete entities
         self.runner.invoke(dump_manager.public, ['--location', self.tempdir])
         archives = get_archives(self.tempdir)
         db_review.delete(review['id'])
-        db_users.delete(user.id)
+        db_users.delete(user_1.id)
+        db_users.delete(user_2.id)
         self.assertEqual(db_users.total_count(), 0)
         self.assertEqual(db_review.get_count(), 0)
+        self.assertEqual(db_vote.get_count(), 0)
 
         # Import dumps - cbdump.tar.bz2 and cbdump-reviews-all.tar.bz2 and check if data imported properly
         self.runner.invoke(dump_manager.importer, [archives['cbdump.tar.bz2']])
-        self.assertEqual(db_users.total_count(), 1)
+        self.assertEqual(db_users.total_count(), 2)
 
         self.runner.invoke(dump_manager.importer, [archives['cbdump-reviews-all.tar.bz2']])
         self.assertEqual(db_review.get_count(), 1)
+        self.assertEqual(db_vote.get_count(), 1)

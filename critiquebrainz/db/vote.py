@@ -73,3 +73,14 @@ def delete(user_id, revision_id):
             "user_id": user_id,
             "revision_id": revision_id,
         })
+
+
+def get_count():
+    """Get the total number of votes in CritiqueBrainz.
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT count(*)
+              FROM vote
+        """))
+        return result.fetchone()[0]

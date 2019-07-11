@@ -40,6 +40,10 @@ def entity(id):
     except mb_exceptions.NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
 
+    if 'url-rels' in release_group:
+        external_reviews = list(filter(lambda rel: rel['type'] == 'review', release_group['url-rels']))
+    else:
+        external_reviews = []
     if 'tag-list' in release_group:
         tags = release_group['tag-list']
     else:
@@ -79,5 +83,5 @@ def entity(id):
 
     return render_template('release_group/entity.html', id=release_group['id'], release_group=release_group, reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
-                           soundcloud_url=soundcloud_url, limit=limit, offset=offset, count=count, avg_rating=avg_rating,
-                           rating_form=rating_form, current_user=current_user)
+                           soundcloud_url=soundcloud_url, external_reviews=external_reviews, limit=limit, offset=offset,
+                           count=count, avg_rating=avg_rating, rating_form=rating_form, current_user=current_user)
