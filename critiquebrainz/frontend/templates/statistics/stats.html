@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div id="header">
+    <div>
+      <h1>CritiqueBrainz Statistics</h1>
+    </div>
+  </div>
+
+  <hr/>
+
+  <div>
+    <div class="row">
+      <div><h2 class="text-center" style="margin-bottom: 20px;">{{ _('Top 10 Contributors Overall') }}</h2></div>
+      <div class="col-md-12">
+        <table class="table table-striped table-bordered table-condensed table-responsive">
+          {% if top_users_overall %}
+            <thead>
+              <tr>
+                <th class="col-sm-1"> # </th>
+                <th class="col-sm-3">{{ _('User') }}</th>
+                <th class="col-sm-2">{{ _('Reviews') }}</th>
+                <th class="col-sm-2">{{ _('Comments') }}</th>
+                <th class="col-sm-2">{{ _('Votes') }}</th>
+                <th class="col-sm-2">{{ _('Total Score') }}</th>
+              </tr>
+            </thead>
+
+            {% for user in top_users_overall %}
+              <tbody>
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>
+                    <a href="{{ url_for('user.info', user_id=user['id']) }}">{{ user["display_name"] }}</a>
+                  </td>
+                  <td>{{ user["review_count"] }}</td>
+                  <td>{{ user["comment_count"] }}</td>
+                  <td>{{ user["vote_count"] }}</td>
+                  <td>{{ user["score"] }}</td>
+                </tr>
+              </tbody>
+            {% endfor %}
+          {% else %}
+            <p class="text-center"> Could not fetch results! Please try again.</p>
+          {% endif %}
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
