@@ -18,8 +18,7 @@
       <ul class="nav navbar-nav">
         {% if not error %} {# Not showing this stuff on error pages. If attempt to load user info fails there, page will not render. #}
           {% if not current_user or current_user.is_anonymous %}
-            <li><a href="{{ url_for('login.index', next=request.url) }}">
-              <span class="glyphicon glyphicon-log-in"></span>{{ _('Sign in') }}</a></li>
+            <li><a href="{{ url_for('login.index', next=request.url) }}">{{ _('Sign in') }}</a></li>
           {% else %}
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -28,18 +27,18 @@
               <ul class="dropdown-menu" role="menu">
                 <li>
                   <a href="{{ url_for('user.reviews', user_id=current_user.id) }}">
-                    <span class="glyphicon glyphicon-user"></span>{{ _('Profile') }}
+                    {{ _('Profile') }}
                   </a>
                 </li>
                 <li>
                   <a href="{{ url_for('profile_applications.index') }}">
-                    <span class="glyphicon glyphicon-file"></span>{{ _('Applications') }}
+                    {{ _('Applications') }}
                   </a>
                 </li>
                 <li class="divider"></li>
                 <li>
                   <a href="{{ url_for('login.logout', next=request.url) }}">
-                    <span class="glyphicon glyphicon-log-out"></span> {{ _('Sign out') }}
+                     {{ _('Sign out') }}
                   </a>
                 </li>
               </ul>
@@ -49,24 +48,24 @@
           {% if not current_user or current_user.is_anonymous %}
             <li>
               <a href="{{ url_for('login.index', next=request.url) }}">
-                <span class="glyphicon glyphicon-log-in"></span>{{ _('Sign in') }}
+                {{ _('Sign in') }}
               </a>
             </li>
           {% endif %}
         {% endif %}
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <span class="glyphicon glyphicon-comment"></span> {{ _('Reviews') }} <span class="caret"></span>
+            {{ _('Reviews') }} <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" role="menu">
             <li>
               <a href="{{ url_for('review.browse') }}">
-                <span class="glyphicon glyphicon-search"></span>{{ _('Browse reviews') }}
+                {{ _('Browse reviews') }}
               </a>
             </li>
             <li>
               <a href="{{ url_for('review.create') }}">
-                <span class="glyphicon glyphicon-edit"></span>{{ _('Write a review') }}
+                {{ _('Write a review') }}
               </a>
             </li>
           </ul>
@@ -74,7 +73,7 @@
 
         <li>
           <a href="{{ url_for('statistics.statistics') }}">
-            <span class="glyphicon glyphicon-stats"></span>{{ _('Statistics') }}
+            {{ _('Statistics') }}
           </a>
         </li>
 
