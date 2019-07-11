@@ -78,3 +78,29 @@ def delete(id):
     if comment:
         comment["text_html"] = markdown(comment["last_revision"]["text"], safe_mode="escape")
     return render_template('review/delete_comment.html', review=review, comment=comment)
+
+
+@comment_bp.route('/<uuid:id>/edit', methods=['POST'])
+@login_required
+def edit(id):
+    comment = get_comment_or_404(id)
+    if comment["user"] != current_user:
+        raise Unauthorized(gettext("Only the author can edit this comment."))
+    if current_user.is_blocked:
+        flash.error(gettext("You are not allowed to edit comments because your "
+                            "account has been blocked by a moderator."))
+        return redirect(url_for('review.entity', id=comment["review_id"]))
+    form = CommentEditForm()
+    if form.validate_on_submit():
+        if form.text.data != comment["last_revision"]["text"]:
+            db_comment.update(
+                comment_id=comment["id"],
+                text=form.text.data
+            )
+            flash.success(gettext("Comment has been updated."))
+        else:
+            flash.error(gettext("You must change some content of the comment to update it!"))
+    elif not form.text.data:
+        # comment must have some text
+        flash.error(gettext("Comment must not be empty!"))
+    return redirect(url_for('review.entity', id=comment["review_id"]))
