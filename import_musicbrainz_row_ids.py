@@ -1,6 +1,6 @@
 from sqlalchemy import text
+from brainzutils import musicbrainz_db
 import critiquebrainz.db.users as db_users
-from critiquebrainz.frontend.external import musicbrainz_db
 from critiquebrainz.frontend import create_app
 from critiquebrainz import db
 

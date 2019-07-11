@@ -63,15 +63,15 @@ def create_app(debug=None, config_path=None):
         sentry_config=app.config.get("LOG_SENTRY"),
     )
 
-    # Database
-    from critiquebrainz.db import init_db_engine
-    init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
+    # CritiqueBrainz Database
+    from critiquebrainz import db as critiquebrainz_db
+    critiquebrainz_db.init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
 
     add_robots(app)
 
     # MusicBrainz Database
-    from critiquebrainz.frontend.external import musicbrainz_db
-    musicbrainz_db.init_db_engine(app.config.get('MB_DATABASE_URI'))
+    from brainzutils import musicbrainz_db
+    musicbrainz_db.init_db_engine(app.config.get("MB_DATABASE_URI"))
 
     # Redis (cache)
     from brainzutils import cache
