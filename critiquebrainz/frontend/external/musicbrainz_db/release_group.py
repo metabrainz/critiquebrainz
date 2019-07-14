@@ -2,6 +2,7 @@ from brainzutils import cache
 from brainzutils.musicbrainz_db.release_group import fetch_multiple_release_groups, get_release_groups_for_artist
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 import critiquebrainz.frontend.external.relationships.release_group as release_group_rel
+from critiquebrainz.frontend.external.musicbrainz_db.utils import deleted_entities_to_unknown
 
 
 def get_release_group_by_id(mbid):
@@ -9,10 +10,15 @@ def get_release_group_by_id(mbid):
     key = cache.gen_key(mbid)
     release_group = cache.get(key)
     if not release_group:
-        release_group = fetch_multiple_release_groups(
+        multiple_release_groups = fetch_multiple_release_groups(
             [mbid],
             includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'tags'],
-        )[mbid]
+        )
+        release_group = deleted_entities_to_unknown(
+            entities=multiple_release_groups,
+            entity_type="release_group",
+            mbids=[mbid]
+        ).get(mbid)
         cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
     return release_group_rel.process(release_group)
 
