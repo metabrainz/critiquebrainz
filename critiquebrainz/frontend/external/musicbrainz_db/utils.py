@@ -22,7 +22,7 @@ def unknown_entity(entity_gid, entity_type):
     return entity
 
 
-def deleted_entities_to_unknown(*, entities, entity_type, mbids):
+def map_deleted_mb_entities_to_unknown(*, entities, entity_type, mbids):
     """Set deleted entities with reviews as unknown.
 
     Args:

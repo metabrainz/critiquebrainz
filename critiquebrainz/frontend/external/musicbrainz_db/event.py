@@ -1,7 +1,7 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db.event import fetch_multiple_events
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
-from critiquebrainz.frontend.external.musicbrainz_db.utils import deleted_entities_to_unknown
+from critiquebrainz.frontend.external.musicbrainz_db.utils import map_deleted_mb_entities_to_unknown
 
 
 def get_event_by_id(mbid):
@@ -19,7 +19,7 @@ def get_event_by_id(mbid):
             [mbid],
             includes=['artist-rels', 'place-rels', 'series-rels', 'url-rels', 'release-group-rels'],
         )
-        event = deleted_entities_to_unknown(
+        event = map_deleted_mb_entities_to_unknown(
             entities=multiple_events,
             entity_type="event",
             mbids=[mbid]

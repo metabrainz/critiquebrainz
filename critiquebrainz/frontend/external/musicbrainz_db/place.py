@@ -2,7 +2,7 @@ from brainzutils import cache
 from brainzutils.musicbrainz_db.place import fetch_multiple_places
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.relationships import place as place_rel
-from critiquebrainz.frontend.external.musicbrainz_db.utils import deleted_entities_to_unknown
+from critiquebrainz.frontend.external.musicbrainz_db.utils import map_deleted_mb_entities_to_unknown
 
 
 def get_place_by_id(mbid):
@@ -20,7 +20,7 @@ def get_place_by_id(mbid):
             [mbid],
             includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
         )
-        place = deleted_entities_to_unknown(
+        place = map_deleted_mb_entities_to_unknown(
             entities=multiple_places,
             entity_type="place",
             mbids=[mbid]

@@ -2,7 +2,7 @@ from brainzutils import cache
 from brainzutils.musicbrainz_db.artist import fetch_multiple_artists
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.relationships import artist as artist_rel
-from critiquebrainz.frontend.external.musicbrainz_db.utils import deleted_entities_to_unknown
+from critiquebrainz.frontend.external.musicbrainz_db.utils import map_deleted_mb_entities_to_unknown
 
 
 def get_artist_by_id(mbid):
@@ -20,7 +20,7 @@ def get_artist_by_id(mbid):
             [mbid],
             includes=['artist-rels', 'url-rels'],
         )
-        artist = deleted_entities_to_unknown(
+        artist = map_deleted_mb_entities_to_unknown(
             entities=multiple_artists,
             entity_type="artist",
             mbids=[mbid]
