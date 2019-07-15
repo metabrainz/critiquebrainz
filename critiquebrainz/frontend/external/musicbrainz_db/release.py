@@ -19,10 +19,13 @@ def get_release_by_id(mbid):
             [mbid],
             includes=['media', 'release-groups'],
         )
-        release = map_deleted_mb_entities_to_unknown(
-            entities=multiple_releases,
-            entity_type="release",
-            mbids=[mbid]
-        ).get(mbid)
+        if mbid in multiple_releases:
+            release = multiple_releases.get(mbid)
+        else:
+            release = map_deleted_mb_entities_to_unknown(
+                entities=multiple_releases,
+                entity_type="release",
+                mbids=[mbid]
+            ).get(mbid)
         cache.set(key=key, val=release, time=DEFAULT_CACHE_EXPIRATION)
     return release

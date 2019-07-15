@@ -19,10 +19,13 @@ def get_event_by_id(mbid):
             [mbid],
             includes=['artist-rels', 'place-rels', 'series-rels', 'url-rels', 'release-group-rels'],
         )
-        event = map_deleted_mb_entities_to_unknown(
-            entities=multiple_events,
-            entity_type="event",
-            mbids=[mbid]
-        ).get(mbid)
+        if mbid in multiple_events:
+            event = multiple_events.get(mbid)
+        else:
+            event = map_deleted_mb_entities_to_unknown(
+                entities=multiple_events,
+                entity_type="event",
+                mbids=[mbid]
+            ).get(mbid)
         cache.set(key=key, val=event, time=DEFAULT_CACHE_EXPIRATION)
     return event

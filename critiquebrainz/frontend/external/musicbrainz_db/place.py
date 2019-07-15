@@ -20,10 +20,13 @@ def get_place_by_id(mbid):
             [mbid],
             includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
         )
-        place = map_deleted_mb_entities_to_unknown(
-            entities=multiple_places,
-            entity_type="place",
-            mbids=[mbid]
-        ).get(mbid)
+        if mbid in multiple_places:
+            place = multiple_places.get(place)
+        else:
+            place = map_deleted_mb_entities_to_unknown(
+                entities=multiple_places,
+                entity_type="place",
+                mbids=[mbid]
+            ).get(mbid)
         cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
     return place_rel.process(place)

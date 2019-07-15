@@ -20,10 +20,13 @@ def get_artist_by_id(mbid):
             [mbid],
             includes=['artist-rels', 'url-rels'],
         )
-        artist = map_deleted_mb_entities_to_unknown(
-            entities=multiple_artists,
-            entity_type="artist",
-            mbids=[mbid]
-        ).get(mbid)
+        if mbid in multiple_artists:
+            artist = multiple_artists.get(mbid)
+        else:
+            artist = map_deleted_mb_entities_to_unknown(
+                entities=multiple_artists,
+                entity_type="artist",
+                mbids=[mbid]
+            ).get(mbid)
         cache.set(key=key, val=artist, time=DEFAULT_CACHE_EXPIRATION)
     return artist_rel.process(artist)

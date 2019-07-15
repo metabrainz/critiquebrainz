@@ -14,11 +14,14 @@ def get_release_group_by_id(mbid):
             [mbid],
             includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'tags'],
         )
-        release_group = map_deleted_mb_entities_to_unknown(
-            entities=multiple_release_groups,
-            entity_type="release_group",
-            mbids=[mbid]
-        ).get(mbid)
+        if mbid in multiple_release_groups:
+            release_group = multiple_release_groups.get(mbid)
+        else:
+            release_group = map_deleted_mb_entities_to_unknown(
+                entities=multiple_release_groups,
+                entity_type="release_group",
+                mbids=[mbid]
+            ).get(mbid)
         cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
     return release_group_rel.process(release_group)
 
