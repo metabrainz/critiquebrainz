@@ -4,6 +4,7 @@ from brainzutils.musicbrainz_db.release_group import fetch_multiple_release_grou
 from critiquebrainz.frontend.external.musicbrainz_db.release_group import get_release_group_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.place import get_place_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.event import get_event_by_id
+from critiquebrainz.frontend.external.musicbrainz_db.utils import map_deleted_mb_entities_to_unknown
 
 
 def get_multiple_entities(entities):
@@ -25,15 +26,23 @@ def get_multiple_entities(entities):
     release_group_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'release_group', entities)]
     place_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'place', entities)]
     event_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'event', entities)]
-    entities_info.update(fetch_multiple_release_groups(
-        release_group_mbids,
-        includes=['artists'],
+    multiple_release_groups = fetch_multiple_release_groups(release_group_mbids, includes=['artists'])
+    multiple_places = fetch_multiple_places(place_mbids)
+    multiple_events = fetch_multiple_events(event_mbids)
+    entities_info.update(map_deleted_mb_entities_to_unknown(
+        entities=entities_info,
+        entity_type="release_group",
+        mbids=multiple_release_groups,
     ))
-    entities_info.update(fetch_multiple_places(
-        place_mbids,
+    entities_info.update(map_deleted_mb_entities_to_unknown(
+        entities=entities_info,
+        entity_type="place",
+        mbids=multiple_places,
     ))
-    entities_info.update(fetch_multiple_events(
-        event_mbids,
+    entities_info.update(map_deleted_mb_entities_to_unknown(
+        entities=entities_info,
+        entity_type="event",
+        mbids=multiple_events,
     ))
     return entities_info
 
