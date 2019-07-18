@@ -33,16 +33,20 @@ def map_deleted_mb_entities_to_unknown(*, entities, entity_type, mbids):
     Returns:
         Dictionary of objects with missing, but reviewed, mbids set as unknown.
     """
-    if mbids and entity_type in CB_ENTITIES:
+    if entity_type in CB_ENTITIES:
         reviewed_gids = reviewed_entities(
             entity_ids=mbids,
             entity_type=entity_type,
         )
-        for gid in reviewed_gids:
-            if gid not in entities:
-                entities[gid] = unknown_entity(gid, entity_type)
-        mbids = list(set(mbids) - set(reviewed_gids))
 
-    if mbids:
-        raise mb_exceptions.NoDataFoundException("Couldn't find entities with IDs: {mbids}".format(mbids=mbids))
+        if reviewed_gids:
+            if mbids:
+                for gid in reviewed_gids:
+                    if gid not in entities:
+                        entities[gid] = unknown_entity(gid, entity_type)
+                mbids = list(set(mbids) - set(reviewed_gids))
+
+            if mbids:
+                raise mb_exceptions.NoDataFoundException("Couldn't find entities with IDs: {mbids}".format(mbids=mbids))
+
     return entities
