@@ -12,6 +12,7 @@ def get_release_group_by_id(mbid):
         release_group = fetch_multiple_release_groups(
             [mbid],
             includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'tags'],
+            unknown_entities_for_missing=True,
         )[mbid]
         cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
     return release_group_rel.process(release_group)
