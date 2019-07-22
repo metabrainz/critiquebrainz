@@ -5,7 +5,7 @@
 <div id="homepage">
 
   <div id="header" class="row">
-    <div class="col-md-8 clearfix">
+    <div class="col-md-8">
       <img src="{{ get_static_path('images/logo_big.svg') }}" id="big-logo" />
       <h2>{{ _('Welcome to CritiqueBrainz!') }}</h2>
       <p>
@@ -36,6 +36,7 @@
               <tr>
                 <td>{{ _('Number of Users') }}</td>
                 <td>{{ _('%(user_count)s', user_count=users_total) }}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -43,54 +44,60 @@
     </div>
   </div>
 
-  <h3 style="margin-bottom:-5px;margin-top:0px;">{{ _('Popular reviews') }}</h3>
-  {% if not popular_reviews %}
-    <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
-  {% else %}
-    <div id="popular-list" class="row">
-      {% for review in popular_reviews %}
-        <div class="col-md-6 review">
-          <div class="cover-art-container pull-left">
-            <a href="{{ url_for('review.entity', id=review.id) }}">
-              {{ cover_art(review.entity_id, review.entity_type, overlay_type=True) }}
-            </a>
+  <hr>
+
+  <div id="popular-reviews">
+    <h3 style="margin-bottom:-5px;margin-top:0px;">{{ _('Popular reviews') }}</h3>
+    {% if not popular_reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <div id="popular-list" class="row">
+        {% for review in popular_reviews %}
+          <div class="col-md-6 review">
+            <div class="cover-art-container pull-left">
+              <a href="{{ url_for('review.entity', id=review.id) }}">
+                {{ cover_art(review.entity_id, review.entity_type, overlay_type=True) }}
+              </a>
+            </div>
+            {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
+            <div class="album">{% include 'entity_review.html' %}</div>
+            <div class="reviewer">
+              <p>{{ review_credit(review, user_picture_size=16) }}</p>
+            </div>
+            <div class="preview">{{ review.preview[:250] }}{% if review.preview|length > 250 %}...{% endif %}</div>
           </div>
-          {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
-          <div class="album">{% include 'entity_review.html' %}</div>
-          <div class="reviewer">
-            <p>{{ review_credit(review, user_picture_size=16) }}</p>
-          </div>
-          <div class="preview">{{ review.preview[:250] }}{% if review.preview|length > 250 %}...{% endif %}</div>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
 
   <hr />
 
-  <h4>{{ _('Recent reviews') }}</h4>
-  {% if not recent_reviews %}
-    <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
-  {% else %}
-    <div id="recent-list" class="row">
-      {% for review in recent_reviews %}
-        <div class="col-md-4 review">
-          <div class="cover-art-container pull-left">
-            <a href="{{ url_for('review.entity', id=review.id) }}">
-              {{ cover_art(review.entity_id, review.entity_type, overlay_type=True) }}
-            </a>
+  <div id="recent-reviews">
+    <h4>{{ _('Recent reviews') }}</h4>
+    {% if not recent_reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <div id="recent-list" class="row">
+        {% for review in recent_reviews %}
+          <div class="col-md-4 review">
+            <div class="cover-art-container pull-left">
+              <a href="{{ url_for('review.entity', id=review.id) }}">
+                {{ cover_art(review.entity_id, review.entity_type, overlay_type=True) }}
+              </a>
+            </div>
+            {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
+            <div class="album">{% include 'entity_review.html' %}</div>
+            <div class="reviewer">
+              <p>{{ review_credit(review, user_picture_size=16) }}</p>
+            </div>
           </div>
-          {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
-          <div class="album">{% include 'entity_review.html' %}</div>
-          <div class="reviewer">
-            <p>{{ review_credit(review, user_picture_size=16) }}</p>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
+        {% endfor %}
+      </div>
 
-    <p class="text-right"><br /><a href="{{ url_for('review.browse') }}"><b><em>{{ _('View all reviews...') }}</em></b></a></p>
-  {% endif %}
+      <p class="text-right"><br /><a href="{{ url_for('review.browse') }}"><b><em>{{ _('View all reviews...') }}</em></b></a></p>
+    {% endif %}
+  </div>
 
 </div>
 {% endblock %}

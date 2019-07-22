@@ -1,7 +1,10 @@
 from brainzutils.musicbrainz_db.artist import fetch_multiple_artists
-from critiquebrainz.frontend.external.musicbrainz_db.release_group import fetch_multiple_release_groups, get_release_group_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.place import fetch_multiple_places, get_place_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.event import fetch_multiple_events, get_event_by_id
+from brainzutils.musicbrainz_db.place import fetch_multiple_places
+from brainzutils.musicbrainz_db.event import fetch_multiple_events
+from brainzutils.musicbrainz_db.release_group import fetch_multiple_release_groups
+from critiquebrainz.frontend.external.musicbrainz_db.release_group import get_release_group_by_id
+from critiquebrainz.frontend.external.musicbrainz_db.place import get_place_by_id
+from critiquebrainz.frontend.external.musicbrainz_db.event import get_event_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.artist import get_artist_by_id
 
 
