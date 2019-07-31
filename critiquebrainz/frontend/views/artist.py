@@ -6,6 +6,7 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+from critiquebrainz.frontend.views import BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
 
 artist_bp = Blueprint('artist', __name__)
 
@@ -25,16 +26,16 @@ def entity(mbid):
     # Note that some artists might not have a list of members because they are not a band
     band_members = _get_band_members(artist)
 
-    reviews_limit = 5
+    artist_reviews_limit = ARTIST_REVIEWS_LIMIT
     if request.args.get('reviews') == "all":
-        reviews_limit = None
+        artist_reviews_limit = None
 
     reviews_offset = 0
     reviews, reviews_count = db_review.list_reviews(
         entity_id=artist['id'],
         entity_type='artist',
         sort='popularity',
-        limit=reviews_limit,
+        limit=artist_reviews_limit,
         offset=reviews_offset,
     )
 
@@ -45,12 +46,11 @@ def entity(mbid):
     page = int(request.args.get('page', default=1))
     if page < 1:
         return redirect(url_for('.reviews'))
-    release_groups_limit = 20
-    release_groups_offset = (page - 1) * release_groups_limit
+    release_groups_offset = (page - 1) * BROWSE_RELEASE_GROUPS_LIMIT
     release_groups, release_group_count = mb_release_group.browse_release_groups(
         artist_id=artist['id'],
         release_types=[release_type],
-        limit=release_groups_limit,
+        limit=BROWSE_RELEASE_GROUPS_LIMIT,
         offset=release_groups_offset,
     )
     for release_group in release_groups:
@@ -70,9 +70,9 @@ def entity(mbid):
         release_groups=release_groups,
         page=page,
         reviews=reviews,
-        reviews_limit=reviews_limit,
+        reviews_limit=artist_reviews_limit,
         reviews_count=reviews_count,
-        release_groups_limit=release_groups_limit,
+        release_groups_limit=BROWSE_RELEASE_GROUPS_LIMIT,
         release_group_count=release_group_count,
         band_members=band_members,
     )
