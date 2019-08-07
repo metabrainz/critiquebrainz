@@ -271,7 +271,7 @@ def create():
                                spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
     if not form.errors:
         flash.info(gettext("Please provide some text or a rating for this review."))
-    return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
+    return render_template('review/modify/write.html', form=form, entity_types=ENTITY_TYPES, entity_type=entity_type, entity=entity)
 
 
 @review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))
