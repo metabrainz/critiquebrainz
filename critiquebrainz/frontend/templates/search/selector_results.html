@@ -64,5 +64,32 @@
     </td>
   </tr>
 
+{% elif type=="artist" %}
+  <tr>
+    <td>
+      <a href="{{ url_for('artist.entity', mbid=result.id) }}" target="_blank">{{ result['name'] }}</a>
+    </td>
+    <td>
+      {{ result['type'] or '-' }}
+    </td>
+    <td>
+      {% if result['gender'] %}
+        {{ result['gender'] | capitalize }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      {% if result['area'] %}
+        {{ result['area']['name'] or '-' }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      <input type="radio" name="work" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
 {% endif %}
 {% endfor %}

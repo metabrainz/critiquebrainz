@@ -2,8 +2,8 @@ from random import shuffle
 from datetime import datetime, timedelta
 import uuid
 import sqlalchemy
-import pycountry
 from brainzutils import cache
+import pycountry
 from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
                                revision as db_revision,
@@ -19,6 +19,7 @@ ENTITY_TYPES = [
     "event",
     "place",
     "release_group",
+    "artist",
 ]
 
 
