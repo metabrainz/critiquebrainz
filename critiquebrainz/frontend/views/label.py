@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import NotFound
 from flask_babel import gettext
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.label as mb_label
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
-from critiquebrainz.frontend.views import BROWSE_RELEASE_GROUPS_LIMIT, LABEL_REVIEWS_LIMIT
+from critiquebrainz.frontend.views import LABEL_REVIEWS_LIMIT
 
 label_bp = Blueprint('label', __name__)
 
