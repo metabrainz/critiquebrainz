@@ -10,7 +10,7 @@
 {% block entity_title %}
   <h2 id="title">
     {% if artist %}
-      {% set artist_name = '<a href="%s">' | safe % url_for('artist.entity', mbid=review.entity_id) ~ artist.name ~ '</a>'|safe %}
+      {% set artist_name = '<a href="%s">' | safe % url_for('artist.entity', id=review.entity_id) ~ artist.name ~ '</a>'|safe %}
     {% else %}
       {% set artist_name =  _('[Unknown artist]') %}
     {% endif %}

@@ -13,15 +13,15 @@ from critiquebrainz.frontend.views import BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_RE
 artist_bp = Blueprint('artist', __name__)
 
 
-@artist_bp.route('/<uuid:mbid>')
-def entity(mbid):
+@artist_bp.route('/<uuid:id>')
+def entity(id):
     """Artist page.
 
     Displays release groups (split up into several sections depending on their
     type), artist information (type, members/member of, external links).
     """
     try:
-        artist = mb_artist.get_artist_by_id(str(mbid))
+        artist = mb_artist.get_artist_by_id(str(id))
     except mb_exceptions.NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
