@@ -160,8 +160,10 @@
   {% endif %}
 {% endmacro %}
 
-{% macro show_avg_rating(rating, count) %}
-  <i class="glyphicon glyphicon-star"></i>
+{% macro show_avg_rating(rating, count, show_glyphicon=True) %}
+  {% if show_glyphicon %}
+    <i class="glyphicon glyphicon-star"></i>
+  {% endif %}
   <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ _('based on %(number)s ratings', number=count) }}</em>
 {% endmacro %}
 
