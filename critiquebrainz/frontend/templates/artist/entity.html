@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art with context %}
+{% from 'macros.html' import cover_art, entity_rate_form, show_avg_rating with context %}
 
 {% block title %}{{ artist.name }} - CritiqueBrainz{% endblock %}
 
@@ -230,6 +230,29 @@
       <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
       <a href="https://musicbrainz.org/artist/{{ artist.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
+
+    <br/><br/>
+    {{ entity_rate_form('artist', 'artist') }}
+    {% if avg_rating %}
+      <div class="avg-rating">
+        {{ show_avg_rating(avg_rating.rating, avg_rating.count, show_glyphicon = false) }}
+      </div>
+    {% endif %}
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <script>
+    $(document).ready(function() {
+      $("#ratestars").click(function(e){
+        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+        if (e.target.tagName === 'I') {
+          $("#rating-form").submit();
+        }
+      });
+    });
+  </script>
+  <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}
