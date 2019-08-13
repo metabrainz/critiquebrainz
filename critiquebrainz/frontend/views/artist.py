@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import current_user
 from flask_babel import gettext
 from werkzeug.exceptions import BadRequest, NotFound
 
@@ -8,7 +9,8 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
-from critiquebrainz.frontend.views import BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
+from critiquebrainz.frontend.views import get_avg_rating, BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
+from critiquebrainz.frontend.forms.rate import RatingEditForm
 
 artist_bp = Blueprint('artist', __name__)
 
@@ -32,6 +34,16 @@ def entity(id):
     if request.args.get('reviews') == "all":
         artist_reviews_limit = None
 
+    if current_user.is_authenticated:
+        my_reviews, my_count = db_review.list_reviews(
+            entity_id=artist['id'],
+            entity_type='artist',
+            user_id=current_user.id,
+        )
+        my_review = my_reviews[0] if my_count else None
+    else:
+        my_review = None
+
     reviews_offset = 0
     reviews, reviews_count = db_review.list_reviews(
         entity_id=artist['id'],
@@ -40,6 +52,11 @@ def entity(id):
         limit=artist_reviews_limit,
         offset=reviews_offset,
     )
+
+    avg_rating = get_avg_rating(artist['id'], "artist")
+
+    rating_form = RatingEditForm(entity_id=id, entity_type='artist')
+    rating_form.rating.data = my_review['rating'] if my_review else None
 
     release_type = request.args.get('release_type', default='album')
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
@@ -74,6 +91,8 @@ def entity(id):
         reviews=reviews,
         reviews_limit=artist_reviews_limit,
         reviews_count=reviews_count,
+        avg_rating=avg_rating,
+        rating_form=rating_form,
         release_groups_limit=BROWSE_RELEASE_GROUPS_LIMIT,
         release_group_count=release_group_count,
         band_members=band_members,
