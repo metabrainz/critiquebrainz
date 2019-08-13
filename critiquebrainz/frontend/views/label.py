@@ -48,13 +48,7 @@ def entity(id):
     rating_form = RatingEditForm(entity_id=id, entity_type='label')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    return render_template(
-        'label/entity.html',
-        id=label['id'],
-        label=label,
-        reviews=reviews,
-        reviews_limit=label_reviews_limit,
-        reviews_count=reviews_count,
-        avg_rating=avg_rating,
-        rating_form=rating_form,
-    )
+    return render_template('label/entity.html', id=label['id'], label=label,
+                           reviews=reviews, my_review=my_review, reviews_limit=label_reviews_limit,
+                           reviews_count=reviews_count, avg_rating=avg_rating, rating_form=rating_form,
+                           current_user=current_user)
