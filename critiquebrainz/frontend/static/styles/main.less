@@ -13,6 +13,7 @@
 @artist-color: @blue;
 @event-color: @green;
 @place-color: @yellow;
+@label-color: @blue;
 
 body {
   padding-bottom: 25px;
@@ -130,6 +131,9 @@ ul.sharing {
     }
     &.place {
       background-color: fade(@place-color, 70%);
+    }
+    &.label {
+      background-color: fade(@label-color, 70%);
     }
     &.event {
       background-color: fade(@event-color, 70%);
@@ -492,6 +496,9 @@ a#edit-review { margin-top: 20px; }
           }
           &.place {
             background-color: fade(@place-color, 70%);
+          }
+          &.label {
+            background-color: fade(@label-color, 70%);
           }
           &.event {
             background-color: fade(@event-color, 70%);
