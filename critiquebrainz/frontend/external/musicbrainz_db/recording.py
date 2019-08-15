@@ -16,7 +16,7 @@ def get_recording_by_id(mbid):
     if not recording:
         recording = fetch_multiple_recordings(
             [mbid],
-            includes=['artist', 'work-rels', 'url-rels'],
+            includes=['artists', 'work-rels', 'url-rels'],
         ).get(mbid)
         recording.update({'length': recording['length'] * 1000.0})
         cache.set(key=key, val=recording, time=DEFAULT_CACHE_EXPIRATION)
