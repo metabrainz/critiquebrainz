@@ -20,6 +20,8 @@ ENTITY_TYPES = [
     "place",
     "release_group",
     "work",
+    "artist",
+    "label",
 ]
 
 
@@ -535,8 +537,9 @@ def get_popular(limit=None):
     cache_key = cache.gen_key("popular_reviews", limit)
     reviews = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
     defined_limit = 4 * limit if limit else None
+    reset_cache = any([check_review_deleted(review["id"]) for review in reviews]) if reviews else False
 
-    if not reviews:
+    if not reviews or reset_cache:
         with db.engine.connect() as connection:
             results = connection.execute(sqlalchemy.text("""
                 SELECT review.id,
@@ -634,6 +637,22 @@ def delete(review_id):
 
     if review["rating"] is not None:
         db_avg_rating.update(review["entity_id"], review["entity_type"])
+
+
+def check_review_deleted(review_id) -> bool:
+    """Check if a review exists in CB.
+
+    Args:
+        review_id: ID of the review to be checked.
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT NOT EXISTS (SELECT true FROM review WHERE id = :review_id) AS exists
+        """), {
+            "review_id": review_id,
+        })
+
+        return dict(result.fetchone())["exists"]
 
 
 def get_distinct_entities(connection):

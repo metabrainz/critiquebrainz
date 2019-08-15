@@ -18,6 +18,8 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_release_groups(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "work":
             count, results = musicbrainz.search_works(query, limit=RESULTS_LIMIT, offset=offset)
+        elif type == "label":
+            count, results = musicbrainz.search_labels(query, limit=RESULTS_LIMIT, offset=offset)
         else:
             count, results = 0, []
     else:
@@ -46,8 +48,9 @@ def more():
 
 @search_bp.route('/selector')
 def selector():
-    artist = request.args.get('artist')
     release_group = request.args.get('release_group')
+    artist = request.args.get('artist')
+    label = request.args.get('label')
     event = request.args.get('event')
     place = request.args.get('place')
     work = request.args.get('work')
@@ -55,9 +58,12 @@ def selector():
     next = request.args.get('next')
     if not next:
         return redirect(url_for('frontend.index'))
-    if artist or release_group:
-        count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
-                                                           limit=RESULTS_LIMIT)
+    if release_group:
+        count, results = musicbrainz.search_release_groups(release_group, limit=RESULTS_LIMIT)
+    elif artist:
+        count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT)
+    elif label:
+        count, results = musicbrainz.search_labels(label, limit=RESULTS_LIMIT)
     elif work:
         count, results = musicbrainz.search_works(work, limit=RESULTS_LIMIT)
     elif event:
@@ -69,13 +75,14 @@ def selector():
     return render_template('search/selector.html', next=next, type=type,
                            results=results, count=count, limit=RESULTS_LIMIT,
                            artist=artist, release_group=release_group, event=event,
-                           work=work, place=place)
+                           work=work, place=place, label=label)
 
 
 @search_bp.route('/selector/more')
 def selector_more():
     artist = request.args.get('artist')
     release_group = request.args.get('release_group')
+    label = request.args.get('label')
     event = request.args.get('event')
     place = request.args.get('place')
     work = request.args.get('work')
@@ -83,10 +90,14 @@ def selector_more():
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
     if type == 'release-group':
-        count, results = musicbrainz.search_release_groups(artist=artist, release_group=release_group,
+        count, results = musicbrainz.search_release_groups(release_group,
                                                            limit=RESULTS_LIMIT, offset=offset)
     elif type == 'work':
         count, results = musicbrainz.search_works(work, limit=RESULTS_LIMIT, offset=offset)
+    elif type == 'artist':
+        count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT, offset=offset)
+    elif type == 'label':
+        count, results = musicbrainz.search_labels(label, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'event':
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'place':

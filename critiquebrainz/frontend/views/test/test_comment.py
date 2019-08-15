@@ -163,3 +163,66 @@ class CommentViewsTestCase(FrontendTestCase):
         self.assert200(response)
         self.assertEqual(comment_count-1, db_comment.count_comments(review_id=self.review["id"]))
         self.assertIn("Comment has been deleted.", str(response.data))
+
+    def test_edit(self):
+        # create a temporary comment by commenter
+        comment = self.create_dummy_comment()
+        comment_count = db_comment.count_comments(review_id=self.review["id"])
+
+        self.temporary_login(self.reviewer)
+
+        # Other users should not be able to edit the comment by commenter
+        response = self.client.post(
+            url_for("comment.edit", id=comment["id"]),
+            follow_redirects=True,
+        )
+        self.assert401(response, "Only the author can edit this comment.")
+
+        self.temporary_login(self.commenter)
+
+        # should return 404 on trying to edit non-existent comment
+        response = self.client.post(
+            url_for("comment.edit", id="false-comment"),
+            follow_redirects=True
+        )
+        self.assert404(response)
+
+        payload = {
+            "review_id": self.review["id"],
+            "text": "",
+            "state": "publish",
+        }
+
+        # should be unable to add an empty comment
+        response = self.client.post(
+            url_for("comment.edit", id=comment["id"]),
+            data=payload,
+            follow_redirects=True,
+        )
+        self.assert200(response)
+        self.assertEqual(comment_count, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertIn("Comment must not be empty!", str(response.data))
+
+        # should be unable to update comment without changing comment text
+        payload["text"] = "Dummy Comment"
+
+        response = self.client.post(
+            url_for("comment.edit", id=comment["id"]),
+            data=payload,
+            follow_redirects=True,
+        )
+        self.assert200(response)
+        self.assertEqual(comment_count, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertIn("You must change some content of the comment to update it!", str(response.data))
+
+        # should be able to update comment by changing text
+        payload["text"] = "Updated comment text"
+
+        response = self.client.post(
+            url_for("comment.edit", id=comment["id"]),
+            data=payload,
+            follow_redirects=True,
+        )
+        self.assert200(response)
+        self.assertEqual(comment_count, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertIn("Comment has been updated.", str(response.data))

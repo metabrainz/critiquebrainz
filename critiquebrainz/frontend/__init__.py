@@ -63,17 +63,15 @@ def create_app(debug=None, config_path=None):
         sentry_config=app.config.get("LOG_SENTRY"),
     )
 
-    # Database
-    from critiquebrainz.db import init_db_engine
-    init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
+    # CritiqueBrainz Database
+    from critiquebrainz import db as critiquebrainz_db
+    critiquebrainz_db.init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
 
     add_robots(app)
 
     # MusicBrainz Database
-    from brainzutils import musicbrainz_db as brainzutils_db
-    from critiquebrainz.frontend.external import musicbrainz_db
-    musicbrainz_db.init_db_engine(app.config.get('MB_DATABASE_URI'))
-    brainzutils_db.init_db_engine(app.config.get('MB_DATABASE_URI'))
+    from brainzutils import musicbrainz_db
+    musicbrainz_db.init_db_engine(app.config.get("MB_DATABASE_URI"))
 
     # Redis (cache)
     from brainzutils import cache
@@ -133,6 +131,7 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.review import review_bp
     from critiquebrainz.frontend.views.search import search_bp
     from critiquebrainz.frontend.views.artist import artist_bp
+    from critiquebrainz.frontend.views.label import label_bp
     from critiquebrainz.frontend.views.release_group import release_group_bp
     from critiquebrainz.frontend.views.release import release_bp
     from critiquebrainz.frontend.views.work import work_bp
@@ -149,11 +148,13 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.log import log_bp
     from critiquebrainz.frontend.views.comment import comment_bp
     from critiquebrainz.frontend.views.rate import rate_bp
+    from critiquebrainz.frontend.views.statistics import statistics_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
     app.register_blueprint(search_bp, url_prefix='/search')
     app.register_blueprint(artist_bp, url_prefix='/artist')
+    app.register_blueprint(label_bp, url_prefix='/label')
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
     app.register_blueprint(release_bp, url_prefix='/release')
     app.register_blueprint(work_bp, url_prefix='/work')
@@ -170,6 +171,7 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(moderators_bp, url_prefix='/moderators')
     app.register_blueprint(comment_bp, url_prefix='/comments')
     app.register_blueprint(rate_bp, url_prefix='/rate')
+    app.register_blueprint(statistics_bp, url_prefix='/statistics')
 
     return app
 

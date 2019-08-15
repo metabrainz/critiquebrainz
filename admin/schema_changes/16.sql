@@ -1,1 +1,1 @@
-ALTER TYPE entity_types ADD VALUE 'work' AFTER 'place';
+ALTER TYPE entity_types ADD VALUE 'artist' AFTER 'place';

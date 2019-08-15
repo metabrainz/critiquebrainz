@@ -30,7 +30,7 @@ ENV PGPASSWORD "critiquebrainz"
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install -y nodejs
 
-RUN pip install uWSGI==2.0.13.1
+RUN pip install uWSGI==2.0.18
 
 RUN mkdir /code
 WORKDIR /code

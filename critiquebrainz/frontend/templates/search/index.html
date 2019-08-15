@@ -26,6 +26,7 @@
         <option value="release-group" {% if type=="release-group" %}selected="selected"{% endif %}>{{ _('Release group') }}</option>
         <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>{{ _('Artist') }}</option>
         <option value="event" {% if type=="event" %}selected="selected"{% endif %}>{{ _('Event') }}</option>
+        <option value="label" {% if type=="label" %}selected="selected"{% endif %}>{{ _('Label') }}</option>
         <option value="place" {% if type=="place" %}selected="selected"{% endif %}>{{ _('Place') }}</option>
         <option value="work" {% if type=="work" %}selected="selected"{% endif %}>{{ _('Work') }}</option>
       </select>
@@ -70,6 +71,12 @@
           <th>{{ _('Release group') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Type') }}</th>
+        </tr>
+      {% elif type=="label" %}
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Country') }}</th>
         </tr>
       {% elif type=="work" %}
         <tr>

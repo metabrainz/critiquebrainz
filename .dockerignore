@@ -1,7 +1,6 @@
 .git
 
 # Docker configuration
-/docker
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
