@@ -18,6 +18,8 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_release_groups(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "recording":
             count, results = musicbrainz.search_recordings(query, limit=RESULTS_LIMIT, offset=offset)
+        elif type == "label":
+            count, results = musicbrainz.search_labels(query, limit=RESULTS_LIMIT, offset=offset)
         else:
             count, results = 0, []
     else:
@@ -46,10 +48,10 @@ def more():
 
 @search_bp.route('/selector')
 def selector():
-    artist = request.args.get('artist')
     release_group = request.args.get('release_group')
-    artist = request.args.get('artist')
     recording = request.args.get('recording')
+    artist = request.args.get('artist')
+    label = request.args.get('label')
     event = request.args.get('event')
     place = request.args.get('place')
     type = request.args.get('type')
@@ -62,6 +64,8 @@ def selector():
         count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT)
     elif recording:
         count, results = musicbrainz.search_recordings(recording, limit=RESULTS_LIMIT)
+    elif label:
+        count, results = musicbrainz.search_labels(label, limit=RESULTS_LIMIT)
     elif event:
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT)
     elif place:
@@ -71,7 +75,7 @@ def selector():
     return render_template('search/selector.html', next=next, type=type,
                            results=results, count=count, limit=RESULTS_LIMIT,
                            artist=artist, release_group=release_group, event=event,
-                           recording=recording, place=place)
+                           recording=recording, place=place, label=label)
 
 
 @search_bp.route('/selector/more')
@@ -79,6 +83,7 @@ def selector_more():
     artist = request.args.get('artist')
     recording = request.args.get('recording')
     release_group = request.args.get('release_group')
+    label = request.args.get('label')
     event = request.args.get('event')
     place = request.args.get('place')
     type = request.args.get('type')
@@ -91,6 +96,8 @@ def selector_more():
         count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'recording':
         count, results = musicbrainz.search_recordings(recording, limit=RESULTS_LIMIT, offset=offset)
+    elif type == 'label':
+        count, results = musicbrainz.search_labels(label, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'event':
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'place':

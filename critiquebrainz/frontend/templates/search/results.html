@@ -88,5 +88,18 @@
       </td>
     </tr>
 
+  {% elif type=="label" %}
+    <tr>
+      <td>
+        <a href="{{ url_for('label.entity', id=result.id) }}">{{ result['name'] }}</a>
+      </td>
+      <td>
+        {{ result['type'] or '-' }}
+      </td>
+      <td>
+        {{ result['country'] or '-' }}
+      </td>
+    </tr>
+
   {% endif %}
 {% endfor %}

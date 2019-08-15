@@ -131,6 +131,7 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.review import review_bp
     from critiquebrainz.frontend.views.search import search_bp
     from critiquebrainz.frontend.views.artist import artist_bp
+    from critiquebrainz.frontend.views.label import label_bp
     from critiquebrainz.frontend.views.release_group import release_group_bp
     from critiquebrainz.frontend.views.release import release_bp
     from critiquebrainz.frontend.views.recording import recording_bp
@@ -153,6 +154,7 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(review_bp, url_prefix='/review')
     app.register_blueprint(search_bp, url_prefix='/search')
     app.register_blueprint(artist_bp, url_prefix='/artist')
+    app.register_blueprint(label_bp, url_prefix='/label')
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
     app.register_blueprint(release_bp, url_prefix='/release')
     app.register_blueprint(recording_bp, url_prefix='/recording')

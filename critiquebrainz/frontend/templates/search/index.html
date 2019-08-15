@@ -27,6 +27,7 @@
         <option value="recording" {% if type=="recording" %}selected="selected"{% endif %}>{{ _('Recording') }}</option>
         <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>{{ _('Artist') }}</option>
         <option value="event" {% if type=="event" %}selected="selected"{% endif %}>{{ _('Event') }}</option>
+        <option value="label" {% if type=="label" %}selected="selected"{% endif %}>{{ _('Label') }}</option>
         <option value="place" {% if type=="place" %}selected="selected"{% endif %}>{{ _('Place') }}</option>
       </select>
     </div>
@@ -77,6 +78,12 @@
           <th>{{ _('Length') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Release group') }}</th>
+        </tr>
+      {% elif type=="label" %}
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Country') }}</th>
         </tr>
       {% endif %}
       </thead>

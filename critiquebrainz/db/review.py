@@ -21,6 +21,7 @@ ENTITY_TYPES = [
     "release_group",
     "artist",
     "recording",
+    "label",
 ]
 
 

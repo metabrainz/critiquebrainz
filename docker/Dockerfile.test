@@ -39,7 +39,7 @@ COPY . /code/
 RUN pybabel compile -d critiquebrainz/frontend/translations
 
 CMD dockerize -wait tcp://db_test:5432 -timeout 60s \
-    dockerize -wait tcp://musicbrainz_db:5432 -timeout 240s \
+    dockerize -wait tcp://musicbrainz_db:5432 -timeout 360s \
     python manage.py init_db --skip-create-db --test-db \
     && py.test --junitxml=/data/test_report.xml \
             --cov-report xml:/data/coverage.xml
