@@ -7,6 +7,9 @@
 <div class="clearfix">
   <h2 class="pull-left">
     {{ work.name }}
+    {% if work.type %}
+      <small>({{ work.type }})</small>
+    {% endif %}
   </h2>
 
   {% if not my_review %}
@@ -112,7 +115,6 @@
 
   <div class="col-sm-3">
     <h4>{{ _('Work information') }}</h4>
-    {% if work.type %}<p class="text-muted">{{ work.type }}</p>{% endif %}
 
     {% if work['external-urls'] %}
       <b>{{ _('External links') }}</b>
