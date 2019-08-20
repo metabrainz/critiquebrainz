@@ -48,6 +48,22 @@
                 {% endif %}
               {%- elif review.entity_type == 'place' -%}
                 <strong>{{ entity.name | default(_('[Unknown place]')) }}</strong>
+
+              {%- elif review.entity_type == 'recording' -%}
+                <strong>{{ entity.name | default(_('[Unknown recording]')) }}</strong>
+                - {{ entity['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
+
+              {%- elif review.entity_type == 'artist' -%}
+                <strong>{{ entity.name | default(_('[Unknown artist]')) }}</strong>
+                {% if entity['type'] %}
+                  ({{ entity.type }})
+                {% endif %}
+
+              {%- elif review.entity_type == 'label' -%}
+                <strong>{{ entity.name | default(_('[Unknown label]')) }}</strong>
+                {% if entity['type'] %}
+                  ({{ entity.type }})
+                {% endif %}
               {%- endif -%}
 
             </a>
