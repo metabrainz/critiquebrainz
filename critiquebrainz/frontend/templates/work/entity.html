@@ -88,7 +88,7 @@
               <td>{{ rel.type | capitalize }}</td>
               <td>
                 {% if recording.length %}
-                  {{ (recording.length * 1000) | track_length }}
+                  {{ recording.length | track_length }}
                 {% else %}
                   -
                 {% endif %}
