@@ -6,7 +6,7 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.recording as mb_recording
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.forms.rate import RatingEditForm
-from critiquebrainz.frontend.views import get_avg_rating
+from critiquebrainz.frontend.views import get_avg_rating, RECORDING_REVIEWS_LIMIT
 
 
 recording_bp = Blueprint('recording', __name__)
@@ -25,7 +25,7 @@ def entity(id):
     else:
         external_reviews = []
 
-    limit = int(request.args.get('limit', default=10))
+    limit = int(request.args.get('limit', default=RECORDING_REVIEWS_LIMIT))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated:
         my_reviews, my_count = db_review.list_reviews(
