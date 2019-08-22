@@ -115,11 +115,12 @@ def create_app(debug=None, config_path=None):
     # TODO (code-master5): disabled no-member warnings just as a workaround to deal with failing tests till the
     # issue [https://github.com/PyCQA/pylint/issues/2563] with pylint is resolved
     app.jinja_env.add_extension('jinja2.ext.do')
-    from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, parameterize
+    from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, track_length_ms, parameterize
     from critiquebrainz.frontend.external.musicbrainz_db.entities import get_entity_by_id
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
+    app.jinja_env.filters['track_length_ms'] = track_length_ms
     app.jinja_env.filters['parameterize'] = parameterize
     app.jinja_env.filters['entity_details'] = get_entity_by_id
     from flask_babel import Locale, get_locale
