@@ -10,7 +10,7 @@
     <dt>{{ _('Length') }}</dt>
     <dd>
       {% if entity['length'] %}
-        {{ entity['length'] | track_length_ms }}
+        {{ entity['length'] | track_length }}
       {% else %}
         -
       {% endif %}
