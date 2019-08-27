@@ -34,6 +34,7 @@ def entity(id):
     if request.args.get('reviews') == "all":
         artist_reviews_limit = None
 
+    my_review = None
     if current_user.is_authenticated:
         my_reviews, my_count = db_review.list_reviews(
             entity_id=artist['id'],
@@ -41,8 +42,6 @@ def entity(id):
             user_id=current_user.id,
         )
         my_review = my_reviews[0] if my_count else None
-    else:
-        my_review = None
 
     reviews_offset = 0
     reviews, reviews_count = db_review.list_reviews(
