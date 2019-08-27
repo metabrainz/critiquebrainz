@@ -16,9 +16,5 @@
     {% endif %}
 
     {{ _('%(recording)s', recording=recording_name) }}
-
-    {% if recording['life-span'] %}
-      <small>{{ recording['life-span']['begin'][:4] }}</small>
-    {% endif %}
   </h2>
 {% endblock %}
