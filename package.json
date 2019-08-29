@@ -28,7 +28,7 @@
   },
   "private": true,
   "devDependencies": {
-    "acorn": "6.0.0",
+    "acorn": "7.0.0",
     "bootstrap": "3.4.1",
     "jquery": "3.4.0",
     "lodash": "4.17.11"
