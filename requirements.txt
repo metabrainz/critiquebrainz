@@ -4,7 +4,7 @@ coverage==4.4.1
 click==6.7
 Flask-Babel==0.11.2
 Flask-Login==0.4.0
-Flask-SQLAlchemy==2.2
+Flask-SQLAlchemy==2.4.0
 Flask-Testing==0.6.2
 Flask-WTF==0.14.2
 Markdown==2.6.8
