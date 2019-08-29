@@ -18,5 +18,5 @@ pycountry==1.20
 python-dateutil==2.6.1
 rauth==0.7.3
 transifex-client==0.12.4
-WTForms==2.1
+WTForms==2.2.1
 langdetect==1.0.7
