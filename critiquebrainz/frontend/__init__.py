@@ -115,11 +115,12 @@ def create_app(debug=None, config_path=None):
     # TODO (code-master5): disabled no-member warnings just as a workaround to deal with failing tests till the
     # issue [https://github.com/PyCQA/pylint/issues/2563] with pylint is resolved
     app.jinja_env.add_extension('jinja2.ext.do')
-    from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, parameterize
+    from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, track_length_ms, parameterize
     from critiquebrainz.frontend.external.musicbrainz_db.entities import get_entity_by_id
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
+    app.jinja_env.filters['track_length_ms'] = track_length_ms
     app.jinja_env.filters['parameterize'] = parameterize
     app.jinja_env.filters['entity_details'] = get_entity_by_id
     from flask_babel import Locale, get_locale
@@ -134,6 +135,7 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.label import label_bp
     from critiquebrainz.frontend.views.release_group import release_group_bp
     from critiquebrainz.frontend.views.release import release_bp
+    from critiquebrainz.frontend.views.work import work_bp
     from critiquebrainz.frontend.views.event import event_bp
     from critiquebrainz.frontend.views.mapping import mapping_bp
     from critiquebrainz.frontend.views.user import user_bp
@@ -156,6 +158,7 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(label_bp, url_prefix='/label')
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
     app.register_blueprint(release_bp, url_prefix='/release')
+    app.register_blueprint(work_bp, url_prefix='/work')
     app.register_blueprint(event_bp, url_prefix='/event')
     app.register_blueprint(place_bp, url_prefix='/place')
     app.register_blueprint(mapping_bp, url_prefix='/mapping')

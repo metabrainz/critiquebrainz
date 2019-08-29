@@ -28,6 +28,7 @@
         <option value="event" {% if type=="event" %}selected="selected"{% endif %}>{{ _('Event') }}</option>
         <option value="label" {% if type=="label" %}selected="selected"{% endif %}>{{ _('Label') }}</option>
         <option value="place" {% if type=="place" %}selected="selected"{% endif %}>{{ _('Place') }}</option>
+        <option value="work" {% if type=="work" %}selected="selected"{% endif %}>{{ _('Work') }}</option>
       </select>
     </div>
   </div>
@@ -76,6 +77,13 @@
           <th>{{ _('Name') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Country') }}</th>
+        </tr>
+      {% elif type=="work" %}
+        <tr>
+          <th>{{ _('Title') }}</th>
+          <th>{{ _('Artists') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Language') }}</th>
         </tr>
       {% endif %}
       </thead>

@@ -19,6 +19,8 @@
     <a href="{{ url_for('review.browse', entity_type='event') }}">{{ _('Event') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'place' }}>
     <a href="{{ url_for('review.browse', entity_type='place') }}">{{ _('Place') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'work' }}>
+    <a href="{{ url_for('review.browse', entity_type='work') }}">{{ _('Work') }}</a></li>
 </ul>
 
 <div id="reviews-browse" class="row">

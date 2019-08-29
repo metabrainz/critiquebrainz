@@ -16,6 +16,8 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_places(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "release-group":
             count, results = musicbrainz.search_release_groups(query, limit=RESULTS_LIMIT, offset=offset)
+        elif type == "work":
+            count, results = musicbrainz.search_works(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "label":
             count, results = musicbrainz.search_labels(query, limit=RESULTS_LIMIT, offset=offset)
         else:
@@ -51,6 +53,7 @@ def selector():
     label = request.args.get('label')
     event = request.args.get('event')
     place = request.args.get('place')
+    work = request.args.get('work')
     type = request.args.get('type')
     next = request.args.get('next')
     if not next:
@@ -61,6 +64,8 @@ def selector():
         count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT)
     elif label:
         count, results = musicbrainz.search_labels(label, limit=RESULTS_LIMIT)
+    elif work:
+        count, results = musicbrainz.search_works(work, limit=RESULTS_LIMIT)
     elif event:
         count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT)
     elif place:
@@ -70,7 +75,7 @@ def selector():
     return render_template('search/selector.html', next=next, type=type,
                            results=results, count=count, limit=RESULTS_LIMIT,
                            artist=artist, release_group=release_group, event=event,
-                           label=label, place=place)
+                           work=work, place=place, label=label)
 
 
 @search_bp.route('/selector/more')
@@ -80,12 +85,15 @@ def selector_more():
     label = request.args.get('label')
     event = request.args.get('event')
     place = request.args.get('place')
+    work = request.args.get('work')
     type = request.args.get('type')
     page = int(request.args.get('page', default=0))
     offset = page * RESULTS_LIMIT
     if type == 'release-group':
         count, results = musicbrainz.search_release_groups(release_group,
                                                            limit=RESULTS_LIMIT, offset=offset)
+    elif type == 'work':
+        count, results = musicbrainz.search_works(work, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'artist':
         count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT, offset=offset)
     elif type == 'label':

@@ -11,5 +11,7 @@
     {{ _('%(event)s', event = '<b>'|safe + entity.name | default(_('[Unknown event]')) + '</b>'|safe) }}
   {% elif review.entity_type == 'place' %}
     {{ _('%(place)s', place = '<b>'|safe + entity.name | default(_('[Unknown place]')) + '</b>'|safe) }}
+  {% elif review.entity_type == 'work' %}
+    {{ _('%(work)s', work = '<b>'|safe + entity.name | default(_('[Unknown work]')) + '</b>'|safe) }}
   {% endif %}
 </a>

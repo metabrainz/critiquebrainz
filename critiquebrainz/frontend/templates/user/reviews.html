@@ -48,6 +48,18 @@
                 {% endif %}
               {%- elif review.entity_type == 'place' -%}
                 <strong>{{ entity.name | default(_('[Unknown place]')) }}</strong>
+
+              {%- elif review.entity_type == 'work' -%}
+                <strong>{{ entity.name | default(_('[Unknown work]')) }}</strong>
+                {% if entity['artist-rels'] %}
+                  (
+                  {{ entity['artist-rels'][0]['artist']['name'] }}
+                  {% set count = entity['artist-rels'] | length %}
+                  {% if count > 1 %}
+                    + {{ count - 1 }} {{ _("more") }}
+                  {% endif %}
+                  )
+                {% endif %}
               {%- endif -%}
 
             </a>
