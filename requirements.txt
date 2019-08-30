@@ -1,4 +1,4 @@
-git+https://github.com/spellew/brainzutils-python.git@recording-multiple-credit-names#brainzutils
+git+https://github.com/metabrainz/brainzutils-python.git@v1.14.0
 beautifulsoup4==4.6.0
 coverage==4.4.1
 click==6.7
