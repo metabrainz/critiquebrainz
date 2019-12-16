@@ -1,0 +1,28 @@
+{% if entity is not defined %}
+  {% set entity = review.entity_id | entity_details(type=entity_type) %}
+{% endif %}
+<div class="col-md-12">
+  <dl class="dl-horizontal">
+    <dt>{{ _('Work') }}</dt>
+    <dd>
+      {{ entity['name'] | default(_('[Unknown work]')) }}
+    </dd>
+    <dt>{{ _('Type') }}</dt>
+    <dd>{{ entity['type'] or '-' }}</dd>
+    <dt>{{ _('Artists') }}</dt>
+    <dd>
+      {% if entity['artist-rels'] %}
+        {{ entity['artist-rels'][0]['artist']['name'] or '-' }}
+        {% set count = entity['artist-rels'] | length %}
+        {% if count > 1 %}
+          + {{ count - 1 }} {{ _("more") }}
+        {% endif %}
+      {% else %}
+        -
+      {% endif %}
+    </dd>
+    {% block more_info %}
+    {# Information like creation date, votes etc. #}
+    {% endblock %}
+  </dl>
+</div>

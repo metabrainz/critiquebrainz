@@ -39,15 +39,66 @@
 {% endmacro %}
 
 {% block content %}
-<h2>
-  {{ artist.name }}
-  {% if artist.disambiguation %}
-    <small>({{ artist.disambiguation }})</small>
+<div class="clearfix">
+  <h2 class="pull-left">
+    {{ artist.name }}
+    {% if artist.disambiguation %}
+      <small>({{ artist.disambiguation }})</small>
+    {% endif %}
+  </h2>
+
+  {% if not my_review %}
+    <a id="write-review" href="{{ url_for('review.create', artist=id) }}"
+        role="button" class="btn btn-success pull-right">
+      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
+    </a>
+  {% else %}
+    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
+        role="button" class="btn btn-primary pull-right">
+      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
+    </a>
   {% endif %}
-</h2>
+</div>
 
 <div class="row">
   <div class="col-sm-9">
+    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+    {% if not reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ _('Published on') }}</th>
+            <th>{{ _('Votes (+/-)') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for review in reviews %}
+            <tr data-review-id="{{ review.id }}">
+              <td>
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                </a>
+              </td>
+              <td>{{ review.published_on | date }}</td>
+              <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="col-md-12">
+        <ul class="pager">
+          {% if not reviews_limit %}
+            <li class="next"><a href="{{ url_for('artist.entity', mbid=id, release_type=release_type) }}">{{ _('Hide reviews') }}</a></li>
+          {% elif reviews_count > reviews_limit %}
+            <li class="next"><a href="{{ url_for('artist.entity', mbid=id, release_type=release_type, reviews='all') }}">{{ _('Show all reviews') }}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    {% endif %}
+    <ul class="pagination"></ul>
     <h4>{{ _('Discography') }}</h4>
     <ul class="nav nav-tabs">
       <li {% if release_type=='album' %}class="active"{% endif %}>
@@ -66,7 +117,7 @@
         <a href="{{ url_for('artist.entity', mbid=artist.id) }}?release_type=other">{{ _('Other releases') }}</a>
       </li>
     </ul>
-    {% if count==0 %}
+    {% if release_group_count==0 %}
       <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No releases found') }}</p>
     {% else %}
       <div id="release-groups" class="row">
@@ -95,13 +146,13 @@
         {% endfor %}
         <div class="clearfix"></div>
 
-        {% if count > limit %}
+        {% if release_group_count > release_groups_limit %}
           <div class="col-md-12">
             <ul class="pager">
               {% if page > 1 %}
                 <li class="previous"><a href="{{ url_for('artist.entity', mbid=id, release_type=release_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
               {% endif %}
-              {% if page-1 < count//limit %}
+              {% if page-1 < release_group_count//release_groups_limit %}
                 <li class="next"><a href="{{ url_for('artist.entity', mbid=id, release_type=release_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
               {% endif %}
             </ul>
@@ -109,6 +160,7 @@
         {% endif %}
       </div>
     {% endif %}
+    <ul class="pagination"></ul>
   </div>
 
   <div class="col-sm-3">
