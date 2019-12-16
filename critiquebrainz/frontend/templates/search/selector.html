@@ -18,6 +18,12 @@
       <li {% if type=="place" %}class="active"{% endif %}>
         <a href="#place" data-toggle="tab">Place</a>
       </li>
+      <li {% if type=="work" %}class="active"{% endif %}>
+        <a href="#work" data-toggle="tab">{{ _('Work') }}</a>
+      </li>
+      <li {% if type=="label" %}class="active"{% endif %}>
+        <a href="#label" data-toggle="tab">{{ _('Label') }}</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -101,6 +107,46 @@
         </form>
       </div>
 
+      <div id="work" class="tab-pane {% if type=="work" %}active{% endif %}">
+        <h3>{{ _('Work selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Work') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="work" type="text"
+                      value="{{ request.args.get('work', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="work" />
+        </form>
+      </div>
+
+      <div id="label" class="tab-pane {% if type=="label" %}active{% endif %}">
+        <h3>{{ _('Label selection') }}</h3>
+        <form method="GET" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input-release-group" class="col-sm-2 control-label">{{ _('Label') }}</label>
+            <div class="col-sm-4">
+              <input id="input-release-group" class="form-control" name="label" type="text"
+                      value="{{ request.args.get('label', default='') }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">{{ _('Search') }}</button>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <input type="hidden" name="type" value="label" />
+        </form>
+      </div>
+
     </div>
   </div>
 
@@ -109,6 +155,8 @@
   or request.args.get('release_group', default=False)
   or request.args.get('event', default=False)
   or request.args.get('place', default=False)
+  or request.args.get('work', default=False)
+  or request.args.get('label', default=False)
 %}
   <hr />
   {% if not results %}
@@ -146,11 +194,25 @@
             <th>{{ _('Location') }}</th>
             <th></th>
           </tr>
+        {% elif type=="label" %}
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Type') }}</th>
+            <th>{{ _('Country') }}</th>
+            <th></th>
+          </tr>
+        {% elif type=="work" %}
+          <tr>
+            <th>{{ _('Title') }}</th>
+            <th>{{ _('Artists') }}</th>
+            <th>{{ _('Type') }}</th>
+            <th>{{ _('Language') }}</th>
+            <th></th>
+          </tr>
         {% endif %}
         </thead>
         <tbody id="results">{% include 'search/selector_results.html' %}</tbody>
       </table>
-
       <div class="row">
         {% if count > limit %}
           <div class="col-md-6">

@@ -46,11 +46,25 @@
         {{ _('Place') }}
       </span>
     {% endif %}
+  {% elif entity_type == 'work'  %}
+    <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type work">
+        {{ _('Work') }}
+      </span>
+    {% endif %}
   {% elif entity_type == 'artist'  %}
     <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
     {% if overlay_type %}
       <span class="entity-type artist">
         {{ _('Artist') }}
+      </span>
+    {% endif %}
+  {% elif entity_type == 'label'  %}
+    <img src="{{ get_static_path('images/placeholder_disc.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type label">
+        {{ _('Label') }}
       </span>
     {% endif %}
   {% else %} {# release-group #}

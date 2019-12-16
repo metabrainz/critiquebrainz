@@ -5,9 +5,13 @@
     artist = entity['artist-credit-phrase'] | default(_('[Unknown artist]'))) }}
   {% elif review.entity_type == 'artist' %}
     {{ _('%(artist)s', artist = '<b>'|safe + entity.name | default(_('[Unknown artist]')) + '</b>'|safe) }}
+  {% elif review.entity_type == 'label' %}
+    {{ _('%(label)s', label = '<b>'|safe + entity.name | default(_('[Unknown label]')) + '</b>'|safe) }}
   {% elif review.entity_type == 'event' %}
     {{ _('%(event)s', event = '<b>'|safe + entity.name | default(_('[Unknown event]')) + '</b>'|safe) }}
   {% elif review.entity_type == 'place' %}
     {{ _('%(place)s', place = '<b>'|safe + entity.name | default(_('[Unknown place]')) + '</b>'|safe) }}
+  {% elif review.entity_type == 'work' %}
+    {{ _('%(work)s', work = '<b>'|safe + entity.name | default(_('[Unknown work]')) + '</b>'|safe) }}
   {% endif %}
 </a>

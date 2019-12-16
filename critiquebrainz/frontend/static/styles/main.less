@@ -13,6 +13,8 @@
 @artist-color: @blue;
 @event-color: @green;
 @place-color: @yellow;
+@work-color: @blue;
+@label-color: @blue;
 
 body {
   padding-bottom: 25px;
@@ -125,11 +127,20 @@ ul.sharing {
     &.release-group {
       background-color: fade(@rg-color, 70%);
     }
+    &.place {
+      background-color: fade(@place-color, 70%);
+    }
+    &.event {
+      background-color: fade(@event-color, 70%);
+    }
     &.artist {
       background-color: fade(@artist-color, 70%);
     }
-    &.place {
-      background-color: fade(@place-color, 70%);
+    &.work {
+      background-color: fade(@work-color, 70%);
+    }
+    &.label {
+      background-color: fade(@label-color, 70%);
     }
     &.event {
       background-color: fade(@event-color, 70%);
@@ -487,11 +498,20 @@ a#edit-review { margin-top: 20px; }
           &.release-group {
             background-color: fade(@rg-color, 70%);
           }
+          &.place {
+            background-color: fade(@place-color, 70%);
+          }
+          &.event {
+            background-color: fade(@event-color, 70%);
+          }
           &.artist {
             background-color: fade(@artist-color, 70%);
           }
-          &.place {
-            background-color: fade(@place-color, 70%);
+          &.work {
+            background-color: fade(@work-color, 70%);
+          }
+          &.label {
+            background-color: fade(@label-color, 70%);
           }
           &.event {
             background-color: fade(@event-color, 70%);

@@ -1,0 +1,24 @@
+{% extends 'review/entity/base.html' %}
+
+{% set work = review.entity_id | entity_details(type='work') %}
+
+{% block title %}
+  {% set work_title = work.name | default(_('[Unknown work]')) %}
+  {{ _('Review of "%(work)s" by %(user)s', work=work_title, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block entity_title %}
+  <h2 id="title">
+    {% if work %}
+      {% set work_name = '<a href="%s">' | safe % url_for('work.entity', id=review.entity_id) ~ work.name ~ '</a>'|safe %}
+    {% else %}
+      {% set work_name =  _('[Unknown work]') %}
+    {% endif %}
+
+    {{ _('%(work)s', work=work_name) }}
+
+    {% if work['life-span'] %}
+      <small>{{ work['life-span']['begin'][:4] }}</small>
+    {% endif %}
+  </h2>
+{% endblock %}
