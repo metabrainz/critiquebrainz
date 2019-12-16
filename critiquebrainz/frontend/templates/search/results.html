@@ -88,6 +88,30 @@
       </td>
     </tr>
 
+  {% elif type=="work" %}
+    <tr>
+      <td>
+        <a href="{{ url_for('work.entity', id=result.id) }}">{{ result['title'] }}</a>
+      </td>
+      <td>
+        {% if result['artist-relation-list'] %}
+          <a href="{{ url_for('artist.entity', mbid=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+          {% set count = result['artist-relation-list'] | length %}
+          {% if count > 1 %}
+            + {{ count - 1 }} {{ _("more") }}
+          {% endif %}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>
+        {{ result['type'] or '-' }}
+      </td>
+      <td>
+        {{ result['language'] or '-' }}
+      </td>
+    </tr>
+
   {% elif type=="label" %}
     <tr>
       <td>
