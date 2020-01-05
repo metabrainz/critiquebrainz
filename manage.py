@@ -1,7 +1,7 @@
 ﻿import os
 import subprocess
 from werkzeug.serving import run_simple
-from werkzeug.wsgi import DispatcherMiddleware
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from brainzutils import cache
 import click
 from critiquebrainz import frontend, ws

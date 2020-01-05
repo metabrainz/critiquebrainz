@@ -1,4 +1,4 @@
-git+https://github.com/metabrainz/brainzutils-python.git@v1.13.0
+git+https://github.com/metabrainz/brainzutils-python.git@v1.14.0
 beautifulsoup4==4.8.0
 coverage==4.4.1
 click==6.7
@@ -11,8 +11,8 @@ Markdown==3.1.1
 musicbrainzngs==0.6
 pytest==3.2.0
 pytest-cov==2.5.1
-pylint==2.3.0
-flake8==3.7.7
+pylint==2.4.4
+flake8==3.8.3
 psycopg2==2.8.3
 pycountry==1.20
 python-dateutil==2.6.1
