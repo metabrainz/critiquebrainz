@@ -1,3 +1,3 @@
-FROM postgres:9.5.4
+FROM postgres:12.3
 
 ADD create_extensions.sql /docker-entrypoint-initdb.d/
