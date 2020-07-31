@@ -4,12 +4,11 @@ CritiqueBrainz is a repository for Creative Commons licensed reviews.
 
 ## Documentation
 
-**Documentation is available at https://critiquebrainz.readthedocs.org/.**
+Documentation is available at https://critiquebrainz.readthedocs.io/.
  
 ### Building documentation
 
-In case you want to build documentation yourself follow the following steps
-*(make sure that you use Python 3)*:
+If you want to build documentation yourself, follow these steps using python 3
 
     $ cd ./docs
     $ pip3 install -r requirements.txt
