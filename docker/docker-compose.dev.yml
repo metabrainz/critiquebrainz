@@ -22,6 +22,9 @@ services:
     volumes:
       - ../:/code:z
       - ../data/app:/data:z
+    environment:
+      FLASK_APP: critiquebrainz.frontend
+      FLASK_ENV: development
     ports:
       - "80:80"
     depends_on:
@@ -40,6 +43,7 @@ services:
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       MB_IMPORT_DUMPS: "true"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     ports:
       - "5430:5432"
 
