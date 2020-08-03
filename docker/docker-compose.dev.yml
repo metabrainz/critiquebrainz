@@ -3,13 +3,15 @@ version: "2"
 services:
 
   db:
-    extends:
-      file: ./common.yml
-      service: db
+    image: postgres:12.3
+    environment:
+      POSTGRES_USER: critiquebrainz
+      POSTGRES_PASSWORD: critiquebrainz
+      POSTGRES_DB: critiquebrainz
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ../data/pgdata:/var/lib/postgresql/data/pgdata:z
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
+      - ./pg_custom:/docker-entrypoint-initdb.d/
     ports:
       - "15432:5432"
 
