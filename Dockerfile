@@ -27,7 +27,7 @@ RUN apt-get update \
 ENV PGPASSWORD "critiquebrainz"
 
 # Node
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get install -y nodejs
 
 RUN pip install uWSGI==2.0.18
@@ -41,13 +41,12 @@ RUN pip install -r requirements.txt
 
 # Node dependencies
 COPY ./package.json /code/
-COPY ./npm-shrinkwrap.json /code/
 RUN npm install
 
 COPY . /code/
 
 # Build static files
-RUN ./node_modules/.bin/gulp
+RUN npm run build
 
 # Compile translations
 RUN pybabel compile -d critiquebrainz/frontend/translations

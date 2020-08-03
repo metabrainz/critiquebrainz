@@ -19,7 +19,7 @@ application = DispatcherMiddleware(frontend.create_app(), {
 # Files listed here will be monitored for changes in debug mode and will
 # force a reload when modified.
 OBSERVE_FILES = [
-    "critiquebrainz/frontend/static/build/rev-manifest.json",
+    "critiquebrainz/frontend/static/build/manifest.json",
 ]
 
 
