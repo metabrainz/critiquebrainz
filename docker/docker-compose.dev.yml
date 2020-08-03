@@ -13,16 +13,6 @@ services:
     ports:
       - "15432:5432"
 
-  db_test:
-    build:
-      context: ./pg_custom/
-      dockerfile: Dockerfile
-    command: postgres -F
-    environment:
-      POSTGRES_USER: critiquebrainz
-      POSTGRES_PASSWORD: critiquebrainz
-      POSTGRES_DB: critiquebrainz
-
   critiquebrainz:
     build:
       context: ..
@@ -34,7 +24,6 @@ services:
       - "80:80"
     depends_on:
       - db
-      - db_test
       - critiquebrainz_redis
       - musicbrainz_db
       - static_builder
