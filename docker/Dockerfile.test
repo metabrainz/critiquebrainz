@@ -30,6 +30,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends postgresql-client-$PG_MAJOR \
     && rm -rf /var/lib/apt/lists/*
 
+# Specifying password so that client doesn't ask scripts for it...
+ENV PGPASSWORD "critiquebrainz"
+
 COPY requirements.txt /code/
 RUN pip install --no-cache-dir -r requirements.txt
 
