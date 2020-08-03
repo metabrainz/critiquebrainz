@@ -31,17 +31,17 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
    && apt-get install -y nodejs \
    && rm -rf /var/lib/apt/lists/*
 
-RUN pip install uWSGI==2.0.18
+RUN pip install --no-cache-dir uWSGI==2.0.18
 
 RUN mkdir /code
 WORKDIR /code
 
 # Python dependencies
 COPY ./requirements.txt /code/
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Node dependencies
-COPY ./package.json /code/
+COPY ./package.json ./package-lock.json /code/
 RUN npm install
 
 COPY . /code/
