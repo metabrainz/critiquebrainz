@@ -3,14 +3,14 @@ version: "2"
 services:
 
   db_test:
-    build:
-      context: ./pg_custom/
-      dockerfile: Dockerfile
+    image: postgres:12.3
     environment:
       POSTGRES_USER: critiquebrainz
       POSTGRES_PASSWORD: critiquebrainz
       POSTGRES_DB: critiquebrainz
     command: postgres -F
+    volumes:
+      - ./pg_custom:/docker-entrypoint-initdb.d/
     network_mode: bridge
 
   musicbrainz_db:

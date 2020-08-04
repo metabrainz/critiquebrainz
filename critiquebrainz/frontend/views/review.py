@@ -206,11 +206,10 @@ def revisions_more(id):
 @review_bp.route('/write', methods=('GET', 'POST'))
 @login_required
 def create():
-    entity_id, entity_type = None, None
-    for entity_type in ENTITY_TYPES:
-        entity_id = request.args.get(entity_type)
-        if entity_id:
-            entity_type = entity_type
+    entity_type = None
+    for supported_type in ENTITY_TYPES:
+        if entity_id := request.args.get(supported_type):
+            entity_type = supported_type
             break
 
     if not (entity_id or entity_type):

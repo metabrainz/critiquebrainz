@@ -16,6 +16,10 @@ class AdminActions(Enum):
     ACTION_BLOCK_USER = "block_user"
     ACTION_UNBLOCK_USER = "unblock_user"
 
+    @classmethod
+    def get_all_actions(cls):
+        return list(cls)
+
 
 def create(*, admin_id, review_id=None, user_id=None,
            action, reason):
@@ -30,7 +34,7 @@ def create(*, admin_id, review_id=None, user_id=None,
     """
     if not review_id and not user_id:
         raise ValueError("No review ID or user ID specified.")
-    if action not in AdminActions:
+    if action not in AdminActions.get_all_actions():
         raise ValueError("Please specify a valid action.")
     with db.engine.connect() as connection:
         connection.execute(sqlalchemy.text("""

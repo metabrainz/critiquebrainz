@@ -3,25 +3,17 @@ version: "2"
 services:
 
   db:
-    extends:
-      file: ./common.yml
-      service: db
-    volumes:
-      - ../data/pgdata:/var/lib/postgresql/data/pgdata:z
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-    ports:
-      - "15432:5432"
-
-  db_test:
-    build:
-      context: ./pg_custom/
-      dockerfile: Dockerfile
-    command: postgres -F
+    image: postgres:12.3
     environment:
       POSTGRES_USER: critiquebrainz
       POSTGRES_PASSWORD: critiquebrainz
       POSTGRES_DB: critiquebrainz
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ../data/pgdata:/var/lib/postgresql/data/pgdata:z
+      - ./pg_custom:/docker-entrypoint-initdb.d/
+    ports:
+      - "15432:5432"
 
   critiquebrainz:
     build:
@@ -34,7 +26,6 @@ services:
       - "80:80"
     depends_on:
       - db
-      - db_test
       - critiquebrainz_redis
       - musicbrainz_db
       - static_builder
