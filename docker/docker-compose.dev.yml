@@ -1,5 +1,9 @@
 # Docker Compose file for development
 version: "2"
+
+volumes:
+  cb_home:
+
 services:
 
   db:
@@ -22,6 +26,7 @@ services:
     volumes:
       - ../:/code:z
       - ../data/app:/data:z
+      - cb_home:/root
     environment:
       FLASK_APP: critiquebrainz.frontend
       FLASK_ENV: development
