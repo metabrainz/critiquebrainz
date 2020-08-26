@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "bootstrap": "4.3.1",
-    "bootstrap-rating-input": "0.4.0",
+    "bootstrap-rating-input": "javiertoledo/bootstrap-rating-input#0a4ebb7d",
     "jquery": "3.5.1",
     "popper.js": "^1.14.1",
     "leaflet": "1.1.0",
