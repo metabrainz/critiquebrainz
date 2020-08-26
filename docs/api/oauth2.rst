@@ -50,7 +50,6 @@ HTTP connections are refused.
       scope=review,vote&
       redirect_uri=http%3A%2F%2Fwww.example.com.com%2Fcallback&
       client_id=yDDvwAzPUnoD8imvTpVm&
-      access_type=offline
 
 Handling server response
 ^^^^^^^^^^^^^^^^^^^^^^^^
