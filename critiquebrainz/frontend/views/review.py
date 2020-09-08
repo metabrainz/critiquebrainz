@@ -212,10 +212,6 @@ def create():
             entity_type = supported_type
             break
 
-    if not (entity_id or entity_type):
-        logging.warning("Unsupported entity type")
-        raise BadRequest("Unsupported entity type")
-
     if not entity_id:
         flash.info(gettext("Please choose an entity to review."))
         return redirect(url_for('search.selector', next=url_for('.create')))
