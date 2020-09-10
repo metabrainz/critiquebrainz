@@ -427,7 +427,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:85
 msgid ""
-"We don’t have a mapping between this release group and Spotify. Please help "
+"We don't have a mapping between this release group and Spotify. Please help "
 "us find the right album."
 msgstr ""
 
@@ -1049,7 +1049,7 @@ msgstr "Signaler un mappage erroné"
 
 #: critiquebrainz/frontend/templates/moderators/moderators.html:8
 msgid "These users respond to reports and make sure that spammers don't spam."
-msgstr "Ces utilisateurs répondent aux signalement et s’assure que les spammeurs se tiennent tranquilles."
+msgstr "Ces utilisateurs répondent aux signalement et s’assurent que les spammeurs se tiennent tranquilles."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
