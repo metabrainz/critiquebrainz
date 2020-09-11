@@ -108,7 +108,8 @@ class ReviewViewsTestCase(FrontendTestCase):
     # pylint: disable=unused-variable
     def test_create(self):
         data = dict(
-            release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_id='6b3cd75d-7453-39f3-86c4-1441f360e121',
+            entity_type='release_group',
             state='draft',
             text=self.review_text,
             license_choice=self.license["id"],
@@ -120,21 +121,25 @@ class ReviewViewsTestCase(FrontendTestCase):
         # test for review limit exceeded message
         with patch.object(User, 'is_review_limit_exceeded') as mock_is_review_limit_exceeded:
             mock_is_review_limit_exceeded.return_value = True
-            response = self.client.post('/review/write', data=data,
-                                        query_string=data, follow_redirects=True)
+            response = self.client.post("/review/write/{}/{}".format(data["entity_type"], data["entity_id"]),
+                                        data=data, query_string=data, follow_redirects=True)
             self.assertIn("You have exceeded your limit of reviews per day.", str(response.data))
 
         # test create review when review limit is not exceeded
-        response = self.client.post('/review/write', data=data,
-                                    query_string=data, follow_redirects=True)
+        response = self.client.post("/review/write/{}/{}".format(data["entity_type"], data["entity_id"]),
+                                    data=data, query_string=data, follow_redirects=True)
         self.assert200(response)
         self.assertIn(self.review_text, str(response.data))
+
+        response = self.client.post("/review/write/hello_entity/{}".format(data['entity_id']),
+                                    data=data, query_string=data, follow_redirects=True)
+        self.assert400(response, "Unsupported entity type")
 
     def test_create_duplicate(self):
         review = self.create_dummy_review()
 
         self.temporary_login(self.user)
-        response = self.client.get("/review/write?release_group=%s" % review["entity_id"],
+        response = self.client.get("/review/write/release_group/%s" % review["entity_id"],
                                    follow_redirects=True)
         self.assertIn("You have already published a review for this entity!", str(response.data))
 

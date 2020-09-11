@@ -48,7 +48,7 @@
   </h2>
 
   {% if not my_review %}
-    <a id="write-review" href="{{ url_for('review.create', artist=id) }}"
+    <a id="write-review" href="{{ url_for('review.create', entity_type='artist', entity_id=id) }}"
         role="button" class="btn btn-success pull-right">
       <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
     </a>

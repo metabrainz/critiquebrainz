@@ -201,20 +201,16 @@ def revisions_more(id):
     return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
 
 
-# TODO(psolanki): Refactor this function to remove PyLint warning.
-# pylint: disable=too-many-branches
-@review_bp.route('/write', methods=('GET', 'POST'))
+@review_bp.route('/write/<entity_type>/<entity_id>/', methods=('GET', 'POST'))
+@review_bp.route('/write/')
 @login_required
-def create():
-    entity_type = None
-    for supported_type in ENTITY_TYPES:
-        if entity_id := request.args.get(supported_type):
-            entity_type = supported_type
-            break
-
-    if not entity_id:
+def create(entity_type=None, entity_id=None):
+    if not (entity_id or entity_type):
         flash.info(gettext("Please choose an entity to review."))
         return redirect(url_for('search.selector', next=url_for('.create')))
+
+    if entity_type not in ENTITY_TYPES:
+        raise BadRequest("Unsupported entity type")
 
     if current_user.is_blocked:
         flash.error(gettext("You are not allowed to write new reviews because your "
