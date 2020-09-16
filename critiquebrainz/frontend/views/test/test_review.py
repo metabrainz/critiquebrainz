@@ -1,12 +1,12 @@
 from unittest.mock import patch, MagicMock
-from flask import current_app
+from flask import current_app, url_for
 import brainzutils.musicbrainz_db.release as mb_release
 from critiquebrainz.frontend.testing import FrontendTestCase
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db.user import User
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.license as db_license
-
+from urllib.parse import urlparse
 
 def mock_get_entity_by_id(id, type='release_group'):
     if id == '6b3cd75d-7453-39f3-86c4-1441f360e121' and type == 'release_group':
@@ -125,15 +125,24 @@ class ReviewViewsTestCase(FrontendTestCase):
                                         data=data, query_string=data, follow_redirects=True)
             self.assertIn("You have exceeded your limit of reviews per day.", str(response.data))
 
+        response = self.client.get("/review/write", follow_redirects=True)
+        self.assertIn("Please choose an entity to review.", str(response.data))
+
         # test create review when review limit is not exceeded
         response = self.client.post("/review/write/{}/{}".format(data["entity_type"], data["entity_id"]),
                                     data=data, query_string=data, follow_redirects=True)
         self.assert200(response)
         self.assertIn(self.review_text, str(response.data))
 
-        response = self.client.post("/review/write/hello_entity/{}".format(data['entity_id']),
-                                    data=data, query_string=data, follow_redirects=True)
-        self.assert400(response, "Unsupported entity type")
+        response = self.client.get("/review/write/hello_entity/{}".format(data['entity_id']),
+                                   follow_redirects=True)
+        self.assert400(response, "You can't write reviews about this type of entity.")
+
+        data = dict(release_group='6b3cd75d-7453-39f3-86c4-1441f360e121')
+        response = self.client.get("/review/write/", query_string=data)
+        redirect_url = urlparse(response.location)
+        self.assertEquals(redirect_url.path, url_for("review.create", entity_type="release_group",
+                                                     entity_id=data["release_group"]))
 
     def test_create_duplicate(self):
         review = self.create_dummy_review()

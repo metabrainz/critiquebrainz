@@ -1,5 +1,4 @@
 from math import ceil
-import logging
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
@@ -205,12 +204,22 @@ def revisions_more(id):
 @review_bp.route('/write/')
 @login_required
 def create(entity_type=None, entity_id=None):
+
     if not (entity_id or entity_type):
-        flash.info(gettext("Please choose an entity to review."))
-        return redirect(url_for('search.selector', next=url_for('.create')))
+        for allowed_type in ENTITY_TYPES:
+            if mbid := request.args.get(allowed_type):
+                entity_type = allowed_type
+                entity_id = mbid
+                break
+
+        if entity_type:
+            return redirect(url_for('.create', entity_type=entity_type, entity_id=entity_id))
+        else:
+            flash.info(gettext("Please choose an entity to review."))
+            return redirect(url_for('search.selector', next=url_for('.create')))
 
     if entity_type not in ENTITY_TYPES:
-        raise BadRequest("Unsupported entity type")
+        raise BadRequest("You can't write reviews about this type of entity.")
 
     if current_user.is_blocked:
         flash.error(gettext("You are not allowed to write new reviews because your "
