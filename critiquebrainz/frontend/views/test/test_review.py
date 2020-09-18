@@ -104,6 +104,14 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get("/review/%s" % review["id"])
         self.assert404(response, "Drafts shouldn't be publicly visible.")
 
+    def test_draft_redirect(self):
+        review = self.create_dummy_review(is_draft=True)
+        self.temporary_login(self.user)
+        response = self.client.get('/review/write/{}/{}/'
+                                   .format(review["entity_type"], review["entity_id"]))
+        redirect_url = urlparse(response.location)
+        self.assertEquals(redirect_url.path, url_for('review.edit', id=review['id']))
+
     def test_missing_review(self):
         response = self.client.get("/review/aef06569-098f-4218-a577-b413944d9493")
         self.assert404(response)
