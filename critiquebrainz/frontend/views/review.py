@@ -228,12 +228,15 @@ def create(entity_type=None, entity_id=None):
         return redirect(url_for('user.reviews', user_id=current_user.id))
 
     # Checking if the user already wrote a review for this entity
-    reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id)
+    reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id, inc_drafts=True)
     review = reviews[0] if count != 0 else None
 
     if review:
-        flash.error(gettext("You have already published a review for this entity"))
-        return redirect(url_for('review.entity', id=review["id"]))
+        if review['is_draft']:
+            return redirect(url_for('review.edit', id=review['id']))
+        else:
+            flash.error(gettext("You have already published a review for this entity"))
+            return redirect(url_for('review.entity', id=review["id"]))
 
     if current_user.is_review_limit_exceeded:
         flash.error(gettext("You have exceeded your limit of reviews per day."))
