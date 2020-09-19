@@ -48,7 +48,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         mb_release.browse_releases = MagicMock()
         current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
 
-    def create_dummy_review(self, is_draft=False):
+    def create_dummy_review(self, is_draft=False, is_hidden=False):
         review = db_review.create(
             entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
             entity_type="release_group",
@@ -58,6 +58,8 @@ class ReviewViewsTestCase(FrontendTestCase):
             is_draft=is_draft,
             license_id=self.license["id"],
         )
+        if is_hidden:
+            db_review.set_hidden_state(review["id"], is_hidden=True)
         return review
 
     def test_browse(self):
@@ -323,3 +325,11 @@ class ReviewViewsTestCase(FrontendTestCase):
             follow_redirects=True,
         )
         self.assertIn("Review is not hidden.", str(response.data))
+
+    def test_hide_redirect(self):
+        review = self.create_dummy_review(is_hidden=True)
+        self.temporary_login(self.user)
+        response = self.client.get('/review/write/{}/{}/'.format(
+            review["entity_type"], review["entity_id"]))
+        redirect_url = urlparse(response.location)
+        self.assertEquals(redirect_url.path, url_for('review.entity', id=review['id']))
