@@ -22,7 +22,7 @@ import critiquebrainz.db.moderation_log as db_moderation_log
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.comment as db_comment
 from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
-
+from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 
 review_bp = Blueprint('review', __name__)
 RESULTS_LIMIT = 10
@@ -257,7 +257,11 @@ def create(entity_type=None, entity_id=None):
             flash.success(gettext("Review has been published!"))
         return redirect(url_for('.entity', id=review['id']))
 
-    entity = get_entity_by_id(entity_id, entity_type)
+    try:
+        entity = get_entity_by_id(entity_id, entity_type)
+    except NoDataFoundException:
+        raise NotFound(gettext("Sorry, we couldn't find a %s with that MusicBrainz ID." % entity_type))
+
     if not entity:
         flash.error(gettext("You can only write a review for an entity that exists on MusicBrainz!"))
         return redirect(url_for('search.selector', next=url_for('.create')))
