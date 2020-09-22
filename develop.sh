@@ -26,7 +26,7 @@ function invoke_manage {
 }
 
 function open_psql_shell {
-    invoke_docker_compose run --rm critiquebrainz psql \
+    invoke_docker_compose run --rm db psql \
         ${POSTGRES_CB_URI}
 }
 
