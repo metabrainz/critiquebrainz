@@ -1,5 +1,4 @@
 from math import ceil
-import logging
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
@@ -23,7 +22,7 @@ import critiquebrainz.db.moderation_log as db_moderation_log
 import critiquebrainz.db.users as db_users
 import critiquebrainz.db.comment as db_comment
 from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
-
+from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 
 review_bp = Blueprint('review', __name__)
 RESULTS_LIMIT = 10
@@ -201,24 +200,26 @@ def revisions_more(id):
     return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
 
 
-# TODO(psolanki): Refactor this function to remove PyLint warning.
-# pylint: disable=too-many-branches
-@review_bp.route('/write', methods=('GET', 'POST'))
+@review_bp.route('/write/<entity_type>/<entity_id>/', methods=('GET', 'POST'))
+@review_bp.route('/write/')
 @login_required
-def create():
-    entity_type = None
-    for supported_type in ENTITY_TYPES:
-        if entity_id := request.args.get(supported_type):
-            entity_type = supported_type
-            break
+def create(entity_type=None, entity_id=None):
 
     if not (entity_id or entity_type):
-        logging.warning("Unsupported entity type")
-        raise BadRequest("Unsupported entity type")
+        for allowed_type in ENTITY_TYPES:
+            if mbid := request.args.get(allowed_type):
+                entity_type = allowed_type
+                entity_id = mbid
+                break
 
-    if not entity_id:
-        flash.info(gettext("Please choose an entity to review."))
-        return redirect(url_for('search.selector', next=url_for('.create')))
+        if entity_type:
+            return redirect(url_for('.create', entity_type=entity_type, entity_id=entity_id))
+        else:
+            flash.info(gettext("Please choose an entity to review."))
+            return redirect(url_for('search.selector', next=url_for('.create')))
+
+    if entity_type not in ENTITY_TYPES:
+        raise BadRequest("You can't write reviews about this type of entity.")
 
     if current_user.is_blocked:
         flash.error(gettext("You are not allowed to write new reviews because your "
@@ -256,7 +257,11 @@ def create():
             flash.success(gettext("Review has been published!"))
         return redirect(url_for('.entity', id=review['id']))
 
-    entity = get_entity_by_id(entity_id, entity_type)
+    try:
+        entity = get_entity_by_id(entity_id, entity_type)
+    except NoDataFoundException:
+        raise NotFound(gettext("Sorry, we couldn't find a %s with that MusicBrainz ID." % entity_type))
+
     if not entity:
         flash.error(gettext("You can only write a review for an entity that exists on MusicBrainz!"))
         return redirect(url_for('search.selector', next=url_for('.create')))
