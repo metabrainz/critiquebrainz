@@ -14,6 +14,7 @@ import click
 from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri, with_request_context
 from critiquebrainz.db import license as db_license, review as db_review
 from critiquebrainz import db
+from psycopg2.sql import SQL, Identifier
 
 
 cli = click.Group()
@@ -471,6 +472,9 @@ def importer(archive):
         import_data(os.path.join(temp_dir, 'cbdump', 'avg_rating'), 'avg_rating')
         import_data(os.path.join(temp_dir, 'cbdump', 'vote'), 'vote')
 
+        # Reset sequence values after importing dump
+        reset_sequence(['revision'])
+
         shutil.rmtree(temp_dir)  # Cleanup
         print("Done!")
 
@@ -499,6 +503,18 @@ def import_data(file_name, table_name, columns=None):
             cursor.copy_from(f, '"{table_name}"'.format(table_name=table_name), columns=columns)
             connection.commit()
 
+    finally:
+        connection.close()
+
+
+def reset_sequence(table_names):
+    connection = db.engine.raw_connection()
+    try:
+        cursor = connection.cursor()
+        for table_name in table_names:
+            cursor.execute(SQL("SELECT setval(pg_get_serial_sequence(%s, 'id'), coalesce(max(id),0) + 1, false) FROM {};")
+                           .format(Identifier(table_name)), (table_name,))
+            connection.commit()
     finally:
         connection.close()
 
