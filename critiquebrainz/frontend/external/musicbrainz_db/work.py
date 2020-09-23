@@ -12,7 +12,7 @@ def get_work_by_id(mbid):
     Returns:
         Dictionary containing the work information
     """
-    key = cache.gen_key(mbid)
+    key = cache.gen_key('work', mbid)
     work = cache.get(key)
     if not work:
         work = fetch_multiple_works(

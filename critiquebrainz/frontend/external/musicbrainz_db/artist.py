@@ -13,7 +13,7 @@ def get_artist_by_id(mbid):
     Returns:
         Dictionary containing the artist information
     """
-    key = cache.gen_key(mbid)
+    key = cache.gen_key('artist', mbid)
     artist = cache.get(key)
     if not artist:
         artist = fetch_multiple_artists(

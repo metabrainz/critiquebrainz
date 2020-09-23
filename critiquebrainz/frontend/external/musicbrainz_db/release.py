@@ -12,7 +12,7 @@ def get_release_by_id(mbid):
     Returns:
         Dictionary containing the release information
     """
-    key = cache.gen_key(mbid)
+    key = cache.gen_key('release', mbid)
     release = cache.get(key)
     if not release:
         release = fetch_multiple_releases(

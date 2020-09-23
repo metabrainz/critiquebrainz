@@ -12,7 +12,7 @@ def get_event_by_id(mbid):
     Returns:
         Dictionary containing the event information.
     """
-    key = cache.gen_key(mbid)
+    key = cache.gen_key('event', mbid)
     event = cache.get(key)
     if not event:
         event = fetch_multiple_events(

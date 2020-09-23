@@ -13,7 +13,7 @@ def get_label_by_id(mbid):
     Returns:
         Dictionary containing the label information
     """
-    key = cache.gen_key(mbid)
+    key = cache.gen_key('label', mbid)
     label = cache.get(key)
     if not label:
         label = fetch_multiple_labels(

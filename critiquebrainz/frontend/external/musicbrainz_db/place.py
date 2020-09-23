@@ -13,7 +13,7 @@ def get_place_by_id(mbid):
     Returns:
         Dictionary containing the place information.
     """
-    key = cache.gen_key(mbid)
+    key = cache.gen_key('place', mbid)
     place = cache.get(key)
     if not place:
         place = fetch_multiple_places(
