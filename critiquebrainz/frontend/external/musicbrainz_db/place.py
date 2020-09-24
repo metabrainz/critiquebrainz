@@ -1,5 +1,5 @@
 from brainzutils import cache
-from brainzutils.musicbrainz_db.place import fetch_multiple_places
+from brainzutils.musicbrainz_db import place as db
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.relationships import place as place_rel
@@ -16,7 +16,7 @@ def get_place_by_id(mbid):
     key = cache.gen_key('place', mbid)
     place = cache.get(key)
     if not place:
-        place = fetch_multiple_places(
+        place = db.fetch_multiple_places(
             [mbid],
             includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
         ).get(mbid)

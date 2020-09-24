@@ -1,5 +1,5 @@
 from brainzutils import cache
-from brainzutils.musicbrainz_db.release import fetch_multiple_releases
+from brainzutils.musicbrainz_db import release as db
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
@@ -15,7 +15,7 @@ def get_release_by_id(mbid):
     key = cache.gen_key('release', mbid)
     release = cache.get(key)
     if not release:
-        release = fetch_multiple_releases(
+        release = db.fetch_multiple_releases(
             [mbid],
             includes=['media', 'release-groups'],
         ).get(mbid)

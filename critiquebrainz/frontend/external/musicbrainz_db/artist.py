@@ -1,5 +1,5 @@
 from brainzutils import cache
-from brainzutils.musicbrainz_db.artist import fetch_multiple_artists
+from brainzutils.musicbrainz_db import artist as db
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.relationships import artist as artist_rel
@@ -16,7 +16,7 @@ def get_artist_by_id(mbid):
     key = cache.gen_key('artist', mbid)
     artist = cache.get(key)
     if not artist:
-        artist = fetch_multiple_artists(
+        artist = db.fetch_multiple_artists(
             [mbid],
             includes=['artist-rels', 'url-rels'],
         ).get(mbid)
