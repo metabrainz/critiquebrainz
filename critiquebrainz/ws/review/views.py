@@ -349,10 +349,14 @@ def review_list_handler():
         entity_type = Parser.string('uri', 'entity_type', valid_values=ENTITY_TYPES, optional=True)
 
     user_id = Parser.uuid('uri', 'user_id', optional=True)
-    # TODO: "rating" sort value is deprecated and needs to be removed.
-    sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating'], optional=True)
+    sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating', 'created'], optional=True)
+
+    # "rating" and "created" sort values are deprecated and but allowed here for backward compatibility
+    if sort == 'created':
+        sort = 'published_on'
     if sort == 'rating':
         sort = 'popularity'
+
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
     offset = Parser.int('uri', 'offset', optional=True) or 0
     language = Parser.string('uri', 'language', min=2, max=3, optional=True)
