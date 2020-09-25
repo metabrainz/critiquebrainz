@@ -8,6 +8,7 @@ import critiquebrainz.db.users as db_users
 import critiquebrainz.db.license as db_license
 from urllib.parse import urlparse
 
+
 def mock_get_entity_by_id(id, type='release_group'):
     if id == '6b3cd75d-7453-39f3-86c4-1441f360e121' and type == 'release_group':
         return {

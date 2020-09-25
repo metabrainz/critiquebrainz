@@ -36,8 +36,8 @@ def create(comment_id, text):
                  VALUES (:comment_id, :text)
               RETURNING id
             """), {
-                'comment_id': comment_id,
-                'text': text,
-            })
+            'comment_id': comment_id,
+            'text': text,
+        })
 
         return result.fetchone()['id']

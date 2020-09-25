@@ -97,7 +97,7 @@ def get_user_by_id(connection, user_id):
 
     result = connection.execute(query, {
         "user_id": user_id
-        })
+    })
     row = result.fetchone()
     if not row:
         return None

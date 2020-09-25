@@ -42,10 +42,10 @@ def create(*, user_id, text, review_id, is_draft=False):
                  VALUES (:user_id, :review_id, :is_draft)
               RETURNING id
             """), {
-                'user_id': user_id,
-                'review_id': review_id,
-                'is_draft': is_draft,
-            })
+            'user_id': user_id,
+            'review_id': review_id,
+            'is_draft': is_draft,
+        })
         comment_id = result.fetchone()['id']
         db_comment_revision.create(comment_id, text)
     return get_by_id(comment_id)
@@ -97,8 +97,8 @@ def get_by_id(comment_id):
           ORDER BY cr.timestamp DESC
              LIMIT 1
             """), {
-                'comment_id': comment_id,
-            })
+            'comment_id': comment_id,
+        })
 
         comment = result.fetchone()
         if not comment:
@@ -231,8 +231,8 @@ def delete(comment_id):
               FROM comment
              WHERE id = :comment_id
             """), {
-                'comment_id': comment_id,
-            })
+            'comment_id': comment_id,
+        })
 
 
 def update(comment_id, *, text=None, is_draft=None, is_hidden=None):

@@ -13,8 +13,8 @@ def fix_user(mb_connection, cb_connection, user_name, cb_id):
               FROM editor
              WHERE name = :user_name
         """), {
-            'user_name': user_name,
-        })
+        'user_name': user_name,
+    })
     if r.rowcount > 0:
         musicbrainz_row_id = r.fetchone()['id']
         if not DRY_RUN:
@@ -63,8 +63,8 @@ def import_musicbrainz_row_ids():
                       FROM editor
                      WHERE name = :musicbrainz_id
                     """), {
-                        'musicbrainz_id': user['musicbrainz_username'],
-                    })
+                    'musicbrainz_id': user['musicbrainz_username'],
+                })
                 musicbrainz_row_id = None
                 if r.rowcount > 0:
                     musicbrainz_row_id = r.fetchone()['id']
@@ -76,9 +76,9 @@ def import_musicbrainz_row_ids():
                                SET musicbrainz_row_id = :musicbrainz_row_id
                              WHERE id = :id
                             """), {
-                                'musicbrainz_row_id': musicbrainz_row_id,
-                                'id': user['id'],
-                            })
+                            'musicbrainz_row_id': musicbrainz_row_id,
+                            'id': user['id'],
+                        })
                 else:
                     print('%s not found!' % name)
                     not_found += 1
