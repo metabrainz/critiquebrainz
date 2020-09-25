@@ -231,7 +231,7 @@ def create(entity_type=None, entity_id=None):
     review = reviews[0] if count != 0 else None
 
     if review:
-        flash.error(gettext("You have already published a review for this entity!"))
+        flash.error(gettext("You have already published a review for this entity"))
         return redirect(url_for('review.entity', id=review["id"]))
 
     if current_user.is_review_limit_exceeded:
