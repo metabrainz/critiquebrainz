@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify
 from brainzutils import cache
-from critiquebrainz.db.review import supported_languages, ENTITY_TYPES
+from flask import Blueprint, jsonify
+
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import (
     vote as db_vote,
@@ -13,10 +13,11 @@ from critiquebrainz.db import (
     REVIEW_TEXT_MIN_LENGTH,
     REVIEW_TEXT_MAX_LENGTH
 )
+from critiquebrainz.db.review import supported_languages, ENTITY_TYPES
+from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
-from critiquebrainz.decorators import crossdomain
 
 review_bp = Blueprint('ws_review', __name__)
 

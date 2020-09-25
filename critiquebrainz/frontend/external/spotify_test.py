@@ -1,9 +1,11 @@
-from unittest.mock import MagicMock
 from http import HTTPStatus
+from unittest.mock import MagicMock
+
 import requests
 from brainzutils import cache
-from critiquebrainz.frontend.testing import FrontendTestCase
+
 from critiquebrainz.frontend.external import spotify
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class MockResponse:

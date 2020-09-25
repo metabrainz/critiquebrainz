@@ -1,5 +1,6 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db.artist import fetch_multiple_artists
+
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.relationships import artist as artist_rel
 

@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.oauth_grant as db_oauth_grant
-import critiquebrainz.db.oauth_client as db_oauth_client
-import critiquebrainz.db.users as db_users
+
 import critiquebrainz.db.exceptions as db_exceptions
+import critiquebrainz.db.oauth_client as db_oauth_client
+import critiquebrainz.db.oauth_grant as db_oauth_grant
+import critiquebrainz.db.users as db_users
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
 
 
@@ -45,7 +46,8 @@ class OAuthGrantTestCase(DataTestCase):
             scopes=None,
         )
         self.assertEqual(len(db_oauth_grant.list_grants(client_id=self.oauth_client["client_id"])), 1)
-        self.assertEqual(len(db_oauth_grant.list_grants(client_id=self.oauth_client["client_id"], code=oauth_grant["code"])), 1)
+        self.assertEqual(
+            len(db_oauth_grant.list_grants(client_id=self.oauth_client["client_id"], code=oauth_grant["code"])), 1)
 
     def test_delete(self):
         oauth_grant = db_oauth_grant.create(

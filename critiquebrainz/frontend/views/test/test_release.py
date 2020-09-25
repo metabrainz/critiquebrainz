@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
-from critiquebrainz.frontend.testing import FrontendTestCase
+
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class ReleaseViewsTestCase(FrontendTestCase):

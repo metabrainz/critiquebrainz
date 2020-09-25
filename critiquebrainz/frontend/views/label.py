@@ -1,13 +1,13 @@
 from flask import Blueprint, render_template, request
-from werkzeug.exceptions import NotFound
-from flask_login import current_user
 from flask_babel import gettext
-import critiquebrainz.db.review as db_review
-import critiquebrainz.frontend.external.musicbrainz_db.label as mb_label
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
-from critiquebrainz.frontend.views import get_avg_rating, LABEL_REVIEWS_LIMIT
-from critiquebrainz.frontend.forms.rate import RatingEditForm
+from flask_login import current_user
+from werkzeug.exceptions import NotFound
 
+import critiquebrainz.db.review as db_review
+import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+import critiquebrainz.frontend.external.musicbrainz_db.label as mb_label
+from critiquebrainz.frontend.forms.rate import RatingEditForm
+from critiquebrainz.frontend.views import get_avg_rating, LABEL_REVIEWS_LIMIT
 
 label_bp = Blueprint('label', __name__)
 

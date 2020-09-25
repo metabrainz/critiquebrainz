@@ -8,7 +8,6 @@ More information about the MusicBrainz webservice can be found at http://wiki.mu
 """
 import musicbrainzngs
 
-
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 THREAD_POOL_PROCESSES = 10
 

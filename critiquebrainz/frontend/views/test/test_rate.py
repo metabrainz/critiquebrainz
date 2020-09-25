@@ -17,13 +17,15 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from unittest import mock
+
 from flask import url_for
-from critiquebrainz.frontend.testing import FrontendTestCase
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
-import critiquebrainz.db.users as db_users
-from critiquebrainz.db.user import User
-import critiquebrainz.db.review as db_review
+
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class RateViewsTestCase(FrontendTestCase):

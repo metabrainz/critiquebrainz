@@ -1,10 +1,11 @@
 import difflib
-import urllib.parse
-import string
 import random
+import string
+import urllib.parse
+
 from flask import request
-from flask_uuid import UUID_RE
 from flask_babel import format_datetime, format_date
+from flask_uuid import UUID_RE
 
 tags = {'+': ('<ins>', '</ins>'), '-': ('<del>', '</del>'), ' ': (' ', '')}
 

@@ -1,5 +1,6 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db.place import fetch_multiple_places
+
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.relationships import place as place_rel
 

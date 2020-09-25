@@ -1,9 +1,11 @@
-from random import shuffle
-from datetime import datetime, timedelta
 import uuid
+from datetime import datetime, timedelta
+from random import shuffle
+
+import pycountry
 import sqlalchemy
 from brainzutils import cache
-import pycountry
+
 from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
                                revision as db_revision,
@@ -23,7 +25,6 @@ ENTITY_TYPES = [
     "artist",
     "label",
 ]
-
 
 supported_languages = []
 for lang in list(pycountry.languages):

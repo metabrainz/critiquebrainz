@@ -1,13 +1,15 @@
 import os
 import tempfile
 from datetime import datetime
+
 from click.testing import CliRunner
-from critiquebrainz.data.testing import DataTestCase
-from critiquebrainz.data import utils
+
 import critiquebrainz.db.license as db_license
-import critiquebrainz.db.users as db_users
 import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
 import critiquebrainz.db.vote as db_vote
+from critiquebrainz.data import utils
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
 
 utils.with_request_context = utils.with_test_request_context  # noqa

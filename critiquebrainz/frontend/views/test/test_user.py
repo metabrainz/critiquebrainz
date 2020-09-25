@@ -1,7 +1,8 @@
 from unittest.mock import MagicMock
-from critiquebrainz.frontend.testing import FrontendTestCase
+
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class UserViewsTestCase(FrontendTestCase):

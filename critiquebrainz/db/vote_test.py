@@ -1,9 +1,10 @@
 from datetime import datetime
 from uuid import UUID
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.review as db_review
+
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db import exceptions
 from critiquebrainz.db import vote
 from critiquebrainz.db.user import User

@@ -6,19 +6,21 @@ Spotify. These mappings are then used to show embedded Spotify player on some
 pages. See https://github.com/metabrainz/mbspotify for more info about this
 project.
 """
-import urllib.parse
 import os.path
 import string
+import urllib.parse
+
 from flask import Blueprint, render_template, request, url_for, redirect, current_app
-from flask_login import login_required, current_user
 from flask_babel import gettext
+from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound, BadRequest, ServiceUnavailable
-import critiquebrainz.frontend.external.spotify as spotify_api
-from critiquebrainz.frontend.external.exceptions import ExternalServiceException
-from critiquebrainz.frontend.external import mbspotify
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend import flash
+from critiquebrainz.frontend.external import mbspotify
+from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 
 mapping_bp = Blueprint('mapping', __name__)
 

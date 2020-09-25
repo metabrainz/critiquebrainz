@@ -17,6 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from flask import Blueprint, render_template
+
 import critiquebrainz.db.statistics as db_statistics
 
 statistics_bp = Blueprint('statistics', __name__)

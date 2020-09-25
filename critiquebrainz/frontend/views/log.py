@@ -1,6 +1,8 @@
 from itertools import groupby
+
 from flask import Blueprint, render_template, request, jsonify
 from flask_babel import gettext
+
 import critiquebrainz.db.moderation_log as db_moderation_log
 from critiquebrainz.frontend import flash
 

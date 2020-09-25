@@ -17,10 +17,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from datetime import date, timedelta
+
 import sqlalchemy
 from brainzutils import cache
-from critiquebrainz import db
+
 import critiquebrainz.db.exceptions as db_exceptions
+from critiquebrainz import db
 
 _CACHE_NAMESPACE = "cb_statistics"
 _DEFAULT_CACHE_EXPIRATION = 1 * 60 * 60  # seconds (1 hour)
@@ -47,7 +49,7 @@ def merge_rows(list_1, list_2, key):
     return list(merged.values())
 
 
-def get_users_with_review_count(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1)):
+def get_users_with_review_count(from_date=date(1970, 1, 1), to_date=date.today() + timedelta(1)):
     """ Gets list of users with number of reviews they've submitted
 
     Args:
@@ -88,7 +90,7 @@ def get_users_with_review_count(from_date=date(1970, 1, 1), to_date=date.today()
         return reviewers
 
 
-def get_users_with_vote_count(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1)):
+def get_users_with_vote_count(from_date=date(1970, 1, 1), to_date=date.today() + timedelta(1)):
     """ Gets list of users with number of votes they've submitted
 
     Args:
@@ -127,7 +129,7 @@ def get_users_with_vote_count(from_date=date(1970, 1, 1), to_date=date.today()+t
         return voters
 
 
-def get_users_with_comment_count(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1)):
+def get_users_with_comment_count(from_date=date(1970, 1, 1), to_date=date.today() + timedelta(1)):
     """ Gets list of users with number of comments they've submitted
 
     Args:
@@ -171,7 +173,7 @@ def get_users_with_comment_count(from_date=date(1970, 1, 1), to_date=date.today(
         return commenters
 
 
-def get_top_users(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1), review_weight=1,
+def get_top_users(from_date=date(1970, 1, 1), to_date=date.today() + timedelta(1), review_weight=1,
                   comment_weight=1, vote_weight=1, limit=10):
     """ Gets list of top contributors based on number of reviews, votes and comments
         along with their final scores.
@@ -208,7 +210,8 @@ def get_top_users(from_date=date(1970, 1, 1), to_date=date.today()+timedelta(1),
     # add 'score' for each user
     for user in top_scorers:
         user["id"] = str(user["id"])
-        user["score"] = user["review_count"]*review_weight + user["comment_count"]*comment_weight + user["vote_count"]*vote_weight
+        user["score"] = user["review_count"] * review_weight + user["comment_count"] * comment_weight + user[
+            "vote_count"] * vote_weight
 
     # sort top_users by 'score' in descending order and keep only top 'limit' users
     top_scorers = sorted(top_scorers, key=lambda row: row["score"], reverse=True)[:limit]

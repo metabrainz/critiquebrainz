@@ -1,5 +1,6 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db.event import fetch_multiple_events
+
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 

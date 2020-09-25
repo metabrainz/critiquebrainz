@@ -1,11 +1,12 @@
-import urllib.parse
-import unicodedata
-import shutil
 import errno
-import sys
 import os
 import re
+import shutil
+import sys
+import unicodedata
+import urllib.parse
 from functools import wraps
+
 from critiquebrainz import db
 from critiquebrainz import frontend
 
@@ -102,11 +103,13 @@ def with_request_context(f):
     def decorated(*args, **kwargs):
         with frontend.create_app().test_request_context():
             return f(*args, **kwargs)
+
     return decorated
 
 
 def with_test_request_context(f):
     """Decorator for providing request context for application using test_config.py."""
+
     @wraps(f)
     def decorated(*args, **kwargs):
         with frontend.create_app(
@@ -114,4 +117,5 @@ def with_test_request_context(f):
                     os.path.dirname(os.path.realpath(__file__)),
                     '..', 'test_config.py')).test_request_context():
             return f(*args, **kwargs)
+
     return decorated

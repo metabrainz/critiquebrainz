@@ -1,12 +1,14 @@
 from unittest.mock import patch, MagicMock
-from flask import current_app, url_for
-import brainzutils.musicbrainz_db.release as mb_release
-from critiquebrainz.frontend.testing import FrontendTestCase
-import critiquebrainz.db.review as db_review
-from critiquebrainz.db.user import User
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.license as db_license
 from urllib.parse import urlparse
+
+import brainzutils.musicbrainz_db.release as mb_release
+from flask import current_app, url_for
+
+import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 def mock_get_entity_by_id(id, type='release_group'):
@@ -142,8 +144,8 @@ class ReviewViewsTestCase(FrontendTestCase):
         data = dict(release_group='6b3cd75d-7453-39f3-86c4-1441f360e121')
         response = self.client.get("/review/write/", query_string=data)
         redirect_url = urlparse(response.location)
-        self.assertEquals(redirect_url.path, url_for("review.create", entity_type="release_group",
-                                                     entity_id=data["release_group"]))
+        self.assertEqual(redirect_url.path, url_for("review.create", entity_type="release_group",
+                                                    entity_id=data["release_group"]))
 
     def test_create_duplicate(self):
         review = self.create_dummy_review()

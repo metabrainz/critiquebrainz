@@ -1,7 +1,8 @@
 from unittest.mock import MagicMock
-from critiquebrainz.frontend.testing import FrontendTestCase
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+
 import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 def return_release_groups(*, artist_id, release_types=None, limit=None, offset=None):

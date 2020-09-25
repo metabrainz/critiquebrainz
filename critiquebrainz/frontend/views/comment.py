@@ -17,16 +17,16 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from flask import Blueprint, redirect, url_for, render_template, request
-from flask_login import current_user, login_required
 from flask_babel import gettext
+from flask_login import current_user, login_required
 from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound
+
+import critiquebrainz.db.comment as db_comment
+from critiquebrainz.db import exceptions as db_exceptions
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.views.review import get_review_or_404
-from critiquebrainz.db import exceptions as db_exceptions
-import critiquebrainz.db.comment as db_comment
-
 
 comment_bp = Blueprint('comment', __name__)
 

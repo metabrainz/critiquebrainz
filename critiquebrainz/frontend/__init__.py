@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 from time import sleep
+
 from brainzutils.flask import CustomFlask
 from flask import send_from_directory
 
@@ -32,7 +33,8 @@ def create_app(debug=None, config_path=None):
                 sleep(1)
 
         if not os.path.exists(config_file):
-            print("No configuration file generated yet. Retried {} times, exiting.".format(CONSUL_CONFIG_FILE_RETRY_COUNT))
+            print("No configuration file generated yet. Retried {} times, exiting.".format(
+                CONSUL_CONFIG_FILE_RETRY_COUNT))
             sys.exit(-1)
 
         print("Loading consul config file {}".format(config_file))
@@ -76,8 +78,8 @@ def create_app(debug=None, config_path=None):
     # Redis (cache)
     from brainzutils import cache
     if "REDIS_HOST" in app.config and \
-       "REDIS_PORT" in app.config and \
-       "REDIS_NAMESPACE" in app.config:
+            "REDIS_PORT" in app.config and \
+            "REDIS_NAMESPACE" in app.config:
         cache.init(
             host=app.config["REDIS_HOST"],
             port=app.config["REDIS_PORT"],
@@ -178,7 +180,6 @@ def create_app(debug=None, config_path=None):
 
 
 def add_robots(app):
-
     @app.route('/robots.txt')
     def robots_txt():  # pylint: disable=unused-variable
         return send_from_directory(app.static_folder, 'robots.txt')

@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, flash, url_for, redirect, request, jsonify
-from flask_login import login_required
 from flask_babel import gettext
+from flask_login import login_required
 from werkzeug.exceptions import NotFound
+
 import critiquebrainz.db.spam_report as db_spam_report
 from critiquebrainz.frontend.login import admin_view
 

@@ -1,8 +1,8 @@
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.spam_report as db_spam_report
-import critiquebrainz.db.review as db_review
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.spam_report as db_spam_report
 import critiquebrainz.db.users as db_users
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
 
 
@@ -63,7 +63,8 @@ class SpamReportTestCase(DataTestCase):
             text="Updated Review",
         )
         self.review = db_review.get_by_id(self.review["id"])
-        db_spam_report.create(self.review["last_revision"]["id"], self.user1.id, "This is again a report on the updated review")
+        db_spam_report.create(self.review["last_revision"]["id"], self.user1.id,
+                              "This is again a report on the updated review")
         # two reports on the old revision and one on the new revision.
         reports, count = db_spam_report.list_reports(review_id=self.review["id"])  # pylint: disable=unused-variable
         self.assertEqual(count, 3)

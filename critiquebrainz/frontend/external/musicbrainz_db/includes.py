@@ -21,9 +21,8 @@ VALID_INCLUDES = {
     'place': ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
     'event': ["aliases"] + RELATION_INCLUDES + TAG_INCLUDES,
     'release_group': ["artists", "media", "releases"] + TAG_INCLUDES + RELATION_INCLUDES,
-    'release': [
-        "artists", "labels", "recordings", "release-groups", "media", "annotation", "aliases"
-    ] + TAG_INCLUDES + RELATION_INCLUDES,
+    'release': ["artists", "labels", "recordings", "release-groups", "media", "annotation", "aliases"]
+               + TAG_INCLUDES + RELATION_INCLUDES,
     'artist': ["recordings", "releases", "media", "aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
 }
 

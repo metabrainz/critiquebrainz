@@ -1,5 +1,6 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db.release import fetch_multiple_releases
+
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 

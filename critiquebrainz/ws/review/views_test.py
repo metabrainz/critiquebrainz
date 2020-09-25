@@ -1,10 +1,10 @@
 import json
 
-from critiquebrainz.ws.testing import WebServiceTestCase
+import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
-import critiquebrainz.db.license as db_license
+from critiquebrainz.ws.testing import WebServiceTestCase
 
 
 class ReviewViewsTestCase(WebServiceTestCase):
@@ -56,7 +56,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
         response = self.client.get('/review/', query_string={'sort': 'hello'})
         self.assert400(response)
-        self.assertEquals(response.json['description'], 'Parameter `sort`: is not valid')
+        self.assertEqual(response.json['description'], 'Parameter `sort`: is not valid')
 
     def test_review_count(self):
         resp = self.client.get('/review/').json

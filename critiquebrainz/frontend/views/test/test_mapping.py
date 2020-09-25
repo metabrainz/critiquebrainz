@@ -17,15 +17,17 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from unittest.mock import MagicMock
+
 from flask import url_for
+
 import critiquebrainz.db.users as db_users
-from critiquebrainz.db.user import User
-from critiquebrainz.frontend.testing import FrontendTestCase
-from critiquebrainz.frontend.external import mbspotify
-import critiquebrainz.frontend.external.spotify as spotify_api
-from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+import critiquebrainz.frontend.external.spotify as spotify_api
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.external import mbspotify
+from critiquebrainz.frontend.external.exceptions import ExternalServiceException
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class SpotifyMappingViewsTestCase(FrontendTestCase):
@@ -188,7 +190,8 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assertIn("You need to specify existing album from Spotify!", str(response.data))
 
         # test when uri supplied is available on Spotify
-        spotify_api.get_album = MagicMock(return_value=self.test_spotify_get_multiple_albums_response[self.test_spotify_id])
+        spotify_api.get_album = MagicMock(
+            return_value=self.test_spotify_get_multiple_albums_response[self.test_spotify_id])
         response = self.client.get("/mapping/spotify/confirm",
                                    query_string={
                                        "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
@@ -276,7 +279,8 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assertIn("You need to specify existing album from Spotify!", str(response.data))
 
         # test confirmation page for reporting
-        spotify_api.get_album = MagicMock(return_value=self.test_spotify_get_multiple_albums_response[self.test_spotify_id])
+        spotify_api.get_album = MagicMock(
+            return_value=self.test_spotify_get_multiple_albums_response[self.test_spotify_id])
         response = self.client.get("/mapping/spotify/report",
                                    query_string={
                                        "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",

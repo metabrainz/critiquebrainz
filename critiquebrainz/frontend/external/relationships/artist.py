@@ -2,6 +2,7 @@
 Relationship processor for artist entity.
 """
 import urllib.parse
+
 from flask_babel import lazy_gettext
 
 

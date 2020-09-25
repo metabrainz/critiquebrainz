@@ -1,11 +1,13 @@
 from collections import OrderedDict
+
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from werkzeug.exceptions import BadRequest, NotFound
+
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 from critiquebrainz.frontend.views import BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
 
 artist_bp = Blueprint('artist', __name__)

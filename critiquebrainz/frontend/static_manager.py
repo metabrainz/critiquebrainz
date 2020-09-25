@@ -1,5 +1,5 @@
-import os.path
 import json
+import os.path
 
 MANIFEST_PATH = os.path.join(os.path.dirname(__file__), "static", "build", "manifest.json")
 
@@ -14,7 +14,6 @@ def read_manifest():
 
 
 def get_static_path(resource_name):
-
     if resource_name not in manifest_content:
         return "/static/%s" % resource_name
     return "/static/build/%s" % manifest_content[resource_name]

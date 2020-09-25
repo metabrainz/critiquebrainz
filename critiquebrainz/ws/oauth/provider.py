@@ -1,16 +1,18 @@
 from datetime import datetime, timedelta
 from functools import wraps
+
 from flask import request
+
+import critiquebrainz.db.exceptions as db_exceptions
+import critiquebrainz.db.oauth_client as db_oauth_client
+import critiquebrainz.db.oauth_grant as db_oauth_grant
+import critiquebrainz.db.oauth_token as db_oauth_token
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.utils import generate_string
 from critiquebrainz.ws.constants import available_scopes
 from critiquebrainz.ws.exceptions import NotAuthorized
 from critiquebrainz.ws.oauth import exceptions
-from critiquebrainz.utils import generate_string
-import critiquebrainz.db.oauth_client as db_oauth_client
-import critiquebrainz.db.oauth_token as db_oauth_token
-import critiquebrainz.db.exceptions as db_exceptions
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.oauth_grant as db_oauth_grant
-from critiquebrainz.db.user import User
 
 
 class CritiqueBrainzAuthorizationProvider:
@@ -208,5 +210,7 @@ class CritiqueBrainzAuthorizationProvider:
                 user = self.get_authorized_user(scopes)
                 kwargs.update(dict(user=user))
                 return f(*args, **kwargs)
+
             return decorated
+
         return decorator

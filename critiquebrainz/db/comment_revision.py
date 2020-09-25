@@ -17,6 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import sqlalchemy
+
 import critiquebrainz.db as db
 
 
@@ -36,8 +37,8 @@ def create(comment_id, text):
                  VALUES (:comment_id, :text)
               RETURNING id
             """), {
-            'comment_id': comment_id,
-            'text': text,
-        })
+                'comment_id': comment_id,
+                'text': text,
+                })
 
         return result.fetchone()['id']

@@ -1,9 +1,9 @@
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.moderation_log as db_moderation_log
-from critiquebrainz.db.moderation_log import AdminActions
-import critiquebrainz.db.users as db_users
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.moderation_log as db_moderation_log
 import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
+from critiquebrainz.data.testing import DataTestCase
+from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.user import User
 
 

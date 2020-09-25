@@ -1,24 +1,24 @@
-from time import gmtime, strftime
-from datetime import datetime
-import subprocess
-import tempfile
-import tarfile
-import shutil
 import errno
-import sys
 import os
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+from datetime import datetime
+from time import gmtime, strftime
+
+import click
+import sqlalchemy
 from flask import current_app, jsonify
 from flask.json import JSONEncoder
-import sqlalchemy
-import click
-from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri, with_request_context
-from critiquebrainz.db import license as db_license, review as db_review
-from critiquebrainz import db
 from psycopg2.sql import SQL, Identifier
 
+from critiquebrainz import db
+from critiquebrainz.data.utils import create_path, remove_old_archives, slugify, explode_db_uri, with_request_context
+from critiquebrainz.db import license as db_license, review as db_review
 
 cli = click.Group()
-
 
 _TABLES = {
     "review": (
@@ -111,7 +111,7 @@ def full_db(location, rotate=False):
     # More info about it is available at http://www.postgresql.org/docs/9.3/static/app-pgdump.html
     dump_file = os.path.join(location, FILE_PREFIX + strftime("%Y%m%d-%H%M%S", gmtime()))
     print('pg_dump -h "%s" -p "%s" -U "%s" -d "%s" -Ft > "%s.tar"' %
-          (db_hostname, db_port, db_username, db_name, dump_file),)
+          (db_hostname, db_port, db_username, db_name, dump_file), )
     result = subprocess.call(
         'pg_dump -h "%s" -p "%s" -U "%s" -d "%s" -Ft > "%s.tar"' %
         (db_hostname, db_port, db_username, db_name, dump_file),
@@ -166,7 +166,8 @@ def json(location, rotate=False):
                     entity = str(entity)
                     # Creating directory structure and dumping reviews
                     dir_part = os.path.join(entity[0:1], entity[0:2])
-                    reviews = db_review.get_reviews_list(connection, entity_id=entity, license_id=license["id"], limit=None)[0]
+                    reviews = db_review.get_reviews_list(connection, entity_id=entity,
+                                                         license_id=license["id"], limit=None)[0]
                     if reviews:
                         rg_dir = '%s/%s' % (license_dir, dir_part)
                         create_path(rg_dir)
@@ -181,7 +182,8 @@ def json(location, rotate=False):
                 tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"),
                         arcname='COPYING')
 
-                print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (location, datetime.today().strftime('%Y%m%d'), safe_name))
+                print(" + %s/critiquebrainz-%s-%s-json.tar.bz2" % (
+                    location, datetime.today().strftime('%Y%m%d'), safe_name))
 
                 shutil.rmtree(temp_dir)  # Cleanup
 
@@ -314,7 +316,8 @@ def create_base_archive(connection, *, location, meta_files_dir=None):
 
         # Including additional information about this archive
         # Copying the most restrictive license there (CC BY-NC-SA 3.0)
-        tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"), arcname='COPYING')
+        tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"),
+                arcname='COPYING')
         # Copy meta files
         if not meta_files_dir:
             prepare_meta_files(temp_dir)
@@ -417,7 +420,8 @@ def create_reviews_archive(connection, *, location, meta_files_dir=None, license
             tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", "cc-by-nc-sa-30.txt"),
                     arcname='COPYING')
         else:
-            tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"), arcname='COPYING')
+            tar.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), "licenses", safe_name + ".txt"),
+                    arcname='COPYING')
 
         if not meta_files_dir:
             prepare_meta_files(temp_dir)
@@ -480,7 +484,6 @@ def importer(archive):
 
 
 def import_data(file_name, table_name, columns=None):
-
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
@@ -512,8 +515,9 @@ def reset_sequence(table_names):
     try:
         cursor = connection.cursor()
         for table_name in table_names:
-            cursor.execute(SQL("SELECT setval(pg_get_serial_sequence(%s, 'id'), coalesce(max(id),0) + 1, false) FROM {};")
-                           .format(Identifier(table_name)), (table_name,))
+            cursor.execute(
+                SQL("SELECT setval(pg_get_serial_sequence(%s, 'id'), coalesce(max(id),0) + 1, false) FROM {};")
+                .format(Identifier(table_name)), (table_name,))
             connection.commit()
     finally:
         connection.close()

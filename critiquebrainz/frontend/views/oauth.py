@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, request
 from flask_login import login_required, current_user
 
+import critiquebrainz.db.oauth_client as db_oauth_client
 from critiquebrainz.utils import build_url
 from critiquebrainz.ws.oauth import oauth
-import critiquebrainz.db.oauth_client as db_oauth_client
 
 oauth_bp = Blueprint('oauth', __name__)
 

@@ -1,5 +1,7 @@
 from datetime import datetime
+
 import sqlalchemy
+
 from critiquebrainz import db
 from critiquebrainz.db import revision as db_revision
 
@@ -181,7 +183,6 @@ def list_reports(**kwargs):
         if spam_reports:
             spam_reports = [dict(spam_report) for spam_report in spam_reports]
             for spam_report in spam_reports:
-
                 spam_report["review"] = {
                     "user": {
                         "id": spam_report.pop("review_user_id"),

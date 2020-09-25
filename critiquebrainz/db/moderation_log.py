@@ -4,7 +4,9 @@ via the moderator interface. A new log entry is created for every action.
 """
 from datetime import datetime
 from enum import Enum
+
 import sqlalchemy
+
 from critiquebrainz import db
 
 

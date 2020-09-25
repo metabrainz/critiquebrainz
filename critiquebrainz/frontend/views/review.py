@@ -1,28 +1,30 @@
 from math import ceil
+
+from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
+from langdetect import detect
 from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
-from langdetect import detect
-from critiquebrainz.db.review import ENTITY_TYPES
-from critiquebrainz.db.moderation_log import AdminActions
+
+import critiquebrainz.db.comment as db_comment
+import critiquebrainz.db.moderation_log as db_moderation_log
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.spam_report as db_spam_report
+import critiquebrainz.db.users as db_users
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
+from critiquebrainz.db.moderation_log import AdminActions
+from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud
+from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
+from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
-from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.frontend.views import get_avg_rating
 from critiquebrainz.utils import side_by_side_diff
-import critiquebrainz.db.spam_report as db_spam_report
-import critiquebrainz.db.review as db_review
-import critiquebrainz.db.moderation_log as db_moderation_log
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.comment as db_comment
-from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
-from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 
 review_bp = Blueprint('review', __name__)
 RESULTS_LIMIT = 10
@@ -204,7 +206,6 @@ def revisions_more(id):
 @review_bp.route('/write/')
 @login_required
 def create(entity_type=None, entity_id=None):
-
     if not (entity_id or entity_type):
         for allowed_type in ENTITY_TYPES:
             if mbid := request.args.get(allowed_type):
@@ -214,9 +215,9 @@ def create(entity_type=None, entity_id=None):
 
         if entity_type:
             return redirect(url_for('.create', entity_type=entity_type, entity_id=entity_id))
-        else:
-            flash.info(gettext("Please choose an entity to review."))
-            return redirect(url_for('search.selector', next=url_for('.create')))
+
+        flash.info(gettext("Please choose an entity to review."))
+        return redirect(url_for('search.selector', next=url_for('.create')))
 
     if entity_type not in ENTITY_TYPES:
         raise BadRequest("You can't write reviews about this type of entity.")

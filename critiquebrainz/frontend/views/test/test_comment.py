@@ -17,12 +17,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from flask import current_app, url_for
-from critiquebrainz.frontend.testing import FrontendTestCase
-import critiquebrainz.db.users as db_users
-from critiquebrainz.db.user import User
+
 import critiquebrainz.db.comment as db_comment
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 def mock_get_entity_by_id(id, type='release_group'):
@@ -117,7 +118,7 @@ class CommentViewsTestCase(FrontendTestCase):
             data=payload,
         )
         self.assertRedirects(response, url_for("review.entity", id=self.review["id"]))
-        self.assertEqual(comment_count+1, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertEqual(comment_count + 1, db_comment.count_comments(review_id=self.review["id"]))
 
         response = self.client.get(url_for("review.entity", id=self.review["id"]))
         self.assert200(response)
@@ -161,7 +162,7 @@ class CommentViewsTestCase(FrontendTestCase):
             follow_redirects=True,
         )
         self.assert200(response)
-        self.assertEqual(comment_count-1, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertEqual(comment_count - 1, db_comment.count_comments(review_id=self.review["id"]))
         self.assertIn("Comment has been deleted.", str(response.data))
 
     def test_edit(self):

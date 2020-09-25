@@ -1,5 +1,5 @@
-from critiquebrainz.data.testing import DataTestCase
 import critiquebrainz.db.license as db_license
+from critiquebrainz.data.testing import DataTestCase
 
 
 class LicenseTestCase(DataTestCase):

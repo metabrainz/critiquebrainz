@@ -17,15 +17,17 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from unittest.mock import MagicMock
+
 from brainzutils import cache
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.users as db_users
-from critiquebrainz.db.user import User
-import critiquebrainz.db.review as db_review
-import critiquebrainz.db.vote as db_vote
+
 import critiquebrainz.db.comment as db_comment
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
 import critiquebrainz.db.statistics as db_statistics
+import critiquebrainz.db.users as db_users
+import critiquebrainz.db.vote as db_vote
+from critiquebrainz.data.testing import DataTestCase
+from critiquebrainz.db.user import User
 
 
 class StatisticsTestCase(DataTestCase):
