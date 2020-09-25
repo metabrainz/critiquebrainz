@@ -150,7 +150,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.temporary_login(self.user)
         response = self.client.get("/review/write/release_group/%s" % review["entity_id"],
                                    follow_redirects=True)
-        self.assertIn("You have already published a review for this entity!", str(response.data))
+        self.assertIn("You have already published a review for this entity", str(response.data))
 
     def test_edit(self):
         updated_text = "The text has now been updated"
