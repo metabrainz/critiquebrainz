@@ -84,14 +84,12 @@ def clear_memcached():
     click.echo("Flushed everything from memcached.")
 
 
-@click.option("--skip-create-db", "-s", is_flag=True,
-              help="Skip database creation step.")
 @click.option("--test-db", "-t", is_flag=True,
               help="Initialize the test database.")
 @click.option("--force", "-f", is_flag=True,
               help="Drop existing tables and types.")
 @cli.command()
-def init_db(skip_create_db=False, test_db=False, force=False):
+def init_db(test_db=False, force=False):
     """Initialize the database.
 
     * Creates the database.
@@ -107,15 +105,12 @@ def init_db(skip_create_db=False, test_db=False, force=False):
         click.echo("Done!")
 
     if test_db:
-        db_uri = frontend.create_app(config_path=os.path.join(
+        frontend.create_app(config_path=os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
             'critiquebrainz', 'test_config.py'
-        )).config['SQLALCHEMY_DATABASE_URI']
+        ))
     else:
-        db_uri = frontend.create_app().config['SQLALCHEMY_DATABASE_URI']
-
-    if not skip_create_db:
-        create_extension(db_uri)
+        frontend.create_app()
 
     click.echo("Creating tables... ", nl=False)
     data_utils.create_all()
@@ -128,18 +123,6 @@ def init_db(skip_create_db=False, test_db=False, force=False):
     click.echo("Done!")
 
     click.echo("Initialization has been completed!")
-
-
-def create_extension(db_uri):
-    host, port, db, username, password = data_utils.explode_db_uri(db_uri)
-    psql_cmd = "psql -h %s -p %s -U %s -W %s %s" % (host, port, username, password, db)
-    exit_code = subprocess.call(
-        '%s  -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' %
-        (psql_cmd, 'uuid-ossp', db),
-        shell=True,
-    )
-    if exit_code != 0:
-        raise Exception('Failed to create PostgreSQL extension!')
 
 
 def _run_command(command):

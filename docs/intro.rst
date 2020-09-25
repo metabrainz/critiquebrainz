@@ -124,7 +124,7 @@ a single command::
 
 Next, initialize the CritiqueBrainz database::
 
-   $ ./develop.sh run --rm critiquebrainz python3 manage.py init_db --skip-create-db
+   $ ./develop.sh run --rm critiquebrainz python3 manage.py init_db
 
 
 You will also need to run some commands to build the static assets (javascript and css files) for the first run::
