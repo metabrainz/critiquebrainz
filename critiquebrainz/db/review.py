@@ -240,7 +240,7 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
         updated_info["review_id"] = review_id
         with db.engine.connect() as connection:
             connection.execute(query, updated_info)
-            db_revision.create(review_id, text, rating, sql_connection=connection)
+            db_revision.create(connection, review_id, text, rating)
     cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
 
 
@@ -319,7 +319,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "published_on": published_on,
         })
         review_id = result.fetchone()[0]
-        db_revision.create(review_id, text, rating, sql_connection=connection)
+        db_revision.create(connection, review_id, text, rating)
         cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
     return get_by_id(review_id)
 

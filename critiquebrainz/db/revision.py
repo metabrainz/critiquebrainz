@@ -157,14 +157,14 @@ def get_revision_number(review_id, revision_id):
     return rev_num
 
 
-def create(review_id, text=None, rating=None, sql_connection=None):
+def create(sql_connection, review_id, text=None, rating=None):
     """Creates a new revision for the given review.
 
     Args:
+        sql_connection: connection to database to update/create the review
         review_id (uuid): ID of the review.
         text (str): Updated/New text part of the review.
         rating (int): Updated/New rating part of the review
-        sql_connection: connection to database to update/create the review
     """
     if text is None and rating is None:
         raise db_exceptions.BadDataException("Text part and rating part of a revision can not be None simultaneously")
@@ -183,11 +183,7 @@ def create(review_id, text=None, rating=None, sql_connection=None):
         "rating": rating,
     }
 
-    if sql_connection:
-        sql_connection.execute(sql_query, value_dict)
-    else:
-        with db.engine.connect() as connection:
-            connection.execute(sql_query, value_dict)
+    sql_connection.execute(sql_query, value_dict)
 
     # Update average rating if rating part of the review has changed
     review = db_review.get_by_id(review_id)
