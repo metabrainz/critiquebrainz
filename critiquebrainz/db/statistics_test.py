@@ -48,7 +48,6 @@ class StatisticsTestCase(DataTestCase):
         )
 
         # totally disable cache get or set
-        cache.gen_key = MagicMock(return_value=None)
         cache.get = MagicMock(return_value=None)
         cache.set = MagicMock(return_value=None)
 
