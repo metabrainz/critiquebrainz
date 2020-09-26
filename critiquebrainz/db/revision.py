@@ -157,11 +157,11 @@ def get_revision_number(review_id, revision_id):
     return rev_num
 
 
-def create(sql_connection, review_id, text=None, rating=None):
+def create(connection, review_id, text=None, rating=None):
     """Creates a new revision for the given review.
 
     Args:
-        sql_connection: connection to database to update/create the review
+        connection: connection to database to update/create the review
         review_id (uuid): ID of the review.
         text (str): Updated/New text part of the review.
         rating (int): Updated/New rating part of the review
@@ -173,18 +173,19 @@ def create(sql_connection, review_id, text=None, rating=None):
     # Convert ratings to values on a scale 0-100
     rating = RATING_SCALE_0_100.get(rating)
 
-    sql_query = sqlalchemy.text(
-        """INSERT INTO revision(review_id, timestamp, text, rating) 
+    query = sqlalchemy.text("""INSERT INTO revision(review_id, timestamp, text, rating) 
         VALUES (:review_id, :timestamp, :text, :rating)""")
-    value_dict = {
+    params = {
         "review_id": review_id,
         "timestamp": datetime.now(),
         "text": text,
         "rating": rating,
     }
 
-    sql_connection.execute(sql_query, value_dict)
+    connection.execute(query, params)
 
+
+def update_rating(review_id):
     # Update average rating if rating part of the review has changed
     review = db_review.get_by_id(review_id)
     rev_num = get_revision_number(review["id"], review["last_revision"]["id"])
@@ -192,7 +193,7 @@ def create(sql_connection, review_id, text=None, rating=None):
         revisions = get(review["id"], limit=2, offset=0)
         if revisions[0]["rating"] != revisions[1]["rating"]:
             db_avg_rating.update(review["entity_id"], review["entity_type"])
-    elif rating is not None:
+    else:
         db_avg_rating.update(review["entity_id"], review["entity_type"])
 
 

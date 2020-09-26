@@ -236,11 +236,12 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
          WHERE id = :review_id
     """.format(setstr=setstr))
 
-    if setstr:
-        updated_info["review_id"] = review_id
-        with db.engine.connect() as connection:
+    with db.engine.connect() as connection:
+        if setstr:
+            updated_info["review_id"] = review_id
             connection.execute(query, updated_info)
-            db_revision.create(connection, review_id, text, rating)
+        db_revision.create(connection, review_id, text, rating)
+        db_revision.update_rating(review_id)
     cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
 
 
@@ -320,7 +321,10 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
         })
         review_id = result.fetchone()[0]
         db_revision.create(connection, review_id, text, rating)
-        cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
+    if rating:
+        db_revision.update_rating(review_id)
+
+    cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
     return get_by_id(review_id)
 
 
