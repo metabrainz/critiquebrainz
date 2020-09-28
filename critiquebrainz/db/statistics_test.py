@@ -15,10 +15,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-from unittest.mock import MagicMock
-
-from brainzutils import cache
+from unittest import mock
 
 import critiquebrainz.db.comment as db_comment
 import critiquebrainz.db.license as db_license
@@ -46,11 +43,6 @@ class StatisticsTestCase(DataTestCase):
             id=u'Test',
             full_name=u"Test License",
         )
-
-        # totally disable cache get or set
-        cache.gen_key = MagicMock(return_value=None)
-        cache.get = MagicMock(return_value=None)
-        cache.set = MagicMock(return_value=None)
 
     def create_dummy_review(self, user_id):
         return db_review.create(
@@ -144,7 +136,9 @@ class StatisticsTestCase(DataTestCase):
         self.assertEqual(top_users[1]["id"], self.user_1.id)
         self.assertEqual(top_users[1]["score"], 1)
 
-    def test_get_top_users_overall(self):
+    @mock.patch('brainzutils.cache.get', return_value=None)
+    @mock.patch('brainzutils.cache.set', return_value=None)
+    def test_get_top_users_overall(self, cache_set, cache_get):
         # user_1 added a review
         review_1 = self.create_dummy_review(user_id=self.user_1.id)
 
@@ -167,6 +161,12 @@ class StatisticsTestCase(DataTestCase):
 
         # get list of top users
         top_users = db_statistics.get_top_users_overall()
+        expected_key = b"top_users_overall_cb_statistics"
+        cache_get.assert_called_once_with(expected_key,
+                                          db_statistics._CACHE_NAMESPACE)
+        cache_set.assert_called_once_with(key=expected_key, val={"users": top_users},
+                                          namespace=db_statistics._CACHE_NAMESPACE,
+                                          time=db_statistics._DEFAULT_CACHE_EXPIRATION)
         self.assertEqual(len(top_users), 2)
         self.assertEqual(top_users[0]["id"], self.user_2.id)
         self.assertEqual(top_users[0]["score"], 7)
