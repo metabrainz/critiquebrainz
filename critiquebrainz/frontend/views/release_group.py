@@ -66,7 +66,7 @@ def entity(id):
             entity_type='release_group',
             user_id=current_user.id,
         )
-        my_review = my_reviews[0] if my_count else None
+        my_review = my_reviews[0] if my_reviews else None
     else:
         my_review = None
     reviews, count = db_review.list_reviews(

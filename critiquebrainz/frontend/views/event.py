@@ -56,7 +56,7 @@ def entity(id):
             entity_type='event',
             user_id=current_user.id
         )
-        my_review = my_reviews[0] if my_count else None
+        my_review = my_reviews[0] if my_reviews else None
     else:
         my_review = None
 
