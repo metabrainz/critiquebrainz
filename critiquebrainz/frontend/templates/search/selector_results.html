@@ -67,7 +67,7 @@
 {% elif type=="work" %}
   <tr>
     <td>
-      {# <a href="{{ url_for('work.entity', id=result.id) }}" target="_blank">{{ result['name'] }}</a> #}
+       <a href="{{ url_for('work.entity', id=result.id) }}" target="_blank">{{ result['title'] }}</a>
     </td>
     <td>
       {% if result['artist-relation-list'] %}
