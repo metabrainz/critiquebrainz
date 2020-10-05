@@ -3,9 +3,8 @@ from flask_babel import lazy_gettext, Locale
 from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input
-from babel.core import UnknownLocaleError
-import pycountry
 from critiquebrainz.db.review import supported_languages
+from critiquebrainz.frontend.forms.utils import get_language_name
 
 MIN_REVIEW_LENGTH = 25
 MAX_REVIEW_LENGTH = 100000
@@ -23,10 +22,7 @@ class StateAndLength(validators.Length):
 # Loading supported languages
 languages = []
 for language_code in supported_languages:
-    try:
-        languages.append((language_code, Locale(language_code).language_name))
-    except UnknownLocaleError:
-        languages.append((language_code, pycountry.languages.get(iso639_1_code=language_code).name))
+    languages.append((language_code, get_language_name(language_code)))
 
 
 class ReviewEditForm(FlaskForm):
