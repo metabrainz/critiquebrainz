@@ -1,7 +1,7 @@
 ﻿import os
 import subprocess
 from werkzeug.serving import run_simple
-from werkzeug.wsgi import DispatcherMiddleware
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from brainzutils import cache
 import click
 from critiquebrainz import frontend, ws
@@ -19,7 +19,7 @@ application = DispatcherMiddleware(frontend.create_app(), {
 # Files listed here will be monitored for changes in debug mode and will
 # force a reload when modified.
 OBSERVE_FILES = [
-    "critiquebrainz/frontend/static/build/rev-manifest.json",
+    "critiquebrainz/frontend/static/build/manifest.json",
 ]
 
 
@@ -84,14 +84,12 @@ def clear_memcached():
     click.echo("Flushed everything from memcached.")
 
 
-@click.option("--skip-create-db", "-s", is_flag=True,
-              help="Skip database creation step.")
 @click.option("--test-db", "-t", is_flag=True,
               help="Initialize the test database.")
 @click.option("--force", "-f", is_flag=True,
               help="Drop existing tables and types.")
 @cli.command()
-def init_db(skip_create_db=False, test_db=False, force=False):
+def init_db(test_db=False, force=False):
     """Initialize the database.
 
     * Creates the database.
@@ -107,16 +105,12 @@ def init_db(skip_create_db=False, test_db=False, force=False):
         click.echo("Done!")
 
     if test_db:
-        db_uri = frontend.create_app(config_path=os.path.join(
+        frontend.create_app(config_path=os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
             'critiquebrainz', 'test_config.py'
-        )).config['SQLALCHEMY_DATABASE_URI']
+        ))
     else:
-        db_uri = frontend.create_app().config['SQLALCHEMY_DATABASE_URI']
-
-    if not skip_create_db:
-        init_postgres(db_uri)
-        create_extension(db_uri)
+        frontend.create_app()
 
     click.echo("Creating tables... ", nl=False)
     data_utils.create_all()
@@ -129,49 +123,6 @@ def init_db(skip_create_db=False, test_db=False, force=False):
     click.echo("Done!")
 
     click.echo("Initialization has been completed!")
-
-
-def init_postgres(db_uri):
-    """Initializes PostgreSQL database from provided URI.
-
-    New user and database will be created, if needed. It also creates uuid-ossp extension.
-    """
-    hostname, port, db, username, password = data_utils.explode_db_uri(db_uri)  # pylint: disable=unused-variable
-    if hostname not in ['localhost', '127.0.0.1']:
-        raise Exception('Cannot configure a remote database')
-
-    # Checking if user already exists
-    retv = subprocess.check_output('sudo -u postgres psql -t -A -c'
-                                   '"SELECT COUNT(*) FROM pg_user WHERE usename = \'%s\';"' %
-                                   username, shell=True)
-    if retv == '0':
-        exit_code = subprocess.call(
-            'sudo -u postgres psql -c '
-            '"CREATE ROLE %s PASSWORD \'%s\' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;"' %
-            (username, password),
-            shell=True,
-        )
-        if exit_code != 0:
-            raise Exception('Failed to create PostgreSQL user!')
-
-    # Checking if database exists
-    exit_code = subprocess.call('sudo -u postgres psql -c "\\q" %s' % db, shell=True)
-    if exit_code != 0:
-        exit_code = subprocess.call('sudo -u postgres createdb -O %s %s' % (username, db), shell=True)
-        if exit_code != 0:
-            raise Exception('Failed to create PostgreSQL database!')
-
-
-def create_extension(db_uri):
-    host, port, db, username, password = data_utils.explode_db_uri(db_uri)
-    psql_cmd = "psql -h %s -p %s -U %s -W %s %s" % (host, port, username, password, db)
-    exit_code = subprocess.call(
-        '%s  -t -A -c "CREATE EXTENSION IF NOT EXISTS \\"%s\\";" %s' %
-        (psql_cmd, 'uuid-ossp', db),
-        shell=True,
-    )
-    if exit_code != 0:
-        raise Exception('Failed to create PostgreSQL extension!')
 
 
 def _run_command(command):

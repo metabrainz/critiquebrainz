@@ -1,15 +1,16 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from werkzeug.exceptions import NotFound
 from flask_babel import gettext
 from flask_login import login_required, current_user
+from werkzeug.exceptions import NotFound
+
+import critiquebrainz.db.moderation_log as db_moderation_log
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
 from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.user import User
+from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
-from critiquebrainz.frontend import flash
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.review as db_review
-import critiquebrainz.db.moderation_log as db_moderation_log
 
 user_bp = Blueprint('user', __name__)
 

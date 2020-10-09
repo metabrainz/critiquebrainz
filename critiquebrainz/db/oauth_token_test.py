@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.oauth_token as db_oauth_token
-import critiquebrainz.db.oauth_client as db_oauth_client
-import critiquebrainz.db.users as db_users
+
 import critiquebrainz.db.exceptions as db_exceptions
+import critiquebrainz.db.oauth_client as db_oauth_client
+import critiquebrainz.db.oauth_token as db_oauth_token
+import critiquebrainz.db.users as db_users
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
 
 

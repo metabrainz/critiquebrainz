@@ -1,12 +1,14 @@
 from unittest.mock import MagicMock
+
 from brainzutils import cache
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.users as db_users
-from critiquebrainz.db.user import User
-import critiquebrainz.db.review as db_review
-import critiquebrainz.db.revision as db_revision
+
 import critiquebrainz.db.exceptions as db_exceptions
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.revision as db_revision
+import critiquebrainz.db.users as db_users
+from critiquebrainz.data.testing import DataTestCase
+from critiquebrainz.db.user import User
 
 
 class ReviewTestCase(DataTestCase):

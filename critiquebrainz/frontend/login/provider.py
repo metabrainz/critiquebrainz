@@ -1,9 +1,10 @@
 import json
-from rauth import OAuth2Service
-from flask import request, session, url_for
 
-from critiquebrainz.db.user import User
+from flask import request, session, url_for
+from rauth import OAuth2Service
+
 import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
 from critiquebrainz.utils import generate_string
 
 

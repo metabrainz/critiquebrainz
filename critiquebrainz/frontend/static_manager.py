@@ -1,7 +1,7 @@
-import os.path
 import json
+import os.path
 
-MANIFEST_PATH = os.path.join(os.path.dirname(__file__), "static", "build", "rev-manifest.json")
+MANIFEST_PATH = os.path.join(os.path.dirname(__file__), "static", "build", "manifest.json")
 
 manifest_content = {}
 

@@ -1,5 +1,7 @@
 from datetime import datetime
+
 import sqlalchemy
+
 from critiquebrainz import db
 from critiquebrainz.db import exceptions as db_exceptions
 
@@ -73,3 +75,14 @@ def delete(user_id, revision_id):
             "user_id": user_id,
             "revision_id": revision_id,
         })
+
+
+def get_count():
+    """Get the total number of votes in CritiqueBrainz.
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT count(*)
+              FROM vote
+        """))
+        return result.fetchone()[0]

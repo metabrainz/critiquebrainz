@@ -3,14 +3,16 @@ This module provides access to Spotify Web API.
 
 More information about it is available at https://developer.spotify.com/web-api/.
 """
-from base64 import b64encode
-from typing import List
-from http import HTTPStatus
 import logging
 import urllib.parse
+from base64 import b64encode
+from http import HTTPStatus
+from typing import List
+
 import requests
 from brainzutils import cache
 from flask import current_app as app
+
 from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 
 _DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)

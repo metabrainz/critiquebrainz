@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import entity_rate_form, show_avg_rating with context %}
+
+{% block title %}{{ label.name }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">
+    {{ label.name }}
+    {% if label.disambiguation %}
+      <small>({{ label.disambiguation }})</small>
+    {% endif %}
+  </h2>
+
+  {% if not my_review %}
+    <a id="write-review" href="{{ url_for('review.create', entity_type='label', entity_id=id) }}"
+        role="button" class="btn btn-success pull-right">
+      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
+    </a>
+  {% else %}
+    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
+        role="button" class="btn btn-primary pull-right">
+      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
+    </a>
+  {% endif %}
+</div>
+
+<div class="row">
+  <div class="col-sm-9">
+    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+    {% if not reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ _('Published on') }}</th>
+            <th>{{ _('Votes (+/-)') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for review in reviews %}
+            <tr data-review-id="{{ review.id }}">
+              <td>
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                </a>
+              </td>
+              <td>{{ review.published_on | date }}</td>
+              <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="col-md-12">
+        <ul class="pager">
+          {% if not reviews_limit %}
+            <li class="next"><a href="{{ url_for('label.entity', id=id) }}">{{ _('Hide reviews') }}</a></li>
+          {% elif reviews_count > reviews_limit %}
+            <li class="next"><a href="{{ url_for('label.entity', id=id, reviews='all') }}">{{ _('Show all reviews') }}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    {% endif %}
+    <ul class="pagination"></ul>
+  </div>
+
+  <div class="col-sm-3">
+    <h4>{{ _('Label information') }}</h4>
+    {% if label.type %}<p class="text-muted">{{ label.type }}</p>{% endif %}
+
+    {% if label['external-urls'] %}
+      <b>{{ _('External links') }}</b>
+      <ul class="list-unstyled external-links">
+        {% for url in label['external-urls'] %}
+          <li class="clearfix">
+            <div class="favicon-container">
+              {% if url.icon %}
+                <img src="{{ get_static_path('favicons/' + url.icon) }}" />
+              {% else %}
+                <img src="{{ get_static_path('favicons/external-16.png') }}" />
+              {% endif %}
+            </div>
+            <a href="{{ url.url.url }}">{{ url.name }}</a>
+            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <div class="external-links">
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
+      <a href="https://musicbrainz.org/label/{{ label.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+    </div>
+
+    <br/><br/>
+    {{ entity_rate_form('label', 'label') }}
+    {% if avg_rating %}
+      <div class="avg-rating">
+        {{ show_avg_rating(avg_rating.rating, avg_rating.count, show_glyphicon = false) }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+<script>
+  $(document).ready(function() {
+    $("#ratestars").click(function(e){
+      // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+      if (e.target.tagName === 'I') {
+        $("#rating-form").submit();
+      }
+    });
+  });
+</script>
+<script src="{{ get_static_path('rating.js') }}"></script>
+{% endblock %}

@@ -1,4 +1,5 @@
 import sqlalchemy
+
 from critiquebrainz import db
 
 

@@ -1,11 +1,14 @@
 from collections import OrderedDict
+
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from werkzeug.exceptions import BadRequest, NotFound
+
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+from critiquebrainz.frontend.views import BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
 
 artist_bp = Blueprint('artist', __name__)
 
@@ -25,6 +28,19 @@ def entity(mbid):
     # Note that some artists might not have a list of members because they are not a band
     band_members = _get_band_members(artist)
 
+    artist_reviews_limit = ARTIST_REVIEWS_LIMIT
+    if request.args.get('reviews') == "all":
+        artist_reviews_limit = None
+
+    reviews_offset = 0
+    reviews, reviews_count = db_review.list_reviews(
+        entity_id=artist['id'],
+        entity_type='artist',
+        sort='popularity',
+        limit=artist_reviews_limit,
+        offset=reviews_offset,
+    )
+
     release_type = request.args.get('release_type', default='album')
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
         raise BadRequest("Unsupported release type.")
@@ -32,22 +48,21 @@ def entity(mbid):
     page = int(request.args.get('page', default=1))
     if page < 1:
         return redirect(url_for('.reviews'))
-    limit = 20
-    offset = (page - 1) * limit
-    release_groups, count = mb_release_group.browse_release_groups(
+    release_groups_offset = (page - 1) * BROWSE_RELEASE_GROUPS_LIMIT
+    release_groups, release_group_count = mb_release_group.browse_release_groups(
         artist_id=artist['id'],
         release_types=[release_type],
-        limit=limit,
-        offset=offset,
+        limit=BROWSE_RELEASE_GROUPS_LIMIT,
+        offset=release_groups_offset,
     )
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
-        reviews, review_count = db_review.list_reviews(  # pylint: disable=unused-variable
+        _, release_group_review_count = db_review.list_reviews(  # pylint: disable=unused-variable
             entity_id=release_group['id'],
             entity_type='release_group',
             sort='published_on', limit=1,
         )
-        release_group['review_count'] = review_count
+        release_group['review_count'] = release_group_review_count
 
     return render_template(
         'artist/entity.html',
@@ -56,8 +71,11 @@ def entity(mbid):
         release_type=release_type,
         release_groups=release_groups,
         page=page,
-        limit=limit,
-        count=count,
+        reviews=reviews,
+        reviews_limit=artist_reviews_limit,
+        reviews_count=reviews_count,
+        release_groups_limit=BROWSE_RELEASE_GROUPS_LIMIT,
+        release_group_count=release_group_count,
         band_members=band_members,
     )
 

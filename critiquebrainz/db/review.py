@@ -1,9 +1,11 @@
-from random import shuffle
-from datetime import datetime, timedelta
 import uuid
-import sqlalchemy
+from datetime import datetime, timedelta
+from random import shuffle
+
 import pycountry
+import sqlalchemy
 from brainzutils import cache
+
 from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
                                revision as db_revision,
@@ -19,8 +21,10 @@ ENTITY_TYPES = [
     "event",
     "place",
     "release_group",
+    "work",
+    "artist",
+    "label",
 ]
-
 
 supported_languages = []
 for lang in list(pycountry.languages):
@@ -233,12 +237,12 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
          WHERE id = :review_id
     """.format(setstr=setstr))
 
-    if setstr:
-        updated_info["review_id"] = review_id
-        with db.engine.connect() as connection:
+    with db.engine.connect() as connection:
+        if setstr:
+            updated_info["review_id"] = review_id
             connection.execute(query, updated_info)
-
-    db_revision.create(review_id, text, rating)
+        db_revision.create(connection, review_id, text, rating)
+        db_revision.update_rating(review_id)
     cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
 
 
@@ -317,9 +321,11 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
             "published_on": published_on,
         })
         review_id = result.fetchone()[0]
-        # TODO(roman): It would be better to create review and revision in one transaction
-        db_revision.create(review_id, text, rating)
-        cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
+        db_revision.create(connection, review_id, text, rating)
+    if rating:
+        db_revision.update_rating(review_id)
+
+    cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
     return get_by_id(review_id)
 
 
@@ -534,8 +540,9 @@ def get_popular(limit=None):
     cache_key = cache.gen_key("popular_reviews", limit)
     reviews = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
     defined_limit = 4 * limit if limit else None
+    reset_cache = any([check_review_deleted(review["id"]) for review in reviews]) if reviews else False
 
-    if not reviews:
+    if not reviews or reset_cache:
         with db.engine.connect() as connection:
             results = connection.execute(sqlalchemy.text("""
                 SELECT review.id,
@@ -633,6 +640,22 @@ def delete(review_id):
 
     if review["rating"] is not None:
         db_avg_rating.update(review["entity_id"], review["entity_type"])
+
+
+def check_review_deleted(review_id) -> bool:
+    """Check if a review exists in CB.
+
+    Args:
+        review_id: ID of the review to be checked.
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT NOT EXISTS (SELECT true FROM review WHERE id = :review_id) AS exists
+        """), {
+            "review_id": review_id,
+        })
+
+        return dict(result.fetchone())["exists"]
 
 
 def get_distinct_entities(connection):

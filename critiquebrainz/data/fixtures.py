@@ -37,4 +37,4 @@ class LicenseData:
 
 
 # Include all objects into this tuple.
-all_data = (LicenseData, )
+all_data = (LicenseData,)

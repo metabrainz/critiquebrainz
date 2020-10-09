@@ -1,5 +1,5 @@
-from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.data import utils
+from critiquebrainz.data.testing import DataTestCase
 
 
 class DataUtilsTestCase(DataTestCase):

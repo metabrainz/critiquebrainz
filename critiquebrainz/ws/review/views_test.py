@@ -1,10 +1,10 @@
 import json
 
-from critiquebrainz.ws.testing import WebServiceTestCase
+import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
-import critiquebrainz.db.license as db_license
+from critiquebrainz.ws.testing import WebServiceTestCase
 
 
 class ReviewViewsTestCase(WebServiceTestCase):
@@ -40,6 +40,23 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
     def create_dummy_review(self):
         return db_review.create(**self.review)
+
+    def test_review_sort(self):
+        response = self.client.get('/review/', query_string={'sort': 'rating'})
+        self.assert200(response)
+
+        response = self.client.get('/review/', query_string={'sort': 'published_on'})
+        self.assert200(response)
+
+        response = self.client.get('/review/', query_string={'sort': 'popularity'})
+        self.assert200(response)
+
+        response = self.client.get('/review/', query_string={'sort': 'created'})
+        self.assert200(response)
+
+        response = self.client.get('/review/', query_string={'sort': 'hello'})
+        self.assert400(response)
+        self.assertEqual(response.json['description'], 'Parameter `sort`: is not valid')
 
     def test_review_count(self):
         resp = self.client.get('/review/').json

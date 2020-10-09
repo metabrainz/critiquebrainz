@@ -1,8 +1,8 @@
 from mbdata import models
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
-from critiquebrainz.frontend.external.musicbrainz_db import special_entities
-from critiquebrainz.db.review import reviewed_entities, ENTITY_TYPES as CB_ENTITIES
 
+import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+from critiquebrainz.db.review import reviewed_entities, ENTITY_TYPES as CB_ENTITIES
+from critiquebrainz.frontend.external.musicbrainz_db import special_entities
 
 # Entity models
 ENTITY_MODELS = {
@@ -14,7 +14,6 @@ ENTITY_MODELS = {
     'series': models.Series,
     'url': models.URL,
 }
-
 
 # Redirect models
 REDIRECT_MODELS = {
@@ -84,5 +83,6 @@ def get_entities_by_gids(*, query, entity_type, mbids):
         remaining_gids = list(set(remaining_gids) - set(reviewed_gids))
 
     if remaining_gids:
-        raise mb_exceptions.NoDataFoundException("Couldn't find entities with IDs: {mbids}".format(mbids=remaining_gids))
+        raise mb_exceptions.NoDataFoundException(
+            "Couldn't find entities with IDs: {mbids}".format(mbids=remaining_gids))
     return entities

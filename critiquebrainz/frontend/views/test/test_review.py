@@ -1,11 +1,14 @@
 from unittest.mock import patch, MagicMock
-from flask import current_app
-from critiquebrainz.frontend.testing import FrontendTestCase
-import critiquebrainz.db.review as db_review
-from critiquebrainz.db.user import User
-import critiquebrainz.db.users as db_users
+from urllib.parse import urlparse
+
+import brainzutils.musicbrainz_db.release as mb_release
+from flask import current_app, url_for
+
 import critiquebrainz.db.license as db_license
-import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 def mock_get_entity_by_id(id, type='release_group'):
@@ -45,7 +48,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         mb_release.browse_releases = MagicMock()
         current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
 
-    def create_dummy_review(self, is_draft=False):
+    def create_dummy_review(self, is_draft=False, is_hidden=False):
         review = db_review.create(
             entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
             entity_type="release_group",
@@ -55,6 +58,8 @@ class ReviewViewsTestCase(FrontendTestCase):
             is_draft=is_draft,
             license_id=self.license["id"],
         )
+        if is_hidden:
+            db_review.set_hidden_state(review["id"], is_hidden=True)
         return review
 
     def test_browse(self):
@@ -101,6 +106,14 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get("/review/%s" % review["id"])
         self.assert404(response, "Drafts shouldn't be publicly visible.")
 
+    def test_draft_redirect(self):
+        review = self.create_dummy_review(is_draft=True)
+        self.temporary_login(self.user)
+        response = self.client.get('/review/write/{}/{}/'
+                                   .format(review["entity_type"], review["entity_id"]))
+        redirect_url = urlparse(response.location)
+        self.assertEquals(redirect_url.path, url_for('review.edit', id=review['id']))
+
     def test_missing_review(self):
         response = self.client.get("/review/aef06569-098f-4218-a577-b413944d9493")
         self.assert404(response)
@@ -108,7 +121,8 @@ class ReviewViewsTestCase(FrontendTestCase):
     # pylint: disable=unused-variable
     def test_create(self):
         data = dict(
-            release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_id='6b3cd75d-7453-39f3-86c4-1441f360e121',
+            entity_type='release_group',
             state='draft',
             text=self.review_text,
             license_choice=self.license["id"],
@@ -120,23 +134,36 @@ class ReviewViewsTestCase(FrontendTestCase):
         # test for review limit exceeded message
         with patch.object(User, 'is_review_limit_exceeded') as mock_is_review_limit_exceeded:
             mock_is_review_limit_exceeded.return_value = True
-            response = self.client.post('/review/write', data=data,
-                                        query_string=data, follow_redirects=True)
+            response = self.client.post("/review/write/{}/{}".format(data["entity_type"], data["entity_id"]),
+                                        data=data, query_string=data, follow_redirects=True)
             self.assertIn("You have exceeded your limit of reviews per day.", str(response.data))
 
+        response = self.client.get("/review/write", follow_redirects=True)
+        self.assertIn("Please choose an entity to review.", str(response.data))
+
         # test create review when review limit is not exceeded
-        response = self.client.post('/review/write', data=data,
-                                    query_string=data, follow_redirects=True)
+        response = self.client.post("/review/write/{}/{}".format(data["entity_type"], data["entity_id"]),
+                                    data=data, query_string=data, follow_redirects=True)
         self.assert200(response)
         self.assertIn(self.review_text, str(response.data))
+
+        response = self.client.get("/review/write/hello_entity/{}".format(data['entity_id']),
+                                   follow_redirects=True)
+        self.assert400(response, "You can't write reviews about this type of entity.")
+
+        data = dict(release_group='6b3cd75d-7453-39f3-86c4-1441f360e121')
+        response = self.client.get("/review/write/", query_string=data)
+        redirect_url = urlparse(response.location)
+        self.assertEqual(redirect_url.path, url_for("review.create", entity_type="release_group",
+                                                    entity_id=data["release_group"]))
 
     def test_create_duplicate(self):
         review = self.create_dummy_review()
 
         self.temporary_login(self.user)
-        response = self.client.get("/review/write?release_group=%s" % review["entity_id"],
+        response = self.client.get("/review/write/release_group/%s" % review["entity_id"],
                                    follow_redirects=True)
-        self.assertIn("You have already published a review for this entity!", str(response.data))
+        self.assertIn("You have already published a review for this entity", str(response.data))
 
     def test_edit(self):
         updated_text = "The text has now been updated"
@@ -298,3 +325,11 @@ class ReviewViewsTestCase(FrontendTestCase):
             follow_redirects=True,
         )
         self.assertIn("Review is not hidden.", str(response.data))
+
+    def test_hide_redirect(self):
+        review = self.create_dummy_review(is_hidden=True)
+        self.temporary_login(self.user)
+        response = self.client.get('/review/write/{}/{}/'.format(
+            review["entity_type"], review["entity_id"]))
+        redirect_url = urlparse(response.location)
+        self.assertEquals(redirect_url.path, url_for('review.entity', id=review['id']))

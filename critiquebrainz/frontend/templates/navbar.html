@@ -25,24 +25,56 @@
                 {{ current_user.display_name }} <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="{{ url_for('user.reviews', user_id=current_user.id) }}">{{ _('Profile') }}</a></li>
-                <li><a href="{{ url_for('profile_applications.index') }}">{{ _('Applications') }}</a></li>
+                <li>
+                  <a href="{{ url_for('user.reviews', user_id=current_user.id) }}">
+                    {{ _('Profile') }}
+                  </a>
+                </li>
+                <li>
+                  <a href="{{ url_for('profile_applications.index') }}">
+                    {{ _('Applications') }}
+                  </a>
+                </li>
                 <li class="divider"></li>
-                <li><a href="{{ url_for('login.logout', next=request.url) }}">{{ _('Sign out') }}</a></li>
+                <li>
+                  <a href="{{ url_for('login.logout', next=request.url) }}">
+                     {{ _('Sign out') }}
+                  </a>
+                </li>
               </ul>
             </li>
           {% endif %}
         {% else %}
           {% if not current_user or current_user.is_anonymous %}
-            <li><a href="{{ url_for('login.index', next=request.url) }}">{{ _('Sign in') }}</a></li>
+            <li>
+              <a href="{{ url_for('login.index', next=request.url) }}">
+                {{ _('Sign in') }}
+              </a>
+            </li>
           {% endif %}
         {% endif %}
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ _('Reviews') }} <span class="caret"></span></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            {{ _('Reviews') }} <span class="caret"></span>
+          </a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="{{ url_for('review.browse') }}">{{ _('Browse reviews') }}</a></li>
-            <li><a href="{{ url_for('review.create') }}">{{ _('Write a review') }}</a></li>
+            <li>
+              <a href="{{ url_for('review.browse') }}">
+                {{ _('Browse reviews') }}
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('review.create') }}">
+                {{ _('Write a review') }}
+              </a>
+            </li>
           </ul>
+        </li>
+
+        <li>
+          <a href="{{ url_for('statistics.statistics') }}">
+            {{ _('Statistics') }}
+          </a>
         </li>
 
         <li class="language-selector dropdown hidden-md">
@@ -63,9 +95,11 @@
         <div class="form-group">
           <select id="type-selector" name="type" class="form-control input-sm">
             <option value="artist">{{ _('Artist') }}</option>
-            <option value="release-group">{{ _('Release group') }}</option>
+            <option value="work">{{ _('Work') }}</option>
+            <option value="label">{{ _('Label') }}</option>
             <option value="event">{{ _('Event') }}</option>
             <option value="place">{{ _('Place') }}</option>
+            <option value="release-group">{{ _('Release group') }}</option>
           </select>
         </div>
         <button type="submit" class="btn input-sm"><span class="glyphicon glyphicon-search"></span></button>

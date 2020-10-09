@@ -1,10 +1,11 @@
 import difflib
-import urllib.parse
-import string
 import random
+import string
+import urllib.parse
+
 from flask import request
-from flask_uuid import UUID_RE
 from flask_babel import format_datetime, format_date
+from flask_uuid import UUID_RE
 
 tags = {'+': ('<ins>', '</ins>'), '-': ('<del>', '</del>'), ' ': (' ', '')}
 
@@ -46,6 +47,13 @@ def reformat_datetime(value, format=None):
 
 
 def track_length(value):
+    """Converts track length specified in seconds into a pretty string."""
+    seconds = int(value)
+    minutes, seconds = divmod(seconds, 60)
+    return '%i:%02i' % (minutes, seconds)
+
+
+def track_length_ms(value):
     """Converts track length specified in milliseconds into a pretty string."""
     seconds = int(value) / 1000
     minutes, seconds = divmod(seconds, 60)

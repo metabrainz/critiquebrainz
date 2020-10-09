@@ -17,17 +17,17 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from flask import Blueprint, render_template, request
-from flask_login import current_user
 from flask_babel import gettext
+from flask_login import current_user
 from werkzeug.exceptions import NotFound
-from critiquebrainz.frontend.external import mbspotify, soundcloud
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+
+import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
-import critiquebrainz.db.review as db_review
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+from critiquebrainz.frontend.external import mbspotify, soundcloud
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
-
 
 release_group_bp = Blueprint('release_group', __name__)
 
@@ -66,7 +66,7 @@ def entity(id):
             entity_type='release_group',
             user_id=current_user.id,
         )
-        my_review = my_reviews[0] if my_count else None
+        my_review = my_reviews[0] if my_reviews else None
     else:
         my_review = None
     reviews, count = db_review.list_reviews(
@@ -81,7 +81,8 @@ def entity(id):
     rating_form = RatingEditForm(entity_id=id, entity_type='release_group')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    return render_template('release_group/entity.html', id=release_group['id'], release_group=release_group, reviews=reviews,
+    return render_template('release_group/entity.html', id=release_group['id'], release_group=release_group,
+                           reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
                            soundcloud_url=soundcloud_url, external_reviews=external_reviews, limit=limit, offset=offset,
                            count=count, avg_rating=avg_rating, rating_form=rating_form, current_user=current_user)

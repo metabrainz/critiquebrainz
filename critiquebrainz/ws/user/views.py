@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify, request, redirect, url_for
-from critiquebrainz.db.user import User
+
 from critiquebrainz.db import users as db_users
+from critiquebrainz.db.user import User
 from critiquebrainz.decorators import crossdomain
+from critiquebrainz.ws.exceptions import NotFound
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
-from critiquebrainz.ws.exceptions import NotFound
 
 user_bp = Blueprint('ws_user', __name__)
 
@@ -154,6 +155,7 @@ def user_modify_handler(user):
 
     :resheader Content-Type: *application/json*
     """
+
     def fetch_params():
         display_name = Parser.string('json', 'display_name', optional=True)
         email = Parser.email('json', 'email', optional=True)
@@ -280,6 +282,7 @@ def review_list_handler():
 
     :resheader Content-Type: *application/json*
     """
+
     def fetch_params():
         limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
         offset = Parser.int('uri', 'offset', optional=True) or 0

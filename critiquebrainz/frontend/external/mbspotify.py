@@ -4,11 +4,13 @@ This module provides interface to Spotify ID mapper - mbspotify.
 Source code of mbspotify is available at https://github.com/metabrainz/mbspotify.
 """
 import json
+
 import requests
-from requests.exceptions import RequestException
-from requests.adapters import HTTPAdapter
-from flask_babel import lazy_gettext
 from brainzutils import cache
+from flask_babel import lazy_gettext
+from requests.adapters import HTTPAdapter
+from requests.exceptions import RequestException
+
 from critiquebrainz.frontend import flash
 
 _base_url = ""

@@ -17,14 +17,15 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from flask import Blueprint, render_template, request
-from flask_login import current_user
 from flask_babel import gettext
+from flask_login import current_user
 from werkzeug.exceptions import NotFound
-import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
+
+import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
-import critiquebrainz.db.review as db_review
 
 place_bp = Blueprint('place', __name__)
 
@@ -43,7 +44,7 @@ def entity(id):
             entity_type='place',
             user_id=current_user.id
         )
-        my_review = my_reviews[0] if my_count else None
+        my_review = my_reviews[0] if my_reviews else None
     else:
         my_review = None
 

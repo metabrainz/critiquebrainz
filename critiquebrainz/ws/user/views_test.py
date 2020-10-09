@@ -1,6 +1,6 @@
-from critiquebrainz.ws.testing import WebServiceTestCase
 from critiquebrainz.db import users as db_users
 from critiquebrainz.db.user import User
+from critiquebrainz.ws.testing import WebServiceTestCase
 
 
 class UserViewsTestCase(WebServiceTestCase):

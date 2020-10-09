@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import entity_rate_form, show_avg_rating with context %}
+
+{% block title %}{{ work.name }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">
+    {{ work.name }}
+    {% if work.type %}
+      <small>({{ work.type }})</small>
+    {% endif %}
+  </h2>
+
+  {% if not my_review %}
+    <a id="write-review" href="{{ url_for('review.create', entity_type='work', entity_id=id) }}"
+        role="button" class="btn btn-success pull-right">
+      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
+    </a>
+  {% else %}
+    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
+        role="button" class="btn btn-primary pull-right">
+      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
+    </a>
+  {% endif %}
+</div>
+
+<div class="row">
+  <div class="col-sm-9">
+    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+    {% if not reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ _('Published on') }}</th>
+            <th>{{ _('Votes (+/-)') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for review in reviews %}
+            <tr data-review-id="{{ review.id }}">
+              <td>
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                </a>
+              </td>
+              <td>{{ review.published_on | date }}</td>
+              <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="col-md-12">
+        <ul class="pager">
+          {% if not reviews_limit %}
+            <li class="next"><a href="{{ url_for('work.entity', id=id) }}">{{ _('Hide reviews') }}</a></li>
+          {% elif reviews_count > reviews_limit %}
+            <li class="next"><a href="{{ url_for('work.entity', id=id, reviews='all') }}">{{ _('Show all reviews') }}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    {% endif %}
+    <ul class="pagination"></ul>
+    <h4>{{ _('Recordings') }}</h4>
+    {% if not recording_rels %}
+      <p class="lead" style="text-align: center;">{{ _('No recordings found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ _('Type') }}</th>
+            <th>{{ _('Length') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rel in recording_rels %}
+          {% set recording = rel['recording'] %}
+            <tr data-review-id="{{ recording.id }}">
+              <td>
+                {# <a href="{{ url_for('recording.entity', id=recording.id) }}"> #}
+                  {{ recording.name }}
+                {# </a> #}
+              </td>
+              <td>{{ rel.type | capitalize }}</td>
+              <td>
+                {% if recording.length %}
+                  {{ recording.length | track_length }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% if recording_count > recording_limit %}
+        <div class="col-md-12">
+          <ul class="pager">
+            {% if page > 1 %}
+              <li class="previous"><a href="{{ url_for('work.entity', id=id, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
+            {% endif %}
+            {% if page < recording_count//recording_limit %}
+              <li class="next"><a href="{{ url_for('work.entity', id=id, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      {% endif %}
+    {% endif %}
+    <ul class="pagination"></ul>
+  </div>
+
+  <div class="col-sm-3">
+    <h4>{{ _('Work information') }}</h4>
+
+    {% if work['external-urls'] %}
+      <b>{{ _('External links') }}</b>
+      <ul class="list-unstyled external-links">
+        {% for url in work['external-urls'] %}
+          <li class="clearfix">
+            <div class="favicon-container">
+              {% if url.icon %}
+                <img src="{{ get_static_path('favicons/' + url.icon) }}" />
+              {% else %}
+                <img src="{{ get_static_path('favicons/external-16.png') }}" />
+              {% endif %}
+            </div>
+            <a href="{{ url.url.url }}">{{ url.name }}</a>
+            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <div class="external-links">
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
+      <a href="https://musicbrainz.org/work/{{ work.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+    </div>
+
+    <br/><br/>
+    {{ entity_rate_form('work', 'work') }}
+    {% if avg_rating %}
+      <div class="avg-rating">
+        {{ show_avg_rating(avg_rating.rating, avg_rating.count, show_glyphicon = false) }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+<script>
+  $(document).ready(function() {
+    $("#ratestars").click(function(e){
+      // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+      if (e.target.tagName === 'I') {
+        $("#rating-form").submit();
+      }
+    });
+  });
+</script>
+<script src="{{ get_static_path('rating.js') }}"></script>
+{% endblock %}

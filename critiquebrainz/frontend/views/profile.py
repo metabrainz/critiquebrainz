@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from flask_login import login_required, current_user
-import critiquebrainz.db.users as db_users
 
+import critiquebrainz.db.users as db_users
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.profile import ProfileEditForm
 

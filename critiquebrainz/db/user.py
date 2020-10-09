@@ -1,11 +1,11 @@
 from datetime import date, timedelta
+
 from critiquebrainz.data.mixins import AdminMixin
-from critiquebrainz.db import users as db_users
 from critiquebrainz.data.user_types import user_types
+from critiquebrainz.db import users as db_users
 
 
 class User(AdminMixin):
-
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user_type', 'stats')
 
@@ -91,6 +91,7 @@ class User(AdminMixin):
             for user_type in user_types:
                 if user_type.is_instance(user):
                     return user_type
+
         if hasattr(self, '_user_type') is False:
             self._user_type = get_user_type(self)
         return self._user_type

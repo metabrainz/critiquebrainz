@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
+
+from critiquebrainz.decorators import nocache, crossdomain
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.oauth.exceptions import UnsupportedGrantType
-from critiquebrainz.decorators import nocache, crossdomain
 
 oauth_bp = Blueprint('ws_oauth', __name__)
 
@@ -39,7 +40,8 @@ def oauth_token_handler():
         user_id = token['user_id']
         scope = token['scopes']
     else:
-        raise UnsupportedGrantType("Specified grant_type is unsupported. Please, use authorization_code or refresh_token.")
+        raise UnsupportedGrantType(
+            "Specified grant_type is unsupported. Please, use authorization_code or refresh_token.")
 
     # Deleting grant and/or existing token(s)
     # TODO(roman): Check if that's necessary:

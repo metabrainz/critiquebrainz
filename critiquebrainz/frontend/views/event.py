@@ -18,16 +18,17 @@
 
 from itertools import groupby
 from operator import itemgetter
+
 from flask import Blueprint, render_template, request
-from flask_login import current_user
 from flask_babel import gettext
+from flask_login import current_user
 from werkzeug.exceptions import NotFound
+
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.event as mb_event
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
-
 
 event_bp = Blueprint('event', __name__)
 
@@ -55,7 +56,7 @@ def entity(id):
             entity_type='event',
             user_id=current_user.id
         )
-        my_review = my_reviews[0] if my_count else None
+        my_review = my_reviews[0] if my_reviews else None
     else:
         my_review = None
 

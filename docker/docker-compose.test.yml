@@ -3,14 +3,23 @@ version: "2"
 services:
 
   db_test:
-    build:
-      context: ./pg_custom/
-      dockerfile: Dockerfile
+    image: postgres:12.3
     environment:
       POSTGRES_USER: critiquebrainz
       POSTGRES_PASSWORD: critiquebrainz
       POSTGRES_DB: critiquebrainz
     command: postgres -F
+    volumes:
+      - ./pg_custom:/docker-entrypoint-initdb.d/
+    network_mode: bridge
+
+  musicbrainz_db:
+    image: metabrainz/musicbrainz-test-database:beta
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5430:5432"
     network_mode: bridge
 
   critiquebrainz_redis:
@@ -23,5 +32,6 @@ services:
       dockerfile: ./docker/Dockerfile.test
     links:
       - db_test
+      - musicbrainz_db
       - critiquebrainz_redis
     network_mode: bridge

@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify
 from brainzutils import cache
-from critiquebrainz.db.review import supported_languages, ENTITY_TYPES
+from flask import Blueprint, jsonify
+
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import (
     vote as db_vote,
@@ -13,10 +13,11 @@ from critiquebrainz.db import (
     REVIEW_TEXT_MIN_LENGTH,
     REVIEW_TEXT_MAX_LENGTH
 )
+from critiquebrainz.db.review import supported_languages, ENTITY_TYPES
+from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
-from critiquebrainz.decorators import crossdomain
 
 review_bp = Blueprint('ws_review', __name__)
 
@@ -349,10 +350,14 @@ def review_list_handler():
         entity_type = Parser.string('uri', 'entity_type', valid_values=ENTITY_TYPES, optional=True)
 
     user_id = Parser.uuid('uri', 'user_id', optional=True)
-    # TODO: "rating" sort value is deprecated and needs to be removed.
-    sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating'], optional=True)
+    sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating', 'created'], optional=True)
+
+    # "rating" and "created" sort values are deprecated and but allowed here for backward compatibility
+    if sort == 'created':
+        sort = 'published_on'
     if sort == 'rating':
         sort = 'popularity'
+
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
     offset = Parser.int('uri', 'offset', optional=True) or 0
     language = Parser.string('uri', 'language', min=2, max=3, optional=True)

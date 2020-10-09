@@ -1,10 +1,10 @@
 # pylint: disable=unused-variable
 from flask import jsonify
+
 from critiquebrainz.ws import exceptions as ws_exceptions
 
 
 def init_error_handlers(app):
-
     @app.errorhandler(ws_exceptions.WebServiceError)
     def base_error_handler(error):
         return jsonify(error=error.code, description=error.desc), error.status

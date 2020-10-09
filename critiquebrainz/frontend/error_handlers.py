@@ -15,7 +15,6 @@ def get_sentry_event_id():
 
 
 def init_error_handlers(app):
-
     @app.errorhandler(400)
     def bad_request(error):
         return render_template('errors/400.html', error=error), 400

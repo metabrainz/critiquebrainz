@@ -1,16 +1,17 @@
 from datetime import datetime, date, timedelta
 from uuid import UUID
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.users as db_users
-from critiquebrainz.db.users import gravatar_url, get_many_by_mb_username
-import critiquebrainz.db.review as db_review
-import critiquebrainz.db.spam_report as db_spam_report
-import critiquebrainz.db.vote as db_vote
+
 import critiquebrainz.db.comment as db_comment
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.oauth_token as db_oauth_token
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.spam_report as db_spam_report
+import critiquebrainz.db.users as db_users
+import critiquebrainz.db.vote as db_vote
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
+from critiquebrainz.db.users import gravatar_url, get_many_by_mb_username
 
 
 class UserTestCase(DataTestCase):
@@ -163,7 +164,6 @@ class UserTestCase(DataTestCase):
         self.assertEqual(user1['email'], 'foo@foo.com')
 
     def test_delete(self):
-
         user1_id = self.user1.id
         db_users.delete(self.user1.id)
         # Votes should be deleted as well

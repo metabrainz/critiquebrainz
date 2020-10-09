@@ -1,9 +1,10 @@
 from datetime import datetime
 from uuid import UUID
-from critiquebrainz.data.testing import DataTestCase
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.review as db_review
+
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
+from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db import exceptions
 from critiquebrainz.db import vote
 from critiquebrainz.db.user import User
@@ -61,3 +62,14 @@ class VoteTestCase(DataTestCase):
             "revision_id": self.review["last_revision"]["id"],
             "vote": False,
         })
+
+    def test_get_count(self):
+        self.assertEqual(vote.get_count(), 0)
+        vote.submit(self.user_1.id, self.review["last_revision"]["id"], True)
+        self.assertEqual(vote.get_count(), 1)
+
+    def test_delete(self):
+        vote.submit(self.user_1.id, self.review["last_revision"]["id"], True)
+        self.assertEqual(vote.get_count(), 1)
+        vote.delete(self.user_1.id, self.review["last_revision"]["id"])
+        self.assertEqual(vote.get_count(), 0)

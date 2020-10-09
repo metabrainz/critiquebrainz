@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 from time import sleep
+
 from brainzutils.flask import CustomFlask
 
 deploy_env = os.environ.get('DEPLOY_ENV', '')
@@ -31,7 +32,8 @@ def create_app(debug=None, config_path=None):
                 sleep(1)
 
         if not os.path.exists(config_file):
-            print("No configuration file generated yet. Retried {} times, exiting.".format(CONSUL_CONFIG_FILE_RETRY_COUNT))
+            print("No configuration file generated yet. Retried {} times, exiting.".format(
+                CONSUL_CONFIG_FILE_RETRY_COUNT))
             sys.exit(-1)
 
         print("Loading consul config file {}".format(config_file))
@@ -56,15 +58,19 @@ def create_app(debug=None, config_path=None):
         sentry_config=app.config.get("LOG_SENTRY"),
     )
 
-    # Database
-    from critiquebrainz.db import init_db_engine
-    init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
+    # CritiqueBrainz Database
+    from critiquebrainz import db as critiquebrainz_db
+    critiquebrainz_db.init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
+
+    # MusicBrainz Database
+    from brainzutils import musicbrainz_db
+    musicbrainz_db.init_db_engine(app.config.get("MB_DATABASE_URI"))
 
     # Redis (cache)
     from brainzutils import cache
     if "REDIS_HOST" in app.config and \
-       "REDIS_PORT" in app.config and \
-       "REDIS_NAMESPACE" in app.config:
+            "REDIS_PORT" in app.config and \
+            "REDIS_NAMESPACE" in app.config:
         cache.init(
             host=app.config["REDIS_HOST"],
             port=app.config["REDIS_PORT"],

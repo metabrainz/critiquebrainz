@@ -1,5 +1,6 @@
 import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
+
 from raven.contrib.flask import Sentry
 
 

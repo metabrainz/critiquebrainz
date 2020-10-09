@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template
 from flask import current_app
+
 from critiquebrainz.db import users as db_users
 from critiquebrainz.db.users import gravatar_url
 

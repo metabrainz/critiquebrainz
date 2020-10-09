@@ -1,7 +1,9 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
 from hashlib import md5
+
 import sqlalchemy
+
 from critiquebrainz import db
 from critiquebrainz.db import revision as db_revision
 
@@ -97,7 +99,7 @@ def get_user_by_id(connection, user_id):
 
     result = connection.execute(query, {
         "user_id": user_id
-        })
+    })
     row = result.fetchone()
     if not row:
         return None

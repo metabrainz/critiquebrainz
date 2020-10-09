@@ -10,8 +10,11 @@
 
 // Entity colors
 @rg-color: @blue;
+@artist-color: @blue;
 @event-color: @green;
 @place-color: @yellow;
+@work-color: @blue;
+@label-color: @blue;
 
 body {
   padding-bottom: 25px;
@@ -52,6 +55,8 @@ body {
 .footer {
   font-size: 13px;
   line-height: 20px;
+  border-top: 2px solid #36b5b2;
+  padding-top: 20px;
   .title {
     font-weight: bold;
     margin-bottom: 6px;
@@ -122,11 +127,23 @@ ul.sharing {
     &.release-group {
       background-color: fade(@rg-color, 70%);
     }
+    &.place {
+      background-color: fade(@place-color, 70%);
+    }
     &.event {
       background-color: fade(@event-color, 70%);
     }
-    &.place {
-      background-color: fade(@place-color, 70%);
+    &.artist {
+      background-color: fade(@artist-color, 70%);
+    }
+    &.work {
+      background-color: fade(@work-color, 70%);
+    }
+    &.label {
+      background-color: fade(@label-color, 70%);
+    }
+    &.event {
+      background-color: fade(@event-color, 70%);
     }
   }
 
@@ -150,9 +167,9 @@ ul.sharing {
       margin-bottom: 20px;
     }
     #stats {
-      margin-top: 10px;
+      margin-top: 30px;
       @media (min-width: @grid-float-breakpoint) {
-        margin-top: 60px;
+        margin-top: 10px;
         margin-bottom: 0px;
       }
     }
@@ -262,6 +279,7 @@ ul.sharing {
     }
 
     img {
+      z-index: 0;
       display: block;
       margin-left: auto;
       margin-right: auto;
@@ -277,10 +295,12 @@ ul.sharing {
       font-weight: bold;
       font-size: small;
       color: #fff;
+      z-index: 2;
     }
 
     .caption {
       .release-group-title {
+        z-index: 2;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -418,6 +438,11 @@ a#edit-review { margin-top: 20px; }
       }
     }
   }
+
+  // comments
+  .comment-header {
+    margin: 15px auto;
+  }
 }
 
 
@@ -476,11 +501,23 @@ a#edit-review { margin-top: 20px; }
           &.release-group {
             background-color: fade(@rg-color, 70%);
           }
+          &.place {
+            background-color: fade(@place-color, 70%);
+          }
           &.event {
             background-color: fade(@event-color, 70%);
           }
-          &.place {
-            background-color: fade(@place-color, 70%);
+          &.artist {
+            background-color: fade(@artist-color, 70%);
+          }
+          &.work {
+            background-color: fade(@work-color, 70%);
+          }
+          &.label {
+            background-color: fade(@label-color, 70%);
+          }
+          &.event {
+            background-color: fade(@event-color, 70%);
           }
         }
       }
@@ -540,6 +577,11 @@ a#edit-review { margin-top: 20px; }
   }
 }
 
+nav {
+  .glyphicon {
+    padding-right: 5px;
+  }
+}
 
 // Rating star icons
 .glyphicon-star, .glyphicon-star-empty {
