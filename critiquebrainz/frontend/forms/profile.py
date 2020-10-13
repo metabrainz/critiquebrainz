@@ -6,7 +6,7 @@ from wtforms.fields.html5 import EmailField
 
 class ProfileEditForm(FlaskForm):
     display_name = StringField(lazy_gettext("Display name"), [
-        validators.DataRequired(message=lazy_gettext("Display name field is empty.")),
+        validators.InputRequired(message=lazy_gettext("Display name field is empty.")),
         validators.Length(min=3, message=lazy_gettext("Display name needs to be at least 3 characters long.")),
         validators.Length(max=64, message=lazy_gettext("Display name needs to be at most 64 characters long."))])
     email = EmailField(lazy_gettext("Email"), [

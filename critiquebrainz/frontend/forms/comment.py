@@ -2,14 +2,14 @@ from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext
 from wtforms import TextAreaField, StringField
 from wtforms.widgets import HiddenInput
-from wtforms.validators import DataRequired
+from wtforms.validators import InputRequired
 
 
 class CommentEditForm(FlaskForm):
     state = StringField(widget=HiddenInput(), default='publish')
     text = TextAreaField(
         lazy_gettext("Add a comment..."),
-        validators=[DataRequired(message=lazy_gettext("Comment must not be empty!"))]
+        validators=[InputRequired(message=lazy_gettext("Comment must not be empty!"))]
     )
     review_id = StringField(widget=HiddenInput())
 
