@@ -5,7 +5,7 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
 from critiquebrainz.ws.testing import WebServiceTestCase
-
+import logging
 
 class ReviewViewsTestCase(WebServiceTestCase):
 
@@ -71,6 +71,55 @@ class ReviewViewsTestCase(WebServiceTestCase):
         review = self.create_dummy_review()
         resp = self.client.delete('/review/%s' % review["id"], headers=self.header(self.user))
         self.assert200(resp)
+
+    def test_review_type(self):
+        review_type_all = dict(
+            entity_id="1b3abc15-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
+            user_id=self.user.id,
+            text="Testing! This text should be on the page.",
+            rating=5,
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        review_only_rating = dict(
+            entity_id="2b3abc25-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
+            user_id=self.user.id,
+            rating=5,
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        review_only_text = dict(
+            entity_id="3b3abc35-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
+            user_id=self.user.id,
+            text="Testing! This text should be on the page.",
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        db_review.create(**review_type_all)
+        db_review.create(**review_only_rating)
+        db_review.create(**review_only_text)
+
+        response = self.client.get('/review/', query_string={'review_type': 'all'})
+        self.assert200(response)
+        actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
+        expected_review_ids = [review_type_all['entity_id'], review_only_rating['entity_id'], review_only_text['entity_id']]
+        self.assertCountEqual(actual_review_ids, expected_review_ids)
+
+        response = self.client.get('/review/', query_string={'review_type': 'rating'})
+        self.assert200(response)
+        actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
+        expected_review_ids = [review_type_all['entity_id'], review_only_rating['entity_id']]
+        self.assertCountEqual(actual_review_ids, expected_review_ids)
+
+        response = self.client.get('/review/', query_string={'review_type': 'text'})
+        self.assert200(response)
+        actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
+        expected_review_ids = [review_type_all['entity_id'], review_only_text['entity_id']]
+        self.assertCountEqual(actual_review_ids, expected_review_ids)
+
 
     def test_review_modify(self):
         review = self.create_dummy_review()
