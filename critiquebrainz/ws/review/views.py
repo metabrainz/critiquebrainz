@@ -342,6 +342,7 @@ def review_list_handler():
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
+    :query review_type: ``all`` or ``text`` or ``rating`` **(optional)**
 
     :resheader Content-Type: *application/json*
     """
