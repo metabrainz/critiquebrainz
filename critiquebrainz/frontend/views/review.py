@@ -278,7 +278,7 @@ def create(entity_type=None, entity_id=None):
         if not form.errors:
             flash.info(gettext("Please provide some text or a rating for this review."))
         return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity,
-                               spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
+                               entity_id=entity_id, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
 
     entity_title = None
     if 'title' in entity:
@@ -289,7 +289,7 @@ def create(entity_type=None, entity_id=None):
     if not form.errors:
         flash.info(gettext("Please provide some text or a rating for this review."))
     return render_template('review/modify/write.html', form=form, entity_type=entity_type,
-                           entity_title=entity_title, entity=entity)
+                           entity_title=entity_title, entity=entity, entity_id=entity_id)
 
 
 @review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))

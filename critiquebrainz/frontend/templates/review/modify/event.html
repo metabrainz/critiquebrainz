@@ -6,6 +6,7 @@
     <dt>{{ _('Event') }}</dt>
     <dd>
       {{ entity['name'] | default(_('[Unknown event]')) }}
+       <a href="{{ url_for('event.entity', id=entity_id) }}" target="_blank">{{ entity['name'] | default(_('[Unknown event]')) }}</a>
       {% if entity['life-span'] %}
         <span class="text-muted">({{ entity['life-span']['begin'] }} - {{ entity['life-span']['end'] }})</span>
       {% endif %}

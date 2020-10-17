@@ -5,7 +5,7 @@
   <dl class="dl-horizontal">
     <dt>{{ _('Label') }}</dt>
     <dd>
-      {{ entity['name'] | default(_('[Unknown label]')) }}
+       <a href="{{ url_for('label.entity', id=entity_id) }}" target="_blank">{{ entity['name'] | default(_('[Unknown label]')) }}</a>
       {% if entity['life-span'] %}
         <span class="text-muted">({{ entity['life-span']['begin'] }} - {{ entity['life-span']['end'] }})</span>
       {% endif %}

@@ -6,6 +6,7 @@
     <dt>{{ _('Work') }}</dt>
     <dd>
       {{ entity['name'] | default(_('[Unknown work]')) }}
+         <a href="{{ url_for('work.entity', id=entity_id) }}" target="_blank">{{entity['name'] | default(_('[Unknown work]')) }}</a>
     </dd>
     <dt>{{ _('Type') }}</dt>
     <dd>{{ entity['type'] or '-' }}</dd>

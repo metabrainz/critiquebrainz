@@ -1,11 +1,11 @@
 {% if entity is not defined %}
-  {% set entity = review.entity_id | entity_details(type=entity_type) %}
+  {% set entity = entity_id | entity_details(type=entity_type) %}
 {% endif %}
 <div class="col-md-12">
   <dl class="dl-horizontal">
     <dt>{{ _('Artist') }}</dt>
     <dd>
-      {{ entity['name'] | default(_('[Unknown artist]')) }}
+      <a href="{{ url_for('artist.entity', mbid=entity_id) }}" target="_blank">{{entity['name'] | default(_('[Unknown artist]')) }}</a>
     </dd>
     <dt>{{ _('Type') }}</dt>
     <dd>{{ entity['type'] or '-' }}</dd>
