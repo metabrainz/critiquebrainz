@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating, entity_rate_form, show_external_reviews with context %}
+{% from 'common.html' import rating_script with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -187,16 +188,5 @@
 {% endblock %}
 
 {% block scripts %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
-  <script>
-    $(document).ready(function() {
-      $("#ratestars").click(function(e){
-        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
-        if (e.target.tagName === 'I') {
-          $("#rating-form").submit();
-        }
-      });
-    });
-  </script>
-  <script src="{{ get_static_path('rating.js') }}"></script>
+    {{ rating_script }}
 {% endblock %}

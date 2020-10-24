@@ -1,0 +1,14 @@
+{% set rating_script %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+<script>
+    $(document).ready(function () {
+        $("#ratestars").click(function (e) {
+            // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+            if (e.target.tagName === 'I') {
+                $("#rating-form").submit();
+            }
+        });
+    });
+</script>
+<script src="{{ get_static_path('rating.js') }}"></script>
+{% endset %}
