@@ -1,11 +1,8 @@
-{% if entity is not defined %}
-  {% set entity = review.entity_id | entity_details(type=entity_type) %}
-{% endif %}
 <div class="col-md-12">
   <dl class="dl-horizontal">
     <dt>{{ _('Label') }}</dt>
     <dd>
-       <a href="{{ url_for('label.entity', id=entity_id) }}" target="_blank">{{ entity['name'] | default(_('[Unknown label]')) }}</a>
+       <a href="{{ url_for('label.entity', id=entity['id']) }}" target="_blank">{{ entity['name'] }}</a>
       {% if entity['life-span'] %}
         <span class="text-muted">({{ entity['life-span']['begin'] }} - {{ entity['life-span']['end'] }})</span>
       {% endif %}
