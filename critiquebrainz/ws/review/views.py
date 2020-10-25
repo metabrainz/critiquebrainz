@@ -342,7 +342,7 @@ def review_list_handler():
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
-    :query review_type: ``all`` or ``text`` or ``rating`` **(optional)**
+    :query review_type: ``review`` or ``rating`` **(optional)**
 
     :resheader Content-Type: *application/json*
     """
@@ -357,7 +357,7 @@ def review_list_handler():
 
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating', 'created'], optional=True)
-    review_type = Parser.string('uri', 'review_type', valid_values=['rating', 'text', 'all'], optional=True)
+    review_type = Parser.string('uri', 'review_type', valid_values=['rating', 'review'], optional=True)
 
     # "rating" and "created" sort values are deprecated and but allowed here for backward compatibility
     if sort == 'created':
@@ -388,18 +388,13 @@ def review_list_handler():
             limit=limit,
             offset=offset,
             language=language,
+            review_type=review_type
         )
         reviews = [db_review.to_dict(p) for p in reviews]
         cache.set(cache_key, {
             'reviews': reviews,
             'count': count,
         }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
-    if review_type:
-        if review_type == 'rating':
-            reviews = list(filter(lambda x: x['rating'], reviews))
-        elif review_type == 'text':
-            reviews = list(filter(lambda x: x['text'], reviews))
-        count = len(reviews)
 
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 

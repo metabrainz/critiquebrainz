@@ -5,7 +5,7 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
 from critiquebrainz.ws.testing import WebServiceTestCase
-import logging
+
 
 class ReviewViewsTestCase(WebServiceTestCase):
 
@@ -90,7 +90,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
-        review_only_text = dict(
+        review_only_review = dict(
             entity_id="3b3abc35-7453-39f3-86c4-1441f360e121",
             entity_type='release_group',
             user_id=self.user.id,
@@ -98,26 +98,20 @@ class ReviewViewsTestCase(WebServiceTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
-        db_review.create(**review_type_all)
         db_review.create(**review_only_rating)
-        db_review.create(**review_only_text)
+        db_review.create(**review_only_review)
 
-        response = self.client.get('/review/', query_string={'review_type': 'all'})
-        self.assert200(response)
-        actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
-        expected_review_ids = [review_type_all['entity_id'], review_only_rating['entity_id'], review_only_text['entity_id']]
-        self.assertCountEqual(actual_review_ids, expected_review_ids)
-
+        
         response = self.client.get('/review/', query_string={'review_type': 'rating'})
         self.assert200(response)
         actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
         expected_review_ids = [review_type_all['entity_id'], review_only_rating['entity_id']]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
-        response = self.client.get('/review/', query_string={'review_type': 'text'})
+        response = self.client.get('/review/', query_string={'review_type': 'review'})
         self.assert200(response)
         actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
-        expected_review_ids = [review_type_all['entity_id'], review_only_text['entity_id']]
+        expected_review_ids = [review_type_all['entity_id'], review_only_review['entity_id']]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
 
