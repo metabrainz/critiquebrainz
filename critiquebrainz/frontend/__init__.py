@@ -3,6 +3,7 @@ import os
 import sys
 from time import sleep
 
+import pycountry
 from brainzutils.flask import CustomFlask
 from flask import send_from_directory
 
@@ -119,14 +120,14 @@ def create_app(debug=None, config_path=None):
     app.jinja_env.add_extension('jinja2.ext.do')
     from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, track_length_ms, parameterize
     from critiquebrainz.frontend.external.musicbrainz_db.entities import get_entity_by_id
+    from critiquebrainz.frontend.forms.utils import get_language_name
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
     app.jinja_env.filters['track_length_ms'] = track_length_ms
     app.jinja_env.filters['parameterize'] = parameterize
     app.jinja_env.filters['entity_details'] = get_entity_by_id
-    from flask_babel import Locale, get_locale
-    app.jinja_env.filters['language_name'] = lambda language_code: Locale(language_code).get_language_name(get_locale())
+    app.jinja_env.filters['language_name'] = get_language_name
     app.context_processor(lambda: dict(get_static_path=static_manager.get_static_path))
 
     # Blueprints
