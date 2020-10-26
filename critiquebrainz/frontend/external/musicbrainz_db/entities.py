@@ -38,6 +38,7 @@ def get_multiple_entities(entities):
     entities_info.update(fetch_multiple_release_groups(
         release_group_mbids,
         includes=['artists'],
+        unknown_entities_for_missing=True,
     ))
     entities_info.update(fetch_multiple_artists(
         artist_mbids,
@@ -47,9 +48,11 @@ def get_multiple_entities(entities):
     ))
     entities_info.update(fetch_multiple_places(
         place_mbids,
+        unknown_entities_for_missing=True,
     ))
     entities_info.update(fetch_multiple_events(
         event_mbids,
+        unknown_entities_for_missing=True,
     ))
     entities_info.update(fetch_multiple_works(
         work_mbids,
