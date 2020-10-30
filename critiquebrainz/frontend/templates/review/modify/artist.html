@@ -1,8 +1,8 @@
 <div class="col-md-12">
   <dl class="dl-horizontal">
     <dt>{{ _('Artist') }}</dt>
-    <dd>     
-      <a href="{{ url_for('artist.entity', mbid=review.entity['id']) }}" target="_blank">{{ entity['name'] }}</a>
+    <dd>
+      <a href="{{ url_for('artist.entity', mbid=entity['id']) }}" target="_blank">{{ entity['name'] }}</a>
     </dd>
     <dt>{{ _('Type') }}</dt>
     <dd>{{ entity['type'] or '-' }}</dd>
