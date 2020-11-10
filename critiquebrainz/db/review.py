@@ -365,6 +365,12 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
         filters.append("review.user_id = :user_id")
         filter_data["user_id"] = user_id
 
+    if review_type == 'rating':
+        filters.append("rating is not NULL")
+
+    if review_type == 'text':
+        filters.append("text is not NULL")
+
     if exclude is not None:
         filters.append("review.id NOT IN :exclude")
         filter_data["exclude"] = tuple(exclude)
@@ -488,10 +494,6 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
                 "created": row.pop("user_created"),
             })
 
-        if review_type == 'rating':
-            rows = list(filter(lambda x: x['rating'], rows))
-        elif review_type == 'review':
-            rows = list(filter(lambda x: x['text'], rows))
         count = len(rows)
 
     return rows, count
