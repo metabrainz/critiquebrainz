@@ -366,10 +366,10 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
         filter_data["user_id"] = user_id
 
     if review_type == 'rating':
-        filters.append("rating is not NULL")
+        filters.append("latest_revision.rating is not NULL")
 
     if review_type == 'text':
-        filters.append("text is not NULL")
+        filters.append("latest_revision.text is not NULL")
 
     if exclude is not None:
         filters.append("review.id NOT IN :exclude")
