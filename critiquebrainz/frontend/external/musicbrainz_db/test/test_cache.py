@@ -35,7 +35,7 @@ class CacheTestCase(DataTestCase):
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        artist_fetch.assert_called_with([mbid], includes=['artist-rels', 'url-rels'])
+        artist_fetch.assert_called_with([mbid], includes=['artist-rels', 'url-rels'], unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=artist, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = artist
@@ -66,7 +66,8 @@ class CacheTestCase(DataTestCase):
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
         event_fetch.assert_called_with([mbid], includes=['artist-rels', 'place-rels',
-                                                         'series-rels', 'url-rels', 'release-group-rels'])
+                                                         'series-rels', 'url-rels', 'release-group-rels'],
+                                       unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=event, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = event
@@ -98,7 +99,7 @@ class CacheTestCase(DataTestCase):
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        label_fetch.assert_called_with([mbid], includes=['artist-rels', 'url-rels'])
+        label_fetch.assert_called_with([mbid], includes=['artist-rels', 'url-rels'], unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=label, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = label
@@ -137,7 +138,8 @@ class CacheTestCase(DataTestCase):
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
         place_fetch.assert_called_with([mbid], includes=['artist-rels', 'place-rels',
-                                                         'release-group-rels', 'url-rels'])
+                                                         'release-group-rels', 'url-rels'],
+                                       unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=place, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = place
@@ -178,7 +180,7 @@ class CacheTestCase(DataTestCase):
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        release_fetch.assert_called_with([mbid], includes=['media', 'release-groups'])
+        release_fetch.assert_called_with([mbid], includes=['media', 'release-groups'], unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=release, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = release
@@ -219,7 +221,8 @@ class CacheTestCase(DataTestCase):
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
         release_group_fetch.assert_called_with([mbid], includes=['artists', 'releases',
-                                                                 'release-group-rels', 'url-rels', 'tags'])
+                                                                 'release-group-rels', 'url-rels', 'tags'],
+                                               unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = release_group
