@@ -1,4 +1,4 @@
-FROM metabrainz/python:3.8
+FROM metabrainz/python:3.8-20191226
 
 ARG DEPLOY_ENV
 
