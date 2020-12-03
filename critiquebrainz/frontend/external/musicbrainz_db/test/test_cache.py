@@ -1,3 +1,4 @@
+# pylint: disable=no-self-use
 from unittest import mock
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
