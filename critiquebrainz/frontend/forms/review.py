@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from flask_babel import lazy_gettext, Locale
+from flask_babel import lazy_gettext
 from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input

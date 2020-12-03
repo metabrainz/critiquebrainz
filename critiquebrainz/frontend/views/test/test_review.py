@@ -112,7 +112,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get('/review/write/{}/{}/'
                                    .format(review["entity_type"], review["entity_id"]))
         redirect_url = urlparse(response.location)
-        self.assertEquals(redirect_url.path, url_for('review.edit', id=review['id']))
+        self.assertEqual(redirect_url.path, url_for('review.edit', id=review['id']))
 
     def test_missing_review(self):
         response = self.client.get("/review/aef06569-098f-4218-a577-b413944d9493")
@@ -332,4 +332,4 @@ class ReviewViewsTestCase(FrontendTestCase):
         response = self.client.get('/review/write/{}/{}/'.format(
             review["entity_type"], review["entity_id"]))
         redirect_url = urlparse(response.location)
-        self.assertEquals(redirect_url.path, url_for('review.entity', id=review['id']))
+        self.assertEqual(redirect_url.path, url_for('review.entity', id=review['id']))

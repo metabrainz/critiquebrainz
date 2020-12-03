@@ -61,7 +61,7 @@ def entity(id):
     limit = int(request.args.get('limit', default=10))
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated:
-        my_reviews, my_count = db_review.list_reviews(
+        my_reviews, _ = db_review.list_reviews(
             entity_id=release_group['id'],
             entity_type='release_group',
             user_id=current_user.id,

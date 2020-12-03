@@ -3,7 +3,6 @@ import os
 import sys
 from time import sleep
 
-import pycountry
 from brainzutils.flask import CustomFlask
 from flask import send_from_directory
 

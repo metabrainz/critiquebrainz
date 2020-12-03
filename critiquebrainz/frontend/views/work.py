@@ -25,7 +25,7 @@ def entity(id):
         work_reviews_limit = None
 
     if current_user.is_authenticated:
-        my_reviews, my_count = db_review.list_reviews(
+        my_reviews, _ = db_review.list_reviews(
             entity_id=work['id'],
             entity_type='work',
             user_id=current_user.id,

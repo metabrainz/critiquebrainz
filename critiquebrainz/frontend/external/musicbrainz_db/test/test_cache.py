@@ -13,9 +13,6 @@ from critiquebrainz.data.testing import DataTestCase
 
 class CacheTestCase(DataTestCase):
 
-    def setUp(self):
-        super(CacheTestCase, self).setUp()
-
     @mock.patch('brainzutils.cache.get')
     @mock.patch('brainzutils.cache.set')
     @mock.patch('brainzutils.musicbrainz_db.artist.fetch_multiple_artists')
