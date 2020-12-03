@@ -19,6 +19,7 @@ def get_label_by_id(mbid):
         label = db.fetch_multiple_labels(
             [mbid],
             includes=['artist-rels', 'url-rels'],
+            unknown_entities_for_missing=True
         ).get(mbid)
         cache.set(key=key, val=label, time=DEFAULT_CACHE_EXPIRATION)
     return label_rel.process(label)
