@@ -100,6 +100,7 @@ def entity(id, rev=None):
         if not current_user.is_admin():
             raise Forbidden(gettext("Review has been hidden. "
                                     "You need to be an administrator to view it."))
+        flash.warn(gettext("Review has been hidden."))
 
     spotify_mappings = None
     soundcloud_url = None
