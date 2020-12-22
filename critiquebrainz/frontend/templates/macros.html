@@ -171,7 +171,7 @@
   {% if show_glyphicon %}
     <i class="glyphicon glyphicon-star"></i>
   {% endif %}
-  <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ _('based on %(number)s ratings', number=count) }}</em>
+  <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ ngettext('based on %(num)s rating', 'based on %(num)s ratings', count) }}</em>
 {% endmacro %}
 
 {% macro comment_credit(comment, user_picture_size) %}
