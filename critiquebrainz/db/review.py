@@ -386,6 +386,18 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
     query = sqlalchemy.text("""
         SELECT COUNT(*)
           FROM review
+           JOIN (
+                revision
+                JOIN (
+                    SELECT review.id AS review_uuid,
+                           MAX(timestamp) AS latest_timestamp
+                      FROM review
+                      JOIN revision ON review.id = review_id
+                  GROUP BY review.id
+                  ) AS latest
+                  ON latest.review_uuid = revision.review_id
+                 AND latest.latest_timestamp = revision.timestamp
+               ) AS latest_revision ON review.id = latest_revision.review_id
             {filterstr}
         """.format(filterstr=filterstr))
 
@@ -494,7 +506,6 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
                 "created": row.pop("user_created"),
             })
 
-        count = len(rows)
 
     return rows, count
 
