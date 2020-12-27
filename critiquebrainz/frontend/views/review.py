@@ -520,7 +520,6 @@ def hide(id):
         review_reports, count = db_spam_report.list_reports(review_id=review["id"])  # pylint: disable=unused-variable
         for report in review_reports:
             db_spam_report.archive(report["user_id"], report["revision_id"])
-        flash.success(gettext("Review has been hidden."))
         return redirect(url_for('.entity', id=review["id"]))
 
     return render_template('log/action.html', review=review, form=form, action=AdminActions.ACTION_HIDE_REVIEW.value)
