@@ -19,6 +19,15 @@ class StateAndLength(validators.Length):
             raise ValidationError(self.message)
 
 
+def optional_license(message):
+    def _license(form, field):
+        if form.state.data == "draft":
+            return
+        else:
+            if not field.raw_data or not field.raw_data[0]: #https://wtforms.readthedocs.io/en/2.3.x/_modules/wtforms/validators/#InputRequired
+                raise ValidationError(message)
+    return _license
+
 # Loading supported languages
 languages = []
 for language_code in supported_languages:
@@ -32,12 +41,13 @@ class ReviewEditForm(FlaskForm):
         StateAndLength(min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH,
                        message=lazy_gettext("Text length needs to be between %(min)d and %(max)d characters.",
                                             min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH))])
+
     license_choice = RadioField(
         choices=[
             ('CC BY-SA 3.0', lazy_gettext('Allow commercial use of this review(<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA 3.0 license</a>)')),  # noqa: E501
             ('CC BY-NC-SA 3.0', lazy_gettext('Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),  # noqa: E501
         ],
-        validators=[validators.InputRequired(message=lazy_gettext("You need to choose a license"))])
+        validators=[validators.Optional(), optional_license(lazy_gettext("You need to choose a license"))])
     remember_license = BooleanField(lazy_gettext("Remember this license choice for further preference"))
     language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
     rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
