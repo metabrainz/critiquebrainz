@@ -358,7 +358,7 @@ def edit(id):
         del form.license_choice
 
     # Check if contents of the review are updated
-    if not review["is draft"] and form.text.data == review['text'] and form.rating.data == review['rating']:
+    if not review["is_draft"] and form.text.data == review['text'] and form.rating.data == review['rating']:
         form.errors['edit'] = ["You must edit either text or rating to update the review."]
     elif form.validate_on_submit():
         if review["is_draft"]:
