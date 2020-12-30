@@ -357,7 +357,10 @@ def edit(id):
         # Can't change license if review is published.
         del form.license_choice
 
-    if form.validate_on_submit():
+    # Check if contents of the review are updated
+    if form.text.data == review['text'] and form.rating.data == review['rating']:
+        form.errors['edit'] = ["You must edit either text or rating to update the review."]
+    elif form.validate_on_submit():
         if review["is_draft"]:
             license_choice = form.license_choice.data
         else:
