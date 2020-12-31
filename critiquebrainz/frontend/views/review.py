@@ -286,17 +286,12 @@ def create(entity_type=None, entity_id=None):
         return redirect(url_for('search.selector', next=url_for('.create')))
 
     if entity_type == 'release_group':
-        spotify_mappings = mbspotify.mappings(entity_id)
-        soundcloud_url = soundcloud.get_url(entity_id)
-        dict["spotify_mappings"]=spotify_mappings
-        dict["soundcloud_url"]=soundcloud_url
-        return render_template('review/modify/write.html', dict=dict)
-
-    display_title=entity_title(entity)
-    dict["entity_title"] = display_title
+        dict["spotify_mappings"]=mbspotify.mappings(entity_id)
+        dict["soundcloud_url"]=soundcloud.get_url(entity_id)
+    dict["entity_title"] = entity_title(entity)
     if not form.errors:
         flash.info(gettext("Please provide some text or a rating for this review."))
-    return render_template('review/modify/write.html', dict=dict)
+    return render_template('review/modify/write.html', **dict)
 
 
 @review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))
@@ -311,6 +306,10 @@ def edit(id):
         raise NotFound(gettext("Review has been hidden."))
 
     form = ReviewEditForm(default_license_id=review["license_id"], default_language=review["language"])
+    dict = {"form": form,
+            "entity_type": review["entity_type"],
+            "review": review,
+            }
     if not review["is_draft"]:
         # Can't change license if review is published.
         del form.license_choice
@@ -346,11 +345,9 @@ def edit(id):
         form.text.data = review["text"]
         form.rating.data = review["rating"]
     if review["entity_type"] == 'release_group':
-        spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
-        soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
-        return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"],
-                               spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
-    return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"])
+        dict["spotify_mappings"] = mbspotify.mappings(str(review["entity_id"]))
+        dict["soundcloud_url"] = soundcloud.get_url(str(review["entity_id"]))
+    return render_template('review/modify/edit.html', **dict)
 
 
 @review_bp.route('/write/get_language', methods=['POST'])
