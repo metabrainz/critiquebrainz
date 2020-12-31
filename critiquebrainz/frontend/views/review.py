@@ -274,6 +274,10 @@ def create(entity_type=None, entity_id=None):
 
     try:
         entity = get_entity_by_id(entity_id, entity_type)
+        dict={"form":form,
+              "entity_type":entity_type,
+              "entity":entity,
+              }
     except NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find a %s with that MusicBrainz ID." % entity_type))
 
@@ -284,16 +288,15 @@ def create(entity_type=None, entity_id=None):
     if entity_type == 'release_group':
         spotify_mappings = mbspotify.mappings(entity_id)
         soundcloud_url = soundcloud.get_url(entity_id)
-        if not form.errors:
-            flash.info(gettext("Please provide some text or a rating for this review."))
-        return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity,
-                               spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
+        dict["spotify_mappings"]=spotify_mappings
+        dict["soundcloud_url"]=soundcloud_url
+        return render_template('review/modify/write.html', dict=dict)
 
     display_title=entity_title(entity)
+    dict["entity_title"] = display_title
     if not form.errors:
         flash.info(gettext("Please provide some text or a rating for this review."))
-    return render_template('review/modify/write.html', form=form, entity_type=entity_type,
-                           entity_title=entity_title, entity=entity)
+    return render_template('review/modify/write.html', dict=dict)
 
 
 @review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))
