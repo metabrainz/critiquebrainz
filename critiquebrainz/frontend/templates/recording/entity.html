@@ -9,19 +9,12 @@
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">
-    {% set artist = [] %}
+    {{ recording.name }} {{ _('by') }}
     {% for credit in recording['artists'] %}
-      {% if credit.name %}
-        {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', mbid=credit.id) ~ credit.name ~ '</a>'|safe) %}
-        {% if credit.join_phrase %}
-          {% do artist.append(credit.join_phrase) %}
-        {% endif %}
-      {% else %}
-        {% do artist.append(credit) %}
-      {% endif %}
-    {% endfor %}
-
-    {{ _('%(recording)s by %(artist)s', recording = recording.name, artist = artist|join()) }}
+    {% if credit.name %}
+        <a href="{{ url_for('artist.entity', mbid=credit.id) }}">{{ credit.name }}</a>
+        {% if credit.join_phrase %}{{ credit.join_phrase }}{% endif %}
+    {% endif %}
   </h2>
 
   {% if not my_review %}
@@ -58,7 +51,7 @@
             <tr data-review-id="{{ review.id }}">
               <td>
                 <a href="{{ url_for('review.entity', id=review.id) }}">
-                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                    {{ _('by') }} <img class="avatar" src="{{ review.user.avatar + review.user.display_name }}&s=16" />
                 </a>
               </td>
               <td>{{ review.published_on | date }}</td>

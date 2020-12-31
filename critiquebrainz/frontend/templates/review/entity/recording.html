@@ -10,11 +10,9 @@
 {% block entity_title %}
   <h2 id="title">
     {% if recording %}
-      {% set recording_name = '<a href="%s">' | safe % url_for('recording.entity', id=review.entity_id) ~ recording.name ~ '</a>'|safe %}
+      <a href="{{ url_for('recording.entity', id=review.entity_id) }}">recording.name</a>
     {% else %}
-      {% set recording_name =  _('[Unknown recording]') %}
+      {{ _('[Unknown recording]') }}
     {% endif %}
-
-    {{ _('%(recording)s', recording=recording_name) }}
   </h2>
 {% endblock %}
