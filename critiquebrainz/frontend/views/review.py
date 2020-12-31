@@ -342,7 +342,7 @@ def edit(id):
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
         return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"],
-                               entity=entity, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
+                               spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
     return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"])
 
 
