@@ -19,7 +19,7 @@ def get_multiple_entities(entities):
     """Fetch multiple entities using their MBIDs.
 
     Args:
-        entites: List of tuples containing the entity ID and the entity type.
+        entities: List of tuples containing the entity ID and the entity type.
 
     Returns:
         Dictionary containing the basic information related to the entities.
@@ -31,13 +31,13 @@ def get_multiple_entities(entities):
         coordinates of the places is also included.
     """
     entities_info = {}
-    release_group_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'release_group', entities)]
-    artist_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'artist', entities)]
-    label_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'label', entities)]
-    recording_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'recording', entities)]
-    place_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'place', entities)]
-    event_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'event', entities)]
-    work_mbids = [entity[0] for entity in filter(lambda entity: entity[1] == 'work', entities)]
+    release_group_mbids = [entity[0] for entity in entities if entity[1] == 'release_group']
+    artist_mbids = [entity[0] for entity in entities if entity[1] == 'artist']
+    label_mbids = [entity[0] for entity in entities if entity[1] == 'label']
+    recording_mbids = [entity[0] for entity in entities if entity[1] == 'recording']
+    place_mbids = [entity[0] for entity in entities if entity[1] == 'place']
+    event_mbids = [entity[0] for entity in entities if entity[1] == 'event']
+    work_mbids = [entity[0] for entity in entities if entity[1] == 'work']
     entities_info.update(fetch_multiple_release_groups(
         release_group_mbids,
         includes=['artists'],
