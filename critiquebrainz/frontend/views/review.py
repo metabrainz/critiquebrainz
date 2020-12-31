@@ -347,6 +347,8 @@ def edit(id):
     if review["entity_type"] == 'release_group':
         dict["spotify_mappings"] = mbspotify.mappings(str(review["entity_id"]))
         dict["soundcloud_url"] = soundcloud.get_url(str(review["entity_id"]))
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    dict["entity_title"] = entity_title(entity)
     return render_template('review/modify/edit.html', **dict)
 
 
