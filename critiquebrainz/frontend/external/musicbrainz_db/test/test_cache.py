@@ -16,7 +16,7 @@ class CacheTestCase(DataTestCase):
 
     @mock.patch('brainzutils.cache.get')
     @mock.patch('brainzutils.cache.set')
-    @mock.patch('brainzutils.musicbrainz_db.artist.fetch_multiple_artists')
+    @mock.patch('brainzutils.musicbrainz_db.artist.get_artist_by_id')
     def test_artist_cache(self, artist_fetch, cache_set, cache_get):
         mbid = "f59c5520-5f46-4d2c-b2c4-822eabf53419"
         expected_key = b"artist_f59c5520-5f46-4d2c-b2c4-822eabf53419"
@@ -26,14 +26,14 @@ class CacheTestCase(DataTestCase):
             "sort_name": "Linkin Park",
             "type": "Group"
         }
-        artist_fetch.return_value = {mbid: artist}
+        artist_fetch.return_value = artist
 
         cache_get.return_value = None
         get_artist_by_id(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        artist_fetch.assert_called_with([mbid], includes=['artist-rels', 'url-rels'], unknown_entities_for_missing=True)
+        artist_fetch.assert_called_with(mbid, includes=['artist-rels', 'url-rels'], unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=artist, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = artist
@@ -48,7 +48,7 @@ class CacheTestCase(DataTestCase):
 
     @mock.patch('brainzutils.cache.get')
     @mock.patch('brainzutils.cache.set')
-    @mock.patch('brainzutils.musicbrainz_db.event.fetch_multiple_events')
+    @mock.patch('brainzutils.musicbrainz_db.event.get_event_by_id')
     def test_event_cache(self, event_fetch, cache_set, cache_get):
         mbid = "ebe6ce0f-22c0-4fe7-bfd4-7a0397c9fe94"
         expected_key = b"event_ebe6ce0f-22c0-4fe7-bfd4-7a0397c9fe94"
@@ -56,14 +56,14 @@ class CacheTestCase(DataTestCase):
             'id': 'ebe6ce0f-22c0-4fe7-bfd4-7a0397c9fe94',
             'name': 'Taubertal-Festival 2004, Day 1',
         }
-        event_fetch.return_value = {mbid: event}
+        event_fetch.return_value = event
 
         cache_get.return_value = None
         get_event_by_id(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        event_fetch.assert_called_with([mbid], includes=['artist-rels', 'place-rels',
+        event_fetch.assert_called_with(mbid, includes=['artist-rels', 'place-rels',
                                                          'series-rels', 'url-rels', 'release-group-rels'],
                                        unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=event, time=DEFAULT_CACHE_EXPIRATION)
@@ -80,7 +80,7 @@ class CacheTestCase(DataTestCase):
 
     @mock.patch('brainzutils.cache.get')
     @mock.patch('brainzutils.cache.set')
-    @mock.patch('brainzutils.musicbrainz_db.label.fetch_multiple_labels')
+    @mock.patch('brainzutils.musicbrainz_db.label.get_label_by_id')
     def test_label_cache(self, label_fetch, cache_set, cache_get):
         mbid = "1aed8c3b-8e1e-46f8-b558-06357ff5f298"
         expected_key = b"label_1aed8c3b-8e1e-46f8-b558-06357ff5f298"
@@ -90,14 +90,14 @@ class CacheTestCase(DataTestCase):
             "type": "Imprint",
             "area": "United States",
         }
-        label_fetch.return_value = {mbid: label}
+        label_fetch.return_value = label
 
         cache_get.return_value = None
         get_label_by_id(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        label_fetch.assert_called_with([mbid], includes=['artist-rels', 'url-rels'], unknown_entities_for_missing=True)
+        label_fetch.assert_called_with(mbid, includes=['artist-rels', 'url-rels'], unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=label, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = label
@@ -112,7 +112,7 @@ class CacheTestCase(DataTestCase):
 
     @mock.patch('brainzutils.cache.get')
     @mock.patch('brainzutils.cache.set')
-    @mock.patch('brainzutils.musicbrainz_db.place.fetch_multiple_places')
+    @mock.patch('brainzutils.musicbrainz_db.place.get_place_by_id')
     def test_place_cache(self, place_fetch, cache_set, cache_get):
         mbid = "d71ffe38-5eaf-426b-9a2e-e1f21bc84609"
         expected_key = b"place_d71ffe38-5eaf-426b-9a2e-e1f21bc84609"
@@ -128,14 +128,14 @@ class CacheTestCase(DataTestCase):
                 "name": "Hämeenlinna",
             }
         }
-        place_fetch.return_value = {mbid: place}
+        place_fetch.return_value = place
 
         cache_get.return_value = None
         get_place_by_id(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        place_fetch.assert_called_with([mbid], includes=['artist-rels', 'place-rels',
+        place_fetch.assert_called_with(mbid, includes=['artist-rels', 'place-rels',
                                                          'release-group-rels', 'url-rels'],
                                        unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=place, time=DEFAULT_CACHE_EXPIRATION)
@@ -152,7 +152,7 @@ class CacheTestCase(DataTestCase):
 
     @mock.patch('brainzutils.cache.get')
     @mock.patch('brainzutils.cache.set')
-    @mock.patch('brainzutils.musicbrainz_db.release.fetch_multiple_releases')
+    @mock.patch('brainzutils.musicbrainz_db.release.get_release_by_id')
     def test_release_cache(self, release_fetch, cache_set, cache_get):
         mbid = "16bee711-d7ce-48b0-adf4-51f124bcc0df"
         expected_key = b"release_16bee711-d7ce-48b0-adf4-51f124bcc0df"
@@ -171,14 +171,14 @@ class CacheTestCase(DataTestCase):
                 }]
             }]
         }
-        release_fetch.return_value = {mbid: release}
+        release_fetch.return_value = release
 
         cache_get.return_value = None
         get_release_by_id(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        release_fetch.assert_called_with([mbid], includes=['media', 'release-groups'], unknown_entities_for_missing=True)
+        release_fetch.assert_called_with(mbid, includes=['media', 'release-groups'], unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=release, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = release
@@ -193,7 +193,7 @@ class CacheTestCase(DataTestCase):
 
     @mock.patch('brainzutils.cache.get')
     @mock.patch('brainzutils.cache.set')
-    @mock.patch('brainzutils.musicbrainz_db.release_group.fetch_multiple_release_groups')
+    @mock.patch('brainzutils.musicbrainz_db.release_group.get_release_group_by_id')
     def test_release_group_cache(self, release_group_fetch, cache_set, cache_get):
         mbid = "7c1014eb-454c-3867-8854-3c95d265f8de"
         expected_key = b"release-group_7c1014eb-454c-3867-8854-3c95d265f8de"
@@ -211,14 +211,14 @@ class CacheTestCase(DataTestCase):
                 'join_phrase': '/',
             }]
         }
-        release_group_fetch.return_value = {mbid: release_group}
+        release_group_fetch.return_value = release_group
 
         cache_get.return_value = None
         get_release_group_by_id(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        release_group_fetch.assert_called_with([mbid], includes=['artists', 'releases',
+        release_group_fetch.assert_called_with(mbid, includes=['artists', 'releases',
                                                                  'release-group-rels', 'url-rels', 'tags'],
                                                unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
@@ -235,7 +235,7 @@ class CacheTestCase(DataTestCase):
 
     @mock.patch('brainzutils.cache.get')
     @mock.patch('brainzutils.cache.set')
-    @mock.patch('brainzutils.musicbrainz_db.work.fetch_multiple_works')
+    @mock.patch('brainzutils.musicbrainz_db.work.get_work_by_id')
     def test_work_cache(self, work_fetch, cache_set, cache_get):
         mbid = "54ce5e07-2aca-4578-83d8-5a41a7b2f434"
         expected_key = b"work_54ce5e07-2aca-4578-83d8-5a41a7b2f434"
@@ -244,14 +244,14 @@ class CacheTestCase(DataTestCase):
             "name": "a lot",
             "type": "Song",
         }
-        work_fetch.return_value = {mbid: work}
+        work_fetch.return_value = work
 
         cache_get.return_value = None
         get_work_by_id(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        work_fetch.assert_called_with([mbid], includes=['artist-rels', 'recording-rels'])
+        work_fetch.assert_called_with(mbid, includes=['artist-rels', 'recording-rels'])
         cache_set.assert_called_with(key=expected_key, val=work, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = work
