@@ -6,6 +6,7 @@ from critiquebrainz.frontend.external.musicbrainz_db.artist import get_artist_by
 from critiquebrainz.frontend.external.musicbrainz_db.event import get_event_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.label import get_label_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.place import get_place_by_id
+from critiquebrainz.frontend.external.musicbrainz_db.recording import get_recording_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.release import get_release_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.release_group import get_release_group_by_id
 from critiquebrainz.frontend.external.musicbrainz_db.work import get_work_by_id
@@ -148,6 +149,49 @@ class CacheTestCase(DataTestCase):
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)
         place_fetch.assert_not_called()
+        cache_set.assert_not_called()
+
+    @mock.patch('brainzutils.cache.get')
+    @mock.patch('brainzutils.cache.set')
+    @mock.patch('brainzutils.musicbrainz_db.recording.get_recording_by_mbid')
+    def test_recording_cache(self, recording_fetch, cache_set, cache_get):
+        mbid = "442ddce2-ffa1-4865-81d2-b42c40fec7c5"
+        expected_key = b"recording_442ddce2-ffa1-4865-81d2-b42c40fec7c5"
+        recording = {
+            'id': '442ddce2-ffa1-4865-81d2-b42c40fec7c5',
+            'name': 'Dream Come True',
+            'length': 229.0,
+            'artists': [
+                {
+                    'id': '164f0d73-1234-4e2c-8743-d77bf2191051',
+                    'name': 'Kanye West',
+                    'join_phrase': ' feat. '
+                },
+                {
+                    'id': '75a72702-a5ef-4513-bca5-c5b944903546',
+                    'name': 'John Legend'
+                }
+            ],
+            'artist-credit-phrase': 'Kanye West feat. John Legend'
+        }
+        recording_fetch.return_value = recording
+
+        cache_get.return_value = None
+        get_recording_by_id(mbid)
+
+        # Test that first time data is fetched database is queried
+        cache_get.assert_called_with(expected_key)
+        recording_fetch.assert_called_with(mbid, includes=['artists', 'work-rels', 'url-rels'])
+        cache_set.assert_called_with(key=expected_key, val=recording, time=DEFAULT_CACHE_EXPIRATION)
+
+        cache_get.return_value = recording
+        cache_set.reset_mock()
+        recording_fetch.reset_mock()
+        get_recording_by_id(mbid)
+
+        # Test that second time data is fetched from cache
+        cache_get.assert_called_with(expected_key)
+        recording_fetch.assert_not_called()
         cache_set.assert_not_called()
 
     @mock.patch('brainzutils.cache.get')
