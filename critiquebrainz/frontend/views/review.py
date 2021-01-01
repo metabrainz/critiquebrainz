@@ -76,6 +76,7 @@ def entity_title(_entity):
         ent_title = _entity['name']
     return ent_title
 
+
 @review_bp.route('/<uuid:id>/revisions/<int:rev>')
 @review_bp.route('/<uuid:id>')
 def entity(id, rev=None):
