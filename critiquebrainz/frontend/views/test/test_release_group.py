@@ -1,9 +1,8 @@
-from unittest.mock import MagicMock
+from unittest import mock
 
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 from critiquebrainz.db.user import User
 from critiquebrainz.frontend.testing import FrontendTestCase
 
@@ -12,12 +11,6 @@ class ReleaseGroupViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(ReleaseGroupViewsTestCase, self).setUp()
-        mb_release_group.get_release_group_by_id = MagicMock()
-        mb_release_group.get_release_group_by_id.return_value = {
-            'id': '8ef859e3-feb2-4dd1-93da-22b91280d768',
-            'title': 'Collision Course',
-            'first-release-year': 2004,
-        }
         self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": "test user",
         }))
@@ -26,7 +19,13 @@ class ReleaseGroupViewsTestCase(FrontendTestCase):
             full_name='Test License',
         )
 
-    def test_release_group_page(self):
+    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_id')
+    def test_release_group_page(self, get_release_group_by_id):
+        get_release_group_by_id.return_value = {
+            'id': '8ef859e3-feb2-4dd1-93da-22b91280d768',
+            'title': 'Collision Course',
+            'first-release-year': 2004,
+        }
         db_review.create(
             user_id=self.user.id,
             entity_id='8ef859e3-feb2-4dd1-93da-22b91280d768',
