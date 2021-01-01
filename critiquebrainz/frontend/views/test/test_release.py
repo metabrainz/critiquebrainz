@@ -4,9 +4,6 @@ from critiquebrainz.frontend.testing import FrontendTestCase
 
 class ReleaseViewsTestCase(FrontendTestCase):
 
-    def setUp(self):
-        super(ReleaseViewsTestCase, self).setUp()
-
     @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release.get_release_by_id')
     def test_release_page(self, get_release_by_id):
         get_release_by_id.return_value = {

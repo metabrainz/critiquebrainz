@@ -77,10 +77,9 @@ class SpotifyTestCase(FrontendTestCase):
             spotify._get("test-query")
         _fetch_access_token.assert_called_with(refresh=True)
 
-    @mock.patch('brainzutils.cache.set')
     @mock.patch('brainzutils.cache.get')
     @mock.patch('requests.post')
-    def test_fetch_access_token(self, requests_post, cache_get, cache_set):
+    def test_fetch_access_token(self, requests_post, cache_get):
         requests_post.return_value = self.fresh_token_response
 
         # token present in cache

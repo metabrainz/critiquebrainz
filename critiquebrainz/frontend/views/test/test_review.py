@@ -1,5 +1,5 @@
 from unittest import mock
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 from urllib.parse import urlparse
 
 from flask import current_app, url_for

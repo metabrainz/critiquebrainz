@@ -28,9 +28,6 @@ def return_release_groups(*, artist_id, release_types=None, limit=None, offset=N
 
 class ArtistViewsTestCase(FrontendTestCase):
 
-    def setUp(self):
-        super(ArtistViewsTestCase, self).setUp()
-
     @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.browse_release_groups')
     @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.artist.get_artist_by_id')
     def test_artist_page(self, get_artist_by_id, browse_release_groups):
