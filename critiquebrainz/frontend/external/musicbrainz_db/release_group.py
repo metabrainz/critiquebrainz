@@ -1,12 +1,13 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db import release_group as db
-
+import logging
 import critiquebrainz.frontend.external.relationships.release_group as release_group_rel
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
 def get_release_group_by_id(mbid):
     """Get release group using the MusicBrainz ID."""
+    logging.error("XYZ!!! Mock didn't work.")
     key = cache.gen_key('release-group', mbid)
     release_group = cache.get(key)
     if not release_group:
