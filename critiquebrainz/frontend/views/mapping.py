@@ -8,7 +8,6 @@ project.
 """
 import os.path
 import string
-import logging
 import urllib.parse
 
 from flask import Blueprint, render_template, request, url_for, redirect, current_app
@@ -57,7 +56,6 @@ def spotify_add():
         return redirect(url_for('frontend.index'))
     try:
         release_group = mb_release_group.get_release_group_by_id(release_group_id)
-        logging.error(release_group)
     except mb_exceptions.NoDataFoundException:
         flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
