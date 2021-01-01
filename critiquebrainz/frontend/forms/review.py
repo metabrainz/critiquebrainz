@@ -24,9 +24,11 @@ def optional_license(message):
         if form.state.data == "draft":
             return
         else:
-            if not field.raw_data or not field.raw_data[0]: #https://wtforms.readthedocs.io/en/2.3.x/_modules/wtforms/validators/#InputRequired
+            # https://wtforms.readthedocs.io/en/2.3.x/_modules/wtforms/validators/#InputRequired
+            if not field.raw_data or not field.raw_data[0]:
                 raise ValidationError(message)
     return _license
+
 
 # Loading supported languages
 languages = []
