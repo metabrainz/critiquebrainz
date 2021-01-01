@@ -89,7 +89,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         get_release_group_by_id.reset_mock()
         get_release_group_by_id.return_value = self.test_release_group
         response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
-        logging.error(str(response))
+        logging.error(str(response.data))
         self.assert200(response)
         self.assertIn("No mappings", str(response.data))
 
@@ -129,7 +129,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         search.side_effect = ExternalServiceException
         response = self.client.get("/mapping/spotify/add",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"})
-        logging.error(str(response))
+        logging.error(str(response.data))
         self.assertStatus(response, 503)
 
         # test when response has no albums for given id
