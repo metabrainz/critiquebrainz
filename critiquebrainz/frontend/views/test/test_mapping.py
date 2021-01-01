@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
+import logging
 from unittest import mock
 
 from flask import url_for
@@ -88,6 +88,8 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         # test for release group with no mappings
         get_release_group_by_id.reset_mock()
         get_release_group_by_id.return_value = self.test_release_group
+        response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
+        logging.error(str(response))
         self.assert200(response)
         self.assertIn("No mappings", str(response.data))
 
@@ -127,6 +129,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         search.side_effect = ExternalServiceException
         response = self.client.get("/mapping/spotify/add",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"})
+        logging.error(str(response))
         self.assertStatus(response, 503)
 
         # test when response has no albums for given id
@@ -153,7 +156,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
     @mock.patch('critiquebrainz.frontend.external.mbspotify.add_mapping')
     @mock.patch('critiquebrainz.frontend.external.spotify.get_album')
     @mock.patch('critiquebrainz.frontend.external.spotify.search')
-    def test_spotify_confirm(self, search, get_album, add_mapping, get_multiple_albums, get_release_group_by_id):
+    def test_spotify_confirm(self, search, get_album, add_mapping, get_release_group_by_id):
         self.temporary_login(self.user)
 
         # test `release_group_id` variable not supplied
