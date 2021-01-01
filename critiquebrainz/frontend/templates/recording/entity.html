@@ -15,6 +15,7 @@
         <a href="{{ url_for('artist.entity', mbid=credit.id) }}">{{ credit.name }}</a>
         {% if credit.join_phrase %}{{ credit.join_phrase }}{% endif %}
     {% endif %}
+    {% endfor %}
   </h2>
 
   {% if not my_review %}

@@ -3,7 +3,6 @@ from brainzutils.musicbrainz_db import recording as db
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
-
 def get_recording_by_id(mbid):
     """Get recording with MusicBrainz ID.
 
@@ -15,7 +14,7 @@ def get_recording_by_id(mbid):
     key = cache.gen_key(mbid)
     recording = cache.get(key)
     if not recording:
-        recording = db.get_recording_by_id(
+        recording = db.get_recording_by_mbid(
             mbid,
             includes=['artists', 'work-rels', 'url-rels'],
         )
