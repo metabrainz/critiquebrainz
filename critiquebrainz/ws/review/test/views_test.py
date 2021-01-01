@@ -2,7 +2,6 @@ import json
 import uuid
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
-import logging
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
 from critiquebrainz.ws.testing import WebServiceTestCase
@@ -103,7 +102,6 @@ class ReviewViewsTestCase(WebServiceTestCase):
         db_review.create(**review_only_review)
         db_review.create(**review_type_all)
 
-        
         response = self.client.get('/review/', query_string={'review_type': 'rating'})
         self.assert200(response)
         actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
@@ -116,8 +114,8 @@ class ReviewViewsTestCase(WebServiceTestCase):
         expected_review_ids = [review_type_all['entity_id'], review_only_review['entity_id']]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
-    def test_review_count(self):
-        for i in range(100):
+    def test_review_large_count(self):
+        for _ in range(100):
             review = dict(
                 entity_id=uuid.uuid4(),
                 entity_type='release_group',
