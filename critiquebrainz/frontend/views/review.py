@@ -274,10 +274,11 @@ def create(entity_type=None, entity_id=None):
 
     try:
         entity = get_entity_by_id(entity_id, entity_type)
-        dict={"form":form,
-              "entity_type":entity_type,
-              "entity":entity,
-              }
+        dict = {
+            "form": form,
+            "entity_type": entity_type,
+            "entity": entity,
+        }
     except NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find a %s with that MusicBrainz ID." % entity_type))
 
@@ -286,8 +287,8 @@ def create(entity_type=None, entity_id=None):
         return redirect(url_for('search.selector', next=url_for('.create')))
 
     if entity_type == 'release_group':
-        dict["spotify_mappings"]=mbspotify.mappings(entity_id)
-        dict["soundcloud_url"]=soundcloud.get_url(entity_id)
+        dict["spotify_mappings"] = mbspotify.mappings(entity_id)
+        dict["soundcloud_url"] = soundcloud.get_url(entity_id)
     dict["entity_title"] = entity_title(entity)
     if not form.errors:
         flash.info(gettext("Please provide some text or a rating for this review."))
