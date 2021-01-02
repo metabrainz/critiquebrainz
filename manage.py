@@ -105,19 +105,18 @@ def init_db(test_db=False, force=False):
         click.echo("Done!")
 
     if test_db:
-        frontend.create_app(config_path=os.path.join(
+        app = frontend.create_app(config_path=os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
             'critiquebrainz', 'test_config.py'
         ))
     else:
-        frontend.create_app()
+        app = frontend.create_app()
 
     click.echo("Creating tables... ", nl=False)
     data_utils.create_all()
     click.echo("Done!")
 
     click.echo("Adding fixtures... ")
-    app = frontend.create_app()
     with app.app_context():
         _fixtures.install(*_fixtures.all_data)
     click.echo("Done!")
