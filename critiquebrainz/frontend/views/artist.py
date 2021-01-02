@@ -6,9 +6,9 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 from critiquebrainz.frontend.views import BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
+from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 
 artist_bp = Blueprint('artist', __name__)
 
@@ -22,7 +22,7 @@ def entity(mbid):
     """
     try:
         artist = mb_artist.get_artist_by_id(str(mbid))
-    except mb_exceptions.NoDataFoundException:
+    except NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
     # Note that some artists might not have a list of members because they are not a band

@@ -22,7 +22,7 @@ from flask_login import current_user
 from werkzeug.exceptions import NotFound
 
 import critiquebrainz.db.review as db_review
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 from critiquebrainz.frontend.external import mbspotify, soundcloud
@@ -37,7 +37,7 @@ def entity(id):
     id = str(id)
     try:
         release_group = mb_release_group.get_release_group_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    except NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
 
     if 'url-rels' in release_group:

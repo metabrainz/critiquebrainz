@@ -15,12 +15,12 @@ from flask_babel import gettext
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound, BadRequest, ServiceUnavailable
 
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify
 from critiquebrainz.frontend.external.exceptions import ExternalServiceException
+from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 
 mapping_bp = Blueprint('mapping', __name__)
 
@@ -43,7 +43,7 @@ def spotify_list(release_group_id):
         spotify_albums = {}
     try:
         release_group = mb_release_group.get_release_group_by_id(str(release_group_id))
-    except mb_exceptions.NoDataFoundException:
+    except NoDataFoundException:
         raise NotFound("Can't find release group with a specified ID.")
     return render_template('mapping/list.html', spotify_albums=spotify_albums,
                            release_group=release_group)
@@ -56,7 +56,7 @@ def spotify_add():
         return redirect(url_for('frontend.index'))
     try:
         release_group = mb_release_group.get_release_group_by_id(release_group_id)
-    except mb_exceptions.NoDataFoundException:
+    except NoDataFoundException:
         flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
 
@@ -99,7 +99,7 @@ def spotify_confirm():
         raise BadRequest("Didn't provide `release_group_id`!")
     try:
         release_group = mb_release_group.get_release_group_by_id(release_group_id)
-    except mb_exceptions.NoDataFoundException:
+    except NoDataFoundException:
         flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
 
@@ -155,7 +155,7 @@ def spotify_report():
     # Checking if release group exists
     try:
         release_group = mb_release_group.get_release_group_by_id(release_group_id)
-    except mb_exceptions.NoDataFoundException:
+    except NoDataFoundException:
         raise NotFound("Can't find release group with a specified ID.")
 
     # Checking if release group is mapped to Spotify

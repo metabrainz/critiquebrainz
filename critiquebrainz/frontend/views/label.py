@@ -4,10 +4,10 @@ from flask_login import current_user
 from werkzeug.exceptions import NotFound
 
 import critiquebrainz.db.review as db_review
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.label as mb_label
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, LABEL_REVIEWS_LIMIT
+from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 
 label_bp = Blueprint('label', __name__)
 
@@ -17,7 +17,7 @@ def entity(id):
     id = str(id)
     try:
         label = mb_label.get_label_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    except NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find a label with that MusicBrainz ID."))
 
     label_reviews_limit = LABEL_REVIEWS_LIMIT
