@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, jsonify, url_for
+from flask import Blueprint, request, render_template, jsonify
 
 from critiquebrainz.frontend.external import musicbrainz
 from werkzeug.exceptions import BadRequest

@@ -1,4 +1,4 @@
-{% from 'macros.html' import display_artist_credit %}
+{% from 'macros.html' import display_artist_credit, write_a_review %}
 {% for result in results %}
 
   {% if type=="artist" %}
@@ -10,6 +10,7 @@
       <td>{{ result['sort-name'] }}</td>
       <td>{{ result['type'] or '-' }}</td>
       <td>{{ result['country'] or '-' }}</td>
+      <td>{{ write_a_review(entity_type='artist', entity_id=result.id) }}</td>
     </tr>
 
   {% elif type=="release-group" %}
@@ -20,6 +21,7 @@
       </td>
       <td>{{ display_artist_credit(result) }}</td>
       <td>{{ result['primary-type'] or '-' }}</td>
+      <td>{{ write_a_review(entity_type='release_group', entity_id=result.id) }}</td>
     </tr>
 
   {% elif type=="event" %}
@@ -36,6 +38,7 @@
           -
         {% endif %}
       </td>
+      <td>{{ write_a_review(entity_type='event', entity_id=result.id) }}</td>
     </tr>
 
   {% elif type=="place" %}
@@ -53,6 +56,7 @@
           -
         {% endif %}
       </td>
+      <td>{{ write_a_review(entity_type='place', entity_id=result.id) }}</td>
     </tr>
 
   {% elif type=="work" %}
@@ -67,6 +71,7 @@
       <td>
         {{ result['language'] or '-' }}
       </td>
+      <td>{{ write_a_review(entity_type='work', entity_id=result.id) }}</td>
     </tr>
 
   {% elif type=="label" %}
@@ -80,6 +85,7 @@
       <td>
         {{ result['country'] or '-' }}
       </td>
+      <td>{{ write_a_review(entity_type='label', entity_id=result.id) }}</td>
     </tr>
 
   {% elif type=="recording" %}

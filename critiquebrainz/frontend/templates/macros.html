@@ -1,3 +1,10 @@
+{% macro write_a_review(entity_type, entity_id) %}
+    <a href="{{ url_for('review.create', entity_type=entity_type, entity_id=entity_id) }}"
+       role="button" class="btn btn-success">
+        <span class="glyphicon glyphicon-asterisk"></span>{{ _('Write a review') }}
+    </a>
+{% endmacro %}
+
 {% macro print_message(message, category) %}
   {% if category == "error" %}
     {% set alert_class="alert-danger" %}
