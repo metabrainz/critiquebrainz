@@ -1,4 +1,4 @@
-/.git
+/.git*
 
 # Docker configuration
 
@@ -7,9 +7,9 @@
 **/*.py[cod]
 
 # Virtual environment
-/env/
-/venv/
-/build/
+/env*/
+/venv*/
+/build*/
 
 # Node
 /node_modules/
