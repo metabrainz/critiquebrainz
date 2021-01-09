@@ -7,12 +7,12 @@
 **/*.py[cod]
 
 # Virtual environment
-/env
-/venv
-/build
+/env/
+/venv/
+/build/
 
 # Node
-/node_modules
+/node_modules/
 
 # Logs
 **/*.log
@@ -20,14 +20,14 @@
 **/pip-delete-this-directory.txt
 
 # Application data
-/data
+/data/
 
 # Configuration
 /consul_config.py
 /custom_config.py
 
 # Test results
-**/htmlcov
+**/htmlcov/
 **/.coverage
 
 **/.transifexrc
