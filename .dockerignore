@@ -1,33 +1,33 @@
-.git
+/.git
 
 # Docker configuration
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
+**/__pycache__/
+**/*.py[cod]
 
 # Virtual environment
-env
-venv
+/env
+/venv
 /build
 
 # Node
-node_modules
+/node_modules
 
 # Logs
-*.log
-pip-log.txt
-pip-delete-this-directory.txt
+**/*.log
+**/pip-log.txt
+**/pip-delete-this-directory.txt
 
 # Application data
-data
+/data
 
 # Configuration
-consul_config.py
-custom_config.py
+/consul_config.py
+/custom_config.py
 
 # Test results
-htmlcov
-.coverage
+**/htmlcov
+**/.coverage
 
-.transifexrc
+**/.transifexrc
