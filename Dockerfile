@@ -62,9 +62,15 @@ RUN useradd --create-home --shell /bin/bash critiquebrainz
 # Just need to copy the configuration.
 COPY ./docker/prod/consul-template.conf /etc/consul-template.conf
 
+# runit service files
+# All services are created with a `down` file, preventing them from starting
+# rc.local removes the down file for the specific service we want to run in a container
+# http://smarden.org/runit/runsv.8.html
+
 COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.service /etc/service/uwsgi/run
 RUN chmod 755 /etc/service/uwsgi/run
 COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
+RUN touch /etc/service/uswgi/down
 
 # cron jobs
 ADD ./docker/prod/cron/jobs /tmp/crontab
@@ -72,9 +78,6 @@ RUN chmod 0644 /tmp/crontab && crontab -u critiquebrainz /tmp/crontab
 RUN rm /tmp/crontab
 RUN touch /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log \
     && chown critiquebrainz:critiquebrainz /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log
-
-# Make sure the cron service doesn't start automagically
-# http://smarden.org/runit/runsv.8.html
 RUN touch /etc/service/cron/down
 
 ARG GIT_COMMIT_SHA
