@@ -61,6 +61,7 @@ RUN useradd --create-home --shell /bin/bash critiquebrainz
 # Consul Template service is already set up with the base image.
 # Just need to copy the configuration.
 COPY ./docker/consul-template.conf /etc/consul-template.conf
+COPY ./docker/consul-template-cron.conf /etc/consul-template-cron.conf
 
 # runit service files
 # All services are created with a `down` file, preventing them from starting
@@ -73,6 +74,7 @@ COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
 RUN touch /etc/service/uswgi/down
 
 # cron jobs
+COPY ./docker/$DEPLOY_ENV/cron/cron.service /etc/service/cron/run
 ADD ./docker/prod/cron/jobs /tmp/crontab
 RUN chmod 0644 /tmp/crontab && crontab -u critiquebrainz /tmp/crontab
 RUN rm /tmp/crontab
