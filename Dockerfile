@@ -58,9 +58,7 @@ RUN useradd --create-home --shell /bin/bash critiquebrainz
 # Services #
 ############
 
-# Consul Template service is already set up with the base image.
-# Just need to copy the configuration.
-COPY ./docker/consul-template.conf /etc/consul-template.conf
+COPY ./docker/consul-template-uswgi.conf /etc/consul-template-uswgi.conf
 COPY ./docker/consul-template-cron.conf /etc/consul-template-cron.conf
 
 # runit service files
