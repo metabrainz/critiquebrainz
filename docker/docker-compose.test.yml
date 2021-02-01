@@ -18,8 +18,6 @@ services:
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_HOST_AUTH_METHOD: trust
-    ports:
-      - "5430:5432"
     network_mode: bridge
 
   critiquebrainz_redis:
