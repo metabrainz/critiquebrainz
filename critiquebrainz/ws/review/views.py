@@ -22,6 +22,7 @@ from critiquebrainz.ws.parser import Parser
 review_bp = Blueprint('ws_review', __name__)
 
 REVIEW_CACHE_NAMESPACE = "Review"
+REVIEW_CACHE_TIMEOUT = 30 * 60  # 30 minutes
 
 
 def get_review_or_404(review_id):
@@ -386,7 +387,7 @@ def review_list_handler():
         cache.set(cache_key, {
             'reviews': reviews,
             'count': count,
-        }, namespace=REVIEW_CACHE_NAMESPACE)
+        }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
 
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 
