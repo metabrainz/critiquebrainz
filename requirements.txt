@@ -2,7 +2,7 @@ git+https://github.com/metabrainz/brainzutils-python.git@v1.14.0
 beautifulsoup4==4.8.0
 coverage==4.4.1
 click==6.7
-Flask-Babel==0.11.2
+Flask-Babel==2.0.0
 Flask-Login==0.4.0
 Flask-SQLAlchemy==2.4.0
 Flask-Testing==0.6.2
