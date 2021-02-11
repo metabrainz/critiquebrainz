@@ -1,6 +1,4 @@
-from unittest.mock import MagicMock
-
-from brainzutils import cache
+from unittest import mock
 
 import critiquebrainz.db.exceptions as db_exceptions
 import critiquebrainz.db.license as db_license
@@ -29,9 +27,6 @@ class ReviewTestCase(DataTestCase):
             id=u'Test',
             full_name=u"Test License",
         )
-
-        # disable caching
-        cache.get = MagicMock(return_value=None)
 
     def test_review_creation(self):
         review = db_review.create(
@@ -211,7 +206,9 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
-    def test_get_popular(self):
+    @mock.patch('brainzutils.cache.get')
+    def test_get_popular(self, cache_get):
+        cache_get.return_value = None
         reviews = db_review.get_popular()
         self.assertEqual(len(reviews), 0)
 

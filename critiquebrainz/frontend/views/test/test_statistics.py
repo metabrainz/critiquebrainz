@@ -16,9 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from unittest.mock import MagicMock
-
-from brainzutils import cache
+from unittest import mock
 
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
@@ -39,12 +37,11 @@ class StatisticsViewsTestCase(FrontendTestCase):
             full_name="Test License.",
         )
 
-        # totally disable cache get or set
-        cache.gen_key = MagicMock(return_value=None)
-        cache.get = MagicMock(return_value=None)
-        cache.set = MagicMock(return_value=None)
-
-    def test_statistics(self):
+    @mock.patch('brainzutils.cache.set')
+    @mock.patch('brainzutils.cache.get')
+    def test_statistics(self, cache_get, cache_set):
+        cache_get.return_value = None
+        cache_set.return_value = None
         # test when there is no user
         response = self.client.get("statistics/")
         self.assert200(response)

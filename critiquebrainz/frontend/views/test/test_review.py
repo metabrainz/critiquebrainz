@@ -1,7 +1,7 @@
-from unittest.mock import patch, MagicMock
+from unittest import mock
+from unittest.mock import patch
 from urllib.parse import urlparse
 
-import brainzutils.musicbrainz_db.release as mb_release
 from flask import current_app, url_for
 
 import critiquebrainz.db.license as db_license
@@ -45,7 +45,6 @@ class ReviewViewsTestCase(FrontendTestCase):
         )
         self.review_text = "Testing! This text should be on the page."
         self.review_rating = 3
-        mb_release.browse_releases = MagicMock()
         current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
 
     def create_dummy_review(self, is_draft=False, is_hidden=False):
@@ -264,13 +263,15 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.assert200(response)
         self.assertIn("A great place.", str(response.data))
 
-    def test_hide_unhide(self):
+    @mock.patch('critiquebrainz.db.user.User.is_admin')
+    def test_hide_unhide(self, is_user_admin):
         # create a review by self.user and check it's not hidden
         review = self.create_dummy_review()
         self.assertEqual(review["is_hidden"], False)
 
         # make self.hacker as current user
         self.temporary_login(self.hacker)
+        is_user_admin.return_value = False
 
         # check that hide button is not visible to non-admin user
         response = self.client.get("/review/{}".format(review["id"]))
@@ -278,7 +279,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.assertNotIn("Hide this review", str(response.data))
 
         # make self.hacker as admin
-        User.is_admin = MagicMock(return_value=True)
+        is_user_admin.return_value = True
 
         # check that hide button is visible to admin
         response = self.client.get("/review/{}".format(review["id"]))

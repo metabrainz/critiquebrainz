@@ -1,6 +1,5 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db import release_group as db
-
 import critiquebrainz.frontend.external.relationships.release_group as release_group_rel
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 

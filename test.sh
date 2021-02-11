@@ -122,7 +122,7 @@ if [[ ${DB_EXISTS} -eq 1 && ${DB_RUNNING} -eq 1 ]]; then
     docker-compose -f ${COMPOSE_FILE_LOC} \
                    -p ${COMPOSE_PROJECT_NAME} \
                 run --rm critiquebrainz_test pytest "$@"
-    dc_down
+    # dc_down
 else
     # Else, we have containers, just run tests
     echo "Running tests"

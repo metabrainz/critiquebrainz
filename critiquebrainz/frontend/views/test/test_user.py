@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest import mock
 
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
@@ -36,7 +36,8 @@ class UserViewsTestCase(FrontendTestCase):
         self.assert200(response)
         self.assertIn("Tester", str(response.data))
 
-    def test_block_unblock(self):
+    @mock.patch('critiquebrainz.db.user.User.is_admin')
+    def test_block_unblock(self, is_user_admin):
         self.temporary_login(self.admin)
 
         # test block user when user is not in db
@@ -44,7 +45,7 @@ class UserViewsTestCase(FrontendTestCase):
         self.assert404(response, "Can't find a user with ID: random-user-id")
 
         # make self.admin a moderator
-        User.is_admin = MagicMock(return_value=True)
+        is_user_admin.return_value = True
 
         # admin blocks tester
         response = self.client.post(
