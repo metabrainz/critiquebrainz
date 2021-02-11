@@ -5,6 +5,7 @@ from random import shuffle
 import pycountry
 import sqlalchemy
 from brainzutils import cache
+from flask import current_app as app
 
 from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
@@ -522,7 +523,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
                                 language=language, exclude=exclude, sort=sort, limit=limit, offset=offset)
 
 
-def get_popular(limit=None):
+def get_popular_reviews_for_index():
     """Get a list of popular reviews.
 
     Popularity is determined by 'popularity' of a particular review. popularity is a
@@ -530,13 +531,11 @@ def get_popular(limit=None):
     from the last month are used to calculate popularity to make results more
     varied.
 
-    Args:
-        limit (int): Maximum number of reviews to return.
-
     Returns:
         Randomized list of popular reviews which are converted into
         dictionaries using to_dict method.
     """
+    limit = app.config['POPULAR_REVIEWS_LIMIT']
     cache_key = cache.gen_key("popular_reviews", limit)
     reviews = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
     defined_limit = 4 * limit if limit else None

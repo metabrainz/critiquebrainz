@@ -6,7 +6,6 @@ from markdown import markdown
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
 
-DEFAULT_CACHE_EXPIRATION = 10 * 60  # seconds
 
 frontend_bp = Blueprint('frontend', __name__)
 
@@ -14,7 +13,7 @@ frontend_bp = Blueprint('frontend', __name__)
 @frontend_bp.route('/')
 def index():
     # Popular reviews
-    popular_reviews = db_review.get_popular(6)
+    popular_reviews = db_review.get_popular_reviews_for_index()
     for review in popular_reviews:
         # Preparing text for preview
         preview = markdown(review['text'], safe_mode="escape")
