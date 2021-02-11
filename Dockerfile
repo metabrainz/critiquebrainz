@@ -1,4 +1,4 @@
-FROM metabrainz/python:3.8-20191226
+FROM metabrainz/python:3.8-20201201
 
 ARG DEPLOY_ENV
 
@@ -30,6 +30,8 @@ ENV PGPASSWORD "critiquebrainz"
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
    && apt-get install -y nodejs \
    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --upgrade pip==21.0.1
 
 RUN pip install --no-cache-dir uWSGI==2.0.18
 
