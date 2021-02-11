@@ -389,6 +389,18 @@ def review_list_handler():
             'count': count,
         }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
 
+        # When reviews for an entity get created/updated, the existing cache for it need to be cleared. The keys used to
+        # cache reviews include parameters like user_id, sort, limit so on which are unavailable later. Hence, making it
+        # impossible to generate the cache keys at time of invalidation. To circumvent this issue, we track all cache
+        # keys for an entity_id. Cache keys of the form ws_cache_{entity_id} point to a list of cache keys of that
+        # entity. We can retrieve this list at time during invalidate and invalidate all caches for that entity_id.
+        track_cache_key = cache.gen_key('ws_cache', entity_id)
+        review_cache_keys = cache.get(track_cache_key, REVIEW_CACHE_NAMESPACE)
+        if review_cache_keys is None:
+            review_cache_keys = []
+        review_cache_keys.append(cache_key)
+        cache.set(track_cache_key, review_cache_keys, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
+
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 
 
