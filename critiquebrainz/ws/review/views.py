@@ -1,3 +1,5 @@
+import logging
+
 from brainzutils import cache
 from flask import Blueprint, jsonify
 
@@ -367,12 +369,17 @@ def review_list_handler():
 
     # TODO(roman): Ideally caching logic should live inside the model. Otherwise it
     # becomes hard to track all this stuff.
-    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language)
-    cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
+    cache_key = None
+    cached_result = None
+
+    # If entity_id is absent, it is not possible to track cache keys. Hence, skip caching altogether in that case.
+    if entity_id:
+        cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language)
+        cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
+
     if cached_result:
         reviews = cached_result['reviews']
         count = cached_result['count']
-
     else:
         reviews, count = db_review.list_reviews(
             entity_id=entity_id,
@@ -384,22 +391,27 @@ def review_list_handler():
             language=language,
         )
         reviews = [db_review.to_dict(p) for p in reviews]
-        cache.set(cache_key, {
-            'reviews': reviews,
-            'count': count,
-        }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
 
-        # When reviews for an entity get created/updated, the existing cache for it need to be cleared. The keys used to
-        # cache reviews include parameters like user_id, sort, limit so on which are unavailable later. Hence, making it
-        # impossible to generate the cache keys at time of invalidation. To circumvent this issue, we track all cache
-        # keys for an entity_id. Cache keys of the form ws_cache_{entity_id} point to a list of cache keys of that
-        # entity. We can retrieve this list at time during invalidate and invalidate all caches for that entity_id.
-        track_cache_key = cache.gen_key('ws_cache', entity_id)
-        review_cache_keys = cache.get(track_cache_key, REVIEW_CACHE_NAMESPACE)
-        if review_cache_keys is None:
-            review_cache_keys = []
-        review_cache_keys.append(cache_key)
-        cache.set(track_cache_key, review_cache_keys, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
+        if entity_id:
+            cache.set(cache_key, {
+                'reviews': reviews,
+                'count': count,
+            }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
+
+            # When reviews for an entity get created/updated, the existing cache for it need to be cleared. The keys
+            # used to cache reviews include parameters like user_id, sort, limit so on which are unavailable later.
+            # Hence, making it impossible to generate the cache keys at time of invalidation. To circumvent this issue,
+            # we track all cache keys for an entity_id. Cache keys of the form ws_cache_{entity_id} point to a list of
+            # cache keys of that entity. We can retrieve this list at time during invalidate and invalidate all caches
+            # for that entity_id.
+
+            track_cache_key = cache.gen_key('ws_cache', entity_id)
+            review_cache_keys = cache.get(track_cache_key, REVIEW_CACHE_NAMESPACE)
+            if review_cache_keys is None:
+                review_cache_keys = []
+            review_cache_keys.append(cache_key)
+            logging.error(track_cache_key, review_cache_keys)
+            cache.set(track_cache_key, review_cache_keys, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
 
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 
