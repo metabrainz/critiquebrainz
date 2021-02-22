@@ -1,0 +1,13 @@
+PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
+
+# Database backup creation
+10 00 * * * critiquebrainz /usr/local/bin/python /code/manage.py dump full_db -l /data/backups -r >> /var/log/dump_backup.log 2>&1
+
+# Public MB-style dump creation
+15 00 * * * critiquebrainz /usr/local/bin/python /code/manage.py dump public -l /data/dumps/dump -r >> /var/log/public_dump_create.log 2>&1
+
+# JSON dump creation
+20 00 * * * critiquebrainz /usr/local/bin/python /code/manage.py dump json -l /data/dumps/json -r >> /var/log/json_dump_create.log 2>&1
+
+# Copy everything over...
+45 00 * * * critiquebrainz /code/admin/rsync-dump-files.sh

@@ -1,7 +1,5 @@
 FROM metabrainz/python:3.8-20210115
 
-ARG DEPLOY_ENV
-
 RUN apt-get update \
      && apt-get install -y --no-install-recommends \
                         build-essential \
@@ -58,27 +56,28 @@ RUN useradd --create-home --shell /bin/bash critiquebrainz
 # Services #
 ############
 
-COPY ./docker/consul-template-uswgi.conf /etc/consul-template-uswgi.conf
-COPY ./docker/consul-template-cron.conf /etc/consul-template-cron.conf
-
 # runit service files
 # All services are created with a `down` file, preventing them from starting
 # rc.local removes the down file for the specific service we want to run in a container
 # http://smarden.org/runit/runsv.8.html
 
-COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.service /etc/service/uwsgi/run
-RUN chmod 755 /etc/service/uwsgi/run
-COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
-RUN touch /etc/service/uswgi/down
+COPY ./docker/rc.local /etc/rc.local
+
+# UWSGI
+COPY ./docker/uwsgi/consul-template-uwsgi.conf /etc/consul-template-uwsgi.conf
+COPY ./docker/uwsgi/uwsgi.service /etc/service/uwsgi/run
+COPY ./docker/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
+RUN touch /etc/service/uwsgi/down
 
 # cron jobs
-COPY ./docker/$DEPLOY_ENV/cron/cron.service /etc/service/cron/run
-ADD ./docker/prod/cron/jobs /tmp/crontab
-RUN chmod 0644 /tmp/crontab && crontab -u critiquebrainz /tmp/crontab
-RUN rm /tmp/crontab
+COPY ./docker/cron/consul-template-cron-config.conf /etc/consul-template-cron-config.conf
+COPY ./docker/cron/cron-config.service /etc/service/cron-config/run
+COPY ./docker/cron/crontab /etc/cron.d/critiquebrainz
+RUN touch /etc/service/cron/down
+RUN touch /etc/service/cron-config/down
+
 RUN touch /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log \
     && chown critiquebrainz:critiquebrainz /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log
-RUN touch /etc/service/cron/down
 
 ARG GIT_COMMIT_SHA
 ENV GIT_SHA ${GIT_COMMIT_SHA}
