@@ -175,7 +175,7 @@ def create(connection, review_id, text=None, rating=None):
     # Convert ratings to values on a scale 0-100
     rating = RATING_SCALE_0_100.get(rating)
 
-    query = sqlalchemy.text("""INSERT INTO revision(review_id, timestamp, text, rating) 
+    query = sqlalchemy.text("""INSERT INTO revision(review_id, timestamp, text, rating)
         VALUES (:review_id, :timestamp, :text, :rating)""")
     params = {
         "review_id": review_id,

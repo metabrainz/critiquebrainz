@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from flask_babel import lazy_gettext, Locale
+from flask_babel import lazy_gettext
 from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
 from wtforms.widgets import HiddenInput, Input
@@ -26,7 +26,7 @@ for language_code in supported_languages:
 
 
 class ReviewEditForm(FlaskForm):
-    state = StringField(widget=HiddenInput(), default='draft', validators=[validators.DataRequired()])
+    state = StringField(widget=HiddenInput(), default='draft', validators=[validators.InputRequired()])
     text = TextAreaField(lazy_gettext("Text"), [
         validators.Optional(),
         StateAndLength(min=MIN_REVIEW_LENGTH, max=MAX_REVIEW_LENGTH,
@@ -58,9 +58,9 @@ class ReviewEditForm(FlaskForm):
 
 class ReviewCreateForm(ReviewEditForm):
     agreement = BooleanField(validators=[
-        validators.DataRequired(message=lazy_gettext("You need to accept the license agreement!")),
+        validators.InputRequired(message=lazy_gettext("You need to accept the license agreement!")),
     ])
 
 
 class ReviewReportForm(FlaskForm):
-    reason = TextAreaField(validators=[validators.DataRequired()])
+    reason = TextAreaField(validators=[validators.InputRequired()])

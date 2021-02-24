@@ -16,14 +16,11 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from unittest import mock
-
 from flask import url_for
 
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 from critiquebrainz.db.user import User
 from critiquebrainz.frontend.testing import FrontendTestCase
 
@@ -32,13 +29,6 @@ class RateViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(RateViewsTestCase, self).setUp()
-        self.test_entity = {
-            'id': 'e7aad618-fa86-3983-9e77-405e21796eca',
-            'title': 'Test Release Group',
-            'first-release-year': 1970,
-        }
-        mb_release_group.get_release_group_by_id = mock.MagicMock()
-        mb_release_group.get_release_group_by_id.return_value = self.test_entity
         self.reviewer = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
             "display_name": u"Reviewer",
         }))
@@ -49,10 +39,10 @@ class RateViewsTestCase(FrontendTestCase):
 
     def test_rate(self):
         self.temporary_login(self.reviewer)
-
+        entity_id = 'e7aad618-fa86-3983-9e77-405e21796eca'
         # Test for first time rating (no review exists)
         payload = {
-            'entity_id': self.test_entity['id'],
+            'entity_id': entity_id,
             'entity_type': 'release_group',
             'rating': 4
         }
@@ -61,10 +51,10 @@ class RateViewsTestCase(FrontendTestCase):
             data=payload
         )
 
-        self.assertRedirects(response, '/release-group/{}'.format(self.test_entity['id']))
+        self.assertRedirects(response, '/release-group/{}'.format(entity_id))
 
         reviews, review_count = db_review.list_reviews(
-            entity_id=self.test_entity['id'],
+            entity_id=entity_id,
             entity_type='release_group',
             user_id=self.reviewer.id
         )
@@ -74,13 +64,13 @@ class RateViewsTestCase(FrontendTestCase):
         self.assertEqual(review['text'], None)
         self.assertEqual(review['rating'], 4)
 
-        response = self.client.get('/release-group/{}'.format(self.test_entity['id']))
+        response = self.client.get('/release-group/{}'.format(entity_id))
         self.assert200(response)
         self.assertIn('We have updated your rating for this entity!', str(response.data))
 
         # Test after rating is cleared for review with NO text
         payload = {
-            'entity_id': self.test_entity['id'],
+            'entity_id': entity_id,
             'entity_type': 'release_group',
             'rating': None
         }
@@ -90,7 +80,7 @@ class RateViewsTestCase(FrontendTestCase):
         )
 
         reviews, review_count = db_review.list_reviews(
-            entity_id=self.test_entity['id'],
+            entity_id=entity_id,
             entity_type='release_group',
             user_id=self.reviewer.id
         )
@@ -100,7 +90,7 @@ class RateViewsTestCase(FrontendTestCase):
         # Test after rating is cleared for review with some text
         self.review = db_review.create(
             user_id=self.reviewer.id,
-            entity_id=self.test_entity['id'],
+            entity_id=entity_id,
             entity_type="release_group",
             text="Test Review.",
             rating=4,
@@ -109,7 +99,7 @@ class RateViewsTestCase(FrontendTestCase):
         )
 
         payload = {
-            'entity_id': self.test_entity['id'],
+            'entity_id': entity_id,
             'entity_type': 'release_group',
             'rating': None
         }
@@ -119,7 +109,7 @@ class RateViewsTestCase(FrontendTestCase):
         )
 
         reviews, review_count = db_review.list_reviews(
-            entity_id=self.test_entity['id'],
+            entity_id=entity_id,
             entity_type='release_group',
             user_id=self.reviewer.id
         )

@@ -5,5 +5,5 @@ from wtforms import TextAreaField, validators
 
 class AdminActionForm(FlaskForm):
     reason = TextAreaField(validators=[
-        validators.DataRequired(message=lazy_gettext("You need to specify a reason for taking this action."))
+        validators.InputRequired(message=lazy_gettext("You need to specify a reason for taking this action."))
     ])

@@ -1,4 +1,4 @@
-FROM metabrainz/python:3.8
+FROM metabrainz/python:3.8-20201201
 
 ENV DOCKERIZE_VERSION v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
@@ -33,6 +33,8 @@ RUN apt-get update \
 # Specifying password so that client doesn't ask scripts for it...
 ENV PGPASSWORD "critiquebrainz"
 
+RUN pip install --upgrade pip==21.0.1
+
 COPY requirements.txt /code/
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -42,7 +44,7 @@ COPY . /code/
 RUN pybabel compile -d critiquebrainz/frontend/translations
 
 CMD dockerize -wait tcp://db_test:5432 -timeout 60s \
-    dockerize -wait tcp://musicbrainz_db:5432 -timeout 360s \
+    dockerize -wait tcp://musicbrainz_db:5432 -timeout 600s \
     python manage.py init_db --test-db \
     && py.test --junitxml=/data/test_report.xml \
             --cov-report xml:/data/coverage.xml

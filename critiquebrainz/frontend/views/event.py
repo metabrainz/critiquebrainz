@@ -51,7 +51,7 @@ def entity(id):
         event['artists_grouped'] = groupby(artists_sorted, itemgetter('type'))
 
     if current_user.is_authenticated:
-        my_reviews, my_count = db_review.list_reviews(
+        my_reviews, _ = db_review.list_reviews(
             entity_id=event['id'],
             entity_type='event',
             user_id=current_user.id

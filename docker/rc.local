@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "Hello, this is rc.local. CONTAINER_NAME is $CONTAINER_NAME, and DEPLOY_ENV is $DEPLOY_ENV"
+
+if [ "${CONTAINER_NAME}" = "critiquebrainz-web-${DEPLOY_ENV}" ]
+then
+    echo "starting uwsgi"
+    rm -f /etc/service/uwsgi/down
+elif [ "${CONTAINER_NAME}" = "critiquebrainz-cron-${DEPLOY_ENV}" ]
+then
+    echo "starting cron"
+    rm -f /etc/service/cron/down
+    rm -f /etc/service/cron-config/down
+fi
+
+exit 0

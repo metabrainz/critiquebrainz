@@ -1,6 +1,4 @@
-FROM metabrainz/python:3.8
-
-ARG DEPLOY_ENV
+FROM metabrainz/python:3.8-20210115
 
 RUN apt-get update \
      && apt-get install -y --no-install-recommends \
@@ -31,6 +29,8 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
    && apt-get install -y nodejs \
    && rm -rf /var/lib/apt/lists/*
 
+RUN pip install --upgrade pip==21.0.1
+
 RUN pip install --no-cache-dir uWSGI==2.0.18
 
 RUN mkdir /code
@@ -58,24 +58,28 @@ RUN useradd --create-home --shell /bin/bash critiquebrainz
 # Services #
 ############
 
-# Consul Template service is already set up with the base image.
-# Just need to copy the configuration.
-COPY ./docker/prod/consul-template.conf /etc/consul-template.conf
+# runit service files
+# All services are created with a `down` file, preventing them from starting
+# rc.local removes the down file for the specific service we want to run in a container
+# http://smarden.org/runit/runsv.8.html
 
-COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.service /etc/service/uwsgi/run
-RUN chmod 755 /etc/service/uwsgi/run
-COPY ./docker/$DEPLOY_ENV/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
+COPY ./docker/rc.local /etc/rc.local
+
+# UWSGI
+COPY ./docker/uwsgi/consul-template-uwsgi.conf /etc/consul-template-uwsgi.conf
+COPY ./docker/uwsgi/uwsgi.service /etc/service/uwsgi/run
+COPY ./docker/uwsgi/uwsgi.ini /etc/uwsgi/uwsgi.ini
+RUN touch /etc/service/uwsgi/down
 
 # cron jobs
-ADD ./docker/prod/cron/jobs /tmp/crontab
-RUN chmod 0644 /tmp/crontab && crontab -u critiquebrainz /tmp/crontab
-RUN rm /tmp/crontab
+COPY ./docker/cron/consul-template-cron-config.conf /etc/consul-template-cron-config.conf
+COPY ./docker/cron/cron-config.service /etc/service/cron-config/run
+COPY ./docker/cron/crontab /etc/cron.d/critiquebrainz
+RUN touch /etc/service/cron/down
+RUN touch /etc/service/cron-config/down
+
 RUN touch /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log \
     && chown critiquebrainz:critiquebrainz /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log
-
-# Make sure the cron service doesn't start automagically
-# http://smarden.org/runit/runsv.8.html
-RUN touch /etc/service/cron/down
 
 ARG GIT_COMMIT_SHA
 ENV GIT_SHA ${GIT_COMMIT_SHA}
