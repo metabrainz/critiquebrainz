@@ -1,17 +1,6 @@
 # pylint: disable=unused-variable
-from flask import render_template, g
-
-
-def get_sentry_event_id():
-    """Makes sentry_event_id optional for error handlers
-
-    Returns:
-        sentry_event_id if available else None
-    """
-    try:
-        return g.sentry_event_id
-    except AttributeError:
-        return None
+from flask import render_template
+from sentry_sdk import last_event_id
 
 
 def init_error_handlers(app):
@@ -33,8 +22,8 @@ def init_error_handlers(app):
 
     @app.errorhandler(500)
     def internal_server_error(error):
-        return render_template('errors/500.html', error=error, event_id=get_sentry_event_id()), 500
+        return render_template('errors/500.html', error=error, event_id=last_event_id()), 500
 
     @app.errorhandler(503)
     def service_unavailable(error):
-        return render_template('errors/503.html', error=error, event_id=get_sentry_event_id()), 503
+        return render_template('errors/503.html', error=error, event_id=last_event_id()), 503
