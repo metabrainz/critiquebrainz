@@ -8,7 +8,6 @@ MB_DATABASE_URI = "postgresql://musicbrainz:musicbrainz@musicbrainz_db:5432/musi
 
 # Logging
 LOG_FILE = None
-LOG_EMAIL = None
 LOG_SENTRY = None
 
 # MusicBrainz
