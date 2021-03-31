@@ -8,18 +8,18 @@
   <p><code>{% block error_info %}{{ error }}{% endblock %}</code></p>
   <p><a href="{{ url_for('frontend.index') }}">{{ _('Back to home page') }}</a></p>
 
-  {% if config.SENTRY_DSN_PUBLIC and event_id %}
+  {% if config.LOG_SENTRY.dsn and event_id %}
     <script
       src="https://browser.sentry-cdn.com/6.2.4/bundle.min.js"
       integrity="sha384-b3mYy/x0ZxlqU5OjYvVD7RczftJVOXmpHSmrcqpL4c+kBSXWEnRL2Puv9eMjYmDq"
       crossorigin="anonymous">
     </script>
+
+    <script>
       Sentry.init({
         eventId: '{{ event_id }}',
-        dsn: '{{ config.SENTRY_DSN_PUBLIC }}'
+        dsn: '{{ config.LOG_SENTRY.dsn }}'
       });
-    <script>
-
     </script>
   {% endif %}
 {% endblock %}
