@@ -12,11 +12,10 @@ import os
 SECRET_KEY = '''{{template "KEY" "secret_key"}}'''
 
 LOG_SENTRY = {
-    'dsn': '''{{template "KEY" "sentry/dsn_private"}}''',
+    'dsn': '''{{template "KEY" "sentry/dsn"}}''',
     'environment': '''{{template "KEY" "sentry/environment"}}''',
     'release': os.getenv('GIT_SHA', None),
 }
-SENTRY_DSN_PUBLIC = '''{{template "KEY" "sentry/dsn_public"}}'''
 
 MUSICBRAINZ_HOSTNAME = '''{{template "KEY" "musicbrainz/hostname"}}'''
 MUSICBRAINZ_USERAGENT = '''{{template "KEY" "musicbrainz/useragent"}}'''

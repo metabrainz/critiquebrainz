@@ -48,12 +48,6 @@ SUPPORTED_LANGUAGES = [
 # List of administrators (MusicBrainz usernames as strings)
 ADMINS = []
 
-
-# EXTERNAL SERVICES
-
-SENTRY_DSN_PUBLIC = None
-SENTRY_TIMEOUT = 5
-
 # MusicBrainz
 MUSICBRAINZ_HOSTNAME = None
 MUSICBRAINZ_USERAGENT = "CritiqueBrainz"
