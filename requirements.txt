@@ -1,4 +1,4 @@
-git+https://github.com/metabrainz/brainzutils-python.git#sentry-additional-settings
+git+https://github.com/metabrainz/brainzutils-python.git@v1.18.1
 beautifulsoup4==4.8.0
 coverage==4.4.1
 click==6.7
