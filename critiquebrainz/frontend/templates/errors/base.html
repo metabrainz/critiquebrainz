@@ -17,9 +17,9 @@
 
     <script>
       Sentry.init({
-        eventId: '{{ event_id }}',
         dsn: '{{ config.LOG_SENTRY.dsn }}'
       });
+      Sentry.showReportDialog({ eventId: '{{ event_id }}' });
     </script>
   {% endif %}
 {% endblock %}

@@ -33,7 +33,6 @@ def index():
 
 @frontend_bp.route('/about')
 def about():
-    a = 1 / 0
     return render_template('index/about.html')
 
 
