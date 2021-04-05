@@ -340,11 +340,11 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
 
 
 def invalidate_ws_entity_cache(entity_id):
-    track_cache_key = cache.gen_key('ws_cache', entity_id)
-    cache_keys = cache.get(track_cache_key, namespace=REVIEW_CACHE_NAMESPACE)
-    if cache_keys:
-        cache.delete_many(cache_keys, namespace=REVIEW_CACHE_NAMESPACE)
-        cache.delete(track_cache_key, namespace=REVIEW_CACHE_NAMESPACE)
+    cache_keys_for_entity_id_key = cache.gen_key('ws_cache', entity_id)
+    cache_keys_to_delete = cache.smembers(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
+    if not cache_keys_to_delete:
+        cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
+        cache.delete(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
 
 
 # pylint: disable=too-many-branches
