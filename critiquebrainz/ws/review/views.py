@@ -369,13 +369,9 @@ def review_list_handler():
 
     # TODO(roman): Ideally caching logic should live inside the model. Otherwise it
     # becomes hard to track all this stuff.
-    cache_key = None
-    cached_result = None
 
-    # If entity_id is absent, it is not possible to track cache keys. Hence, skip caching altogether in that case.
-    if entity_id:
-        cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language)
-        cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
+    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language)
+    cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
 
     if cached_result:
         reviews = cached_result['reviews']
@@ -392,20 +388,21 @@ def review_list_handler():
         )
         reviews = [db_review.to_dict(p) for p in reviews]
 
-        if entity_id:
-            cache.set(cache_key, {
-                'reviews': reviews,
-                'count': count,
-            }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
+        cache.set(cache_key, {
+            'reviews': reviews,
+            'count': count,
+        }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
 
-            # When we cache the results of a request, we include (entity_id, user_id, sort, limit, offset, language)
-            # in the cache key. When entity_id is edited or deleted, we need to expire all cache items for this entity.
-            # To do this, we track all of the cache keys for the entity in a separate cache item, ws_cache_{entity_id}.
-            # These keys are retrieved and all keys are expired in invalidate_ws_entity_cache.
-            cache_keys_for_entity_id_key = cache.gen_key('ws_cache', entity_id)
-            cache.sadd(cache_keys_for_entity_id_key, cache_key,
-                       expirein=REVIEW_CACHE_TIMEOUT,
-                       namespace=REVIEW_CACHE_NAMESPACE)
+        # When we cache the results of a request, we include (entity_id, user_id, sort, limit, offset, language)
+        # in the cache key. When entity_id is edited or deleted, we need to expire all cache items for this entity.
+        # To do this, we track all of the cache keys for the entity in a separate cache item, ws_cache_{entity_id}.
+        # These keys are retrieved and all keys are expired in invalidate_ws_entity_cache.
+        # For keys without an entity_id, we add them to a separate cache item ws_cache_entity_id_absent. The keys in
+        # this set invalidated when any review is modified or updated.
+        cache_keys_for_entity_id_key = cache.gen_key('ws_cache', entity_id if entity_id else 'entity_id_absent')
+        cache.sadd(cache_keys_for_entity_id_key, cache_key,
+                   expirein=REVIEW_CACHE_TIMEOUT,
+                   namespace=REVIEW_CACHE_NAMESPACE)
 
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 

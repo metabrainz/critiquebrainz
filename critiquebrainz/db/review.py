@@ -346,6 +346,12 @@ def invalidate_ws_entity_cache(entity_id):
         cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
         cache.delete(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
 
+    cache_keys_for_no_entity_id_key = cache.gen_key('ws_cache', 'entity_id_absent')
+    cache_keys_to_delete = cache.smembers(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
+    if not cache_keys_for_no_entity_id_key:
+        cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
+        cache.delete(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
+
 
 # pylint: disable=too-many-branches
 def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_id=None,
