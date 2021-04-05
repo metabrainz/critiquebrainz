@@ -235,7 +235,7 @@ def get_top_users_overall():
             "score": (int),
         }
     """
-    key = cache.gen_key("top_users_overall", _CACHE_NAMESPACE)
+    key = "top_users_overall"
     top_users = cache.get(key, _CACHE_NAMESPACE)
 
     # if could not fetch results from cache, or fetched results have to be updated
