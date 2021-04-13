@@ -60,6 +60,9 @@
                   {% endif %}
                   )
                 {% endif %}
+
+              {%- elif review.entity_type == 'artist' -%}
+                <strong>{{ entity.name | default(_('[Unknown artist]')) }}</strong>
               {%- endif -%}
 
             </a>
