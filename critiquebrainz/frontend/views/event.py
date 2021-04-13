@@ -47,7 +47,11 @@ def entity(id):
         external_reviews = []
 
     if 'artist-rels' in event and event['artist-rels']:
-        artists_sorted = sorted(event['artist-rels'], key=itemgetter('type'))
+        artists_unique = []
+        for artist in event['artist-rels']:
+            if artist not in artists_unique:
+                artists_unique.append(artist)
+        artists_sorted = sorted(artists_unique, key=itemgetter('type'))
         event['artists_grouped'] = groupby(artists_sorted, itemgetter('type'))
 
     if current_user.is_authenticated:
