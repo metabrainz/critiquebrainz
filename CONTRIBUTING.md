@@ -11,5 +11,5 @@ Try to provide a good description for the ticket. If it's a bug report, tell us 
 **All MetaBrainz projects have a set of general contribution guidelines: https://github.com/metabrainz/guidelines.** Make sure
 to take a look at the documents in that repository, especially ones directly related to CritiqueBrainz (Python, SQL, etc.).
 
-One of the best ways to discuss something with us is by connecting to the [#metabrainz](irc://irc.freenode.net/metabrainz)
-IRC channel on the Freenode network. Other ways to communicate with us are described at https://metabrainz.org/contact.
+One of the best ways to discuss something with us is by connecting to the [#metabrainz](ircs://irc.libera.chat:6697/metabrainz)
+IRC channel on the Libera.Chat network. Other ways to communicate with us are described at https://metabrainz.org/contact.
