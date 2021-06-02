@@ -81,8 +81,7 @@ function run_tests {
                 run --rm critiquebrainz_test \
                 dockerize -wait tcp://db_test:5432 -timeout 60s \
                 dockerize -wait tcp://musicbrainz_db:5432 -timeout 600s \
-                python manage.py init_db --test-db \
-                && pytest --junitxml=reports/tests.xml "$@"
+                pytest --junitxml=reports/tests.xml "$@"
 }
 
 
