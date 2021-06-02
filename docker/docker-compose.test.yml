@@ -29,7 +29,7 @@ services:
       context: ..
       dockerfile: ./docker/Dockerfile.test
     volumes:
-      - ..:/code:z
+      - ..:/code
     links:
       - db_test
       - musicbrainz_db
