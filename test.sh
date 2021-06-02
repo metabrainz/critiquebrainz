@@ -10,10 +10,7 @@
 # ./test.sh -d             stop unit test containers and remove them
 
 COMPOSE_FILE_LOC=docker/docker-compose.test.yml
-COMPOSE_PROJECT_NAME_ORIGINAL=critiquebrainz_test
-# Project name is sanitized by Compose, so we need to do the same thing.
-# See https://github.com/docker/compose/issues/2119.
-COMPOSE_PROJECT_NAME=$(echo ${COMPOSE_PROJECT_NAME_ORIGINAL} | awk '{print tolower($0)}' | sed 's/[^a-z0-9]*//g')
+COMPOSE_PROJECT_NAME=critiquebrainz_test
 
 if [[ ! -d "docker" ]]; then
     echo "This script must be run from the top level directory of the critiquebrainz-server source."
@@ -77,6 +74,16 @@ function dc_down {
                 down
 }
 
+function run_tests {
+    echo "Running tests"
+    docker-compose -f ${COMPOSE_FILE_LOC} \
+                   -p ${COMPOSE_PROJECT_NAME} \
+                run --rm critiquebrainz_test \
+                dockerize -wait tcp://db_test:5432 -timeout 60s \
+                dockerize -wait tcp://musicbrainz_db:5432 -timeout 600s \
+                pytest --junitxml=reports/tests.xml "$@"
+}
+
 
 
 if [[ "$1" == "-s" ]]; then
@@ -118,15 +125,11 @@ if [[ ${DB_EXISTS} -eq 1 && ${DB_RUNNING} -eq 1 ]]; then
     build_containers
     bring_up_db
     setup
-    echo "Running tests"
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                run --rm critiquebrainz_test pytest "$@"
-    # dc_down
+    run_tests "$@"
+    RET=$?
+    dc_down
+    exit $RET
 else
     # Else, we have containers, just run tests
-    echo "Running tests"
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                run --rm critiquebrainz_test pytest "$@"
+    run_tests "$@"
 fi

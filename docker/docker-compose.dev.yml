@@ -37,6 +37,7 @@ services:
       - critiquebrainz_redis
       - musicbrainz_db
       - static_builder
+    command: python3 manage.py runserver -h 0.0.0.0 -p 80 -d
 
   critiquebrainz_redis:
     image: redis:4.0-alpine

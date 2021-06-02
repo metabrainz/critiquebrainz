@@ -1,5 +1,9 @@
 FROM metabrainz/python:3.8-20210115
 
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
 RUN apt-get update \
      && apt-get install -y --no-install-recommends \
                         build-essential \
@@ -11,6 +15,14 @@ RUN apt-get update \
                         libssl-dev \
                         libxml2-dev \
                         libxslt1-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# PostgreSQL client
+RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+ENV PG_MAJOR 12
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client-$PG_MAJOR \
     && rm -rf /var/lib/apt/lists/*
 
 # Node
@@ -31,5 +43,3 @@ COPY . /code/
 
 # Compile translations
 RUN pybabel compile -d critiquebrainz/frontend/translations
-
-CMD python3 manage.py runserver -h 0.0.0.0 -p 80 -d

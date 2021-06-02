@@ -27,9 +27,13 @@ services:
   critiquebrainz_test:
     build:
       context: ..
-      dockerfile: ./docker/Dockerfile.test
+      dockerfile: ./docker/Dockerfile.dev
+    volumes:
+      - ..:/code
     links:
       - db_test
       - musicbrainz_db
       - critiquebrainz_redis
     network_mode: bridge
+    environment:
+      PGPASSWORD: critiquebrainz
