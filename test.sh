@@ -74,6 +74,17 @@ function dc_down {
                 down
 }
 
+function run_tests {
+    echo "Running tests"
+    docker-compose -f ${COMPOSE_FILE_LOC} \
+                   -p ${COMPOSE_PROJECT_NAME} \
+                run --rm critiquebrainz_test \
+                dockerize -wait tcp://db_test:5432 -timeout 60s \
+                dockerize -wait tcp://musicbrainz_db:5432 -timeout 600s \
+                python manage.py init_db --test-db \
+                && pytest --junitxml=reports/tests.xml "$@"
+}
+
 
 
 if [[ "$1" == "-s" ]]; then
@@ -115,15 +126,11 @@ if [[ ${DB_EXISTS} -eq 1 && ${DB_RUNNING} -eq 1 ]]; then
     build_containers
     bring_up_db
     setup
-    echo "Running tests"
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                run --rm critiquebrainz_test pytest "$@"
-    # dc_down
+    run_tests "$@"
+    RET=$?
+    dc_down
+    exit $RET
 else
     # Else, we have containers, just run tests
-    echo "Running tests"
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                run --rm critiquebrainz_test pytest "$@"
+    run_tests "$@"
 fi
