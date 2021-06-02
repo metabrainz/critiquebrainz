@@ -10,10 +10,7 @@
 # ./test.sh -d             stop unit test containers and remove them
 
 COMPOSE_FILE_LOC=docker/docker-compose.test.yml
-COMPOSE_PROJECT_NAME_ORIGINAL=critiquebrainz_test
-# Project name is sanitized by Compose, so we need to do the same thing.
-# See https://github.com/docker/compose/issues/2119.
-COMPOSE_PROJECT_NAME=$(echo ${COMPOSE_PROJECT_NAME_ORIGINAL} | awk '{print tolower($0)}' | sed 's/[^a-z0-9]*//g')
+COMPOSE_PROJECT_NAME=critiquebrainz_test
 
 if [[ ! -d "docker" ]]; then
     echo "This script must be run from the top level directory of the critiquebrainz-server source."
