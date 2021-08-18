@@ -416,6 +416,7 @@ def review_post_handler(user):
     """
 
     def fetch_params():
+        global REVIEW_TEXT_MIN_LENGTH
         is_draft = Parser.bool('json', 'is_draft', optional=True) or False
         if is_draft:
             REVIEW_TEXT_MIN_LENGTH = None
