@@ -416,13 +416,11 @@ def review_post_handler(user):
     """
 
     def fetch_params():
-        global REVIEW_TEXT_MIN_LENGTH
         is_draft = Parser.bool('json', 'is_draft', optional=True) or False
-        if is_draft:
-            REVIEW_TEXT_MIN_LENGTH = None
+        min_review_length = None if is_draft else REVIEW_TEXT_MIN_LENGTH
         entity_id = Parser.uuid('json', 'entity_id')
         entity_type = Parser.string('json', 'entity_type', valid_values=ENTITY_TYPES)
-        text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
+        text = Parser.string('json', 'text', min=min_review_length, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
         rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX, optional=True)
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'

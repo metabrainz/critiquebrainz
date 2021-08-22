@@ -124,6 +124,19 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.post('/review/', headers=self.header(self.another_user), data=json.dumps(review_2))
         self.assert400(resp, "Review must have either text or rating")
 
+        # test writing a normal review works using the API. this test may not look useful but interestingly,
+        # writing a review using the API was broken for at least a year and no one seemed to notice or report
+        # it. so here it is, a test to write a valid review using the API.
+        review_3 = dict(
+            entity_id=self.review['entity_id'],
+            entity_type='release_group',
+            license_choice=self.license["id"],
+            language='en',
+            text="Hello, World! Let's write a long long long even longer the longest review........................"
+        )
+        resp = self.client.post('/review/', headers=self.header(self.another_user), data=json.dumps(review_3))
+        self.assert200(resp)
+
     def test_review_vote_entity(self):
         review = self.create_dummy_review()
         resp = self.client.get('/review/%s/vote' % review["id"], headers=self.header(self.user))
