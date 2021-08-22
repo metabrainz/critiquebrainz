@@ -12,7 +12,7 @@
     {{ recording.name }} {{ _('by') }}
     {% for credit in recording['artists'] %}
     {% if credit.name %}
-        <a href="{{ url_for('artist.entity', mbid=credit.id) }}">{{ credit.name }}</a>
+        <a href="{{ url_for('artist.entity', id=credit.id) }}">{{ credit.name }}</a>
         {% if credit.join_phrase %}{{ credit.join_phrase }}{% endif %}
     {% endif %}
     {% endfor %}
