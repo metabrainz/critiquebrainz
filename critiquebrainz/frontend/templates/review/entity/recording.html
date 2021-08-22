@@ -10,7 +10,7 @@
 {% block entity_title %}
   <h2 id="title">
     {% if recording %}
-      <a href="{{ url_for('recording.entity', id=review.entity_id) }}">recording.name</a>
+      <a href="{{ url_for('recording.entity', id=review.entity_id) }}">{{ recording.name }}</a>
     {% else %}
       {{ _('[Unknown recording]') }}
     {% endif %}
