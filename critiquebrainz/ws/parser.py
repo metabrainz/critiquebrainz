@@ -53,10 +53,12 @@ class Parser:
         _i = cls.get_key(src, key, optional)
         if _i is None:
             return None
-        if _i.isdigit() is False:
+
+        try:
+            _i = int(_i)
+        except ValueError:
             raise ParserError(key, 'NaN')
 
-        _i = int(_i)
         if max is not None and _i > max:
             raise ParserError(key, 'too large (max=%d)' % max)
         if min is not None and _i < min:
