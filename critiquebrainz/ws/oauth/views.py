@@ -7,9 +7,9 @@ from critiquebrainz.ws.oauth.exceptions import UnsupportedGrantType
 oauth_bp = Blueprint('ws_oauth', __name__)
 
 
-@oauth_bp.route('/token', methods=['POST'])
+@oauth_bp.route('/token', methods=['POST', 'OPTIONS'])
 @nocache
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def oauth_token_handler():
     """OAuth 2.0 token endpoint.
 

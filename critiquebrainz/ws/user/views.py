@@ -11,7 +11,7 @@ user_bp = Blueprint('ws_user', __name__)
 
 
 @user_bp.route('/me')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 @oauth.require_auth()
 def user_me_handler(user):
     """Get your profile information.
@@ -52,7 +52,7 @@ def user_me_handler(user):
 
 @user_bp.route('/me/reviews')
 @oauth.require_auth()
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_reviews_handler(user):
     """Get your reviews.
 
@@ -63,7 +63,7 @@ def user_reviews_handler(user):
 
 @user_bp.route('/me/applications')
 @oauth.require_auth()
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_applications_handler(user):
     """Get your applications.
 
@@ -100,7 +100,7 @@ def user_applications_handler(user):
 
 @user_bp.route('/me/tokens')
 @oauth.require_auth()
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_tokens_handler(user):
     """Get your OAuth tokens.
 
@@ -139,9 +139,9 @@ def user_tokens_handler(user):
     return jsonify(tokens=[t.to_dict() for t in user.tokens])
 
 
-@user_bp.route('/me', methods=['POST'])
+@user_bp.route('/me', methods=['POST', 'OPTIONS'])
 @oauth.require_auth('user')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_modify_handler(user):
     """Modify your profile.
 
@@ -167,9 +167,9 @@ def user_modify_handler(user):
     return jsonify(message='Request processed successfully')
 
 
-@user_bp.route('/me', methods=['DELETE'])
+@user_bp.route('/me', methods=['DELETE', 'OPTIONS'])
 @oauth.require_auth('user')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_delete_handler(user):
     """Delete your profile.
 
@@ -197,8 +197,8 @@ def user_delete_handler(user):
     return jsonify(message='Request processed successfully')
 
 
-@user_bp.route('/<uuid:user_id>', methods=['GET'])
-@crossdomain()
+@user_bp.route('/<uuid:user_id>', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def user_entity_handler(user_id):
     """Get profile of a user with a specified UUID.
 
@@ -232,8 +232,8 @@ def user_entity_handler(user_id):
     return jsonify(user=User(user).to_dict(inc))
 
 
-@user_bp.route('/', methods=['GET'])
-@crossdomain()
+@user_bp.route('/', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def review_list_handler():
     """Get list of users.
 
