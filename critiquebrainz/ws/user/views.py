@@ -10,7 +10,7 @@ from critiquebrainz.ws.parser import Parser
 user_bp = Blueprint('ws_user', __name__)
 
 
-@user_bp.route('/me')
+@user_bp.route('/me', methods=["GET", "OPTIONS"])
 @crossdomain(headers="Authorization, Content-Type")
 @oauth.require_auth()
 def user_me_handler(user):
@@ -139,7 +139,9 @@ def user_tokens_handler(user):
     return jsonify(tokens=[t.to_dict() for t in user.tokens])
 
 
-@user_bp.route('/me', methods=['POST', 'OPTIONS'])
+# don't need to add OPTIONS here because its already added
+# for this endpoint in user_me_handler
+@user_bp.route('/me', methods=['POST'])
 @oauth.require_auth('user')
 @crossdomain(headers="Authorization, Content-Type")
 def user_modify_handler(user):
@@ -167,7 +169,9 @@ def user_modify_handler(user):
     return jsonify(message='Request processed successfully')
 
 
-@user_bp.route('/me', methods=['DELETE', 'OPTIONS'])
+# don't need to add OPTIONS here because its already added
+# for this endpoint in user_me_handler
+@user_bp.route('/me', methods=['DELETE'])
 @oauth.require_auth('user')
 @crossdomain(headers="Authorization, Content-Type")
 def user_delete_handler(user):

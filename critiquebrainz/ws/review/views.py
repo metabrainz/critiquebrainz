@@ -185,7 +185,9 @@ def review_revision_entity_handler(review_id, rev):
     return jsonify(revision=revision)
 
 
-@review_bp.route('/<uuid:review_id>', methods=['DELETE', 'OPTIONS'])
+# don't need to add OPTIONS here because its already added
+# for this endpoint in review_entity_handler
+@review_bp.route('/<uuid:review_id>', methods=['DELETE'])
 @oauth.require_auth('review')
 @crossdomain(headers="Authorization, Content-Type")
 def review_delete_handler(review_id, user):
@@ -224,7 +226,9 @@ def review_delete_handler(review_id, user):
     return jsonify(message='Request processed successfully')
 
 
-@review_bp.route('/<uuid:review_id>', methods=['POST', 'OPTIONS'])
+# don't need to add OPTIONS here because its already added
+# for this endpoint in review_entity_handler
+@review_bp.route('/<uuid:review_id>', methods=['POST'])
 @oauth.require_auth('review')
 @crossdomain(headers="Authorization, Content-Type")
 def review_modify_handler(review_id, user):
@@ -392,7 +396,9 @@ def review_list_handler():
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 
 
-@review_bp.route('/', methods=['POST', 'OPTIONS'])
+# don't need to add OPTIONS here because its already added
+# for this endpoint in review_list_handler
+@review_bp.route('/', methods=['POST'])
 @oauth.require_auth('review')
 @crossdomain(headers="Authorization, Content-Type")
 def review_post_handler(user):
