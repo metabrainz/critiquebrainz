@@ -14,7 +14,7 @@ class ApplicationForm(FlaskForm):
         validators.Length(max=512, message=lazy_gettext("Client description needs to be at most 512 characters long."))])
     website = StringField(lazy_gettext('Homepage'), [
         validators.InputRequired(message=lazy_gettext("Homepage field is empty.")),
-        validators.URL(message=lazy_gettext("Homepage is not a valid URI."))])
+        validators.URL(require_tld=False, message=lazy_gettext("Homepage is not a valid URI."))])
     redirect_uri = StringField(lazy_gettext('Authorization callback URL'), [
         validators.InputRequired(message=lazy_gettext("Authorization callback URL field is empty.")),
-        validators.URL(message=lazy_gettext("Authorization callback URL is invalid."))])
+        validators.URL(require_tld=False, message=lazy_gettext("Authorization callback URL is invalid."))])
