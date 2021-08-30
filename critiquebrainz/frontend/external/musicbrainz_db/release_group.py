@@ -9,11 +9,11 @@ def get_release_group_by_id(mbid):
     key = cache.gen_key('release-group', mbid)
     release_group = cache.get(key)
     if not release_group:
-        release_group = db.fetch_multiple_release_groups(
-            [mbid],
+        release_group = db.get_release_group_by_id(
+            mbid,
             includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'tags'],
             unknown_entities_for_missing=True,
-        )[mbid]
+        )
         cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
     return release_group_rel.process(release_group)
 

@@ -67,7 +67,14 @@
         {{ _('Label') }}
       </span>
     {% endif %}
-  {% else %} {# release-group #}
+  {% elif entity_type == 'recording'  %}
+    <img src="{{ get_static_path('images/placeholder_disc.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type recording">
+        {{ _('Recording') }}
+      </span>
+    {% endif %}
+  {% elif entity_type == 'release_group' %}
     <img {{ attributes }} />
     {% if overlay_type %}
       <span class="entity-type release-group">
@@ -196,4 +203,20 @@
   {% else %}
     {{ _('<h4><a href="%(link)s">Sign in</a> to rate!</h4>', link=url_for('login.index', next=url_for('{}.entity'.format(entity_type), id=id))) }}
   {% endif %}
+{% endmacro %}
+
+{% macro display_artist_credit(result) %}
+    {% if result['artist-relation-list'] %}
+        {% if result['artist-credit-phrase'] %}
+            <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-credit-phrase'] }}</a>
+        {% else %}
+            <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+            {% set count = result['artist-relation-list'] | length %}
+            {% if count > 1 %}
+                + {{ count - 1 }} {{ _("more") }}
+            {% endif %}
+        {% endif %}
+    {% else %}
+        -
+    {% endif %}
 {% endmacro %}

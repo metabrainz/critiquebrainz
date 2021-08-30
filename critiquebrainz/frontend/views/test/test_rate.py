@@ -117,3 +117,27 @@ class RateViewsTestCase(FrontendTestCase):
         self.assertEqual(review_count, 1)
         review = reviews[0]
         self.assertEqual(review['rating'], None)
+
+    def test_artist_rating(self):
+        self.temporary_login(self.reviewer)
+        test_entity_id = 'f59c5520-5f46-4d2c-b2c4-822eabf53419'
+        payload = {
+            'entity_id': test_entity_id,
+            'entity_type': 'artist',
+            'rating': 4
+        }
+
+        response = self.client.post(url_for('rate.rate'), data=payload)
+        self.assertRedirects(response, '/artist/{}'.format(test_entity_id))
+        reviews, review_count = db_review.list_reviews(
+            entity_id=test_entity_id,
+            entity_type='artist',
+            user_id=self.reviewer.id
+        )
+
+        self.assertEqual(review_count, 1)
+        self.assertEqual(reviews[0]['rating'], 4)
+
+        response = self.client.get('/artist/{}'.format(test_entity_id))
+        self.assert200(response)
+        self.assertIn('We have updated your rating for this entity!', str(response.data))

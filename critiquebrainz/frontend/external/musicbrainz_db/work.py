@@ -15,9 +15,9 @@ def get_work_by_id(mbid):
     key = cache.gen_key('work', mbid)
     work = cache.get(key)
     if not work:
-        work = db.fetch_multiple_works(
-            [mbid],
+        work = db.get_work_by_id(
+            mbid,
             includes=['artist-rels', 'recording-rels'],
-        ).get(mbid)
+        )
         cache.set(key=key, val=work, time=DEFAULT_CACHE_EXPIRATION)
     return work

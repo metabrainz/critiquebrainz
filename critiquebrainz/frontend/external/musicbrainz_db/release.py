@@ -15,10 +15,10 @@ def get_release_by_id(mbid):
     key = cache.gen_key('release', mbid)
     release = cache.get(key)
     if not release:
-        release = db.fetch_multiple_releases(
-            [mbid],
+        release = db.get_release_by_id(
+            mbid,
             includes=['media', 'release-groups'],
             unknown_entities_for_missing=True,
-        ).get(mbid)
+        )
         cache.set(key=key, val=release, time=DEFAULT_CACHE_EXPIRATION)
     return release
