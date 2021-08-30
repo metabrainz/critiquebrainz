@@ -108,7 +108,7 @@ def list_tokens(*, client_id=None, refresh_token=None, access_token=None, limit=
             OFFSET :offset
         """.format(where_clause=filterstr)), filter_data)
         rows = results.fetchall()
-    return [dict(row) for row in rows] if rows.rowcount else None
+    return [dict(row) for row in rows]
 
 
 def delete(*, client_id=None, refresh_token=None, user_id=None):
