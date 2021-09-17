@@ -150,6 +150,111 @@ def get_by_id(review_id):
     return review
 
 
+def get_by_ids(review_ids):
+    """Get a list of reviews by their IDs.
+
+    Args:
+        review_ids (list<uuid>): ID's of the reviews.
+
+    Returns:
+        Dictionary with the following structure
+        {
+            "id": uuid,
+            "entity_id": uuid,
+            "entity_type": str,
+            "user_id": uuid,
+            "user": dict,
+            "edits": int,
+            "is_draft": bool,
+            "is_hidden": bool,
+            "language": str,
+            "license_id": str,
+            "source": str,
+            "source_url": str,
+            "last_revision: dict,
+            "votes": dict,
+            "popularity": int,
+            "rating": int,
+            "text": str,
+            "license": dict,
+            "published_on": datetime,
+        }
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT review.id AS id,
+                   review.entity_id,
+                   review.entity_type,
+                   review.user_id,
+                   review.edits,
+                   review.is_draft,
+                   review.is_hidden,
+                   review.license_id,
+                   review.language,
+                   review.source,
+                   review.source_url,
+                   review.published_on,
+                   revision.id AS last_revision_id,
+                   revision.timestamp,
+                   revision.text,
+                   revision.rating,
+                   "user".email,
+                   "user".created as user_created,
+                   "user".display_name,
+                   "user".show_gravatar,
+                   "user".musicbrainz_id,
+                   "user".is_blocked,
+                   license.full_name,
+                   license.info_url
+              FROM review
+              JOIN revision ON revision.review_id = review.id
+              JOIN "user" ON "user".id = review.user_id
+              JOIN license ON license.id = license_id
+             WHERE review.id IN :review_ids
+          ORDER BY timestamp DESC
+        """), {
+            "review_ids": tuple(map(str, review_ids)),
+        })
+
+        reviews = result.fetchall()
+        if not reviews:
+            raise db_exceptions.NoDataFoundException("Can't find any reviews for the supplied IDs: {id}".format(id=review_ids))
+
+    results = []
+    for review in reviews:
+        review = dict(review)
+        review["rating"] = RATING_SCALE_1_5.get(review["rating"])
+        review["last_revision"] = {
+            "id": review.pop("last_revision_id"),
+            "timestamp": review.pop("timestamp"),
+            "text": review.get("text"),
+            "rating": review.get("rating"),
+            "review_id": review.get("id"),
+        }
+        review["user"] = User({
+            "id": review["user_id"],
+            "display_name": review.pop("display_name", None),
+            "is_blocked": review.pop("is_blocked", False),
+            "show_gravatar": review.pop("show_gravatar", False),
+            "musicbrainz_username": review.pop("musicbrainz_id"),
+            "email": review.pop("email"),
+            "created": review.pop("user_created"),
+        })
+        review["license"] = {
+            "id": review["license_id"],
+            "info_url": review["info_url"],
+            "full_name": review["full_name"],
+        }
+        votes = db_revision.votes(review["last_revision"]["id"])
+        review["votes"] = {
+            "positive": votes["positive"],
+            "negative": votes["negative"],
+        }
+        review["popularity"] = review["votes"]["positive"] - review["votes"]["negative"]
+        results.append(review)
+    return results
+
+
 def set_hidden_state(review_id, *, is_hidden):
     """Hide or reveal a review.
 
