@@ -15,9 +15,10 @@ from critiquebrainz.db import (
 )
 from critiquebrainz.db.review import supported_languages, ENTITY_TYPES
 from critiquebrainz.decorators import crossdomain
-from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError
+from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError, ParserError
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
+from critiquebrainz.utils import validate_uuid
 
 review_bp = Blueprint('ws_review', __name__)
 
@@ -33,6 +34,13 @@ def get_review_or_404(review_id):
         raise NotFound("Can't find a review with ID: {review_id}".format(review_id=review_id))
     return review
 
+def get_reviews_or_404(review_ids):
+    """Get a review using review ID or raise error 404"""
+    try:
+        review = db_review.get_by_ids(review_ids)
+    except db_exceptions.NoDataFoundException:
+        raise NotFound("Can't find a review with ID: {review_ids}".format(review_ids=review_ids))
+    return review
 
 @review_bp.route('/<uuid:review_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(headers="Authorization, Content-Type")
@@ -92,6 +100,80 @@ def review_entity_handler(review_id):
     if review["is_hidden"]:
         raise NotFound("Review has been hidden.")
     return jsonify(review=db_review.to_dict(review))
+
+
+@review_bp.route('/<review_ids>', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
+def bulk_review_entity_handler(review_ids):
+    """Get a list of reviews with specified UUIDs.
+
+    **Request Example:**
+
+    .. code-block:: bash
+
+       $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de,e4364ed2-a5db-4427-8456-ea7604b499ef \\
+              -X GET
+
+    **Response Example:**
+
+    .. code-block:: json
+
+        {
+          "review": [
+            {
+              "created": "Tue, 10 Aug 2010 00:00:00 GMT",
+              "edits": 0,
+              "entity_id": "03e0a99c-3530-4e64-8f50-6592325c2082",
+              "entity_type": "release_group",
+              "id": "b7575c23-13d5-4adc-ac09-2f55a647d3de",
+              "language": "en",
+              "last_updated": "Tue, 10 Aug 2010 00:00:00 GMT",
+              "license": {
+                "full_name": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
+                "id": "CC BY-NC-SA 3.0",
+                "info_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/"
+              },
+              "popularity": 0,
+              "source": "BBC",
+              "source_url": "http://www.bbc.co.uk/music/reviews/3vfd",
+              "text": "TEXT CONTENT OF REVIEW",
+              "rating": 5,
+              "user": {
+                "created": "Wed, 07 May 2014 14:55:23 GMT",
+                "display_name": "Paul Clarke",
+                "id": "f5857a65-1eb1-4574-8843-ae6195de16fa",
+                "karma": 0,
+                "user_type": "Noob"
+              },
+              "votes": {
+                "positive": 0,
+                "negative": 0
+              }
+            },
+            -- more reviews here --
+          ]
+        }
+
+    :statuscode 200: no error
+    :statuscode 400: invalid UUID format
+    :statuscode 404: review not found
+
+    :resheader Content-Type: *application/json*
+    """
+    reviews = []
+    review_ids = list(review_ids.split(',')) # retrieve UUID's as list from URL parameter
+    for review_id in review_ids:
+        if not validate_uuid(review_id):
+            raise ParserError(review_id, 'not valid UUID')
+
+    reviews = get_reviews_or_404(review_ids)
+
+    for review in reviews:
+        if review["is_hidden"]:
+            review={"entity_id" : review["entity_id"], "is_hidden": True}
+        else:
+            review=db_review.to_dict(review)
+    return jsonify(review=reviews)
 
 
 @review_bp.route('/<uuid:review_id>/revisions', methods=['GET', 'OPTIONS'])
