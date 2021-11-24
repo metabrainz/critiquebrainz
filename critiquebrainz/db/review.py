@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime, timedelta
 from random import shuffle
+from typing import List
 
 import pycountry
 import sqlalchemy
@@ -48,11 +49,11 @@ def to_dict(review, confidential=False, connection=None):
     return review
 
 
-def get_by_id(review_id):
+def get_by_id(review_id: uuid.UUID):
     """Get a review by its ID.
 
     Args:
-        review_id (uuid): ID of the review.
+        review_id: ID of the review.
 
     Returns:
         Dictionary with the following structure
@@ -78,86 +79,20 @@ def get_by_id(review_id):
             "published_on": datetime,
         }
     """
-    with db.engine.connect() as connection:
-        result = connection.execute(sqlalchemy.text("""
-            SELECT review.id AS id,
-                   review.entity_id,
-                   review.entity_type,
-                   review.user_id,
-                   review.edits,
-                   review.is_draft,
-                   review.is_hidden,
-                   review.license_id,
-                   review.language,
-                   review.source,
-                   review.source_url,
-                   review.published_on,
-                   revision.id AS last_revision_id,
-                   revision.timestamp,
-                   revision.text,
-                   revision.rating,
-                   "user".email,
-                   "user".created as user_created,
-                   "user".display_name,
-                   "user".show_gravatar,
-                   "user".musicbrainz_id,
-                   "user".is_blocked,
-                   license.full_name,
-                   license.info_url
-              FROM review
-              JOIN revision ON revision.review_id = review.id
-              JOIN "user" ON "user".id = review.user_id
-              JOIN license ON license.id = license_id
-             WHERE review.id = :review_id
-          ORDER BY timestamp DESC
-        """), {
-            "review_id": review_id,
-        })
-
-        review = result.fetchone()
-        if not review:
-            raise db_exceptions.NoDataFoundException("Can't find review with ID: {id}".format(id=review_id))
-
-        review = dict(review)
-        review["rating"] = RATING_SCALE_1_5.get(review["rating"])
-        review["last_revision"] = {
-            "id": review.pop("last_revision_id"),
-            "timestamp": review.pop("timestamp"),
-            "text": review.get("text"),
-            "rating": review.get("rating"),
-            "review_id": review.get("id"),
-        }
-        review["user"] = User({
-            "id": review["user_id"],
-            "display_name": review.pop("display_name", None),
-            "is_blocked": review.pop("is_blocked", False),
-            "show_gravatar": review.pop("show_gravatar", False),
-            "musicbrainz_username": review.pop("musicbrainz_id"),
-            "email": review.pop("email"),
-            "created": review.pop("user_created"),
-        })
-        review["license"] = {
-            "id": review["license_id"],
-            "info_url": review["info_url"],
-            "full_name": review["full_name"],
-        }
-        votes = db_revision.votes(review["last_revision"]["id"])
-        review["votes"] = {
-            "positive": votes["positive"],
-            "negative": votes["negative"],
-        }
-        review["popularity"] = review["votes"]["positive"] - review["votes"]["negative"]
-    return review
+    reviews = get_by_ids([review_id])
+    if len(reviews) == 0:
+        raise db_exceptions.NoDataFoundException(f"Can't find any reviews for the supplied IDs: {review_id}")
+    return reviews[0]
 
 
-def get_by_ids(review_ids):
+def get_by_ids(review_ids: List[uuid.UUID]):
     """Get a list of reviews by their IDs.
 
     Args:
-        review_ids (list<uuid>): ID's of the reviews.
+        review_ids: ID's of the reviews.
 
     Returns:
-        Dictionary with the following structure
+        List of dictionary with each having the following structure
         {
             "id": uuid,
             "entity_id": uuid,
@@ -217,8 +152,6 @@ def get_by_ids(review_ids):
         })
 
         reviews = result.fetchall()
-        if not reviews:
-            raise db_exceptions.NoDataFoundException("Can't find any reviews for the supplied IDs: {id}".format(id=review_ids))
 
     results = []
     for review in reviews:

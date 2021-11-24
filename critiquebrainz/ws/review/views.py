@@ -1,5 +1,5 @@
 from brainzutils import cache
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import (
@@ -31,16 +31,9 @@ def get_review_or_404(review_id):
     try:
         review = db_review.get_by_id(review_id)
     except db_exceptions.NoDataFoundException:
-        raise NotFound("Can't find a review with ID: {review_id}".format(review_id=review_id))
+        raise NotFound(f"Can't find a review with ID: {review_id}")
     return review
 
-def get_reviews_or_404(review_ids):
-    """Get a review using review ID or raise error 404"""
-    try:
-        review = db_review.get_by_ids(review_ids)
-    except db_exceptions.NoDataFoundException:
-        raise NotFound("Can't find a review with ID: {review_ids}".format(review_ids=review_ids))
-    return review
 
 @review_bp.route('/<uuid:review_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(headers="Authorization, Content-Type")
@@ -102,16 +95,21 @@ def review_entity_handler(review_id):
     return jsonify(review=db_review.to_dict(review))
 
 
-@review_bp.route('/<review_ids>', methods=['GET', 'OPTIONS'])
+@review_bp.route('/reviews', methods=['GET', 'OPTIONS'])
 @crossdomain(headers="Authorization, Content-Type")
-def bulk_review_entity_handler(review_ids):
+def bulk_review_entity_handler():
     """Get a list of reviews with specified UUIDs.
+
+    .. note::
+
+        Hidden reviews are omitted from the response. Invalid uuids and uuids not associated
+        with a review are ignored.
 
     **Request Example:**
 
     .. code-block:: bash
 
-       $ curl https://critiquebrainz.org/ws/1/review/b7575c23-13d5-4adc-ac09-2f55a647d3de,e4364ed2-a5db-4427-8456-ea7604b499ef \\
+       $ curl https://critiquebrainz.org/ws/1/reviews?review_ids=b7575c23-13d5-4adc-ac09-2f55a647d3de,e4364ed2-a5db-4427-8456-ea7604b499ef \\
               -X GET
 
     **Response Example:**
@@ -119,8 +117,8 @@ def bulk_review_entity_handler(review_ids):
     .. code-block:: json
 
         {
-          "review": [
-            {
+          "reviews": {
+            "b7575c23-13d5-4adc-ac09-2f55a647d3de": {
               "created": "Tue, 10 Aug 2010 00:00:00 GMT",
               "edits": 0,
               "entity_id": "03e0a99c-3530-4e64-8f50-6592325c2082",
@@ -151,29 +149,20 @@ def bulk_review_entity_handler(review_ids):
               }
             },
             -- more reviews here --
-          ]
+          }
         }
 
     :statuscode 200: no error
-    :statuscode 400: invalid UUID format
-    :statuscode 404: review not found
-
     :resheader Content-Type: *application/json*
     """
-    reviews = []
-    review_ids = list(review_ids.split(',')) # retrieve UUID's as list from URL parameter
-    for review_id in review_ids:
-        if not validate_uuid(review_id):
-            raise ParserError(review_id, 'not valid UUID')
-
-    reviews = get_reviews_or_404(review_ids)
-
-    for review in reviews:
-        if review["is_hidden"]:
-            review={"entity_id" : review["entity_id"], "is_hidden": True}
-        else:
-            review=db_review.to_dict(review)
-    return jsonify(review=reviews)
+    # retrieve UUID's as list from URL parameter
+    review_ids = request.args.get("review_ids")
+    if not review_ids:
+        return jsonify(review={})
+    review_ids = review_ids.split(",")
+    reviews = db_review.get_by_ids(review_ids)
+    results = {review["id"]: review for review in reviews if not review["is_hidden"]}
+    return jsonify(reviews=results)
 
 
 @review_bp.route('/<uuid:review_id>/revisions', methods=['GET', 'OPTIONS'])
