@@ -1,5 +1,5 @@
 from brainzutils import cache
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import (
@@ -156,12 +156,13 @@ def bulk_review_entity_handler():
     :resheader Content-Type: *application/json*
     """
     # retrieve UUID's as list from URL parameter
+    current_app.logger.error("Bulk review endpoint here ;)")
     review_ids = request.args.get("review_ids")
     if not review_ids:
         return jsonify(review={})
-    review_ids = review_ids.split(",")
-    reviews = db_review.get_by_ids(review_ids)
-    results = {review["id"]: review for review in reviews if not review["is_hidden"]}
+    current_app.logger.error("Review IDs requested: %s", review_ids)
+    reviews = db_review.get_by_ids(review_ids.split(","))
+    results = { review["id"]: review for review in reviews if not review["is_hidden"] }
     return jsonify(reviews=results)
 
 
