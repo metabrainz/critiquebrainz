@@ -71,5 +71,9 @@ def bulk_review_entity_handler():
     if not review_ids:
         return jsonify(review={})
     reviews = db_review.get_by_ids(review_ids.split(","))
-    results = { str(review["id"]): review for review in reviews if not review["is_hidden"] }
+    results = {
+        str(review["id"]): db_review.to_dict(review)
+            for review in reviews
+            if not review["is_hidden"]
+    }
     return jsonify(reviews=results)
