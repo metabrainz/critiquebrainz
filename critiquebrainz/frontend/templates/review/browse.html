@@ -56,6 +56,21 @@
       {% if page > 1 %}
         <li class="previous"><a href="{{ url_for('review.browse', entity_type=entity_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
       {% endif %}
+
+			{% if page <= 2 %}
+				{% for pagination_index in range(1,[7, count//limit + 1]|min) %}
+					<li role="presentation" {{ "class=current" if page == pagination_index }}><a href="{{ url_for('review.browse', entity_type=entity_type, page=pagination_index) }}">{{ pagination_index }}</a></li>
+				{% endfor %}
+			{% elif page+2 > count//limit %}
+				{% for pagination_index in range(count//limit-4, count//limit + 2) %}
+					<li role="presentation" {{ "class=current" if page == pagination_index }}><a href="{{ url_for('review.browse', entity_type=entity_type, page=pagination_index) }}">{{ pagination_index }}</a></li>
+				{% endfor %}
+			{% else %}
+				{% for pagination_index in range(page-2, page+4) %}
+					<li role="presentation" {{ "class=current" if page == pagination_index }}><a href="{{ url_for('review.browse', entity_type=entity_type, page=pagination_index) }}">{{ pagination_index }}</a></li>
+				{% endfor %}
+			{% endif %}
+
       {% if page-1 < count//limit %}
         <li class="next"><a href="{{ url_for('review.browse', entity_type=entity_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
       {% endif %}

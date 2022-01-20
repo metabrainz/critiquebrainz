@@ -18,6 +18,7 @@
       background-color: @pager-bg;
       border: 1px solid @pager-border;
       border-radius: @pager-border-radius;
+      margin-bottom: @pager-margin-bottom;
     }
 
     > a:hover,
@@ -27,17 +28,12 @@
     }
   }
 
-  .next {
+  li.current  {
     > a,
-    > span {
-      float: right;
-    }
-  }
-
-  .previous {
-    > a,
-    > span {
-      float: left;
+    > a:hover,
+    > a:focus {
+      background-color: @pager-current-bg;
+      color: @pager-current-color;
     }
   }
 
