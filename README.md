@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://listenbrainz.org"><img src="https://github.com/metabrainz/metabrainz-logos/blob/master/logos/CritiqueBrainz/SVG/CritiqueBrainz_logo.svg" alt="CritiqueBrainz"></a>
+  <a href="https://critiquebrainz.org"><img src="https://github.com/metabrainz/metabrainz-logos/blob/master/logos/CritiqueBrainz/SVG/CritiqueBrainz_logo.svg" alt="CritiqueBrainz"></a>
 </h1>
 <h4 align="center">Server for the CritiqueBrainz project</h4>
 <p align="center">
