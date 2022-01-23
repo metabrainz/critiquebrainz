@@ -23,7 +23,7 @@
 
 CritiqueBrainz is a repository for Creative Commons licensed music reviews. Here you can read what other people have written about an album or event and write your own review!
 
-CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia.
+CritiqueBrainz is based on data from [MusicBrainz](https://musicbrainz.org) - open music encyclopedia.
 Everyone - including you - can participate and contribute.
 
 CritiqueBrainz is operated by the [MetaBrainz Foundation](https://metabrainz.org)
@@ -69,7 +69,6 @@ After that open `./docs/_build/html/index.html` in your favourite browser.
 ## License Notice
 
 ```
-
 Copyright (C) 2022 MetaBrainz Foundation Inc.
 
 This program is free software; you can redistribute it and/or modify
