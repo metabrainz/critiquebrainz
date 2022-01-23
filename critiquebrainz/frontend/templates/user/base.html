@@ -30,3 +30,8 @@
     {% block profile_content %}{% endblock %}
   </div>
 {% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ get_static_path('rating.js') }}"></script>
+{% endblock %}
