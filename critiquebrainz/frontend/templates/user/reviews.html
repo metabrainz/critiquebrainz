@@ -136,3 +136,8 @@
     {% endif %}
   {% endif %}
 {% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ get_static_path('rating.js') }}"></script>
+{% endblock %}
