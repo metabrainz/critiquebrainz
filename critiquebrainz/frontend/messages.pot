@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-22 18:40+0000\n"
+"POT-Creation-Date: 2022-01-29 06:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -536,6 +536,14 @@ msgstr ""
 msgid "more"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/macros.html:229
+msgid "Previous"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/macros.html:255
+msgid "Next"
+msgstr ""
+
 #: critiquebrainz/frontend/templates/navbar.html:6
 msgid "Toggle navigation"
 msgstr ""
@@ -691,57 +699,45 @@ msgid_plural "%(num)d reviews"
 msgstr[0] ""
 msgstr[1] ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:154
-#: critiquebrainz/frontend/templates/review/browse.html:57
-#: critiquebrainz/frontend/templates/work/entity.html:105
-msgid "Previous"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/artist/entity.html:157
-#: critiquebrainz/frontend/templates/review/browse.html:60
-#: critiquebrainz/frontend/templates/work/entity.html:108
-msgid "Next"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/artist/entity.html:168
+#: critiquebrainz/frontend/templates/artist/entity.html:159
 msgid "Artist information"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:174
+#: critiquebrainz/frontend/templates/artist/entity.html:165
 msgid "Member of"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:176
+#: critiquebrainz/frontend/templates/artist/entity.html:167
 msgid "Members"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:185
-#: critiquebrainz/frontend/templates/artist/entity.html:205
+#: critiquebrainz/frontend/templates/artist/entity.html:176
+#: critiquebrainz/frontend/templates/artist/entity.html:196
 msgid "View all..."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:193
+#: critiquebrainz/frontend/templates/artist/entity.html:184
 msgid "Former member of"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:195
+#: critiquebrainz/frontend/templates/artist/entity.html:186
 msgid "Former members"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:212
+#: critiquebrainz/frontend/templates/artist/entity.html:203
 #: critiquebrainz/frontend/templates/label/entity.html:75
 #: critiquebrainz/frontend/templates/place/entity.html:105
 #: critiquebrainz/frontend/templates/recording/entity.html:95
-#: critiquebrainz/frontend/templates/work/entity.html:121
+#: critiquebrainz/frontend/templates/work/entity.html:112
 msgid "External links"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:232
+#: critiquebrainz/frontend/templates/artist/entity.html:223
 #: critiquebrainz/frontend/templates/event/entity.html:142
 #: critiquebrainz/frontend/templates/label/entity.html:95
 #: critiquebrainz/frontend/templates/place/entity.html:135
 #: critiquebrainz/frontend/templates/recording/entity.html:115
-#: critiquebrainz/frontend/templates/work/entity.html:141
+#: critiquebrainz/frontend/templates/work/entity.html:132
 msgid "Edit on MusicBrainz"
 msgstr ""
 
@@ -2125,14 +2121,6 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/user/reviews.html:130
-msgid "Newer"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/user/reviews.html:133
-msgid "Older"
-msgstr ""
-
 #: critiquebrainz/frontend/templates/work/entity.html:68
 msgid "Recordings"
 msgstr ""
@@ -2141,7 +2129,7 @@ msgstr ""
 msgid "No recordings found"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/work/entity.html:118
+#: critiquebrainz/frontend/templates/work/entity.html:109
 msgid "Work information"
 msgstr ""
 
@@ -2202,7 +2190,8 @@ msgstr ""
 msgid "No logs to display."
 msgstr ""
 
-#: critiquebrainz/frontend/views/login.py:34
+#: critiquebrainz/frontend/views/login.py:36
+#: critiquebrainz/frontend/views/login.py:38
 msgid "Login failed."
 msgstr ""
 

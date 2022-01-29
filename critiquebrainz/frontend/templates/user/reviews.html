@@ -1,5 +1,5 @@
 {% extends 'user/base.html' %}
-
+{% from 'macros.html' import display_pagination with context %}
 {% block title %}{{ user.display_name }} - {{ _('Reviews') }} - CritiqueBrainz{% endblock %}
 
 {% block profile_content %}
@@ -125,14 +125,7 @@
     </table>
 
     {% if count > limit %}
-      <ul class="pager">
-        {% if page > 1 %}
-          <li class="previous"><a href="{{ url_for('user.reviews', user_id=user.id, page=page-1) }}">&larr; {{ _('Newer') }}</a></li>
-        {% endif %}
-        {% if page-1 < count//limit %}
-          <li class="next"><a href="{{ url_for('user.reviews', user_id=user.id, page=page+1) }}">{{ _('Older') }} &rarr;</a></li>
-        {% endif %}
-      </ul>
+      {{ display_pagination(page, (count/limit)|round(method='ceil')|int, 'user.reviews', {'user_id':user.id}) }}
     {% endif %}
   {% endif %}
 {% endblock %}
