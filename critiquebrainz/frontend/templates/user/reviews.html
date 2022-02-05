@@ -125,7 +125,7 @@
     </table>
 
     {% if count > limit %}
-      {{ display_pagination(page, (count/limit)|round(method='ceil')|int, 'user.reviews', {'user_id':user.id}) }}
+      {{ display_pagination(page, count, limit, 'user.reviews', {'user_id':user.id}) }}
     {% endif %}
   {% endif %}
 {% endblock %}

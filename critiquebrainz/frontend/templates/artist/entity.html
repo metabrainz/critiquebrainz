@@ -148,7 +148,7 @@
         <div class="clearfix"></div>
 
         {% if release_group_count > release_groups_limit %}
-          {{ display_pagination(page, (release_group_count/release_groups_limit)|round(method='ceil')|int, 'artist.entity', {'id': id, 'release_type':release_type}) }}
+          {{ display_pagination(page, release_group_count, release_groups_limit, 'artist.entity', {'id': id, 'release_type':release_type}) }}
         {% endif %}
       </div>
     {% endif %}

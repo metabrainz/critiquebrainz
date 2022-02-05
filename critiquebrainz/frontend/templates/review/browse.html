@@ -51,7 +51,7 @@
 </div>
 
 {% if count > limit %}
-  {{ display_pagination(page, (count/limit)|round(method='ceil')|int, 'review.browse', {'entity_type':entity_type}) }}
+  {{ display_pagination(page, count, limit, 'review.browse', {'entity_type':entity_type}) }}
 {% endif %}
 
 {% endblock %}

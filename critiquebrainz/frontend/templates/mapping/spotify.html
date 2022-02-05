@@ -47,7 +47,7 @@
     {% endfor %}
   </div>
   {% if count > limit %}
-    {{ display_pagination(page, (count/limit)|round(method='ceil')|int, 'mapping.spotify_add', {'release_group_id':release_group.id}) }}
+    {{ display_pagination(page, count, limit, 'mapping.spotify_add', {'release_group_id':release_group.id}) }}
   {% endif %}
 {% else %}
   <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No similar albums found') }}</p>

@@ -99,7 +99,7 @@
         </tbody>
       </table>
       {% if recording_count > recording_limit %}
-        {{ display_pagination(page, (recording_count/recording_limit)|round(method='ceil')|int, 'work.entity', {'id':id}) }}
+        {{ display_pagination(page, recording_count, recording_limit, 'work.entity', {'id':id}) }}
       {% endif %}
     {% endif %}
     <ul class="pagination"></ul>

@@ -221,7 +221,8 @@
     {% endif %}
 {% endmacro %}
 
-{% macro display_pagination(current_page, total_pages, page_info, parameter) %}
+{% macro display_pagination(current_page, count, limit, page_info, parameter) %}
+  {% set total_pages = (count/limit)|round(method='ceil')|int %}
   <div class="col-md-12 text-center">
     <nav aria-label="Page navigation">
       <ul class="pagination">
@@ -235,7 +236,7 @@
         {% endif %}
 
         {% if current_page == 5 %}
-          <li {{ "class=active" if current_page == 2 }}><a href="{{ url_for(page_info, page=2, **parameter) }}">{{ 2 }}</a></li>
+          <li><a href="{{ url_for(page_info, page=2, **parameter) }}">{{ 2 }}</a></li>
         {% endif %}
 
         {% for page_index in range([2,current_page-2]|max, [total_pages,current_page+3]|min) %}
@@ -243,7 +244,7 @@
         {% endfor %}
 
         {% if current_page == (total_pages-4) %}
-          <li {{ "class=active" if current_page == total_pages-1 }}><a href="{{ url_for(page_info, page=(total_pages-1), **parameter) }}">{{ total_pages-1 }}</a></li>
+          <li><a href="{{ url_for(page_info, page=(total_pages-1), **parameter) }}">{{ total_pages-1 }}</a></li>
         {% endif %}
 
         {% if (current_page < (total_pages - 4)) %}
@@ -252,7 +253,7 @@
 
         <li {{ "class=active" if current_page == total_pages }}><a href="{{ url_for(page_info, page=total_pages, **parameter) }}">{{ total_pages }}</a></li>
 
-        <li class="next {{'disabled' if current_page-1 >= count//limit }}"><a aria-label="Next" href="{{ url_for(page_info, page=page+1, **parameter) }}">{{ _('Next') }} &rarr;</a></li>
+        <li class="next {{'disabled' if (current_page-1) >= total_pages }}"><a aria-label="Next" href="{{ url_for(page_info, page=page+1, **parameter) }}">{{ _('Next') }} &rarr;</a></li>
       </ul>
     </nav>
   </div>
