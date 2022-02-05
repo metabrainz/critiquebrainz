@@ -9,10 +9,7 @@ from critiquebrainz.frontend import create_app
 class DataTestCase(TestCase):
 
     def create_app(self):
-        app = create_app(config_path=os.path.join(
-            os.path.dirname(os.path.realpath(__file__)),
-            '..', 'test_config.py'
-        ))
+        app = create_app()
         return app
 
     def setUp(self):

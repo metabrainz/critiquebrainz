@@ -2,7 +2,7 @@
 version: "2"
 services:
 
-  db_test:
+  db:
     image: postgres:12.3
     environment:
       POSTGRES_USER: critiquebrainz
@@ -24,14 +24,14 @@ services:
     image: redis:4.0-alpine
     network_mode: bridge
 
-  critiquebrainz_test:
+  critiquebrainz:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile.dev
     volumes:
       - ..:/code
     links:
-      - db_test
+      - db
       - musicbrainz_db
       - critiquebrainz_redis
     network_mode: bridge

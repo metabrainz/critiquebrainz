@@ -12,10 +12,7 @@ from critiquebrainz.ws.oauth import oauth
 class WebServiceTestCase(TestCase):
 
     def create_app(self):
-        app = create_app(config_path=os.path.join(
-            os.path.dirname(os.path.realpath(__file__)),
-            '..', 'test_config.py'
-        ))
+        app = create_app()
         oauth.init_app(app)
         return app
 
