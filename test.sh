@@ -36,7 +36,7 @@ function setup {
                    -p ${COMPOSE_PROJECT_NAME} \
                 run --rm critiquebrainz dockerize \
                   -wait tcp://db:5432 -timeout 60s \
-                bash -c "python3 manage.py init_db --test-db"
+                bash -c "python3 manage.py init_db"
 }
 
 function is_db_running {
