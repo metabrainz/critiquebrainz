@@ -17,8 +17,10 @@ services:
     image: metabrainz/musicbrainz-test-database:beta
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     network_mode: bridge
+    ports:
+      - "5430:5432"
 
   critiquebrainz_redis:
     image: redis:4.0-alpine
