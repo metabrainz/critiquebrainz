@@ -383,23 +383,28 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
     if filterstr:
         filterstr = " WHERE " + filterstr
 
+    latest_revision_query = """
+        JOIN (
+            revision
+            JOIN (
+                SELECT review.id AS review_uuid,
+                       MAX(timestamp) AS latest_timestamp
+                  FROM review
+                  JOIN revision ON review.id = review_id
+              GROUP BY review.id
+            ) AS latest
+              ON latest.review_uuid = revision.review_id
+             AND latest.latest_timestamp = revision.timestamp
+            ) AS latest_revision
+          ON review.id = latest_revision.review_id
+    """
+
     query = sqlalchemy.text("""
         SELECT COUNT(*)
           FROM review
-           JOIN (
-                revision
-                JOIN (
-                    SELECT review.id AS review_uuid,
-                           MAX(timestamp) AS latest_timestamp
-                      FROM review
-                      JOIN revision ON review.id = review_id
-                  GROUP BY review.id
-                  ) AS latest
-                  ON latest.review_uuid = revision.review_id
-                 AND latest.latest_timestamp = revision.timestamp
-               ) AS latest_revision ON review.id = latest_revision.review_id
+            {latest_revision_query}
             {filterstr}
-        """.format(filterstr=filterstr))
+        """.format(filterstr=filterstr, latest_revision_query=latest_revision_query))
 
     result = connection.execute(query, filter_data)
     count = result.fetchone()[0]
@@ -459,24 +464,13 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
      LEFT JOIN vote ON vote.revision_id = revision.id
           JOIN "user" ON review.user_id = "user".id
           JOIN license ON license.id = license_id
-          JOIN (
-                revision
-                JOIN (
-                    SELECT review.id AS review_uuid,
-                           MAX(timestamp) AS latest_timestamp
-                      FROM review
-                      JOIN revision ON review.id = review_id
-                  GROUP BY review.id
-                  ) AS latest
-                  ON latest.review_uuid = revision.review_id
-                 AND latest.latest_timestamp = revision.timestamp
-               ) AS latest_revision ON review.id = latest_revision.review_id
+        {latest_revision_query}   
         {where_clause}
       GROUP BY review.id, latest_revision.id, "user".id, license.id
         {order_by_clause}
          LIMIT :limit
         OFFSET :offset
-        """.format(where_clause=filterstr, order_by_clause=order_by_clause))
+        """.format(where_clause=filterstr, order_by_clause=order_by_clause, latest_revision_query=latest_revision_query))
 
     filter_data["limit"] = limit
     filter_data["offset"] = offset
