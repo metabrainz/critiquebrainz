@@ -257,7 +257,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
     reference will accompany the review.
 
     Args:
-        entity_id (uuid): ID of an entity that review is for.
+        entity_id: ID of an entity that review is for.
         entity_type (str): Entity type associated with the `entity_id`.
         user_id (uuid): ID of the reviewer.
         is_draft (bool): Whether this review is a draft (not shown to public).

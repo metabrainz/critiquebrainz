@@ -1,5 +1,5 @@
 # Docker Compose file for testing
-version: "2"
+version: "3.4"
 services:
 
   db_test:
@@ -11,18 +11,15 @@ services:
     command: postgres -F
     volumes:
       - ./pg_custom:/docker-entrypoint-initdb.d/
-    network_mode: bridge
 
   musicbrainz_db:
     image: metabrainz/musicbrainz-test-database:beta
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_HOST_AUTH_METHOD: trust
-    network_mode: bridge
 
   critiquebrainz_redis:
     image: redis:4.0-alpine
-    network_mode: bridge
 
   critiquebrainz_test:
     build:
@@ -30,10 +27,9 @@ services:
       dockerfile: ./docker/Dockerfile.dev
     volumes:
       - ..:/code
-    links:
+    depends_on:
       - db_test
       - musicbrainz_db
       - critiquebrainz_redis
-    network_mode: bridge
     environment:
       PGPASSWORD: critiquebrainz
