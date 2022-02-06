@@ -50,8 +50,6 @@
 {% endif %}
 </div>
 
-{% if count > limit %}
-  {{ display_pagination(page, count, limit, 'review.browse', {'entity_type':entity_type}) }}
-{% endif %}
+{{ display_pagination(page, count, limit, 'review.browse', {'entity_type':entity_type}) }}
 
 {% endblock %}

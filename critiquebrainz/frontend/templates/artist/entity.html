@@ -147,9 +147,7 @@
         {% endfor %}
         <div class="clearfix"></div>
 
-        {% if release_group_count > release_groups_limit %}
-          {{ display_pagination(page, release_group_count, release_groups_limit, 'artist.entity', {'id': id, 'release_type':release_type}) }}
-        {% endif %}
+        {{ display_pagination(page, release_group_count, release_groups_limit, 'artist.entity', {'id': id, 'release_type':release_type}) }}
       </div>
     {% endif %}
     <ul class="pagination"></ul>

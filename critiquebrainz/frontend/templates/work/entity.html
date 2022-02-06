@@ -98,9 +98,7 @@
           {% endfor %}
         </tbody>
       </table>
-      {% if recording_count > recording_limit %}
-        {{ display_pagination(page, recording_count, recording_limit, 'work.entity', {'id':id}) }}
-      {% endif %}
+      {{ display_pagination(page, recording_count, recording_limit, 'work.entity', {'id':id}) }}
     {% endif %}
     <ul class="pagination"></ul>
   </div>
