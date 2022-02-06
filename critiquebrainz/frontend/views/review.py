@@ -356,6 +356,7 @@ def edit(id):
 
     _entity = get_entity_by_id(review["entity_id"], review["entity_type"])
     data["entity_title"] = get_entity_title(_entity)
+    data["entity"] = _entity
     return render_template('review/modify/edit.html', **data)
 
 
