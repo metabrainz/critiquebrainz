@@ -68,13 +68,13 @@ def browse():
 # TODO(psolanki): Refactor this function to remove PyLint warning.
 # pylint: disable=too-many-branches
 
-def entity_title(_entity):
-    ent_title = None
+def get_entity_title(_entity):
+    title = None
     if 'title' in _entity:
-        ent_title = _entity['title']
+        title = _entity['title']
     elif 'name' in _entity:
-        ent_title = _entity['name']
-    return ent_title
+        title = _entity['name']
+    return title
 
 
 @review_bp.route('/<uuid:id>/revisions/<int:rev>')
@@ -274,26 +274,28 @@ def create(entity_type=None, entity_id=None):
         return redirect(url_for('.entity', id=review['id']))
 
     try:
-        entity = get_entity_by_id(entity_id, entity_type)
-        dict = {
+        _entity = get_entity_by_id(entity_id, entity_type)
+        data = {
             "form": form,
             "entity_type": entity_type,
-            "entity": entity,
+            "entity": _entity,
         }
     except NoDataFoundException:
         raise NotFound(gettext("Sorry, we couldn't find a %s with that MusicBrainz ID." % entity_type))
-
-    if not entity:
+    # TODO: The NoDataFoundException and not _entity check serve the same purpose. Investigate why we
+    #  have both and retain only one.
+    if not _entity:
         flash.error(gettext("You can only write a review for an entity that exists on MusicBrainz!"))
         return redirect(url_for('search.selector', next=url_for('.create')))
 
-    if entity_type == 'release_group':
-        dict["spotify_mappings"] = mbspotify.mappings(entity_id)
-        dict["soundcloud_url"] = soundcloud.get_url(entity_id)
-    dict["entity_title"] = entity_title(entity)
+    data["entity_title"] = get_entity_title(_entity)
+    if entity_type == "release_group":
+        data["spotify_mappings"] = mbspotify.mappings(entity_id)
+        data["soundcloud_url"] = soundcloud.get_url(entity_id)
+
     if not form.errors:
         flash.info(gettext("Please provide some text or a rating for this review."))
-    return render_template('review/modify/write.html', **dict)
+    return render_template('review/modify/write.html', **data)
 
 
 @review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))
@@ -308,10 +310,11 @@ def edit(id):
         raise NotFound(gettext("Review has been hidden."))
 
     form = ReviewEditForm(default_license_id=review["license_id"], default_language=review["language"])
-    dict = {"form": form,
-            "entity_type": review["entity_type"],
-            "review": review,
-            }
+    data = {
+        "form": form,
+        "entity_type": review["entity_type"],
+        "review": review,
+    }
     if not review["is_draft"]:
         # Can't change license if review is published.
         del form.license_choice
@@ -346,12 +349,14 @@ def edit(id):
     else:
         form.text.data = review["text"]
         form.rating.data = review["rating"]
+
     if review["entity_type"] == 'release_group':
-        dict["spotify_mappings"] = mbspotify.mappings(str(review["entity_id"]))
-        dict["soundcloud_url"] = soundcloud.get_url(str(review["entity_id"]))
-    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
-    dict["entity_title"] = entity_title(entity)
-    return render_template('review/modify/edit.html', **dict)
+        data["spotify_mappings"] = mbspotify.mappings(str(review["entity_id"]))
+        data["soundcloud_url"] = soundcloud.get_url(str(review["entity_id"]))
+
+    _entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    data["entity_title"] = get_entity_title(_entity)
+    return render_template('review/modify/edit.html', **data)
 
 
 @review_bp.route('/write/get_language', methods=['POST'])
