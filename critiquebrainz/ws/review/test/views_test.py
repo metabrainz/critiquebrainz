@@ -102,13 +102,13 @@ class ReviewViewsTestCase(WebServiceTestCase):
         response = self.client.get('/review/', query_string={'review_type': 'rating'})
         self.assert200(response)
         actual_review_ids = [review['id'] for review in response.json['reviews']]
-        expected_review_ids = [review_type_all['id'], review_only_rating['id']]
+        expected_review_ids = [str(review_type_all['id']), str(review_only_rating['id'])]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
         response = self.client.get('/review/', query_string={'review_type': 'text'})
         self.assert200(response)
         actual_review_ids = [review['id'] for review in response.json['reviews']]
-        expected_review_ids = [review_type_all['id'], review_only_review['id']]
+        expected_review_ids = [str(review_type_all['id']), str(review_only_review['id'])]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
     def test_review_large_count(self):
