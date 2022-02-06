@@ -373,7 +373,7 @@ def review_list_handler():
 
     # TODO(roman): Ideally caching logic should live inside the model. Otherwise it
     # becomes hard to track all this stuff.
-    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language)
+    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language, review_type)
     cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
     if cached_result:
         reviews = cached_result['reviews']
