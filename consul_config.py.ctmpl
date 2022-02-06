@@ -57,5 +57,3 @@ SPOTIFY_CLIENT_SECRET = '''{{template "KEY" "spotify/client_secret"}}'''
 ADMINS = [
     {{template "KEY_ARRAY" "admins"}}
 ]
-
-GOOGLE_ANALYTICS_TRACKING_ID = '''{{template "KEY" "ga_tracking_id"}}'''
