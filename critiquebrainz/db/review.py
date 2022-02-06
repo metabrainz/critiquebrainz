@@ -17,6 +17,8 @@ from critiquebrainz.db.user import User
 REVIEW_CACHE_NAMESPACE = "Review"
 DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
 DEFAULT_LANG = "en"
+
+#: list of allowed entity_type 's for writing/querying a review
 ENTITY_TYPES = [
     "event",
     "place",
@@ -368,7 +370,7 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
     if review_type == 'rating':
         filters.append("latest_revision.rating is not NULL")
 
-    if review_type == 'text':
+    if review_type == 'review':
         filters.append("latest_revision.text is not NULL")
 
     if exclude is not None:

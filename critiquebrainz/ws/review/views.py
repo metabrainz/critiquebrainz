@@ -335,8 +335,8 @@ def review_list_handler():
           ]
         }
 
-    :json uuid entity_id: UUID of the release group that is being reviewed
-    :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc. **(optional)**
+    :json uuid entity_id: UUID of the entity that is being reviewed
+    :json string entity_type: One of the supported reviewable entities. :data:`critiquebrainz.db.review.ENTITY_TYPES` **(optional)**
     :query user_id: user's UUID **(optional)**
     :query sort: ``popularity`` or ``published_on`` **(optional)**
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
@@ -357,7 +357,7 @@ def review_list_handler():
 
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating', 'created'], optional=True)
-    review_type = Parser.string('uri', 'review_type', valid_values=['rating', 'text'], optional=True)
+    review_type = Parser.string('uri', 'review_type', valid_values=['rating', 'review'], optional=True)
 
     # "rating" and "created" sort values are deprecated and but allowed here for backward compatibility
     if sort == 'created':

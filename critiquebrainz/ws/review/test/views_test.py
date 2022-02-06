@@ -105,7 +105,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
         expected_review_ids = [str(review_type_all['id']), str(review_only_rating['id'])]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
-        response = self.client.get('/review/', query_string={'review_type': 'text'})
+        response = self.client.get('/review/', query_string={'review_type': 'review'})
         self.assert200(response)
         actual_review_ids = [review['id'] for review in response.json['reviews']]
         expected_review_ids = [str(review_type_all['id']), str(review_only_review['id'])]
