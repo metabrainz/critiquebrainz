@@ -98,19 +98,23 @@ class ReviewViewsTestCase(WebServiceTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
-        db_review.create(**review_only_rating)
-        db_review.create(**review_only_review)
-        db_review.create(**review_type_all)
+        print(db_review.create(**review_only_rating))
+        print(db_review.create(**review_only_review))
+        print(db_review.create(**review_type_all))
 
         response = self.client.get('/review/', query_string={'review_type': 'rating'})
         self.assert200(response)
-        actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
+        data = response.json
+        print(data)
+        actual_review_ids = [review['entity_id'] for review in data['reviews']]
         expected_review_ids = [review_type_all['entity_id'], review_only_rating['entity_id']]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
         response = self.client.get('/review/', query_string={'review_type': 'text'})
         self.assert200(response)
-        actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
+        data = response.json
+        print(data)
+        actual_review_ids = [review['entity_id'] for review in data['reviews']]
         expected_review_ids = [review_type_all['entity_id'], review_only_review['entity_id']]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
