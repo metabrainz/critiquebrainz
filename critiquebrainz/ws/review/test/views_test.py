@@ -73,7 +73,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.assert200(resp)
 
     def test_review_type(self):
-        review_type_all = dict(
+        review_type_all = db_review.create(
             entity_id="1b3abc15-7453-39f3-86c4-1441f360e121",
             entity_type='release_group',
             user_id=self.user.id,
@@ -82,7 +82,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
-        review_only_rating = dict(
+        review_only_rating = db_review.create(
             entity_id="2b3abc25-7453-39f3-86c4-1441f360e121",
             entity_type='release_group',
             user_id=self.user.id,
@@ -90,7 +90,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
-        review_only_review = dict(
+        review_only_review = db_review.create(
             entity_id="3b3abc35-7453-39f3-86c4-1441f360e121",
             entity_type='release_group',
             user_id=self.user.id,
@@ -98,20 +98,17 @@ class ReviewViewsTestCase(WebServiceTestCase):
             is_draft=False,
             license_id=self.license["id"],
         )
-        db_review.create(**review_only_rating)
-        db_review.create(**review_only_review)
-        db_review.create(**review_type_all)
 
         response = self.client.get('/review/', query_string={'review_type': 'rating'})
         self.assert200(response)
-        actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
-        expected_review_ids = [review_type_all['entity_id'], review_only_rating['entity_id']]
+        actual_review_ids = [review['id'] for review in response.json['reviews']]
+        expected_review_ids = [review_type_all['id'], review_only_rating['entity_id']]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
         response = self.client.get('/review/', query_string={'review_type': 'text'})
         self.assert200(response)
-        actual_review_ids = [review['entity_id'] for review in response.json['reviews']]
-        expected_review_ids = [review_type_all['entity_id'], review_only_review['entity_id']]
+        actual_review_ids = [review['id'] for review in response.json['reviews']]
+        expected_review_ids = [review_type_all['id'], review_only_review['id']]
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
     def test_review_large_count(self):
