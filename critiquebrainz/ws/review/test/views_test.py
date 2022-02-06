@@ -122,7 +122,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
                 license_id=self.license["id"],
             )
             db_review.create(**review)
-        resp = self.client.get('/review/', query_string={'review_type': 'text'})
+        resp = self.client.get('/review/', query_string={'review_type': 'review'})
         self.assert200(resp)
         self.assertEqual(resp.json["count"], 100)
         self.assertEqual(len(resp.json["reviews"]), 50)
