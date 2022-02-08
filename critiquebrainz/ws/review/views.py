@@ -335,14 +335,14 @@ def review_list_handler():
           ]
         }
 
-    :query entity_id: UUID of the entity that is being reviewed
+    :query entity_id: UUID of an entity to retrieve reviews for **(optional)**
     :query entity_type: One of the supported reviewable entities. :data:`critiquebrainz.db.review.ENTITY_TYPES` **(optional)**
     :query user_id: user's UUID **(optional)**
     :query sort: ``popularity`` or ``published_on`` **(optional)**
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
-    :query review_type: ``review`` or ``rating`` **(optional)**
+    :query review_type: ``review`` or ``rating``. If set, only return reviews which have a text review, or a rating **(optional)**
 
     :resheader Content-Type: *application/json*
     """
