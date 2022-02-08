@@ -525,8 +525,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
         inc_drafts (bool): True if reviews marked as drafts should be included, False if not.
         inc_hidden (bool): True if reviews marked as hidden should be included, False if not.
         exclude (list): List of reviews (their IDs) to exclude from results.
-        review_type (str): Filter reviews. Can either be "review"(for reviews with only text), or "rating" (for
-                           reviews with only rating), or "None" (for all reviews).
+        review_type (str): Return reviews of this type. Can either be "review" (to return reviews with text),
+                           or "rating" (to return reviews which have a rating), or ``None`` (to return all reviews).
 
     Returns:
         Tuple with two values:
