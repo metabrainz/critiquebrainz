@@ -33,3 +33,10 @@ See :doc:`OAuth documentation <oauth2>` for more info.
    :blueprints: ws_oauth
    :include-empty-docstring:
    :undoc-static:
+
+Constants
+^^^^^^^^^
+
+Constants that are relevant to using the API:
+
+.. autodata:: critiquebrainz.db.review.ENTITY_TYPES

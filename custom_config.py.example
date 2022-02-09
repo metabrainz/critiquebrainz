@@ -50,5 +50,3 @@ ADMINS = []
 #MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
 
 #DEBUG_TB_TEMPLATE_EDITOR_ENABLED = True
-
-#GOOGLE_ANALYTICS_TRACKING_ID = ""

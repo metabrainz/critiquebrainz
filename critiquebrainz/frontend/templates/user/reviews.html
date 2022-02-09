@@ -1,5 +1,5 @@
 {% extends 'user/base.html' %}
-
+{% from 'macros.html' import display_pagination with context %}
 {% block title %}{{ user.display_name }} - {{ _('Reviews') }} - CritiqueBrainz{% endblock %}
 
 {% block profile_content %}
@@ -16,6 +16,7 @@
         <th>{{ _('Created on') }}</th>
         <th>{{ _('Published on')}} </th>
         <th>{{ _('Votes (+/-)') }}</th>
+		  <th>{{ _('Rating') }}</th>
         {% if current_user.is_authenticated and current_user == user %}
           <th><!-- Buttons --></th>
         {% endif %}
@@ -106,6 +107,12 @@
             <td>{{ review.published_on | date }}</td>
           {% endif %}
           <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+          <td>{% if review.rating %}
+              <input type="number" class="rating" id="rating" value={{ review.rating }} data-readonly data-inline />
+            {% else %}
+              <input type="number" class="rating" id="rating" value=0 data-readonly data-inline />
+            {% endif %}
+          </td>
           {% if current_user.is_authenticated and current_user == user %}
             <td>
               <a class="btn btn-primary btn-xs" href="{{ url_for('review.edit', id=review.id) }}">{{ _('Edit') }}</a>
@@ -117,15 +124,12 @@
       </tbody>
     </table>
 
-    {% if count > limit %}
-      <ul class="pager">
-        {% if page > 1 %}
-          <li class="previous"><a href="{{ url_for('user.reviews', user_id=user.id, page=page-1) }}">&larr; {{ _('Newer') }}</a></li>
-        {% endif %}
-        {% if page-1 < count//limit %}
-          <li class="next"><a href="{{ url_for('user.reviews', user_id=user.id, page=page+1) }}">{{ _('Older') }} &rarr;</a></li>
-        {% endif %}
-      </ul>
-    {% endif %}
+    {{ display_pagination(page, count, limit, 'user.reviews', {'user_id':user.id}) }}
+
   {% endif %}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ get_static_path('rating.js') }}"></script>
 {% endblock %}

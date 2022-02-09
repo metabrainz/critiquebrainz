@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, review_credit with context %}
+{% from 'macros.html' import cover_art, review_credit, display_pagination with context %}
 
 {% block title %}{{ _('Reviews') }} - CritiqueBrainz{% endblock %}
 
@@ -50,17 +50,6 @@
 {% endif %}
 </div>
 
-{% if count > limit %}
-  <div class="col-md-12">
-    <ul class="pager">
-      {% if page > 1 %}
-        <li class="previous"><a href="{{ url_for('review.browse', entity_type=entity_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
-      {% endif %}
-      {% if page-1 < count//limit %}
-        <li class="next"><a href="{{ url_for('review.browse', entity_type=entity_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
-      {% endif %}
-    </ul>
-  </div>
-{% endif %}
+{{ display_pagination(page, count, limit, 'review.browse', {'entity_type':entity_type}) }}
 
 {% endblock %}
