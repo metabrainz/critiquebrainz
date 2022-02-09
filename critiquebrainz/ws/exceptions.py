@@ -37,8 +37,7 @@ class ServerError(WebServiceError):
     def __init__(self):
         super(ServerError, self).__init__(
             code='server_error',
-            desc='The authorization server encountered an unexpected '
-                 'condition that prevented it from fulfilling the request.',
+            desc='An unexpected error occurred',
             status=500)
 
 
