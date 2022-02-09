@@ -480,6 +480,10 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
         order_by_clause = """
             ORDER BY review.published_on DESC
         """
+    elif sort == "published_on_asc":
+        order_by_clause = """
+            ORDER BY review.published_on ASC
+        """
     elif sort == "random":
         order_by_clause = """
             ORDER BY RANDOM()
