@@ -1,9 +1,60 @@
 from flask import Blueprint, jsonify, request
 
 from critiquebrainz.decorators import crossdomain
+from critiquebrainz.ws.exceptions import InvalidRequest
 import critiquebrainz.db.review as db_review
 
 bulk_review_bp = Blueprint('ws_review_bulk', __name__)
+
+MAX_ITEMS_PER_BULK_REQUEST = 25
+
+
+def remove_duplicates(arr):
+    seen = set()
+    return [x for x in arr if not (x in seen or seen.add(x))]
+
+
+def _validate_bulk_params(review_ids):
+    """
+    Validate a string containing a comma separated list of review uuids.
+    If any item in the list is an invalid uuid (even if there are other valid ones) then raise
+      cb.ws.exceptions.InvalidRequest
+    If any item in the list is empty (e.g. uuid,,uuid) then silently skip it.
+    If any item in the list is duplicated then only return one
+    If any item in the list is a valid uuid but malformed (e.g. separating - placed in the wrong place, or letters
+      in upper-case instead of lower-case) then return a correctly formatted version of the uuid, and return
+      a mapping of the user-provided uuid -> formatted uuid in review_id_mapping
+
+    Arguments:
+        review_ids: a comma separated string of review uuids
+
+    Returns:
+        A tuple (review_ids, review_id_mapping) where review_ids is a unique list of formatted uuids, and
+        review_id_mapping maps user-provided uuid values to formatted uuids
+
+    Raises:
+        critiquebrainz.ws.exceptions.InvalidRequest: if any provided argument isn't a valid uuid, or if
+          more than MAX_ITEMS_PER_BULK_REQUEST items are provided.
+    """
+
+    ret = []
+    mbid_mapping = {}
+    for mbid in review_ids.split(","):
+        if not mbid:
+            continue
+        try:
+            normalised_mbid = str(uuid.UUID(mbid))
+            mbid_mapping[mbid] = normalised_mbid
+        except ValueError:
+            raise InvalidRequest("'review_ids' parameter includes an invalid UUID")
+
+        ret.append(args)
+
+    if len(recordings) > MAX_ITEMS_PER_BULK_REQUEST:
+        raise InvalidRequest(f"More than {MAX_ITEMS_PER_BULK_REQUEST} recordings not allowed per request")
+
+    # Remove duplicates, preserving order
+    return remove_duplicates(ret), mbid_mapping
 
 
 @bulk_review_bp.route('/', methods=['GET', 'OPTIONS'])
@@ -11,16 +62,19 @@ bulk_review_bp = Blueprint('ws_review_bulk', __name__)
 def bulk_review_entity_handler():
     """Get a list of reviews with specified UUIDs.
 
-    .. note::
+       Hidden reviews are omitted from the response. UUIDs which are not valid result in an error.
+       UUIDS which are not current review ids are omitted from the response.
 
-        Hidden reviews are omitted from the response. Invalid uuids and uuids not associated
-        with a review are ignored.
+       The returned data is a dictionary where each key is the review id. This UUID is formatted in the canonical
+       UUID representation and may be different from the UUID that was passed in as the query parameter.
+       A mapping of user-provided UUIDs to canonical representation is provided in the ``review_id_mapping``
+       element of the response.
 
     **Request Example:**
 
     .. code-block:: bash
 
-       $ curl https://critiquebrainz.org/ws/1/reviews?review_ids=b7575c23-13d5-4adc-ac09-2f55a647d3de,e4364ed2-a5db-4427-8456-ea7604b499ef \\
+       $ curl https://critiquebrainz.org/ws/1/reviews?review_ids=B7575C23-13D5-4ADC-AC09-2F55A647D3DE,e4364ed2-a5db-4427-8456-ea7604b499ef \\
               -X GET
 
     **Response Example:**
@@ -60,20 +114,27 @@ def bulk_review_entity_handler():
               }
             },
             -- more reviews here --
+          },
+          "review_id_mapping": {
+            "B7575C23-13D5-4ADC-AC09-2F55A647D3DE": "b7575c23-13d5-4adc-ac09-2f55a647d3de"
           }
         }
 
     :statuscode 200: no error
+    :statuscode 400: Too many review ids were requested, or a provided review id isn't a valid UUID
     :resheader Content-Type: *application/json*
     """
-    # retrieve UUID's as list from URL parameter
     review_ids = request.args.get("review_ids")
     if not review_ids:
         return jsonify(review={})
-    reviews = db_review.get_by_ids(review_ids.split(","))
-    results = {
-        str(review["id"]): db_review.to_dict(review)
-            for review in reviews
-            if not review["is_hidden"]
+
+    review_ids, review_id_mapping = _validate_bulk_params(review_ids)
+    reviews = db_review.get_by_ids(review_ids)
+
+    response = {
+        "reviews": {
+            str(review["id"]): db_review.to_dict(review) for review in reviews if not review["is_hidden"]
+        },
+        "review_id_mapping": review_id_mapping
     }
-    return jsonify(reviews=results)
+    return jsonify(**response)
