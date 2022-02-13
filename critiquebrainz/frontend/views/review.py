@@ -42,7 +42,7 @@ def get_review_or_404(review_id):
 @review_bp.route('/')
 def browse():
     entity_type = request.args.get('entity_type', default=None)
-    sort = request.args.get('sort', default='popularity')
+    sort = request.args.get('sort', default='published_on')
     sort_options = {'popularity': 'Popularity', 'published_on': 'Newest', 'published_on_asc': 'Oldest'}
     if entity_type == 'all':
         entity_type = None
