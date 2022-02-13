@@ -51,6 +51,9 @@ class ReviewViewsTestCase(WebServiceTestCase):
         response = self.client.get('/review/', query_string={'sort': 'published_on'})
         self.assert200(response)
 
+        response = self.client.get('/review/', query_string={'sort': 'published_on_asc'})
+        self.assert200(response)
+
         response = self.client.get('/review/', query_string={'sort': 'popularity'})
         self.assert200(response)
 
