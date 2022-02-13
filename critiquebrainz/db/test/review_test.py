@@ -202,6 +202,10 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
+        reviews, count = db_review.list_reviews(sort="published_on_asc")
+        self.assertEqual(count, 1)
+        self.assertEqual(len(reviews), 1)
+
         reviews, count = db_review.list_reviews(sort="random")
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)

@@ -579,7 +579,7 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
         entity_type (str): Type of the entity that has been reviewed.
         user_id (uuid): ID of the author.
         sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
-                    or "published_on" (order by publish time), or "random" (order randomly).
+                    "published_on" (order by publish time), "published_on_asc" (order by publish time ascending) or "random" (order randomly).
         limit (int): Maximum number of reviews to return.
         offset (int): Offset that can be used in conjunction with the limit.
         language (str): Language code of reviews.
