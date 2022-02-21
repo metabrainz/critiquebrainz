@@ -122,13 +122,13 @@ class CritiqueBrainzAuthorizationProvider:
 
     @staticmethod
     def fetch_token(client_id, refresh_token):
-        token = db_oauth_token.list_tokens(client_id=client_id, refresh_token=refresh_token)[0]
-        return token
+        tokens = db_oauth_token.list_tokens(client_id=client_id, refresh_token=refresh_token)
+        return tokens[0] if tokens else None
 
     @staticmethod
     def fetch_access_token(access_token):
-        token = db_oauth_token.list_tokens(access_token=access_token)[0]
-        return token
+        tokens = db_oauth_token.list_tokens(access_token=access_token)
+        return tokens[0] if tokens else None
 
     @staticmethod
     def discard_grant(client_id, code):

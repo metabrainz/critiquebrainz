@@ -36,8 +36,8 @@ def get_review_or_404(review_id):
     return review
 
 
-@review_bp.route('/<uuid:review_id>', methods=['GET'])
-@crossdomain()
+@review_bp.route('/<uuid:review_id>', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def review_entity_handler(review_id):
     """Get review with a specified UUID.
 
@@ -96,8 +96,8 @@ def review_entity_handler(review_id):
     return jsonify(review=db_review.to_dict(review))
 
 
-@review_bp.route('/<uuid:review_id>/revisions', methods=['GET'])
-@crossdomain()
+@review_bp.route('/<uuid:review_id>/revisions', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def review_revisions_handler(review_id):
     """Get revisions of review with a specified UUID.
 
@@ -141,8 +141,8 @@ def review_revisions_handler(review_id):
     return jsonify(revisions=revisions)
 
 
-@review_bp.route('/<uuid:review_id>/revisions/<int:rev>', methods=['GET'])
-@crossdomain()
+@review_bp.route('/<uuid:review_id>/revisions/<int:rev>', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def review_revision_entity_handler(review_id, rev):
     """Get a particular revisions of review with a specified UUID.
 
@@ -187,9 +187,11 @@ def review_revision_entity_handler(review_id, rev):
     return jsonify(revision=revision)
 
 
+# don't need to add OPTIONS here because its already added
+# for this endpoint in review_entity_handler
 @review_bp.route('/<uuid:review_id>', methods=['DELETE'])
 @oauth.require_auth('review')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def review_delete_handler(review_id, user):
     """Delete review with a specified UUID.
 
@@ -226,9 +228,11 @@ def review_delete_handler(review_id, user):
     return jsonify(message='Request processed successfully')
 
 
+# don't need to add OPTIONS here because its already added
+# for this endpoint in review_entity_handler
 @review_bp.route('/<uuid:review_id>', methods=['POST'])
 @oauth.require_auth('review')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def review_modify_handler(review_id, user):
     """Update review with a specified UUID.
 
@@ -279,8 +283,8 @@ def review_modify_handler(review_id, user):
                    review=dict(id=review["id"]))
 
 
-@review_bp.route('/', methods=['GET'])
-@crossdomain()
+@review_bp.route('/', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def review_list_handler():
     """Get list of reviews.
 
@@ -333,13 +337,14 @@ def review_list_handler():
           ]
         }
 
-    :json uuid entity_id: UUID of the release group that is being reviewed
-    :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc. **(optional)**
+    :query entity_id: UUID of an entity to retrieve reviews for **(optional)**
+    :query entity_type: One of the supported reviewable entities. :data:`critiquebrainz.db.review.ENTITY_TYPES` **(optional)**
     :query user_id: user's UUID **(optional)**
     :query sort: ``popularity`` or ``published_on`` **(optional)**
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
+    :query review_type: ``review`` or ``rating``. If set, only return reviews which have a text review, or a rating **(optional)**
 
     :resheader Content-Type: *application/json*
     """
@@ -354,6 +359,7 @@ def review_list_handler():
 
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating', 'created'], optional=True)
+    review_type = Parser.string('uri', 'review_type', valid_values=['rating', 'review'], optional=True)
 
     # "rating" and "created" sort values are deprecated and but allowed here for backward compatibility
     if sort == 'created':
@@ -370,7 +376,7 @@ def review_list_handler():
     # TODO(roman): Ideally caching logic should live inside the model. Otherwise it
     # becomes hard to track all this stuff.
 
-    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language)
+    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language, review_type)
     cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
 
     if cached_result:
@@ -385,6 +391,7 @@ def review_list_handler():
             limit=limit,
             offset=offset,
             language=language,
+            review_type=review_type
         )
         reviews = [db_review.to_dict(p) for p in reviews]
 
@@ -393,7 +400,7 @@ def review_list_handler():
             'count': count,
         }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
 
-        # When we cache the results of a request, we include (entity_id, user_id, sort, limit, offset, language)
+        # When we cache the results of a request, we include (entity_id, user_id, sort, limit, offset, language, review_type)
         # in the cache key. When entity_id is edited or deleted, we need to expire all cache items for this entity.
         # To do this, we track all of the cache keys for the entity in a separate cache item, ws_cache_{entity_id}.
         # These keys are retrieved and all keys are expired in invalidate_ws_entity_cache.
@@ -407,9 +414,11 @@ def review_list_handler():
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 
 
+# don't need to add OPTIONS here because its already added
+# for this endpoint in review_list_handler
 @review_bp.route('/', methods=['POST'])
 @oauth.require_auth('review')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def review_post_handler(user):
     """Publish a review.
 
@@ -432,11 +441,10 @@ def review_post_handler(user):
 
     def fetch_params():
         is_draft = Parser.bool('json', 'is_draft', optional=True) or False
-        if is_draft:
-            REVIEW_TEXT_MIN_LENGTH = None
+        min_review_length = None if is_draft else REVIEW_TEXT_MIN_LENGTH
         entity_id = Parser.uuid('json', 'entity_id')
         entity_type = Parser.string('json', 'entity_type', valid_values=ENTITY_TYPES)
-        text = Parser.string('json', 'text', min=REVIEW_TEXT_MIN_LENGTH, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
+        text = Parser.string('json', 'text', min=min_review_length, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
         rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX, optional=True)
         license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
@@ -464,8 +472,8 @@ def review_post_handler(user):
     return jsonify(message='Request processed successfully', id=review["id"])
 
 
-@review_bp.route('/languages', methods=['GET'])
-@crossdomain()
+@review_bp.route('/languages', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def languages_list_handler():
     """Get list of supported review languages (language codes from ISO 639-1).
 
@@ -498,9 +506,9 @@ def languages_list_handler():
     return jsonify(languages=supported_languages)
 
 
-@review_bp.route('/<uuid:review_id>/vote', methods=['GET'])
+@review_bp.route('/<uuid:review_id>/vote', methods=['GET', 'OPTIONS'])
 @oauth.require_auth('vote')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def review_vote_entity_handler(review_id, user):
     """Get your vote for a specified review.
 
@@ -537,9 +545,9 @@ def review_vote_entity_handler(review_id, user):
     return jsonify(vote)
 
 
-@review_bp.route('/<uuid:review_id>/vote', methods=['PUT'])
+@review_bp.route('/<uuid:review_id>/vote', methods=['PUT', 'OPTIONS'])
 @oauth.require_auth('vote')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def review_vote_put_handler(review_id, user):
     """Set your vote for a specified review.
 
@@ -599,9 +607,9 @@ def review_vote_put_handler(review_id, user):
     return jsonify(message='Request processed successfully')
 
 
-@review_bp.route('/<uuid:review_id>/vote', methods=['DELETE'])
+@review_bp.route('/<uuid:review_id>/vote', methods=['DELETE', 'OPTIONS'])
 @oauth.require_auth('vote')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def review_vote_delete_handler(review_id, user):
     """Delete your vote for a specified review.
 
@@ -636,9 +644,9 @@ def review_vote_delete_handler(review_id, user):
     return jsonify(message="Request processed successfully")
 
 
-@review_bp.route('/<uuid:review_id>/report', methods=['POST'])
+@review_bp.route('/<uuid:review_id>/report', methods=['POST', 'OPTIONS'])
 @oauth.require_auth('vote')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def review_spam_report_handler(review_id, user):
     """Create spam report for a specified review.
 

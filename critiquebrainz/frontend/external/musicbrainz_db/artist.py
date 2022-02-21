@@ -16,10 +16,10 @@ def get_artist_by_id(mbid):
     key = cache.gen_key('artist', mbid)
     artist = cache.get(key)
     if not artist:
-        artist = db.fetch_multiple_artists(
-            [mbid],
+        artist = db.get_artist_by_id(
+            mbid,
             includes=['artist-rels', 'url-rels'],
             unknown_entities_for_missing=True,
-        ).get(mbid)
+        )
         cache.set(key=key, val=artist, time=DEFAULT_CACHE_EXPIRATION)
     return artist_rel.process(artist)

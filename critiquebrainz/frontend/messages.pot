@@ -1,21 +1,21 @@
 # Translations template for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
+# Copyright (C) 2022 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-02-12 16:21+0000\n"
+"POT-Creation-Date: 2022-01-29 06:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
 msgid ""
@@ -169,7 +169,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/forms/profile_apps.py:11
 #: critiquebrainz/frontend/templates/index/index.html:27
-#: critiquebrainz/frontend/templates/oauth/prompt.html:17
+#: critiquebrainz/frontend/templates/oauth/prompt.html:18
 msgid "Description"
 msgstr ""
 
@@ -211,6 +211,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/forms/rate.py:26
 #: critiquebrainz/frontend/forms/review.py:43
+#: critiquebrainz/frontend/templates/user/reviews.html:19
 msgid "Rating"
 msgstr ""
 
@@ -259,100 +260,21 @@ msgid "You must be an administrator to view this page."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
-#: critiquebrainz/frontend/templates/mapping/confirm.html:14
-#: critiquebrainz/frontend/templates/mapping/report.html:14
-#, python-format
-msgid "%(album)s by %(artist)s"
+#: critiquebrainz/frontend/templates/recording/entity.html:12
+#: critiquebrainz/frontend/templates/recording/entity.html:55
+msgid "by"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/entity_review.html:4
-#: critiquebrainz/frontend/templates/log/action.html:5
-#: critiquebrainz/frontend/templates/reports/reports_results.html:9
-#: critiquebrainz/frontend/templates/review/delete.html:5
-#: critiquebrainz/frontend/templates/review/delete_comment.html:5
-#: critiquebrainz/frontend/templates/review/modify/edit.html:5
-#: critiquebrainz/frontend/templates/review/modify/release_group.html:11
-#: critiquebrainz/frontend/templates/review/report.html:4
-#: critiquebrainz/frontend/templates/user/reviews.html:32
-msgid "[Unknown release group]"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:5
-#: critiquebrainz/frontend/templates/entity_review.html:7
+#: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/reports/reports_results.html:11
 #: critiquebrainz/frontend/templates/review/entity/artist.html:6
 #: critiquebrainz/frontend/templates/review/entity/artist.html:15
 #: critiquebrainz/frontend/templates/review/modify/artist.html:8
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:8
-#: critiquebrainz/frontend/templates/user/reviews.html:36
+#: critiquebrainz/frontend/templates/user/reviews.html:37
+#: critiquebrainz/frontend/templates/user/reviews.html:67
+#: critiquebrainz/frontend/templates/user/reviews.html:70
 msgid "[Unknown artist]"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:7
-#: critiquebrainz/frontend/templates/review/entity/artist.html:18
-#, python-format
-msgid "%(artist)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:9
-#: critiquebrainz/frontend/templates/review/entity/label.html:18
-#, python-format
-msgid "%(label)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:9
-#: critiquebrainz/frontend/templates/review/entity/label.html:6
-#: critiquebrainz/frontend/templates/review/entity/label.html:15
-#: critiquebrainz/frontend/templates/review/modify/label.html:8
-msgid "[Unknown label]"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:11
-#: critiquebrainz/frontend/templates/review/entity/event.html:18
-#, python-format
-msgid "%(event)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:11
-#: critiquebrainz/frontend/templates/review/delete.html:7
-#: critiquebrainz/frontend/templates/review/delete_comment.html:7
-#: critiquebrainz/frontend/templates/review/entity/event.html:6
-#: critiquebrainz/frontend/templates/review/entity/event.html:15
-#: critiquebrainz/frontend/templates/review/modify/edit.html:7
-#: critiquebrainz/frontend/templates/review/modify/event.html:8
-#: critiquebrainz/frontend/templates/user/reviews.html:39
-msgid "[Unknown event]"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:13
-#: critiquebrainz/frontend/templates/review/entity/place.html:23
-#, python-format
-msgid "%(place)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:13
-#: critiquebrainz/frontend/templates/review/delete.html:9
-#: critiquebrainz/frontend/templates/review/delete_comment.html:9
-#: critiquebrainz/frontend/templates/review/entity/place.html:11
-#: critiquebrainz/frontend/templates/review/entity/place.html:20
-#: critiquebrainz/frontend/templates/review/modify/edit.html:9
-#: critiquebrainz/frontend/templates/review/modify/place.html:8
-#: critiquebrainz/frontend/templates/user/reviews.html:50
-msgid "[Unknown place]"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:15
-#: critiquebrainz/frontend/templates/review/entity/work.html:18
-#, python-format
-msgid "%(work)s"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/entity_review.html:15
-#: critiquebrainz/frontend/templates/review/entity/work.html:6
-#: critiquebrainz/frontend/templates/review/entity/work.html:15
-#: critiquebrainz/frontend/templates/review/modify/work.html:8
-#: critiquebrainz/frontend/templates/user/reviews.html:53
-msgid "[Unknown work]"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/footer.html:5
@@ -370,30 +292,32 @@ msgstr ""
 msgid "Moderation log"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:65
-#: critiquebrainz/frontend/templates/event/entity.html:62
+#: critiquebrainz/frontend/templates/artist/entity.html:66
+#: critiquebrainz/frontend/templates/event/entity.html:63
 #: critiquebrainz/frontend/templates/footer.html:15
-#: critiquebrainz/frontend/templates/label/entity.html:30
+#: critiquebrainz/frontend/templates/label/entity.html:31
 #: critiquebrainz/frontend/templates/macros.html:21
 #: critiquebrainz/frontend/templates/navbar.html:58
-#: critiquebrainz/frontend/templates/place/entity.html:53
+#: critiquebrainz/frontend/templates/place/entity.html:54
+#: critiquebrainz/frontend/templates/recording/entity.html:38
 #: critiquebrainz/frontend/templates/review/browse.html:4
 #: critiquebrainz/frontend/templates/review/browse.html:7
 #: critiquebrainz/frontend/templates/statistics/stats.html:22
 #: critiquebrainz/frontend/templates/user/base.html:26
 #: critiquebrainz/frontend/templates/user/info.html:36
 #: critiquebrainz/frontend/templates/user/reviews.html:3
-#: critiquebrainz/frontend/templates/work/entity.html:30
+#: critiquebrainz/frontend/templates/work/entity.html:31
 msgid "Reviews"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:53
-#: critiquebrainz/frontend/templates/event/entity.html:20
+#: critiquebrainz/frontend/templates/artist/entity.html:54
+#: critiquebrainz/frontend/templates/event/entity.html:21
 #: critiquebrainz/frontend/templates/footer.html:17
-#: critiquebrainz/frontend/templates/label/entity.html:18
+#: critiquebrainz/frontend/templates/label/entity.html:19
 #: critiquebrainz/frontend/templates/navbar.html:68
-#: critiquebrainz/frontend/templates/place/entity.html:20
-#: critiquebrainz/frontend/templates/work/entity.html:18
+#: critiquebrainz/frontend/templates/place/entity.html:21
+#: critiquebrainz/frontend/templates/recording/entity.html:24
+#: critiquebrainz/frontend/templates/work/entity.html:19
 msgid "Write a review"
 msgstr ""
 
@@ -431,8 +355,8 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/footer.html:40
 #: critiquebrainz/frontend/templates/navbar.html:82
-#: critiquebrainz/frontend/templates/search/index.html:86
-#: critiquebrainz/frontend/templates/search/selector.html:209
+#: critiquebrainz/frontend/templates/search/index.html:87
+#: critiquebrainz/frontend/templates/search/selector.html:233
 msgid "Language"
 msgstr ""
 
@@ -484,31 +408,31 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:39
 #: critiquebrainz/frontend/templates/navbar.html:100
-#: critiquebrainz/frontend/templates/review/browse.html:19
+#: critiquebrainz/frontend/templates/review/browse.html:21
 #: critiquebrainz/frontend/templates/review/modify/event.html:6
-#: critiquebrainz/frontend/templates/search/index.html:28
+#: critiquebrainz/frontend/templates/search/index.html:29
 #: critiquebrainz/frontend/templates/search/selector.html:16
-#: critiquebrainz/frontend/templates/search/selector.html:74
+#: critiquebrainz/frontend/templates/search/selector.html:77
 msgid "Event"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:46
 #: critiquebrainz/frontend/templates/navbar.html:101
-#: critiquebrainz/frontend/templates/review/browse.html:21
+#: critiquebrainz/frontend/templates/review/browse.html:23
 #: critiquebrainz/frontend/templates/review/modify/event.html:13
 #: critiquebrainz/frontend/templates/review/modify/place.html:6
-#: critiquebrainz/frontend/templates/search/index.html:30
-#: critiquebrainz/frontend/templates/search/selector.html:94
+#: critiquebrainz/frontend/templates/search/index.html:31
+#: critiquebrainz/frontend/templates/search/selector.html:97
 msgid "Place"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:53
 #: critiquebrainz/frontend/templates/navbar.html:98
-#: critiquebrainz/frontend/templates/review/browse.html:23
+#: critiquebrainz/frontend/templates/review/browse.html:25
 #: critiquebrainz/frontend/templates/review/modify/work.html:6
-#: critiquebrainz/frontend/templates/search/index.html:31
+#: critiquebrainz/frontend/templates/search/index.html:32
 #: critiquebrainz/frontend/templates/search/selector.html:22
-#: critiquebrainz/frontend/templates/search/selector.html:114
+#: critiquebrainz/frontend/templates/search/selector.html:117
 msgid "Work"
 msgstr ""
 
@@ -516,14 +440,17 @@ msgstr ""
 #: critiquebrainz/frontend/templates/navbar.html:97
 #: critiquebrainz/frontend/templates/review/browse.html:15
 #: critiquebrainz/frontend/templates/review/modify/artist.html:6
+#: critiquebrainz/frontend/templates/review/modify/recording.html:18
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:8
-#: critiquebrainz/frontend/templates/search/index.html:27
-#: critiquebrainz/frontend/templates/search/index.html:60
-#: critiquebrainz/frontend/templates/search/index.html:72
+#: critiquebrainz/frontend/templates/search/index.html:28
+#: critiquebrainz/frontend/templates/search/index.html:61
+#: critiquebrainz/frontend/templates/search/index.html:73
+#: critiquebrainz/frontend/templates/search/index.html:93
 #: critiquebrainz/frontend/templates/search/selector.html:10
-#: critiquebrainz/frontend/templates/search/selector.html:34
-#: critiquebrainz/frontend/templates/search/selector.html:170
-#: critiquebrainz/frontend/templates/search/selector.html:186
+#: critiquebrainz/frontend/templates/search/selector.html:37
+#: critiquebrainz/frontend/templates/search/selector.html:194
+#: critiquebrainz/frontend/templates/search/selector.html:210
+#: critiquebrainz/frontend/templates/search/selector.html:240
 msgid "Artist"
 msgstr ""
 
@@ -531,61 +458,90 @@ msgstr ""
 #: critiquebrainz/frontend/templates/navbar.html:99
 #: critiquebrainz/frontend/templates/review/browse.html:17
 #: critiquebrainz/frontend/templates/review/modify/label.html:6
-#: critiquebrainz/frontend/templates/search/index.html:29
+#: critiquebrainz/frontend/templates/search/index.html:30
 #: critiquebrainz/frontend/templates/search/selector.html:25
-#: critiquebrainz/frontend/templates/search/selector.html:134
+#: critiquebrainz/frontend/templates/search/selector.html:137
 msgid "Label"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:74
+#: critiquebrainz/frontend/templates/navbar.html:103
+#: critiquebrainz/frontend/templates/review/browse.html:19
+#: critiquebrainz/frontend/templates/review/modify/recording.html:6
+#: critiquebrainz/frontend/templates/search/index.html:27
+#: critiquebrainz/frontend/templates/search/selector.html:28
+#: critiquebrainz/frontend/templates/search/selector.html:157
+msgid "Recording"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/macros.html:81
 #: critiquebrainz/frontend/templates/search/selector.html:13
 msgid "Release Group"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:79
+#: critiquebrainz/frontend/templates/macros.html:86
 msgid "We don't have cover art for this release group."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:83
+#: critiquebrainz/frontend/templates/macros.html:90
 msgid "See how to add cover art!"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:104
+#: critiquebrainz/frontend/templates/macros.html:111
 #, python-format
 msgid "Review by %(user)s"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:114
+#: critiquebrainz/frontend/templates/macros.html:121
 msgid "View Spotify mapping information"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:120
+#: critiquebrainz/frontend/templates/macros.html:127
 msgid ""
 "We don't have a mapping between this release group and Spotify. Please "
 "help us find the right album."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:124
+#: critiquebrainz/frontend/templates/macros.html:131
 msgid "Match this!"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:150
+#: critiquebrainz/frontend/templates/macros.html:157
 msgid "(none)"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:174
+#: critiquebrainz/frontend/templates/macros.html:181
 #, python-format
-msgid "based on %(number)s ratings"
-msgstr ""
+msgid "based on %(num)s rating"
+msgid_plural "based on %(num)s ratings"
+msgstr[0] ""
+msgstr[1] ""
 
-#: critiquebrainz/frontend/templates/macros.html:180
+#: critiquebrainz/frontend/templates/macros.html:187
 #, python-format
 msgid "%(user)s"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/macros.html:197
+#: critiquebrainz/frontend/templates/macros.html:204
 #, python-format
 msgid "<h4><a href=\"%(link)s\">Sign in</a> to rate!</h4>"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/macros.html:216
+#: critiquebrainz/frontend/templates/review/modify/work.html:18
+#: critiquebrainz/frontend/templates/search/selector_results.html:29
+#: critiquebrainz/frontend/templates/search/selector_results.html:77
+#: critiquebrainz/frontend/templates/user/reviews.html:46
+#: critiquebrainz/frontend/templates/user/reviews.html:60
+msgid "more"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/macros.html:229
+msgid "Previous"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/macros.html:255
+msgid "Next"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/navbar.html:6
@@ -620,13 +576,14 @@ msgstr ""
 #: critiquebrainz/frontend/templates/navbar.html:93
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
-#: critiquebrainz/frontend/templates/search/index.html:37
-#: critiquebrainz/frontend/templates/search/selector.html:42
-#: critiquebrainz/frontend/templates/search/selector.html:62
-#: critiquebrainz/frontend/templates/search/selector.html:82
-#: critiquebrainz/frontend/templates/search/selector.html:102
-#: critiquebrainz/frontend/templates/search/selector.html:122
-#: critiquebrainz/frontend/templates/search/selector.html:142
+#: critiquebrainz/frontend/templates/search/index.html:38
+#: critiquebrainz/frontend/templates/search/selector.html:45
+#: critiquebrainz/frontend/templates/search/selector.html:65
+#: critiquebrainz/frontend/templates/search/selector.html:85
+#: critiquebrainz/frontend/templates/search/selector.html:105
+#: critiquebrainz/frontend/templates/search/selector.html:125
+#: critiquebrainz/frontend/templates/search/selector.html:145
+#: critiquebrainz/frontend/templates/search/selector.html:165
 msgid "Search"
 msgstr ""
 
@@ -634,157 +591,153 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/browse.html:13
 #: critiquebrainz/frontend/templates/review/modify/release_group.html:9
 #: critiquebrainz/frontend/templates/search/index.html:26
-#: critiquebrainz/frontend/templates/search/index.html:71
-#: critiquebrainz/frontend/templates/search/selector.html:54
-#: critiquebrainz/frontend/templates/search/selector.html:171
+#: critiquebrainz/frontend/templates/search/index.html:72
+#: critiquebrainz/frontend/templates/search/index.html:94
+#: critiquebrainz/frontend/templates/search/selector.html:57
+#: critiquebrainz/frontend/templates/search/selector.html:195
+#: critiquebrainz/frontend/templates/search/selector.html:241
 msgid "Release group"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:58
-#: critiquebrainz/frontend/templates/event/entity.html:25
-#: critiquebrainz/frontend/templates/label/entity.html:23
-#: critiquebrainz/frontend/templates/place/entity.html:25
-#: critiquebrainz/frontend/templates/work/entity.html:23
+#: critiquebrainz/frontend/templates/artist/entity.html:59
+#: critiquebrainz/frontend/templates/event/entity.html:26
+#: critiquebrainz/frontend/templates/label/entity.html:24
+#: critiquebrainz/frontend/templates/place/entity.html:26
+#: critiquebrainz/frontend/templates/recording/entity.html:29
+#: critiquebrainz/frontend/templates/work/entity.html:24
 msgid "Edit my review"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:67
-#: critiquebrainz/frontend/templates/event/entity.html:64
+#: critiquebrainz/frontend/templates/artist/entity.html:68
+#: critiquebrainz/frontend/templates/event/entity.html:65
 #: critiquebrainz/frontend/templates/index/index.html:52
 #: critiquebrainz/frontend/templates/index/index.html:79
-#: critiquebrainz/frontend/templates/label/entity.html:32
-#: critiquebrainz/frontend/templates/place/entity.html:55
-#: critiquebrainz/frontend/templates/review/browse.html:28
+#: critiquebrainz/frontend/templates/label/entity.html:33
+#: critiquebrainz/frontend/templates/place/entity.html:56
+#: critiquebrainz/frontend/templates/recording/entity.html:40
+#: critiquebrainz/frontend/templates/review/browse.html:30
 #: critiquebrainz/frontend/templates/user/reviews.html:7
-#: critiquebrainz/frontend/templates/work/entity.html:32
+#: critiquebrainz/frontend/templates/work/entity.html:33
 msgid "No reviews found"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/artist/entity.html:73
-#: critiquebrainz/frontend/templates/event/entity.html:70
-#: critiquebrainz/frontend/templates/label/entity.html:38
-#: critiquebrainz/frontend/templates/place/entity.html:61
-#: critiquebrainz/frontend/templates/user/reviews.html:17
-#: critiquebrainz/frontend/templates/work/entity.html:38
-msgid "Published on"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/artist/entity.html:74
 #: critiquebrainz/frontend/templates/event/entity.html:71
 #: critiquebrainz/frontend/templates/label/entity.html:39
 #: critiquebrainz/frontend/templates/place/entity.html:62
+#: critiquebrainz/frontend/templates/recording/entity.html:46
+#: critiquebrainz/frontend/templates/user/reviews.html:17
+#: critiquebrainz/frontend/templates/work/entity.html:39
+msgid "Published on"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/artist/entity.html:75
+#: critiquebrainz/frontend/templates/event/entity.html:72
+#: critiquebrainz/frontend/templates/label/entity.html:40
+#: critiquebrainz/frontend/templates/place/entity.html:63
+#: critiquebrainz/frontend/templates/recording/entity.html:47
 #: critiquebrainz/frontend/templates/review/modify/edit.html:23
 #: critiquebrainz/frontend/templates/review/revisions.html:26
 #: critiquebrainz/frontend/templates/user/reviews.html:18
-#: critiquebrainz/frontend/templates/work/entity.html:39
+#: critiquebrainz/frontend/templates/work/entity.html:40
 msgid "Votes (+/-)"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:82
-#: critiquebrainz/frontend/templates/event/entity.html:79
-#: critiquebrainz/frontend/templates/label/entity.html:47
-#: critiquebrainz/frontend/templates/place/entity.html:70
-#: critiquebrainz/frontend/templates/work/entity.html:47
+#: critiquebrainz/frontend/templates/artist/entity.html:83
+#: critiquebrainz/frontend/templates/event/entity.html:80
+#: critiquebrainz/frontend/templates/label/entity.html:48
+#: critiquebrainz/frontend/templates/place/entity.html:71
+#: critiquebrainz/frontend/templates/work/entity.html:48
 #, python-format
 msgid "by %(reviewer)s"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:94
-#: critiquebrainz/frontend/templates/label/entity.html:59
-#: critiquebrainz/frontend/templates/work/entity.html:59
+#: critiquebrainz/frontend/templates/artist/entity.html:95
+#: critiquebrainz/frontend/templates/label/entity.html:60
+#: critiquebrainz/frontend/templates/work/entity.html:60
 msgid "Hide reviews"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:96
-#: critiquebrainz/frontend/templates/label/entity.html:61
-#: critiquebrainz/frontend/templates/work/entity.html:61
+#: critiquebrainz/frontend/templates/artist/entity.html:97
+#: critiquebrainz/frontend/templates/label/entity.html:62
+#: critiquebrainz/frontend/templates/work/entity.html:62
 msgid "Show all reviews"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:102
+#: critiquebrainz/frontend/templates/artist/entity.html:103
 msgid "Discography"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:105
+#: critiquebrainz/frontend/templates/artist/entity.html:106
 msgid "Albums"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:108
+#: critiquebrainz/frontend/templates/artist/entity.html:109
 msgid "Singles"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:111
+#: critiquebrainz/frontend/templates/artist/entity.html:112
 msgid "EPs"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:114
+#: critiquebrainz/frontend/templates/artist/entity.html:115
 msgid "Broadcasts"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:117
+#: critiquebrainz/frontend/templates/artist/entity.html:118
 msgid "Other releases"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:121
+#: critiquebrainz/frontend/templates/artist/entity.html:122
 msgid "No releases found"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:130
+#: critiquebrainz/frontend/templates/artist/entity.html:131
 #, python-format
 msgid "%(num)d review"
 msgid_plural "%(num)d reviews"
 msgstr[0] ""
 msgstr[1] ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:153
-#: critiquebrainz/frontend/templates/review/browse.html:55
-#: critiquebrainz/frontend/templates/work/entity.html:104
-msgid "Previous"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/artist/entity.html:156
-#: critiquebrainz/frontend/templates/review/browse.html:58
-#: critiquebrainz/frontend/templates/work/entity.html:107
-msgid "Next"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/artist/entity.html:167
+#: critiquebrainz/frontend/templates/artist/entity.html:159
 msgid "Artist information"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:173
+#: critiquebrainz/frontend/templates/artist/entity.html:165
 msgid "Member of"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:175
+#: critiquebrainz/frontend/templates/artist/entity.html:167
 msgid "Members"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:184
-#: critiquebrainz/frontend/templates/artist/entity.html:204
+#: critiquebrainz/frontend/templates/artist/entity.html:176
+#: critiquebrainz/frontend/templates/artist/entity.html:196
 msgid "View all..."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:192
+#: critiquebrainz/frontend/templates/artist/entity.html:184
 msgid "Former member of"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:194
+#: critiquebrainz/frontend/templates/artist/entity.html:186
 msgid "Former members"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:211
-#: critiquebrainz/frontend/templates/label/entity.html:74
-#: critiquebrainz/frontend/templates/place/entity.html:104
-#: critiquebrainz/frontend/templates/work/entity.html:120
+#: critiquebrainz/frontend/templates/artist/entity.html:203
+#: critiquebrainz/frontend/templates/label/entity.html:75
+#: critiquebrainz/frontend/templates/place/entity.html:105
+#: critiquebrainz/frontend/templates/recording/entity.html:95
+#: critiquebrainz/frontend/templates/work/entity.html:112
 msgid "External links"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/artist/entity.html:231
-#: critiquebrainz/frontend/templates/event/entity.html:141
-#: critiquebrainz/frontend/templates/label/entity.html:94
-#: critiquebrainz/frontend/templates/place/entity.html:134
-#: critiquebrainz/frontend/templates/work/entity.html:140
+#: critiquebrainz/frontend/templates/artist/entity.html:223
+#: critiquebrainz/frontend/templates/event/entity.html:142
+#: critiquebrainz/frontend/templates/label/entity.html:95
+#: critiquebrainz/frontend/templates/place/entity.html:135
+#: critiquebrainz/frontend/templates/recording/entity.html:115
+#: critiquebrainz/frontend/templates/work/entity.html:132
 msgid "Edit on MusicBrainz"
 msgstr ""
 
@@ -816,16 +769,17 @@ msgstr ""
 msgid "Back to home page"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/event/entity.html:50
+#: critiquebrainz/frontend/templates/event/entity.html:51
 #: critiquebrainz/frontend/templates/review/entity/event.html:47
 msgid "Held at"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/event/entity.html:106
+#: critiquebrainz/frontend/templates/event/entity.html:107
 msgid "Event information"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/event/entity.html:132
+#: critiquebrainz/frontend/templates/event/entity.html:133
+#: critiquebrainz/frontend/templates/recording/entity.html:89
 msgid "External reviews"
 msgstr ""
 
@@ -1195,8 +1149,19 @@ msgstr ""
 msgid "View all reviews..."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/label/entity.html:70
+#: critiquebrainz/frontend/templates/label/entity.html:71
 msgid "Label information"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/log/action.html:5
+#: critiquebrainz/frontend/templates/reports/reports_results.html:9
+#: critiquebrainz/frontend/templates/review/delete.html:5
+#: critiquebrainz/frontend/templates/review/delete_comment.html:5
+#: critiquebrainz/frontend/templates/review/modify/edit.html:5
+#: critiquebrainz/frontend/templates/review/modify/release_group.html:11
+#: critiquebrainz/frontend/templates/review/report.html:4
+#: critiquebrainz/frontend/templates/user/reviews.html:33
+msgid "[Unknown release group]"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/log/action.html:12
@@ -1294,6 +1259,12 @@ msgstr ""
 msgid "Are you sure you want to create this mapping?"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/mapping/confirm.html:14
+#: critiquebrainz/frontend/templates/mapping/report.html:14
+#, python-format
+msgid "%(album)s by %(artist)s"
+msgstr ""
+
 #: critiquebrainz/frontend/templates/mapping/confirm.html:18
 #: critiquebrainz/frontend/templates/mapping/report.html:18
 msgid "Spotify"
@@ -1341,14 +1312,14 @@ msgstr ""
 #: critiquebrainz/frontend/templates/oauth/prompt.html:15
 #: critiquebrainz/frontend/templates/profile/applications/index.html:20
 #: critiquebrainz/frontend/templates/profile/applications/index.html:54
-#: critiquebrainz/frontend/templates/search/index.html:52
-#: critiquebrainz/frontend/templates/search/index.html:59
-#: critiquebrainz/frontend/templates/search/index.html:65
-#: critiquebrainz/frontend/templates/search/index.html:77
-#: critiquebrainz/frontend/templates/search/selector.html:177
-#: critiquebrainz/frontend/templates/search/selector.html:185
-#: critiquebrainz/frontend/templates/search/selector.html:192
-#: critiquebrainz/frontend/templates/search/selector.html:199
+#: critiquebrainz/frontend/templates/search/index.html:53
+#: critiquebrainz/frontend/templates/search/index.html:60
+#: critiquebrainz/frontend/templates/search/index.html:66
+#: critiquebrainz/frontend/templates/search/index.html:78
+#: critiquebrainz/frontend/templates/search/selector.html:201
+#: critiquebrainz/frontend/templates/search/selector.html:209
+#: critiquebrainz/frontend/templates/search/selector.html:216
+#: critiquebrainz/frontend/templates/search/selector.html:223
 msgid "Name"
 msgstr ""
 
@@ -1358,31 +1329,31 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/oauth/prompt.html:23
+#: critiquebrainz/frontend/templates/oauth/prompt.html:24
 #, python-format
 msgid ""
 "%(client)s is requesting permission to access the following parts of your"
 " profile:"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/oauth/prompt.html:30
+#: critiquebrainz/frontend/templates/oauth/prompt.html:31
 #, python-format
 msgid "%(client)s does not require any special permissions."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/oauth/prompt.html:36
+#: critiquebrainz/frontend/templates/oauth/prompt.html:37
 msgid "Allow access"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/oauth/prompt.html:37
+#: critiquebrainz/frontend/templates/oauth/prompt.html:38
 msgid "No thanks"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/place/entity.html:97
+#: critiquebrainz/frontend/templates/place/entity.html:98
 msgid "Place information"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/place/entity.html:122
+#: critiquebrainz/frontend/templates/place/entity.html:123
 msgid "Part of"
 msgstr ""
 
@@ -1465,7 +1436,7 @@ msgid "Modify"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:36
-#: critiquebrainz/frontend/templates/user/reviews.html:96
+#: critiquebrainz/frontend/templates/user/reviews.html:119
 msgid "Delete"
 msgstr ""
 
@@ -1492,6 +1463,15 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:79
 msgid "Revoke access"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/recording/entity.html:5
+#, python-format
+msgid "Recording \"%(name)s\" by %(artist)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/recording/entity.html:82
+msgid "Recording information"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/reports/reports.html:3
@@ -1559,6 +1539,26 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/compare.html:10
 #: critiquebrainz/frontend/templates/review/compare.html:20
 msgid "as of"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/delete.html:7
+#: critiquebrainz/frontend/templates/review/delete_comment.html:7
+#: critiquebrainz/frontend/templates/review/entity/event.html:6
+#: critiquebrainz/frontend/templates/review/entity/event.html:15
+#: critiquebrainz/frontend/templates/review/modify/edit.html:7
+#: critiquebrainz/frontend/templates/review/modify/event.html:8
+#: critiquebrainz/frontend/templates/user/reviews.html:40
+msgid "[Unknown event]"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/delete.html:9
+#: critiquebrainz/frontend/templates/review/delete_comment.html:9
+#: critiquebrainz/frontend/templates/review/entity/place.html:11
+#: critiquebrainz/frontend/templates/review/entity/place.html:20
+#: critiquebrainz/frontend/templates/review/modify/edit.html:9
+#: critiquebrainz/frontend/templates/review/modify/place.html:8
+#: critiquebrainz/frontend/templates/user/reviews.html:51
+msgid "[Unknown place]"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/delete.html:13
@@ -1665,6 +1665,11 @@ msgstr ""
 msgid "Review of \"%(artist)s\" by %(user)s"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/review/entity/artist.html:18
+#, python-format
+msgid "%(artist)s"
+msgstr ""
+
 #: critiquebrainz/frontend/templates/review/entity/base.html:18
 msgid "<b>This review has not been published yet!</b> Only you can see it."
 msgstr ""
@@ -1756,9 +1761,26 @@ msgstr ""
 msgid "Review of \"%(event)s\" by %(user)s"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/review/entity/event.html:18
+#, python-format
+msgid "%(event)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/entity/label.html:6
+#: critiquebrainz/frontend/templates/review/entity/label.html:15
+#: critiquebrainz/frontend/templates/review/modify/label.html:8
+#: critiquebrainz/frontend/templates/user/reviews.html:76
+msgid "[Unknown label]"
+msgstr ""
+
 #: critiquebrainz/frontend/templates/review/entity/label.html:7
 #, python-format
 msgid "Review of \"%(label)s\" by %(user)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/entity/label.html:18
+#, python-format
+msgid "%(label)s"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:12
@@ -1766,26 +1788,55 @@ msgstr ""
 msgid "Review of \"%(place)s\" by %(user)s"
 msgstr ""
 
+#: critiquebrainz/frontend/templates/review/entity/place.html:23
+#, python-format
+msgid "%(place)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/entity/recording.html:6
+#: critiquebrainz/frontend/templates/review/entity/recording.html:15
+#: critiquebrainz/frontend/templates/review/modify/recording.html:8
+#: critiquebrainz/frontend/templates/user/reviews.html:66
+msgid "[Unknown recording]"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/entity/recording.html:7
+#, python-format
+msgid "Review of \"%(recording)s\" by %(user)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/entity/work.html:6
+#: critiquebrainz/frontend/templates/review/entity/work.html:15
+#: critiquebrainz/frontend/templates/review/modify/work.html:8
+#: critiquebrainz/frontend/templates/user/reviews.html:54
+msgid "[Unknown work]"
+msgstr ""
+
 #: critiquebrainz/frontend/templates/review/entity/work.html:7
 #, python-format
 msgid "Review of \"%(work)s\" by %(user)s"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/review/entity/work.html:18
+#, python-format
+msgid "%(work)s"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/artist.html:10
 #: critiquebrainz/frontend/templates/review/modify/label.html:13
 #: critiquebrainz/frontend/templates/review/modify/work.html:10
 #: critiquebrainz/frontend/templates/search/index.html:23
-#: critiquebrainz/frontend/templates/search/index.html:54
-#: critiquebrainz/frontend/templates/search/index.html:66
-#: critiquebrainz/frontend/templates/search/index.html:73
-#: critiquebrainz/frontend/templates/search/index.html:78
-#: critiquebrainz/frontend/templates/search/index.html:85
-#: critiquebrainz/frontend/templates/search/selector.html:172
-#: critiquebrainz/frontend/templates/search/selector.html:178
-#: critiquebrainz/frontend/templates/search/selector.html:193
-#: critiquebrainz/frontend/templates/search/selector.html:200
-#: critiquebrainz/frontend/templates/search/selector.html:208
-#: critiquebrainz/frontend/templates/work/entity.html:75
+#: critiquebrainz/frontend/templates/search/index.html:55
+#: critiquebrainz/frontend/templates/search/index.html:67
+#: critiquebrainz/frontend/templates/search/index.html:74
+#: critiquebrainz/frontend/templates/search/index.html:79
+#: critiquebrainz/frontend/templates/search/index.html:86
+#: critiquebrainz/frontend/templates/search/selector.html:196
+#: critiquebrainz/frontend/templates/search/selector.html:202
+#: critiquebrainz/frontend/templates/search/selector.html:217
+#: critiquebrainz/frontend/templates/search/selector.html:224
+#: critiquebrainz/frontend/templates/search/selector.html:232
+#: critiquebrainz/frontend/templates/work/entity.html:76
 msgid "Type"
 msgstr ""
 
@@ -1820,12 +1871,12 @@ msgid "Status"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:28
-#: critiquebrainz/frontend/templates/user/reviews.html:74
+#: critiquebrainz/frontend/templates/user/reviews.html:91
 msgid "Draft"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:30
-#: critiquebrainz/frontend/templates/user/reviews.html:76
+#: critiquebrainz/frontend/templates/user/reviews.html:93
 msgid "Published"
 msgstr ""
 
@@ -1852,34 +1903,31 @@ msgid "Unknown place"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/label.html:15
-#: critiquebrainz/frontend/templates/search/index.html:55
-#: critiquebrainz/frontend/templates/search/index.html:79
-#: critiquebrainz/frontend/templates/search/selector.html:201
+#: critiquebrainz/frontend/templates/search/index.html:56
+#: critiquebrainz/frontend/templates/search/index.html:80
+#: critiquebrainz/frontend/templates/search/selector.html:225
 msgid "Country"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/place.html:13
-#: critiquebrainz/frontend/templates/search/index.html:61
-#: critiquebrainz/frontend/templates/search/index.html:67
-#: critiquebrainz/frontend/templates/search/selector.html:187
-#: critiquebrainz/frontend/templates/search/selector.html:194
+#: critiquebrainz/frontend/templates/search/index.html:62
+#: critiquebrainz/frontend/templates/search/index.html:68
+#: critiquebrainz/frontend/templates/search/selector.html:211
+#: critiquebrainz/frontend/templates/search/selector.html:218
 msgid "Location"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/review/modify/work.html:12
-#: critiquebrainz/frontend/templates/search/index.html:84
-#: critiquebrainz/frontend/templates/search/selector.html:207
-msgid "Artists"
+#: critiquebrainz/frontend/templates/review/modify/recording.html:10
+#: critiquebrainz/frontend/templates/search/index.html:92
+#: critiquebrainz/frontend/templates/search/selector.html:239
+#: critiquebrainz/frontend/templates/work/entity.html:77
+msgid "Length"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/review/modify/work.html:18
-#: critiquebrainz/frontend/templates/search/results.html:35
-#: critiquebrainz/frontend/templates/search/results.html:77
-#: critiquebrainz/frontend/templates/search/selector_results.html:29
-#: critiquebrainz/frontend/templates/search/selector_results.html:77
-#: critiquebrainz/frontend/templates/user/reviews.html:45
-#: critiquebrainz/frontend/templates/user/reviews.html:59
-msgid "more"
+#: critiquebrainz/frontend/templates/review/modify/work.html:12
+#: critiquebrainz/frontend/templates/search/index.html:85
+#: critiquebrainz/frontend/templates/search/selector.html:231
+msgid "Artists"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/write.html:4
@@ -1917,32 +1965,34 @@ msgstr ""
 msgid "Query"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/index.html:45
-#: critiquebrainz/frontend/templates/search/selector.html:163
+#: critiquebrainz/frontend/templates/search/index.html:46
+#: critiquebrainz/frontend/templates/search/selector.html:187
 msgid "No results found"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/index.html:53
+#: critiquebrainz/frontend/templates/search/index.html:54
 msgid "Sort name"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/index.html:83
-#: critiquebrainz/frontend/templates/search/selector.html:206
+#: critiquebrainz/frontend/templates/search/index.html:84
+#: critiquebrainz/frontend/templates/search/index.html:91
+#: critiquebrainz/frontend/templates/search/selector.html:230
+#: critiquebrainz/frontend/templates/search/selector.html:238
 msgid "Title"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/index.html:95
-#: critiquebrainz/frontend/templates/search/selector.html:219
+#: critiquebrainz/frontend/templates/search/index.html:103
+#: critiquebrainz/frontend/templates/search/selector.html:251
 msgid "Load more results"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/index.html:96
-#: critiquebrainz/frontend/templates/search/selector.html:220
+#: critiquebrainz/frontend/templates/search/index.html:104
+#: critiquebrainz/frontend/templates/search/selector.html:252
 msgid "Loading more results..."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/index.html:125
-#: critiquebrainz/frontend/templates/search/selector.html:259
+#: critiquebrainz/frontend/templates/search/index.html:133
+#: critiquebrainz/frontend/templates/search/selector.html:291
 msgid "Failed to load more search results!"
 msgstr ""
 
@@ -1950,39 +2000,43 @@ msgstr ""
 msgid "Entity selection"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:31
+#: critiquebrainz/frontend/templates/search/selector.html:34
 msgid "Artist selection"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:51
+#: critiquebrainz/frontend/templates/search/selector.html:54
 msgid "Release group selection"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:71
+#: critiquebrainz/frontend/templates/search/selector.html:74
 msgid "Event selection"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:91
+#: critiquebrainz/frontend/templates/search/selector.html:94
 msgid "Place selection"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:111
+#: critiquebrainz/frontend/templates/search/selector.html:114
 msgid "Work selection"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:131
+#: critiquebrainz/frontend/templates/search/selector.html:134
 msgid "Label selection"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:179
+#: critiquebrainz/frontend/templates/search/selector.html:154
+msgid "Recording selection"
+msgstr ""
+
+#: critiquebrainz/frontend/templates/search/selector.html:203
 msgid "Gender"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:180
+#: critiquebrainz/frontend/templates/search/selector.html:204
 msgid "Area"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/search/selector.html:224
+#: critiquebrainz/frontend/templates/search/selector.html:256
 msgid "Continue"
 msgstr ""
 
@@ -2059,39 +2113,27 @@ msgstr ""
 msgid "This month"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/user/reviews.html:82
+#: critiquebrainz/frontend/templates/user/reviews.html:99
 msgid "Hidden"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/user/reviews.html:95
+#: critiquebrainz/frontend/templates/user/reviews.html:118
 msgid "Edit"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/user/reviews.html:107
-msgid "Newer"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/user/reviews.html:110
-msgid "Older"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/work/entity.html:67
+#: critiquebrainz/frontend/templates/work/entity.html:68
 msgid "Recordings"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/work/entity.html:69
+#: critiquebrainz/frontend/templates/work/entity.html:70
 msgid "No recordings found"
 msgstr ""
 
-#: critiquebrainz/frontend/templates/work/entity.html:76
-msgid "Length"
-msgstr ""
-
-#: critiquebrainz/frontend/templates/work/entity.html:117
+#: critiquebrainz/frontend/templates/work/entity.html:109
 msgid "Work information"
 msgstr ""
 
-#: critiquebrainz/frontend/views/artist.py:26
+#: critiquebrainz/frontend/views/artist.py:28
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
 msgstr ""
 
@@ -2148,7 +2190,8 @@ msgstr ""
 msgid "No logs to display."
 msgstr ""
 
-#: critiquebrainz/frontend/views/login.py:34
+#: critiquebrainz/frontend/views/login.py:36
+#: critiquebrainz/frontend/views/login.py:38
 msgid "Login failed."
 msgstr ""
 
@@ -2214,6 +2257,10 @@ msgstr ""
 msgid ""
 "You are not allowed to rate any entity because your account has been "
 "blocked by a moderator."
+msgstr ""
+
+#: critiquebrainz/frontend/views/recording.py:21
+msgid "Sorry, we couldn't find a recording with that MusicBrainz ID."
 msgstr ""
 
 #: critiquebrainz/frontend/views/release.py:19

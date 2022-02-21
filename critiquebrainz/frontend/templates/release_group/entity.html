@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating, entity_rate_form, show_external_reviews with context %}
+{% from 'common.html' import rating_script with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -12,7 +13,7 @@
     {% set artist = [] %}
     {% for credit in release_group['artist-credit'] %}
       {% if credit.artist %}
-        {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', mbid=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
+        {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
         {% if credit.join_phrase %}
           {% do artist.append(credit.join_phrase) %}
         {% endif %}
@@ -113,7 +114,7 @@
               <tr>
                 <td>{{ track.number }}</td>
                 <td>
-                  <a href="http://acousticbrainz.org/{{ track.recording_id }}" title="View on AcousticBrainz">
+                  <a href="{{ url_for('recording.entity', id=track.recording_id) }}">
                     {{ track.recording_title }}
                   </a>
                 </td>
@@ -187,16 +188,5 @@
 {% endblock %}
 
 {% block scripts %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
-  <script>
-    $(document).ready(function() {
-      $("#ratestars").click(function(e){
-        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
-        if (e.target.tagName === 'I') {
-          $("#rating-form").submit();
-        }
-      });
-    });
-  </script>
-  <script src="{{ get_static_path('rating.js') }}"></script>
+    {{ rating_script }}
 {% endblock %}

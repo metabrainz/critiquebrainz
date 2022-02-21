@@ -31,6 +31,7 @@ MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
 # Valid language codes can be obtained from Transifex.
 SUPPORTED_LANGUAGES = [
     'en',  # English
+    'he',  # עברית, Hebrew
     'hr',  # Croatian
     'nl',  # Dutch
     'et',  # Estonian

@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_external_reviews with context %}
+
+{% block title %}
+  {{ _('Recording "%(name)s" by %(artist)s', name=recording.name, artist=recording['artist-credit-phrase']) }}
+  - CritiqueBrainz
+{% endblock %}
+
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">
+    {{ recording.name }} {{ _('by') }}
+    {% for credit in recording['artists'] %}
+    {% if credit.name %}
+        <a href="{{ url_for('artist.entity', id=credit.id) }}">{{ credit.name }}</a>
+        {% if credit.join_phrase %}{{ credit.join_phrase }}{% endif %}
+    {% endif %}
+    {% endfor %}
+  </h2>
+
+  {% if not my_review %}
+    <a id="write-review" href="{{ url_for('review.create', recording=id) }}"
+       role="button" class="btn btn-success pull-right">
+      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
+    </a>
+  {% else %}
+    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
+       role="button" class="btn btn-primary pull-right">
+      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
+    </a>
+  {% endif %}
+</div>
+
+<div id="recording-details" class="row">
+  <div class="col-md-9">
+    {{ entity_rate_form('recording', 'recording') }}
+    <br/><br/>
+    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+    {% if not reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ _('Published on') }}</th>
+            <th>{{ _('Votes (+/-)') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for review in reviews %}
+            <tr data-review-id="{{ review.id }}">
+              <td>
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                    {{ _('by') }} <img class="avatar" src="{{ review.user.avatar + review.user.display_name }}&s=16" />
+                </a>
+              </td>
+              <td>{{ review.published_on | date }}</td>
+              <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <ul class="pagination">
+        {% set pages = count//limit %}
+        {% if count%limit %}
+          {% set pages = pages+1 %}
+        {% endif %}
+        {% if pages>1 %}
+          {% for p in range(pages) %}
+            {% set p_offset = p*limit %}
+            <li {% if offset == p_offset %}class="active"{% endif %}>
+              <a href="{{ url_for('recording.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <div class="col-md-3">
+    <h4>{{ _('Recording information') }}</h4>
+    {% if avg_rating %}
+      <div class="avg-rating">
+        {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
+      </div>
+    {% endif %}
+    {% if external_reviews %}
+      <b>{{ _('External reviews') }}</b>
+      <ul class="list-unstyled external-links">
+        {{ show_external_reviews(external_reviews) }}
+      </ul>
+    {% endif %}
+    {% if recording['external-urls'] %}
+      <b>{{ _('External links') }}</b>
+      <ul class="list-unstyled external-links">
+        {% for url in recording['external-urls'] %}
+          <li class="clearfix">
+            <div class="favicon-container">
+              {% if url.icon %}
+                <img src="{{ get_static_path('favicons/'+url.icon) }}" />
+              {% else %}
+                <img src="{{ get_static_path('favicons/external-16.png') }}" />
+              {% endif %}
+            </div>
+            <a href="{{ url.url.url }}">{{ url.name }}</a>
+            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <div class="external-links">
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
+      <a href="https://musicbrainz.org/recording/{{ recording.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <script>
+    $(document).ready(function() {
+      $("#ratestars").click(function(e){
+        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
+        if (e.target.tagName === 'I') {
+          $("#rating-form").submit();
+        }
+      });
+    });
+  </script>
+  <script src="{{ get_static_path('rating.js') }}"></script>
+{% endblock %}

@@ -1,5 +1,12 @@
 FROM metabrainz/python:3.8-20210115
 
+# remove expired let's encrypt certificate and install new ones
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN apt-get update \
      && apt-get install -y --no-install-recommends \
                         build-essential \
@@ -15,12 +22,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # PostgreSQL client
-RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 ENV PG_MAJOR 12
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
 RUN apt-get update \
-    && apt-get install -y postgresql-client-$PG_MAJOR \
+    && apt-get install -y --no-install-recommends postgresql-client-$PG_MAJOR \
     && rm -rf /var/lib/apt/lists/*
+
 # Specifying password so that client doesn't ask scripts for it...
 ENV PGPASSWORD "critiquebrainz"
 
@@ -75,6 +83,7 @@ RUN touch /etc/service/uwsgi/down
 COPY ./docker/cron/consul-template-cron-config.conf /etc/consul-template-cron-config.conf
 COPY ./docker/cron/cron-config.service /etc/service/cron-config/run
 COPY ./docker/cron/crontab /etc/cron.d/critiquebrainz
+RUN chmod 0644 /etc/cron.d/critiquebrainz
 RUN touch /etc/service/cron/down
 RUN touch /etc/service/cron-config/down
 

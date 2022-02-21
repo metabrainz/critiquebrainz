@@ -46,6 +46,14 @@ class BaseAuthentication:
         self._session_key = session_key
 
 
+def musicbrainz_auth_session_decoder(message):
+    """Decode the json oauth response from MusicBrainz, returning {} if the response isn't valid json"""
+    try:
+        return json.loads(message.decode("utf-8"))
+    except ValueError:
+        return {}
+
+
 class MusicBrainzAuthentication(BaseAuthentication):
 
     def get_authentication_uri(self, **kwargs):
@@ -61,17 +69,20 @@ class MusicBrainzAuthentication(BaseAuthentication):
         data = dict(code=str(self.fetch_data('code')),
                     grant_type='authorization_code',
                     redirect_uri=url_for('login.musicbrainz_post', _external=True))
-        s = self._service.get_auth_session(
-            data=data,
-            decoder=lambda content: json.loads(content.decode("utf-8")),
-        )
-        data = s.get('oauth2/userinfo').json()
-        musicbrainz_id = data.get('sub')
-        musicbrainz_row_id = data.get('metabrainz_user_id')
-        user = db_users.get_or_create(musicbrainz_row_id, musicbrainz_id, new_user_data={
-            'display_name': musicbrainz_id,
-        })
-        return User(user)
+        try:
+            s = self._service.get_auth_session(
+                data=data,
+                decoder=musicbrainz_auth_session_decoder,
+            )
+            data = s.get('oauth2/userinfo').json()
+            musicbrainz_id = data.get('sub')
+            musicbrainz_row_id = data.get('metabrainz_user_id')
+            user = db_users.get_or_create(musicbrainz_row_id, musicbrainz_id, new_user_data={
+                'display_name': musicbrainz_id,
+            })
+            return User(user)
+        except KeyError:
+            return None
 
     def validate_post_login(self):
         if request.args.get('error'):

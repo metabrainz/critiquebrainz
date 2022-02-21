@@ -1,6 +1,5 @@
 import json
-
-from unittest import mock
+import uuid
 
 from brainzutils import cache
 
@@ -76,6 +75,78 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.delete('/review/%s' % review["id"], headers=self.header(self.user))
         self.assert200(resp)
 
+    def test_review_type(self):
+        review_type_all = db_review.create(
+            entity_id="1b3abc15-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
+            user_id=self.user.id,
+            text="Testing! This text should be on the page.",
+            rating=5,
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        review_only_rating = db_review.create(
+            entity_id="2b3abc25-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
+            user_id=self.user.id,
+            rating=5,
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        review_only_review = db_review.create(
+            entity_id="3b3abc35-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
+            user_id=self.user.id,
+            text="Testing! This text should be on the page.",
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+
+        response = self.client.get('/review/', query_string={'review_type': 'rating'})
+        self.assert200(response)
+        actual_review_ids = [review['id'] for review in response.json['reviews']]
+        expected_review_ids = [str(review_type_all['id']), str(review_only_rating['id'])]
+        self.assertCountEqual(actual_review_ids, expected_review_ids)
+
+        response = self.client.get('/review/', query_string={'review_type': 'review'})
+        self.assert200(response)
+        actual_review_ids = [review['id'] for review in response.json['reviews']]
+        expected_review_ids = [str(review_type_all['id']), str(review_only_review['id'])]
+        self.assertCountEqual(actual_review_ids, expected_review_ids)
+
+    def test_review_large_count(self):
+        """Test that retrieving reviews of a particular type correctly returns the total number of
+        reviews of this type in addition to the paged results"""
+
+        # 100 text reviews and 1 rating
+        for _ in range(100):
+            review = dict(
+                entity_id=uuid.uuid4(),
+                entity_type='release_group',
+                user_id=self.user.id,
+                text="Testing! This text should be on the page.",
+                is_draft=False,
+                license_id=self.license["id"],
+            )
+            db_review.create(**review)
+
+        db_review.create(
+            entity_id="2b3abc25-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
+            user_id=self.user.id,
+            rating=5,
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        resp = self.client.get('/review/')
+        self.assert200(resp)
+        self.assertEqual(resp.json["count"], 101)
+
+        resp = self.client.get('/review/', query_string={'review_type': 'review'})
+        self.assert200(resp)
+        self.assertEqual(resp.json["count"], 100)
+        self.assertEqual(len(resp.json["reviews"]), 50)
+
     def test_review_modify(self):
         review = self.create_dummy_review()
 
@@ -127,6 +198,19 @@ class ReviewViewsTestCase(WebServiceTestCase):
         )
         resp = self.client.post('/review/', headers=self.header(self.another_user), data=json.dumps(review_2))
         self.assert400(resp, "Review must have either text or rating")
+
+        # test writing a normal review works using the API. this test may not look useful but interestingly,
+        # writing a review using the API was broken for at least a year and no one seemed to notice or report
+        # it. so here it is, a test to write a valid review using the API.
+        review_3 = dict(
+            entity_id=self.review['entity_id'],
+            entity_type='release_group',
+            license_choice=self.license["id"],
+            language='en',
+            text="Hello, World! Let's write a long long long even longer the longest review........................"
+        )
+        resp = self.client.post('/review/', headers=self.header(self.another_user), data=json.dumps(review_3))
+        self.assert200(resp)
 
     def test_review_vote_entity(self):
         review = self.create_dummy_review()

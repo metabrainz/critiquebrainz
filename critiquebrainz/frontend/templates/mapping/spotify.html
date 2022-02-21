@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% from 'macros.html' import display_pagination with context %}
 {% block title %}{{ _('Spotify album mapping') }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
@@ -46,20 +46,7 @@
     </div>
     {% endfor %}
   </div>
-  {% if count > limit %}
-    <div class="row">
-      <div class="col-md-12">
-        <ul class="pager">
-          {% if page > 1 %}
-            <li class="previous"><a href="{{ url_for('mapping.spotify_add', release_group_id=release_group.id, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
-          {% endif %}
-          {% if page-1 < count//limit %}
-            <li class="next"><a href="{{ url_for('mapping.spotify_add', release_group_id=release_group.id, page=page + 1) }}">{{ _('Next') }} &rarr;</a></li>
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  {% endif %}
+  {{ display_pagination(page, count, limit, 'mapping.spotify_add', {'release_group_id':release_group.id}) }}
 {% else %}
   <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No similar albums found') }}</p>
 {% endif %}

@@ -1,5 +1,5 @@
 # Docker Compose file for development
-version: "2"
+version: "3.4"
 
 volumes:
   cb_home:
@@ -17,7 +17,7 @@ services:
       - ../data/pgdata:/var/lib/postgresql/data/pgdata:z
       - ./pg_custom:/docker-entrypoint-initdb.d/
     ports:
-      - "15432:5432"
+      - "127.0.0.1:15432:5432"
 
   critiquebrainz:
     build:
@@ -31,12 +31,13 @@ services:
       FLASK_APP: critiquebrainz.frontend
       FLASK_ENV: development
     ports:
-      - "80:80"
+      - "8200:8200"
     depends_on:
       - db
       - critiquebrainz_redis
       - musicbrainz_db
       - static_builder
+    command: python3 manage.py runserver -h 0.0.0.0 -p 8200 -d
 
   critiquebrainz_redis:
     image: redis:4.0-alpine
@@ -50,7 +51,7 @@ services:
       MB_IMPORT_DUMPS: "true"
       POSTGRES_HOST_AUTH_METHOD: "trust"
     ports:
-      - "5430:5432"
+      - "127.0.0.1:25432:5432"
 
   static_builder:
     build:

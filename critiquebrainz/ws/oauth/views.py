@@ -2,14 +2,14 @@ from flask import Blueprint, request, jsonify
 
 from critiquebrainz.decorators import nocache, crossdomain
 from critiquebrainz.ws.oauth import oauth
-from critiquebrainz.ws.oauth.exceptions import UnsupportedGrantType
+from critiquebrainz.ws.oauth.exceptions import UnsupportedGrantType, InvalidGrant
 
 oauth_bp = Blueprint('ws_oauth', __name__)
 
 
-@oauth_bp.route('/token', methods=['POST'])
+@oauth_bp.route('/token', methods=['POST', 'OPTIONS'])
 @nocache
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def oauth_token_handler():
     """OAuth 2.0 token endpoint.
 
@@ -37,6 +37,8 @@ def oauth_token_handler():
         scope = grant['scopes']
     elif grant_type == 'refresh_token':
         token = oauth.fetch_token(client_id, refresh_token)
+        if token is None:
+            raise InvalidGrant()
         user_id = token['user_id']
         scope = token['scopes']
     else:
