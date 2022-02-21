@@ -136,14 +136,18 @@ Then you can start all the services::
 
    $ ./develop.sh up
 
-Visit CritiqueBrainz at ``http://localhost`` in your browser.
+Visit CritiqueBrainz at ``http://localhost:8200`` in your browser.
+
+.. note::
+
+   CB Runs on 8200. change line x if you want it somewhere else.
 
 Importing data dump
 '''''''''''''''''''
 
 We provide daily data dumps from https://critiquebrainz.org that include reviews
 and most of the data associated with them. If you want to import that into your
-own installation, download the archives from ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
+own installation, download the archives from http://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
 (you'll need to get the base archive ``cbdump.tar.bz2`` and the reviews ``cbdump-reviews-all.tar.bz2``)
 and use ``python3 manage.py dump import`` command. First you need to import
 base archive and then the one that contains reviews. For example::
