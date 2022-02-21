@@ -19,5 +19,5 @@ def get_work_by_id(mbid):
             mbid,
             includes=['artist-rels', 'recording-rels'],
         )
-        cache.set(key=key, val=work, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key, work, DEFAULT_CACHE_EXPIRATION)
     return work

@@ -21,5 +21,5 @@ def get_artist_by_id(mbid):
             includes=['artist-rels', 'url-rels'],
             unknown_entities_for_missing=True,
         )
-        cache.set(key=key, val=artist, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key, artist, DEFAULT_CACHE_EXPIRATION)
     return artist_rel.process(artist)

@@ -19,5 +19,5 @@ def get_recording_by_id(mbid):
             mbid,
             includes=['artists', 'work-rels', 'url-rels'],
         )
-        cache.set(key=key, val=recording, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key, recording, DEFAULT_CACHE_EXPIRATION)
     return recording

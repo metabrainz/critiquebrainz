@@ -21,5 +21,5 @@ def get_place_by_id(mbid):
             includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
             unknown_entities_for_missing=True,
         )
-        cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key, place, DEFAULT_CACHE_EXPIRATION)
     return place_rel.process(place)

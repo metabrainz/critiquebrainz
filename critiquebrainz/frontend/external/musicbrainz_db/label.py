@@ -21,5 +21,5 @@ def get_label_by_id(mbid):
             includes=['artist-rels', 'url-rels'],
             unknown_entities_for_missing=True
         )
-        cache.set(key=key, val=label, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key, label, DEFAULT_CACHE_EXPIRATION)
     return label_rel.process(label)

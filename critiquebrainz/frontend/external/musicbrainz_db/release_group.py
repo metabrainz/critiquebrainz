@@ -14,7 +14,7 @@ def get_release_group_by_id(mbid):
             includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'tags'],
             unknown_entities_for_missing=True,
         )
-        cache.set(key=key, val=release_group, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key, release_group, DEFAULT_CACHE_EXPIRATION)
     return release_group_rel.process(release_group)
 
 
@@ -44,5 +44,5 @@ def browse_release_groups(*, artist_id, release_types=None, limit=None, offset=N
             limit=limit,
             offset=offset
         )
-        cache.set(key=key, val=release_groups, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
     return release_groups

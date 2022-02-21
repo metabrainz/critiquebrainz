@@ -20,5 +20,5 @@ def get_event_by_id(mbid):
             includes=['artist-rels', 'place-rels', 'series-rels', 'url-rels', 'release-group-rels'],
             unknown_entities_for_missing=True,
         )
-        cache.set(key=key, val=event, time=DEFAULT_CACHE_EXPIRATION)
+        cache.set(key, event, DEFAULT_CACHE_EXPIRATION)
     return event

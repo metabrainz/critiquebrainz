@@ -161,11 +161,10 @@ class StatisticsTestCase(DataTestCase):
 
         # get list of top users
         top_users = db_statistics.get_top_users_overall()
-        expected_key = b"top_users_overall_cb_statistics"
+        expected_key = "top_users_overall"
         cache_get.assert_called_with(expected_key, db_statistics._CACHE_NAMESPACE)
-        cache_set.assert_called_with(key=expected_key, val={"users": top_users},
-                                     namespace=db_statistics._CACHE_NAMESPACE,
-                                     time=db_statistics._DEFAULT_CACHE_EXPIRATION)
+        cache_set.assert_called_with(expected_key, {"users": top_users}, db_statistics._DEFAULT_CACHE_EXPIRATION,
+                                     namespace=db_statistics._CACHE_NAMESPACE)
         self.assertEqual(len(top_users), 2)
         self.assertEqual(top_users[0]["id"], self.user_2.id)
         self.assertEqual(top_users[0]["score"], 7)

@@ -52,7 +52,7 @@ def mappings(mbid=None):
         except RequestException:
             flash.warn(lazy_gettext("Spotify mapping server is unavailable. You will not see an embedded player."))
             return []
-        cache.set(key=mbid, namespace=_CACHE_NAMESPACE, val=data, time=MBSPOTIFY_CACHE_TIMEOUT)
+        cache.set(mbid, data, MBSPOTIFY_CACHE_TIMEOUT, namespace=_CACHE_NAMESPACE)
     return data
 
 

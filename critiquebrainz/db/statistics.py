@@ -252,7 +252,7 @@ def get_top_users_overall():
                 "users": results,
             }
 
-            cache.set(key=key, val=top_users, namespace=_CACHE_NAMESPACE, time=_DEFAULT_CACHE_EXPIRATION)
+            cache.set(key, top_users, _DEFAULT_CACHE_EXPIRATION, namespace=_CACHE_NAMESPACE)
         except db_exceptions.NoDataFoundException:
             return None
     return top_users["users"]

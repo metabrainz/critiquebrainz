@@ -30,7 +30,7 @@ def search(query: str, *, item_types="", limit=20, offset=0) -> dict:
     if not result:
         query = urllib.parse.quote(query.encode('utf8'))
         result = _get(f"search?q={query}&type={item_types}&limit={str(limit)}&offset={str(offset)}")
-        cache.set(key=cache_key, namespace=cache_namespace, val=result, time=_DEFAULT_CACHE_EXPIRATION)
+        cache.set(cache_key, result, _DEFAULT_CACHE_EXPIRATION, namespace=cache_namespace)
     return result
 
 
@@ -48,7 +48,7 @@ def get_album(spotify_id: str) -> dict:
     album = cache.get(spotify_id, cache_namespace)
     if not album:
         album = _get(f"albums/{spotify_id}")
-        cache.set(key=spotify_id, namespace=cache_namespace, val=album, time=_DEFAULT_CACHE_EXPIRATION)
+        cache.set(spotify_id, album, _DEFAULT_CACHE_EXPIRATION, namespace=cache_namespace)
     return album
 
 
@@ -86,7 +86,7 @@ def get_multiple_albums(spotify_ids: List[str]) -> dict:
         for album in response["albums"]:
             if album is not None:
                 received_albums[album['id']] = album
-        cache.set_many(received_albums, namespace=cache_namespace, time=_DEFAULT_CACHE_EXPIRATION)
+        cache.set_many(received_albums, _DEFAULT_CACHE_EXPIRATION, namespace=cache_namespace)
         albums.update(received_albums)
     return albums
 
@@ -143,7 +143,7 @@ def _fetch_access_token(refresh=False) -> str:
         if not access_token:
             raise SpotifyException("Could not fetch access token for Spotify API")
         # Making the token stored in cache expire at the same time as the actual token
-        cache.set(key=key, val=access_token, time=response.get("expires_in", 10))
+        cache.set(key=key, val=access_token, expirein=response.get("expires_in", 10))
     return access_token
 
 

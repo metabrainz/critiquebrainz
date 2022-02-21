@@ -345,13 +345,13 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
 def invalidate_ws_entity_cache(entity_id):
     cache_keys_for_entity_id_key = cache.gen_key('ws_cache', entity_id)
     cache_keys_to_delete = cache.smembers(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
-    if not cache_keys_to_delete:
+    if cache_keys_to_delete:
         cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
         cache.delete(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
 
     cache_keys_for_no_entity_id_key = cache.gen_key('ws_cache', 'entity_id_absent')
     cache_keys_to_delete = cache.smembers(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
-    if not cache_keys_for_no_entity_id_key:
+    if cache_keys_to_delete:
         cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
         cache.delete(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
 
@@ -656,7 +656,7 @@ def get_popular_reviews_for_index():
                     "review_id": review["id"],
                 }
             reviews = [to_dict(review, confidential=True) for review in reviews]
-        cache.set(cache_key, reviews, 1 * 60 * 60, REVIEW_CACHE_NAMESPACE)  # 1 hour
+        cache.set(cache_key, reviews, 1 * 60 * 60, namespace=REVIEW_CACHE_NAMESPACE)  # 1 hour
     shuffle(reviews)
     return reviews[:limit]
 
