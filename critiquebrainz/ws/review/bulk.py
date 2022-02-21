@@ -1,3 +1,5 @@
+import uuid
+
 from flask import Blueprint, jsonify, request
 
 from critiquebrainz.decorators import crossdomain
@@ -48,9 +50,9 @@ def _validate_bulk_params(review_ids):
         except ValueError:
             raise InvalidRequest("'review_ids' parameter includes an invalid UUID")
 
-        ret.append(args)
+        ret.append(normalised_mbid)
 
-    if len(recordings) > MAX_ITEMS_PER_BULK_REQUEST:
+    if len(ret) > MAX_ITEMS_PER_BULK_REQUEST:
         raise InvalidRequest(f"More than {MAX_ITEMS_PER_BULK_REQUEST} recordings not allowed per request")
 
     # Remove duplicates, preserving order
@@ -63,7 +65,7 @@ def bulk_review_entity_handler():
     """Get a list of reviews with specified UUIDs.
 
        Hidden reviews are omitted from the response. UUIDs which are not valid result in an error.
-       UUIDS which are not current review ids are omitted from the response.
+       UUIDs which are not review ids are omitted from the response.
 
        The returned data is a dictionary where each key is the review id. This UUID is formatted in the canonical
        UUID representation and may be different from the UUID that was passed in as the query parameter.
@@ -122,19 +124,26 @@ def bulk_review_entity_handler():
 
     :statuscode 200: no error
     :statuscode 400: Too many review ids were requested, or a provided review id isn't a valid UUID
+    :statuscode 503: Query string is too long
+    :query review_ids: a comma-separated list of review IDs to retrieve.
     :resheader Content-Type: *application/json*
     """
     review_ids = request.args.get("review_ids")
     if not review_ids:
-        return jsonify(review={})
+        return jsonify(reviews={}, review_id_mapping={})
 
     review_ids, review_id_mapping = _validate_bulk_params(review_ids)
     reviews = db_review.get_by_ids(review_ids)
 
+    # review_id_mapping should only include the reviews that we are returning
+    # (don't return an ID that doesn't match a review, or which is for a hidden review)
+    review_ret = {
+        str(review["id"]): db_review.to_dict(review) for review in reviews if not review["is_hidden"]
+    }
+    review_id_mapping = {k: v for k, v in review_id_mapping.items() if v in review_ret}
+
     response = {
-        "reviews": {
-            str(review["id"]): db_review.to_dict(review) for review in reviews if not review["is_hidden"]
-        },
+        "reviews": review_ret,
         "review_id_mapping": review_id_mapping
     }
     return jsonify(**response)
