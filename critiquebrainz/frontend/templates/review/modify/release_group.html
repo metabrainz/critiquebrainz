@@ -1,14 +1,11 @@
 {% from 'macros.html' import cover_art, show_embedded_player with context %}
 
-{% if entity is not defined %}
-  {% set entity = review.entity_id | entity_details(type=entity_type) %}
-{% endif %}
 <div class="col-md-5">
   <dl class="dl-horizontal">
-    <dt>{{ _('Artist') }}</dt><dd>{{ entity['artist-credit-phrase'] | default(_('[Unknown artist]')) }}</dd>
+    <dt>{{ _('Artist') }}</dt><dd>{{ entity['artist-credit-phrase'] }}</dd>
     <dt>{{ _('Release group') }}</dt>
     <dd>
-      {{ entity['title'] | default(_('[Unknown release group]')) }}
+      <a href="{{ url_for('release_group.entity', id=entity['id']) }}" target="_blank">{{ entity['title'] }}</a>
       {% if entity['first-release-date'] %}
         <span class="text-muted">({{ entity['first-release-date'][:4] }})</span>
       {% endif %}

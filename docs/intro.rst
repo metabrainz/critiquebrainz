@@ -30,15 +30,13 @@ These values can be obtained from MusicBrainz after you register a new instance 
 CritiqueBrainz at https://musicbrainz.org/account/applications/register (you'll need a
 MusicBrainz account). In the ``Callback URL`` field type::
 
-   http://<HOST>/login/musicbrainz/post
+   http://localhost:8200/login/musicbrainz/post
 
 .. note::
 
-   ``<HOST>`` field should be set to ``localhost`` if you plan to run a local instance of
-   CritiqueBrainz for development purposes.
-   For example:- If you are running your local instance of the server on Port Number
-   8000 then ``<HOST>`` should be set
-   to ``localhost:8000``.
+   By default, CritiqueBrainz will be available at http://localhost:8200. If you change the
+   port or host that it is running on, you should set the Callback URL to the host that you
+   configure.
 
 After application has been registered, set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
 in your ``custom_config.py`` to the values that you see on the MusicBrainz website.
@@ -136,14 +134,18 @@ Then you can start all the services::
 
    $ ./develop.sh up
 
-Visit CritiqueBrainz at ``http://localhost`` in your browser.
+Visit CritiqueBrainz at ``http://localhost:8200`` in your browser.
+
+.. note::
+
+   CB Runs on 8200. change line x if you want it somewhere else.
 
 Importing data dump
 '''''''''''''''''''
 
 We provide daily data dumps from https://critiquebrainz.org that include reviews
 and most of the data associated with them. If you want to import that into your
-own installation, download the archives from ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
+own installation, download the archives from http://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
 (you'll need to get the base archive ``cbdump.tar.bz2`` and the reviews ``cbdump-reviews-all.tar.bz2``)
 and use ``python3 manage.py dump import`` command. First you need to import
 base archive and then the one that contains reviews. For example::

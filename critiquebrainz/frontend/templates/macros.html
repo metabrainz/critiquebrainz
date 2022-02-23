@@ -94,7 +94,7 @@
     <script>
       $('img').last()
         .on('error', function () {
-          $(this).attr('src', '{{ get_static_path('images/placeholder_disc.svg') }}');
+          $(this).attr('src', "{{ get_static_path('images/placeholder_disc.svg') }}");
           if ('{{ release_group_page }}' == 'True')
             $("#mb-call-to-act").css('display','block');
           else
@@ -219,4 +219,45 @@
     {% else %}
         -
     {% endif %}
+{% endmacro %}
+
+{% macro display_pagination(current_page, count, limit, page_info, parameter) %}
+  {% set total_pages = (count/limit)|round(method='ceil')|int %}
+  {% if count > limit %}
+    <div class="col-md-12 text-center">
+      <nav aria-label="{{ _('Page Navigation') }}">
+        <ul class="pagination">
+          <li class="previous {{'disabled' if current_page <= 1 }}">
+              <a aria-label="{{ _('Previous') }}" href="{{ url_for(page_info, page=page-1, **parameter) }}">&larr; {{ _('Previous') }}</a>
+          </li>
+
+          <li {{ "class=active" if current_page == 1 }}>
+              <a href="{{ url_for(page_info, page=1,  **parameter) }}">{{ 1 }}</a>
+          </li>
+
+          {% if current_page >= 5 %}
+            <li class="disabled"><a>{{ '...' }}</a></li>
+          {% endif %}
+
+          {% for page_index in range([2,current_page-2]|max, [total_pages,current_page+3]|min) %}
+            <li {{ "class=active" if current_page == page_index }}>
+                <a href="{{ url_for(page_info, page=page_index, **parameter) }}">{{ page_index }}</a>
+            </li>
+          {% endfor %}
+
+          {% if (current_page <= (total_pages - 4)) %}
+            <li class='disabled'><a>{{ '...' }}</a></li>
+          {% endif %}
+
+          <li {{ "class=active" if current_page == total_pages }}>
+              <a href="{{ url_for(page_info, page=total_pages, **parameter) }}">{{ total_pages }}</a>
+          </li>
+
+          <li class="next {{'disabled' if current_page == total_pages }}">
+              <a aria-label="{{ _('Next') }}" href="{{ url_for(page_info, page=page+1, **parameter) }}">{{ _('Next') }} &rarr;</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  {% endif %}
 {% endmacro %}

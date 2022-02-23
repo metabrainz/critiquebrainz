@@ -83,6 +83,7 @@ RUN touch /etc/service/uwsgi/down
 COPY ./docker/cron/consul-template-cron-config.conf /etc/consul-template-cron-config.conf
 COPY ./docker/cron/cron-config.service /etc/service/cron-config/run
 COPY ./docker/cron/crontab /etc/cron.d/critiquebrainz
+RUN chmod 0644 /etc/cron.d/critiquebrainz
 RUN touch /etc/service/cron/down
 RUN touch /etc/service/cron-config/down
 

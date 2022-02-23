@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, entity_rate_form, show_avg_rating with context %}
+{% from 'macros.html' import cover_art, entity_rate_form, show_avg_rating, display_pagination with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ artist.name }} - CritiqueBrainz{% endblock %}
@@ -147,18 +147,7 @@
         {% endfor %}
         <div class="clearfix"></div>
 
-        {% if release_group_count > release_groups_limit %}
-          <div class="col-md-12">
-            <ul class="pager">
-              {% if page > 1 %}
-                <li class="previous"><a href="{{ url_for('artist.entity', id=id, release_type=release_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
-              {% endif %}
-              {% if page-1 < release_group_count//release_groups_limit %}
-                <li class="next"><a href="{{ url_for('artist.entity', id=id, release_type=release_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
-              {% endif %}
-            </ul>
-          </div>
-        {% endif %}
+        {{ display_pagination(page, release_group_count, release_groups_limit, 'artist.entity', {'id': id, 'release_type':release_type}) }}
       </div>
     {% endif %}
     <ul class="pagination"></ul>

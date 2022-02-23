@@ -17,6 +17,8 @@ from critiquebrainz.db.user import User
 REVIEW_CACHE_NAMESPACE = "Review"
 DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
 DEFAULT_LANG = "en"
+
+#: list of allowed entity_type 's for writing/querying a review
 ENTITY_TYPES = [
     "event",
     "place",
@@ -257,7 +259,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
     reference will accompany the review.
 
     Args:
-        entity_id (uuid): ID of an entity that review is for.
+        entity_id: ID of an entity that review is for.
         entity_type (str): Entity type associated with the `entity_id`.
         user_id (uuid): ID of the reviewer.
         is_draft (bool): Whether this review is a draft (not shown to public).
@@ -333,7 +335,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
 # pylint: disable=too-many-branches
 def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_id=None,
                      entity_type=None, license_id=None, user_id=None, language=None,
-                     exclude=None, sort=None, limit=20, offset=None):
+                     exclude=None, sort=None, limit=20, offset=None, review_type=None):
     """
         helper function for list_reviews() that extends support for execution within a transaction by directly receiving the
         connection object
@@ -365,6 +367,12 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
         filters.append("review.user_id = :user_id")
         filter_data["user_id"] = user_id
 
+    if review_type == 'rating':
+        filters.append("latest_revision.rating is not NULL")
+
+    if review_type == 'review':
+        filters.append("latest_revision.text is not NULL")
+
     if exclude is not None:
         filters.append("review.id NOT IN :exclude")
         filter_data["exclude"] = tuple(exclude)
@@ -377,11 +385,28 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
     if filterstr:
         filterstr = " WHERE " + filterstr
 
+    latest_revision_query = """
+        JOIN (
+            revision
+            JOIN (
+                SELECT review.id AS review_uuid,
+                       MAX(timestamp) AS latest_timestamp
+                  FROM review
+                  JOIN revision ON review.id = review_id
+              GROUP BY review.id
+            ) AS latest
+              ON latest.review_uuid = revision.review_id
+             AND latest.latest_timestamp = revision.timestamp
+            ) AS latest_revision
+          ON review.id = latest_revision.review_id
+    """
+
     query = sqlalchemy.text("""
         SELECT COUNT(*)
           FROM review
+            {latest_revision_query}
             {filterstr}
-        """.format(filterstr=filterstr))
+        """.format(filterstr=filterstr, latest_revision_query=latest_revision_query))
 
     result = connection.execute(query, filter_data)
     count = result.fetchone()[0]
@@ -441,24 +466,13 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
      LEFT JOIN vote ON vote.revision_id = revision.id
           JOIN "user" ON review.user_id = "user".id
           JOIN license ON license.id = license_id
-          JOIN (
-                revision
-                JOIN (
-                    SELECT review.id AS review_uuid,
-                           MAX(timestamp) AS latest_timestamp
-                      FROM review
-                      JOIN revision ON review.id = review_id
-                  GROUP BY review.id
-                  ) AS latest
-                  ON latest.review_uuid = revision.review_id
-                 AND latest.latest_timestamp = revision.timestamp
-               ) AS latest_revision ON review.id = latest_revision.review_id
+        {latest_revision_query}   
         {where_clause}
       GROUP BY review.id, latest_revision.id, "user".id, license.id
         {order_by_clause}
          LIMIT :limit
         OFFSET :offset
-        """.format(where_clause=filterstr, order_by_clause=order_by_clause))
+        """.format(where_clause=filterstr, order_by_clause=order_by_clause, latest_revision_query=latest_revision_query))
 
     filter_data["limit"] = limit
     filter_data["offset"] = offset
@@ -493,7 +507,7 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
 
 def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_type=None,
                  license_id=None, user_id=None, language=None, exclude=None,
-                 sort=None, limit=20, offset=None):
+                 sort=None, limit=20, offset=None, review_type=None):
     """Get a list of reviews.
 
     This function provides several filters that can be used to select a subset of reviews.
@@ -511,6 +525,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
         inc_drafts (bool): True if reviews marked as drafts should be included, False if not.
         inc_hidden (bool): True if reviews marked as hidden should be included, False if not.
         exclude (list): List of reviews (their IDs) to exclude from results.
+        review_type (str): Return reviews of this type. Can either be "review" (to return reviews with text),
+                           or "rating" (to return reviews which have a rating), or ``None`` (to return all reviews).
 
     Returns:
         Tuple with two values:
@@ -520,7 +536,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
     with db.engine.connect() as connection:
         return get_reviews_list(connection, inc_drafts=inc_drafts, inc_hidden=inc_hidden, entity_id=entity_id,
                                 entity_type=entity_type, license_id=license_id, user_id=user_id,
-                                language=language, exclude=exclude, sort=sort, limit=limit, offset=offset)
+                                language=language, exclude=exclude, sort=sort, limit=limit, offset=offset,
+                                review_type=review_type)
 
 
 def get_popular(limit=None):

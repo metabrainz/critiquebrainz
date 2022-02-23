@@ -335,13 +335,14 @@ def review_list_handler():
           ]
         }
 
-    :json uuid entity_id: UUID of the release group that is being reviewed
-    :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc. **(optional)**
+    :query entity_id: UUID of an entity to retrieve reviews for **(optional)**
+    :query entity_type: One of the supported reviewable entities. :data:`critiquebrainz.db.review.ENTITY_TYPES` **(optional)**
     :query user_id: user's UUID **(optional)**
     :query sort: ``popularity`` or ``published_on`` **(optional)**
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
+    :query review_type: ``review`` or ``rating``. If set, only return reviews which have a text review, or a rating **(optional)**
 
     :resheader Content-Type: *application/json*
     """
@@ -356,6 +357,7 @@ def review_list_handler():
 
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating', 'created'], optional=True)
+    review_type = Parser.string('uri', 'review_type', valid_values=['rating', 'review'], optional=True)
 
     # "rating" and "created" sort values are deprecated and but allowed here for backward compatibility
     if sort == 'created':
@@ -371,7 +373,7 @@ def review_list_handler():
 
     # TODO(roman): Ideally caching logic should live inside the model. Otherwise it
     # becomes hard to track all this stuff.
-    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language)
+    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language, review_type)
     cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
     if cached_result:
         reviews = cached_result['reviews']
@@ -386,6 +388,7 @@ def review_list_handler():
             limit=limit,
             offset=offset,
             language=language,
+            review_type=review_type
         )
         reviews = [db_review.to_dict(p) for p in reviews]
         cache.set(cache_key, {
