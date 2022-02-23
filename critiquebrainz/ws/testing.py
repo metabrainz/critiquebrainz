@@ -13,6 +13,8 @@ class WebServiceTestCase(TestCase):
 
     def create_app(self):
         app = create_app()
+        app.config['WTF_CSRF_ENABLED'] = False
+        app.config['TESTING'] = True
         oauth.init_app(app)
         return app
 

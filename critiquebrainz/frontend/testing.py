@@ -10,6 +10,8 @@ class FrontendTestCase(TestCase):
 
     def create_app(self):
         app = create_app()
+        app.config['WTF_CSRF_ENABLED'] = False
+        app.config['TESTING'] = True
         return app
 
     def setUp(self):
