@@ -51,9 +51,6 @@ class ReviewViewsTestCase(WebServiceTestCase):
         response = self.client.get('/review/', query_string={'sort': 'published_on'})
         self.assert200(response)
 
-        response = self.client.get('/review/', query_string={'sort': 'published_on_asc'})
-        self.assert200(response)
-
         response = self.client.get('/review/', query_string={'sort': 'popularity'})
         self.assert200(response)
 
@@ -63,6 +60,17 @@ class ReviewViewsTestCase(WebServiceTestCase):
         response = self.client.get('/review/', query_string={'sort': 'hello'})
         self.assert400(response)
         self.assertEqual(response.json['description'], 'Parameter `sort`: is not valid')
+
+    def test_review_sort_order(self):
+        response = self.client.get('/review/', query_string={'sort_order': 'desc'})
+        self.assert200(response)
+
+        response = self.client.get('/review/', query_string={'sort_order': 'asc'})
+        self.assert200(response)
+
+        response = self.client.get('/review/', query_string={'sort_order': 'hello'})
+        self.assert400(response)
+        self.assertEqual(response.json['description'], 'Parameter `sort_order`: is not valid')
 
     def test_review_count(self):
         resp = self.client.get('/review/').json
