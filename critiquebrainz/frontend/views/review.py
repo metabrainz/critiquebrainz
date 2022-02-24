@@ -44,6 +44,7 @@ def browse():
     entity_type = request.args.get('entity_type', default=None)
     sort = request.args.get('sort', default='published_on')
     sort_options = {'popularity': 'Popularity', 'published_on': 'Newest', 'published_on_asc': 'Oldest'}
+    sort_order = request.args.get('sort_order', default='desc')
     if entity_type == 'all':
         entity_type = None
     
@@ -56,7 +57,7 @@ def browse():
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
-    reviews, count = db_review.list_reviews(sort=sort, limit=limit, offset=offset, entity_type=entity_type)
+    reviews, count = db_review.list_reviews(sort=sort, sort_order=sort_order, limit=limit, offset=offset, entity_type=entity_type)
     if not reviews:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count / limit))))
@@ -75,7 +76,7 @@ def browse():
     reviews = [r for r in reviews if str(r["entity_id"]) in retrieved_entity_mbids]
 
     return render_template('review/browse.html', reviews=reviews, entities=entities_info,
-                           page=page, limit=limit, count=count, entity_type=entity_type, sort=sort, sort_options=sort_options)
+                           page=page, limit=limit, count=count, entity_type=entity_type, sort=sort, sort_order=sort_order, sort_options=sort_options)
 
 
 # TODO(psolanki): Refactor this function to remove PyLint warning.

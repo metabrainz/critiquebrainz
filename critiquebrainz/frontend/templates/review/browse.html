@@ -8,21 +8,21 @@
 <p><em class="text-muted">{{ _('Ordered by') }} {{ sort_options[sort] }}</em></p>
 <ul class="nav nav-pills">
   <li role="presentation" {{ "class=active" if entity_type == None }}>
-    <a href="{{ url_for('review.browse', entity_type='all', sort=sort) }}">{{ _('All') }}</a></li>
+    <a href="{{ url_for('review.browse', entity_type='all', sort=sort, sort_order=sort_order) }}">{{ _('All') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'release_group' }}>
-    <a href="{{ url_for('review.browse', entity_type='release_group', sort=sort) }}">{{ _('Release group') }}</a></li>
+    <a href="{{ url_for('review.browse', entity_type='release_group', sort=sort, sort_order=sort_order) }}">{{ _('Release group') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'artist' }}>
-    <a href="{{ url_for('review.browse', entity_type='artist', sort=sort) }}">{{ _('Artist') }}</a></li>    
+    <a href="{{ url_for('review.browse', entity_type='artist', sort=sort, sort_order=sort_order) }}">{{ _('Artist') }}</a></li>    
   <li role="presentation" {{ "class=active" if entity_type == 'label' }}>
-    <a href="{{ url_for('review.browse', entity_type='label', sort=sort) }}">{{ _('Label') }}</a></li>
+    <a href="{{ url_for('review.browse', entity_type='label', sort=sort, sort_order=sort_order) }}">{{ _('Label') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'recording' }}>
-    <a href="{{ url_for('review.browse', entity_type='recording', sort=sort) }}">{{ _('Recording') }}</a></li>
+    <a href="{{ url_for('review.browse', entity_type='recording', sort=sort, sort_order=sort_order) }}">{{ _('Recording') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'event' }}>
-    <a href="{{ url_for('review.browse', entity_type='event', sort=sort) }}">{{ _('Event') }}</a></li>
+    <a href="{{ url_for('review.browse', entity_type='event', sort=sort, sort_order=sort_order) }}">{{ _('Event') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'place' }}>
-    <a href="{{ url_for('review.browse', entity_type='place', sort=sort) }}">{{ _('Place') }}</a></li>
+    <a href="{{ url_for('review.browse', entity_type='place', sort=sort, sort_order=sort_order) }}">{{ _('Place') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'work' }}>
-    <a href="{{ url_for('review.browse', entity_type='work', sort=sort) }}">{{ _('Work') }}</a></li>
+    <a href="{{ url_for('review.browse', entity_type='work', sort=sort, sort_order=sort_order) }}">{{ _('Work') }}</a></li>
 
   <div class="btn-group dropdown pull-right">
     <button class="btn btn-default dropdown-toggle" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -30,9 +30,9 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-      {% for sort_option in sort_options %}
-        <li><a href="{{ url_for('review.browse', entity_type=entity_type, sort=sort_option) }}">{{ sort_options[sort_option] }}</a></li>          
-      {% endfor %}
+        <li><a href="{{ url_for('review.browse', entity_type=entity_type, sort='popularity', sort_order='desc') }}">{{ _('Popularity') }}</a></li> 
+        <li><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='desc') }}">{{ _('Newest') }}</a></li> 
+        <li><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='asc') }}">{{ _('Oldest') }}</a></li>      
     </ul>
   </div>
 </ul>
