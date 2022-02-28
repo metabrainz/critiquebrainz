@@ -1,5 +1,7 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db import label as db
+from brainzutils.musicbrainz_db import serialize
+from brainzutils.musicbrainz_db import unknown_entities
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.relationships import label as label_rel
@@ -21,5 +23,7 @@ def get_label_by_id(mbid):
             includes=['artist-rels', 'url-rels'],
             unknown_entities_for_missing=True
         )
+        if label['name'] == unknown_entities.unknown_label.name:
+            return None
         cache.set(key=key, val=label, time=DEFAULT_CACHE_EXPIRATION)
     return label_rel.process(label)

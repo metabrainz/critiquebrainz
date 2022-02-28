@@ -19,24 +19,23 @@ class ReleaseGroupViewsTestCase(FrontendTestCase):
             full_name='Test License',
         )
 
-    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_id')
-    def test_release_group_page(self, get_release_group_by_id):
-        get_release_group_by_id.return_value = {
-            'id': '8ef859e3-feb2-4dd1-93da-22b91280d768',
-            'title': 'Collision Course',
-            'first-release-year': 2004,
-        }
+    def test_release_group_page(self):
         db_review.create(
             user_id=self.user.id,
-            entity_id='8ef859e3-feb2-4dd1-93da-22b91280d768',
+            entity_id='1eff4a06-056e-4dc7-91c4-0cbc5878f3c3',
             entity_type='release_group',
             text='This is a test review',
             is_draft=False,
             license_id=self.license['id'],
             language='en',
         )
-        response = self.client.get('/release-group/8ef859e3-feb2-4dd1-93da-22b91280d768')
+        response = self.client.get('/release-group/1eff4a06-056e-4dc7-91c4-0cbc5878f3c3')
         self.assert200(response)
-        self.assertIn('Collision Course', str(response.data))
+        self.assertIn('Strobe Light', str(response.data))
         # Test if there is a review from test user
         self.assertIn('test user', str(response.data))
+
+    def test_releasegroup_page_not_found(self):
+        # No such mbid returns an error.
+        response = self.client.get('/release-group/1eff4a06-056e-4dc7-91c4-0cbc58780000')
+        self.assert404(response)

@@ -181,7 +181,7 @@ class CacheTestCase(DataTestCase):
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        recording_fetch.assert_called_with(mbid, includes=['artists', 'work-rels', 'url-rels'])
+        recording_fetch.assert_called_with(mbid, includes=['artists', 'work-rels', 'url-rels'], unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=recording, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = recording
@@ -295,7 +295,7 @@ class CacheTestCase(DataTestCase):
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
-        work_fetch.assert_called_with(mbid, includes=['artist-rels', 'recording-rels'])
+        work_fetch.assert_called_with(mbid, includes=['artist-rels', 'recording-rels'], unknown_entities_for_missing=True)
         cache_set.assert_called_with(key=expected_key, val=work, time=DEFAULT_CACHE_EXPIRATION)
 
         cache_get.return_value = work

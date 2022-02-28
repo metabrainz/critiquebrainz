@@ -4,7 +4,6 @@ from werkzeug.exceptions import NotFound
 from flask_babel import gettext
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.recording as mb_recording
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, RECORDING_REVIEWS_LIMIT
 
@@ -15,9 +14,8 @@ recording_bp = Blueprint('recording', __name__)
 @recording_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    try:
-        recording = mb_recording.get_recording_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    recording = mb_recording.get_recording_by_id(id)
+    if recording is None:
         raise NotFound(gettext("Sorry, we couldn't find a recording with that MusicBrainz ID."))
 
     if 'url-rels' in recording:
