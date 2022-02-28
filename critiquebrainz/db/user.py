@@ -21,13 +21,6 @@ class User(AdminMixin):
         self.musicbrainz_row_id = user.get('musicbrainz_row_id', None)
 
     @property
-    def avatar(self):
-        """Link to user's avatar image."""
-        if self.show_gravatar and self.email:
-            return db_users.gravatar_url(self.email)
-        return db_users.gravatar_url(self.id)
-
-    @property
     def is_vote_limit_exceeded(self):
         return self.votes_today_count() >= self.user_type.votes_per_day
 
@@ -125,7 +118,6 @@ class User(AdminMixin):
         if confidential is True:
             response.update(dict(
                 email=self.email,
-                avatar=self.avatar,
                 show_gravatar=self.show_gravatar,
                 musicbrainz_username=self.musicbrainz_username,
                 license_choice=self.license_choice,

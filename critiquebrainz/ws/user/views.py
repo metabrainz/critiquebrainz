@@ -37,8 +37,7 @@ def user_me_handler(user):
             "email": "your_email_id",
             "karma": 0,
             "musicbrainz_username": "username/id associated with musicbrainz",
-            "id": "your-unique-user-id",
-            "avatar": "https://gravatar.com/your-gravatar-link"
+            "id": "your-unique-user-id"
           }
         }
 
