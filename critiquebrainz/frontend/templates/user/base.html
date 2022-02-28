@@ -5,7 +5,7 @@
 {% block content %}
   <div id="user-profile">
     <div class="clearfix">
-      <h2 class="pull-left"><img class="avatar" src="{{ user.avatar }}&s=32" /> {{ user.display_name }}</h2>
+      <h2 class="pull-left">{{ user.display_name }}</h2>
       {% if current_user.is_authenticated %}
         {% if current_user == user %}
           <a href="{{ url_for('profile_details.edit') }}"

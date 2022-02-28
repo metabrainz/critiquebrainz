@@ -12,7 +12,7 @@
     {% block sidebar %}{% endblock %}
 
     <div class="col-md-{% if sidebar_visible %}9{% else %}12{% endif %}">
-      <h3>{{ review_credit(review, user_picture_size=24) }}</h3>
+      <h3>{{ review_credit(review) }}</h3>
 
       {% if review.is_draft %}
         <div class="alert alert-warning" role="alert">{{ _('<b>This review has not been published yet!</b> Only you can see it.') }}</div>
