@@ -152,11 +152,11 @@ def get_revision_number(review_id, revision_id):
             "review_id": review_id,
             "revision_id": revision_id,
         })
-        rev_num = result.fetchone()[0]
+        rev_num = result.fetchone()
         if not rev_num:
             raise db_exceptions.NoDataFoundException("Can't find the revision with id={} for specified review.".
                                                      format(revision_id))
-    return rev_num
+    return rev_num[0]
 
 
 def create(connection, review_id, text=None, rating=None):
