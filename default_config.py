@@ -8,7 +8,7 @@ SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@db:5432/cr
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # MusicBrainz Database
-MB_DATABASE_URI = "postgresql://musicbrainz:musicbrainz@musicbrainz_db:5432/musicbrainz_test"
+MB_DATABASE_URI = "postgresql://musicbrainz:musicbrainz@musicbrainz_db:5432/musicbrainz_db"
 
 # Redis
 REDIS_HOST = "critiquebrainz_redis"

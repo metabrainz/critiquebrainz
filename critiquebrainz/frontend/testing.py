@@ -9,9 +9,7 @@ from critiquebrainz.frontend import create_app
 class FrontendTestCase(TestCase):
 
     def create_app(self):
-        app = create_app()
-        app.config['WTF_CSRF_ENABLED'] = False
-        app.config['TESTING'] = True
+        app = create_app(config_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'test_config.py'))
         return app
 
     def setUp(self):
