@@ -22,7 +22,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             full_name="Created so we can fill the form correctly.",
         )
         self.review = dict(
-            entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_id="90878b63-f639-3c8b-aefb-190bdf3d1790",
             entity_type='release_group',
             user_id=self.user.id,
             text="Testing! This text should be on the page.",

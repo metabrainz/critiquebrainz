@@ -1,6 +1,6 @@
 {% extends 'review/entity/base.html' %}
 
-{% set label = review.entity_id | entity_details(type='label') %}
+{% set label = entity %}
 
 {% block title %}
   {% set label_title = label.name | default(_('[Unknown label]')) %}

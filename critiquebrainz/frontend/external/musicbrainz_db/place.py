@@ -7,6 +7,10 @@ from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRA
 from critiquebrainz.frontend.external.relationships import place as place_rel
 
 
+def place_is_unknown(place):
+    return place['name'] == unknown_entities.unknown_place.name
+
+
 def get_place_by_id(mbid):
     """Get place with the MusicBrainz ID.
 
@@ -23,7 +27,7 @@ def get_place_by_id(mbid):
             includes=['artist-rels', 'place-rels', 'release-group-rels', 'url-rels'],
             unknown_entities_for_missing=True,
         )
-        if place['name'] == unknown_entities.unknown_place.name:
+        if place_is_unknown(place):
             return None
         cache.set(key=key, val=place, time=DEFAULT_CACHE_EXPIRATION)
     return place_rel.process(place)

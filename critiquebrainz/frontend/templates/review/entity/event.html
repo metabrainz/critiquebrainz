@@ -1,6 +1,6 @@
 {% extends 'review/entity/base.html' %}
 
-{% set event = review.entity_id | entity_details(type='event') %}
+{% set event = entity %}
 
 {% block title %}
   {% set event_title = event.name | default(_('[Unknown event]')) %}

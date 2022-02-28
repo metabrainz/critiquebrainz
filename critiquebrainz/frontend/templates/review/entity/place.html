@@ -5,7 +5,7 @@
   <script src="{{ get_static_path('leaflet.js') }}"></script>
 {% endblock %}
 
-{% set place = review.entity_id | entity_details(type='place') %}
+{% set place = entity %}
 
 {% block title %}
   {% set place_title = place.name | default(_('[Unknown place]')) %}

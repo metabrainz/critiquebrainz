@@ -24,7 +24,7 @@
       </thead>
       <tbody>
       {% for review in reviews %}
-        {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
+        {% set entity = entities[review.entity_id | string] %}
         <tr data-review-id="{{ review.id }}">
           <td class="title">
             <a href="{{ url_for('review.entity', id=review.id) }}">

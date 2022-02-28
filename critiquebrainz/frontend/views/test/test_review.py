@@ -218,7 +218,7 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def test_event_review_pages(self):
         review = db_review.create(
-            entity_id="b4e75ef8-3454-4fdc-8af1-61038c856abc",
+            entity_id="026015da-11cc-4dcb-bdce-760f852c46cd",
             entity_type="event",
             user_id=self.user.id,
             text="A great event, enjoyed it.",

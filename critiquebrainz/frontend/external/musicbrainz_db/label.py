@@ -7,6 +7,10 @@ from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRA
 from critiquebrainz.frontend.external.relationships import label as label_rel
 
 
+def label_is_unknown(label):
+    return label['name'] == unknown_entities.unknown_label.name
+
+
 def get_label_by_id(mbid):
     """Get label with MusicBrainz ID.
 
@@ -23,7 +27,7 @@ def get_label_by_id(mbid):
             includes=['artist-rels', 'url-rels'],
             unknown_entities_for_missing=True
         )
-        if label['name'] == unknown_entities.unknown_label.name:
+        if label_is_unknown(label):
             return None
         cache.set(key=key, val=label, time=DEFAULT_CACHE_EXPIRATION)
     return label_rel.process(label)
