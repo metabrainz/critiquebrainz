@@ -1,14 +1,8 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db import release_group as db
-from brainzutils.musicbrainz_db import serialize
-from brainzutils.musicbrainz_db import unknown_entities
 
 import critiquebrainz.frontend.external.relationships.release_group as release_group_rel
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
-
-
-def release_group_is_unknown(release_group):
-    return release_group['title'] == unknown_entities.unknown_release_group.name
 
 
 def get_release_group_by_id(mbid):
@@ -16,12 +10,11 @@ def get_release_group_by_id(mbid):
     key = cache.gen_key('release-group', mbid)
     release_group = cache.get(key)
     if not release_group:
-        release_group = db.get_release_group_by_id(
+        release_group = db.get_release_group_by_mbid(
             mbid,
             includes=['artists', 'releases', 'release-group-rels', 'url-rels', 'tags'],
-            unknown_entities_for_missing=True,
         )
-        if release_group_is_unknown(release_group):
+        if not release_group:
             return None
         cache.set(key, release_group, DEFAULT_CACHE_EXPIRATION)
     return release_group_rel.process(release_group)

@@ -292,7 +292,6 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
                                        "spotify_id": "6IH6co1QUS7uXoyPDv0rIr"
                                    },
                                    follow_redirects=True)
-        # self.assertRedirects(response, url_for('mapping.spotify_list', release_group_id=self.test_release_group['id']))
         self.assert200(response)
         self.assertIn("You need to specify existing album from Spotify!", str(response.data))
 

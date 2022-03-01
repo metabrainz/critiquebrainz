@@ -24,7 +24,7 @@ def entity(id):
 
     if current_user.is_authenticated:
         my_reviews, _ = db_review.list_reviews(
-            entity_id=label['id'],
+            entity_id=label['mbid'],
             entity_type='label',
             user_id=current_user.id,
         )
@@ -34,19 +34,19 @@ def entity(id):
 
     reviews_offset = 0
     reviews, reviews_count = db_review.list_reviews(
-        entity_id=label['id'],
+        entity_id=label['mbid'],
         entity_type='label',
         sort='popularity',
         limit=label_reviews_limit,
         offset=reviews_offset,
     )
 
-    avg_rating = get_avg_rating(label['id'], "label")
+    avg_rating = get_avg_rating(label['mbid'], "label")
 
     rating_form = RatingEditForm(entity_id=id, entity_type='label')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    return render_template('label/entity.html', id=label['id'], label=label,
+    return render_template('label/entity.html', id=label['mbid'], label=label,
                            reviews=reviews, my_review=my_review, reviews_limit=label_reviews_limit,
                            reviews_count=reviews_count, avg_rating=avg_rating, rating_form=rating_form,
                            current_user=current_user)

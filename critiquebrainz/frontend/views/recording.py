@@ -27,7 +27,7 @@ def entity(id):
     offset = int(request.args.get('offset', default=0))
     if current_user.is_authenticated:
         my_reviews, my_count = db_review.list_reviews(
-            entity_id=recording['id'],
+            entity_id=recording['mbid'],
             entity_type='recording',
             user_id=current_user.id,
         )
@@ -35,17 +35,17 @@ def entity(id):
     else:
         my_review = None
     reviews, count = db_review.list_reviews(
-        entity_id=recording['id'],
+        entity_id=recording['mbid'],
         entity_type='recording',
         sort='popularity',
         limit=limit,
         offset=offset,
     )
-    avg_rating = get_avg_rating(recording['id'], "recording")
+    avg_rating = get_avg_rating(recording['mbid'], "recording")
 
     rating_form = RatingEditForm(entity_id=id, entity_type='recording')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    return render_template('recording/entity.html', id=recording['id'], recording=recording, reviews=reviews,
+    return render_template('recording/entity.html', id=recording['mbid'], recording=recording, reviews=reviews,
                            my_review=my_review, external_reviews=external_reviews, limit=limit, offset=offset,
                            count=count, avg_rating=avg_rating, rating_form=rating_form, current_user=current_user)

@@ -35,7 +35,7 @@ def entity(id):
     my_review = None
     if current_user.is_authenticated:
         my_reviews, my_count = db_review.list_reviews(
-            entity_id=artist['id'],
+            entity_id=artist['mbid'],
             entity_type='artist',
             user_id=current_user.id,
         )
@@ -43,14 +43,14 @@ def entity(id):
 
     reviews_offset = 0
     reviews, reviews_count = db_review.list_reviews(
-        entity_id=artist['id'],
+        entity_id=artist['mbid'],
         entity_type='artist',
         sort='popularity',
         limit=artist_reviews_limit,
         offset=reviews_offset,
     )
 
-    avg_rating = get_avg_rating(artist['id'], "artist")
+    avg_rating = get_avg_rating(artist['mbid'], "artist")
 
     rating_form = RatingEditForm(entity_id=id, entity_type='artist')
     rating_form.rating.data = my_review['rating'] if my_review else None
@@ -64,7 +64,7 @@ def entity(id):
         return redirect(url_for('.reviews'))
     release_groups_offset = (page - 1) * BROWSE_RELEASE_GROUPS_LIMIT
     release_groups, release_group_count = mb_release_group.browse_release_groups(
-        artist_id=artist['id'],
+        artist_id=artist['mbid'],
         release_types=[release_type],
         limit=BROWSE_RELEASE_GROUPS_LIMIT,
         offset=release_groups_offset,
@@ -72,7 +72,7 @@ def entity(id):
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
         _, release_group_review_count = db_review.list_reviews(  # pylint: disable=unused-variable
-            entity_id=release_group['id'],
+            entity_id=release_group['mbid'],
             entity_type='release_group',
             sort='published_on', limit=1,
         )
@@ -80,7 +80,7 @@ def entity(id):
 
     return render_template(
         'artist/entity.html',
-        id=artist['id'],
+        id=artist['mbid'],
         artist=artist,
         release_type=release_type,
         release_groups=release_groups,
