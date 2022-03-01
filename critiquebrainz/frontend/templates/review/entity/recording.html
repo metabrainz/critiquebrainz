@@ -1,6 +1,6 @@
 {% extends 'review/entity/base.html' %}
 
-{% set recording = review.entity_id | entity_details(type='recording') %}
+{% set recording = entity %}
 
 {% block title %}
   {% set recording_title = recording.name | default(_('[Unknown recording]')) %}

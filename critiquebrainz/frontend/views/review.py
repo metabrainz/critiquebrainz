@@ -18,7 +18,7 @@ from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud
-from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
+from critiquebrainz.frontend.external.musicbrainz_db.entities import entity_is_unknown, get_multiple_entities, get_entity_by_id
 from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
@@ -61,6 +61,12 @@ def browse():
     entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
     entities_info = get_multiple_entities(entities)
 
+    # If we don't have metadata for a review, remove it from the list
+    # This will have the effect of removing an item from the 3x9 grid of reviews, but it
+    # happens so infrequently that we don't bother to back-fill it.
+    retrieved_entity_mbids = entities_info.keys()
+    reviews = [r for r in reviews if str(r["entity_id"]) in retrieved_entity_mbids]
+
     return render_template('review/browse.html', reviews=reviews, entities=entities_info,
                            page=page, limit=limit, count=count, entity_type=entity_type)
 
@@ -96,6 +102,11 @@ def entity(id, rev=None):
     if review["entity_type"] == 'release_group':
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
+
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    if not entity:
+        raise NotFound("This review is for an item that doesn't exist")
+
     count = db_revision.get_count(id)
     if not rev:
         rev = count
@@ -135,7 +146,8 @@ def entity(id, rev=None):
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
                            spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
                            vote=vote, other_reviews=other_reviews, avg_rating=avg_rating,
-                           comment_count=count, comments=comments, comment_form=comment_form)
+                           comment_count=count, comments=comments, comment_form=comment_form,
+                           entity=entity)
 
 
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')
@@ -150,6 +162,10 @@ def redirect_to_entity(review_id, revision_id):
 @review_bp.route('/<uuid:id>/revisions/compare')
 def compare(id):
     review = get_review_or_404(id)
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    if not entity:
+        raise NotFound("This review is for an item that doesn't exist")
+
     if review["is_draft"] and not (current_user.is_authenticated and
                                    current_user == review["user"]):
         raise NotFound(gettext("Can't find a review with the specified ID."))
@@ -171,6 +187,10 @@ def compare(id):
 @review_bp.route('/<uuid:id>/revisions')
 def revisions(id):
     review = get_review_or_404(id)
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    if not entity:
+        raise NotFound("This review is for an item that doesn't exist")
+
     # Not showing review if it isn't published yet and not viewed by author.
     if review["is_draft"] and not (current_user.is_authenticated and
                                    current_user == review["user"]):
@@ -191,6 +211,10 @@ def revisions(id):
 @review_bp.route('/<uuid:id>/revisions/more')
 def revisions_more(id):
     review = get_review_or_404(id)
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    if not entity:
+        raise NotFound("This review is for an item that doesn't exist")
+
     # Not showing review if it isn't published yet and not viewed by author.
     if review["is_draft"] and not (current_user.is_authenticated and
                                    current_user == review["user"]):

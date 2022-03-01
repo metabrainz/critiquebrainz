@@ -25,7 +25,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             full_name="Created so we can fill the form correctly.",
         )
         self.review = dict(
-            entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_id="90878b63-f639-3c8b-aefb-190bdf3d1790",
             entity_type='release_group',
             user_id=self.user.id,
             text="Testing! This text should be on the page.",
@@ -284,8 +284,8 @@ class ReviewViewsTestCase(WebServiceTestCase):
         cache_keys = cache.smembers(track_key, namespace="Review")
         self.assertEqual(set(), cache_keys)
 
-        expected_cache_keys = {'list_entity_id=6b3cd75d-7453-39f3-86c4-1441f360e121_user_id=None_sort=popularity_limit=50_offset=0_language=None_review_type=None',
-                               'list_entity_id=6b3cd75d-7453-39f3-86c4-1441f360e121_user_id=None_sort=None_limit=5_offset=0_language=None_review_type=None'}
+        expected_cache_keys = {'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=popularity_limit=50_offset=0_language=None_review_type=None',
+                               'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=None_limit=5_offset=0_language=None_review_type=None'}
 
         # Test cache keys are recorded
         self.client.get('/review/', query_string={'sort': 'rating', 'entity_id': entity_id})

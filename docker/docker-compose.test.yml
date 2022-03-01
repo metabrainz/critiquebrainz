@@ -2,7 +2,7 @@
 version: "3.4"
 services:
 
-  db_test:
+  db:
     image: postgres:12.3
     environment:
       POSTGRES_USER: critiquebrainz
@@ -13,22 +13,21 @@ services:
       - ./pg_custom:/docker-entrypoint-initdb.d/
 
   musicbrainz_db:
-    image: metabrainz/musicbrainz-test-database:beta
+    image: metabrainz/brainzutils-mb-sample-database:schema-25-2021-04-04.0
     environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_HOST_AUTH_METHOD: trust
 
   critiquebrainz_redis:
     image: redis:4.0-alpine
 
-  critiquebrainz_test:
+  critiquebrainz:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile.dev
     volumes:
       - ..:/code
     depends_on:
-      - db_test
+      - db
       - musicbrainz_db
       - critiquebrainz_redis
     environment:

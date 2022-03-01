@@ -36,14 +36,10 @@ class ArtistViewsTestCase(FrontendTestCase):
         ))
 
     @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.browse_release_groups')
-    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.artist.get_artist_by_id')
-    def test_artist_page(self, get_artist_by_id, browse_release_groups):
-        get_artist_by_id.return_value = {
-            'id': 'f59c5520-5f46-4d2c-b2c4-822eabf53419',
-            'name': 'Linkin Park',
-            'sort-name': 'Linkin Park',
-        }
+    def test_artist_page(self, browse_release_groups):
+        # Release groups in the sample database don't have all possible rg types, so mock it
         browse_release_groups.side_effect = return_release_groups
+
         # Basic artist page should be available.
         response = self.client.get('/artist/f59c5520-5f46-4d2c-b2c4-822eabf53419')
         self.assert200(response)
@@ -71,3 +67,8 @@ class ArtistViewsTestCase(FrontendTestCase):
         # Other releases tab
         response = self.client.get('/artist/f59c5520-5f46-4d2c-b2c4-822eabf53419?release_type=other')
         self.assert200(response)
+
+    def test_artist_page_not_found(self):
+        # No such mbid returns an error.
+        response = self.client.get('/artist/f59c5520-5f46-4d2c-b2c4-822eabf59999')
+        self.assert404(response)

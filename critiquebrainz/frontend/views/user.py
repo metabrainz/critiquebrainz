@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities
 from flask_babel import gettext
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
@@ -33,8 +34,20 @@ def reviews(user_id):
     reviews, count = db_review.list_reviews(user_id=user_id, sort='published_on', limit=limit, offset=offset,
                                             inc_hidden=current_user.is_admin(),
                                             inc_drafts=current_user.is_authenticated and current_user.id == user_id)
+    
+    # Load info about entities for reviews
+    entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
+    entities_info = get_multiple_entities(entities)
+
+    # If we don't have metadata for a review, remove it from the list
+    # This will have the effect of removing an item from the 3x9 grid of reviews, but it
+    # happens so infrequently that we don't bother to back-fill it.
+    retrieved_entity_mbids = entities_info.keys()
+    reviews = [r for r in reviews if str(r["entity_id"]) in retrieved_entity_mbids]
+
     return render_template('user/reviews.html', section='reviews', user=user,
-                           reviews=reviews, page=page, limit=limit, count=count)
+                           reviews=reviews, page=page, limit=limit, count=count,
+                           entities=entities_info)
 
 
 @user_bp.route('/<uuid:user_id>/info')

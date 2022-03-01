@@ -1,7 +1,7 @@
 {% extends 'review/entity/base.html' %}
 {% from 'macros.html' import cover_art, show_embedded_player with context %}
 
-{% set release_group = review.entity_id | entity_details %}
+{% set release_group = entity %}
 
 {% block title %}
   {% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}

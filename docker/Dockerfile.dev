@@ -1,5 +1,7 @@
 FROM metabrainz/python:3.8-20210115
 
+ENV PYTHONUNBUFFERED 1
+
 # remove expired let's encrypt certificate and install new ones
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \

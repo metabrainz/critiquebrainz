@@ -20,13 +20,13 @@ fi
 function build_containers {
     docker-compose -f ${COMPOSE_FILE_LOC} \
                    -p ${COMPOSE_PROJECT_NAME} \
-                build critiquebrainz_test
+                build critiquebrainz
 }
 
 function bring_up_db {
     docker-compose -f ${COMPOSE_FILE_LOC} \
                    -p ${COMPOSE_PROJECT_NAME} \
-                up -d db_test musicbrainz_db critiquebrainz_redis
+                up -d db musicbrainz_db critiquebrainz_redis
 }
 
 function setup {
@@ -34,14 +34,14 @@ function setup {
     # PostgreSQL Database initialization
     docker-compose -f ${COMPOSE_FILE_LOC} \
                    -p ${COMPOSE_PROJECT_NAME} \
-                run --rm critiquebrainz_test dockerize \
-                  -wait tcp://db_test:5432 -timeout 60s \
-                bash -c "python3 manage.py init_db --test-db"
+                run --rm critiquebrainz dockerize \
+                  -wait tcp://db:5432 -timeout 60s \
+                bash -c "python3 manage.py init_db"
 }
 
 function is_db_running {
     # Check if the database container is running
-    containername="${COMPOSE_PROJECT_NAME}_db_test_1"
+    containername="${COMPOSE_PROJECT_NAME}_db_1"
     res=`docker ps --filter "name=$containername" --filter "status=running" -q`
     if [[ -n "$res" ]]; then
         return 0
@@ -51,7 +51,7 @@ function is_db_running {
 }
 
 function is_db_exists {
-    containername="${COMPOSE_PROJECT_NAME}_db_test_1"
+    containername="${COMPOSE_PROJECT_NAME}_db_1"
     res=`docker ps --filter "name=$containername" --filter "status=exited" -q`
     if [[ -n "$res" ]]; then
         return 0
@@ -78,8 +78,8 @@ function run_tests {
     echo "Running tests"
     docker-compose -f ${COMPOSE_FILE_LOC} \
                    -p ${COMPOSE_PROJECT_NAME} \
-                run --rm critiquebrainz_test \
-                dockerize -wait tcp://db_test:5432 -timeout 60s \
+                run --rm critiquebrainz \
+                dockerize -wait tcp://db:5432 -timeout 60s \
                 dockerize -wait tcp://musicbrainz_db:5432 -timeout 600s \
                 pytest --junitxml=reports/tests.xml "$@"
 }

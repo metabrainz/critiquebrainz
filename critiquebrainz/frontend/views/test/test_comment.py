@@ -26,14 +26,6 @@ from critiquebrainz.db.user import User
 from critiquebrainz.frontend.testing import FrontendTestCase
 
 
-def mock_get_entity_by_id(id, type='release_group'):
-    # pylint: disable=unused-argument
-    return {
-        'id': 'e7aad618-fa86-3983-9e77-405e21796eca',
-        'title': 'Test Entity',
-    }
-
-
 class CommentViewsTestCase(FrontendTestCase):
 
     def setUp(self):
@@ -50,14 +42,13 @@ class CommentViewsTestCase(FrontendTestCase):
         )
         self.review = db_review.create(
             user_id=self.reviewer.id,
-            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_id="90878b63-f639-3c8b-aefb-190bdf3d1790",
             entity_type="release_group",
             text="Test Review.",
             rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
-        current_app.jinja_env.filters["entity_details"] = mock_get_entity_by_id
 
     def create_dummy_comment(self):
         return db_comment.create(

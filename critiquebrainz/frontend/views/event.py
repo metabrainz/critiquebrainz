@@ -26,7 +26,6 @@ from werkzeug.exceptions import NotFound
 
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.event as mb_event
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
 
@@ -36,9 +35,8 @@ event_bp = Blueprint('event', __name__)
 @event_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    try:
-        event = mb_event.get_event_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    event = mb_event.get_event_by_id(id)
+    if event is None:
         raise NotFound(gettext("Sorry, we couldn't find an event with that MusicBrainz ID."))
 
     if 'url-rels' in event:

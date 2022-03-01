@@ -1,6 +1,6 @@
 {% extends 'review/entity/base.html' %}
 
-{% set artist = review.entity_id | entity_details(type='artist') %}
+{% set artist = entity %}
 
 {% block title %}
   {% set artist_name = artist.name | default(_('[Unknown artist]')) %}

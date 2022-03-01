@@ -22,7 +22,6 @@ from flask_login import current_user
 from werkzeug.exceptions import NotFound
 
 import critiquebrainz.db.review as db_review
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
@@ -33,9 +32,8 @@ place_bp = Blueprint('place', __name__)
 @place_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    try:
-        place = mb_place.get_place_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    place = mb_place.get_place_by_id(id)
+    if place is None:
         raise NotFound(gettext("Sorry, we couldn't find a place with that MusicBrainz ID."))
 
     if current_user.is_authenticated:

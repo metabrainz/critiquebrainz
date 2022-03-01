@@ -46,6 +46,9 @@ elif [[ "$1" == "psql" ]]; then
 elif [[ "$1" == "test" ]]; then shift
     echo "Running docker-compose test..."
     invoke_docker_compose_test "$@"
+elif [[ "$1" == "redis" ]]; then shift
+    echo "Running redis-cli..."
+    invoke_docker_compose run --rm critiquebrainz_redis redis-cli -h critiquebrainz_redis
 else
     echo "Running docker-compose with the given command..."
     invoke_docker_compose "$@"
