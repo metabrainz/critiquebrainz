@@ -15,7 +15,6 @@ USER_GET_COLUMNS = [
     'created',
     'musicbrainz_id',
     'musicbrainz_row_id',
-    'show_gravatar',
     'license_choice',
     'is_blocked',
 ]
@@ -83,7 +82,6 @@ def get_by_id(user_id):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "show_gravatar": (bool),
             "is_blocked": (bool),
             "license_choice": (str)
         }
@@ -100,7 +98,6 @@ def create(**user_data):
         musicbrainz_username(str, optional): musicbrainz username of user.
         musicbrainz_row_id (int): the MusicBrainz row ID of the user,
         email(str, optional): email of the user.
-        show_gravatar(bool, optional): whether to show gravatar(default: false).
         is_blocked(bool, optional): whether user is blocked(default: false).
         license_choice(str, optional): preferred license for reviews by the user
 
@@ -112,7 +109,6 @@ def create(**user_data):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "show_gravatar": (bool),
             "is_blocked": (bool),
             "license_choice": (str)
         }
@@ -120,7 +116,6 @@ def create(**user_data):
     display_name = user_data.pop('display_name')
     musicbrainz_username = user_data.pop('musicbrainz_username', None)
     email = user_data.pop('email', None)
-    show_gravatar = user_data.pop('show_gravatar', False)
     is_blocked = user_data.pop('is_blocked', False)
     license_choice = user_data.pop('license_choice', None)
     musicbrainz_row_id = user_data.pop('musicbrainz_row_id', None)
@@ -129,9 +124,9 @@ def create(**user_data):
 
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id, show_gravatar,
+            INSERT INTO "user" (id, display_name, email, created, musicbrainz_id,
                                 is_blocked, license_choice, musicbrainz_row_id)
-                 VALUES (:id, :display_name, :email, :created, :musicbrainz_id, :show_gravatar,
+                 VALUES (:id, :display_name, :email, :created, :musicbrainz_id,
                         :is_blocked, :license_choice, :musicbrainz_row_id)
               RETURNING id
         """), {
@@ -140,7 +135,6 @@ def create(**user_data):
             "email": email,
             "created": datetime.now(),
             "musicbrainz_id": musicbrainz_username,
-            "show_gravatar": show_gravatar,
             "is_blocked": is_blocked,
             "license_choice": license_choice,
             "musicbrainz_row_id": musicbrainz_row_id,
@@ -163,7 +157,6 @@ def get_by_mbid(musicbrainz_username):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "show_gravatar": (bool),
             "is_blocked": (bool),
             "license_choice": (str)
         }
@@ -195,7 +188,6 @@ def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
         {
             "display_name": Display name of the user.
             "email": email of the user(optional).
-            "show_gravatar": whether to show gravatar(default: false, optional).
             "is_blocked": whether user is blocked(default: false, optional).
             "license_choice": preferred license for reviews by the user(optional)
         }
@@ -208,7 +200,6 @@ def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "show_gravatar": (bool),
             "is_blocked": (bool),
             "license_choice": (str)
         }
@@ -255,7 +246,6 @@ def list_users(limit=None, offset=0):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "show_gravatar": (bool),
             "is_blocked": (bool),
             "license_choice": (str),
             "musicbrainz_row_id": (int),
@@ -548,7 +538,6 @@ def update(user_id, user_new_info):
         user_new_info: Dictionary containing the new information for the user
         {
             "display_name": (str),
-            "show_gravatar": (bool),
             "email": (str)
             "license_choice": (str)
         }
@@ -556,8 +545,6 @@ def update(user_id, user_new_info):
     updates = []
     if "display_name" in user_new_info:
         updates.append("display_name = :display_name")
-    if "show_gravatar" in user_new_info:
-        updates.append("show_gravatar = :show_gravatar")
     if "email" in user_new_info:
         updates.append("email = :email")
     if "license_choice" in user_new_info:

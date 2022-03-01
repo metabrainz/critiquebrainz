@@ -24,13 +24,6 @@
         <div class="col-sm-4">{{ form.email(class="form-control") }}</div>
       </div>
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <div class="checkbox">
-            <label>{{ form.show_gravatar }} {{ form.show_gravatar.label.text }}</label>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
         <label class="col-sm-2 control-label">{{ form.license_choice.label.text }}</label>
         <div class="col-sm-6">
           {% for choice in form.license_choice %}
