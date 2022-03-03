@@ -108,7 +108,9 @@ def _register_blueprints(app):
     from critiquebrainz.ws.review.views import review_bp
     from critiquebrainz.ws.user.views import user_bp
     from critiquebrainz.ws.review.bulk import bulk_review_bp
+    from critiquebrainz.ws.artist.views import artist_bp
     app.register_blueprint(oauth_bp, url_prefix="/oauth")
     app.register_blueprint(review_bp, url_prefix="/review")
     app.register_blueprint(user_bp, url_prefix="/user")
     app.register_blueprint(bulk_review_bp, url_prefix="/reviews")
+    app.register_blueprint(artist_bp, url_prefix="/artist")
