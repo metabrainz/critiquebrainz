@@ -22,7 +22,7 @@ from operator import itemgetter
 from flask import Blueprint, render_template, request
 from flask_babel import gettext
 from flask_login import current_user
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.event as mb_event
@@ -65,8 +65,16 @@ def entity(id):
     rating_form = RatingEditForm(entity_id=id, entity_type='event')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    limit = int(request.args.get('limit', default=10))
-    offset = int(request.args.get('offset', default=0))
+    try:
+        limit = int(request.args.get('limit', default=10))
+    except ValueError:
+        raise BadRequest("Invalid limit parameter!")
+
+    try:
+        offset = int(request.args.get('offset', default=0))
+    except ValueError:
+        raise BadRequest("Invalid offset parameter!")
+    
     reviews, count = db_review.list_reviews(
         entity_id=event['id'],
         entity_type='event',
