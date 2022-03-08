@@ -4,7 +4,7 @@ from brainzutils.musicbrainz_db import work as db
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
-def get_work_by_id(mbid):
+def get_work_by_mbid(mbid):
     """Get work with MusicBrainz ID.
 
     Args:

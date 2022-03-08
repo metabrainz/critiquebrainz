@@ -297,17 +297,12 @@ def create(entity_type=None, entity_id=None):
             flash.success(gettext("Review has been published!"))
         return redirect(url_for('.entity', id=review['id']))
 
-    try:
-        _entity = get_entity_by_id(entity_id, entity_type)
-        data = {
-            "form": form,
-            "entity_type": entity_type,
-            "entity": _entity,
-        }
-    except NoDataFoundException:
-        raise NotFound(gettext("Sorry, we couldn't find a %s with that MusicBrainz ID." % entity_type))
-    # TODO: The NoDataFoundException and not _entity check serve the same purpose. Investigate why we
-    #  have both and retain only one.
+    _entity = get_entity_by_id(entity_id, entity_type)
+    data = {
+        "form": form,
+        "entity_type": entity_type,
+        "entity": _entity,
+    }
     if not _entity:
         flash.error(gettext("You can only write a review for an entity that exists on MusicBrainz!"))
         return redirect(url_for('search.selector', next=url_for('.create')))

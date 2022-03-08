@@ -34,7 +34,7 @@ release_group_bp = Blueprint('release_group', __name__)
 @release_group_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    release_group = mb_release_group.get_release_group_by_id(id)
+    release_group = mb_release_group.get_release_group_by_mbid(id)
     if release_group is None:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
 
@@ -47,7 +47,7 @@ def entity(id):
     else:
         tags = None
     if 'release-list' in release_group and release_group['release-list']:
-        release = mb_release.get_release_by_id(release_group['release-list'][0]['mbid'])
+        release = mb_release.get_release_by_mbid(release_group['release-list'][0]['mbid'])
     else:
         release = None
     soundcloud_url = soundcloud.get_url(release_group['mbid'])

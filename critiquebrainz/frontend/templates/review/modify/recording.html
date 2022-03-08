@@ -1,5 +1,5 @@
 {% if entity is not defined %}
-  {% set entity = review.entity_id | entity_details(type=entity_type) %}
+  {% set entity = review.entity_id | entity_details(entity_type=entity_type) %}
 {% endif %}
 <div class="col-md-12">
   <dl class="dl-horizontal">

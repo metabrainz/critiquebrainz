@@ -21,12 +21,13 @@ def entity(id):
     Displays release groups (split up into several sections depending on their
     type), artist information (type, members/member of, external links).
     """
-    artist = mb_artist.get_artist_by_id(str(id))
+    artist = mb_artist.get_artist_by_mbid(str(id))
     if artist is None:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
     # Note that some artists might not have a list of members because they are not a band
     band_members = _get_band_members(artist)
+    print(band_members)
 
     artist_reviews_limit = ARTIST_REVIEWS_LIMIT
     if request.args.get('reviews') == "all":
@@ -112,7 +113,7 @@ def _squash_duplicated_members(members):
     members_by_artist_id = OrderedDict()
 
     for member in members:
-        artist_id = member.get('artist', {}).get('id', None)
+        artist_id = member.get('artist', {}).get('mbid', None)
 
         if artist_id in members_by_artist_id:
             members_by_artist_id[artist_id]['attributes'].extend(member.get('attribute-list', []))
@@ -122,7 +123,7 @@ def _squash_duplicated_members(members):
                 'periods': [],
                 'attributes': member.get('attribute-list', []),
                 'disambiguation': member.get('disambiguation', ''),
-                'artist_id': member.get('artist', {}).get('id', None),
+                'artist_id': member.get('artist', {}).get('mbid', None),
                 'ended': member.get('ended')
             }
         period = _get_period(member)

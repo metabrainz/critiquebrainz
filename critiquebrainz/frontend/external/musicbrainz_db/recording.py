@@ -4,7 +4,7 @@ from brainzutils.musicbrainz_db import recording as db
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
-def get_recording_by_id(mbid):
+def get_recording_by_mbid(mbid):
     """Get recording with MusicBrainz ID.
 
     Args:

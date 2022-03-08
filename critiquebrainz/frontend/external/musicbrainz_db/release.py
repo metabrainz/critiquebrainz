@@ -4,7 +4,7 @@ from brainzutils.musicbrainz_db import release as db
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
-def get_release_by_id(mbid):
+def get_release_by_mbid(mbid):
     """Get release with MusicBrainz ID.
 
     Args:

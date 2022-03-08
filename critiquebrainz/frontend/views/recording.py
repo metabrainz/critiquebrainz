@@ -14,7 +14,7 @@ recording_bp = Blueprint('recording', __name__)
 @recording_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    recording = mb_recording.get_recording_by_id(id)
+    recording = mb_recording.get_recording_by_mbid(id)
     if recording is None:
         raise NotFound(gettext("Sorry, we couldn't find a recording with that MusicBrainz ID."))
 

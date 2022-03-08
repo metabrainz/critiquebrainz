@@ -1,11 +1,10 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db import event as db
-from brainzutils.musicbrainz_db import serialize
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
-def get_event_by_id(mbid):
+def get_event_by_mbid(mbid):
     """Get event with the MusicBrainz ID.
 
     Args:

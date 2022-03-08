@@ -9,7 +9,6 @@ class CommentEditForm(FlaskForm):
     state = StringField(widget=HiddenInput(), default='publish')
     text = TextAreaField(
         lazy_gettext("Add a comment..."),
-        validators=[InputRequired(message=lazy_gettext("Comment must not be empty!"))]
     )
     review_id = StringField(widget=HiddenInput())
 

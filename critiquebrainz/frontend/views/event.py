@@ -35,7 +35,7 @@ event_bp = Blueprint('event', __name__)
 @event_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    event = mb_event.get_event_by_id(id)
+    event = mb_event.get_event_by_mbid(id)
     if event is None:
         raise NotFound(gettext("Sorry, we couldn't find an event with that MusicBrainz ID."))
 

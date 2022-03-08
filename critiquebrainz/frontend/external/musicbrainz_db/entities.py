@@ -74,20 +74,22 @@ def get_multiple_entities(entities):
     return entities_info
 
 
-def get_entity_by_id(id, type='release_group'):
-    """A wrapper to call the correct get_*_by_id function."""
-    if type == 'release_group':
-        entity = release_group.get_release_group_by_id(str(id))
-    elif type == 'artist':
-        entity = artist.get_artist_by_id(str(id))
-    elif type == 'label':
-        entity = label.get_label_by_id(str(id))
-    elif type == 'place':
-        entity = place.get_place_by_id(str(id))
-    elif type == 'event':
-        entity = event.get_event_by_id(str(id))
-    elif type == 'work':
-        entity = work.get_work_by_id(str(id))
-    elif type == 'recording':
-        entity = recording.get_recording_by_id(str(id))
+def get_entity_by_id(id, entity_type):
+    """A wrapper to call the correct get_*_by_mbid function."""
+    if entity_type == 'release_group':
+        entity = release_group.get_release_group_by_mbid(str(id))
+    elif entity_type == 'artist':
+        entity = artist.get_artist_by_mbid(str(id))
+    elif entity_type == 'label':
+        entity = label.get_label_by_mbid(str(id))
+    elif entity_type == 'place':
+        entity = place.get_place_by_mbid(str(id))
+    elif entity_type == 'event':
+        entity = event.get_event_by_mbid(str(id))
+    elif entity_type == 'work':
+        entity = work.get_work_by_mbid(str(id))
+    elif entity_type == 'recording':
+        entity = recording.get_recording_by_mbid(str(id))
+    else:
+        raise ValueError('Unknown entity type')
     return entity

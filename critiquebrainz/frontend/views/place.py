@@ -32,7 +32,7 @@ place_bp = Blueprint('place', __name__)
 @place_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    place = mb_place.get_place_by_id(id)
+    place = mb_place.get_place_by_mbid(id)
     if place is None:
         raise NotFound(gettext("Sorry, we couldn't find a place with that MusicBrainz ID."))
 

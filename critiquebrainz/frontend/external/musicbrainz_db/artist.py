@@ -1,12 +1,11 @@
 from brainzutils import cache
 from brainzutils.musicbrainz_db import artist as db
-from brainzutils.musicbrainz_db import serialize
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.relationships import artist as artist_rel
 
 
-def get_artist_by_id(mbid):
+def get_artist_by_mbid(mbid):
     """Get artist with MusicBrainz ID.
 
     Args:

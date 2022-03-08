@@ -2,14 +2,14 @@
 from unittest import mock
 
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
-from critiquebrainz.frontend.external.musicbrainz_db.artist import get_artist_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.event import get_event_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.label import get_label_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.place import get_place_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.recording import get_recording_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.release import get_release_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.release_group import get_release_group_by_id
-from critiquebrainz.frontend.external.musicbrainz_db.work import get_work_by_id
+from critiquebrainz.frontend.external.musicbrainz_db.artist import get_artist_by_mbid
+from critiquebrainz.frontend.external.musicbrainz_db.event import get_event_by_mbid
+from critiquebrainz.frontend.external.musicbrainz_db.label import get_label_by_mbid
+from critiquebrainz.frontend.external.musicbrainz_db.place import get_place_by_mbid
+from critiquebrainz.frontend.external.musicbrainz_db.recording import get_recording_by_mbid
+from critiquebrainz.frontend.external.musicbrainz_db.release import get_release_by_mbid
+from critiquebrainz.frontend.external.musicbrainz_db.release_group import get_release_group_by_mbid
+from critiquebrainz.frontend.external.musicbrainz_db.work import get_work_by_mbid
 from critiquebrainz.data.testing import DataTestCase
 
 
@@ -30,7 +30,7 @@ class CacheTestCase(DataTestCase):
         artist_fetch.return_value = artist
 
         cache_get.return_value = None
-        get_artist_by_id(mbid)
+        get_artist_by_mbid(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
@@ -40,7 +40,7 @@ class CacheTestCase(DataTestCase):
         cache_get.return_value = artist
         cache_set.reset_mock()
         artist_fetch.reset_mock()
-        get_artist_by_id(mbid)
+        get_artist_by_mbid(mbid)
 
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)
@@ -60,7 +60,7 @@ class CacheTestCase(DataTestCase):
         event_fetch.return_value = event
 
         cache_get.return_value = None
-        get_event_by_id(mbid)
+        get_event_by_mbid(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
@@ -71,7 +71,7 @@ class CacheTestCase(DataTestCase):
         cache_get.return_value = event
         cache_set.reset_mock()
         event_fetch.reset_mock()
-        get_event_by_id(mbid)
+        get_event_by_mbid(mbid)
 
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)
@@ -93,7 +93,7 @@ class CacheTestCase(DataTestCase):
         label_fetch.return_value = label
 
         cache_get.return_value = None
-        get_label_by_id(mbid)
+        get_label_by_mbid(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
@@ -103,7 +103,7 @@ class CacheTestCase(DataTestCase):
         cache_get.return_value = label
         cache_set.reset_mock()
         label_fetch.reset_mock()
-        get_label_by_id(mbid)
+        get_label_by_mbid(mbid)
 
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)
@@ -131,7 +131,7 @@ class CacheTestCase(DataTestCase):
         place_fetch.return_value = place
 
         cache_get.return_value = None
-        get_place_by_id(mbid)
+        get_place_by_mbid(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
@@ -142,7 +142,7 @@ class CacheTestCase(DataTestCase):
         cache_get.return_value = place
         cache_set.reset_mock()
         place_fetch.reset_mock()
-        get_place_by_id(mbid)
+        get_place_by_mbid(mbid)
 
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)
@@ -175,7 +175,7 @@ class CacheTestCase(DataTestCase):
         recording_fetch.return_value = recording
 
         cache_get.return_value = None
-        get_recording_by_id(mbid)
+        get_recording_by_mbid(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
@@ -185,7 +185,7 @@ class CacheTestCase(DataTestCase):
         cache_get.return_value = recording
         cache_set.reset_mock()
         recording_fetch.reset_mock()
-        get_recording_by_id(mbid)
+        get_recording_by_mbid(mbid)
 
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)
@@ -216,7 +216,7 @@ class CacheTestCase(DataTestCase):
         release_fetch.return_value = release
 
         cache_get.return_value = None
-        get_release_by_id(mbid)
+        get_release_by_mbid(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
@@ -226,7 +226,7 @@ class CacheTestCase(DataTestCase):
         cache_get.return_value = release
         cache_set.reset_mock()
         release_fetch.reset_mock()
-        get_release_by_id(mbid)
+        get_release_by_mbid(mbid)
 
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)
@@ -256,7 +256,7 @@ class CacheTestCase(DataTestCase):
         release_group_fetch.return_value = release_group
 
         cache_get.return_value = None
-        get_release_group_by_id(mbid)
+        get_release_group_by_mbid(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
@@ -267,7 +267,7 @@ class CacheTestCase(DataTestCase):
         cache_get.return_value = release_group
         cache_set.reset_mock()
         release_group_fetch.reset_mock()
-        get_release_group_by_id(mbid)
+        get_release_group_by_mbid(mbid)
 
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)
@@ -288,7 +288,7 @@ class CacheTestCase(DataTestCase):
         work_fetch.return_value = work
 
         cache_get.return_value = None
-        get_work_by_id(mbid)
+        get_work_by_mbid(mbid)
 
         # Test that first time data is fetched database is queried
         cache_get.assert_called_with(expected_key)
@@ -298,7 +298,7 @@ class CacheTestCase(DataTestCase):
         cache_get.return_value = work
         cache_set.reset_mock()
         work_fetch.reset_mock()
-        get_work_by_id(mbid)
+        get_work_by_mbid(mbid)
 
         # Test that second time data is fetched from cache
         cache_get.assert_called_with(expected_key)

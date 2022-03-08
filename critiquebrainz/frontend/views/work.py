@@ -14,7 +14,7 @@ work_bp = Blueprint('work', __name__)
 @work_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    work = mb_work.get_work_by_id(id)
+    work = mb_work.get_work_by_mbid(id)
     if work is None:
         raise NotFound(gettext("Sorry, we couldn't find a work with that MusicBrainz ID."))
 

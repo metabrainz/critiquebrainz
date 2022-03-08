@@ -10,7 +10,7 @@ release_bp = Blueprint('release', __name__)
 @release_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    release_data = mb_release.get_release_by_id(id)
+    release_data = mb_release.get_release_by_mbid(id)
     if release_data:
         group_id = release_data['release-group']['mbid']
         url = '/release-group/' + str(group_id)

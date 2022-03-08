@@ -5,7 +5,7 @@ import critiquebrainz.frontend.external.relationships.release_group as release_g
 from critiquebrainz.frontend.external.musicbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
-def get_release_group_by_id(mbid):
+def get_release_group_by_mbid(mbid):
     """Get release group using the MusicBrainz ID."""
     key = cache.gen_key('release-group', mbid)
     release_group = cache.get(key)

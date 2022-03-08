@@ -14,7 +14,7 @@ label_bp = Blueprint('label', __name__)
 @label_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    label = mb_label.get_label_by_id(id)
+    label = mb_label.get_label_by_mbid(id)
     if label is None:
         raise NotFound(gettext("Sorry, we couldn't find a label with that MusicBrainz ID."))
 
