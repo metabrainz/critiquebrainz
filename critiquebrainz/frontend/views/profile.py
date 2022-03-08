@@ -17,7 +17,6 @@ def edit():
         db_users.update(current_user.id, user_new_info={
             "display_name": form.display_name.data,
             "email": form.email.data,
-            "show_gravatar": form.show_gravatar.data,
             "license_choice": form.license_choice.data,
         })
         flash.success(gettext("Profile updated."))
@@ -25,7 +24,6 @@ def edit():
 
     form.display_name.data = current_user.display_name
     form.email.data = current_user.email
-    form.show_gravatar.data = current_user.show_gravatar
     form.license_choice.data = current_user.license_choice
     return render_template('profile/edit.html', form=form)
 
