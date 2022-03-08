@@ -13,7 +13,7 @@ USER_GET_COLUMNS = [
     'display_name',
     'email',
     'created',
-    'musicbrainz_id',
+    'musicbrainz_id as musicbrainz_username',
     'musicbrainz_row_id',
     'license_choice',
     'is_blocked',
@@ -64,7 +64,6 @@ def get_user_by_id(connection, user_id):
     if not row:
         return None
     row = dict(row)
-    row['musicbrainz_username'] = row.pop('musicbrainz_id')
     return row
 
 
@@ -173,7 +172,6 @@ def get_by_mbid(musicbrainz_username):
         if not row:
             return None
         row = dict(row)
-        row['musicbrainz_username'] = row.pop('musicbrainz_id')
     return row
 
 
@@ -263,8 +261,6 @@ def list_users(limit=None, offset=0):
         })
         rows = result.fetchall()
         rows = [dict(row) for row in rows]
-        for row in rows:
-            row['musicbrainz_username'] = row.pop('musicbrainz_id')
     return rows
 
 
