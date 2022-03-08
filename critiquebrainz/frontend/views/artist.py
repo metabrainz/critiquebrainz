@@ -59,7 +59,11 @@ def entity(id):
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
         raise BadRequest("Unsupported release type.")
 
-    page = int(request.args.get('page', default=1))
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.reviews'))
     release_groups_offset = (page - 1) * BROWSE_RELEASE_GROUPS_LIMIT
