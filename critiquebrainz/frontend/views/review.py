@@ -179,12 +179,12 @@ def compare(id):
     count = db_revision.get_count(id)
 
     try:
-        old = int(request.args.get('old') or count - 1)
+        old = int(request.args.get('old', default=count - 1))
     except ValueError:
         raise BadRequest("Invalid old revision number!")
     
     try:
-        new = int(request.args.get('new') or count)
+        new = int(request.args.get('new', count))
     except ValueError:
         raise BadRequest("Invalid new revision number!")
 
