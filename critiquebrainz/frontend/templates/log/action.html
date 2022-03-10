@@ -5,7 +5,7 @@
   {% set rg_title = release_group.title | default(_('[Unknown release group]')) %}
   {% set cancel_url = url_for('review.entity', id=review.id) %}
 {% elif user is defined %}
-  {% set cancel_url = url_for('user.reviews', user_id=user.id) %}
+  {% set cancel_url = url_for('user.reviews', user_ref= user.musicbrainz_username or user.id) %}
 {% endif %}
 
 {% if action == "hide_review" %}

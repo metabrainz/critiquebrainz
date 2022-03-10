@@ -12,21 +12,36 @@ from critiquebrainz.db.user import User
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
-
+import uuid
 user_bp = Blueprint('user', __name__)
 
 
-@user_bp.route('/<uuid:user_id>')
-def reviews(user_id):
-    user_id = str(user_id)
-    if current_user.is_authenticated and current_user.id == user_id:
-        user = current_user
-    else:
-        user = db_users.get_by_id(user_id)
+@user_bp.route('/<string:user_ref>')
+def reviews(user_ref):
+    try:
+        uuid.UUID(user_ref)
+        user = db_users.get_by_mbid(user_ref)
         if not user:
-            raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+            user_id = str(user_ref)
+            if current_user.is_authenticated and current_user.id == user_id:
+                user = current_user
+            else:
+                user = db_users.get_by_id(user_id)
+                if not user:
+                    raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
         user = User(user)
     
+    except ValueError:
+        mb_username = str(user_ref)
+        if current_user.is_authenticated and current_user.musicbrainz_username == mb_username:
+            user = current_user
+        else:
+            user = db_users.get_by_mbid(mb_username)
+            if not user:
+                raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
+            user = User(user)
+
+    user_id = user.id
     try:
         page = int(request.args.get('page', default=1))
     except ValueError:
@@ -58,26 +73,49 @@ def reviews(user_id):
                            entities=entities_info, entity_names=entity_names)
 
 
-@user_bp.route('/<uuid:user_id>/info')
-def info(user_id):
-    user = db_users.get_by_id(user_id)
-    if not user:
-        raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+@user_bp.route('/<string:user_ref>/info')
+def info(user_ref):
+    try:
+        uuid.UUID(user_ref)
+        user = db_users.get_by_mbid(user_ref)
+        if not user:
+            user_id = str(user_ref)
+            user = db_users.get_by_id(user_id)
+            if not user:
+                raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+    
+    except ValueError:
+        mb_username = str(user_ref)
+        user = db_users.get_by_mbid(mb_username)
+        if not user:
+            raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
+
     user = User(user)
     return render_template('user/info.html', section='info', user=user)
 
 
-@user_bp.route('/<uuid:user_id>/block', methods=['GET', 'POST'])
+@user_bp.route('/<string:user_ref>/block', methods=['GET', 'POST'])
 @login_required
 @admin_view
-def block(user_id):
-    user = db_users.get_by_id(user_id)
-    if not user:
-        raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+def block(user_ref):
+    try:
+        uuid.UUID(user_ref)
+        user = db_users.get_by_mbid(user_ref)
+        if not user:
+            user_id = str(user_ref)
+            user = db_users.get_by_id(user_id)
+            if not user:
+                raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+
+    except ValueError:
+        mb_username = str(user_ref)
+        user = db_users.get_by_mbid(mb_username)
+        if not user:
+            raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
 
     if user['is_blocked']:
         flash.info(gettext("This account is already blocked."))
-        return redirect(url_for('user.reviews', user_id=user['id']))
+        return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
 
     form = AdminActionForm()
     if form.validate_on_submit():
@@ -85,22 +123,33 @@ def block(user_id):
         db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_BLOCK_USER,
                                  reason=form.reason.data, user_id=user['id'])
         flash.success(gettext("This user account has been blocked."))
-        return redirect(url_for('user.reviews', user_id=user['id']))
+        return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
 
     return render_template('log/action.html', user=user, form=form, action=AdminActions.ACTION_BLOCK_USER.value)
 
 
-@user_bp.route('/<uuid:user_id>/unblock', methods=['GET', 'POST'])
+@user_bp.route('/<string:user_ref>/unblock', methods=['GET', 'POST'])
 @login_required
 @admin_view
-def unblock(user_id):
-    user = db_users.get_by_id(user_id)
-    if not user:
-        raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+def unblock(user_ref):
+    try:
+        uuid.UUID(user_ref)
+        user = db_users.get_by_mbid(user_ref)
+        if not user:
+            user_id = str(user_ref)
+            user = db_users.get_by_id(user_id)
+            if not user:
+                raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+
+    except ValueError:
+        mb_username = str(user_ref)
+        user = db_users.get_by_mbid(mb_username)
+        if not user:
+            raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
 
     if not user['is_blocked']:
         flash.info(gettext("This account is not blocked."))
-        return redirect(url_for('user.reviews', user_id=user['id']))
+        return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
 
     form = AdminActionForm()
     if form.validate_on_submit():
@@ -108,6 +157,6 @@ def unblock(user_id):
         db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_UNBLOCK_USER,
                                  reason=form.reason.data, user_id=user['id'])
         flash.success(gettext("This user account has been unblocked."))
-        return redirect(url_for('user.reviews', user_id=user['id']))
+        return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
 
     return render_template('log/action.html', user=user, form=form, action=AdminActions.ACTION_UNBLOCK_USER.value)

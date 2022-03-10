@@ -133,7 +133,7 @@
         <hr/>
         <h3>
           Other reviews by
-          {{ '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) }}
+          {{ '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_ref= review.user.musicbrainz_username or review.user.id), review.user.display_name) }}
         </h3>
         <div id="other-reviews" class="row">
           {% for review in other_reviews %}

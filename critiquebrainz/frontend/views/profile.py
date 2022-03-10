@@ -20,7 +20,7 @@ def edit():
             "license_choice": form.license_choice.data,
         })
         flash.success(gettext("Profile updated."))
-        return redirect(url_for('user.reviews', user_id=current_user.id))
+        return redirect(url_for('user.reviews', user_ref= current_user.musicbrainz_username if current_user.musicbrainz_username else current_user.id))
 
     form.display_name.data = current_user.display_name
     form.email.data = current_user.email
