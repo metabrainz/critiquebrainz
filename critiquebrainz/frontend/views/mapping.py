@@ -58,7 +58,11 @@ def spotify_add():
         flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
 
-    page = int(request.args.get('page', default=1))
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.spotify_add'))
     limit = 16

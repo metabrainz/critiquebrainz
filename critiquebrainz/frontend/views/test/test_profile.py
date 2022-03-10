@@ -20,7 +20,6 @@ class ProfileViewsTestCase(FrontendTestCase):
         data = dict(
             display_name="Some User",
             email='someuser@somesite.com',
-            show_gravatar='True',
             license_choice=self.license["id"]
         )
 

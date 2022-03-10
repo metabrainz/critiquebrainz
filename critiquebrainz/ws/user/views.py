@@ -32,13 +32,11 @@ def user_me_handler(user):
           "user": {
             "display_name": "your_display_name",
             "created": "Fri, 02 Dec 2016 19:02:47 GMT",
-            "show_gravatar": true,
             "user_type": "Noob",
             "email": "your_email_id",
             "karma": 0,
             "musicbrainz_username": "username/id associated with musicbrainz",
-            "id": "your-unique-user-id",
-            "avatar": "https://gravatar.com/your-gravatar-link"
+            "id": "your-unique-user-id"
           }
         }
 
@@ -153,7 +151,6 @@ def user_modify_handler(user):
 
     :json string display_name: Display name **(optional)**
     :json string email: Email address **(optional)**
-    :json boolean show_gravatar: Show gravatar **(optional)**
 
     :resheader Content-Type: *application/json*
     """
@@ -161,11 +158,10 @@ def user_modify_handler(user):
     def fetch_params():
         display_name = Parser.string('json', 'display_name', optional=True)
         email = Parser.email('json', 'email', optional=True)
-        show_gravatar = Parser.bool('json', 'show_gravatar', optional=True)
-        return display_name, email, show_gravatar
+        return display_name, email
 
-    display_name, email, show_gravatar = fetch_params()
-    user.update(display_name, email, show_gravatar)
+    display_name, email = fetch_params()
+    user.update(display_name, email)
     return jsonify(message='Request processed successfully')
 
 

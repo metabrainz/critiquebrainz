@@ -4,7 +4,7 @@
       <hr/>
       <div id="{{ comment.id }}" class="comment-container">
         <div class="comment-header">
-          {{ comment_credit(comment, user_picture_size=24) }}
+          {{ comment_credit(comment) }}
           {% if current_user.is_authenticated and current_user == comment.user %}
             <a href="{{ url_for('comment.delete', id=comment.id) }}"
                class="btn btn-danger btn-xs"

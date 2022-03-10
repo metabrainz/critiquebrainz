@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from flask_login import current_user
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.work as mb_work
@@ -41,7 +41,11 @@ def entity(id):
         offset=reviews_offset,
     )
 
-    page = int(request.args.get('page', default=1))
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.reviews'))
 

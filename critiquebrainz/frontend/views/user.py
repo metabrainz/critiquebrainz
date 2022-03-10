@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities
 from flask_babel import gettext
 from flask_login import login_required, current_user
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 import critiquebrainz.db.moderation_log as db_moderation_log
 import critiquebrainz.db.review as db_review
@@ -26,7 +26,12 @@ def reviews(user_id):
         if not user:
             raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
         user = User(user)
-    page = int(request.args.get('page', default=1))
+    
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.reviews'))
     limit = 12
