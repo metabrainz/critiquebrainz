@@ -20,6 +20,12 @@ class User(AdminMixin):
         self.musicbrainz_row_id = user.get('musicbrainz_row_id', None)
 
     @property
+    def username_or_id(self):
+        if self.musicbrainz_username:
+            return self.musicbrainz_username
+        return self.id
+    
+    @property
     def is_vote_limit_exceeded(self):
         return self.votes_today_count() >= self.user_type.votes_per_day
 
