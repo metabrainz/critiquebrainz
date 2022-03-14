@@ -13,7 +13,7 @@
             <span class="glyphicon glyphicon-edit"></span> {{ _('Edit profile') }}
           </a>
         {% elif current_user.is_admin() %}
-          <a href="{{ url_for('user.unblock' if user.is_blocked else 'user.block', user_ref= user.musicbrainz_username or user.id) }}"
+          <a href="{{ url_for('user.unblock' if user.is_blocked else 'user.block', user_ref= user.username_or_id) }}"
              class="btn {{ 'btn-warning' if user.is_blocked else 'btn-danger'}} pull-right" style="margin-top: 20px;">
              <span class="glyphicon {{ 'glyphicon-ok' if user.is_blocked else 'glyphicon-remove' }}"></span>
             {{ ('Unblock User' if user.is_blocked else 'Block User') }}
@@ -23,8 +23,8 @@
     </div>
 
     <ul id="profile-navigation" class="nav nav-tabs" role="tablist">
-      <li {{ 'class=active' if section=='reviews' }}><a href="{{ url_for('user.reviews', user_ref= user.musicbrainz_username or user.id ) }}">{{ _('Reviews') }}</a></li>
-      <li {{ 'class=active' if section=='info' }}><a href="{{ url_for('user.info', user_ref= user.musicbrainz_username or user.id) }}">{{ _('Info') }}</a></li>
+      <li {{ 'class=active' if section=='reviews' }}><a href="{{ url_for('user.reviews', user_ref= user.username_or_id ) }}">{{ _('Reviews') }}</a></li>
+      <li {{ 'class=active' if section=='info' }}><a href="{{ url_for('user.info', user_ref= user.username_or_id ) }}">{{ _('Info') }}</a></li>
     </ul>
 
     {% block profile_content %}{% endblock %}

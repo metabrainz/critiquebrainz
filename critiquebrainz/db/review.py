@@ -714,6 +714,8 @@ def get_popular_reviews_for_index():
                     "review_id": review["id"],
                 }
             reviews = [to_dict(review, confidential=True) for review in reviews]
+            for review in reviews:
+                review["user"]["username_or_id"] = review["user"]["musicbrainz_username"] or review["user"]["id"]
         cache.set(cache_key, reviews, 1 * 60 * 60, namespace=REVIEW_CACHE_NAMESPACE)  # 1 hour
     shuffle(reviews)
     return reviews[:limit]
