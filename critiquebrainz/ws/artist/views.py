@@ -1,8 +1,7 @@
 from flask import Blueprint, jsonify
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.rating_stats as db_rating_stats
-from critiquebrainz.db import exceptions as db_exceptions
-import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
+import brainzutils.musicbrainz_db.exceptions as db_exceptions
 from brainzutils.musicbrainz_db import artist as db_artist
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound
@@ -193,7 +192,7 @@ def artist_entity_handler(artist_mbid):
         }
 
     :statuscode 200: no error
-    :statuscode 404: review not found
+    :statuscode 404: artist not found
     
     :resheader Content-Type: *application/json*
     """
@@ -218,7 +217,7 @@ def artist_entity_handler(artist_mbid):
     latest_reviews, reviews_count = db_review.list_reviews(
         entity_id=artist['id'],
         entity_type='artist',
-        sort='popularity',
+        sort='published_on',
         limit=reviews_limit,
         offset=0,
     )

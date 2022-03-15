@@ -37,8 +37,11 @@ def get_stats(entity_id, entity_type):
         })
         row = result.fetchall()
 
-    ratings =  [r[0]/20 for r in row]
     ratings_stats = {1: 0, 2: 0, 3: 0, 4:0, 5:0}
+    if row == []:
+        return ratings_stats, 0
+
+    ratings =  [r[0]/20 for r in row if r[0] is not None]
 
     for rating in ratings:
         ratings_stats[rating] += 1
