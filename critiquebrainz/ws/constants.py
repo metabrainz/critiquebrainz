@@ -3,4 +3,5 @@ available_scopes = (
     'review',
     'vote',
     'artist',
+    'release_group',
 )
