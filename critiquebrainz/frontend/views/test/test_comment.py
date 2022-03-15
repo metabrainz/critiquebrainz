@@ -30,10 +30,10 @@ class CommentViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(CommentViewsTestCase, self).setUp()
-        self.reviewer = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
+        self.reviewer = User(db_users.get_or_create(1, "reviewer", new_user_data={
             "display_name": u"Reviewer",
         }))
-        self.commenter = User(db_users.get_or_create(2, "9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
+        self.commenter = User(db_users.get_or_create(2, "commenter", new_user_data={
             "display_name": u"Commenter",
         }))
         self.license = db_license.create(

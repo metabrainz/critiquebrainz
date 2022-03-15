@@ -9,10 +9,11 @@ class UserViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(UserViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
+        self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": u"Tester",
         }))
-        self.admin = User(db_users.get_or_create(2, "9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
+        self.hacker = User(db_users.create(musicbrainz_row_id = 2, display_name = u"Hacker"))
+        self.admin = User(db_users.get_or_create(3, "Admin", new_user_data={
             "display_name": u"Admin",
         }))
 
@@ -25,6 +26,17 @@ class UserViewsTestCase(FrontendTestCase):
         response = self.client.get("/user/{user_id}".format(user_id=self.user.id))
         self.assert200(response)
         self.assertIn("Tester", str(response.data))
+
+        # test reviews for user present in db, and logged in
+        self.temporary_login(self.user)
+        response = self.client.get("/user/{user_id}".format(user_id=self.user.id))
+        self.assert200(response)
+        self.assertIn("Tester", str(response.data))
+
+        # test reviews for user present in db, but without musicbrainz_id
+        response = self.client.get("/user/{user_id}".format(user_id=self.hacker.id))
+        self.assert200(response)
+        self.assertIn("Hacker", str(response.data))
 
     def test_info(self):
         # test info for user not in db
