@@ -16,37 +16,60 @@ import uuid
 user_bp = Blueprint('user', __name__)
 
 
+def get_user_from_username_or_id(username_or_id):
+    """
+    Get user by username or id.
+    """
+    try:
+        uuid.UUID(username_or_id)
+        user_id = str(username_or_id)
+        user = db_users.get_by_id(user_id)
+        if not user:
+            raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+
+    except ValueError:
+        mb_username = str(username_or_id)
+        user = db_users.get_by_mbid(mb_username)
+        if not user:
+            raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
+
+    return user
+
+
+def get_loggedin_user_by_username_or_id(username_or_id):
+    """
+    Get logged in user by username or id.
+    """
+    try:
+        uuid.UUID(username_or_id)
+        user_id = str(username_or_id)
+        if current_user.is_authenticated and current_user.id == user_id:
+            return current_user
+
+        return None
+
+    except ValueError:
+        mb_username = str(username_or_id)
+        if current_user.is_authenticated and current_user.musicbrainz_username == mb_username:
+            return current_user
+
+    return None
+
+
 @user_bp.route('/<string:user_ref>')
 def reviews(user_ref):
-    try:
-        uuid.UUID(user_ref)
-        user = db_users.get_by_mbid(user_ref)
-        if not user:
-            user_id = str(user_ref)
-            if current_user.is_authenticated and current_user.id == user_id:
-                user = current_user
-            else:
-                user = db_users.get_by_id(user_id)
-                if not user:
-                    raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+
+    user = get_loggedin_user_by_username_or_id(user_ref)
+    if not user:
+        user = get_user_from_username_or_id(user_ref)
         user = User(user)
-    
-    except ValueError:
-        mb_username = str(user_ref)
-        if current_user.is_authenticated and current_user.musicbrainz_username == mb_username:
-            user = current_user
-        else:
-            user = db_users.get_by_mbid(mb_username)
-            if not user:
-                raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
-            user = User(user)
 
     user_id = user.id
     try:
         page = int(request.args.get('page', default=1))
     except ValueError:
         raise BadRequest("Invalid page number!")
-    
+
     if page < 1:
         return redirect(url_for('.reviews', user_id=user_id))
     limit = 12
@@ -75,22 +98,11 @@ def reviews(user_ref):
 
 @user_bp.route('/<string:user_ref>/info')
 def info(user_ref):
-    try:
-        uuid.UUID(user_ref)
-        user = db_users.get_by_mbid(user_ref)
-        if not user:
-            user_id = str(user_ref)
-            user = db_users.get_by_id(user_id)
-            if not user:
-                raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
-    
-    except ValueError:
-        mb_username = str(user_ref)
-        user = db_users.get_by_mbid(mb_username)
-        if not user:
-            raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
 
-    user = User(user)
+    user = get_loggedin_user_by_username_or_id(user_ref)
+    if not user:
+        user = get_user_from_username_or_id(user_ref)
+        user = User(user)
     return render_template('user/info.html', section='info', user=user)
 
 
@@ -98,20 +110,7 @@ def info(user_ref):
 @login_required
 @admin_view
 def block(user_ref):
-    try:
-        uuid.UUID(user_ref)
-        user = db_users.get_by_mbid(user_ref)
-        if not user:
-            user_id = str(user_ref)
-            user = db_users.get_by_id(user_id)
-            if not user:
-                raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
-
-    except ValueError:
-        mb_username = str(user_ref)
-        user = db_users.get_by_mbid(mb_username)
-        if not user:
-            raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
+    user = get_user_from_username_or_id(user_ref)
 
     if user['is_blocked']:
         flash.info(gettext("This account is already blocked."))
@@ -132,20 +131,7 @@ def block(user_ref):
 @login_required
 @admin_view
 def unblock(user_ref):
-    try:
-        uuid.UUID(user_ref)
-        user = db_users.get_by_mbid(user_ref)
-        if not user:
-            user_id = str(user_ref)
-            user = db_users.get_by_id(user_id)
-            if not user:
-                raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
-
-    except ValueError:
-        mb_username = str(user_ref)
-        user = db_users.get_by_mbid(mb_username)
-        if not user:
-            raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
+    user = get_user_from_username_or_id(user_ref)
 
     if not user['is_blocked']:
         flash.info(gettext("This account is not blocked."))
