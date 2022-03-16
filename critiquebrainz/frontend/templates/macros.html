@@ -105,9 +105,8 @@
   {% endif %}
 {% endmacro %}
 
-{% macro review_credit(review, user_picture_size) %}
-  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (review.user.avatar, user_picture_size)
-              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
+{% macro review_credit(review) %}
+  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
   {{ _('Review by %(user)s', user=user_string) }}
 {% endmacro %}
 
@@ -181,9 +180,8 @@
   <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ ngettext('based on %(num)s rating', 'based on %(num)s ratings', count) }}</em>
 {% endmacro %}
 
-{% macro comment_credit(comment, user_picture_size) %}
-  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (comment.user.avatar, user_picture_size)
-              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=comment.user.id), comment.user.display_name) %}
+{% macro comment_credit(comment) %}
+  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=comment.user.id), comment.user.display_name) %}
   {{ _('%(user)s', user=user_string) }}
 {% endmacro %}
 

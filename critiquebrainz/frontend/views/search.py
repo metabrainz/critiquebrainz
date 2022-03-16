@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, jsonify, url_for
 
 from critiquebrainz.frontend.external import musicbrainz
+from werkzeug.exceptions import BadRequest
 
 search_bp = Blueprint('search', __name__)
 
@@ -43,7 +44,11 @@ def index():
 def more():
     query = request.args.get('query')
     type = request.args.get('type')
-    page = int(request.args.get('page', default=0))
+    try:
+        page = int(request.args.get('page', default=0))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     offset = page * RESULTS_LIMIT
     count, results = search_wrapper(query, type, offset)
     template = render_template('search/results.html', type=type, results=results)
@@ -95,7 +100,12 @@ def selector_more():
     place = request.args.get('place')
     work = request.args.get('work')
     type = request.args.get('type')
-    page = int(request.args.get('page', default=0))
+    
+    try:
+        page = int(request.args.get('page', default=0))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     offset = page * RESULTS_LIMIT
     if type == 'release-group':
         count, results = musicbrainz.search_release_groups(release_group,

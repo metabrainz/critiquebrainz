@@ -9,7 +9,6 @@
     <ul>
     {% for mod in moderators %}
       <li>
-        <img src="{{ mod['avatar_url'] }}" class="avatar" />
         {% if mod['critiquebrainz_id'] %}
           <a href="{{ url_for('user.info', user_id=mod['critiquebrainz_id']) }}">
             {{ mod['musicbrainz_username'] }}

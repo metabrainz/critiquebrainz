@@ -44,7 +44,12 @@ def browse():
     entity_type = request.args.get('entity_type', default=None)
     if entity_type == 'all':
         entity_type = None
-    page = int(request.args.get('page', default=1))
+    
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
@@ -172,7 +177,17 @@ def compare(id):
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
     count = db_revision.get_count(id)
-    old, new = int(request.args.get('old') or count - 1), int(request.args.get('new') or count)
+
+    try:
+        old = int(request.args.get('old', default=count - 1))
+    except ValueError:
+        raise BadRequest("Invalid old revision number!")
+    
+    try:
+        new = int(request.args.get('new', count))
+    except ValueError:
+        raise BadRequest("Invalid new revision number!")
+
     if old > count or new > count:
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
     if old > new:
@@ -222,7 +237,11 @@ def revisions_more(id):
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
 
-    page = int(request.args.get('page', default=0))
+    try:
+        page = int(request.args.get('page', default=0))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     offset = page * RESULTS_LIMIT
     try:
         count = db_revision.get_count(id)

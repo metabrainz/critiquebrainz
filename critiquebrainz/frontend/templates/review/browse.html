@@ -40,7 +40,7 @@
       <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
         <p>
-          {{ review_credit(review, user_picture_size=16) }}
+          {{ review_credit(review) }}
           <br/>
           {{ review.published_on | date }}
         </p>

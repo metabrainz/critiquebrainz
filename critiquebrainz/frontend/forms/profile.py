@@ -12,7 +12,6 @@ class ProfileEditForm(FlaskForm):
     email = EmailField(lazy_gettext("Email"), [
         validators.Optional(strip_whitespace=False),
         validators.Email(message=lazy_gettext("Email field is not a valid email address."))])
-    show_gravatar = BooleanField(lazy_gettext("Show my Gravatar"))
     license_choice = RadioField(lazy_gettext("Preferred License Choice"), choices=[
         ('CC BY-SA 3.0', lazy_gettext('Allow commercial use of my reviews (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA 3.0 license</a>)')),  # noqa: E501
         ('CC BY-NC-SA 3.0', lazy_gettext('Do not allow commercial use of my reviews, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),  # noqa: E501

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 from flask_babel import gettext
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.recording as mb_recording
@@ -23,8 +23,16 @@ def entity(id):
     else:
         external_reviews = []
 
-    limit = int(request.args.get('limit', default=RECORDING_REVIEWS_LIMIT))
-    offset = int(request.args.get('offset', default=0))
+    try:
+        limit = int(request.args.get('limit', default=RECORDING_REVIEWS_LIMIT))
+    except ValueError:
+        raise BadRequest("Invalid limit parameter!")
+
+    try:
+        offset = int(request.args.get('offset', default=0))
+    except ValueError:
+        raise BadRequest("Invalid offset parameter!")
+    
     if current_user.is_authenticated:
         my_reviews, my_count = db_review.list_reviews(
             entity_id=recording['id'],
