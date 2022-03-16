@@ -80,18 +80,21 @@
     {% else %}
       <div id="recent-list" class="row">
         {% for review in recent_reviews %}
-          <div class="col-md-4 review">
-            <div class="cover-art-container pull-left">
-              <a href="{{ url_for('review.entity', id=review.id) }}">
-                {{ cover_art(review.entity_id, review.entity_type, overlay_type=True) }}
-              </a>
+          {% set entity = review.entity_id | entity_details(entity_type=review.entity_type) %}
+          {% if entity %}
+            <div class="col-md-4 review">
+              <div class="cover-art-container pull-left">
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                  {{ cover_art(review.entity_id, review.entity_type, overlay_type=True) }}
+                </a>
+              </div>
+              {% set entity = review.entity_id | entity_details(entity_type=review.entity_type) %}
+              <div class="album">{% include 'entity_review.html' %}</div>
+              <div class="reviewer">
+                <p>{{ review_credit(review) }}</p>
+              </div>
             </div>
-            {% set entity = review.entity_id | entity_details(entity_type=review.entity_type) %}
-            <div class="album">{% include 'entity_review.html' %}</div>
-            <div class="reviewer">
-              <p>{{ review_credit(review) }}</p>
-            </div>
-          </div>
+          {% endif %}
         {% endfor %}
       </div>
 

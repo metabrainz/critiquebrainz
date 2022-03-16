@@ -31,9 +31,9 @@
           {% endfor %}
         </span>
       {% endif %}
-      {% if member.disambiguation %}
+      {% if member.comment is defined and member.comment %}
         <br />
-        <span class="text-muted">({{ member.disambiguation }})</span>
+        <span class="text-muted">({{ member.comment }})</span>
       {% endif %}
     </li>
   {% endfor %}
@@ -43,12 +43,12 @@
 <div class="clearfix">
   <h2 class="pull-left">
     {{ artist.name }}
-    {% if artist.disambiguation %}
-      <small>({{ artist.disambiguation }})</small>
+    {% if artist.comment is defined and artist.comment %}
+      <small>({{ artist.comment }})</small>
     {% endif %}
   </h2>
 
-  {% if not my_review %}
+  {% if my_review is not defined %}
     <a id="write-review" href="{{ url_for('review.create', entity_type='artist', entity_id=id) }}"
         role="button" class="btn btn-success pull-right">
       <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
@@ -133,14 +133,14 @@
               {% endif %}
               <div class="cover-art-container">
                 <a href="{{ url_for('release_group.entity', id=release_group.mbid) }}">
-                  {{ cover_art(release_group.id, 'release_group') }}
+                  {{ cover_art(release_group.mbid, 'release_group') }}
                 </a>
               </div>
               <div class="caption">
                 <div class="release-group-title">
                   <a href="{{ url_for('release_group.entity', id=release_group.mbid) }}">{{ release_group.title }}</a>
                 </div>
-                {{ release_group['first-release-year'] }}
+                {{ release_group['first-release-year'] is defined and release_group['first-release-year'] }}
               </div>
             </div>
           </div>
@@ -155,11 +155,11 @@
 
   <div class="col-sm-3">
     <h4>{{ _('Artist information') }}</h4>
-    {% if artist.type %}<p class="text-muted">{{ artist.type }}</p>{% endif %}
+    {% if artist.type is defined %}<p class="text-muted">{{ artist.type }}</p>{% endif %}
 
     {% if band_members.current_members %}
       <b>
-        {% if artist.type and artist.type == 'Person' %}
+        {% if artist.type is defined and artist.type == 'Person' %}
           {{ _('Member of') }}
         {% else %}
           {{ _('Members') }}
@@ -178,7 +178,7 @@
 
     {% if band_members['former_members'] %}
       <b>
-        {% if artist.type and artist.type == 'Person' %}
+        {% if artist.type is defined and artist.type == 'Person' %}
           {{ _('Former member of') }}
         {% else %}
           {{ _('Former members') }}
@@ -197,20 +197,20 @@
       </ul>
     {% endif %}
 
-    {% if artist['external-urls'] %}
+    {% if artist['external-urls'] is defined %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
         {% for url in artist['external-urls'] %}
           <li class="clearfix">
             <div class="favicon-container">
-              {% if url.icon %}
+              {% if url.icon is defined %}
                 <img src="{{ get_static_path('favicons/' + url.icon) }}" />
               {% else %}
                 <img src="{{ get_static_path('favicons/external-16.png') }}" />
               {% endif %}
             </div>
             <a href="{{ url.url.url }}">{{ url.name }}</a>
-            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
+            {% if url.disambiguation is defined %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
           </li>
         {% endfor %}
       </ul>

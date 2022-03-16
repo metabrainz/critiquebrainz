@@ -20,8 +20,8 @@
       {% set artist = [] %}
       {% for credit in release_group['artist-credit'] %}
         {% if credit.artist %}
-          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
-          {% if credit.join_phrase %}
+          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.mbid) ~ credit.artist.name ~ '</a>'|safe) %}
+          {% if credit.join_phrase is defined %}
             {% do artist.append(credit.join_phrase) %}
           {% endif %}
         {% else %}
@@ -34,7 +34,7 @@
 
     {{ _('%(album)s by %(artist)s', album = rg_name, artist = artist|join()) }}
 
-    {% if release_group['first-release-date'] %}
+    {% if release_group['first-release-date'] is defined %}
       <small>{{ release_group['first-release-date'][:4] }}</small>
     {% endif %}
   </h2>
@@ -44,6 +44,6 @@
 {% block sidebar %}
   <div id="sidebar" class="col-md-3">
     {{ cover_art(review.entity_id, 'release_group', attributes='class=cover-art class=img-responsive', release_group_page=True) }}
-    {{ show_embedded_player(soundcloud_url, release_group.id, spotify_mappings) }}
+    {{ show_embedded_player(soundcloud_url, release_group.mbid, spotify_mappings) }}
   </div>
 {% endblock %}

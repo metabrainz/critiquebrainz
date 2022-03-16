@@ -22,9 +22,9 @@
     </div>
   </div>
   <hr />
-  <form role="form" method="POST" action="{{ url_for('mapping.spotify_report', release_group_id=release_group.id, spotify_id=spotify_album.id) }}">
+  <form role="form" method="POST" action="{{ url_for('mapping.spotify_report', release_group_id=release_group.mbid, spotify_id=spotify_album.id) }}">
     <button type="submit" class="btn btn-danger">{{ _('Report incorrect mapping') }}</button>
-    <a href="{{ url_for('mapping.spotify_list', release_group_id=release_group.id) }}" class="btn btn-default">{{ _('Cancel') }}</a>
+    <a href="{{ url_for('mapping.spotify_list', release_group_id=release_group.mbid) }}" class="btn btn-default">{{ _('Cancel') }}</a>
   </form>
 </div>
 {% endblock %}

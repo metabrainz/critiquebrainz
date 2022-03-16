@@ -3,6 +3,8 @@ import os
 import sys
 from time import sleep
 
+import jinja2
+
 from brainzutils.flask import CustomFlask
 from flask import send_from_directory
 
@@ -50,6 +52,7 @@ def create_app(debug=None, config_path=None):
         app.debug = debug
     if app.debug and app.config['SECRET_KEY']:
         app.init_debug_toolbar()
+        app.jinja_options['undefined'] = jinja2.StrictUndefined
 
     # Error handling
     from critiquebrainz.frontend.error_handlers import init_error_handlers

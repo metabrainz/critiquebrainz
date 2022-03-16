@@ -1,4 +1,4 @@
-git+https://github.com/metabrainz/brainzutils-python.git@v2.3.1
+git+https://github.com/metabrainz/brainzutils-python.git@v2.4.0
 beautifulsoup4==4.8.0
 coverage==4.4.1
 click==6.7
@@ -36,3 +36,4 @@ mbdata==25.0.4
 sqlalchemy-dst==1.0.1
 markupsafe==2.0.1
 itsdangerous==2.0.1
+flask-shell-ipython

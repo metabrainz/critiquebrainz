@@ -35,7 +35,7 @@
       <div class="col-sm-8">{{ form.language(id="review-language", class="form-control") }}</div>
     </div>
     <hr />
-    {% if not review or review.is_draft %}
+    {% if review is not defined or review.is_draft %}
       <div class="form-group">
         <div class="col-sm-12">
           {% for choice in form.license_choice %}
@@ -111,7 +111,7 @@
         $("#state").attr('value', 'publish');
         $("#review-editor").submit();
       });
-      if ('{{not review or review.is_draft}}'){
+      if ('{{review is not defined or review.is_draft}}'){
         $("#btn-draft").click(function(){
           beingSaved = true;
           $("#state").attr('value', 'draft');

@@ -46,7 +46,7 @@
     </div>
     {% endfor %}
   </div>
-  {{ display_pagination(page, count, limit, 'mapping.spotify_add', {'release_group_id':release_group.id}) }}
+  {{ display_pagination(page, count, limit, 'mapping.spotify_add', {'release_group_id':release_group.mbid}) }}
 {% else %}
   <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No similar albums found') }}</p>
 {% endif %}
@@ -57,7 +57,7 @@
   <p>{{ _('If you can\'t find the right album in search results, you can paste a Spotify link there:') }}</p>
   <form class="form-inline" role="form" action="{{ url_for('mapping.spotify_confirm') }}" method="GET">
     <div class="form-group">
-      <input type="hidden" name="release_group_id" value="{{ release_group.id }}">
+      <input type="hidden" name="release_group_id" value="{{ release_group.mbid }}">
       <input type="text" class="form-control input-sm" name="spotify_ref" placeholder="{{ _('Spotify URI or HTTP link') }}" size="40">
     </div>
     <button type="submit" class="btn btn-default btn-sm">{{ _('Submit') }}</button>
@@ -74,7 +74,7 @@
 <p>
   <strong>
     {{ _('It\'s fine if you can\'t find the right album. It might not be available on Spotify yet.') }}
-    {{ _('You can <a href="%(link)s">go back to the release group page</a>.', link=url_for('release_group.entity', id=release_group.id)) }}
+    {{ _('You can <a href="%(link)s">go back to the release group page</a>.', link=url_for('release_group.entity', id=release_group.mbid)) }}
   </strong>
 </p>
 {% endblock %}

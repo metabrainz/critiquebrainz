@@ -27,7 +27,6 @@ def entity(id):
 
     # Note that some artists might not have a list of members because they are not a band
     band_members = _get_band_members(artist)
-    print(band_members)
 
     artist_reviews_limit = ARTIST_REVIEWS_LIMIT
     if request.args.get('reviews') == "all":
@@ -122,12 +121,13 @@ def _squash_duplicated_members(members):
         if artist_id in members_by_artist_id:
             members_by_artist_id[artist_id]['attributes'].extend(member.get('attribute-list', []))
         else:
+            member_artist = member.get('artist', {})
             members_by_artist_id[artist_id] = {
-                'name': member.get('artist', {}).get('name', ''),
+                'name': member_artist.get('name', ''),
                 'periods': [],
                 'attributes': member.get('attribute-list', []),
-                'disambiguation': member.get('disambiguation', ''),
-                'artist_id': member.get('artist', {}).get('mbid', None),
+                'comment': member_artist.get('comment', ''),
+                'artist_id': member_artist.get('mbid', None),
                 'ended': member.get('ended')
             }
         period = _get_period(member)

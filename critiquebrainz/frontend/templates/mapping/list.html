@@ -6,20 +6,20 @@
   <h2>
   {% set artist = [] %}
   {% for credit in release_group['artist-credit'] %}
-    {% if credit.artist %}
-      {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
+    {% if credit.artist is defined %}
+      {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.mbid) ~ credit.artist.name ~ '</a>'|safe) %}
     {% else %}
       {% do artist.append(credit) %}
     {% endif %}
   {% endfor %}
 
     {{ _('%(album)s by %(artist)s',
-     album = '<a href="%s">%s</a>'|safe % (url_for('release_group.entity', id=release_group.id), release_group.title),
+     album = '<a href="%s">%s</a>'|safe % (url_for('release_group.entity', id=release_group.mbid), release_group.title),
      artist = artist|join()) }}
 
-    {% if release_group['first-release-year'] %}
+    {% if release_group['first-release-year'] is defined %}
       <small>{{ release_group['first-release-year'] }}</small>
-    {% elif release_group['first-release-date'] %}
+    {% elif release_group['first-release-date'] is defined %}
       <small>{{ release_group['first-release-date'][:4] }}</small>
     {% endif %}
   </h2>
@@ -60,11 +60,11 @@
               {{ artists|join(', ') }}
             </td>
             <td>{{ album.release_date }}</td>
-            <td><a class="btn btn-danger btn-xs" href="{{ url_for('mapping.spotify_report', release_group_id=release_group.id, spotify_id=album.id) }}">{{ _('Report as incorrect') }}</a></td>
+            <td><a class="btn btn-danger btn-xs" href="{{ url_for('mapping.spotify_report', release_group_id=release_group.mbid, spotify_id=album.id) }}">{{ _('Report as incorrect') }}</a></td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
   {% endif %}
-  <b><a class="btn btn-primary btn-default" href="{{ url_for('mapping.spotify_add', release_group_id=release_group.id) }}">{{ _('+ Add new mapping') }}</a></b>
+  <b><a class="btn btn-primary btn-default" href="{{ url_for('mapping.spotify_add', release_group_id=release_group.mbid) }}">{{ _('+ Add new mapping') }}</a></b>
 {% endblock %}
