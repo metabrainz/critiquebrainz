@@ -6,6 +6,7 @@ from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
+from critiquebrainz.frontend.views.user import get_user_from_username_or_id
 
 user_bp = Blueprint('ws_user', __name__)
 
@@ -197,10 +198,10 @@ def user_delete_handler(user):
     return jsonify(message='Request processed successfully')
 
 
-@user_bp.route('/<uuid:user_id>', methods=['GET', 'OPTIONS'])
+@user_bp.route('/<string:user_ref>', methods=['GET', 'OPTIONS'])
 @crossdomain(headers="Authorization, Content-Type")
-def user_entity_handler(user_id):
-    """Get profile of a user with a specified UUID.
+def user_entity_handler(user_ref):
+    """Get profile of a user with a specified UUID or username.
 
     **Request Example:**
 
@@ -225,9 +226,11 @@ def user_entity_handler(user_id):
 
     :resheader Content-Type: *application/json*
     """
-    user = db_users.get_by_id(str(user_id))
-    if not user:
-        raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
+    try:
+        user = get_user_from_username_or_id(user_ref)
+    except:
+        raise NotFound("Can't find a user with ID or Username: {user_ref}".format(user_ref=user_ref))
+    
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []
     return jsonify(user=User(user).to_dict(inc))
 
