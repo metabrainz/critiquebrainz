@@ -67,7 +67,7 @@
         {% if review.license.info_url %}
           {% set license = '<a href="%s">%s</a>'|safe % (review.license.info_url, review.license.id ) %}
         {% else %}
-          {% set license = review.license.key %}
+          {% set license = review.license.id %}
         {% endif %}
         {{ _('This review is licensed under a %(name)s license.', name=license) }}
         {% if review.source %}

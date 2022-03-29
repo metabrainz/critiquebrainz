@@ -8,7 +8,7 @@
 <div class="clearfix">
   <h2 class="pull-left">
     {{ work.name }}
-    {% if work.type %}
+    {% if work.type is defined %}
       <small>({{ work.type }})</small>
     {% endif %}
   </h2>

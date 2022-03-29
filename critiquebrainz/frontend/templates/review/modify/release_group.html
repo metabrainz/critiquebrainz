@@ -6,7 +6,7 @@
     <dt>{{ _('Release group') }}</dt>
     <dd>
       <a href="{{ url_for('release_group.entity', id=entity['mbid']) }}" target="_blank">{{ entity['title'] }}</a>
-      {% if entity['first-release-date'] %}
+      {% if entity['first-release-date'] is defined %}
         <span class="text-muted">({{ entity['first-release-date'][:4] }})</span>
       {% endif %}
     </dd>

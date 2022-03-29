@@ -71,7 +71,7 @@
     <h4>{{ _('Label information') }}</h4>
     {% if label.type %}<p class="text-muted">{{ label.type }}</p>{% endif %}
 
-    {% if label['external-urls'] %}
+    {% if label['external-urls'] is defined %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
         {% for url in label['external-urls'] %}

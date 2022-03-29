@@ -35,9 +35,10 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
 
         self.test_spotify_id = "6IH6co1QUS7uXoyPDv0rIr"
         self.test_release_group = {
-            'id': '6b3cd75d-7453-39f3-86c4-1441f360e121',
+            'mbid': '6b3cd75d-7453-39f3-86c4-1441f360e121',
             'title': 'Test Release Group',
             'first-release-year': 1970,
+            'artist-credit-phrase': 'Test Artist',
             'artist-credit': [{
                 'name': 'Test Artist'
             }]

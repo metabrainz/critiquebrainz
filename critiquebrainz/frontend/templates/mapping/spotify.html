@@ -5,9 +5,9 @@
 {% block content %}
 <h2>{{ _('Spotify album mapping') }}</h2>
 <p class="lead">
-  {% if release_group['first-release-date'] %}
+  {% if release_group['first-release-date'] is defined %}
     {% set album = '"%s" <span class="text-muted">(%s)</span>'|safe % (release_group.title, release_group['first-release-date'][:4]) %}
-  {% elif release_group['first-release-year']%}
+  {% elif release_group['first-release-year'] is defined %}
     {% set album = '"%s" <span class="text-muted">(%s)</span>'|safe % (release_group.title, release_group['first-release-year']) %}
   {% else %}
     {% set album = '"%s"' % release_group.title %}
@@ -23,7 +23,7 @@
       <div class="thumbnail">
         <div class="cover-art-container">
           <a href="{{ url_for('mapping.spotify_confirm', release_group_id=release_group.mbid, spotify_ref=item.uri) }}" class="match-link" data-toggle="tooltip" data-placement="bottom" title="This is the same album!" rel="nofollow">
-            {% if item.images %}
+            {% if item.images is defined %}
               <img class="img-responsive" src="{{ item.images[0].url }}" />
             {% else %}
               <img class="img-responsive" src="{{ get_static_path('images/placeholder_disc.svg') }}" />
@@ -111,7 +111,7 @@
 {%- endmacro %}
 
 {% macro release_date_string(album) -%}
-  {% if album.release_date %}
+  {% if album.release_date is defined %}
     {{ album.release_date.split('-')[0] }}
   {% endif %}
 

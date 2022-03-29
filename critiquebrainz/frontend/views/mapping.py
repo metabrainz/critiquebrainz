@@ -15,7 +15,6 @@ from flask_babel import gettext
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound, BadRequest, ServiceUnavailable
 
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend import flash

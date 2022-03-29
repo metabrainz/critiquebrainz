@@ -45,7 +45,7 @@
         {% for mbid, album in spotify_albums.items() %}
           <tr>
             <td>
-              <img src="{{ album.images[-1].url if album.images else get_static_path('images/placeholder_disc.svg') }}"
+              <img src="{{ album.images[-1].url if album.images is defined else get_static_path('images/placeholder_disc.svg') }}"
                    style="max-height: 25px;" />
             </td>
             <td>{{ album.type }}</td>
