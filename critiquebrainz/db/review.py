@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime, timedelta
 from random import shuffle
+from typing import List
 
 import pycountry
 import sqlalchemy
@@ -50,14 +51,50 @@ def to_dict(review, confidential=False, connection=None):
     return review
 
 
-def get_by_id(review_id):
+def get_by_id(review_id: uuid.UUID):
     """Get a review by its ID.
 
     Args:
-        review_id (uuid): ID of the review.
+        review_id: ID of the review.
 
     Returns:
         Dictionary with the following structure
+        {
+            "id": uuid,
+            "entity_id": uuid,
+            "entity_type": str,
+            "user_id": uuid,
+            "user": dict,
+            "edits": int,
+            "is_draft": bool,
+            "is_hidden": bool,
+            "language": str,
+            "license_id": str,
+            "source": str,
+            "source_url": str,
+            "last_revision: dict,
+            "votes": dict,
+            "popularity": int,
+            "rating": int,
+            "text": str,
+            "license": dict,
+            "published_on": datetime,
+        }
+    """
+    reviews = get_by_ids([review_id])
+    if len(reviews) == 0:
+        raise db_exceptions.NoDataFoundException(f"Can't find any reviews for the supplied IDs: {review_id}")
+    return reviews[0]
+
+
+def get_by_ids(review_ids: List[uuid.UUID]):
+    """Get a list of reviews by their IDs.
+
+    Args:
+        review_ids: ID's of the reviews.
+
+    Returns:
+        List of dictionary with each having the following structure
         {
             "id": uuid,
             "entity_id": uuid,
@@ -109,16 +146,16 @@ def get_by_id(review_id):
               JOIN revision ON revision.review_id = review.id
               JOIN "user" ON "user".id = review.user_id
               JOIN license ON license.id = license_id
-             WHERE review.id = :review_id
+             WHERE review.id IN :review_ids
           ORDER BY timestamp DESC
         """), {
-            "review_id": review_id,
+            "review_ids": tuple(map(str, review_ids)),
         })
 
-        review = result.fetchone()
-        if not review:
-            raise db_exceptions.NoDataFoundException("Can't find review with ID: {id}".format(id=review_id))
+        reviews = result.fetchall()
 
+    results = []
+    for review in reviews:
         review = dict(review)
         review["rating"] = RATING_SCALE_1_5.get(review["rating"])
         review["last_revision"] = {
@@ -147,7 +184,8 @@ def get_by_id(review_id):
             "negative": votes["negative"],
         }
         review["popularity"] = review["votes"]["positive"] - review["votes"]["negative"]
-    return review
+        results.append(review)
+    return results
 
 
 def set_hidden_state(review_id, *, is_hidden):

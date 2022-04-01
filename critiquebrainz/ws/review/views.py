@@ -15,9 +15,10 @@ from critiquebrainz.db import (
 )
 from critiquebrainz.db.review import supported_languages, ENTITY_TYPES
 from critiquebrainz.decorators import crossdomain
-from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError
+from critiquebrainz.ws.exceptions import NotFound, AccessDenied, InvalidRequest, LimitExceeded, MissingDataError, ParserError
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
+from critiquebrainz.utils import validate_uuid
 
 review_bp = Blueprint('ws_review', __name__)
 
@@ -30,7 +31,7 @@ def get_review_or_404(review_id):
     try:
         review = db_review.get_by_id(review_id)
     except db_exceptions.NoDataFoundException:
-        raise NotFound("Can't find a review with ID: {review_id}".format(review_id=review_id))
+        raise NotFound(f"Can't find a review with ID: {review_id}")
     return review
 
 

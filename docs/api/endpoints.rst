@@ -16,6 +16,11 @@ Reviews
    :include-empty-docstring:
    :undoc-static:
 
+.. autoflask:: critiquebrainz.ws:create_app_sphinx()
+   :blueprints: ws_review_bulk
+   :include-empty-docstring:
+   :undoc-static:
+
 Users
 ^^^^^
 
