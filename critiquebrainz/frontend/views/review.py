@@ -17,7 +17,7 @@ from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revi
 from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.frontend import flash
-from critiquebrainz.frontend.external import mbspotify, soundcloud
+from critiquebrainz.frontend.external import mbspotify, soundcloud, notify_moderators
 from critiquebrainz.frontend.external.musicbrainz_db.entities import entity_is_unknown, get_multiple_entities, get_entity_by_id
 from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.forms.log import AdminActionForm
@@ -497,6 +497,11 @@ def report(id):
     form = ReviewReportForm()
     if form.validate_on_submit():
         db_spam_report.create(last_revision_id, current_user.id, form.reason.data)
+        notify_moderators.mail_review_report(
+            user=current_user,
+            reason=form.reason.data,
+            review=review,
+        )
         flash.success(gettext("Review has been reported."))
         return redirect(url_for('.entity', id=id))
 
