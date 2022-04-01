@@ -46,6 +46,13 @@ REDIS_PORT = {{.Port}}
 {{end}}
 {{end}}
 
+{{if service "critiquebrainz-org.exim-relay"}}
+{{with index (service "critiquebrainz-org.exim-relay") 0}}
+SMTP_SERVER = '''{{.Address}}'''
+SMTP_PORT = {{.Port}}
+{{end}}
+{{end}}
+
 MBSPOTIFY_BASE_URI = '''{{template "KEY" "mbspotify_url"}}'''
 MBSPOTIFY_ACCESS_KEY = '''{{template "KEY" "mbspotify_key"}}'''
 
