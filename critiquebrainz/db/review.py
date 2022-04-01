@@ -138,7 +138,6 @@ def get_by_ids(review_ids: List[uuid.UUID]):
                    "user".email,
                    "user".created as user_created,
                    "user".display_name,
-                   "user".show_gravatar,
                    "user".musicbrainz_id,
                    "user".is_blocked,
                    license.full_name,
@@ -170,7 +169,6 @@ def get_by_ids(review_ids: List[uuid.UUID]):
             "id": review["user_id"],
             "display_name": review.pop("display_name", None),
             "is_blocked": review.pop("is_blocked", False),
-            "show_gravatar": review.pop("show_gravatar", False),
             "musicbrainz_username": review.pop("musicbrainz_id"),
             "email": review.pop("email"),
             "created": review.pop("user_created"),
@@ -476,7 +474,6 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
                review.source_url,
                review.user_id,
                "user".display_name,
-               "user".show_gravatar,
                "user".is_blocked,
                "user".email,
                "user".created as user_created,
@@ -533,7 +530,6 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
             row["user"] = User({
                 "id": row["user_id"],
                 "display_name": row.pop("display_name"),
-                "show_gravatar": row.pop("show_gravatar"),
                 "is_blocked": row.pop("is_blocked"),
                 "musicbrainz_username": row.pop("musicbrainz_id"),
                 "email": row.pop("email"),
@@ -563,8 +559,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
         inc_drafts (bool): True if reviews marked as drafts should be included, False if not.
         inc_hidden (bool): True if reviews marked as hidden should be included, False if not.
         exclude (list): List of reviews (their IDs) to exclude from results.
-        review_type (str): Filter reviews. Can either be "review"(for reviews with only text), or "rating" (for
-                           reviews with only rating), or "None" (for all reviews).
+        review_type (str): Return reviews of this type. Can either be "review" (to return reviews with text),
+                           or "rating" (to return reviews which have a rating), or ``None`` (to return all reviews).
 
     Returns:
         Tuple with two values:

@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from flask_login import current_user
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 import critiquebrainz.db.review as db_review
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.work as mb_work
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, WORK_REVIEWS_LIMIT, BROWSE_RECORDING_LIMIT
@@ -15,9 +14,8 @@ work_bp = Blueprint('work', __name__)
 @work_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    try:
-        work = mb_work.get_work_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    work = mb_work.get_work_by_id(id)
+    if work is None:
         raise NotFound(gettext("Sorry, we couldn't find a work with that MusicBrainz ID."))
 
     work_reviews_limit = WORK_REVIEWS_LIMIT
@@ -43,7 +41,11 @@ def entity(id):
         offset=reviews_offset,
     )
 
-    page = int(request.args.get('page', default=1))
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.reviews'))
 

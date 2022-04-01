@@ -22,11 +22,10 @@ from operator import itemgetter
 from flask import Blueprint, render_template, request
 from flask_babel import gettext
 from flask_login import current_user
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.event as mb_event
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
 
@@ -36,9 +35,8 @@ event_bp = Blueprint('event', __name__)
 @event_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    try:
-        event = mb_event.get_event_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    event = mb_event.get_event_by_id(id)
+    if event is None:
         raise NotFound(gettext("Sorry, we couldn't find an event with that MusicBrainz ID."))
 
     if 'url-rels' in event:
@@ -67,8 +65,16 @@ def entity(id):
     rating_form = RatingEditForm(entity_id=id, entity_type='event')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    limit = int(request.args.get('limit', default=10))
-    offset = int(request.args.get('offset', default=0))
+    try:
+        limit = int(request.args.get('limit', default=10))
+    except ValueError:
+        raise BadRequest("Invalid limit parameter!")
+
+    try:
+        offset = int(request.args.get('offset', default=0))
+    except ValueError:
+        raise BadRequest("Invalid offset parameter!")
+    
     reviews, count = db_review.list_reviews(
         entity_id=event['id'],
         entity_type='event',

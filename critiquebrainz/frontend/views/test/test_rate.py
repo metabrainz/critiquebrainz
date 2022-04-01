@@ -39,7 +39,7 @@ class RateViewsTestCase(FrontendTestCase):
 
     def test_rate(self):
         self.temporary_login(self.reviewer)
-        entity_id = 'e7aad618-fa86-3983-9e77-405e21796eca'
+        entity_id = '9162580e-5df4-32de-80cc-f45a8d8a9b1d'
         # Test for first time rating (no review exists)
         payload = {
             'entity_id': entity_id,

@@ -16,7 +16,7 @@
         <th>{{ _('Created on') }}</th>
         <th>{{ _('Published on')}} </th>
         <th>{{ _('Votes (+/-)') }}</th>
-		  <th>{{ _('Rating') }}</th>
+		<th>{{ _('Rating') }}</th>
         {% if current_user.is_authenticated and current_user == user %}
           <th><!-- Buttons --></th>
         {% endif %}
@@ -24,7 +24,7 @@
       </thead>
       <tbody>
       {% for review in reviews %}
-        {% set entity = review.entity_id | entity_details(type=review.entity_type) %}
+        {% set entity = entities[review.entity_id | string] %}
         <tr data-review-id="{{ review.id }}">
           <td class="title">
             <a href="{{ url_for('review.entity', id=review.id) }}">

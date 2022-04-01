@@ -45,7 +45,7 @@
             <tr data-review-id="{{ review.id }}">
               <td>
                 <a href="{{ url_for('review.entity', id=review.id) }}">
-                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                  {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
                 </a>
               </td>
               <td>{{ review.published_on | date }}</td>
@@ -82,9 +82,9 @@
           {% set recording = rel['recording'] %}
             <tr data-review-id="{{ recording.id }}">
               <td>
-                {# <a href="{{ url_for('recording.entity', id=recording.id) }}"> #}
+                <a href="{{ url_for('recording.entity', id=recording.id) }}">
                   {{ recording.name }}
-                {# </a> #}
+                </a>
               </td>
               <td>{{ rel.type | capitalize }}</td>
               <td>

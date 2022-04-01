@@ -2,7 +2,6 @@ from flask import Blueprint, render_template
 from flask import current_app
 
 from critiquebrainz.db import users as db_users
-from critiquebrainz.db.users import gravatar_url
 
 moderators_bp = Blueprint('moderators', __name__)
 
@@ -19,12 +18,10 @@ def mods_list():
         mods.append({
             'critiquebrainz_id': mod_data["id"],
             'musicbrainz_username': mod_data["musicbrainz_username"],
-            'avatar_url': mod_data["avatar_url"],
         })
     for mod_username in mod_usernames:  # The rest
         mods.append({
             'musicbrainz_username': mod_username,
-            'avatar_url': gravatar_url(mod_username, default="mm"),
         })
     mods = sorted(mods, key=lambda k: k['musicbrainz_username'].lower())
     return render_template('moderators/moderators.html', moderators=mods)

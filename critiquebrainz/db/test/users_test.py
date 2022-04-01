@@ -11,7 +11,7 @@ import critiquebrainz.db.users as db_users
 import critiquebrainz.db.vote as db_vote
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db.user import User
-from critiquebrainz.db.users import gravatar_url, get_many_by_mb_username
+from critiquebrainz.db.users import get_many_by_mb_username
 
 
 class UserTestCase(DataTestCase):
@@ -50,12 +50,6 @@ class UserTestCase(DataTestCase):
         dbresults = [user["musicbrainz_username"] for user in dbresults]
         self.assertEqual(users, dbresults)
         self.assertEqual(get_many_by_mb_username([]), [])
-
-    def test_avatar(self):
-        self.assertEqual(
-            gravatar_url("test2"),
-            "https://gravatar.com/avatar/ad0234829205b9033196ba818f7a872b?d=identicon&r=pg"
-        )
 
     def test_get_by_id(self):
         user = db_users.get_by_id(self.user1.id)

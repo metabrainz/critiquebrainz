@@ -19,10 +19,9 @@
 from flask import Blueprint, render_template, request
 from flask_babel import gettext
 from flask_login import current_user
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 import critiquebrainz.db.review as db_review
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 from critiquebrainz.frontend.external import mbspotify, soundcloud
@@ -35,9 +34,8 @@ release_group_bp = Blueprint('release_group', __name__)
 @release_group_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    try:
-        release_group = mb_release_group.get_release_group_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    release_group = mb_release_group.get_release_group_by_id(id)
+    if release_group is None:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
 
     if 'url-rels' in release_group:
@@ -58,8 +56,16 @@ def entity(id):
     else:
         spotify_mappings = mbspotify.mappings(release_group['id'])
 
-    limit = int(request.args.get('limit', default=10))
-    offset = int(request.args.get('offset', default=0))
+    try:
+        limit = int(request.args.get('limit', default=10))
+    except ValueError:
+        raise BadRequest("Invalid limit parameter!")
+
+    try:
+        offset = int(request.args.get('offset', default=0))
+    except ValueError:
+        raise BadRequest("Invalid offset parameter!")
+    
     if current_user.is_authenticated:
         my_reviews, _ = db_review.list_reviews(
             entity_id=release_group['id'],

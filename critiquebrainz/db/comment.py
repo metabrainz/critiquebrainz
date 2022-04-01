@@ -87,7 +87,6 @@ def get_by_id(comment_id):
                    "user".email,
                    "user".created as user_created,
                    "user".display_name,
-                   "user".show_gravatar,
                    "user".musicbrainz_id,
                    "user".is_blocked
               FROM comment c
@@ -115,7 +114,6 @@ def get_by_id(comment_id):
             'display_name': comment.pop('display_name'),
             'email': comment.pop('email'),
             'created': comment.pop('user_created'),
-            'show_gravatar': comment.pop('show_gravatar'),
             'musicbrainz_username': comment.pop('musicbrainz_id'),
             'is_blocked': comment.pop('is_blocked')
         })
@@ -168,7 +166,6 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
                    "user".email,
                    "user".created as user_created,
                    "user".display_name,
-                   "user".show_gravatar,
                    "user".musicbrainz_id,
                    "user".is_blocked,
                    MIN(comment_revision.timestamp) as created,
@@ -209,7 +206,6 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
             row['user'] = User({
                 'id': row['user_id'],
                 'display_name': row.pop('display_name'),
-                'show_gravatar': row.pop('show_gravatar'),
                 'is_blocked': row.pop('is_blocked'),
                 'musicbrainz_username': row.pop('musicbrainz_id'),
                 'email': row.pop('email'),

@@ -43,6 +43,14 @@ MB_DATABASE_URI = "postgresql://musicbrainz_ro@{{.Address}}:{{.Port}}/musicbrain
 {{with index (service "critiquebrainz-redis") 0}}
 REDIS_HOST = "{{.Address}}"
 REDIS_PORT = {{.Port}}
+REDIS_NAMESPACE = "CB-{{(env "DEPLOY_ENV")}}"
+{{end}}
+{{end}}
+
+{{if service "critiquebrainz-org.exim-relay"}}
+{{with index (service "critiquebrainz-org.exim-relay") 0}}
+SMTP_SERVER = '''{{.Address}}'''
+SMTP_PORT = {{.Port}}
 {{end}}
 {{end}}
 

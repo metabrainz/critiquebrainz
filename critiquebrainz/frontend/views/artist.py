@@ -7,7 +7,6 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 from critiquebrainz.frontend.views import get_avg_rating, BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
 from critiquebrainz.frontend.forms.rate import RatingEditForm
@@ -22,9 +21,8 @@ def entity(id):
     Displays release groups (split up into several sections depending on their
     type), artist information (type, members/member of, external links).
     """
-    try:
-        artist = mb_artist.get_artist_by_id(str(id))
-    except mb_exceptions.NoDataFoundException:
+    artist = mb_artist.get_artist_by_id(str(id))
+    if artist is None:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
     # Note that some artists might not have a list of members because they are not a band
@@ -61,7 +59,11 @@ def entity(id):
     if release_type not in ['album', 'single', 'ep', 'broadcast', 'other']:  # supported release types
         raise BadRequest("Unsupported release type.")
 
-    page = int(request.args.get('page', default=1))
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.reviews'))
     release_groups_offset = (page - 1) * BROWSE_RELEASE_GROUPS_LIMIT

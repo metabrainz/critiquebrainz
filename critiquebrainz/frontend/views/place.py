@@ -19,10 +19,9 @@
 from flask import Blueprint, render_template, request
 from flask_babel import gettext
 from flask_login import current_user
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 import critiquebrainz.db.review as db_review
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
@@ -33,9 +32,8 @@ place_bp = Blueprint('place', __name__)
 @place_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    try:
-        place = mb_place.get_place_by_id(id)
-    except mb_exceptions.NoDataFoundException:
+    place = mb_place.get_place_by_id(id)
+    if place is None:
         raise NotFound(gettext("Sorry, we couldn't find a place with that MusicBrainz ID."))
 
     if current_user.is_authenticated:
@@ -51,8 +49,16 @@ def entity(id):
     rating_form = RatingEditForm(entity_id=id, entity_type='place')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    limit = int(request.args.get('limit', default=10))
-    offset = int(request.args.get('offset', default=0))
+    try:
+        limit = int(request.args.get('limit', default=10))
+    except ValueError:
+        raise BadRequest("Invalid limit parameter!")
+
+    try:
+        offset = int(request.args.get('offset', default=0))
+    except ValueError:
+        raise BadRequest("Invalid offset parameter!")
+    
     reviews, count = db_review.list_reviews(
         entity_id=place['id'],
         entity_type='place',

@@ -11,24 +11,6 @@ from critiquebrainz.db.user import User
 from critiquebrainz.frontend.testing import FrontendTestCase
 
 
-def mock_get_entity_by_id(id, type='release_group'):
-    if id == '6b3cd75d-7453-39f3-86c4-1441f360e121' and type == 'release_group':
-        return {
-            'id': '6b3cd75d-7453-39f3-86c4-1441f360e121',
-            'title': 'Moderat',
-        }
-    if id == 'b4e75ef8-3454-4fdc-8af1-61038c856abc' and type == 'event':
-        return {
-            'id': 'b4e75ef8-3454-4fdc-8af1-61038c856abc',
-            'name': 'Rock am Ring 2014',
-        }
-    if id == 'c5c9c210-b7a0-4f6e-937e-02a586c8e14c' and type == 'place':
-        return {
-            'id': 'c5c9c210-b7a0-4f6e-937e-02a586c8e14c',
-            'name': 'University of London Union',
-        }
-
-
 class ReviewViewsTestCase(FrontendTestCase):
 
     def setUp(self):
@@ -45,11 +27,10 @@ class ReviewViewsTestCase(FrontendTestCase):
         )
         self.review_text = "Testing! This text should be on the page."
         self.review_rating = 3
-        current_app.jinja_env.filters['entity_details'] = mock_get_entity_by_id
 
     def create_dummy_review(self, is_draft=False, is_hidden=False):
         review = db_review.create(
-            entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_id="0cef1de0-6ff1-38e1-80cb-ff11ee2c69e2",
             entity_type="release_group",
             user_id=self.user.id,
             text=self.review_text,
@@ -120,7 +101,7 @@ class ReviewViewsTestCase(FrontendTestCase):
     # pylint: disable=unused-variable
     def test_create(self):
         data = dict(
-            entity_id='6b3cd75d-7453-39f3-86c4-1441f360e121',
+            entity_id='0cef1de0-6ff1-38e1-80cb-ff11ee2c69e2',
             entity_type='release_group',
             state='draft',
             text=self.review_text,
@@ -150,7 +131,7 @@ class ReviewViewsTestCase(FrontendTestCase):
                                    follow_redirects=True)
         self.assert400(response, "You can't write reviews about this type of entity.")
 
-        data = dict(release_group='6b3cd75d-7453-39f3-86c4-1441f360e121')
+        data = dict(release_group='0cef1de0-6ff1-38e1-80cb-ff11ee2c69e2')
         response = self.client.get("/review/write/", query_string=data)
         redirect_url = urlparse(response.location)
         self.assertEqual(redirect_url.path, url_for("review.create", entity_type="release_group",
@@ -167,7 +148,7 @@ class ReviewViewsTestCase(FrontendTestCase):
     def test_edit(self):
         updated_text = "The text has now been updated"
         data = dict(
-            release_group="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            release_group="0cef1de0-6ff1-38e1-80cb-ff11ee2c69e2",
             state='publish',
             text=updated_text,
             license_choice=self.license["id"],
@@ -237,7 +218,7 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def test_event_review_pages(self):
         review = db_review.create(
-            entity_id="b4e75ef8-3454-4fdc-8af1-61038c856abc",
+            entity_id="026015da-11cc-4dcb-bdce-760f852c46cd",
             entity_type="event",
             user_id=self.user.id,
             text="A great event, enjoyed it.",

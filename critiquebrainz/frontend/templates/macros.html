@@ -105,9 +105,8 @@
   {% endif %}
 {% endmacro %}
 
-{% macro review_credit(review, user_picture_size) %}
-  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (review.user.avatar, user_picture_size)
-              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
+{% macro review_credit(review) %}
+  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
   {{ _('Review by %(user)s', user=user_string) }}
 {% endmacro %}
 
@@ -181,9 +180,8 @@
   <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ ngettext('based on %(num)s rating', 'based on %(num)s ratings', count) }}</em>
 {% endmacro %}
 
-{% macro comment_credit(comment, user_picture_size) %}
-  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (comment.user.avatar, user_picture_size)
-              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=comment.user.id), comment.user.display_name) %}
+{% macro comment_credit(comment) %}
+  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=comment.user.id), comment.user.display_name) %}
   {{ _('%(user)s', user=user_string) }}
 {% endmacro %}
 
@@ -225,28 +223,37 @@
   {% set total_pages = (count/limit)|round(method='ceil')|int %}
   {% if count > limit %}
     <div class="col-md-12 text-center">
-      <nav aria-label="Page navigation">
+      <nav aria-label="{{ _('Page Navigation') }}">
         <ul class="pagination">
+          <li class="previous {{'disabled' if current_page <= 1 }}">
+              <a aria-label="{{ _('Previous') }}" href="{{ url_for(page_info, page=page-1, **parameter) }}">&larr; {{ _('Previous') }}</a>
+          </li>
 
-          <li class="previous {{'disabled' if current_page <= 1 }}"><a aria-label="Previous" href="{{ url_for(page_info, page=page-1, **parameter) }}">&larr; {{ _('Previous') }}</a></li>
-        
-          <li {{ "class=active" if current_page == 1 }}><a href="{{ url_for(page_info, page=1,  **parameter) }}">{{ 1 }}</a></li>
+          <li {{ "class=active" if current_page == 1 }}>
+              <a href="{{ url_for(page_info, page=1,  **parameter) }}">{{ 1 }}</a>
+          </li>
 
           {% if current_page >= 5 %}
             <li class="disabled"><a>{{ '...' }}</a></li>
           {% endif %}
 
           {% for page_index in range([2,current_page-2]|max, [total_pages,current_page+3]|min) %}
-            <li {{ "class=active" if current_page == page_index }}><a href="{{ url_for(page_info, page=page_index, **parameter) }}">{{ page_index }}</a></li>
+            <li {{ "class=active" if current_page == page_index }}>
+                <a href="{{ url_for(page_info, page=page_index, **parameter) }}">{{ page_index }}</a>
+            </li>
           {% endfor %}
 
           {% if (current_page <= (total_pages - 4)) %}
             <li class='disabled'><a>{{ '...' }}</a></li>
           {% endif %}
 
-          <li {{ "class=active" if current_page == total_pages }}><a href="{{ url_for(page_info, page=total_pages, **parameter) }}">{{ total_pages }}</a></li>
+          <li {{ "class=active" if current_page == total_pages }}>
+              <a href="{{ url_for(page_info, page=total_pages, **parameter) }}">{{ total_pages }}</a>
+          </li>
 
-          <li class="next {{'disabled' if current_page == total_pages }}"><a aria-label="Next" href="{{ url_for(page_info, page=page+1, **parameter) }}">{{ _('Next') }} &rarr;</a></li>
+          <li class="next {{'disabled' if current_page == total_pages }}">
+              <a aria-label="{{ _('Next') }}" href="{{ url_for(page_info, page=page+1, **parameter) }}">{{ _('Next') }} &rarr;</a>
+          </li>
         </ul>
       </nav>
     </div>

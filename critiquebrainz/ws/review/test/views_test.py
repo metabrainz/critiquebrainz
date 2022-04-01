@@ -22,7 +22,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             full_name="Created so we can fill the form correctly.",
         )
         self.review = dict(
-            entity_id="6b3cd75d-7453-39f3-86c4-1441f360e121",
+            entity_id="90878b63-f639-3c8b-aefb-190bdf3d1790",
             entity_type='release_group',
             user_id=self.user.id,
             text="Testing! This text should be on the page.",
@@ -112,6 +112,10 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.assertCountEqual(actual_review_ids, expected_review_ids)
 
     def test_review_large_count(self):
+        """Test that retrieving reviews of a particular type correctly returns the total number of
+        reviews of this type in addition to the paged results"""
+
+        # 100 text reviews and 1 rating
         for _ in range(100):
             review = dict(
                 entity_id=uuid.uuid4(),
@@ -122,6 +126,19 @@ class ReviewViewsTestCase(WebServiceTestCase):
                 license_id=self.license["id"],
             )
             db_review.create(**review)
+
+        db_review.create(
+            entity_id="2b3abc25-7453-39f3-86c4-1441f360e121",
+            entity_type='release_group',
+            user_id=self.user.id,
+            rating=5,
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        resp = self.client.get('/review/')
+        self.assert200(resp)
+        self.assertEqual(resp.json["count"], 101)
+
         resp = self.client.get('/review/', query_string={'review_type': 'review'})
         self.assert200(resp)
         self.assertEqual(resp.json["count"], 100)

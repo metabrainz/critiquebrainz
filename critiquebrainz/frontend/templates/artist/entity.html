@@ -11,17 +11,21 @@
         {{ member.name }}
       </a>
       {% if member.periods %}
-        {% if not member.ended and member.periods and member.periods[0][0] %}
-          <span class="text-muted">
-            ({{ 'since ' + member.periods[0][0] }})
-          </span>
-        {% else %}
           <span class="text-muted">
           ({% for period in member.periods -%}
-            {{ period[0] + '-' + period[1] + ', ' * (not loop.last) }}
+              {% if not loop.last %}
+                {{ period[0] + '-' + period[1] + ', '}}
+              {% else %}
+                {% if not member.ended and period[0] %}
+                    {{ 'since ' + period[0] }}
+                {% elif not period[0] and period[1] %}
+                    {{ 'until ' + period[1] }}
+                {% else %}
+                    {{ period[0] + '-' + period[1] }}
+                {% endif %}
+              {% endif %}
           {%- endfor %})
           </span>
-        {%- endif %}
       {% endif %}
       {% if member.attributes and not member.ended %}
         <br />
@@ -80,7 +84,7 @@
             <tr data-review-id="{{ review.id }}">
               <td>
                 <a href="{{ url_for('review.entity', id=review.id) }}">
-                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                  {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
                 </a>
               </td>
               <td>{{ review.published_on | date }}</td>

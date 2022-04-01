@@ -84,12 +84,10 @@ def clear_memcached():
     click.echo("Flushed everything from memcached.")
 
 
-@click.option("--test-db", "-t", is_flag=True,
-              help="Initialize the test database.")
 @click.option("--force", "-f", is_flag=True,
               help="Drop existing tables and types.")
 @cli.command()
-def init_db(test_db=False, force=False):
+def init_db(force=False):
     """Initialize the database.
 
     * Creates the database.
@@ -104,20 +102,13 @@ def init_db(test_db=False, force=False):
         data_utils.drop_types()
         click.echo("Done!")
 
-    if test_db:
-        frontend.create_app(config_path=os.path.join(
-            os.path.dirname(os.path.realpath(__file__)),
-            'critiquebrainz', 'test_config.py'
-        ))
-    else:
-        frontend.create_app()
+    app = frontend.create_app()
 
     click.echo("Creating tables... ", nl=False)
     data_utils.create_all()
     click.echo("Done!")
 
     click.echo("Adding fixtures... ")
-    app = frontend.create_app()
     with app.app_context():
         _fixtures.install(*_fixtures.all_data)
     click.echo("Done!")

@@ -5,6 +5,7 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
 from critiquebrainz.data.testing import DataTestCase
 from critiquebrainz.db import revision, vote
+from critiquebrainz.db import exceptions
 from critiquebrainz.db.user import User
 
 
@@ -104,3 +105,7 @@ class RevisionTestCase(DataTestCase):
         self.review = db_review.get_by_id(self.review["id"])
         rev_num = revision.get_revision_number(self.review["id"], self.review["last_revision"]["id"])
         self.assertEqual(rev_num, 2)
+
+        # A revision number that doesn't exist
+        with self.assertRaises(exceptions.NoDataFoundException):
+            revision.get_revision_number(self.review["id"], self.review["last_revision"]["id"] + 5)

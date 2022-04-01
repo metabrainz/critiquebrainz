@@ -52,7 +52,7 @@
             <tr data-review-id="{{ review.id }}">
               <td>
                 <a href="{{ url_for('review.entity', id=review.id) }}">
-                    {{ _('by') }} <img class="avatar" src="{{ review.user.avatar + review.user.display_name }}&s=16" />
+                    {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
                 </a>
               </td>
               <td>{{ review.published_on | date }}</td>

@@ -1,5 +1,7 @@
 FROM metabrainz/python:3.8-20210115
 
+ENV PYTHONUNBUFFERED 1
+
 # remove expired let's encrypt certificate and install new ones
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \
@@ -83,6 +85,7 @@ RUN touch /etc/service/uwsgi/down
 COPY ./docker/cron/consul-template-cron-config.conf /etc/consul-template-cron-config.conf
 COPY ./docker/cron/cron-config.service /etc/service/cron-config/run
 COPY ./docker/cron/crontab /etc/cron.d/critiquebrainz
+RUN chmod 0644 /etc/cron.d/critiquebrainz
 RUN touch /etc/service/cron/down
 RUN touch /etc/service/cron-config/down
 

@@ -1,6 +1,6 @@
 {% extends 'review/entity/base.html' %}
 
-{% set work = review.entity_id | entity_details(type='work') %}
+{% set work = entity %}
 
 {% block title %}
   {% set work_title = work.name | default(_('[Unknown work]')) %}
