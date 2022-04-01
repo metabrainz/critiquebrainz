@@ -48,81 +48,8 @@ def more():
         page = int(request.args.get('page', default=0))
     except ValueError:
         raise BadRequest("Invalid page number!")
-    
+
     offset = page * RESULTS_LIMIT
     count, results = search_wrapper(query, type, offset)
     template = render_template('search/results.html', type=type, results=results)
-    return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
-
-
-@search_bp.route('/selector')
-def selector():
-    release_group = request.args.get('release_group')
-    artist = request.args.get('artist')
-    recording = request.args.get('recording')
-    label = request.args.get('label')
-    event = request.args.get('event')
-    place = request.args.get('place')
-    work = request.args.get('work')
-    type = request.args.get('type')
-    next = request.args.get('next')
-    if not next:
-        return redirect(url_for('frontend.index'))
-    if release_group:
-        count, results = musicbrainz.search_release_groups(release_group, limit=RESULTS_LIMIT)
-    elif artist:
-        count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT)
-    elif label:
-        count, results = musicbrainz.search_labels(label, limit=RESULTS_LIMIT)
-    elif work:
-        count, results = musicbrainz.search_works(work, limit=RESULTS_LIMIT)
-    elif recording:
-        count, results = musicbrainz.search_recordings(recording, limit=RESULTS_LIMIT)
-    elif event:
-        count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT)
-    elif place:
-        count, results = musicbrainz.search_places(place, limit=RESULTS_LIMIT)
-    else:
-        count, results = 0, []
-    return render_template('search/selector.html', next=next, type=type,
-                           results=results, count=count, limit=RESULTS_LIMIT,
-                           artist=artist, release_group=release_group, event=event,
-                           work=work, place=place, label=label, recording=recording)
-
-
-@search_bp.route('/selector/more')
-def selector_more():
-    artist = request.args.get('artist')
-    recording = request.args.get('recording')
-    release_group = request.args.get('release_group')
-    label = request.args.get('label')
-    event = request.args.get('event')
-    place = request.args.get('place')
-    work = request.args.get('work')
-    type = request.args.get('type')
-    
-    try:
-        page = int(request.args.get('page', default=0))
-    except ValueError:
-        raise BadRequest("Invalid page number!")
-    
-    offset = page * RESULTS_LIMIT
-    if type == 'release-group':
-        count, results = musicbrainz.search_release_groups(release_group,
-                                                           limit=RESULTS_LIMIT, offset=offset)
-    elif type == 'work':
-        count, results = musicbrainz.search_works(work, limit=RESULTS_LIMIT, offset=offset)
-    elif type == 'artist':
-        count, results = musicbrainz.search_artists(artist, limit=RESULTS_LIMIT, offset=offset)
-    elif type == 'label':
-        count, results = musicbrainz.search_labels(label, limit=RESULTS_LIMIT, offset=offset)
-    elif type == 'recording':
-        count, results = musicbrainz.search_recordings(recording, limit=RESULTS_LIMIT, offset=offset)
-    elif type == 'event':
-        count, results = musicbrainz.search_events(event, limit=RESULTS_LIMIT, offset=offset)
-    elif type == 'place':
-        count, results = musicbrainz.search_places(place, limit=RESULTS_LIMIT, offset=offset)
-    else:
-        count, results = 0, []
-    template = render_template('search/selector_results.html', results=results, type=type)
     return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
