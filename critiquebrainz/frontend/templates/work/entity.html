@@ -82,9 +82,9 @@
           {% set recording = rel['recording'] %}
             <tr data-review-id="{{ recording.id }}">
               <td>
-                {# <a href="{{ url_for('recording.entity', id=recording.id) }}"> #}
+                <a href="{{ url_for('recording.entity', id=recording.id) }}">
                   {{ recording.name }}
-                {# </a> #}
+                </a>
               </td>
               <td>{{ rel.type | capitalize }}</td>
               <td>
