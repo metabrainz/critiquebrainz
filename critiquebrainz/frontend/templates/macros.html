@@ -46,7 +46,35 @@
         {{ _('Place') }}
       </span>
     {% endif %}
-  {% else %} {# release-group #}
+  {% elif entity_type == 'work'  %}
+    <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type work">
+        {{ _('Work') }}
+      </span>
+    {% endif %}
+  {% elif entity_type == 'artist'  %}
+    <img src="{{ get_static_path('images/placeholder_place.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type artist">
+        {{ _('Artist') }}
+      </span>
+    {% endif %}
+  {% elif entity_type == 'label'  %}
+    <img src="{{ get_static_path('images/placeholder_disc.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type label">
+        {{ _('Label') }}
+      </span>
+    {% endif %}
+  {% elif entity_type == 'recording'  %}
+    <img src="{{ get_static_path('images/placeholder_disc.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type recording">
+        {{ _('Recording') }}
+      </span>
+    {% endif %}
+  {% elif entity_type == 'release_group' %}
     <img {{ attributes }} />
     {% if overlay_type %}
       <span class="entity-type release-group">
@@ -66,7 +94,7 @@
     <script>
       $('img').last()
         .on('error', function () {
-          $(this).attr('src', '{{ get_static_path('images/placeholder_disc.svg') }}');
+          $(this).attr('src', "{{ get_static_path('images/placeholder_disc.svg') }}");
           if ('{{ release_group_page }}' == 'True')
             $("#mb-call-to-act").css('display','block');
           else
@@ -77,9 +105,8 @@
   {% endif %}
 {% endmacro %}
 
-{% macro review_credit(review, user_picture_size) %}
-  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (review.user.avatar, user_picture_size)
-              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
+{% macro review_credit(review) %}
+  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
   {{ _('Review by %(user)s', user=user_string) }}
 {% endmacro %}
 
@@ -106,6 +133,16 @@
     {% endif %}
   </div>
 {%- endmacro %}
+
+{% macro show_external_reviews(reviews) %}
+  {% if reviews %}
+    {% for review in reviews %}
+      <li class="clearfix">
+        <a href="{{ review.url.url }}">{{ review.url.url }}</a>
+      </li>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
 
 {% macro show_tags(tags) %}
   {% if tags %}
@@ -136,14 +173,15 @@
   {% endif %}
 {% endmacro %}
 
-{% macro show_avg_rating(rating, count) %}
-  <i class="glyphicon glyphicon-star"></i>
-  <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ _('based on %(number)s ratings', number=count) }}</em>
+{% macro show_avg_rating(rating, count, show_glyphicon=True) %}
+  {% if show_glyphicon %}
+    <i class="glyphicon glyphicon-star"></i>
+  {% endif %}
+  <span style="font-size: 16px;">{{ rating }}</span><em class="text-muted">/5 {{ ngettext('based on %(num)s rating', 'based on %(num)s ratings', count) }}</em>
 {% endmacro %}
 
-{% macro comment_credit(comment, user_picture_size) %}
-  {% set user_string = '<img class="avatar" src="%s&s=%d" /> '|safe % (comment.user.avatar, user_picture_size)
-              + '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=comment.user.id), comment.user.display_name) %}
+{% macro comment_credit(comment) %}
+  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=comment.user.id), comment.user.display_name) %}
   {{ _('%(user)s', user=user_string) }}
 {% endmacro %}
 
@@ -162,5 +200,62 @@
     </form>
   {% else %}
     {{ _('<h4><a href="%(link)s">Sign in</a> to rate!</h4>', link=url_for('login.index', next=url_for('{}.entity'.format(entity_type), id=id))) }}
+  {% endif %}
+{% endmacro %}
+
+{% macro display_artist_credit(result) %}
+    {% if result['artist-relation-list'] %}
+        {% if result['artist-credit-phrase'] %}
+            <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-credit-phrase'] }}</a>
+        {% else %}
+            <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+            {% set count = result['artist-relation-list'] | length %}
+            {% if count > 1 %}
+                + {{ count - 1 }} {{ _("more") }}
+            {% endif %}
+        {% endif %}
+    {% else %}
+        -
+    {% endif %}
+{% endmacro %}
+
+{% macro display_pagination(current_page, count, limit, page_info, parameter) %}
+  {% set total_pages = (count/limit)|round(method='ceil')|int %}
+  {% if count > limit %}
+    <div class="col-md-12 text-center">
+      <nav aria-label="{{ _('Page Navigation') }}">
+        <ul class="pagination">
+          <li class="previous {{'disabled' if current_page <= 1 }}">
+              <a aria-label="{{ _('Previous') }}" href="{{ url_for(page_info, page=page-1, **parameter) }}">&larr; {{ _('Previous') }}</a>
+          </li>
+
+          <li {{ "class=active" if current_page == 1 }}>
+              <a href="{{ url_for(page_info, page=1,  **parameter) }}">{{ 1 }}</a>
+          </li>
+
+          {% if current_page >= 5 %}
+            <li class="disabled"><a>{{ '...' }}</a></li>
+          {% endif %}
+
+          {% for page_index in range([2,current_page-2]|max, [total_pages,current_page+3]|min) %}
+            <li {{ "class=active" if current_page == page_index }}>
+                <a href="{{ url_for(page_info, page=page_index, **parameter) }}">{{ page_index }}</a>
+            </li>
+          {% endfor %}
+
+          {% if (current_page <= (total_pages - 4)) %}
+            <li class='disabled'><a>{{ '...' }}</a></li>
+          {% endif %}
+
+          <li {{ "class=active" if current_page == total_pages }}>
+              <a href="{{ url_for(page_info, page=total_pages, **parameter) }}">{{ total_pages }}</a>
+          </li>
+
+          <li class="next {{'disabled' if current_page == total_pages }}">
+              <a aria-label="{{ _('Next') }}" href="{{ url_for(page_info, page=page+1, **parameter) }}">{{ _('Next') }} &rarr;</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   {% endif %}
 {% endmacro %}

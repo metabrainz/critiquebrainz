@@ -30,15 +30,13 @@ These values can be obtained from MusicBrainz after you register a new instance 
 CritiqueBrainz at https://musicbrainz.org/account/applications/register (you'll need a
 MusicBrainz account). In the ``Callback URL`` field type::
 
-   http://<HOST>/login/musicbrainz/post
+   http://localhost:8200/login/musicbrainz/post
 
 .. note::
 
-   ``<HOST>`` field should be set to ``localhost`` if you plan to run a local instance of
-   CritiqueBrainz for development purposes.
-   For example:- If you are running your local instance of the server on Port Number
-   8000 then ``<HOST>`` should be set
-   to ``localhost:8000``.
+   By default, CritiqueBrainz will be available at http://localhost:8200. If you change the
+   port or host that it is running on, you should set the Callback URL to the host that you
+   configure.
 
 After application has been registered, set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
 in your ``custom_config.py`` to the values that you see on the MusicBrainz website.
@@ -58,37 +56,41 @@ fields ``SPOTIFY_CLIENT_ID`` and ``SPOTIFY_CLIENT_SECRET`` respectively.
 
 Startup
 ^^^^^^^
-Then you can build all the services::
 
-   $ docker-compose -f docker/docker-compose.dev.yml build
+We provide a helper tool, ``develop.sh`` to wrap docker-compose and to provide some shortcuts to
+common tasks.
 
-MusicBrainz database containing all the MusicBrainz metadata is needed for
-setting up your application. The ``mbdump.tar.bz2`` is the core MusicBrainz
-archive which includes the tables for artist, release_group etc.
+Build all CritiqueBrainz services with::
+
+   $ ./develop.sh build
+
+A MusicBrainz database is required for running CritiqueBrainz.
+The ``mbdump.tar.bz2`` is the core MusicBrainz archive which includes the tables for artist,
+release_group etc.
 The ``mbdump-derived.tar.bz2`` archive contains annotations, user tags and search indexes.
 These archives include all the data required for setting up an instance of
 CritiqueBrainz.
 
-One can import the database dump by downloading and importing the data in
+You can import the database dump by downloading and importing the data in
 a single command::
 
-    $ docker-compose -f docker/docker-compose.dev.yml run musicbrainz_db
+    $ ./develop.sh run --rm musicbrainz_db
 
 .. note::
 
-  One can also manually download the dumps and then import it:-
+  You can also manually download the dumps and then import it:-
 
   i. For this, you have to download the dumps ``mbdump.tar.bz2`` and ``mbdump-derived.tar.bz2``
      from http://ftp.musicbrainz.org/pub/musicbrainz/data/fullexport/.
 
      .. warning::
 
-        Make sure to get the latest dumps
+        Make sure that you get the latest dumps
 
-  ii. Then the environment variable ``DUMPS_DIR`` must be set to the path of the
-      folders containing the dumps. This can be done by::
+  ii. Set the environment variable ``DUMPS_DIR`` to the path of the
+      folders containing the dumps. For example::
 
-        $ export DUMPS_DIR="Path of the folder containing the dumps"
+        $ export DUMPS_DIR="/home/me/folder/with/dumps"
 
       You can check that the variable ``DUMPS_DIR`` has been succesfully assigned or not by::
 
@@ -99,7 +101,7 @@ a single command::
 
   iii. Then import the database dumps by this command::
 
-        $ docker-compose -f docker/docker-compose.dev.yml run -v $DUMPS_DIR:/home/musicbrainz/dumps \
+        $ ./develop.sh run --rm -v $DUMPS_DIR:/home/musicbrainz/dumps \
         -v $PWD/data/mbdata:/var/lib/postgresql/data/pgdata musicbrainz_db
 
 .. note::
@@ -118,44 +120,38 @@ a single command::
    the ``data/mbdata`` directory by accident. Also make sure that you have about 25GB of free
    space to keep the MusicBrainz data.
 
-Initialization of CritiqueBrainz database is also required::
+Next, initialize the CritiqueBrainz database::
 
-   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz python3 \
-   manage.py init_db --skip-create-db
+   $ ./develop.sh run --rm critiquebrainz python3 manage.py init_db
+
+
+You will also need to run some commands to build the static assets (javascript and css files) for the first run::
+
+   $ ./develop.sh run --rm static_builder npm install
+   $ ./develop.sh run --rm static_builder npm run pre-dev
 
 Then you can start all the services::
 
-   $ docker-compose -f docker/docker-compose.dev.yml up -d
+   $ ./develop.sh up
 
-Building static files
-'''''''''''''''''''''
+Visit CritiqueBrainz at ``http://localhost:8200`` in your browser.
 
-Current Docker setup for development has one caveat: installation of Node.js dependencies
-and static file builds need to be done manually. This is caused by the volume setup.
+.. note::
 
-After you started development versions of containers with Compose, connect to the main
-container::
-
-   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz /bin/bash
-
-then install dependencies (it's enough to do this once, unless you modify ``package.json``)
-and build static files (needs to be done after any changes to JS or Less)::
-
-   root@<container_id>:/code# npm install
-   root@<container_id>:/code# ./node_modules/.bin/gulp
+   CB Runs on 8200. change line x if you want it somewhere else.
 
 Importing data dump
 '''''''''''''''''''
 
 We provide daily data dumps from https://critiquebrainz.org that include reviews
 and most of the data associated with them. If you want to import that into your
-own installation, download archives from ftp://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
-(you'll need to get the base archive ``cbdump.tar.bz2`` and one with reviews)
-and use ``python3 manage.py export importer`` command. First you need to import
-base archive and then one that contains reviews. For example::
+own installation, download the archives from http://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/dump/
+(you'll need to get the base archive ``cbdump.tar.bz2`` and the reviews ``cbdump-reviews-all.tar.bz2``)
+and use ``python3 manage.py dump import`` command. First you need to import
+base archive and then the one that contains reviews. For example::
 
-   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz python3 manage.py dump import cbdump.tar.bz2
-   $ docker-compose -f docker/docker-compose.dev.yml run critiquebrainz python3 manage.py dump import cbdump-reviews-all.tar.bz2
+   $ ./develop.sh run --rm critiquebrainz python3 manage.py dump import cbdump.tar.bz2
+   $ ./develop.sh run --rm critiquebrainz python3 manage.py dump import cbdump-reviews-all.tar.bz2
 
 Keep in mind that CritiqueBrainz only supports importing into an empty database.
 This should work if you just ran ``init_db`` command.
@@ -164,9 +160,9 @@ This should work if you just ran ``init_db`` command.
 Testing
 -------
 
-Alternative way to test the web server is to use a Docker container::
+To test the web server run::
 
-   $ docker-compose -f docker/docker-compose.test.yml up --build
+   $ ./develop.sh test up --build
 
 Modifying strings
 -----------------

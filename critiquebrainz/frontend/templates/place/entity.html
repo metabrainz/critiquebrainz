@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import show_avg_rating, entity_rate_form with context %}
+{% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ place.name }} - CritiqueBrainz{% endblock %}
 
@@ -15,7 +16,7 @@
     </h2>
 
     {% if not my_review %}
-      <a id="write-review" href="{{ url_for('review.create', place=id) }}"
+      <a id="write-review" href="{{ url_for('review.create', entity_type='place', entity_id=id) }}"
          role="button" class="btn btn-success pull-right">
         <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
       </a>
@@ -67,7 +68,7 @@
               <tr data-review-id="{{ review.id }}">
                 <td>
                   <a href="{{ url_for('review.entity', id=review.id) }}">
-                    {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                    {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
                   </a>
                 </td>
                 <td>{{ review.published_on | date }}</td>
@@ -138,16 +139,5 @@
 {% endblock %}
 
 {% block scripts %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
-  <script>
-    $(document).ready(function() {
-      $("#ratestars").click(function(e){
-        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
-        if (e.target.tagName === 'I') {
-          $("#rating-form").submit();
-        }
-      });
-    });
-  </script>
-  <script src="{{ get_static_path('rating.js') }}"></script>
+    {{ rating_script }}
 {% endblock %}

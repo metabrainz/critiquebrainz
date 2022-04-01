@@ -1,5 +1,6 @@
-from functools import wraps, update_wrapper
 from datetime import timedelta
+from functools import wraps, update_wrapper
+
 from flask import request, current_app, make_response
 
 
@@ -16,6 +17,7 @@ def add_response_headers(headers=None):
             for header, value in headers.items():
                 h[header] = value
             return resp
+
         return decorated_function
 
     return decorator
@@ -26,6 +28,7 @@ def nocache(f):
     @add_response_headers({'Cache-Control': 'no-store'})
     def decorated_function(*args, **kwargs):
         return f(*args, **kwargs)
+
     return decorated_function
 
 
@@ -69,4 +72,5 @@ def crossdomain(origin='*', methods=None, headers=None,
 
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
+
     return decorator

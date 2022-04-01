@@ -1,29 +1,30 @@
 from math import ceil
-import logging
+
+from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
+from langdetect import detect
 from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
-from langdetect import detect
-from critiquebrainz.db.review import ENTITY_TYPES
-from critiquebrainz.db.moderation_log import AdminActions
+
+import critiquebrainz.db.comment as db_comment
+import critiquebrainz.db.moderation_log as db_moderation_log
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.spam_report as db_spam_report
+import critiquebrainz.db.users as db_users
 from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revision as db_revision
+from critiquebrainz.db.moderation_log import AdminActions
+from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud, notify_moderators
+from critiquebrainz.frontend.external.musicbrainz_db.entities import entity_is_unknown, get_multiple_entities, get_entity_by_id
+from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
-from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.frontend.views import get_avg_rating
 from critiquebrainz.utils import side_by_side_diff
-import critiquebrainz.db.spam_report as db_spam_report
-import critiquebrainz.db.review as db_review
-import critiquebrainz.db.moderation_log as db_moderation_log
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.comment as db_comment
-from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
-
 
 review_bp = Blueprint('review', __name__)
 RESULTS_LIMIT = 10
@@ -43,22 +44,33 @@ def browse():
     entity_type = request.args.get('entity_type', default=None)
     if entity_type == 'all':
         entity_type = None
-    page = int(request.args.get('page', default=1))
+    
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
-    reviews, count = db_review.list_reviews(sort='created', limit=limit, offset=offset, entity_type=entity_type)
+    reviews, count = db_review.list_reviews(sort='published_on', limit=limit, offset=offset, entity_type=entity_type)
     if not reviews:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count / limit))))
-        else:
-            if not entity_type:
-                raise NotFound(gettext("No reviews to display."))
+
+        if not entity_type:
+            raise NotFound(gettext("No reviews to display."))
 
     # Loading info about entities for reviews
     entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
     entities_info = get_multiple_entities(entities)
+
+    # If we don't have metadata for a review, remove it from the list
+    # This will have the effect of removing an item from the 3x9 grid of reviews, but it
+    # happens so infrequently that we don't bother to back-fill it.
+    retrieved_entity_mbids = entities_info.keys()
+    reviews = [r for r in reviews if str(r["entity_id"]) in retrieved_entity_mbids]
 
     return render_template('review/browse.html', reviews=reviews, entities=entities_info,
                            page=page, limit=limit, count=count, entity_type=entity_type)
@@ -66,6 +78,16 @@ def browse():
 
 # TODO(psolanki): Refactor this function to remove PyLint warning.
 # pylint: disable=too-many-branches
+
+def get_entity_title(_entity):
+    title = None
+    if 'title' in _entity:
+        title = _entity['title']
+    elif 'name' in _entity:
+        title = _entity['name']
+    return title
+
+
 @review_bp.route('/<uuid:id>/revisions/<int:rev>')
 @review_bp.route('/<uuid:id>')
 def entity(id, rev=None):
@@ -78,14 +100,18 @@ def entity(id, rev=None):
         if not current_user.is_admin():
             raise Forbidden(gettext("Review has been hidden. "
                                     "You need to be an administrator to view it."))
-        else:
-            flash.warn(gettext("Review has been hidden."))
+        flash.warn(gettext("Review has been hidden."))
 
     spotify_mappings = None
     soundcloud_url = None
     if review["entity_type"] == 'release_group':
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
+
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    if not entity:
+        raise NotFound("This review is for an item that doesn't exist")
+
     count = db_revision.get_count(id)
     if not rev:
         rev = count
@@ -125,7 +151,8 @@ def entity(id, rev=None):
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
                            spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
                            vote=vote, other_reviews=other_reviews, avg_rating=avg_rating,
-                           comment_count=count, comments=comments, comment_form=comment_form)
+                           comment_count=count, comments=comments, comment_form=comment_form,
+                           entity=entity)
 
 
 @review_bp.route('/<uuid:review_id>/revision/<int:revision_id>')
@@ -140,13 +167,27 @@ def redirect_to_entity(review_id, revision_id):
 @review_bp.route('/<uuid:id>/revisions/compare')
 def compare(id):
     review = get_review_or_404(id)
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    if not entity:
+        raise NotFound("This review is for an item that doesn't exist")
+
     if review["is_draft"] and not (current_user.is_authenticated and
                                    current_user == review["user"]):
         raise NotFound(gettext("Can't find a review with the specified ID."))
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
     count = db_revision.get_count(id)
-    old, new = int(request.args.get('old') or count - 1), int(request.args.get('new') or count)
+
+    try:
+        old = int(request.args.get('old', default=count - 1))
+    except ValueError:
+        raise BadRequest("Invalid old revision number!")
+    
+    try:
+        new = int(request.args.get('new', count))
+    except ValueError:
+        raise BadRequest("Invalid new revision number!")
+
     if old > count or new > count:
         raise NotFound(gettext("The revision(s) you are looking for does not exist."))
     if old > new:
@@ -161,6 +202,10 @@ def compare(id):
 @review_bp.route('/<uuid:id>/revisions')
 def revisions(id):
     review = get_review_or_404(id)
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    if not entity:
+        raise NotFound("This review is for an item that doesn't exist")
+
     # Not showing review if it isn't published yet and not viewed by author.
     if review["is_draft"] and not (current_user.is_authenticated and
                                    current_user == review["user"]):
@@ -181,6 +226,10 @@ def revisions(id):
 @review_bp.route('/<uuid:id>/revisions/more')
 def revisions_more(id):
     review = get_review_or_404(id)
+    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    if not entity:
+        raise NotFound("This review is for an item that doesn't exist")
+
     # Not showing review if it isn't published yet and not viewed by author.
     if review["is_draft"] and not (current_user.is_authenticated and
                                    current_user == review["user"]):
@@ -188,7 +237,11 @@ def revisions_more(id):
     if review["is_hidden"] and not current_user.is_admin():
         raise NotFound(gettext("Review has been hidden."))
 
-    page = int(request.args.get('page', default=0))
+    try:
+        page = int(request.args.get('page', default=0))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     offset = page * RESULTS_LIMIT
     try:
         count = db_revision.get_count(id)
@@ -202,25 +255,25 @@ def revisions_more(id):
     return jsonify(results=template, more=(count - offset - RESULTS_LIMIT) > 0)
 
 
-# TODO(psolanki): Refactor this function to remove PyLint warning.
-# pylint: disable=too-many-branches
-@review_bp.route('/write', methods=('GET', 'POST'))
+@review_bp.route('/write/<entity_type>/<entity_id>/', methods=('GET', 'POST'))
+@review_bp.route('/write/')
 @login_required
-def create():
-    entity_id, entity_type = None, None
-    for entity_type in ENTITY_TYPES:
-        entity_id = request.args.get(entity_type)
-        if entity_id:
-            entity_type = entity_type
-            break
-
+def create(entity_type=None, entity_id=None):
     if not (entity_id or entity_type):
-        logging.warning("Unsupported entity type")
-        raise BadRequest("Unsupported entity type")
+        for allowed_type in ENTITY_TYPES:
+            if mbid := request.args.get(allowed_type):
+                entity_type = allowed_type
+                entity_id = mbid
+                break
 
-    if not entity_id:
+        if entity_type:
+            return redirect(url_for('.create', entity_type=entity_type, entity_id=entity_id))
+
         flash.info(gettext("Please choose an entity to review."))
         return redirect(url_for('search.selector', next=url_for('.create')))
+
+    if entity_type not in ENTITY_TYPES:
+        raise BadRequest("You can't write reviews about this type of entity.")
 
     if current_user.is_blocked:
         flash.error(gettext("You are not allowed to write new reviews because your "
@@ -228,12 +281,17 @@ def create():
         return redirect(url_for('user.reviews', user_id=current_user.id))
 
     # Checking if the user already wrote a review for this entity
-    reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id)
-    review = reviews[0] if count is not 0 else None
+    reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id, inc_drafts=True, inc_hidden=True)
+    review = reviews[0] if count != 0 else None
 
     if review:
-        flash.error(gettext("You have already published a review for this entity!"))
-        return redirect(url_for('review.entity', id=review["id"]))
+        if review['is_draft']:
+            return redirect(url_for('review.edit', id=review['id']))
+        elif review['is_hidden']:
+            return redirect(url_for('review.entity', id=review['id']))
+        else:
+            flash.error(gettext("You have already published a review for this entity"))
+            return redirect(url_for('review.entity', id=review["id"]))
 
     if current_user.is_review_limit_exceeded:
         flash.error(gettext("You have exceeded your limit of reviews per day."))
@@ -258,21 +316,29 @@ def create():
             flash.success(gettext("Review has been published!"))
         return redirect(url_for('.entity', id=review['id']))
 
-    entity = get_entity_by_id(entity_id, entity_type)
-    if not entity:
+    try:
+        _entity = get_entity_by_id(entity_id, entity_type)
+        data = {
+            "form": form,
+            "entity_type": entity_type,
+            "entity": _entity,
+        }
+    except NoDataFoundException:
+        raise NotFound(gettext("Sorry, we couldn't find a %s with that MusicBrainz ID." % entity_type))
+    # TODO: The NoDataFoundException and not _entity check serve the same purpose. Investigate why we
+    #  have both and retain only one.
+    if not _entity:
         flash.error(gettext("You can only write a review for an entity that exists on MusicBrainz!"))
         return redirect(url_for('search.selector', next=url_for('.create')))
 
-    if entity_type == 'release_group':
-        spotify_mappings = mbspotify.mappings(entity_id)
-        soundcloud_url = soundcloud.get_url(entity_id)
-        if not form.errors:
-            flash.info(gettext("Please provide some text or a rating for this review."))
-        return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity,
-                               spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
+    data["entity_title"] = get_entity_title(_entity)
+    if entity_type == "release_group":
+        data["spotify_mappings"] = mbspotify.mappings(entity_id)
+        data["soundcloud_url"] = soundcloud.get_url(entity_id)
+
     if not form.errors:
         flash.info(gettext("Please provide some text or a rating for this review."))
-    return render_template('review/modify/write.html', form=form, entity_type=entity_type, entity=entity)
+    return render_template('review/modify/write.html', **data)
 
 
 @review_bp.route('/<uuid:id>/edit', methods=('GET', 'POST'))
@@ -287,6 +353,11 @@ def edit(id):
         raise NotFound(gettext("Review has been hidden."))
 
     form = ReviewEditForm(default_license_id=review["license_id"], default_language=review["language"])
+    data = {
+        "form": form,
+        "entity_type": review["entity_type"],
+        "review": review,
+    }
     if not review["is_draft"]:
         # Can't change license if review is published.
         del form.license_choice
@@ -321,12 +392,15 @@ def edit(id):
     else:
         form.text.data = review["text"]
         form.rating.data = review["rating"]
+
     if review["entity_type"] == 'release_group':
-        spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
-        soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
-        return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"],
-                               entity=entity, spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url)
-    return render_template('review/modify/edit.html', form=form, review=review, entity_type=review["entity_type"])
+        data["spotify_mappings"] = mbspotify.mappings(str(review["entity_id"]))
+        data["soundcloud_url"] = soundcloud.get_url(str(review["entity_id"]))
+
+    _entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    data["entity_title"] = get_entity_title(_entity)
+    data["entity"] = _entity
+    return render_template('review/modify/edit.html', **data)
 
 
 @review_bp.route('/write/get_language', methods=['POST'])

@@ -1,15 +1,17 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from werkzeug.exceptions import NotFound
+from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities
 from flask_babel import gettext
 from flask_login import login_required, current_user
+from werkzeug.exceptions import NotFound, BadRequest
+
+import critiquebrainz.db.moderation_log as db_moderation_log
+import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
 from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.user import User
+from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
-from critiquebrainz.frontend import flash
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.review as db_review
-import critiquebrainz.db.moderation_log as db_moderation_log
 
 user_bp = Blueprint('user', __name__)
 
@@ -24,7 +26,12 @@ def reviews(user_id):
         if not user:
             raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
         user = User(user)
-    page = int(request.args.get('page', default=1))
+    
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.reviews'))
     limit = 12
@@ -32,8 +39,20 @@ def reviews(user_id):
     reviews, count = db_review.list_reviews(user_id=user_id, sort='published_on', limit=limit, offset=offset,
                                             inc_hidden=current_user.is_admin(),
                                             inc_drafts=current_user.is_authenticated and current_user.id == user_id)
+    
+    # Load info about entities for reviews
+    entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
+    entities_info = get_multiple_entities(entities)
+
+    # If we don't have metadata for a review, remove it from the list
+    # This will have the effect of removing an item from the 3x9 grid of reviews, but it
+    # happens so infrequently that we don't bother to back-fill it.
+    retrieved_entity_mbids = entities_info.keys()
+    reviews = [r for r in reviews if str(r["entity_id"]) in retrieved_entity_mbids]
+
     return render_template('user/reviews.html', section='reviews', user=user,
-                           reviews=reviews, page=page, limit=limit, count=count)
+                           reviews=reviews, page=page, limit=limit, count=count,
+                           entities=entities_info)
 
 
 @user_bp.route('/<uuid:user_id>/info')

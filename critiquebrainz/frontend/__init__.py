@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 from time import sleep
+
 from brainzutils.flask import CustomFlask
 from flask import send_from_directory
 
@@ -32,7 +33,8 @@ def create_app(debug=None, config_path=None):
                 sleep(1)
 
         if not os.path.exists(config_file):
-            print("No configuration file generated yet. Retried {} times, exiting.".format(CONSUL_CONFIG_FILE_RETRY_COUNT))
+            print("No configuration file generated yet. Retried {} times, exiting.".format(
+                CONSUL_CONFIG_FILE_RETRY_COUNT))
             sys.exit(-1)
 
         print("Loading consul config file {}".format(config_file))
@@ -59,25 +61,24 @@ def create_app(debug=None, config_path=None):
 
     app.init_loggers(
         file_config=app.config.get("LOG_FILE"),
-        email_config=app.config.get("LOG_EMAIL"),
         sentry_config=app.config.get("LOG_SENTRY"),
     )
 
-    # Database
-    from critiquebrainz.db import init_db_engine
-    init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
+    # CritiqueBrainz Database
+    from critiquebrainz import db as critiquebrainz_db
+    critiquebrainz_db.init_db_engine(app.config.get("SQLALCHEMY_DATABASE_URI"))
 
     add_robots(app)
 
     # MusicBrainz Database
-    from critiquebrainz.frontend.external import musicbrainz_db
-    musicbrainz_db.init_db_engine(app.config.get('MB_DATABASE_URI'))
+    from brainzutils import musicbrainz_db
+    musicbrainz_db.init_db_engine(app.config.get("MB_DATABASE_URI"))
 
     # Redis (cache)
     from brainzutils import cache
     if "REDIS_HOST" in app.config and \
-       "REDIS_PORT" in app.config and \
-       "REDIS_NAMESPACE" in app.config:
+            "REDIS_PORT" in app.config and \
+            "REDIS_NAMESPACE" in app.config:
         cache.init(
             host=app.config["REDIS_HOST"],
             port=app.config["REDIS_PORT"],
@@ -115,15 +116,16 @@ def create_app(debug=None, config_path=None):
     # TODO (code-master5): disabled no-member warnings just as a workaround to deal with failing tests till the
     # issue [https://github.com/PyCQA/pylint/issues/2563] with pylint is resolved
     app.jinja_env.add_extension('jinja2.ext.do')
-    from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, parameterize
+    from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, track_length_ms, parameterize
     from critiquebrainz.frontend.external.musicbrainz_db.entities import get_entity_by_id
+    from critiquebrainz.frontend.forms.utils import get_language_name
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
+    app.jinja_env.filters['track_length_ms'] = track_length_ms
     app.jinja_env.filters['parameterize'] = parameterize
     app.jinja_env.filters['entity_details'] = get_entity_by_id
-    from flask_babel import Locale, get_locale
-    app.jinja_env.filters['language_name'] = lambda language_code: Locale(language_code).get_language_name(get_locale())
+    app.jinja_env.filters['language_name'] = get_language_name
     app.context_processor(lambda: dict(get_static_path=static_manager.get_static_path))
 
     # Blueprints
@@ -131,8 +133,11 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.review import review_bp
     from critiquebrainz.frontend.views.search import search_bp
     from critiquebrainz.frontend.views.artist import artist_bp
+    from critiquebrainz.frontend.views.label import label_bp
     from critiquebrainz.frontend.views.release_group import release_group_bp
     from critiquebrainz.frontend.views.release import release_bp
+    from critiquebrainz.frontend.views.work import work_bp
+    from critiquebrainz.frontend.views.recording import recording_bp
     from critiquebrainz.frontend.views.event import event_bp
     from critiquebrainz.frontend.views.mapping import mapping_bp
     from critiquebrainz.frontend.views.user import user_bp
@@ -146,13 +151,17 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.log import log_bp
     from critiquebrainz.frontend.views.comment import comment_bp
     from critiquebrainz.frontend.views.rate import rate_bp
+    from critiquebrainz.frontend.views.statistics import statistics_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
     app.register_blueprint(search_bp, url_prefix='/search')
     app.register_blueprint(artist_bp, url_prefix='/artist')
+    app.register_blueprint(label_bp, url_prefix='/label')
     app.register_blueprint(release_group_bp, url_prefix='/release-group')
     app.register_blueprint(release_bp, url_prefix='/release')
+    app.register_blueprint(work_bp, url_prefix='/work')
+    app.register_blueprint(recording_bp, url_prefix='/recording')
     app.register_blueprint(event_bp, url_prefix='/event')
     app.register_blueprint(place_bp, url_prefix='/place')
     app.register_blueprint(mapping_bp, url_prefix='/mapping')
@@ -166,12 +175,12 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(moderators_bp, url_prefix='/moderators')
     app.register_blueprint(comment_bp, url_prefix='/comments')
     app.register_blueprint(rate_bp, url_prefix='/rate')
+    app.register_blueprint(statistics_bp, url_prefix='/statistics')
 
     return app
 
 
 def add_robots(app):
-
     @app.route('/robots.txt')
     def robots_txt():  # pylint: disable=unused-variable
         return send_from_directory(app.static_folder, 'robots.txt')

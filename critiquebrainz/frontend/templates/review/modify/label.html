@@ -1,0 +1,18 @@
+<div class="col-md-12">
+  <dl class="dl-horizontal">
+    <dt>{{ _('Label') }}</dt>
+    <dd>
+      <a href="{{ url_for('label.entity', id=entity['id']) }}" target="_blank">{{ entity['name'] }}</a>
+      {% if entity['life-span'] %}
+        <span class="text-muted">({{ entity['life-span']['begin'] }} - {{ entity['life-span']['end'] }})</span>
+      {% endif %}
+    </dd>
+    <dt>{{ _('Type') }}</dt>
+    <dd>{{ entity['type'] or '-' }}</dd>
+    <dt>{{ _('Country') }}</dt>
+    <dd>{{ entity['area'] or '-' }}</dd>
+    {% block more_info %}
+    {# Information like creation date, votes etc. #}
+    {% endblock %}
+  </dl>
+</div>

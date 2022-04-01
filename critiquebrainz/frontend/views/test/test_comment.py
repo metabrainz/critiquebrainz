@@ -17,20 +17,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from flask import current_app, url_for
-from critiquebrainz.frontend.testing import FrontendTestCase
-import critiquebrainz.db.users as db_users
-from critiquebrainz.db.user import User
+
 import critiquebrainz.db.comment as db_comment
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
-
-
-def mock_get_entity_by_id(id, type='release_group'):
-    # pylint: disable=unused-argument
-    return {
-        'id': 'e7aad618-fa86-3983-9e77-405e21796eca',
-        'title': 'Test Entity',
-    }
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class CommentViewsTestCase(FrontendTestCase):
@@ -49,14 +42,13 @@ class CommentViewsTestCase(FrontendTestCase):
         )
         self.review = db_review.create(
             user_id=self.reviewer.id,
-            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_id="90878b63-f639-3c8b-aefb-190bdf3d1790",
             entity_type="release_group",
             text="Test Review.",
             rating=5,
             is_draft=False,
             license_id=self.license["id"],
         )
-        current_app.jinja_env.filters["entity_details"] = mock_get_entity_by_id
 
     def create_dummy_comment(self):
         return db_comment.create(
@@ -117,7 +109,7 @@ class CommentViewsTestCase(FrontendTestCase):
             data=payload,
         )
         self.assertRedirects(response, url_for("review.entity", id=self.review["id"]))
-        self.assertEqual(comment_count+1, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertEqual(comment_count + 1, db_comment.count_comments(review_id=self.review["id"]))
 
         response = self.client.get(url_for("review.entity", id=self.review["id"]))
         self.assert200(response)
@@ -161,5 +153,68 @@ class CommentViewsTestCase(FrontendTestCase):
             follow_redirects=True,
         )
         self.assert200(response)
-        self.assertEqual(comment_count-1, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertEqual(comment_count - 1, db_comment.count_comments(review_id=self.review["id"]))
         self.assertIn("Comment has been deleted.", str(response.data))
+
+    def test_edit(self):
+        # create a temporary comment by commenter
+        comment = self.create_dummy_comment()
+        comment_count = db_comment.count_comments(review_id=self.review["id"])
+
+        self.temporary_login(self.reviewer)
+
+        # Other users should not be able to edit the comment by commenter
+        response = self.client.post(
+            url_for("comment.edit", id=comment["id"]),
+            follow_redirects=True,
+        )
+        self.assert401(response, "Only the author can edit this comment.")
+
+        self.temporary_login(self.commenter)
+
+        # should return 404 on trying to edit non-existent comment
+        response = self.client.post(
+            url_for("comment.edit", id="false-comment"),
+            follow_redirects=True
+        )
+        self.assert404(response)
+
+        payload = {
+            "review_id": self.review["id"],
+            "text": "",
+            "state": "publish",
+        }
+
+        # should be unable to add an empty comment
+        response = self.client.post(
+            url_for("comment.edit", id=comment["id"]),
+            data=payload,
+            follow_redirects=True,
+        )
+        self.assert200(response)
+        self.assertEqual(comment_count, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertIn("Comment must not be empty!", str(response.data))
+
+        # should be unable to update comment without changing comment text
+        payload["text"] = "Dummy Comment"
+
+        response = self.client.post(
+            url_for("comment.edit", id=comment["id"]),
+            data=payload,
+            follow_redirects=True,
+        )
+        self.assert200(response)
+        self.assertEqual(comment_count, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertIn("You must change some content of the comment to update it!", str(response.data))
+
+        # should be able to update comment by changing text
+        payload["text"] = "Updated comment text"
+
+        response = self.client.post(
+            url_for("comment.edit", id=comment["id"]),
+            data=payload,
+            follow_redirects=True,
+        )
+        self.assert200(response)
+        self.assertEqual(comment_count, db_comment.count_comments(review_id=self.review["id"]))
+        self.assertIn("Comment has been updated.", str(response.data))

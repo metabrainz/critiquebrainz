@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect
 from flask_babel import gettext
 from werkzeug.exceptions import NotFound
+
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 
 release_bp = Blueprint('release', __name__)
@@ -14,5 +15,5 @@ def entity(id):
         group_id = release_data['release-group']['id']
         url = '/release-group/' + str(group_id)
         return redirect(url, 301)
-    else:
-        raise NotFound(gettext("Sorry, we couldn't find a release with that MusicBrainz ID."))
+
+    raise NotFound(gettext("Sorry, we couldn't find a release with that MusicBrainz ID."))

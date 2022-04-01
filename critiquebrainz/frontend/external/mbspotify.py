@@ -4,11 +4,13 @@ This module provides interface to Spotify ID mapper - mbspotify.
 Source code of mbspotify is available at https://github.com/metabrainz/mbspotify.
 """
 import json
+
 import requests
-from requests.exceptions import RequestException
-from requests.adapters import HTTPAdapter
-from flask_babel import lazy_gettext
 from brainzutils import cache
+from flask_babel import lazy_gettext
+from requests.adapters import HTTPAdapter
+from requests.exceptions import RequestException
+
 from critiquebrainz.frontend import flash
 
 _base_url = ""
@@ -16,6 +18,7 @@ _key = ""
 
 _CACHE_NAMESPACE = "mbspotify_mappings"
 _UNAVAILABLE_MSG = "Spotify mapping server is unavailable. You will not see an embedded player."
+MBSPOTIFY_CACHE_TIMEOUT = 30 * 60  # 30 minutes
 
 
 def init(base_url, access_key):
@@ -49,7 +52,7 @@ def mappings(mbid=None):
         except RequestException:
             flash.warn(lazy_gettext("Spotify mapping server is unavailable. You will not see an embedded player."))
             return []
-        cache.set(key=mbid, namespace=_CACHE_NAMESPACE, val=data)
+        cache.set(key=mbid, namespace=_CACHE_NAMESPACE, val=data, time=MBSPOTIFY_CACHE_TIMEOUT)
     return data
 
 

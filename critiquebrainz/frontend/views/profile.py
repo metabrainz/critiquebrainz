@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from flask_login import login_required, current_user
-import critiquebrainz.db.users as db_users
 
+import critiquebrainz.db.users as db_users
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.profile import ProfileEditForm
 
@@ -17,16 +17,14 @@ def edit():
         db_users.update(current_user.id, user_new_info={
             "display_name": form.display_name.data,
             "email": form.email.data,
-            "show_gravatar": form.show_gravatar.data,
             "license_choice": form.license_choice.data,
         })
         flash.success(gettext("Profile updated."))
         return redirect(url_for('user.reviews', user_id=current_user.id))
-    else:
-        form.display_name.data = current_user.display_name
-        form.email.data = current_user.email
-        form.show_gravatar.data = current_user.show_gravatar
-        form.license_choice.data = current_user.license_choice
+
+    form.display_name.data = current_user.display_name
+    form.email.data = current_user.email
+    form.license_choice.data = current_user.license_choice
     return render_template('profile/edit.html', form=form)
 
 

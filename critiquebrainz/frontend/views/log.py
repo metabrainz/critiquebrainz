@@ -1,8 +1,11 @@
 from itertools import groupby
+
 from flask import Blueprint, render_template, request, jsonify
 from flask_babel import gettext
+
 import critiquebrainz.db.moderation_log as db_moderation_log
 from critiquebrainz.frontend import flash
+from werkzeug.exceptions import BadRequest
 
 log_bp = Blueprint('log', __name__)
 
@@ -20,7 +23,11 @@ def browse():
 
 @log_bp.route('/more')
 def more():
-    page = int(request.args.get('page', default=0))
+    try:
+        page = int(request.args.get('page', default=0))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     offset = page * RESULTS_LIMIT
     results, count = db_moderation_log.list_logs(offset=offset, limit=RESULTS_LIMIT)
     results = groupby(results, lambda log: log["timestamp"].strftime('%d %b, %G'))

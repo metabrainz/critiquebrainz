@@ -1,10 +1,12 @@
 from datetime import datetime
+
 import sqlalchemy
+
 from critiquebrainz import db
-from critiquebrainz.db import review as db_review
+from critiquebrainz.db import VALID_RATING_VALUES, RATING_SCALE_1_5, RATING_SCALE_0_100
 from critiquebrainz.db import avg_rating as db_avg_rating
 from critiquebrainz.db import exceptions as db_exceptions
-from critiquebrainz.db import VALID_RATING_VALUES, RATING_SCALE_1_5, RATING_SCALE_0_100
+from critiquebrainz.db import review as db_review
 
 
 def get(review_id, limit=1, offset=0):
@@ -150,17 +152,18 @@ def get_revision_number(review_id, revision_id):
             "review_id": review_id,
             "revision_id": revision_id,
         })
-        rev_num = result.fetchone()[0]
+        rev_num = result.fetchone()
         if not rev_num:
             raise db_exceptions.NoDataFoundException("Can't find the revision with id={} for specified review.".
                                                      format(revision_id))
-    return rev_num
+    return rev_num[0]
 
 
-def create(review_id, text=None, rating=None):
+def create(connection, review_id, text=None, rating=None):
     """Creates a new revision for the given review.
 
     Args:
+        connection: connection to database to update/create the review
         review_id (uuid): ID of the review.
         text (str): Updated/New text part of the review.
         rating (int): Updated/New rating part of the review
@@ -172,17 +175,19 @@ def create(review_id, text=None, rating=None):
     # Convert ratings to values on a scale 0-100
     rating = RATING_SCALE_0_100.get(rating)
 
-    with db.engine.connect() as connection:
-        connection.execute(sqlalchemy.text("""
-            INSERT INTO revision(review_id, timestamp, text, rating)
-                 VALUES (:review_id, :timestamp, :text, :rating)
-        """), {
-            "review_id": review_id,
-            "timestamp": datetime.now(),
-            "text": text,
-            "rating": rating,
-        })
+    query = sqlalchemy.text("""INSERT INTO revision(review_id, timestamp, text, rating)
+        VALUES (:review_id, :timestamp, :text, :rating)""")
+    params = {
+        "review_id": review_id,
+        "timestamp": datetime.now(),
+        "text": text,
+        "rating": rating,
+    }
 
+    connection.execute(query, params)
+
+
+def update_rating(review_id):
     # Update average rating if rating part of the review has changed
     review = db_review.get_by_id(review_id)
     rev_num = get_revision_number(review["id"], review["last_revision"]["id"])
@@ -190,7 +195,7 @@ def create(review_id, text=None, rating=None):
         revisions = get(review["id"], limit=2, offset=0)
         if revisions[0]["rating"] != revisions[1]["rating"]:
             db_avg_rating.update(review["entity_id"], review["entity_type"])
-    elif rating is not None:
+    else:
         db_avg_rating.update(review["entity_id"], review["entity_type"])
 
 

@@ -1,7 +1,7 @@
-from critiquebrainz.frontend.testing import FrontendTestCase
-from critiquebrainz.db.user import User
-import critiquebrainz.db.users as db_users
 import critiquebrainz.db.license as db_license
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class ProfileViewsTestCase(FrontendTestCase):
@@ -20,7 +20,6 @@ class ProfileViewsTestCase(FrontendTestCase):
         data = dict(
             display_name="Some User",
             email='someuser@somesite.com',
-            show_gravatar='True',
             license_choice=self.license["id"]
         )
 

@@ -1,8 +1,8 @@
 import sqlalchemy
+
 from critiquebrainz import db
 from critiquebrainz.db import exceptions as db_exceptions
 from critiquebrainz.utils import generate_string
-
 
 CLIENT_ID_LENGTH = 20
 CLIENT_SECRET_LENGTH = 40

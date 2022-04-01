@@ -1,7 +1,7 @@
 {% extends 'review/entity/base.html' %}
 {% from 'macros.html' import cover_art, show_embedded_player with context %}
 
-{% set release_group = review.entity_id | entity_details %}
+{% set release_group = entity %}
 
 {% block title %}
   {% set release_group_title = release_group.title | default(_('[Unknown release group]')) %}
@@ -20,7 +20,7 @@
       {% set artist = [] %}
       {% for credit in release_group['artist-credit'] %}
         {% if credit.artist %}
-          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', mbid=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
+          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
           {% if credit.join_phrase %}
             {% do artist.append(credit.join_phrase) %}
           {% endif %}

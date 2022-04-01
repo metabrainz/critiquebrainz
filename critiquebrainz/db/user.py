@@ -1,11 +1,11 @@
 from datetime import date, timedelta
+
 from critiquebrainz.data.mixins import AdminMixin
-from critiquebrainz.db import users as db_users
 from critiquebrainz.data.user_types import user_types
+from critiquebrainz.db import users as db_users
 
 
 class User(AdminMixin):
-
     # a list of allowed values of `inc` parameter in API calls
     allowed_includes = ('user_type', 'stats')
 
@@ -15,17 +15,9 @@ class User(AdminMixin):
         self.email = user.get('email')
         self.created = user.get('created')
         self.musicbrainz_username = user.get('musicbrainz_username')
-        self.show_gravatar = user.get('show_gravatar', False)
         self.is_blocked = user.get('is_blocked', False)
         self.license_choice = user.get('license_choice', None)
         self.musicbrainz_row_id = user.get('musicbrainz_row_id', None)
-
-    @property
-    def avatar(self):
-        """Link to user's avatar image."""
-        if self.show_gravatar and self.email:
-            return db_users.gravatar_url(self.email)
-        return db_users.gravatar_url(self.id)
 
     @property
     def is_vote_limit_exceeded(self):
@@ -91,6 +83,7 @@ class User(AdminMixin):
             for user_type in user_types:
                 if user_type.is_instance(user):
                     return user_type
+
         if hasattr(self, '_user_type') is False:
             self._user_type = get_user_type(self)
         return self._user_type
@@ -124,8 +117,6 @@ class User(AdminMixin):
         if confidential is True:
             response.update(dict(
                 email=self.email,
-                avatar=self.avatar,
-                show_gravatar=self.show_gravatar,
                 musicbrainz_username=self.musicbrainz_username,
                 license_choice=self.license_choice,
             ))

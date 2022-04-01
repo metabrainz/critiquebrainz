@@ -31,6 +31,7 @@ MAIL_FROM_ADDR = "no-reply@critiquebrainz.org"
 # Valid language codes can be obtained from Transifex.
 SUPPORTED_LANGUAGES = [
     'en',  # English
+    'he',  # עברית, Hebrew
     'hr',  # Croatian
     'nl',  # Dutch
     'et',  # Estonian
@@ -47,12 +48,6 @@ SUPPORTED_LANGUAGES = [
 
 # List of administrators (MusicBrainz usernames as strings)
 ADMINS = []
-
-
-# EXTERNAL SERVICES
-
-SENTRY_DSN_PUBLIC = None
-SENTRY_TIMEOUT = 5
 
 # MusicBrainz
 MUSICBRAINZ_HOSTNAME = None

@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, flash, url_for, redirect, request, jsonify
-from flask_login import login_required
 from flask_babel import gettext
-from werkzeug.exceptions import NotFound
+from flask_login import login_required
+from werkzeug.exceptions import NotFound, BadRequest
+
 import critiquebrainz.db.spam_report as db_spam_report
 from critiquebrainz.frontend.login import admin_view
 
@@ -22,7 +23,11 @@ def index():
 @login_required
 @admin_view
 def more():
-    page = int(request.args.get('page', default=0))
+    try:
+        page = int(request.args.get('page', default=0))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     offset = page * RESULTS_LIMIT
     results, count = db_spam_report.list_reports(offset=offset, limit=RESULTS_LIMIT, inc_archived=False)
     template = render_template('reports/reports_results.html', results=results)

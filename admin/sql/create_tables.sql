@@ -114,7 +114,6 @@ CREATE TABLE "user" (
     created             TIMESTAMP   NOT NULL,
     musicbrainz_id      VARCHAR,
     musicbrainz_row_id  INTEGER,
-    show_gravatar       BOOLEAN     NOT NULL DEFAULT False,
     is_blocked          BOOLEAN     NOT NULL DEFAULT False,
     license_choice      VARCHAR
 );

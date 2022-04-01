@@ -1,7 +1,8 @@
-from mbdata.utils.models import get_link_model
 from mbdata.models import Tag
-from sqlalchemy.orm import joinedload
+from mbdata.utils.models import get_link_model
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
+
 from critiquebrainz.frontend.external.musicbrainz_db.utils import ENTITY_MODELS
 
 
@@ -22,17 +23,19 @@ def get_relationship_info(*, db, target_type, source_type, source_entity_ids, in
     target_model = ENTITY_MODELS[target_type]
     relation = get_link_model(source_model, target_model)
 
-    query = db.query(relation).\
-        options(joinedload("link", innerjoin=True)).\
+    query = db.query(relation). \
+        options(joinedload("link", innerjoin=True)). \
         options(joinedload("link.link_type", innerjoin=True))
     if relation.entity0.property.mapper.class_ == relation.entity1.property.mapper.class_:
         _relationship_link_helper(relation, query, "entity0", "entity1", target_type, source_entity_ids, includes_data)
         _relationship_link_helper(relation, query, "entity1", "entity0", target_type, source_entity_ids, includes_data)
     else:
         if source_model == relation.entity0.property.mapper.class_:
-            _relationship_link_helper(relation, query, "entity0", "entity1", target_type, source_entity_ids, includes_data)
+            _relationship_link_helper(relation, query, "entity0", "entity1", target_type, source_entity_ids,
+                                      includes_data)
         else:
-            _relationship_link_helper(relation, query, "entity1", "entity0", target_type, source_entity_ids, includes_data)
+            _relationship_link_helper(relation, query, "entity1", "entity0", target_type, source_entity_ids,
+                                      includes_data)
 
 
 def _relationship_link_helper(relation, query, source_attr, target_attr, target_type, source_entity_ids, includes_data):
@@ -55,26 +58,27 @@ def _relationship_link_helper(relation, query, source_attr, target_attr, target_
     query = query.options(joinedload(target_attr, innerjoin=True))
     relation_type = target_type + "-rels"
     for link in query:
-        includes_data[getattr(link, source_id_attr)].setdefault('relationship_objs', {}).\
+        includes_data[getattr(link, source_id_attr)].setdefault('relationship_objs', {}). \
             setdefault(relation_type, []).append(link)
 
 
-def get_tags(*, db, entity_model, tag_model, entity_ids):
+def get_tags(*, db, entity_model, tag_model, foreign_tag_id, entity_ids):
     """Get tags associated with entities.
 
     Args:
         db (Session object): Session object.
         entity_model (mbdata.models): Model of the entity.
         tag_model (mbdata.models): Tag of the model.
+        foreign_tag_id (tag_model.foreign_key): Foreign ID that joins the tag model and entity model
         entity_ids (list): IDs of the entity whose tags are to be fetched
 
     Returns:
         List of tuples containing the entity_ids and the list of associated tags.
     """
-    tags = db.query(entity_model.id, func.array_agg(Tag.name)).\
-        join(tag_model).\
-        join(Tag).\
-        filter(entity_model.id.in_(entity_ids)).\
-        group_by(entity_model.id).\
+    tags = db.query(entity_model.id, func.array_agg(Tag.name)). \
+        join(tag_model, entity_model.id == foreign_tag_id). \
+        join(Tag). \
+        filter(entity_model.id.in_(entity_ids)). \
+        group_by(entity_model.id). \
         all()
     return tags

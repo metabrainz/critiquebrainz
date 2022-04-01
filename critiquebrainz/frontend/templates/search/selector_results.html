@@ -2,7 +2,7 @@
 
 {% if type=="release-group" %}
   <tr>
-    <td><a href="{{ url_for('artist.entity', mbid=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit-phrase'] }}</a></td>
+    <td><a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit-phrase'] }}</a></td>
     <td>
       <a href="{{ url_for('release_group.entity', id=result.id) }}" target="_blank">{{ result['title'] }}</a>
       {% if result['disambiguation'] %}<span class="text-muted">({{ result['disambiguation'] }})</span>{% endif %}
@@ -23,7 +23,7 @@
     </td>
     <td>
       {% if result['artist-relation-list'] %}
-        <a href="{{ url_for('artist.entity', mbid=result['artist-relation-list'][0].artist.id) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
         {% set count = result['artist-relation-list'] | length %}
         {% if count > 1 %}
           + {{ count - 1 }} {{ _("more") }}
@@ -61,6 +61,104 @@
     </td>
     <td>
       <input type="radio" name="place" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
+{% elif type=="work" %}
+  <tr>
+    <td>
+       <a href="{{ url_for('work.entity', id=result.id) }}" target="_blank">{{ result['title'] }}</a>
+    </td>
+    <td>
+      {% if result['artist-relation-list'] %}
+        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+        {% set count = result['artist-relation-list'] | length %}
+        {% if count > 1 %}
+          + {{ count - 1 }} {{ _("more") }}
+        {% endif %}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      {{ result['type'] or '-' }}
+    </td>
+    <td>
+      {{ result['language'] or '-' }}
+    </td>
+    <td>
+      <input type="radio" name="work" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
+{% elif type=="artist" %}
+  <tr>
+    <td>
+      <a href="{{ url_for('artist.entity', id=result.id) }}" target="_blank">{{ result['name'] }}</a>
+    </td>
+    <td>
+      {{ result['type'] or '-' }}
+    </td>
+    <td>
+      {% if result['gender'] %}
+        {{ result['gender'] | capitalize }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      {% if result['area'] %}
+        {{ result['area']['name'] or '-' }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      <input type="radio" name="artist" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
+{% elif type=="label" %}
+  <tr>
+    <td>
+      <a href="{{ url_for('label.entity', id=result.id) }}" target="_blank">{{ result['name'] }}</a>
+    </td>
+    <td>
+      {{ result['type'] or '-' }}
+    </td>
+    <td>
+      {{ result['country'] or '-' }}
+    </td>
+    <td>
+      <input type="radio" name="label" value="{{ result['id'] }}">
+      <input type="radio" name="artist" value="{{ result['id'] }}">
+    </td>
+  </tr>
+
+{% elif type=="recording" %}
+  <tr>
+    <td>
+      <a href="{{ url_for('recording.entity', id=result.id) }}" target="_blank">{{ result['title'] }}</a>
+    </td>
+    <td>
+      {% if result['length'] %}
+        {{ result['length'] | track_length_ms }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      <a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit'][0]['artist']['name'] or '-' }}</a>
+    </td>
+    <td>
+      {% if result['release-list'] %}
+        <a href="{{ url_for('release.entity', id=result['release-list'][0].id) }}" target="_blank">{{ result['release-list'][0].title or '-' }}</a>
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>
+      <input type="radio" name="recording" value="{{ result['id'] }}">
     </td>
   </tr>
 

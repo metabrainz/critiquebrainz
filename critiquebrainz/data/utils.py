@@ -1,11 +1,12 @@
-import urllib.parse
-import unicodedata
-import shutil
 import errno
-import sys
 import os
 import re
+import shutil
+import sys
+import unicodedata
+import urllib.parse
 from functools import wraps
+
 from critiquebrainz import db
 from critiquebrainz import frontend
 
@@ -43,8 +44,8 @@ def slugify(string):
     Also strips leading and trailing whitespace.
     """
     string = unicodedata.normalize('NFKD', string).encode('ascii', 'ignore').decode('ascii')
-    string = re.sub('[^\w\s-]', '', string).strip().lower()
-    return re.sub('[-\s]+', '-', string)
+    string = re.sub(r'[^\w\s-]', '', string).strip().lower()
+    return re.sub(r'[-\s]+', '-', string)
 
 
 def create_path(path):
@@ -102,16 +103,18 @@ def with_request_context(f):
     def decorated(*args, **kwargs):
         with frontend.create_app().test_request_context():
             return f(*args, **kwargs)
+
     return decorated
 
 
 def with_test_request_context(f):
-    """Decorator for providing request context for application using test_config.py."""
+    """Decorator for providing request context for application during tests."""
+
     @wraps(f)
     def decorated(*args, **kwargs):
-        with frontend.create_app(
-            config_path=os.path.join(
-                os.path.dirname(os.path.realpath(__file__)),
-                '..', 'test_config.py')).test_request_context():
+        with frontend.create_app(config_path=os.path.join(
+                    os.path.dirname(os.path.realpath(__file__)),
+                    '..', '..', 'test_config.py')).test_request_context():
             return f(*args, **kwargs)
+
     return decorated

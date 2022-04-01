@@ -1,5 +1,0 @@
-#!/bin/sh
-
-rm -f /etc/service/cron/down
-sv restart cron
-exec uwsgi /etc/uwsgi/uwsgi.ini

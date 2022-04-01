@@ -8,5 +8,9 @@ CREATE TYPE action_types AS ENUM (
 CREATE TYPE entity_types AS ENUM (
     'release_group',
     'event',
-    'place'
+    'place',
+    'work',
+    'artist',
+    'label',
+    'recording'
 );

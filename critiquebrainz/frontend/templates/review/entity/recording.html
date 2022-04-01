@@ -1,0 +1,18 @@
+{% extends 'review/entity/base.html' %}
+
+{% set recording = entity %}
+
+{% block title %}
+  {% set recording_title = recording.name | default(_('[Unknown recording]')) %}
+  {{ _('Review of "%(recording)s" by %(user)s', recording=recording_title, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block entity_title %}
+  <h2 id="title">
+    {% if recording %}
+      <a href="{{ url_for('recording.entity', id=review.entity_id) }}">{{ recording.name }}</a>
+    {% else %}
+      {{ _('[Unknown recording]') }}
+    {% endif %}
+  </h2>
+{% endblock %}

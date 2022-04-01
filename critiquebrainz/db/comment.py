@@ -17,10 +17,10 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import sqlalchemy
+
 import critiquebrainz.db as db
 import critiquebrainz.db.comment_revision as db_comment_revision
 import critiquebrainz.db.exceptions as db_exceptions
-
 from critiquebrainz.db.user import User
 
 
@@ -45,7 +45,7 @@ def create(*, user_id, text, review_id, is_draft=False):
                 'user_id': user_id,
                 'review_id': review_id,
                 'is_draft': is_draft,
-            })
+                })
         comment_id = result.fetchone()['id']
         db_comment_revision.create(comment_id, text)
     return get_by_id(comment_id)
@@ -87,7 +87,6 @@ def get_by_id(comment_id):
                    "user".email,
                    "user".created as user_created,
                    "user".display_name,
-                   "user".show_gravatar,
                    "user".musicbrainz_id,
                    "user".is_blocked
               FROM comment c
@@ -98,7 +97,7 @@ def get_by_id(comment_id):
              LIMIT 1
             """), {
                 'comment_id': comment_id,
-            })
+                })
 
         comment = result.fetchone()
         if not comment:
@@ -115,7 +114,6 @@ def get_by_id(comment_id):
             'display_name': comment.pop('display_name'),
             'email': comment.pop('email'),
             'created': comment.pop('user_created'),
-            'show_gravatar': comment.pop('show_gravatar'),
             'musicbrainz_username': comment.pop('musicbrainz_id'),
             'is_blocked': comment.pop('is_blocked')
         })
@@ -168,7 +166,6 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
                    "user".email,
                    "user".created as user_created,
                    "user".display_name,
-                   "user".show_gravatar,
                    "user".musicbrainz_id,
                    "user".is_blocked,
                    MIN(comment_revision.timestamp) as created,
@@ -209,7 +206,6 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
             row['user'] = User({
                 'id': row['user_id'],
                 'display_name': row.pop('display_name'),
-                'show_gravatar': row.pop('show_gravatar'),
                 'is_blocked': row.pop('is_blocked'),
                 'musicbrainz_username': row.pop('musicbrainz_id'),
                 'email': row.pop('email'),
@@ -232,7 +228,7 @@ def delete(comment_id):
              WHERE id = :comment_id
             """), {
                 'comment_id': comment_id,
-            })
+                })
 
 
 def update(comment_id, *, text=None, is_draft=None, is_hidden=None):

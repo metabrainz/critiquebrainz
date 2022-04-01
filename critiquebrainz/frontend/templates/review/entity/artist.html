@@ -1,0 +1,24 @@
+{% extends 'review/entity/base.html' %}
+
+{% set artist = entity %}
+
+{% block title %}
+  {% set artist_name = artist.name | default(_('[Unknown artist]')) %}
+  {{ _('Review of "%(artist)s" by %(user)s', artist=artist_name, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block entity_title %}
+  <h2 id="title">
+    {% if artist %}
+      {% set artist_name = '<a href="%s">' | safe % url_for('artist.entity', id=review.entity_id) ~ artist.name ~ '</a>'|safe %}
+    {% else %}
+      {% set artist_name =  _('[Unknown artist]') %}
+    {% endif %}
+
+    {{ _('%(artist)s', artist=artist_name) }}
+
+    {% if artist['life-span'] %}
+      <small>{{ artist['life-span']['begin'][:4] }}</small>
+    {% endif %}
+  </h2>
+{% endblock %}

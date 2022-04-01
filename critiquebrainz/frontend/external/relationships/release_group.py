@@ -2,6 +2,7 @@
 Relationship processor for release group entity.
 """
 import urllib.parse
+
 from flask_babel import lazy_gettext
 
 

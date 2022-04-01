@@ -2,7 +2,7 @@
 version: "2"
 services:
 
-  critiquebrainz_test:
+  critiquebrainz:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile.test.pylint

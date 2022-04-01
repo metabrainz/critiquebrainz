@@ -1,19 +1,21 @@
 from datetime import datetime, timedelta
 from functools import wraps
+
 from flask import request
+
+import critiquebrainz.db.exceptions as db_exceptions
+import critiquebrainz.db.oauth_client as db_oauth_client
+import critiquebrainz.db.oauth_grant as db_oauth_grant
+import critiquebrainz.db.oauth_token as db_oauth_token
+import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.utils import generate_string
 from critiquebrainz.ws.constants import available_scopes
 from critiquebrainz.ws.exceptions import NotAuthorized
 from critiquebrainz.ws.oauth import exceptions
-from critiquebrainz.utils import generate_string
-import critiquebrainz.db.oauth_client as db_oauth_client
-import critiquebrainz.db.oauth_token as db_oauth_token
-import critiquebrainz.db.exceptions as db_exceptions
-import critiquebrainz.db.users as db_users
-import critiquebrainz.db.oauth_grant as db_oauth_grant
-from critiquebrainz.db.user import User
 
 
-class CritiqueBrainzAuthorizationProvider(object):
+class CritiqueBrainzAuthorizationProvider:
 
     def init_app(self, app):
         self.token_length = app.config['OAUTH_TOKEN_LENGTH']
@@ -120,13 +122,13 @@ class CritiqueBrainzAuthorizationProvider(object):
 
     @staticmethod
     def fetch_token(client_id, refresh_token):
-        token = db_oauth_token.list_tokens(client_id=client_id, refresh_token=refresh_token)[0]
-        return token
+        tokens = db_oauth_token.list_tokens(client_id=client_id, refresh_token=refresh_token)
+        return tokens[0] if tokens else None
 
     @staticmethod
     def fetch_access_token(access_token):
-        token = db_oauth_token.list_tokens(access_token=access_token)[0]
-        return token
+        tokens = db_oauth_token.list_tokens(access_token=access_token)
+        return tokens[0] if tokens else None
 
     @staticmethod
     def discard_grant(client_id, code):
@@ -208,5 +210,7 @@ class CritiqueBrainzAuthorizationProvider(object):
                 user = self.get_authorized_user(scopes)
                 kwargs.update(dict(user=user))
                 return f(*args, **kwargs)
+
             return decorated
+
         return decorator

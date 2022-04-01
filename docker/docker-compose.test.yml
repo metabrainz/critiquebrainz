@@ -1,27 +1,34 @@
 # Docker Compose file for testing
-version: "2"
+version: "3.4"
 services:
 
-  db_test:
-    build:
-      context: ./pg_custom/
-      dockerfile: Dockerfile
+  db:
+    image: postgres:12.3
     environment:
       POSTGRES_USER: critiquebrainz
       POSTGRES_PASSWORD: critiquebrainz
       POSTGRES_DB: critiquebrainz
     command: postgres -F
-    network_mode: bridge
+    volumes:
+      - ./pg_custom:/docker-entrypoint-initdb.d/
+
+  musicbrainz_db:
+    image: metabrainz/brainzutils-mb-sample-database:schema-25-2021-04-04.0
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
 
   critiquebrainz_redis:
     image: redis:4.0-alpine
-    network_mode: bridge
 
-  critiquebrainz_test:
+  critiquebrainz:
     build:
       context: ..
-      dockerfile: ./docker/Dockerfile.test
-    links:
-      - db_test
+      dockerfile: ./docker/Dockerfile.dev
+    volumes:
+      - ..:/code
+    depends_on:
+      - db
+      - musicbrainz_db
       - critiquebrainz_redis
-    network_mode: bridge
+    environment:
+      PGPASSWORD: critiquebrainz

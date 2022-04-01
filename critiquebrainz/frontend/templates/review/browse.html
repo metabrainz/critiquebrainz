@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, review_credit with context %}
+{% from 'macros.html' import cover_art, review_credit, display_pagination with context %}
 
 {% block title %}{{ _('Reviews') }} - CritiqueBrainz{% endblock %}
 
@@ -11,10 +11,18 @@
     <a href="{{ url_for('review.browse', entity_type='all') }}">{{ _('All') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'release_group' }}>
     <a href="{{ url_for('review.browse', entity_type='release_group') }}">{{ _('Release group') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'artist' }}>
+    <a href="{{ url_for('review.browse', entity_type='artist') }}">{{ _('Artist') }}</a></li>    
+  <li role="presentation" {{ "class=active" if entity_type == 'label' }}>
+    <a href="{{ url_for('review.browse', entity_type='label') }}">{{ _('Label') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'recording' }}>
+    <a href="{{ url_for('review.browse', entity_type='recording') }}">{{ _('Recording') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'event' }}>
     <a href="{{ url_for('review.browse', entity_type='event') }}">{{ _('Event') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'place' }}>
     <a href="{{ url_for('review.browse', entity_type='place') }}">{{ _('Place') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'work' }}>
+    <a href="{{ url_for('review.browse', entity_type='work') }}">{{ _('Work') }}</a></li>
 </ul>
 
 <div id="reviews-browse" class="row">
@@ -32,7 +40,7 @@
       <div class="album">{% include 'entity_review.html' %}</div>
       <div class="reviewer">
         <p>
-          {{ review_credit(review, user_picture_size=16) }}
+          {{ review_credit(review) }}
           <br/>
           {{ review.published_on | date }}
         </p>
@@ -42,17 +50,6 @@
 {% endif %}
 </div>
 
-{% if count > limit %}
-  <div class="col-md-12">
-    <ul class="pager">
-      {% if page > 1 %}
-        <li class="previous"><a href="{{ url_for('review.browse', entity_type=entity_type, page=page-1) }}">&larr; {{ _('Previous') }}</a></li>
-      {% endif %}
-      {% if page-1 < count//limit %}
-        <li class="next"><a href="{{ url_for('review.browse', entity_type=entity_type, page=page+1) }}">{{ _('Next') }} &rarr;</a></li>
-      {% endif %}
-    </ul>
-  </div>
-{% endif %}
+{{ display_pagination(page, count, limit, 'review.browse', {'entity_type':entity_type}) }}
 
 {% endblock %}

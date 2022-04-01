@@ -1,16 +1,17 @@
 from flask import Blueprint, jsonify, request, redirect, url_for
-from critiquebrainz.db.user import User
+
 from critiquebrainz.db import users as db_users
+from critiquebrainz.db.user import User
 from critiquebrainz.decorators import crossdomain
+from critiquebrainz.ws.exceptions import NotFound
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
-from critiquebrainz.ws.exceptions import NotFound
 
 user_bp = Blueprint('ws_user', __name__)
 
 
-@user_bp.route('/me')
-@crossdomain()
+@user_bp.route('/me', methods=["GET", "OPTIONS"])
+@crossdomain(headers="Authorization, Content-Type")
 @oauth.require_auth()
 def user_me_handler(user):
     """Get your profile information.
@@ -31,13 +32,11 @@ def user_me_handler(user):
           "user": {
             "display_name": "your_display_name",
             "created": "Fri, 02 Dec 2016 19:02:47 GMT",
-            "show_gravatar": true,
             "user_type": "Noob",
             "email": "your_email_id",
             "karma": 0,
             "musicbrainz_username": "username/id associated with musicbrainz",
-            "id": "your-unique-user-id",
-            "avatar": "https:\/\/gravatar.com\/your-gravatar-link"
+            "id": "your-unique-user-id"
           }
         }
 
@@ -51,7 +50,7 @@ def user_me_handler(user):
 
 @user_bp.route('/me/reviews')
 @oauth.require_auth()
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_reviews_handler(user):
     """Get your reviews.
 
@@ -62,7 +61,7 @@ def user_reviews_handler(user):
 
 @user_bp.route('/me/applications')
 @oauth.require_auth()
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_applications_handler(user):
     """Get your applications.
 
@@ -81,10 +80,10 @@ def user_applications_handler(user):
         {
           "applications": [
             {
-              "website": "https:\/\/your-website.com",
+              "website": "https://your-website.com",
               "user_id": "your-unique-user-id",
               "name": "Name of your Application",
-              "redirect_uri": "https:\/\/your-call-back.com/uri",
+              "redirect_uri": "https://your-call-back.com/uri",
               "client_id": "your Oauth client ID",
               "client_secret": "your super-secret Oauth client secret",
               "desc": "Application description set by you."
@@ -99,7 +98,7 @@ def user_applications_handler(user):
 
 @user_bp.route('/me/tokens')
 @oauth.require_auth()
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_tokens_handler(user):
     """Get your OAuth tokens.
 
@@ -120,10 +119,10 @@ def user_tokens_handler(user):
             {
               "scopes": "user",
               "client": {
-                "website": "https:\/\/your-website.com",
+                "website": "https://your-website.com",
                 "user_id": "your-unique-user-id",
                 "name": "Name of your Application",
-                "redirect_uri": "https:\/\/your-call-back.com/uri",
+                "redirect_uri": "https://your-call-back.com/uri",
                 "client_id": "your Oauth client ID",
                 "client_secret": "your super-secret Oauth client secret",
                 "desc": "Application description set by you."
@@ -138,9 +137,11 @@ def user_tokens_handler(user):
     return jsonify(tokens=[t.to_dict() for t in user.tokens])
 
 
+# don't need to add OPTIONS here because its already added
+# for this endpoint in user_me_handler
 @user_bp.route('/me', methods=['POST'])
 @oauth.require_auth('user')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_modify_handler(user):
     """Modify your profile.
 
@@ -150,24 +151,25 @@ def user_modify_handler(user):
 
     :json string display_name: Display name **(optional)**
     :json string email: Email address **(optional)**
-    :json boolean show_gravatar: Show gravatar **(optional)**
 
     :resheader Content-Type: *application/json*
     """
+
     def fetch_params():
         display_name = Parser.string('json', 'display_name', optional=True)
         email = Parser.email('json', 'email', optional=True)
-        show_gravatar = Parser.bool('json', 'show_gravatar', optional=True)
-        return display_name, email, show_gravatar
+        return display_name, email
 
-    display_name, email, show_gravatar = fetch_params()
-    user.update(display_name, email, show_gravatar)
+    display_name, email = fetch_params()
+    user.update(display_name, email)
     return jsonify(message='Request processed successfully')
 
 
+# don't need to add OPTIONS here because its already added
+# for this endpoint in user_me_handler
 @user_bp.route('/me', methods=['DELETE'])
 @oauth.require_auth('user')
-@crossdomain()
+@crossdomain(headers="Authorization, Content-Type")
 def user_delete_handler(user):
     """Delete your profile.
 
@@ -195,8 +197,8 @@ def user_delete_handler(user):
     return jsonify(message='Request processed successfully')
 
 
-@user_bp.route('/<uuid:user_id>', methods=['GET'])
-@crossdomain()
+@user_bp.route('/<uuid:user_id>', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def user_entity_handler(user_id):
     """Get profile of a user with a specified UUID.
 
@@ -230,8 +232,8 @@ def user_entity_handler(user_id):
     return jsonify(user=User(user).to_dict(inc))
 
 
-@user_bp.route('/', methods=['GET'])
-@crossdomain()
+@user_bp.route('/', methods=['GET', 'OPTIONS'])
+@crossdomain(headers="Authorization, Content-Type")
 def review_list_handler():
     """Get list of users.
 
@@ -280,6 +282,7 @@ def review_list_handler():
 
     :resheader Content-Type: *application/json*
     """
+
     def fetch_params():
         limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
         offset = Parser.int('uri', 'offset', optional=True) or 0

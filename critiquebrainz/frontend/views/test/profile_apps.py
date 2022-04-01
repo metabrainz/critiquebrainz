@@ -1,7 +1,7 @@
-from critiquebrainz.frontend.testing import FrontendTestCase
-from critiquebrainz.db.user import User
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.users as db_users
+from critiquebrainz.db.user import User
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class ProfileApplicationsViewsTestCase(FrontendTestCase):

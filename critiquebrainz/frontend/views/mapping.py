@@ -6,19 +6,21 @@ Spotify. These mappings are then used to show embedded Spotify player on some
 pages. See https://github.com/metabrainz/mbspotify for more info about this
 project.
 """
-import urllib.parse
 import os.path
 import string
+import urllib.parse
+
 from flask import Blueprint, render_template, request, url_for, redirect, current_app
-from flask_login import login_required, current_user
 from flask_babel import gettext
+from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound, BadRequest, ServiceUnavailable
-import critiquebrainz.frontend.external.spotify as spotify_api
-from critiquebrainz.frontend.external.exceptions import ExternalServiceException
-from critiquebrainz.frontend.external import mbspotify
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+
 import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
+import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+import critiquebrainz.frontend.external.spotify as spotify_api
 from critiquebrainz.frontend import flash
+from critiquebrainz.frontend.external import mbspotify
+from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 
 mapping_bp = Blueprint('mapping', __name__)
 
@@ -58,7 +60,11 @@ def spotify_add():
         flash.error(gettext("Only existing release groups can be mapped to Spotify!"))
         return redirect(url_for('search.index'))
 
-    page = int(request.args.get('page', default=1))
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
     if page < 1:
         return redirect(url_for('.spotify_add'))
     limit = 16
@@ -182,7 +188,6 @@ def spotify_report():
 
 class UnsupportedSpotifyReferenceTypeException(Exception):
     """Exception for Unsupported Spotify Reference Types."""
-    pass
 
 
 def parse_spotify_id(spotify_ref):
@@ -199,13 +204,14 @@ def parse_spotify_id(spotify_ref):
         if spotify_ref.startswith('spotify:album:'):
             # Spotify URI
             return spotify_ref[14:]
-        elif spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
+
+        if spotify_ref.startswith('http://') or spotify_ref.startswith('https://'):
             # Link to Spotify
             if spotify_ref.endswith('/'):
                 spotify_ref = spotify_ref[:-1]
             return os.path.split(urllib.parse.urlparse(spotify_ref).path)[-1]
-        else:
-            raise UnsupportedSpotifyReferenceTypeException("Unsupported Spotify Reference Type!")
+
+        raise UnsupportedSpotifyReferenceTypeException("Unsupported Spotify Reference Type!")
     except Exception as e:
         current_app.logger.error('Error "{}" occurred while parsing Spotify ID!'.format(e))
         # Raise exception if failed to parse!

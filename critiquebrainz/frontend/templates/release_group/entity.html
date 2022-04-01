@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating, entity_rate_form with context %}
+{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating, entity_rate_form, show_external_reviews with context %}
+{% from 'common.html' import rating_script with context %}
 
 {% block title %}
   {{ _('Release group "%(title)s" by %(artist)s', title=release_group.title, artist=release_group['artist-credit-phrase']) }}
@@ -12,7 +13,7 @@
     {% set artist = [] %}
     {% for credit in release_group['artist-credit'] %}
       {% if credit.artist %}
-        {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', mbid=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
+        {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.artist.id) ~ credit.artist.name ~ '</a>'|safe) %}
         {% if credit.join_phrase %}
           {% do artist.append(credit.join_phrase) %}
         {% endif %}
@@ -29,7 +30,7 @@
   </h2>
 
   {% if not my_review %}
-    <a id="write-review" href="{{ url_for('review.create', release_group=id) }}"
+    <a id="write-review" href="{{ url_for('review.create', entity_type='release_group', entity_id=id) }}"
        role="button" class="btn btn-success pull-right">
       <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
     </a>
@@ -66,7 +67,7 @@
             <tr data-review-id="{{ review.id }}">
               <td>
                 <a href="{{ url_for('review.entity', id=review.id) }}">
-                  {{ _('by %(reviewer)s', reviewer='<img class="avatar" src="%s&s=16" /> '|safe % review.user.avatar + review.user.display_name) }}
+                  {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
                 </a>
               </td>
               <td>{{ review.published_on | date }}</td>
@@ -113,13 +114,13 @@
               <tr>
                 <td>{{ track.number }}</td>
                 <td>
-                  <a href="http://acousticbrainz.org/{{ track.recording_id }}" title="View on AcousticBrainz">
+                  <a href="{{ url_for('recording.entity', id=track.recording_id) }}">
                     {{ track.recording_title }}
                   </a>
                 </td>
                 <td>
                   {% if track.length %}
-                    {{ track.length | track_length }}
+                    {{ track.length | track_length_ms }}
                   {% else %}
                     -
                   {% endif %}
@@ -148,6 +149,12 @@
     <p>
       {% if release_group['first-release-date'] %}{{ _('First release in %(year)s', year=release_group['first-release-date'][:4]) }}{% endif %}
     </p>
+    {% if external_reviews %}
+      <b>{{ _('External reviews') }}</b>
+      <ul class="list-unstyled external-links">
+        {{ show_external_reviews(external_reviews) }}
+      </ul>
+    {% endif %}
     {% if release_group['external-urls'] %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
@@ -181,16 +188,5 @@
 {% endblock %}
 
 {% block scripts %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
-  <script>
-    $(document).ready(function() {
-      $("#ratestars").click(function(e){
-        // only submit rating form when user clicks on <i></i> tag (see generated HTML for rating stars on this page)
-        if (e.target.tagName === 'I') {
-          $("#rating-form").submit();
-        }
-      });
-    });
-  </script>
-  <script src="{{ get_static_path('rating.js') }}"></script>
+    {{ rating_script }}
 {% endblock %}

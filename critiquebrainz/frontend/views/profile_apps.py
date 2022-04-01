@@ -3,12 +3,12 @@ from flask_babel import gettext
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
 
-import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.exceptions as db_exceptions
+import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.oauth_token as db_oauth_token
-from critiquebrainz.frontend.forms.profile_apps import ApplicationForm
-from critiquebrainz.frontend import flash
 import critiquebrainz.db.users as db_users
+from critiquebrainz.frontend import flash
+from critiquebrainz.frontend.forms.profile_apps import ApplicationForm
 
 profile_apps_bp = Blueprint('profile_applications', __name__)
 
@@ -59,11 +59,11 @@ def edit(client_id):
         )
         flash.success(gettext("You have updated an application!"))
         return redirect(url_for('.index'))
-    else:
-        form.name.data = application["name"]
-        form.desc.data = application["desc"]
-        form.website.data = application["website"]
-        form.redirect_uri.data = application["redirect_uri"]
+
+    form.name.data = application["name"]
+    form.desc.data = application["desc"]
+    form.website.data = application["website"]
+    form.redirect_uri.data = application["redirect_uri"]
     return render_template('profile/applications/edit.html', form=form)
 
 

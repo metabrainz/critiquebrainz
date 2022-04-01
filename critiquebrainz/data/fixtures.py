@@ -18,7 +18,7 @@ def install(*args):
                         print('Added %s.' % key)
 
 
-class LicenseData(object):
+class LicenseData:
     """Licenses that can be used with reviews.
 
     If you add new ones or remove existing, make sure to update forms,
@@ -37,4 +37,4 @@ class LicenseData(object):
 
 
 # Include all objects into this tuple.
-all_data = (LicenseData, )
+all_data = (LicenseData,)

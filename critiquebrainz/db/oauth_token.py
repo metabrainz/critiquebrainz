@@ -1,4 +1,5 @@
 import sqlalchemy
+
 from critiquebrainz import db
 from critiquebrainz.db import exceptions as db_exceptions
 

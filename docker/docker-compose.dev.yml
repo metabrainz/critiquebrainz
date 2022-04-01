@@ -1,27 +1,23 @@
 # Docker Compose file for development
-version: "2"
+version: "3.4"
+
+volumes:
+  cb_home:
+
 services:
 
   db:
-    extends:
-      file: ./common.yml
-      service: db
-    volumes:
-      - ../data/pgdata:/var/lib/postgresql/data/pgdata:z
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-    ports:
-      - "15432:5432"
-
-  db_test:
-    build:
-      context: ./pg_custom/
-      dockerfile: Dockerfile
-    command: postgres -F
+    image: postgres:12.3
     environment:
       POSTGRES_USER: critiquebrainz
       POSTGRES_PASSWORD: critiquebrainz
       POSTGRES_DB: critiquebrainz
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ../data/pgdata:/var/lib/postgresql/data/pgdata:z
+      - ./pg_custom:/docker-entrypoint-initdb.d/
+    ports:
+      - "127.0.0.1:15432:5432"
 
   critiquebrainz:
     build:
@@ -30,23 +26,37 @@ services:
     volumes:
       - ../:/code:z
       - ../data/app:/data:z
+      - cb_home:/root
+    environment:
+      FLASK_APP: critiquebrainz.frontend
+      FLASK_ENV: development
     ports:
-      - "80:80"
+      - "8200:8200"
     depends_on:
       - db
-      - db_test
       - critiquebrainz_redis
       - musicbrainz_db
+      - static_builder
+    command: python3 manage.py runserver -h 0.0.0.0 -p 8200 -d
 
   critiquebrainz_redis:
     image: redis:4.0-alpine
 
   musicbrainz_db:
-    image: metabrainz/musicbrainz-test-database:schema-change-2017-q2
+    image: metabrainz/musicbrainz-test-database:beta
     volumes:
       - ../data/mbdata:/var/lib/postgresql/data/pgdata:z
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       MB_IMPORT_DUMPS: "true"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     ports:
-      - "5430:5432"
+      - "127.0.0.1:25432:5432"
+
+  static_builder:
+    build:
+      context: ..
+      dockerfile: Dockerfile.webpack
+    command: npm run dev
+    volumes:
+      - ..:/code:z

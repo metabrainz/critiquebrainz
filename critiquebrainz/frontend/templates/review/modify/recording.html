@@ -1,0 +1,26 @@
+{% if entity is not defined %}
+  {% set entity = review.entity_id | entity_details(type=entity_type) %}
+{% endif %}
+<div class="col-md-12">
+  <dl class="dl-horizontal">
+    <dt>{{ _('Recording') }}</dt>
+    <dd>
+      <a href="{{ url_for('recording.entity', id=entity['id']) }}" target="_blank">{{ entity['name'] }}</a>
+    </dd>
+    <dt>{{ _('Length') }}</dt>
+    <dd>
+      {% if entity['length'] %}
+        {{ entity['length'] | track_length }}
+      {% else %}
+        -
+      {% endif %}
+    </dd>
+    <dt>{{ _('Artist') }}</dt>
+    <dd>
+      {{ entity['artist-credit-phrase'] or '-' }}
+    </dd>
+    {% block more_info %}
+    {# Information like creation date, votes etc. #}
+    {% endblock %}
+  </dl>
+</div>

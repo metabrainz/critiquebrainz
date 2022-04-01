@@ -1,13 +1,4 @@
-{% extends 'review/modify/base.html' %}
-
-{% set entity = review.entity_id | entity_details(type=entity_type) %}
-{% if entity_type == 'release_group' %}
-  {% set entity_title = entity['title'] | default(_('[Unknown release group]')) %}
-{% elif entity_type == 'event' %}
-  {% set entity_title = entity['name'] | default(_('[Unknown event]')) %}
-{% elif entity_type == 'place' %}
-  {% set entity_title = entity['name'] | default(_('[Unknown place]')) %}
-{% endif %}
+{% extends 'review/modify/base.html' %}s
 
 {% block title %}
   {{ _('Edit review of "%(entity)s"', entity=entity_title) }} - CritiqueBrainz

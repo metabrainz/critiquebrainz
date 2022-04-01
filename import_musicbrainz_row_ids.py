@@ -1,6 +1,6 @@
 from sqlalchemy import text
+from brainzutils import musicbrainz_db
 import critiquebrainz.db.users as db_users
-from critiquebrainz.frontend.external import musicbrainz_db
 from critiquebrainz.frontend import create_app
 from critiquebrainz import db
 
@@ -14,7 +14,7 @@ def fix_user(mb_connection, cb_connection, user_name, cb_id):
              WHERE name = :user_name
         """), {
             'user_name': user_name,
-        })
+            })
     if r.rowcount > 0:
         musicbrainz_row_id = r.fetchone()['id']
         if not DRY_RUN:
@@ -64,7 +64,7 @@ def import_musicbrainz_row_ids():
                      WHERE name = :musicbrainz_id
                     """), {
                         'musicbrainz_id': user['musicbrainz_username'],
-                    })
+                        })
                 musicbrainz_row_id = None
                 if r.rowcount > 0:
                     musicbrainz_row_id = r.fetchone()['id']
@@ -78,7 +78,7 @@ def import_musicbrainz_row_ids():
                             """), {
                                 'musicbrainz_row_id': musicbrainz_row_id,
                                 'id': user['id'],
-                            })
+                                })
                 else:
                     print('%s not found!' % name)
                     not_found += 1

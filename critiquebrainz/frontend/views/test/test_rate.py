@@ -16,27 +16,19 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from unittest import mock
 from flask import url_for
-from critiquebrainz.frontend.testing import FrontendTestCase
-import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
+
+import critiquebrainz.db.license as db_license
+import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
-import critiquebrainz.db.review as db_review
-import critiquebrainz.db.license as db_license
+from critiquebrainz.frontend.testing import FrontendTestCase
 
 
 class RateViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(RateViewsTestCase, self).setUp()
-        self.test_entity = {
-            'id': 'e7aad618-fa86-3983-9e77-405e21796eca',
-            'title': 'Test Release Group',
-            'first-release-year': 1970,
-        }
-        mb_release_group.get_release_group_by_id = mock.MagicMock()
-        mb_release_group.get_release_group_by_id.return_value = self.test_entity
         self.reviewer = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
             "display_name": u"Reviewer",
         }))
@@ -47,10 +39,10 @@ class RateViewsTestCase(FrontendTestCase):
 
     def test_rate(self):
         self.temporary_login(self.reviewer)
-
+        entity_id = '9162580e-5df4-32de-80cc-f45a8d8a9b1d'
         # Test for first time rating (no review exists)
         payload = {
-            'entity_id': self.test_entity['id'],
+            'entity_id': entity_id,
             'entity_type': 'release_group',
             'rating': 4
         }
@@ -59,10 +51,10 @@ class RateViewsTestCase(FrontendTestCase):
             data=payload
         )
 
-        self.assertRedirects(response, '/release-group/{}'.format(self.test_entity['id']))
+        self.assertRedirects(response, '/release-group/{}'.format(entity_id))
 
         reviews, review_count = db_review.list_reviews(
-            entity_id=self.test_entity['id'],
+            entity_id=entity_id,
             entity_type='release_group',
             user_id=self.reviewer.id
         )
@@ -72,13 +64,13 @@ class RateViewsTestCase(FrontendTestCase):
         self.assertEqual(review['text'], None)
         self.assertEqual(review['rating'], 4)
 
-        response = self.client.get('/release-group/{}'.format(self.test_entity['id']))
+        response = self.client.get('/release-group/{}'.format(entity_id))
         self.assert200(response)
         self.assertIn('We have updated your rating for this entity!', str(response.data))
 
         # Test after rating is cleared for review with NO text
         payload = {
-            'entity_id': self.test_entity['id'],
+            'entity_id': entity_id,
             'entity_type': 'release_group',
             'rating': None
         }
@@ -88,7 +80,7 @@ class RateViewsTestCase(FrontendTestCase):
         )
 
         reviews, review_count = db_review.list_reviews(
-            entity_id=self.test_entity['id'],
+            entity_id=entity_id,
             entity_type='release_group',
             user_id=self.reviewer.id
         )
@@ -98,7 +90,7 @@ class RateViewsTestCase(FrontendTestCase):
         # Test after rating is cleared for review with some text
         self.review = db_review.create(
             user_id=self.reviewer.id,
-            entity_id=self.test_entity['id'],
+            entity_id=entity_id,
             entity_type="release_group",
             text="Test Review.",
             rating=4,
@@ -107,7 +99,7 @@ class RateViewsTestCase(FrontendTestCase):
         )
 
         payload = {
-            'entity_id': self.test_entity['id'],
+            'entity_id': entity_id,
             'entity_type': 'release_group',
             'rating': None
         }
@@ -117,7 +109,7 @@ class RateViewsTestCase(FrontendTestCase):
         )
 
         reviews, review_count = db_review.list_reviews(
-            entity_id=self.test_entity['id'],
+            entity_id=entity_id,
             entity_type='release_group',
             user_id=self.reviewer.id
         )
@@ -125,3 +117,27 @@ class RateViewsTestCase(FrontendTestCase):
         self.assertEqual(review_count, 1)
         review = reviews[0]
         self.assertEqual(review['rating'], None)
+
+    def test_artist_rating(self):
+        self.temporary_login(self.reviewer)
+        test_entity_id = 'f59c5520-5f46-4d2c-b2c4-822eabf53419'
+        payload = {
+            'entity_id': test_entity_id,
+            'entity_type': 'artist',
+            'rating': 4
+        }
+
+        response = self.client.post(url_for('rate.rate'), data=payload)
+        self.assertRedirects(response, '/artist/{}'.format(test_entity_id))
+        reviews, review_count = db_review.list_reviews(
+            entity_id=test_entity_id,
+            entity_type='artist',
+            user_id=self.reviewer.id
+        )
+
+        self.assertEqual(review_count, 1)
+        self.assertEqual(reviews[0]['rating'], 4)
+
+        response = self.client.get('/artist/{}'.format(test_entity_id))
+        self.assert200(response)
+        self.assertIn('We have updated your rating for this entity!', str(response.data))
