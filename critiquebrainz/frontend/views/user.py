@@ -33,7 +33,7 @@ def reviews(user_id):
         raise BadRequest("Invalid page number!")
     
     if page < 1:
-        return redirect(url_for('.reviews'))
+        return redirect(url_for('.reviews', user_id=user_id))
     limit = 12
     offset = (page - 1) * limit
     reviews, count = db_review.list_reviews(user_id=user_id, sort='published_on', limit=limit, offset=offset,
