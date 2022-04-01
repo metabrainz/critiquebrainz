@@ -5,8 +5,8 @@
     <dt>{{ _('Artist') }}</dt><dd>{{ entity['artist-credit-phrase'] }}</dd>
     <dt>{{ _('Release group') }}</dt>
     <dd>
-      <a href="{{ url_for('release_group.entity', id=entity['id']) }}" target="_blank">{{ entity['title'] }}</a>
-      {% if entity['first-release-date'] %}
+      <a href="{{ url_for('release_group.entity', id=entity['mbid']) }}" target="_blank">{{ entity['title'] }}</a>
+      {% if entity['first-release-date'] is defined %}
         <span class="text-muted">({{ entity['first-release-date'][:4] }})</span>
       {% endif %}
     </dd>
@@ -16,8 +16,8 @@
   </dl>
 </div>
 <div class="col-md-3 hidden-xs">
-  {{ show_embedded_player(soundcloud_url, entity['id'], spotify_mappings) }}
+  {{ show_embedded_player(soundcloud_url, entity['mbid'], spotify_mappings) }}
 </div>
 <div class="col-md-4 text-right">
-  {{ cover_art(entity['id'], 'release_group', attributes='class=cover-art style=max-height:120px;max-width:120px;') }}
+  {{ cover_art(entity['mbid'], 'release_group', attributes='class=cover-art style=max-height:120px;max-width:120px;') }}
 </div>

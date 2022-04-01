@@ -2,14 +2,14 @@
 
 {% if type=="release-group" %}
   <tr>
-    <td><a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit-phrase'] }}</a></td>
+    <td><a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.mbid) }}" target="_blank">{{ result['artist-credit-phrase'] }}</a></td>
     <td>
       <a href="{{ url_for('release_group.entity', id=result.id) }}" target="_blank">{{ result['title'] }}</a>
       {% if result['disambiguation'] %}<span class="text-muted">({{ result['disambiguation'] }})</span>{% endif %}
     </td>
     <td>{{ result['primary-type'] or '-' }}</td>
     <td>
-      <input type="radio" name="release_group" value="{{ result['id'] }}">
+      <input type="radio" name="release_group" value="{{ result.id }}">
     </td>
   </tr>
 
@@ -23,7 +23,7 @@
     </td>
     <td>
       {% if result['artist-relation-list'] %}
-        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.mbid) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
         {% set count = result['artist-relation-list'] | length %}
         {% if count > 1 %}
           + {{ count - 1 }} {{ _("more") }}
@@ -40,7 +40,7 @@
       {% endif %}
     </td>
     <td>
-      <input type="radio" name="event" value="{{ result['id'] }}">
+      <input type="radio" name="event" value="{{ result.id }}">
     </td>
   </tr>
 
@@ -60,7 +60,7 @@
       {% endif %}
     </td>
     <td>
-      <input type="radio" name="place" value="{{ result['id'] }}">
+      <input type="radio" name="place" value="{{ result.id }}">
     </td>
   </tr>
 
@@ -71,7 +71,7 @@
     </td>
     <td>
       {% if result['artist-relation-list'] %}
-        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.mbid) }}" target="_blank">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
         {% set count = result['artist-relation-list'] | length %}
         {% if count > 1 %}
           + {{ count - 1 }} {{ _("more") }}
@@ -87,7 +87,7 @@
       {{ result['language'] or '-' }}
     </td>
     <td>
-      <input type="radio" name="work" value="{{ result['id'] }}">
+      <input type="radio" name="work" value="{{ result.id }}">
     </td>
   </tr>
 
@@ -114,7 +114,7 @@
       {% endif %}
     </td>
     <td>
-      <input type="radio" name="artist" value="{{ result['id'] }}">
+      <input type="radio" name="artist" value="{{ result.id }}">
     </td>
   </tr>
 
@@ -130,8 +130,8 @@
       {{ result['country'] or '-' }}
     </td>
     <td>
-      <input type="radio" name="label" value="{{ result['id'] }}">
-      <input type="radio" name="artist" value="{{ result['id'] }}">
+      <input type="radio" name="label" value="{{ result.id }}">
+      <input type="radio" name="artist" value="{{ result.id }}">
     </td>
   </tr>
 
@@ -148,17 +148,17 @@
       {% endif %}
     </td>
     <td>
-      <a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}" target="_blank">{{ result['artist-credit'][0]['artist']['name'] or '-' }}</a>
+      <a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.mbid) }}" target="_blank">{{ result['artist-credit'][0]['artist']['name'] or '-' }}</a>
     </td>
     <td>
       {% if result['release-list'] %}
-        <a href="{{ url_for('release.entity', id=result['release-list'][0].id) }}" target="_blank">{{ result['release-list'][0].title or '-' }}</a>
+        <a href="{{ url_for('release.entity', id=result['release-list'][0].mbid) }}" target="_blank">{{ result['release-list'][0].title or '-' }}</a>
       {% else %}
         -
       {% endif %}
     </td>
     <td>
-      <input type="radio" name="recording" value="{{ result['id'] }}">
+      <input type="radio" name="recording" value="{{ result.id }}">
     </td>
   </tr>
 

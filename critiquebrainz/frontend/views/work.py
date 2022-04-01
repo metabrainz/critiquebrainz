@@ -14,7 +14,7 @@ work_bp = Blueprint('work', __name__)
 @work_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    work = mb_work.get_work_by_id(id)
+    work = mb_work.get_work_by_mbid(id)
     if work is None:
         raise NotFound(gettext("Sorry, we couldn't find a work with that MusicBrainz ID."))
 
@@ -24,7 +24,7 @@ def entity(id):
 
     if current_user.is_authenticated:
         my_reviews, _ = db_review.list_reviews(
-            entity_id=work['id'],
+            entity_id=work['mbid'],
             entity_type='work',
             user_id=current_user.id,
         )
@@ -34,7 +34,7 @@ def entity(id):
 
     reviews_offset = 0
     reviews, reviews_count = db_review.list_reviews(
-        entity_id=work['id'],
+        entity_id=work['mbid'],
         entity_type='work',
         sort='popularity',
         limit=work_reviews_limit,
@@ -55,12 +55,12 @@ def entity(id):
     recording_offset = (page - 1) * BROWSE_RECORDING_LIMIT
     recording_rels = recording_rels[recording_offset:recording_offset + BROWSE_RECORDING_LIMIT]
 
-    avg_rating = get_avg_rating(work['id'], "work")
+    avg_rating = get_avg_rating(work['mbid'], "work")
 
     rating_form = RatingEditForm(entity_id=id, entity_type='work')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    return render_template('work/entity.html', id=work['id'], work=work, page=page,
+    return render_template('work/entity.html', id=work['mbid'], work=work, page=page,
                            reviews=reviews, my_review=my_review, reviews_limit=work_reviews_limit,
                            reviews_count=reviews_count, avg_rating=avg_rating, rating_form=rating_form,
                            recording_limit=BROWSE_RECORDING_LIMIT, recording_rels=recording_rels,

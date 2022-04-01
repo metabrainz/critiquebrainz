@@ -8,7 +8,7 @@
 <div class="clearfix">
   <h2 class="pull-left">
     {{ work.name }}
-    {% if work.type %}
+    {% if work.type is defined %}
       <small>({{ work.type }})</small>
     {% endif %}
   </h2>
@@ -80,15 +80,15 @@
         <tbody>
           {% for rel in recording_rels %}
           {% set recording = rel['recording'] %}
-            <tr data-review-id="{{ recording.id }}">
+            <tr data-review-id="{{ recording.mbid }}">
               <td>
-                {# <a href="{{ url_for('recording.entity', id=recording.id) }}"> #}
+                <a href="{{ url_for('recording.entity', id=recording.mbid) }}">
                   {{ recording.name }}
-                {# </a> #}
+                </a>
               </td>
               <td>{{ rel.type | capitalize }}</td>
               <td>
-                {% if recording.length %}
+                {% if recording.length is defined %}
                   {{ recording.length | track_length }}
                 {% else %}
                   -
@@ -106,7 +106,7 @@
   <div class="col-sm-3">
     <h4>{{ _('Work information') }}</h4>
 
-    {% if work['external-urls'] %}
+    {% if work['external-urls'] is defined %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
         {% for url in work['external-urls'] %}
@@ -127,7 +127,7 @@
 
     <div class="external-links">
       <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
-      <a href="https://musicbrainz.org/work/{{ work.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      <a href="https://musicbrainz.org/work/{{ work.mbid }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
 
     <br/><br/>

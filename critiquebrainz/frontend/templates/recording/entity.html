@@ -12,8 +12,8 @@
     {{ recording.name }} {{ _('by') }}
     {% for credit in recording['artists'] %}
     {% if credit.name %}
-        <a href="{{ url_for('artist.entity', id=credit.id) }}">{{ credit.name }}</a>
-        {% if credit.join_phrase %}{{ credit.join_phrase }}{% endif %}
+        <a href="{{ url_for('artist.entity', id=credit.mbid) }}">{{ credit.name }}</a>
+        {% if credit.join_phrase is defined %}{{ credit.join_phrase }}{% endif %}
     {% endif %}
     {% endfor %}
   </h2>
@@ -91,7 +91,7 @@
         {{ show_external_reviews(external_reviews) }}
       </ul>
     {% endif %}
-    {% if recording['external-urls'] %}
+    {% if recording['external-urls'] is defined %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
         {% for url in recording['external-urls'] %}
@@ -112,7 +112,7 @@
 
     <div class="external-links">
       <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
-      <a href="https://musicbrainz.org/recording/{{ recording.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      <a href="https://musicbrainz.org/recording/{{ recording.mbid }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
   </div>
 </div>

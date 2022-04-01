@@ -3,6 +3,8 @@ import os
 import sys
 from time import sleep
 
+import jinja2
+
 from brainzutils.flask import CustomFlask
 from flask import send_from_directory
 
@@ -50,6 +52,7 @@ def create_app(debug=None, config_path=None):
         app.debug = debug
     if app.debug and app.config['SECRET_KEY']:
         app.init_debug_toolbar()
+        app.jinja_options['undefined'] = jinja2.StrictUndefined
 
     # Error handling
     from critiquebrainz.frontend.error_handlers import init_error_handlers
@@ -59,10 +62,12 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend import static_manager
     static_manager.read_manifest()
 
-    app.init_loggers(
-        file_config=app.config.get("LOG_FILE"),
-        sentry_config=app.config.get("LOG_SENTRY"),
-    )
+    # Sentry
+    from brainzutils import sentry
+
+    dsn = sentry_config=app.config.get("LOG_SENTRY")
+    if dsn:
+        sentry.init_sentry(dsn)
 
     # CritiqueBrainz Database
     from critiquebrainz import db as critiquebrainz_db

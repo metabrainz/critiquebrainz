@@ -35,7 +35,7 @@ event_bp = Blueprint('event', __name__)
 @event_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    event = mb_event.get_event_by_id(id)
+    event = mb_event.get_event_by_mbid(id)
     if event is None:
         raise NotFound(gettext("Sorry, we couldn't find an event with that MusicBrainz ID."))
 
@@ -54,7 +54,7 @@ def entity(id):
 
     if current_user.is_authenticated:
         my_reviews, _ = db_review.list_reviews(
-            entity_id=event['id'],
+            entity_id=event['mbid'],
             entity_type='event',
             user_id=current_user.id
         )
@@ -76,14 +76,14 @@ def entity(id):
         raise BadRequest("Invalid offset parameter!")
     
     reviews, count = db_review.list_reviews(
-        entity_id=event['id'],
+        entity_id=event['mbid'],
         entity_type='event',
         sort='popularity',
         limit=limit,
         offset=offset
     )
-    avg_rating = get_avg_rating(event['id'], "event")
+    avg_rating = get_avg_rating(event['mbid'], "event")
 
-    return render_template('event/entity.html', id=event['id'], event=event, reviews=reviews,
+    return render_template('event/entity.html', id=event['mbid'], event=event, reviews=reviews,
                            rating_form=rating_form, my_review=my_review, external_reviews=external_reviews,
                            limit=limit, offset=offset, count=count, avg_rating=avg_rating, current_user=current_user)

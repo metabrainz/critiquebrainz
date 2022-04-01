@@ -17,13 +17,13 @@
 
     {{ _('%(event)s', event=event_name) }}
 
-    {% if event['life-span'] %}
+    {% if event['life-span'] is defined %}
       <small>{{ event['life-span']['begin'][:4] }}</small>
     {% endif %}
   </h2>
 {% endblock %}
 
-{% if event['place-relation-list'] %}
+{% if event['place-relation-list'] is defined %}
   {% set place = event['place-relation-list'][0]['place'] %}
   {% if place['coordinates'] %}
     {% set lat = place['coordinates']['latitude'] | float %}
@@ -33,7 +33,7 @@
 {% endif %}
 
 {% block sidebar %}
-  {% if lat %}
+  {% if lat is defined %}
     <div id="sidebar" class="col-md-3">
       <div id="map"></div>
       <script src="{{ get_static_path('leaflet.js') }}"></script>

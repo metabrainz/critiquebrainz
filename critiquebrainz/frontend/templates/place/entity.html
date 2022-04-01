@@ -28,13 +28,13 @@
     {% endif %}
   </div>
 
-  {% if place['coordinates'] %}
+  {% if place['coordinates'] is defined %}
     {% set lat = place['coordinates']['latitude'] | float %}
     {% set long = place['coordinates']['longitude'] | float %}
   {% endif %}
 
   <div id="place-details" class="row">
-    {% if lat %}
+    {% if lat is defined %}
       <div class="col-md-4">
         <div id="map"></div>
         <script>
@@ -48,7 +48,7 @@
       </div>
     {% endif %}
 
-    <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
+    <div class="col-md-{% if lat is defined %}5{% else %}9{% endif %}">
       {{ entity_rate_form('place', 'place') }}
       <br/><br/>
       <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
@@ -101,7 +101,7 @@
             {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
           </div>
         {% endif %}
-        {% if place['external-urls'] %}
+        {% if place['external-urls'] is defined %}
           <b>{{ _('External links') }}</b>
             <ul class="list-unstyled external-links">
               {% for url in place['external-urls'] %}
@@ -119,12 +119,12 @@
             </ul>
           {% endif %}
 
-        {% if place['place-rels'] %}
+        {% if place['place-rels'] is defined %}
           <b>{{ _('Part of') }}</b>
             <ul class="list-unstyled">
               {% for relation in place['place-rels'] %}
                 <li class="clearfix">
-                  <a href="{{ url_for('place.entity', id=relation['place']['id']) }}">{{ relation['place']['name'] }}</a>
+                  <a href="{{ url_for('place.entity', id=relation['place'].mbid) }}">{{ relation['place']['name'] }}</a>
                 </li>
               {% endfor %}
             </ul>
@@ -132,7 +132,7 @@
 
       <div class="external-links">
         <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
-        <a href="https://musicbrainz.org/place/{{ place.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+        <a href="https://musicbrainz.org/place/{{ place.mbid }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
       </div>
     </div>
   </div>

@@ -31,14 +31,14 @@
 
               {%- if review.entity_type == 'release_group' -%}
                 <strong>{{ entity.title | default(_('[Unknown release group]')) }}</strong>
-                {% if entity['first-release-date'] %}
+                {% if entity['first-release-date'] is defined %}
                   <span class="text-muted">({{ entity['first-release-date'][:4] }})</span>
                 {% endif %}
                 - {{ entity['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
 
               {%- elif review.entity_type == 'event' -%}
                 <strong>{{ entity.name | default(_('[Unknown event]')) }}</strong>
-                {% if entity['artist-relation-list'] %}
+                {% if entity['artist-relation-list'] is defined %}
                   (
                   {{ entity['artist-relation-list'][0]['artist']['name'] }}
                   {% set count = entity['artist-relation-list'] | length %}
@@ -52,7 +52,7 @@
 
               {%- elif review.entity_type == 'work' -%}
                 <strong>{{ entity.name | default(_('[Unknown work]')) }}</strong>
-                {% if entity['artist-rels'] %}
+                {% if entity['artist-rels'] is defined %}
                   (
                   {{ entity['artist-rels'][0]['artist']['name'] }}
                   {% set count = entity['artist-rels'] | length %}
@@ -68,13 +68,13 @@
 
               {%- elif review.entity_type == 'artist' -%}
                 <strong>{{ entity.name | default(_('[Unknown artist]')) }}</strong>
-                {% if entity['type'] %}
+                {% if entity['type'] is defined %}
                   ({{ entity.type }})
                 {% endif %}
 
               {%- elif review.entity_type == 'label' -%}
                 <strong>{{ entity.name | default(_('[Unknown label]')) }}</strong>
-                {% if entity['type'] %}
+                {% if entity['type'] is defined %}
                   ({{ entity.type }})
                 {% endif %}
               {%- endif -%}

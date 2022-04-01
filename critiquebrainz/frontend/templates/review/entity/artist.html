@@ -17,7 +17,7 @@
 
     {{ _('%(artist)s', artist=artist_name) }}
 
-    {% if artist['life-span'] %}
+    {% if artist['life-span'] is defined %}
       <small>{{ artist['life-span']['begin'][:4] }}</small>
     {% endif %}
   </h2>
