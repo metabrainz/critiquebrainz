@@ -145,6 +145,40 @@ class ReviewViewsTestCase(FrontendTestCase):
                                    follow_redirects=True)
         self.assertIn("You have already published a review for this entity", str(response.data))
 
+    def test_edit_draft_without_changes(self):
+        self.temporary_login(self.user)
+
+        review = self.create_dummy_review()
+        # test saving draft review without changes results in warning
+        data = {
+            review["entity_type"]: review["entity_id"],
+            "state": "draft",
+            "license_choice": self.license["id"],
+            "language": 'en',
+            "agreement": 'True',
+            "text": review["text"],
+            "rating": review["rating"]
+        }
+
+        response = self.client.post(
+            "/review/%s/edit" % review["id"],
+            data=data,
+            query_string=data,
+            follow_redirects=True
+        )
+        self.assert200(response)
+        self.assertIn('You must edit either text or rating to update the review.', str(response.data))
+
+        # test publishing draft review without changes does not cause error
+        response = self.client.post(
+            "/review/%s/edit" % review["id"],
+            data=data,
+            query_string=data,
+            follow_redirects=True
+        )
+        self.assert200(response)
+        self.assertNotIn('You must edit either text or rating to update the review.', str(response.data))
+
     def test_edit(self):
         updated_text = "The text has now been updated"
         data = dict(
