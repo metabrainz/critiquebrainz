@@ -199,7 +199,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.assert200(response)
         self.assertIn(updated_text, str(response.data))
 
-        # edit once again with the same test and check for error
+        # test editing published review without changing errors
         response = self.client.post('/review/%s/edit' % review['id'], data=data,
                                     query_string=data, follow_redirects=True)
         self.assert200(response)
