@@ -1,7 +1,7 @@
 from math import ceil
 
 from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, current_app
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
 from langdetect import detect
@@ -400,6 +400,9 @@ def edit(id):
     _entity = get_entity_by_id(review["entity_id"], review["entity_type"])
     data["entity_title"] = get_entity_title(_entity)
     data["entity"] = _entity
+
+    current_app.logger.info("Form Errors: %s", form.errors)
+
     return render_template('review/modify/edit.html', **data)
 
 
