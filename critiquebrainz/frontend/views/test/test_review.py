@@ -170,6 +170,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         self.assertIn('You must edit either text or rating to update the review.', str(response.data))
 
         # test publishing draft review without changes does not cause error
+        data["state"] = "publish"
         response = self.client.post(
             "/review/%s/edit" % review["id"],
             data=data,
