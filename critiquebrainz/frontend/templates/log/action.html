@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% if review is defined %}
-  {% set release_group = review.entity_id | entity_details %}
+  {% set release_group = review.entity_id | entity_details(entity_type=review.entity_type) %}
   {% set rg_title = release_group.title | default(_('[Unknown release group]')) %}
   {% set cancel_url = url_for('review.entity', id=review.id) %}
 {% elif user is defined %}
