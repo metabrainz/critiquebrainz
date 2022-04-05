@@ -49,7 +49,7 @@ class ReviewEditForm(FlaskForm):
             ('CC BY-SA 3.0', lazy_gettext('Allow commercial use of this review(<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA 3.0 license</a>)')),  # noqa: E501
             ('CC BY-NC-SA 3.0', lazy_gettext('Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),  # noqa: E501
         ],
-        validators=[validators.Optional(), optional_license(lazy_gettext("You need to choose a license"))])
+        validators=[optional_license(lazy_gettext("You need to choose a license"))])
     remember_license = BooleanField(lazy_gettext("Remember this license choice for further preference"))
     language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
     rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
