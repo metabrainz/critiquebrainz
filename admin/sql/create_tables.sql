@@ -72,7 +72,7 @@ CREATE TABLE review (
     edits           INTEGER      NOT NULL,
     is_draft        BOOLEAN      NOT NULL,
     is_hidden       BOOLEAN      NOT NULL,
-    license_id      VARCHAR      NOT NULL,
+    license_id      VARCHAR,
     language        VARCHAR(3)   NOT NULL,
     published_on    TIMESTAMP,
     source          VARCHAR,
@@ -81,6 +81,8 @@ CREATE TABLE review (
 ALTER TABLE review ADD CONSTRAINT review_entity_id_user_id_key UNIQUE (entity_id, user_id);
 ALTER TABLE review ADD CONSTRAINT published_on_null_for_drafts_and_not_null_for_published_reviews
     CHECK ((is_draft = 't' AND published_on IS NULL) OR (is_draft = 'f' And published_on IS NOT NULL));
+ALTER TABLE review ADD CONSTRAINT license_id_not_null_is_draft_false
+    CHECK ((is_draft = 'f' AND license_id IS NOT NULL) OR is_draft = 't');
 
 CREATE TABLE revision (
     id          SERIAL      NOT NULL,

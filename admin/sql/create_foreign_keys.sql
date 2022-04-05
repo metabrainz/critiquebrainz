@@ -4,7 +4,7 @@ ALTER TABLE review
   ADD CONSTRAINT review_license_id_fkey
   FOREIGN KEY (license_id)
   REFERENCES license(id)
-  ON DELETE CASCADE;
+  ON DELETE SET NULL;
 
 ALTER TABLE moderation_log
   ADD CONSTRAINT moderation_log_admin_id_fkey
