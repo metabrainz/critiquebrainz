@@ -8,8 +8,8 @@
 <div class="clearfix">
   <h2 class="pull-left">
     {{ label.name }}
-    {% if label.disambiguation %}
-      <small>({{ label.disambiguation }})</small>
+    {% if label.comment is defined %}
+      <small>({{ label.comment }})</small>
     {% endif %}
   </h2>
 
@@ -71,7 +71,7 @@
     <h4>{{ _('Label information') }}</h4>
     {% if label.type %}<p class="text-muted">{{ label.type }}</p>{% endif %}
 
-    {% if label['external-urls'] %}
+    {% if label['external-urls'] is defined %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
         {% for url in label['external-urls'] %}
@@ -84,7 +84,6 @@
               {% endif %}
             </div>
             <a href="{{ url.url.url }}">{{ url.name }}</a>
-            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
           </li>
         {% endfor %}
       </ul>
@@ -92,7 +91,7 @@
 
     <div class="external-links">
       <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
-      <a href="https://musicbrainz.org/label/{{ label.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      <a href="https://musicbrainz.org/label/{{ label.mbid }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
 
     <br/><br/>

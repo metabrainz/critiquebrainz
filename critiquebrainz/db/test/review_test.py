@@ -209,7 +209,7 @@ class ReviewTestCase(DataTestCase):
     @mock.patch('brainzutils.cache.get')
     def test_get_popular(self, cache_get):
         cache_get.return_value = None
-        reviews = db_review.get_popular()
+        reviews = db_review.get_popular_reviews_for_index()
         self.assertEqual(len(reviews), 0)
 
         # popular reviews should not contain reviews saved as drafts
@@ -222,7 +222,7 @@ class ReviewTestCase(DataTestCase):
             license_id=self.license["id"],
         )
 
-        reviews = db_review.get_popular()
+        reviews = db_review.get_popular_reviews_for_index()
         self.assertEqual(len(reviews), 0)
 
         # publishing the drafted review; now it should be in popular reviews
@@ -233,13 +233,13 @@ class ReviewTestCase(DataTestCase):
             rating=review["rating"],
             is_draft=False,
         )
-        reviews = db_review.get_popular()
+        reviews = db_review.get_popular_reviews_for_index()
         self.assertEqual(len(reviews), 1)
         self.assertEqual(reviews[0]["is_draft"], False)
 
         # A hidden review should not be in popular reviews
         db_review.set_hidden_state(review["id"], is_hidden=True)
-        reviews = db_review.get_popular()
+        reviews = db_review.get_popular_reviews_for_index()
         self.assertEqual(len(reviews), 0)
 
     def test_set_hidden_state(self):

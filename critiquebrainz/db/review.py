@@ -6,6 +6,7 @@ from typing import List
 import pycountry
 import sqlalchemy
 from brainzutils import cache
+from flask import current_app
 
 from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
@@ -282,7 +283,16 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
             connection.execute(query, updated_info)
         db_revision.create(connection, review_id, text, rating)
         db_revision.update_rating(review_id)
-    cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
+
+        result = connection.execute(sqlalchemy.text("""
+                    SELECT review.entity_id
+                      FROM review
+                     WHERE review.id = :review_id
+                """), {
+            "review_id": review_id,
+        })
+        review = dict(result.fetchone())
+        invalidate_ws_entity_cache(review["entity_id"])
 
 
 def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
@@ -364,8 +374,22 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
     if rating:
         db_revision.update_rating(review_id)
 
-    cache.invalidate_namespace(REVIEW_CACHE_NAMESPACE)
+    invalidate_ws_entity_cache(entity_id)
     return get_by_id(review_id)
+
+
+def invalidate_ws_entity_cache(entity_id):
+    cache_keys_for_entity_id_key = cache.gen_key('ws_cache', entity_id)
+    cache_keys_to_delete = cache.smembers(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
+    if cache_keys_to_delete:
+        cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
+        cache.delete(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
+
+    cache_keys_for_no_entity_id_key = cache.gen_key('ws_cache', 'entity_id_absent')
+    cache_keys_to_delete = cache.smembers(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
+    if cache_keys_to_delete:
+        cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
+        cache.delete(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
 
 
 # pylint: disable=too-many-branches
@@ -574,21 +598,18 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
                                 review_type=review_type)
 
 
-def get_popular(limit=None):
-    """Get a list of popular reviews.
+def get_popular_reviews_for_index():
+    """Get a list of popular reviews for displaying on the home page.
 
-    Popularity is determined by 'popularity' of a particular review. popularity is a
-    difference between positive votes and negative. In this case only votes
-    from the last month are used to calculate popularity to make results more
-    varied.
-
-    Args:
-        limit (int): Maximum number of reviews to return.
+    popularity is a difference between positive votes and negative. In this
+    case only votes from the last month are used to calculate popularity
+    to make results more varied.
 
     Returns:
         Randomized list of popular reviews which are converted into
         dictionaries using to_dict method.
     """
+    limit = current_app.config['POPULAR_REVIEWS_LIMIT']
     cache_key = cache.gen_key("popular_reviews", limit)
     reviews = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
     defined_limit = 4 * limit if limit else None
@@ -669,7 +690,7 @@ def get_popular(limit=None):
                     "review_id": review["id"],
                 }
             reviews = [to_dict(review, confidential=True) for review in reviews]
-        cache.set(cache_key, reviews, 1 * 60 * 60, REVIEW_CACHE_NAMESPACE)  # 1 hour
+        cache.set(cache_key, reviews, 1 * 60 * 60, namespace=REVIEW_CACHE_NAMESPACE)  # 1 hour
     shuffle(reviews)
     return reviews[:limit]
 

@@ -46,6 +46,9 @@ SUPPORTED_LANGUAGES = [
     'ru',  # Russian
 ]
 
+# Maximum number of popular reviews to fetch for index
+POPULAR_REVIEWS_LIMIT = 6
+
 # List of administrators (MusicBrainz usernames as strings)
 ADMINS = []
 

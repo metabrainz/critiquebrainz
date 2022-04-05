@@ -1,5 +1,8 @@
 import json
 import uuid
+
+from brainzutils import cache
+
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
@@ -271,3 +274,33 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.client.post('/review/%s' % review["id"], headers=self.header(self.user), data=json.dumps(data))
         resp = self.client.get('/review/%s/revisions/2' % review["id"])
         self.assert200(resp)
+
+    def test_cache_tracking(self):
+        entity_id = self.review["entity_id"]
+        track_key = cache.gen_key("ws_cache", entity_id)
+
+        # Test no cache if entity id is not provided
+        self.client.get('/review/', query_string={'sort': 'rating'})
+        cache_keys = cache.smembers(track_key, namespace="Review")
+        self.assertEqual(set(), cache_keys)
+
+        expected_cache_keys = {'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=popularity_limit=50_offset=0_language=None_review_type=None',
+                               'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=None_limit=5_offset=0_language=None_review_type=None'}
+
+        # Test cache keys are recorded
+        self.client.get('/review/', query_string={'sort': 'rating', 'entity_id': entity_id})
+        self.client.get('/review/', query_string={'limit': 5, 'entity_id': entity_id})
+        cache_keys = cache.smembers(track_key, namespace="Review")
+        self.assertEqual(expected_cache_keys, cache_keys)
+
+        # Test no cache changes if entity_id is not available
+        self.client.get('/review/', query_string={'limit': 5})
+        cache_keys = cache.smembers(track_key, namespace="Review")
+        self.assertEqual(expected_cache_keys, cache_keys)
+        no_entity_id_key = cache.gen_key("ws_cache", None)
+        self.assertEqual(set(), cache.smembers(no_entity_id_key, namespace="Review"))
+
+        # Test cache invalidation upon review creation
+        db_review.create(**self.review)
+        cache_keys = cache.smembers(track_key, namespace="Review")
+        self.assertEqual(set(), cache_keys)

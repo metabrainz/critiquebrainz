@@ -34,7 +34,7 @@
 {% endif %}
 
 {% block sidebar %}
-  {% if lat %}
+  {% if lat is defined %}
     <div id="sidebar" class="col-md-3">
       <div id="map"></div>
       <script>

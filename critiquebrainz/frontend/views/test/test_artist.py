@@ -8,19 +8,19 @@ def return_release_groups(*, artist_id, release_types=None, limit=None, offset=N
     # pylint: disable=unused-argument
     if release_types == ['ep']:
         return [{
-            'id': '8ef859e3-feb2-4dd1-93da-22b91280d768',
+            'mbid': '8ef859e3-feb2-4dd1-93da-22b91280d768',
             'title': 'Collision Course',
             'first-release-year': 2004,
         }], 1
     if release_types == ['single']:
         return [{
-            'id': '7c1014eb-454c-3867-8854-3c95d265f8de',
+            'mbid': '7c1014eb-454c-3867-8854-3c95d265f8de',
             'title': 'Numb/Encore',
             'first-release-year': 2004,
         }], 1
     if release_types == ['album']:
         return [{
-            'id': '65404106-2976-4f98-a0e2-4e76923ea06d',
+            'mbid': '65404106-2976-4f98-a0e2-4e76923ea06d',
             'title': 'A Thousand Suns',
             'first-release-year': 2010,
         }], 1

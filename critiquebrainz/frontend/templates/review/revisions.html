@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% set entity = review.entity_id | entity_details(type=review.entity_type) %}
+{% set entity = review.entity_id | entity_details(entity_type=review.entity_type) %}
 
-{% if review.entity_type == 'release_group' %}
+{% if entity.title is defined %}
   {% set entity_title = entity.title %}
-{% elif review.entity_type == 'event' %}
+{% elif entity.name is defined %}
   {% set entity_title = entity.name %}
 {% endif %}
 

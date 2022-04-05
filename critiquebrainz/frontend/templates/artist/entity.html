@@ -35,9 +35,9 @@
           {% endfor %}
         </span>
       {% endif %}
-      {% if member.disambiguation %}
+      {% if member.comment is defined and member.comment %}
         <br />
-        <span class="text-muted">({{ member.disambiguation }})</span>
+        <span class="text-muted">({{ member.comment }})</span>
       {% endif %}
     </li>
   {% endfor %}
@@ -47,12 +47,12 @@
 <div class="clearfix">
   <h2 class="pull-left">
     {{ artist.name }}
-    {% if artist.disambiguation %}
-      <small>({{ artist.disambiguation }})</small>
+    {% if artist.comment is defined and artist.comment %}
+      <small>({{ artist.comment }})</small>
     {% endif %}
   </h2>
 
-  {% if not my_review %}
+  {% if my_review is not defined %}
     <a id="write-review" href="{{ url_for('review.create', entity_type='artist', entity_id=id) }}"
         role="button" class="btn btn-success pull-right">
       <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
@@ -96,9 +96,9 @@
       <div class="col-md-12">
         <ul class="pager">
           {% if not reviews_limit %}
-            <li class="next"><a href="{{ url_for('artist.entity', id=id, release_type=release_type) }}">{{ _('Hide reviews') }}</a></li>
+            <li class="next"><a href="{{ url_for('artist.entity', id=artist.mbid, release_type=release_type) }}">{{ _('Hide reviews') }}</a></li>
           {% elif reviews_count > reviews_limit %}
-            <li class="next"><a href="{{ url_for('artist.entity', id=id, release_type=release_type, reviews='all') }}">{{ _('Show all reviews') }}</a></li>
+            <li class="next"><a href="{{ url_for('artist.entity', id=artist.mbid, release_type=release_type, reviews='all') }}">{{ _('Show all reviews') }}</a></li>
           {% endif %}
         </ul>
       </div>
@@ -107,19 +107,19 @@
     <h4>{{ _('Discography') }}</h4>
     <ul class="nav nav-tabs">
       <li {% if release_type=='album' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=album">{{ _('Albums') }}</a>
+        <a href="{{ url_for('artist.entity', id=artist.mbid) }}?release_type=album">{{ _('Albums') }}</a>
       </li>
       <li {% if release_type=='single' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=single">{{ _('Singles') }}</a>
+        <a href="{{ url_for('artist.entity', id=artist.mbid) }}?release_type=single">{{ _('Singles') }}</a>
       </li>
       <li {% if release_type=='ep' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=ep">{{ _('EPs') }}</a>
+        <a href="{{ url_for('artist.entity', id=artist.mbid) }}?release_type=ep">{{ _('EPs') }}</a>
       </li>
       <li {% if release_type=='broadcast' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=broadcast">{{ _('Broadcasts') }}</a>
+        <a href="{{ url_for('artist.entity', id=artist.mbid) }}?release_type=broadcast">{{ _('Broadcasts') }}</a>
       </li>
       <li {% if release_type=='other' %}class="active"{% endif %}>
-        <a href="{{ url_for('artist.entity', id=artist.id) }}?release_type=other">{{ _('Other releases') }}</a>
+        <a href="{{ url_for('artist.entity', id=artist.mbid) }}?release_type=other">{{ _('Other releases') }}</a>
       </li>
     </ul>
     {% if release_group_count==0 %}
@@ -136,15 +136,15 @@
                 </div>
               {% endif %}
               <div class="cover-art-container">
-                <a href="{{ url_for('release_group.entity', id=release_group.id) }}">
-                  {{ cover_art(release_group.id, 'release_group') }}
+                <a href="{{ url_for('release_group.entity', id=release_group.mbid) }}">
+                  {{ cover_art(release_group.mbid, 'release_group') }}
                 </a>
               </div>
               <div class="caption">
                 <div class="release-group-title">
-                  <a href="{{ url_for('release_group.entity', id=release_group.id) }}">{{ release_group.title }}</a>
+                  <a href="{{ url_for('release_group.entity', id=release_group.mbid) }}">{{ release_group.title }}</a>
                 </div>
-                {{ release_group['first-release-year'] }}
+                {{ release_group['first-release-year'] is defined and release_group['first-release-year'] }}
               </div>
             </div>
           </div>
@@ -159,11 +159,11 @@
 
   <div class="col-sm-3">
     <h4>{{ _('Artist information') }}</h4>
-    {% if artist.type %}<p class="text-muted">{{ artist.type }}</p>{% endif %}
+    {% if artist.type is defined %}<p class="text-muted">{{ artist.type }}</p>{% endif %}
 
     {% if band_members.current_members %}
       <b>
-        {% if artist.type and artist.type == 'Person' %}
+        {% if artist.type is defined and artist.type == 'Person' %}
           {{ _('Member of') }}
         {% else %}
           {{ _('Members') }}
@@ -182,7 +182,7 @@
 
     {% if band_members['former_members'] %}
       <b>
-        {% if artist.type and artist.type == 'Person' %}
+        {% if artist.type is defined and artist.type == 'Person' %}
           {{ _('Former member of') }}
         {% else %}
           {{ _('Former members') }}
@@ -201,20 +201,20 @@
       </ul>
     {% endif %}
 
-    {% if artist['external-urls'] %}
+    {% if artist['external-urls'] is defined %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
         {% for url in artist['external-urls'] %}
           <li class="clearfix">
             <div class="favicon-container">
-              {% if url.icon %}
+              {% if url.icon is defined %}
                 <img src="{{ get_static_path('favicons/' + url.icon) }}" />
               {% else %}
                 <img src="{{ get_static_path('favicons/external-16.png') }}" />
               {% endif %}
             </div>
             <a href="{{ url.url.url }}">{{ url.name }}</a>
-            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
+            {% if url.disambiguation is defined %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
           </li>
         {% endfor %}
       </ul>
@@ -222,7 +222,7 @@
 
     <div class="external-links">
       <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
-      <a href="https://musicbrainz.org/artist/{{ artist.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      <a href="https://musicbrainz.org/artist/{{ artist.mbid }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
     </div>
 
     <br/><br/>
