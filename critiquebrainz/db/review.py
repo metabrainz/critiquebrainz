@@ -158,7 +158,7 @@ def get_by_ids(review_ids: List[uuid.UUID]):
               FROM review
               JOIN revision ON revision.review_id = review.id
               JOIN "user" ON "user".id = review.user_id
-              JOIN license ON license.id = license_id
+         LEFT JOIN license ON license.id = license_id
              WHERE review.id IN :review_ids
           ORDER BY timestamp DESC
         """), {
@@ -549,7 +549,7 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
           JOIN revision ON review.id = revision.review_id
      LEFT JOIN vote ON vote.revision_id = revision.id
           JOIN "user" ON review.user_id = "user".id
-          JOIN license ON license.id = license_id
+     LEFT JOIN license ON license.id = license_id
         {latest_revision_query}   
         {where_clause}
       GROUP BY review.id, latest_revision.id, "user".id, license.id
