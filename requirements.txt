@@ -18,7 +18,7 @@ pycountry==1.20
 python-dateutil==2.6.1
 rauth==0.7.3
 transifex-client==0.12.4
-WTForms==2.3.3
+WTForms==3.0.1
 langdetect==1.0.7
 Flask==1.1.2
 Jinja2==2.11.3
