@@ -148,7 +148,7 @@ class ReviewViewsTestCase(FrontendTestCase):
     def test_edit_draft_without_changes(self):
         self.temporary_login(self.user)
 
-        review = self.create_dummy_review()
+        review = self.create_dummy_review(is_draft=True)
         # test saving draft review without changes results in warning
         data = {
             review["entity_type"]: review["entity_id"],
