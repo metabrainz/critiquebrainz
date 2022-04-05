@@ -28,7 +28,7 @@
     {% endif %}
   </div>
 
-  {% if event['place-rels'] %}
+  {% if event['place-rels'] is defined %}
     {% set place = event['place-rels'][0]['place'] %}
     {% if place['coordinates'] %}
       {% set lat = place['coordinates']['latitude'] | float %}
@@ -37,7 +37,7 @@
   {% endif %}
 
   <div id="event-details" class="row">
-    {% if lat %}
+    {% if lat is defined %}
       <div class="col-md-4">
         <div id="map"></div>
         <script src="{{ get_static_path('leaflet.js') }}"></script>
@@ -57,7 +57,7 @@
       </div>
     {% endif %}
 
-    <div class="col-md-{% if lat %}5{% else %}9{% endif %}">
+    <div class="col-md-{% if lat is defined %}5{% else %}9{% endif %}">
       {{ entity_rate_form('event', 'event') }}
       <br/><br/>
       <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
@@ -114,7 +114,7 @@
       
       {% if 'release_group-rels' in event %}
         {% for rg in event['release_group-rels'] %}
-            <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['release_group']['id']) }}">{{ rg['release_group']['title'] }}</a></p>
+            <p><b>{{ rg['type'] | title }}:</b> <a href="{{ url_for('release_group.entity', id=rg['release_group'].mbid) }}">{{ rg['release_group']['title'] }}</a></p>
         {% endfor %}
       {% endif %}
 
@@ -123,7 +123,7 @@
           <b>{{ type | title }}</b>
           <ul class="list-unstyled">
             {% for artist in artists %}
-              <li><a href="{{ url_for('artist.entity', id=artist['artist']['id']) }}">{{ artist['artist']['name'] }}</a></li>
+              <li><a href="{{ url_for('artist.entity', id=artist['artist'].mbid) }}">{{ artist['artist']['name'] }}</a></li>
             {% endfor %}
           </ul>
         {% endfor %}
@@ -139,7 +139,7 @@
       <div class="external-links">
         <hr>
         <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
-        <a href="https://musicbrainz.org/event/{{ event.id }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+        <a href="https://musicbrainz.org/event/{{ event.mbid }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
       </div>
     </div>
   </div>

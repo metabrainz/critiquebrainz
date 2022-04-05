@@ -12,7 +12,7 @@
     <div class="col-md-6">
       <h4>CritiqueBrainz</h4>
       <p>{{ _('%(album)s by %(artist)s', album=release_group.title, artist=release_group['artist-credit-phrase']) }}</p>
-      {{ cover_art(release_group.id, 'release_group', attributes='class=cover-art') }}
+      {{ cover_art(release_group.mbid, 'release_group', attributes='class=cover-art') }}
     </div>
     <div class="col-md-6">
       <h4>{{ _('Spotify') }}</h4>
@@ -22,9 +22,9 @@
     </div>
   </div>
   <hr />
-  <form role="form" method="POST" action="{{ url_for('mapping.spotify_report', release_group_id=release_group.id, spotify_id=spotify_album.id) }}">
+  <form role="form" method="POST" action="{{ url_for('mapping.spotify_report', release_group_id=release_group.mbid, spotify_id=spotify_album.id) }}">
     <button type="submit" class="btn btn-danger">{{ _('Report incorrect mapping') }}</button>
-    <a href="{{ url_for('mapping.spotify_list', release_group_id=release_group.id) }}" class="btn btn-default">{{ _('Cancel') }}</a>
+    <a href="{{ url_for('mapping.spotify_list', release_group_id=release_group.mbid) }}" class="btn btn-default">{{ _('Cancel') }}</a>
   </form>
 </div>
 {% endblock %}

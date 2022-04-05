@@ -5,9 +5,9 @@
 {% block content %}
 <h2>{{ _('Spotify album mapping') }}</h2>
 <p class="lead">
-  {% if release_group['first-release-date'] %}
+  {% if release_group['first-release-date'] is defined %}
     {% set album = '"%s" <span class="text-muted">(%s)</span>'|safe % (release_group.title, release_group['first-release-date'][:4]) %}
-  {% elif release_group['first-release-year']%}
+  {% elif release_group['first-release-year'] is defined %}
     {% set album = '"%s" <span class="text-muted">(%s)</span>'|safe % (release_group.title, release_group['first-release-year']) %}
   {% else %}
     {% set album = '"%s"' % release_group.title %}
@@ -22,8 +22,8 @@
     <div class="col-md-3">
       <div class="thumbnail">
         <div class="cover-art-container">
-          <a href="{{ url_for('mapping.spotify_confirm', release_group_id=release_group.id, spotify_ref=item.uri) }}" class="match-link" data-toggle="tooltip" data-placement="bottom" title="This is the same album!" rel="nofollow">
-            {% if item.images %}
+          <a href="{{ url_for('mapping.spotify_confirm', release_group_id=release_group.mbid, spotify_ref=item.uri) }}" class="match-link" data-toggle="tooltip" data-placement="bottom" title="This is the same album!" rel="nofollow">
+            {% if item.images is defined %}
               <img class="img-responsive" src="{{ item.images[0].url }}" />
             {% else %}
               <img class="img-responsive" src="{{ get_static_path('images/placeholder_disc.svg') }}" />
@@ -46,7 +46,7 @@
     </div>
     {% endfor %}
   </div>
-  {{ display_pagination(page, count, limit, 'mapping.spotify_add', {'release_group_id':release_group.id}) }}
+  {{ display_pagination(page, count, limit, 'mapping.spotify_add', {'release_group_id':release_group.mbid}) }}
 {% else %}
   <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No similar albums found') }}</p>
 {% endif %}
@@ -57,7 +57,7 @@
   <p>{{ _('If you can\'t find the right album in search results, you can paste a Spotify link there:') }}</p>
   <form class="form-inline" role="form" action="{{ url_for('mapping.spotify_confirm') }}" method="GET">
     <div class="form-group">
-      <input type="hidden" name="release_group_id" value="{{ release_group.id }}">
+      <input type="hidden" name="release_group_id" value="{{ release_group.mbid }}">
       <input type="text" class="form-control input-sm" name="spotify_ref" placeholder="{{ _('Spotify URI or HTTP link') }}" size="40">
     </div>
     <button type="submit" class="btn btn-default btn-sm">{{ _('Submit') }}</button>
@@ -74,7 +74,7 @@
 <p>
   <strong>
     {{ _('It\'s fine if you can\'t find the right album. It might not be available on Spotify yet.') }}
-    {{ _('You can <a href="%(link)s">go back to the release group page</a>.', link=url_for('release_group.entity', id=release_group.id)) }}
+    {{ _('You can <a href="%(link)s">go back to the release group page</a>.', link=url_for('release_group.entity', id=release_group.mbid)) }}
   </strong>
 </p>
 {% endblock %}
@@ -111,7 +111,7 @@
 {%- endmacro %}
 
 {% macro release_date_string(album) -%}
-  {% if album.release_date %}
+  {% if album.release_date is defined %}
     {{ album.release_date.split('-')[0] }}
   {% endif %}
 

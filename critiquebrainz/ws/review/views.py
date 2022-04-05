@@ -1,3 +1,5 @@
+import logging
+
 from brainzutils import cache
 from flask import Blueprint, jsonify
 
@@ -374,12 +376,14 @@ def review_list_handler():
 
     # TODO(roman): Ideally caching logic should live inside the model. Otherwise it
     # becomes hard to track all this stuff.
-    cache_key = cache.gen_key('list', entity_id, user_id, sort, limit, offset, language, review_type)
+
+    cache_key = cache.gen_key('list', f'entity_id={entity_id}', f'user_id={user_id}', f'sort={sort}', f'limit={limit}', 
+                              f'offset={offset}', f'language={language}', f'review_type={review_type}')
     cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
+
     if cached_result:
         reviews = cached_result['reviews']
         count = cached_result['count']
-
     else:
         reviews, count = db_review.list_reviews(
             entity_id=entity_id,
@@ -392,10 +396,22 @@ def review_list_handler():
             review_type=review_type
         )
         reviews = [db_review.to_dict(p) for p in reviews]
+
         cache.set(cache_key, {
             'reviews': reviews,
             'count': count,
-        }, namespace=REVIEW_CACHE_NAMESPACE, time=REVIEW_CACHE_TIMEOUT)
+        }, expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
+
+        # When we cache the results of a request, we include (entity_id, user_id, sort, limit, offset, language, review_type)
+        # in the cache key. When entity_id is edited or deleted, we need to expire all cache items for this entity.
+        # To do this, we track all of the cache keys for the entity in a separate cache item, ws_cache_{entity_id}.
+        # These keys are retrieved and all keys are expired in invalidate_ws_entity_cache.
+        # For keys without an entity_id, we add them to a separate cache item ws_cache_entity_id_absent. The keys in
+        # this set invalidated when any review is modified or updated.
+        cache_keys_for_entity_id_key = cache.gen_key('ws_cache', entity_id if entity_id else 'entity_id_absent')
+        cache.sadd(cache_keys_for_entity_id_key, cache_key,
+                   expirein=REVIEW_CACHE_TIMEOUT,
+                   namespace=REVIEW_CACHE_NAMESPACE)
 
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 

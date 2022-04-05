@@ -3,7 +3,7 @@ Hi CritiqueBrainz moderator!
 {{username}} has just reported a spam review.
 
 Details:
-* Review link: {{review_link}}
+* Review link: https://critiquebrainz.org{{review_link}}
 * Reviewed By: {{review_author}}
 * Reason for reporting spam: {{reason}}
 

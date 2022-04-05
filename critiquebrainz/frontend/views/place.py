@@ -32,13 +32,13 @@ place_bp = Blueprint('place', __name__)
 @place_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    place = mb_place.get_place_by_id(id)
+    place = mb_place.get_place_by_mbid(id)
     if place is None:
         raise NotFound(gettext("Sorry, we couldn't find a place with that MusicBrainz ID."))
 
     if current_user.is_authenticated:
         my_reviews, _ = db_review.list_reviews(
-            entity_id=place['id'],
+            entity_id=place['mbid'],
             entity_type='place',
             user_id=current_user.id
         )
@@ -60,14 +60,14 @@ def entity(id):
         raise BadRequest("Invalid offset parameter!")
     
     reviews, count = db_review.list_reviews(
-        entity_id=place['id'],
+        entity_id=place['mbid'],
         entity_type='place',
         sort='popularity',
         limit=limit,
         offset=offset,
     )
-    avg_rating = get_avg_rating(place['id'], "place")
+    avg_rating = get_avg_rating(place['mbid'], "place")
 
-    return render_template('place/entity.html', id=place['id'], place=place, reviews=reviews,
+    return render_template('place/entity.html', id=place['mbid'], place=place, reviews=reviews,
                            rating_form=rating_form, my_review=my_review, limit=limit, offset=offset,
                            count=count, avg_rating=avg_rating, current_user=current_user)

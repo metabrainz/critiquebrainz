@@ -34,7 +34,7 @@ release_group_bp = Blueprint('release_group', __name__)
 @release_group_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
-    release_group = mb_release_group.get_release_group_by_id(id)
+    release_group = mb_release_group.get_release_group_by_mbid(id)
     if release_group is None:
         raise NotFound(gettext("Sorry, we couldn't find a release group with that MusicBrainz ID."))
 
@@ -47,14 +47,14 @@ def entity(id):
     else:
         tags = None
     if 'release-list' in release_group and release_group['release-list']:
-        release = mb_release.get_release_by_id(release_group['release-list'][0]['id'])
+        release = mb_release.get_release_by_mbid(release_group['release-list'][0]['mbid'])
     else:
         release = None
-    soundcloud_url = soundcloud.get_url(release_group['id'])
+    soundcloud_url = soundcloud.get_url(release_group['mbid'])
     if soundcloud_url:
         spotify_mappings = None
     else:
-        spotify_mappings = mbspotify.mappings(release_group['id'])
+        spotify_mappings = mbspotify.mappings(release_group['mbid'])
 
     try:
         limit = int(request.args.get('limit', default=10))
@@ -68,7 +68,7 @@ def entity(id):
     
     if current_user.is_authenticated:
         my_reviews, _ = db_review.list_reviews(
-            entity_id=release_group['id'],
+            entity_id=release_group['mbid'],
             entity_type='release_group',
             user_id=current_user.id,
         )
@@ -76,18 +76,18 @@ def entity(id):
     else:
         my_review = None
     reviews, count = db_review.list_reviews(
-        entity_id=release_group['id'],
+        entity_id=release_group['mbid'],
         entity_type='release_group',
         sort='popularity',
         limit=limit,
         offset=offset,
     )
-    avg_rating = get_avg_rating(release_group['id'], "release_group")
+    avg_rating = get_avg_rating(release_group['mbid'], "release_group")
 
     rating_form = RatingEditForm(entity_id=id, entity_type='release_group')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    return render_template('release_group/entity.html', id=release_group['id'], release_group=release_group,
+    return render_template('release_group/entity.html', id=release_group['mbid'], release_group=release_group,
                            reviews=reviews,
                            release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
                            soundcloud_url=soundcloud_url, external_reviews=external_reviews, limit=limit, offset=offset,

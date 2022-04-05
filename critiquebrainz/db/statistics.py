@@ -235,7 +235,7 @@ def get_top_users_overall():
             "score": (int),
         }
     """
-    key = cache.gen_key("top_users_overall", _CACHE_NAMESPACE)
+    key = "top_users_overall"
     top_users = cache.get(key, _CACHE_NAMESPACE)
 
     # if could not fetch results from cache, or fetched results have to be updated
@@ -252,7 +252,7 @@ def get_top_users_overall():
                 "users": results,
             }
 
-            cache.set(key=key, val=top_users, namespace=_CACHE_NAMESPACE, time=_DEFAULT_CACHE_EXPIRATION)
+            cache.set(key, top_users, _DEFAULT_CACHE_EXPIRATION, namespace=_CACHE_NAMESPACE)
         except db_exceptions.NoDataFoundException:
             return None
     return top_users["users"]

@@ -21,7 +21,7 @@ def entity(id):
     Displays release groups (split up into several sections depending on their
     type), artist information (type, members/member of, external links).
     """
-    artist = mb_artist.get_artist_by_id(str(id))
+    artist = mb_artist.get_artist_by_mbid(str(id))
     if artist is None:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
@@ -35,7 +35,7 @@ def entity(id):
     my_review = None
     if current_user.is_authenticated:
         my_reviews, my_count = db_review.list_reviews(
-            entity_id=artist['id'],
+            entity_id=artist['mbid'],
             entity_type='artist',
             user_id=current_user.id,
         )
@@ -43,14 +43,14 @@ def entity(id):
 
     reviews_offset = 0
     reviews, reviews_count = db_review.list_reviews(
-        entity_id=artist['id'],
+        entity_id=artist['mbid'],
         entity_type='artist',
         sort='popularity',
         limit=artist_reviews_limit,
         offset=reviews_offset,
     )
 
-    avg_rating = get_avg_rating(artist['id'], "artist")
+    avg_rating = get_avg_rating(artist['mbid'], "artist")
 
     rating_form = RatingEditForm(entity_id=id, entity_type='artist')
     rating_form.rating.data = my_review['rating'] if my_review else None
@@ -68,7 +68,7 @@ def entity(id):
         return redirect(url_for('.reviews'))
     release_groups_offset = (page - 1) * BROWSE_RELEASE_GROUPS_LIMIT
     release_groups, release_group_count = mb_release_group.browse_release_groups(
-        artist_id=artist['id'],
+        artist_id=artist['mbid'],
         release_types=[release_type],
         limit=BROWSE_RELEASE_GROUPS_LIMIT,
         offset=release_groups_offset,
@@ -76,7 +76,7 @@ def entity(id):
     for release_group in release_groups:
         # TODO(roman): Count reviews instead of fetching them.
         _, release_group_review_count = db_review.list_reviews(  # pylint: disable=unused-variable
-            entity_id=release_group['id'],
+            entity_id=release_group['mbid'],
             entity_type='release_group',
             sort='published_on', limit=1,
         )
@@ -84,7 +84,7 @@ def entity(id):
 
     return render_template(
         'artist/entity.html',
-        id=artist['id'],
+        id=artist['mbid'],
         artist=artist,
         release_type=release_type,
         release_groups=release_groups,
@@ -116,17 +116,18 @@ def _squash_duplicated_members(members):
     members_by_artist_id = OrderedDict()
 
     for member in members:
-        artist_id = member.get('artist', {}).get('id', None)
+        artist_id = member.get('artist', {}).get('mbid', None)
 
         if artist_id in members_by_artist_id:
             members_by_artist_id[artist_id]['attributes'].extend(member.get('attribute-list', []))
         else:
+            member_artist = member.get('artist', {})
             members_by_artist_id[artist_id] = {
-                'name': member.get('artist', {}).get('name', ''),
+                'name': member_artist.get('name', ''),
                 'periods': [],
                 'attributes': member.get('attribute-list', []),
-                'disambiguation': member.get('disambiguation', ''),
-                'artist_id': member.get('artist', {}).get('id', None),
+                'comment': member_artist.get('comment', ''),
+                'artist_id': member_artist.get('mbid', None),
                 'ended': member.get('ended')
             }
         period = _get_period(member)

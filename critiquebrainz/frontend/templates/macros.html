@@ -211,8 +211,8 @@
 {% endmacro %}
 
 {% macro display_artist_credit(result) %}
-    {% if result['artist-relation-list'] %}
-        {% if result['artist-credit-phrase'] %}
+    {% if result['artist-relation-list'] is defined %}
+        {% if result['artist-credit-phrase'] is defined %}
             <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-credit-phrase'] }}</a>
         {% else %}
             <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>

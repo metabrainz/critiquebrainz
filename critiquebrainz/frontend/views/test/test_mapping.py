@@ -35,9 +35,10 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
 
         self.test_spotify_id = "6IH6co1QUS7uXoyPDv0rIr"
         self.test_release_group = {
-            'id': '6b3cd75d-7453-39f3-86c4-1441f360e121',
+            'mbid': '6b3cd75d-7453-39f3-86c4-1441f360e121',
             'title': 'Test Release Group',
             'first-release-year': 1970,
+            'artist-credit-phrase': 'Test Artist',
             'artist-credit': [{
                 'name': 'Test Artist'
             }]
@@ -73,19 +74,19 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
             }
         }
 
-    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_id')
+    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_mbid')
     @mock.patch('critiquebrainz.frontend.external.spotify.get_multiple_albums')
     @mock.patch('critiquebrainz.frontend.external.mbspotify.mappings')
-    def test_spotify_list(self, mappings, get_multiple_albums, get_release_group_by_id):
+    def test_spotify_list(self, mappings, get_multiple_albums, get_release_group_by_mbid):
         # test for non-existent release group
         mappings.return_value = []
-        get_release_group_by_id.side_effect = mb_exceptions.NoDataFoundException
+        get_release_group_by_mbid.return_value = None
         response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
         self.assert404(response, "Can't find release group with a specified ID.")
 
         # test for release group with no mappings
-        get_release_group_by_id.reset_mock(side_effect=True)
-        get_release_group_by_id.return_value = self.test_release_group
+        get_release_group_by_mbid.reset_mock(return_value=True, side_effect=True)
+        get_release_group_by_mbid.return_value = self.test_release_group
         response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
         self.assert200(response)
         self.assertIn("No mappings", str(response.data))
@@ -104,16 +105,16 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         response = self.client.get("/mapping/6b3cd75d-7453-39f3-86c4-1441f360e121")
         self.assertStatus(response, 503)
 
-    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_id')
+    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_mbid')
     @mock.patch('critiquebrainz.frontend.external.spotify.get_multiple_albums')
     @mock.patch('critiquebrainz.frontend.external.spotify.search')
-    def test_spotify_add(self, search, get_multiple_albums, get_release_group_by_id):
+    def test_spotify_add(self, search, get_multiple_albums, get_release_group_by_mbid):
         # test `release_group_id` variable not supplied
         response = self.client.get("/mapping/spotify/add")
         self.assertRedirects(response, url_for('frontend.index'))
 
         # test for non-existent release group
-        get_release_group_by_id.side_effect = mb_exceptions.NoDataFoundException
+        get_release_group_by_mbid.return_value = None
         response = self.client.get("/mapping/spotify/add",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"},
                                    follow_redirects=True)
@@ -121,8 +122,8 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assertIn("Only existing release groups can be mapped to Spotify!", str(response.data))
 
         # test Spotify service unavailable
-        get_release_group_by_id.reset_mock(side_effect=True)
-        get_release_group_by_id.return_value = self.test_release_group
+        get_release_group_by_mbid.reset_mock(return_value=True, side_effect=True)
+        get_release_group_by_mbid.return_value = self.test_release_group
         search.side_effect = ExternalServiceException
         response = self.client.get("/mapping/spotify/add",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"})
@@ -148,12 +149,12 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assertIn("Test Album", str(response.data))
         self.assertIn("Test Artist", str(response.data))
 
-    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_id')
+    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_mbid')
     @mock.patch('critiquebrainz.frontend.external.spotify.get_multiple_albums')
     @mock.patch('critiquebrainz.frontend.external.mbspotify.add_mapping')
     @mock.patch('critiquebrainz.frontend.external.spotify.get_album')
     @mock.patch('critiquebrainz.frontend.external.spotify.search')
-    def test_spotify_confirm(self, search, get_album, add_mapping, get_multiple_albums, get_release_group_by_id):
+    def test_spotify_confirm(self, search, get_album, add_mapping, get_multiple_albums, get_release_group_by_mbid):
         self.temporary_login(self.user)
 
         # test `release_group_id` variable not supplied
@@ -162,7 +163,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assert400(response, "Didn't provide `release_group_id`!")
 
         # test for non-existent release group
-        get_release_group_by_id.side_effect = mb_exceptions.NoDataFoundException
+        get_release_group_by_mbid.return_value = None
         response = self.client.get("/mapping/spotify/confirm",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"},
                                    follow_redirects=True)
@@ -170,8 +171,8 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assertIn("Only existing release groups can be mapped to Spotify!", str(response.data))
 
         # test `spotify_ref` variable not supplied
-        get_release_group_by_id.reset_mock(side_effect=True)
-        get_release_group_by_id.return_value = self.test_release_group
+        get_release_group_by_mbid.reset_mock(return_value=True, side_effect=True)
+        get_release_group_by_mbid.return_value = self.test_release_group
         response = self.client.get("/mapping/spotify/confirm",
                                    query_string={"release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121"},
                                    follow_redirects=True)
@@ -238,12 +239,12 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assert200(response)
         self.assertIn("Spotify mapping has been added!", str(response.data))
 
-    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_id')
+    @mock.patch('critiquebrainz.frontend.external.musicbrainz_db.release_group.get_release_group_by_mbid')
     @mock.patch('critiquebrainz.frontend.external.spotify.get_multiple_albums')
     @mock.patch('critiquebrainz.frontend.external.mbspotify.mappings')
     @mock.patch('critiquebrainz.frontend.external.spotify.get_album')
     @mock.patch('critiquebrainz.frontend.external.mbspotify.vote')
-    def test_spotify_report(self, vote, get_album, mappings, get_multiple_albums, get_release_group_by_id):
+    def test_spotify_report(self, vote, get_album, mappings, get_multiple_albums, get_release_group_by_mbid):
         self.temporary_login(self.user)
 
         # test `release_group_id` variable not supplied
@@ -260,7 +261,7 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assert400(response, "Didn't provide `spotify_id`!")
 
         # test for non-existent release group
-        get_release_group_by_id.side_effect = mb_exceptions.NoDataFoundException
+        get_release_group_by_mbid.return_value = None
         response = self.client.get("/mapping/spotify/report",
                                    query_string={
                                        "release_group_id": "6b3cd75d-7453-39f3-86c4-1441f360e121",
@@ -270,8 +271,8 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
         self.assert404(response, "Can't find release group with a specified ID.")
 
         # test release group not mapped to supplied spotify uri
-        get_release_group_by_id.reset_mock(side_effect=True)
-        get_release_group_by_id.return_value = self.test_release_group
+        get_release_group_by_mbid.reset_mock(return_value=True, side_effect=True)
+        get_release_group_by_mbid.return_value = self.test_release_group
         mappings.return_value = []
         response = self.client.get("/mapping/spotify/report",
                                    query_string={
@@ -292,7 +293,6 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
                                        "spotify_id": "6IH6co1QUS7uXoyPDv0rIr"
                                    },
                                    follow_redirects=True)
-        # self.assertRedirects(response, url_for('mapping.spotify_list', release_group_id=self.test_release_group['id']))
         self.assert200(response)
         self.assertIn("You need to specify existing album from Spotify!", str(response.data))
 

@@ -52,10 +52,11 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.ws.errors import init_error_handlers
     init_error_handlers(app)
 
-    app.init_loggers(
-        file_config=app.config.get("LOG_FILE"),
-        sentry_config=app.config.get("LOG_SENTRY"),
-    )
+    # Sentry
+    from brainzutils import sentry
+    dsn = sentry_config=app.config.get("LOG_SENTRY")
+    if dsn:
+        sentry.init_sentry(dsn)
 
     # CritiqueBrainz Database
     from critiquebrainz import db as critiquebrainz_db
