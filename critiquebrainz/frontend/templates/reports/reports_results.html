@@ -1,5 +1,5 @@
 {% for report in results %}
-  {% set release_group = report.review.entity_id | entity_details %}
+  {% set release_group = report.review.entity_id | entity_details(entity_type=review.entity_type) %}
   <tr>
     <td>{{ report.reported_at | date }}</td>
     <td><a href="{{ url_for('user.info', user_id=report.user.id) }}">{{ report.user.display_name }}</a></td>
