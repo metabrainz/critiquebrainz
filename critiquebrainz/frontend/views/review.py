@@ -96,11 +96,18 @@ def entity(id, rev=None):
     if review["is_draft"] and not (current_user.is_authenticated and
                                    current_user == review["user"]):
         raise NotFound(gettext("Can't find a review with the specified ID."))
+
     if review["is_hidden"]:
-        if not current_user.is_admin():
+        # show review to admin users with a warning that it is hidden
+        if current_user.is_admin():
+            flash.warn(gettext("Review has been hidden."))
+        elif current_user.is_authenticated and current_user == review["user"]:
+            # show to the author of the review that it was hidden but not the actual review
             raise Forbidden(gettext("Review has been hidden. "
                                     "You need to be an administrator to view it."))
-        flash.warn(gettext("Review has been hidden."))
+        else:
+            # for all other users, return a 404 as if the review didn't exist
+            raise NotFound(gettext("Can't find a review with ID: %(review_id)s!", review_id=id))
 
     spotify_mappings = None
     soundcloud_url = None
@@ -520,7 +527,6 @@ def hide(id):
         review_reports, count = db_spam_report.list_reports(review_id=review["id"])  # pylint: disable=unused-variable
         for report in review_reports:
             db_spam_report.archive(report["user_id"], report["revision_id"])
-        flash.success(gettext("Review has been hidden."))
         return redirect(url_for('.entity', id=review["id"]))
 
     return render_template('log/action.html', review=review, form=form, action=AdminActions.ACTION_HIDE_REVIEW.value)
