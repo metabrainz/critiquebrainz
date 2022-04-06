@@ -211,15 +211,13 @@
 {% endmacro %}
 
 {% macro display_artist_credit(result) %}
-    {% if result['artist-relation-list'] is defined %}
-        {% if result['artist-credit-phrase'] is defined %}
-            <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-credit-phrase'] }}</a>
-        {% else %}
-            <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
-            {% set count = result['artist-relation-list'] | length %}
-            {% if count > 1 %}
-                + {{ count - 1 }} {{ _("more") }}
-            {% endif %}
+    {% if result['artist-credit-phrase'] is defined and result['artist-credit'] is defined and result['artist-credit'] %}
+        <a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}">{{ result['artist-credit-phrase'] }}</a>
+    {% elif result['artist-relation-list'] is defined and result['artist-relation-list'] %}
+        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+        {% set count = result['artist-relation-list'] | length %}
+        {% if count > 1 %}
+            + {{ count - 1 }} {{ _("more") }}
         {% endif %}
     {% else %}
         -

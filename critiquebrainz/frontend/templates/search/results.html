@@ -95,7 +95,7 @@
         <a href="{{ url_for('recording.entity', id=result.id) }}">{{ result['title'] }}</a>
       </td>
       <td>
-        {% if result['length'] %}
+        {% if result['length'] is defined %}
           {{ result['length'] | track_length_ms }}
         {% else %}
           -
@@ -103,12 +103,13 @@
       </td>
       <td>{{ display_artist_credit(result) }}</td>
       <td>
-        {% if result['release-list'] %}
-          <a href="{{ url_for('release.entity', id=result['release-list'][0].mbid) }}">{{ result['release-list'][0].title or '-' }}</a>
+        {% if result['release-list'] is defined and result['release-list'] %}
+          <a href="{{ url_for('release.entity', id=result['release-list'][0].id) }}">{{ result['release-list'][0].title or '-' }}</a>
         {% else %}
           -
         {% endif %}
       </td>
+      <td>{{ write_a_review(entity_type='label', entity_id=result.id) }}</td>
     </tr>
 
   {% endif %}
