@@ -167,7 +167,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             follow_redirects=True
         )
         self.assert200(response)
-        self.assertIn('You must edit either text or rating to update the review.', str(response.data))
+        self.assertIn('You must edit either text or rating to update the draft.', str(response.data))
 
         # test publishing draft review without changes does not cause error
         data["state"] = "publish"
@@ -178,7 +178,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             follow_redirects=True
         )
         self.assert200(response)
-        self.assertNotIn('You must edit either text or rating to update the review.', str(response.data))
+        self.assertNotIn('You must edit either text or rating to update the draft.', str(response.data))
 
     def test_edit(self):
         updated_text = "The text has now been updated"
