@@ -296,7 +296,7 @@ class ReviewViewsTestCase(FrontendTestCase):
         # check that error is shown to the user if they try to view their hidden reviews
         response = self.client.get("/review/{}".format(review["id"]))
         self.assert403(response)
-        self.assertIn("Review has been hidden.", response)
+        self.assertIn("Review has been hidden.", str(response.data))
 
         self.temporary_login(self.hacker)
         is_user_admin.return_value = True
