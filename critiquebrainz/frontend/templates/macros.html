@@ -1,7 +1,7 @@
 {% macro write_a_review(entity_type, entity_id) %}
     <a href="{{ url_for('review.create', entity_type=entity_type, entity_id=entity_id) }}"
-       role="button" class="btn btn-success">
-        <span class="glyphicon glyphicon-asterisk"></span>{{ _('Write a review') }}
+       role="button" class="btn btn-success btn-sm" title="{{_('Write a review')}}">
+        <span class="glyphicon glyphicon-plus-sign"></span> {{ _('Review') }}
     </a>
 {% endmacro %}
 

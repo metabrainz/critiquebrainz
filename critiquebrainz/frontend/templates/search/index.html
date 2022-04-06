@@ -48,50 +48,57 @@
 
     <table class="table table-hover">
       <thead>
-      {% if type=="artist" %}
+      {% if type == "artist" %}
         <tr>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Sort name') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Country') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="event" %}
+      {% elif type == "event" %}
         <tr>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Location') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="place" %}
+      {% elif type == "place" %}
         <tr>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Location') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="release-group" %}
+      {% elif type == "release-group" %}
         <tr>
           <th>{{ _('Release group') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Type') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="label" %}
+      {% elif type == "label" %}
         <tr>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Country') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="work" %}
+      {% elif type == "work" %}
         <tr>
           <th>{{ _('Title') }}</th>
           <th>{{ _('Artists') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Language') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="recording" %}
+      {% elif type == "recording" %}
         <tr>
           <th>{{ _('Title') }}</th>
           <th>{{ _('Length') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Release group') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
       {% endif %}
       </thead>
