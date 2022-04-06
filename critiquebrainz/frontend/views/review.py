@@ -270,7 +270,7 @@ def create(entity_type=None, entity_id=None):
             return redirect(url_for('.create', entity_type=entity_type, entity_id=entity_id))
 
         flash.info(gettext("Please choose an entity to review."))
-        return redirect(url_for('search.selector', next=url_for('.create')))
+        return redirect(url_for('search.index'))
 
     if entity_type not in ENTITY_TYPES:
         raise BadRequest("You can't write reviews about this type of entity.")

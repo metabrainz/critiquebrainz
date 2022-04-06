@@ -1,7 +1,7 @@
-{% from 'macros.html' import display_artist_credit %}
+{% from 'macros.html' import display_artist_credit, write_a_review %}
 {% for result in results %}
 
-  {% if type=="artist" %}
+  {% if type == "artist" %}
     <tr>
       <td>
         <a href="{{ url_for('artist.entity', id=result.id) }}">{{ result['name'] }}</a>
@@ -10,9 +10,10 @@
       <td>{{ result['sort-name'] is defined and result['sort-name'] }}</td>
       <td>{{ result['type'] is defined and result['type'] or '-' }}</td>
       <td>{{ result['country'] is defined and result['country'] or '-' }}</td>
+      <td>{{ write_a_review(entity_type='artist', entity_id=result.id) }}</td>
     </tr>
 
-  {% elif type=="release-group" %}
+  {% elif type == "release-group" %}
     <tr>
       <td>
         <a href="{{ url_for('release_group.entity', id=result.id) }}">{{ result['title'] }}</a>
@@ -20,9 +21,10 @@
       </td>
       <td>{{ display_artist_credit(result) }}</td>
       <td>{{ result['primary-type'] is defined and result['primary-type'] or '-' }}</td>
+      <td>{{ write_a_review(entity_type='release_group', entity_id=result.id) }}</td>
     </tr>
 
-  {% elif type=="event" %}
+  {% elif type == "event" %}
     <tr>
       <td>
         <a href="{{ url_for('event.entity', id=result.id) }}">{{ result['name'] }}</a>
@@ -37,9 +39,10 @@
           -
         {% endif %}
       </td>
+      <td>{{ write_a_review(entity_type='event', entity_id=result.id) }}</td>
     </tr>
 
-  {% elif type=="place" %}
+  {% elif type == "place" %}
     <tr>
       <td>
         <a href="{{ url_for('place.entity', id=result.id) }}">{{ result['name'] }}</a>
@@ -54,9 +57,10 @@
           -
         {% endif %}
       </td>
+      <td>{{ write_a_review(entity_type='place', entity_id=result.id) }}</td>
     </tr>
 
-  {% elif type=="work" %}
+  {% elif type == "work" %}
     <tr>
       <td>
         <a href="{{ url_for('work.entity', id=result.id) }}">{{ result['title'] }}</a>
@@ -68,9 +72,10 @@
       <td>
         {{ result['language'] is defined and result['language'] or '-' }}
       </td>
+      <td>{{ write_a_review(entity_type='work', entity_id=result.id) }}</td>
     </tr>
 
-  {% elif type=="label" %}
+  {% elif type == "label" %}
     <tr>
       <td>
         <a href="{{ url_for('label.entity', id=result.id) }}">{{ result['name'] }}</a>
@@ -81,15 +86,16 @@
       <td>
         {{ result['country'] is defined and result['country'] or '-' }}
       </td>
+      <td>{{ write_a_review(entity_type='label', entity_id=result.id) }}</td>
     </tr>
 
-  {% elif type=="recording" %}
+  {% elif type == "recording" %}
     <tr>
       <td>
         <a href="{{ url_for('recording.entity', id=result.id) }}">{{ result['title'] }}</a>
       </td>
       <td>
-        {% if result['length'] %}
+        {% if result['length'] is defined %}
           {{ result['length'] | track_length_ms }}
         {% else %}
           -
@@ -97,12 +103,13 @@
       </td>
       <td>{{ display_artist_credit(result) }}</td>
       <td>
-        {% if result['release-list'] %}
-          <a href="{{ url_for('release.entity', id=result['release-list'][0].mbid) }}">{{ result['release-list'][0].title or '-' }}</a>
+        {% if result['release-list'] is defined and result['release-list'] %}
+          <a href="{{ url_for('release.entity', id=result['release-list'][0].id) }}">{{ result['release-list'][0].title or '-' }}</a>
         {% else %}
           -
         {% endif %}
       </td>
+      <td>{{ write_a_review(entity_type='label', entity_id=result.id) }}</td>
     </tr>
 
   {% endif %}

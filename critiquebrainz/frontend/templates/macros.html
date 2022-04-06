@@ -1,3 +1,10 @@
+{% macro write_a_review(entity_type, entity_id) %}
+    <a href="{{ url_for('review.create', entity_type=entity_type, entity_id=entity_id) }}"
+       role="button" class="btn btn-success btn-sm" title="{{_('Write a review')}}">
+        <span class="glyphicon glyphicon-plus-sign"></span> {{ _('Review') }}
+    </a>
+{% endmacro %}
+
 {% macro print_message(message, category) %}
   {% if category == "error" %}
     {% set alert_class="alert-danger" %}
@@ -204,15 +211,13 @@
 {% endmacro %}
 
 {% macro display_artist_credit(result) %}
-    {% if result['artist-relation-list'] is defined %}
-        {% if result['artist-credit-phrase'] is defined %}
-            <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-credit-phrase'] }}</a>
-        {% else %}
-            <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
-            {% set count = result['artist-relation-list'] | length %}
-            {% if count > 1 %}
-                + {{ count - 1 }} {{ _("more") }}
-            {% endif %}
+    {% if result['artist-credit-phrase'] is defined and result['artist-credit'] is defined and result['artist-credit'] %}
+        <a href="{{ url_for('artist.entity', id=result['artist-credit'][0].artist.id) }}">{{ result['artist-credit-phrase'] }}</a>
+    {% elif result['artist-relation-list'] is defined and result['artist-relation-list'] %}
+        <a href="{{ url_for('artist.entity', id=result['artist-relation-list'][0].artist.id) }}">{{ result['artist-relation-list'][0]['artist']['name'] or '-' }}</a>
+        {% set count = result['artist-relation-list'] | length %}
+        {% if count > 1 %}
+            + {{ count - 1 }} {{ _("more") }}
         {% endif %}
     {% else %}
         -

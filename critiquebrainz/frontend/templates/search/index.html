@@ -23,13 +23,13 @@
     <label for="type-selector" class="col-sm-2 control-label">{{ _('Type') }}</label>
     <div class="col-sm-2">
       <select id="type-selector" name="type" class="form-control">
+        <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>{{ _('Artist') }}</option>
+        <option value="work" {% if type=="work" %}selected="selected"{% endif %}>{{ _('Work') }}</option>
+        <option value="label" {% if type=="label" %}selected="selected"{% endif %}>{{ _('Label') }}</option>
+        <option value="event" {% if type=="event" %}selected="selected"{% endif %}>{{ _('Event') }}</option>
+        <option value="place" {% if type=="place" %}selected="selected"{% endif %}>{{ _('Place') }}</option>
         <option value="release-group" {% if type=="release-group" %}selected="selected"{% endif %}>{{ _('Release group') }}</option>
         <option value="recording" {% if type=="recording" %}selected="selected"{% endif %}>{{ _('Recording') }}</option>
-        <option value="artist" {% if type=="artist" %}selected="selected"{% endif %}>{{ _('Artist') }}</option>
-        <option value="event" {% if type=="event" %}selected="selected"{% endif %}>{{ _('Event') }}</option>
-        <option value="label" {% if type=="label" %}selected="selected"{% endif %}>{{ _('Label') }}</option>
-        <option value="place" {% if type=="place" %}selected="selected"{% endif %}>{{ _('Place') }}</option>
-        <option value="work" {% if type=="work" %}selected="selected"{% endif %}>{{ _('Work') }}</option>
       </select>
     </div>
   </div>
@@ -48,50 +48,57 @@
 
     <table class="table table-hover">
       <thead>
-      {% if type=="artist" %}
+      {% if type == "artist" %}
         <tr>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Sort name') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Country') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="event" %}
+      {% elif type == "event" %}
         <tr>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Location') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="place" %}
+      {% elif type == "place" %}
         <tr>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Location') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="release-group" %}
+      {% elif type == "release-group" %}
         <tr>
           <th>{{ _('Release group') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Type') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="label" %}
+      {% elif type == "label" %}
         <tr>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Country') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="work" %}
+      {% elif type == "work" %}
         <tr>
           <th>{{ _('Title') }}</th>
           <th>{{ _('Artists') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Language') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
-      {% elif type=="recording" %}
+      {% elif type == "recording" %}
         <tr>
           <th>{{ _('Title') }}</th>
           <th>{{ _('Length') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Release group') }}</th>
+          <th>{{ _('Write a review') }}</th>
         </tr>
       {% endif %}
       </thead>

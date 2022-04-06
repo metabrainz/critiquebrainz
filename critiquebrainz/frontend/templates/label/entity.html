@@ -16,7 +16,7 @@
   {% if not my_review %}
     <a id="write-review" href="{{ url_for('review.create', entity_type='label', entity_id=id) }}"
         role="button" class="btn btn-success pull-right">
-      <span class="glyphicon glyphicon-asterisk"></span> {{ _('Write a review') }}
+      <span class="glyphicon glyphicon-plus-sign"></span> {{ _('Write a review') }}
     </a>
   {% else %}
     <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
