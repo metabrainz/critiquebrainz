@@ -277,6 +277,30 @@ class ReviewViewsTestCase(FrontendTestCase):
         review = db_review.get_by_id(review["id"])
         self.assertEqual(review["is_hidden"], True)
 
+        # check that on opening the review directly hidden message is flashed
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert200(response)
+        self.assertIn("Review has been hidden.", str(response.data))
+
+        # make self.hacker as current user
+        self.temporary_login(self.hacker)
+        is_user_admin.return_value = False
+
+        # check that hidden review is not visible to other non-admin users
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert404(response)
+
+        # make self.user as current user
+        self.temporary_login(self.user)
+
+        # check that error is shown to the user if they try to view their hidden reviews
+        response = self.client.get("/review/{}".format(review["id"]))
+        self.assert403(response)
+        self.assertIn("Review has been hidden.", response)
+
+        self.temporary_login(self.hacker)
+        is_user_admin.return_value = True
+
         # hiding already hidden review flashes message
         response = self.client.post(
             "review/{}/hide".format(review["id"]),
