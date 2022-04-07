@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 
 {% set entity = review.entity_id | entity_details(entity_type=review.entity_type) %}
-{% if review.entity_type == 'release_group' %}
-  {% set entity_title = entity['title'] | default(_('[Unknown release group]')) %}
-{% elif review.entity_type == 'event' %}
-  {% set entity_title = entity['name'] | default(_('[Unknown event]')) %}
-{% elif review.entity_type == 'place' %}
-  {% set entity_title = entity['name'] | default(_('[Unknown place]')) %}
+{% if entity.title is defined %}
+  {% set entity_title = entity.title %}
+{% elif entity.name is defined %}
+  {% set entity_title = entity.name %}
 {% endif %}
 
 {% block title %}
