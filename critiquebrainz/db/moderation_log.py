@@ -92,17 +92,21 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
                review_id,
                moderation_log.user_id,
                user_info.display_name as user_name,
+               user_info.musicbrainz_username as user_username,
                admin_info.display_name as admin_name,
+               admin_info.musicbrainz_username as admin_username,
                action,
                timestamp,
                entity_id,
                reason,
                review_user_id,
-               review_user_name
+               review_user_name,
+               review_user_username
           FROM moderation_log
      LEFT JOIN (
                 SELECT "user".id,
-                       "display_name"
+                       "display_name",
+                       "user".musicbrainz_id as musicbrainz_username
                   FROM "user"
                ) AS admin_info
             ON admin_id = admin_info.id
@@ -110,6 +114,7 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
                 SELECT review.id as review_uuid,
                        "user".id as review_user_id,
                        "user".display_name as review_user_name,
+                       "user".musicbrainz_id as review_user_username,
                        review.entity_id
                   FROM review JOIN "user"
                     ON "user".id = user_id
@@ -117,7 +122,8 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
             ON review_id = review_info.review_uuid
      LEFT JOIN (
                 SELECT "user".id,
-                       "display_name"
+                       "display_name",
+                       "user".musicbrainz_id as musicbrainz_username
                   FROM "user"
                ) AS user_info
             ON moderation_log.user_id = user_info.id
@@ -134,18 +140,24 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
             log = dict(log)
             log["user"] = {
                 "id": log["user_id"],
+                'username_or_id': log["user_username"] or log["user_id"],
                 "display_name": log.pop("user_name"),
+                "musicbrainz_username": log.pop("user_username"),
             }
             log["admin"] = {
                 "id": log["admin_id"],
+                'username_or_id': log["admin_username"] or log["admin_id"],                
                 "display_name": log.pop("admin_name"),
+                "musicbrainz_username": log.pop("admin_username"),
             }
             log["review"] = {
                 "id": log["review_id"],
                 "entity_id": log.pop("entity_id"),
                 "user": {
-                    "id": log.pop("review_user_id"),
+                    "id": log["review_user_id"],
+                    "username_or_id": log["review_user_username"] or log.pop('review_user_id'),
                     "display_name": log.pop("review_user_name"),
+                    "musicbrainz_username": log.pop("review_user_username"),
                 }
             }
             logs.append(log)

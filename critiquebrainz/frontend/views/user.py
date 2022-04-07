@@ -111,7 +111,7 @@ def info(user_ref):
 @admin_view
 def block(user_ref):
     user = get_user_from_username_or_id(user_ref)
-
+    user['username_or_id'] = user['musicbrainz_username'] or user['id']
     if user['is_blocked']:
         flash.info(gettext("This account is already blocked."))
         return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
@@ -122,7 +122,7 @@ def block(user_ref):
         db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_BLOCK_USER,
                                  reason=form.reason.data, user_id=user['id'])
         flash.success(gettext("This user account has been blocked."))
-        return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
+        return redirect(url_for('user.reviews', user_ref=user['username_or_id']))
 
     return render_template('log/action.html', user=user, form=form, action=AdminActions.ACTION_BLOCK_USER.value)
 
@@ -132,6 +132,7 @@ def block(user_ref):
 @admin_view
 def unblock(user_ref):
     user = get_user_from_username_or_id(user_ref)
+    user['username_or_id'] = user['musicbrainz_username'] or user['id']
 
     if not user['is_blocked']:
         flash.info(gettext("This account is not blocked."))
@@ -143,6 +144,6 @@ def unblock(user_ref):
         db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_UNBLOCK_USER,
                                  reason=form.reason.data, user_id=user['id'])
         flash.success(gettext("This user account has been unblocked."))
-        return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
+        return redirect(url_for('user.reviews', user_ref=user['username_or_id']))
 
     return render_template('log/action.html', user=user, form=form, action=AdminActions.ACTION_UNBLOCK_USER.value)
