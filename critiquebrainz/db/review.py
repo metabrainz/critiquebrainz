@@ -470,9 +470,11 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
 
     result = connection.execute(query, filter_data)
     count = result.fetchone()[0]
-    order_by_clause = str()
-    if sort_order == None:
+    order_by_clause = ""
+    if not sort_order:
         sort_order = 'DESC'
+    if sort_order.upper() not in ('ASC', 'DESC'):
+        raise ValueError("sort_order must be ASC or DESC")
 
     if sort == "popularity":
         order_by_clause = """

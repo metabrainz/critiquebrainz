@@ -30,9 +30,10 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-        <li><a href="{{ url_for('review.browse', entity_type=entity_type, sort='popularity', sort_order='desc') }}">{{ _('Popularity') }}</a></li> 
-        <li><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='desc') }}">{{ _('Newest') }}</a></li> 
-        <li><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='asc') }}">{{ _('Oldest') }}</a></li>      
+        <li {% if sort == 'popularity' and sort_order == 'desc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='popularity', sort_order='desc') }}">{{ sort_options['popularity', 'desc'] }}</a></li>
+        <li {% if sort == 'popularity' and sort_order == 'asc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='popularity', sort_order='asc') }}">{{ sort_options['popularity', 'asc'] }}</a></li>
+        <li {% if sort == 'published_on' and sort_order == 'desc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='desc') }}">{{ sort_options['published_on', 'desc'] }}</a></li>
+        <li {% if sort == 'published_on' and sort_order == 'asc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='asc') }}">{{ sort_options['published_on', 'asc'] }}</a></li>
     </ul>
   </div>
 </ul>

@@ -43,11 +43,17 @@ def get_review_or_404(review_id):
 def browse():
     entity_type = request.args.get('entity_type', default=None)
     sort = request.args.get('sort', default='published_on')
-    sort_options = {('popularity', 'desc'): 'Popularity', ('published_on', 'desc'): 'Newest', ('published_on', 'asc'): 'Oldest'}
     sort_order = request.args.get('sort_order', default='desc')
     if entity_type == 'all':
         entity_type = None
-    
+
+    sort_options = {
+        ('popularity', 'asc'): gettext('Least Popular'),
+        ('popularity', 'desc'): gettext('Most Popular'),
+        ('published_on', 'desc'): gettext('Newest'),
+        ('published_on', 'asc'): gettext('Oldest')
+    }
+
     try:
         page = int(request.args.get('page', default=1))
     except ValueError:
