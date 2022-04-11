@@ -1,13 +1,6 @@
-FROM metabrainz/python:3.8-20210115
+FROM metabrainz/python:3.10-20220315
 
 ENV PYTHONUNBUFFERED 1
-
-# remove expired let's encrypt certificate and install new ones
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates \
-    && rm -rf /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt \
-    && update-ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
      && apt-get install -y --no-install-recommends \
