@@ -39,6 +39,10 @@ def get_review_or_404(review_id):
     return review
 
 
+valid_browse_sort = ['published_on', 'popularity']
+valid_browse_sort_order = ['asc', 'desc']
+
+
 @review_bp.route('/')
 def browse():
     entity_type = request.args.get('entity_type', default=None)
@@ -53,6 +57,15 @@ def browse():
         ('published_on', 'desc'): gettext('Newest'),
         ('published_on', 'asc'): gettext('Oldest')
     }
+
+    if entity_type and entity_type not in ENTITY_TYPES:
+        raise BadRequest("Not a valid entity type.")
+
+    if sort not in valid_browse_sort:
+        raise BadRequest("Not a valid sort field.")
+
+    if sort_order not in valid_browse_sort_order:
+        raise BadRequest("Not a valid sort order.")
 
     try:
         page = int(request.args.get('page', default=1))
