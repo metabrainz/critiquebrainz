@@ -61,6 +61,17 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.assert400(response)
         self.assertEqual(response.json['description'], 'Parameter `sort`: is not valid')
 
+    def test_review_sort_order(self):
+        response = self.client.get('/review/', query_string={'sort_order': 'desc'})
+        self.assert200(response)
+
+        response = self.client.get('/review/', query_string={'sort_order': 'asc'})
+        self.assert200(response)
+
+        response = self.client.get('/review/', query_string={'sort_order': 'hello'})
+        self.assert400(response)
+        self.assertEqual(response.json['description'], 'Parameter `sort_order`: is not valid')
+
     def test_review_count(self):
         resp = self.client.get('/review/').json
         self.assertEqual(resp['count'], 0)
@@ -284,8 +295,8 @@ class ReviewViewsTestCase(WebServiceTestCase):
         cache_keys = cache.smembers(track_key, namespace="Review")
         self.assertEqual(set(), cache_keys)
 
-        expected_cache_keys = {'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=popularity_limit=50_offset=0_language=None_review_type=None',
-                               'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=None_limit=5_offset=0_language=None_review_type=None'}
+        expected_cache_keys = {'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=popularity_sort_order=None_limit=50_offset=0_language=None_review_type=None',
+                               'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=None_sort_order=None_limit=5_offset=0_language=None_review_type=None'}
 
         # Test cache keys are recorded
         self.client.get('/review/', query_string={'sort': 'rating', 'entity_id': entity_id})

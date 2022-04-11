@@ -395,7 +395,7 @@ def invalidate_ws_entity_cache(entity_id):
 # pylint: disable=too-many-branches
 def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_id=None,
                      entity_type=None, license_id=None, user_id=None, language=None,
-                     exclude=None, sort=None, limit=20, offset=None, review_type=None):
+                     exclude=None, sort=None, sort_order=None, limit=20, offset=None, review_type=None):
     """
         helper function for list_reviews() that extends support for execution within a transaction by directly receiving the
         connection object
@@ -470,16 +470,20 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
 
     result = connection.execute(query, filter_data)
     count = result.fetchone()[0]
-    order_by_clause = str()
+    order_by_clause = ""
+    if not sort_order:
+        sort_order = 'DESC'
+    if sort_order.upper() not in ('ASC', 'DESC'):
+        raise ValueError("sort_order must be ASC or DESC")
 
     if sort == "popularity":
         order_by_clause = """
-            ORDER BY popularity DESC
-        """
+            ORDER BY popularity {sort_order}
+        """.format(sort_order=sort_order)
     elif sort == "published_on":
         order_by_clause = """
-            ORDER BY review.published_on DESC
-        """
+            ORDER BY review.published_on {sort_order}
+        """.format(sort_order=sort_order)
     elif sort == "random":
         order_by_clause = """
             ORDER BY RANDOM()
@@ -565,7 +569,7 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
 
 def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_type=None,
                  license_id=None, user_id=None, language=None, exclude=None,
-                 sort=None, limit=20, offset=None, review_type=None):
+                 sort=None, sort_order='DESC', limit=20, offset=None, review_type=None):
     """Get a list of reviews.
 
     This function provides several filters that can be used to select a subset of reviews.
@@ -575,7 +579,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
         entity_type (str): Type of the entity that has been reviewed.
         user_id (uuid): ID of the author.
         sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
-                    or "published_on" (order by publish time), or "random" (order randomly).
+                    "published_on" (order by publish time) or "random" (order randomly).
+        sort_order (str): Order of the returned reviews. Can be either "asc" or "desc".
         limit (int): Maximum number of reviews to return.
         offset (int): Offset that can be used in conjunction with the limit.
         language (str): Language code of reviews.
@@ -594,8 +599,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
     with db.engine.connect() as connection:
         return get_reviews_list(connection, inc_drafts=inc_drafts, inc_hidden=inc_hidden, entity_id=entity_id,
                                 entity_type=entity_type, license_id=license_id, user_id=user_id,
-                                language=language, exclude=exclude, sort=sort, limit=limit, offset=offset,
-                                review_type=review_type)
+                                language=language, exclude=exclude, sort=sort, sort_order=sort_order, limit=limit, 
+                                offset=offset, review_type=review_type)
 
 
 def get_popular_reviews_for_index():

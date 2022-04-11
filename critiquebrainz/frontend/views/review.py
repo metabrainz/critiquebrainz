@@ -39,12 +39,34 @@ def get_review_or_404(review_id):
     return review
 
 
+valid_browse_sort = ['published_on', 'popularity']
+valid_browse_sort_order = ['asc', 'desc']
+
+
 @review_bp.route('/')
 def browse():
     entity_type = request.args.get('entity_type', default=None)
+    sort = request.args.get('sort', default='published_on')
+    sort_order = request.args.get('sort_order', default='desc')
     if entity_type == 'all':
         entity_type = None
-    
+
+    sort_options = {
+        ('popularity', 'asc'): gettext('Least Popular'),
+        ('popularity', 'desc'): gettext('Most Popular'),
+        ('published_on', 'desc'): gettext('Newest'),
+        ('published_on', 'asc'): gettext('Oldest')
+    }
+
+    if entity_type and entity_type not in ENTITY_TYPES:
+        raise BadRequest("Not a valid entity type.")
+
+    if sort not in valid_browse_sort:
+        raise BadRequest("Not a valid sort field.")
+
+    if sort_order not in valid_browse_sort_order:
+        raise BadRequest("Not a valid sort order.")
+
     try:
         page = int(request.args.get('page', default=1))
     except ValueError:
@@ -54,7 +76,7 @@ def browse():
         return redirect(url_for('.browse'))
     limit = 3 * 9  # 9 rows
     offset = (page - 1) * limit
-    reviews, count = db_review.list_reviews(sort='published_on', limit=limit, offset=offset, entity_type=entity_type)
+    reviews, count = db_review.list_reviews(sort=sort, sort_order=sort_order, limit=limit, offset=offset, entity_type=entity_type)
     if not reviews:
         if page - 1 > count / limit:
             return redirect(url_for('review.browse', page=int(ceil(count / limit))))
@@ -73,7 +95,7 @@ def browse():
     reviews = [r for r in reviews if str(r["entity_id"]) in retrieved_entity_mbids]
 
     return render_template('review/browse.html', reviews=reviews, entities=entities_info,
-                           page=page, limit=limit, count=count, entity_type=entity_type)
+                           page=page, limit=limit, count=count, entity_type=entity_type, sort=sort, sort_order=sort_order, sort_options=sort_options)
 
 
 # TODO(psolanki): Refactor this function to remove PyLint warning.
