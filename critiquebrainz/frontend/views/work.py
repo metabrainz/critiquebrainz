@@ -47,7 +47,7 @@ def entity(id):
         raise BadRequest("Invalid page number!")
     
     if page < 1:
-        return redirect(url_for('.reviews'))
+        return redirect(url_for('work.entity', id=id))
 
     recording_rels = work['recording-rels']
     recording_count = len(recording_rels)
