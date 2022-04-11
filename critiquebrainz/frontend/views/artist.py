@@ -65,7 +65,7 @@ def entity(id):
         raise BadRequest("Invalid page number!")
     
     if page < 1:
-        return redirect(url_for('.reviews'))
+        return redirect(url_for('artist.entity', id=id))
     release_groups_offset = (page - 1) * BROWSE_RELEASE_GROUPS_LIMIT
     release_groups, release_group_count = mb_release_group.browse_release_groups(
         artist_id=artist['mbid'],

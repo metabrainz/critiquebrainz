@@ -17,7 +17,7 @@
 
     {{ _('%(work)s', work=work_name) }}
 
-    {% if work['life-span'] %}
+    {% if work['life-span'] is defined %}
       <small>{{ work['life-span']['begin'][:4] }}</small>
     {% endif %}
   </h2>
