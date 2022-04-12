@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import entity_rate_form, show_avg_rating with context %}
+{% from 'macros.html' import cover_art, entity_rate_form, show_avg_rating, display_pagination with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ label.name }} - CritiqueBrainz{% endblock %}
@@ -62,6 +62,57 @@
             <li class="next"><a href="{{ url_for('label.entity', id=id, reviews='all') }}">{{ _('Show all reviews') }}</a></li>
           {% endif %}
         </ul>
+      </div>
+    {% endif %}
+    <ul class="pagination"></ul>
+    <h4>{{ _('Discography') }}</h4>
+    <ul class="nav nav-tabs">
+      <li {% if release_type=='album' %}class="active"{% endif %}>
+        <a href="{{ url_for('label.entity', id=label.mbid) }}?release_type=album">{{ _('Albums') }}</a>
+      </li>
+      <li {% if release_type=='single' %}class="active"{% endif %}>
+        <a href="{{ url_for('label.entity', id=label.mbid) }}?release_type=single">{{ _('Singles') }}</a>
+      </li>
+      <li {% if release_type=='ep' %}class="active"{% endif %}>
+        <a href="{{ url_for('label.entity', id=label.mbid) }}?release_type=ep">{{ _('EPs') }}</a>
+      </li>
+      <li {% if release_type=='broadcast' %}class="active"{% endif %}>
+        <a href="{{ url_for('label.entity', id=label.mbid) }}?release_type=broadcast">{{ _('Broadcasts') }}</a>
+      </li>
+      <li {% if release_type=='other' %}class="active"{% endif %}>
+        <a href="{{ url_for('label.entity', id=label.mbid) }}?release_type=other">{{ _('Other releases') }}</a>
+      </li>
+    </ul>
+    {% if release_group_count==0 %}
+      <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No releases found') }}</p>
+      {% else %}
+      <div id="release-groups" class="row">
+        {% for release_group in release_groups %}
+          <div class="col-sm-4 col-md-4 col-lg-3">
+            {% set has_reviews = (release_group.review_count > 0) %}
+            <div class="thumbnail clearfix {% if has_reviews %}reviewed{% endif %}">
+              {% if has_reviews %}
+                <div class="review-count">
+                  {{ ngettext('%(num)d review', '%(num)d reviews', release_group.review_count) }}
+                </div>
+              {% endif %}
+              <div class="cover-art-container">
+                <a href="{{ url_for('release_group.entity', id=release_group.mbid) }}">
+                  {{ cover_art(release_group.mbid, 'release_group') }}
+                </a>
+              </div>
+              <div class="caption">
+                <div class="release-group-title">
+                  <a href="{{ url_for('release_group.entity', id=release_group.mbid) }}">{{ release_group.title }}</a>
+                </div>
+                {{ release_group['first-release-year'] is defined and release_group['first-release-year'] }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <div class="clearfix"></div>
+
+        {{ display_pagination(page, release_group_count, release_groups_limit, 'label.entity', {'id': id, 'release_type':release_type}) }}
       </div>
     {% endif %}
     <ul class="pagination"></ul>
