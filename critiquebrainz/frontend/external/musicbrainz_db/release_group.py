@@ -48,3 +48,33 @@ def browse_release_groups(*, artist_id, release_types=None, limit=None, offset=N
         )
         cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
     return release_groups
+
+
+def get_release_groups_for_label(label_id, release_types=None, limit=None, offset=None):
+    """Get all release groups linked to a label.
+
+    Args:
+        label_id (uuid): MBID of the label.
+        release_types (list): List of types of release groups to be fetched.
+        limit (int): Max number of release groups to return.
+        offset (int): Offset that can be used in conjunction with the limit.
+
+    Returns:
+        Tuple containing the list of dictionaries of release groups ordered by release year
+        and the total count of the release groups.
+    """
+    label_id = str(label_id)
+    if release_types is None:
+        release_types = []
+    release_types = [release_type.capitalize() for release_type in release_types]
+    key = cache.gen_key(label_id, limit, offset, *release_types)
+    release_groups = cache.get(key)
+    if not release_groups:
+        release_groups = db.get_release_groups_for_label(
+            label_id=label_id,
+            release_types=release_types,
+            limit=limit,
+            offset=offset
+        )
+        cache.set(key, release_groups, DEFAULT_CACHE_EXPIRATION)
+    return release_groups
