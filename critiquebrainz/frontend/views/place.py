@@ -24,7 +24,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
 from critiquebrainz.frontend.forms.rate import RatingEditForm
-from critiquebrainz.frontend.views import get_avg_rating
+from critiquebrainz.frontend.views import get_avg_rating, PLACE_REVIEW_LIMIT
 
 place_bp = Blueprint('place', __name__)
 
@@ -35,6 +35,10 @@ def entity(id):
     place = mb_place.get_place_by_mbid(id)
     if place is None:
         raise NotFound(gettext("Sorry, we couldn't find a place with that MusicBrainz ID."))
+
+    place_review_limit = PLACE_REVIEW_LIMIT
+    if request.args.get('reviews') == "all":
+        place_review_limit = None
 
     if current_user.is_authenticated:
         my_reviews, _ = db_review.list_reviews(
@@ -48,26 +52,26 @@ def entity(id):
 
     rating_form = RatingEditForm(entity_id=id, entity_type='place')
     rating_form.rating.data = my_review['rating'] if my_review else None
-
-    try:
-        limit = int(request.args.get('limit', default=10))
-    except ValueError:
-        raise BadRequest("Invalid limit parameter!")
-
-    try:
-        offset = int(request.args.get('offset', default=0))
-    except ValueError:
-        raise BadRequest("Invalid offset parameter!")
     
-    reviews, count = db_review.list_reviews(
+    reviews_offset = 0
+    reviews, reviews_count = db_review.list_reviews(
         entity_id=place['mbid'],
         entity_type='place',
         sort='popularity',
-        limit=limit,
-        offset=offset,
+        limit=place_review_limit,
+        offset=reviews_offset,
     )
     avg_rating = get_avg_rating(place['mbid'], "place")
 
-    return render_template('place/entity.html', id=place['mbid'], place=place, reviews=reviews,
-                           rating_form=rating_form, my_review=my_review, limit=limit, offset=offset,
-                           count=count, avg_rating=avg_rating, current_user=current_user)
+    return render_template(
+        'place/entity.html',
+        id=place['mbid'],
+        place=place,
+        reviews=reviews,
+        rating_form=rating_form,
+        my_review=my_review,
+        reviews_limit=place_review_limit,
+        reviews_count=reviews_count,
+        avg_rating=avg_rating,
+        current_user=current_user
+    )

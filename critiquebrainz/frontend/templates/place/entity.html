@@ -77,18 +77,11 @@
             {% endfor %}
           </tbody>
         </table>
-        <ul class="pagination">
-          {% set pages = count//limit %}
-          {% if count%limit %}
-            {% set pages = pages+1 %}
-          {% endif %}
-          {% if pages>1 %}
-            {% for p in range(pages) %}
-              {% set p_offset = p*limit %}
-              <li {% if offset == p_offset %}class="active"{% endif %}>
-                <a href="{{ url_for('place.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
-              </li>
-            {% endfor %}
+        <ul class="pager">
+          {% if not reviews_limit %}
+            <li class="next"><a href="{{ url_for('place.entity', id=place.mbid) }}">{{ _('Hide reviews') }}</a></li>
+          {% elif reviews_count > reviews_limit %}
+            <li class="next"><a href="{{ url_for('place.entity', id=place.mbid, reviews='all') }}">{{ _('Show all reviews') }}</a></li>
           {% endif %}
         </ul>
       {% endif %}
