@@ -16,15 +16,16 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_babel import gettext
 from flask_login import current_user
 from werkzeug.exceptions import NotFound, BadRequest
 
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.place as mb_place
+import critiquebrainz.frontend.external.musicbrainz_db.event as mb_event
 from critiquebrainz.frontend.forms.rate import RatingEditForm
-from critiquebrainz.frontend.views import get_avg_rating, PLACE_REVIEW_LIMIT
+from critiquebrainz.frontend.views import get_avg_rating, PLACE_REVIEW_LIMIT, BROWSE_EVENTS_LIMIT
 
 place_bp = Blueprint('place', __name__)
 
@@ -63,10 +64,40 @@ def entity(id):
     )
     avg_rating = get_avg_rating(place['mbid'], "place")
 
+    event_type = request.args.get('event_type', default='concert')
+    if event_type not in ['concert', 'festival', 'other']:  # supported event types
+        raise BadRequest("Unsupported event type.")
+
+    if event_type == 'other':
+        event_types = ['award ceremony', 'convention/expo', 'launch event', 'masterclass/clinic', 'stage performance', 'none']
+    else: 
+        event_types = [event_type]
+
+    try:
+        page = int(request.args.get('page', default=1))
+    except ValueError:
+        raise BadRequest("Invalid page number!")
+    
+    if page < 1:
+        return redirect(url_for('place.entity', id=id))
+
+    events_offset = (page - 1) * BROWSE_EVENTS_LIMIT
+    events, events_count = mb_event.get_event_for_place(
+        place_id=place['mbid'],
+        event_types=event_types,
+        limit=BROWSE_EVENTS_LIMIT,
+        offset=events_offset,
+    )
+    
     return render_template(
         'place/entity.html',
         id=place['mbid'],
         place=place,
+        events=events,
+        event_type=event_type,
+        page=page,
+        events_limit=BROWSE_EVENTS_LIMIT,
+        events_count=events_count,
         reviews=reviews,
         rating_form=rating_form,
         my_review=my_review,

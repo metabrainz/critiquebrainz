@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_avg_rating, entity_rate_form with context %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, display_pagination with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ place.name }} - CritiqueBrainz{% endblock %}
@@ -35,7 +35,7 @@
 
   <div id="place-details" class="row">
     {% if lat is defined %}
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div id="map"></div>
         <script>
           var map = L.map('map').setView([{{ lat }}, {{ long }}], 14);
@@ -48,7 +48,7 @@
       </div>
     {% endif %}
 
-    <div class="col-md-{% if lat is defined %}5{% else %}9{% endif %}">
+    <div class="col-md-{% if lat is defined %}6{% else %}9{% endif %}">
       {{ entity_rate_form('place', 'place') }}
       <br/><br/>
       <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
@@ -128,6 +128,62 @@
         <a href="https://musicbrainz.org/place/{{ place.mbid }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
       </div>
     </div>
+  </div>
+  <div class="col-md-9">
+    <ul class="pagination"></ul>
+    <h4>{{ _('Events') }}</h4>
+    <ul class="nav nav-tabs">
+      <li {% if event_type=='concert' %}class="active"{% endif %}>
+        <a href="{{ url_for('place.entity', id=place.mbid) }}?event_type=concert">{{ _('Concerts') }}</a>
+      </li>
+      <li {% if event_type=='festival' %}class="active"{% endif %}>
+        <a href="{{ url_for('place.entity', id=place.mbid) }}?event_type=festival">{{ _('Festivals') }}</a>
+      </li>
+      <li {% if event_type=='other' %}class="active"{% endif %}>
+        <a href="{{ url_for('place.entity', id=place.mbid) }}?event_type=other">{{ _('Other Events') }}</a>
+      </li>
+    </ul>
+    {% if events_count==0 %}
+      <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No events found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>{{ _('Title') }}</th>
+            <th>{{ _('Begin Date') }}</th>
+            <th>{{ _('End Date') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for event in events %}
+            <tr>
+              <td>
+                <a href="{{ url_for('event.entity', id=event.mbid) }}">
+                  {{ event.name }}
+                </a>
+              </td>
+              <td>
+                {% if event['life-span']['begin'] is defined %}
+                  {{ event['life-span']['begin'] }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>
+                {% if event['life-span']['end'] is defined %}
+                  {{ event['life-span']['end'] }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      {{ display_pagination(page, events_count, events_limit, 'place.entity', {'id': id, 'event_type':event_type}) }}
+    {% endif %}
+
   </div>
 {% endblock %}
 
