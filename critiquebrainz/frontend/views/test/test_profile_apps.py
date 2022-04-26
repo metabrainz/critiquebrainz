@@ -55,6 +55,21 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
         self.assertNotIn('You have created an application!', str(response.data))
         self.assertIn('callback URL must use http or https', str(response.data))
 
+    def test_create_invalid_website(self):
+        """Check that an error is returned if the redirect URL isn't an http/s url"""
+        self.temporary_login(self.user)
+        data = {
+            "name": "Another Application",
+            "desc": "Created for Hacking",
+            "website": "javascript://alert(ohno)",
+            "redirect_uri": "http://example.com/redirect",
+        }
+        response = self.client.post('/profile/applications/create', data=data,
+                                    follow_redirects=True)
+        self.assert200(response)
+        self.assertNotIn('You have created an application!', str(response.data))
+        self.assertIn('Homepage URL must use http or https', str(response.data))
+
     def test_edit(self):
         app = self.create_dummy_application()
 
