@@ -1,15 +1,34 @@
+{% macro entity_description(entity, entity_type) %}
+  {% if entity_type == "artist" %}
+    {{ entity['name'] }}
+  {% elif entity_type == "release_group" %}
+    {{ entity['title'] }} by {{ entity['artist-credit-phrase'] }}
+  {% elif entity_type == "event" %}
+    {{ entity['name'] }}
+  {% elif entity_type == "place" %}
+    {{ entity['name'] }}
+  {% elif entity_type == "work" %}
+    {{ entity['name'] }}
+  {% elif entity_type == "label" %}
+    {{ entity['name'] }}
+  {% elif entity_type == "recording" %}
+    {{ entity['name'] }} by {{ entity['artist-credit-phrase'] }}
+  {% else %}
+    [Unknown type]
+  {% endif %}
+{% endmacro %}
+
+
 {% for report in results %}
-  {% set release_group = report.review.entity_id | entity_details(entity_type=review.entity_type) %}
+  {% set entity = report.review.entity_id | entity_details(entity_type=report.review.entity_type) %}
   <tr>
     <td>{{ report.reported_at | date }}</td>
     <td><a href="{{ url_for('user.info', user_id=report.user.id) }}">{{ report.user.display_name }}</a></td>
     <td>{{ report.reason }}</td>
     <td>
       <a href="{{ url_for('review.entity', id=report.review.id) }}">
-        {{ release_group.title | default(_('[Unknown release group]')) }}
-        by
-        {{ release_group['artist-credit-phrase'] | default(_('[Unknown artist]')) }}
-      </a>
+        {{ entity_description(entity, report.review.entity_type) }}
+      </a> ({{report.review.entity_type | title}})
     </td>
     <td><a href="{{ url_for('user.info', user_id=report.review.user.id) }}">{{ report.review.user.display_name }}</a></td>
     <td>
