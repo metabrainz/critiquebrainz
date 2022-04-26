@@ -173,6 +173,7 @@ def list_reports(**kwargs):
                        ON spam_report.revision_id = revision.id)
             ON spam_report.user_id = "user".id
             {}
+      ORDER BY spam_report.reported_at desc
         OFFSET :offset
          LIMIT :limit
     """.format(filterstr))
