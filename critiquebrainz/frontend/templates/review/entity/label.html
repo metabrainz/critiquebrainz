@@ -1,4 +1,5 @@
 {% extends 'review/entity/base.html' %}
+{% from 'macros.html' import show_life_span with context %}
 
 {% set label = entity %}
 
@@ -17,8 +18,8 @@
 
     {{ _('%(label)s', label=label_name) }}
 
-    {% if label['life-span'] %}
-      <small>{{ label['life-span']['begin'][:4] }}</small>
-    {% endif %}
+    <small>
+      {{ show_life_span(label, False) }}
+    </small>
   </h2>
 {% endblock %}

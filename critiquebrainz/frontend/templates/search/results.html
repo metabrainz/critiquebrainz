@@ -1,4 +1,4 @@
-{% from 'macros.html' import display_artist_credit, write_a_review %}
+{% from 'macros.html' import display_artist_credit, write_a_review, show_life_span with context %}
 {% for result in results %}
 
   {% if type == "artist" %}
@@ -28,8 +28,9 @@
     <tr>
       <td>
         <a href="{{ url_for('event.entity', id=result.id) }}">{{ result['name'] }}</a>
-        {% if result['life-span'] is defined %}<span class="text-muted">({{ result['life-span']['begin'] }}
-          {% if result['life-span']['end'] is defined %} - {{ result['life-span']['end'] }}{% endif %})</span>{% endif %}
+        <span class="text-muted">
+          {{show_life_span(result, True)}}
+        </span>
       </td>
       <td>{{ display_artist_credit(result) }}</td>
       <td>

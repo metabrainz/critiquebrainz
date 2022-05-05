@@ -1,4 +1,5 @@
 {% extends 'review/entity/base.html' %}
+{% from 'macros.html' import show_life_span with context %}
 
 {% set event = entity %}
 
@@ -17,9 +18,9 @@
 
     {{ _('%(event)s', event=event_name) }}
 
-    {% if event['life-span'] is defined %}
-      <small>{{ event['life-span']['begin'][:4] }}</small>
-    {% endif %}
+    <small>
+      {{ show_life_span(event, True) }}
+    </small>
   </h2>
 {% endblock %}
 

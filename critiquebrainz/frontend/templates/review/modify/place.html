@@ -1,11 +1,13 @@
+{% from 'macros.html' import show_life_span with context %}
+
 <div class="col-md-12">
   <dl class="dl-horizontal">
     <dt>{{ _('Place') }}</dt>
     <dd>
       <a href="{{ url_for('place.entity', id=entity['mbid']) }}" target="_blank">{{ entity['name'] }}</a>
-      {% if entity['life-span'] %}
-        <span class="text-muted">({{ entity['life-span']['begin'] }} - {{ entity['life-span']['end'] }})</span>
-      {% endif %}
+      <span class="text-muted">
+        {{ show_life_span(entity, False) }}
+      </span>
     </dd>
     <dt>{{ _('Location') }}</dt>
     <dd>{{ entity['area']['name'] or '-' }}</dd>

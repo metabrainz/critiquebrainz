@@ -1,4 +1,5 @@
 {% extends 'review/entity/base.html' %}
+{% from 'macros.html' import show_life_span with context %}
 
 {% set artist = entity %}
 
@@ -17,8 +18,8 @@
 
     {{ _('%(artist)s', artist=artist_name) }}
 
-    {% if artist['life-span'] is defined %}
-      <small>{{ artist['life-span']['begin'][:4] }}</small>
-    {% endif %}
+    <small>
+      {{ show_life_span(artist, False) }}
+    </small>
   </h2>
 {% endblock %}

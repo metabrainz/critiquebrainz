@@ -1,4 +1,5 @@
 {% extends 'review/entity/base.html' %}
+{% from 'macros.html' import show_life_span with context %}
 
 {% set work = entity %}
 
@@ -17,8 +18,8 @@
 
     {{ _('%(work)s', work=work_name) }}
 
-    {% if work['life-span'] is defined %}
-      <small>{{ work['life-span']['begin'][:4] }}</small>
-    {% endif %}
+    <small>
+      {{ show_life_span(work, False) }}
+    </small>
   </h2>
 {% endblock %}
