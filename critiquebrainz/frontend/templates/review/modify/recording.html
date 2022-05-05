@@ -9,7 +9,7 @@
     </dd>
     <dt>{{ _('Length') }}</dt>
     <dd>
-      {% if entity['length'] %}
+      {% if entity['length'] is defined and entity['length'] %}
         {{ entity['length'] | track_length }}
       {% else %}
         -

@@ -180,7 +180,7 @@
       </ul>
     {% endif %}
 
-    {% if band_members['former_members'] %}
+    {% if band_members['former_members'] is defined and band_members['former_members'] %}
       <b>
         {% if artist.type is defined and artist.type == 'Person' %}
           {{ _('Former member of') }}

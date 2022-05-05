@@ -13,7 +13,7 @@
     <dd>{{ entity['type'] or '-' }}</dd>
     <dt>{{ _('Artists') }}</dt>
     <dd>
-      {% if entity['artist-rels'] %}
+      {% if entity['artist-rels'] is defined and entity['artist-rels'] %}
         {{ entity['artist-rels'][0]['artist']['name'] or '-' }}
         {% set count = entity['artist-rels'] | length %}
         {% if count > 1 %}

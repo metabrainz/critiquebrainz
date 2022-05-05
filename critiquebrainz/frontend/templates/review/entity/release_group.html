@@ -16,7 +16,7 @@
       {% set rg_name =  _('[Unknown release group]') %}
     {% endif %}
 
-    {% if release_group['artist-credit'] %}
+    {% if release_group['artist-credit'] is defined and release_group['artist-credit'] %}
       {% set artist = [] %}
       {% for credit in release_group['artist-credit'] %}
         {% if credit.artist %}

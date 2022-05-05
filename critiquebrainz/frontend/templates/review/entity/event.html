@@ -26,7 +26,7 @@
 
 {% if event['place-relation-list'] is defined %}
   {% set place = event['place-relation-list'][0]['place'] %}
-  {% if place['coordinates'] %}
+  {% if place['coordinates'] is defined and place['coordinates'] %}
     {% set lat = place['coordinates']['latitude'] | float %}
     {% set long = place['coordinates']['longitude'] | float %}
     {% set sidebar_visible = True %}
