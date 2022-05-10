@@ -68,8 +68,10 @@ def entity(id):
     if event_type not in ['concert', 'festival', 'other']:  # supported event types
         raise BadRequest("Unsupported event type.")
 
+    includeNullType = False
     if event_type == 'other':
-        event_types = ['award ceremony', 'convention/expo', 'launch event', 'masterclass/clinic', 'stage performance', 'none']
+        event_types = ['award ceremony', 'convention/expo', 'launch event', 'masterclass/clinic', 'stage performance']
+        includeNullType = True
     else: 
         event_types = [event_type]
 
@@ -87,6 +89,7 @@ def entity(id):
         event_types=event_types,
         limit=BROWSE_EVENTS_LIMIT,
         offset=events_offset,
+        includeNullType=includeNullType,
     )
     
     return render_template(

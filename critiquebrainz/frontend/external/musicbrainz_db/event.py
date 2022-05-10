@@ -25,7 +25,7 @@ def get_event_by_mbid(mbid):
     return event
 
 
-def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
+def get_event_for_place(place_id, event_types=None, limit=None, offset=None, includeNullType = False):
     """Get events for the place.
 
     Args:
@@ -33,12 +33,13 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
         event_types (list): List of event types to be fetched.
         limit (int): Max number of events to return.
         offset (int): Offset that can be used in conjunction with the limit.
+        includeNullType (bool): If True, include events with null event type.
 
     Returns:
         Tuple containing the list of dictionaries of events ordered by begin year
         and the total count of the events.
     """
-    key = cache.gen_key( place_id, limit, offset, *event_types)
+    key = cache.gen_key( place_id, limit, offset, includeNullType, *event_types)
     events = cache.get(key)
     if not events:
         events = db.get_event_for_place(
@@ -46,6 +47,7 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
             event_types=event_types,
             limit=limit,
             offset=offset,
+            includeNullType = includeNullType,
         )
         if not events:
             return None
