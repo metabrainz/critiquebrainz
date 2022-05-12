@@ -63,22 +63,34 @@ def entity(id):
         offset=reviews_offset,
     )
     avg_rating = get_avg_rating(place['mbid'], "place")
+    other_event_types = ['award ceremony', 'convention/expo', 'launch event', 'masterclass/clinic', 'stage performance']
+    event_type = request.args.get('event_type')
+    if event_type:
+        event_type_provided = True
+    else:
+        event_type_provided = False
+        event_type = 'concert'
 
-    event_type = request.args.get('event_type', default='concert')
     if event_type not in ['concert', 'festival', 'other']:  # supported event types
         raise BadRequest("Unsupported event type.")
 
     includeNullType = False
     if event_type == 'other':
-        event_types = ['award ceremony', 'convention/expo', 'launch event', 'masterclass/clinic', 'stage performance']
+        event_types = other_event_types
         includeNullType = True
     else: 
         event_types = [event_type]
 
-    try:
-        page = int(request.args.get('page', default=1))
-    except ValueError:
-        raise BadRequest("Invalid page number!")
+    page = request.args.get('page')
+    if page:
+        try:
+            page = int(page)
+            page_provided = True
+        except ValueError:
+            raise BadRequest("Invalid page number!")
+    else:
+        page = 1
+        page_provided = False
     
     if page < 1:
         return redirect(url_for('place.entity', id=id))
@@ -92,6 +104,30 @@ def entity(id):
         includeNullType=includeNullType,
     )
     
+    if events_count == 0 and event_type_provided == False and page_provided == False:
+        # check for events with festival event type
+        festivals, festivals_count = mb_event.get_event_for_place(
+            place_id=place['mbid'],
+            event_types=['festival'],
+            limit=BROWSE_EVENTS_LIMIT,
+            offset=events_offset,
+            includeNullType=includeNullType,
+        )
+        if festivals_count == 0:
+            # check for events with other event type
+            others, others_count = mb_event.get_event_for_place(
+                place_id=place['mbid'],
+                event_types=other_event_types,
+                limit=BROWSE_EVENTS_LIMIT,
+                offset=events_offset,
+                includeNullType=True,
+            )
+            if others_count > 0:
+                events = others
+                event_type = 'other'
+                events_count = others_count
+
+
     return render_template(
         'place/entity.html',
         id=place['mbid'],
@@ -109,3 +145,4 @@ def entity(id):
         avg_rating=avg_rating,
         current_user=current_user
     )
+
