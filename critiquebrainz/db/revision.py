@@ -230,3 +230,22 @@ def votes(revision_id):
             else:  # False = negative
                 revision_votes["negative"] += 1
     return revision_votes
+
+
+def delete_draft_revisons(review_id):
+    """Delete all draft revisions of a review after the review has been published.
+
+    Args:
+        review_id: ID of the review.
+    """
+    with db.engine.connect() as connection:
+        connection.execute(sqlalchemy.text("""
+            DELETE
+              FROM revision
+              USING review
+              WHERE review.id = revision.review_id
+              AND revision.review_id = :review_id
+              AND revision.timestamp < review.published_on               
+        """), {
+            "review_id": review_id,
+        })
