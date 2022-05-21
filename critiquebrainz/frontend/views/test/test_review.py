@@ -6,6 +6,7 @@ from flask import current_app, url_for
 
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review
+import critiquebrainz.db.revision as db_revision
 import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
 from critiquebrainz.frontend.testing import FrontendTestCase
@@ -374,3 +375,32 @@ class ReviewViewsTestCase(FrontendTestCase):
             review["entity_type"], review["entity_id"]))
         redirect_url = urlparse(response.location)
         self.assertEqual(redirect_url.path, url_for('review.entity', id=review['id']))
+
+
+    def test_publish_draft_review(self):
+        updated_text = 'This is the published review.'
+        review = self.create_dummy_review(is_draft=True)
+        self.temporary_login(self.user)
+        
+        data = {
+            review["entity_type"]: review["entity_id"],
+            "state": "publish",
+            "license_choice": self.license["id"],
+            "language": 'en',
+            "agreement": 'True',
+            "text": updated_text,
+            "rating": review["rating"]
+        }
+
+        response = self.client.post(
+            "/review/%s/edit" % review["id"],
+            data=data,
+            query_string=data,
+            follow_redirects=True
+        )
+        self.assert200(response)
+        self.assertIn(updated_text, str(response.data))
+
+        # test draft revisions are deleted after review is published
+        revisions = db_revision.get_count(review["id"])
+        self.assertEqual(revisions, 1)
