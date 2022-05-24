@@ -28,7 +28,8 @@ ENTITY_TYPES = [
     "work",
     "artist",
     "label",
-    "recording"
+    "recording",
+    "edition_group"
 ]
 
 supported_languages = []
