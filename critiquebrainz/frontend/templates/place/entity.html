@@ -149,7 +149,7 @@
       <table class="table table-condensed table-hover">
         <thead>
           <tr>
-            <th>{{ _('Title') }}</th>
+            <th style="width: 75%;">{{ _('Title') }}</th>
             <th>{{ _('Begin Date') }}</th>
             <th>{{ _('End Date') }}</th>
           </tr>
@@ -163,14 +163,14 @@
                 </a>
               </td>
               <td>
-                {% if event['life-span']['begin'] is defined %}
+                {% if event['life-span'] is defined and event['life-span']['begin'] is defined %}
                   {{ event['life-span']['begin'] }}
                 {% else %}
                   -
                 {% endif %}
               </td>
               <td>
-                {% if event['life-span']['end'] is defined %}
+                {% if event['life-span'] is defined and event['life-span']['end'] is defined %}
                   {{ event['life-span']['end'] }}
                 {% else %}
                   -
@@ -181,7 +181,7 @@
         </tbody>
       </table>
       
-      {{ display_pagination(page, events_count, events_limit, 'place.entity', {'id': id, 'event_type':event_type}) }}
+      {{ display_pagination(page, events_count, events_limit, 'place.entity', {'id': id, 'event_type': event_type}) }}
     {% endif %}
 
   </div>

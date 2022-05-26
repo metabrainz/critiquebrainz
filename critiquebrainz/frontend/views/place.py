@@ -30,6 +30,13 @@ from critiquebrainz.frontend.views import get_avg_rating, PLACE_REVIEW_LIMIT, BR
 place_bp = Blueprint('place', __name__)
 
 
+# These are the names from the `event_type` table in MusicBrainz. If a new one gets added there it needs to be added here too
+OTHER_EVENT_TYPES = ['award ceremony', 'convention/expo', 'launch event', 'masterclass/clinic', 'stage performance']
+EVENT_TYPE_CONCERT = 'concert'
+EVENT_TYPE_FESTIVAL = 'festival'
+EVENT_TYPE_OTHER = 'other'
+VALID_EVENT_PARAMS = [EVENT_TYPE_CONCERT, EVENT_TYPE_FESTIVAL, EVENT_TYPE_OTHER]
+
 @place_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
@@ -63,20 +70,20 @@ def entity(id):
         offset=reviews_offset,
     )
     avg_rating = get_avg_rating(place['mbid'], "place")
-    other_event_types = ['award ceremony', 'convention/expo', 'launch event', 'masterclass/clinic', 'stage performance']
+
     event_type = request.args.get('event_type')
+    event_type_provided = False
     if event_type:
         event_type_provided = True
     else:
-        event_type_provided = False
-        event_type = 'concert'
+        event_type = EVENT_TYPE_CONCERT
 
-    if event_type not in ['concert', 'festival', 'other']:  # supported event types
+    if event_type not in VALID_EVENT_PARAMS:  # supported event types
         raise BadRequest("Unsupported event type.")
 
     include_null_type = False
-    if event_type == 'other':
-        event_types = other_event_types
+    if event_type == EVENT_TYPE_OTHER:
+        event_types = OTHER_EVENT_TYPES
         include_null_type = True
     else: 
         event_types = [event_type]
@@ -105,10 +112,12 @@ def entity(id):
     )
     
     if events_count == 0 and not event_type_provided and not page_provided:
-        # check for events with festival event type
+        # If there is no event type parameter, it means we tried to get Concerts but there were't any.
+        # See if there are any festivals or other events and if so, redirect to show that tab instead.
+        # If all types have no events, then just show the Concerts tab anyway.
         festivals, festivals_count = mb_event.get_events_for_place(
             place_id=place['mbid'],
-            event_types=['festival'],
+            event_types=[EVENT_TYPE_FESTIVAL],
             limit=BROWSE_EVENTS_LIMIT,
             offset=events_offset,
             include_null_type=include_null_type,
@@ -117,15 +126,15 @@ def entity(id):
             # check for events with other event type
             others, others_count = mb_event.get_events_for_place(
                 place_id=place['mbid'],
-                event_types=other_event_types,
+                event_types=OTHER_EVENT_TYPES,
                 limit=BROWSE_EVENTS_LIMIT,
                 offset=events_offset,
                 include_null_type=True,
             )
             if others_count > 0:
-                events = others
-                event_type = 'other'
-                events_count = others_count
+                return redirect(url_for('place.entity', id=id, event_type=EVENT_TYPE_OTHER))
+        else:
+            return redirect(url_for('place.entity', id=id, event_type=EVENT_TYPE_FESTIVAL))
 
 
     return render_template(
