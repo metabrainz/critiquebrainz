@@ -74,10 +74,10 @@ def entity(id):
     if event_type not in ['concert', 'festival', 'other']:  # supported event types
         raise BadRequest("Unsupported event type.")
 
-    includeNullType = False
+    include_null_type = False
     if event_type == 'other':
         event_types = other_event_types
-        includeNullType = True
+        include_null_type = True
     else: 
         event_types = [event_type]
 
@@ -96,31 +96,31 @@ def entity(id):
         return redirect(url_for('place.entity', id=id))
 
     events_offset = (page - 1) * BROWSE_EVENTS_LIMIT
-    events, events_count = mb_event.get_event_for_place(
+    events, events_count = mb_event.get_events_for_place(
         place_id=place['mbid'],
         event_types=event_types,
         limit=BROWSE_EVENTS_LIMIT,
         offset=events_offset,
-        includeNullType=includeNullType,
+        include_null_type=include_null_type,
     )
     
-    if events_count == 0 and event_type_provided == False and page_provided == False:
+    if events_count == 0 and not event_type_provided and not page_provided:
         # check for events with festival event type
-        festivals, festivals_count = mb_event.get_event_for_place(
+        festivals, festivals_count = mb_event.get_events_for_place(
             place_id=place['mbid'],
             event_types=['festival'],
             limit=BROWSE_EVENTS_LIMIT,
             offset=events_offset,
-            includeNullType=includeNullType,
+            include_null_type=include_null_type,
         )
         if festivals_count == 0:
             # check for events with other event type
-            others, others_count = mb_event.get_event_for_place(
+            others, others_count = mb_event.get_events_for_place(
                 place_id=place['mbid'],
                 event_types=other_event_types,
                 limit=BROWSE_EVENTS_LIMIT,
                 offset=events_offset,
-                includeNullType=True,
+                include_null_type=True,
             )
             if others_count > 0:
                 events = others
