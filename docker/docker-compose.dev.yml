@@ -3,18 +3,18 @@ version: "3.4"
 
 volumes:
   cb_home:
+  cb_postgres:
 
 services:
 
   db:
     image: postgres:12.3
+    user: postgres
     environment:
-      POSTGRES_USER: critiquebrainz
-      POSTGRES_PASSWORD: critiquebrainz
-      POSTGRES_DB: critiquebrainz
-      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
-      - ../data/pgdata:/var/lib/postgresql/data/pgdata:z
+      - cb_postgres:/var/lib/postgresql/data:z
       - ./pg_custom:/docker-entrypoint-initdb.d/
     ports:
       - "127.0.0.1:15432:5432"
