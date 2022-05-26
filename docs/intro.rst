@@ -120,6 +120,12 @@ a single command::
    the ``data/mbdata`` directory by accident. Also make sure that you have about 25GB of free
    space to keep the MusicBrainz data.
 
+A BookBrainz database is also required for running CritiqueBrainz.
+You can import the database dump by downloading and importing the data in
+a single command::
+
+    $ ./develop.sh run --rm critiquebrainz scripts/download-import-dump.sh
+
 Next, initialize the CritiqueBrainz database::
 
    $ ./develop.sh run --rm critiquebrainz python3 manage.py init_db
