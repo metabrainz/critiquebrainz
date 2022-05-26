@@ -65,7 +65,7 @@
       </div>
     {% endif %}
     <ul class="pagination"></ul>
-    <h4>{{ _('Discography') }}</h4>
+    <h4>{{ _('Releases') }}</h4>
     <ul class="nav nav-tabs">
       <li {% if release_type=='album' %}class="active"{% endif %}>
         <a href="{{ url_for('label.entity', id=label.mbid) }}?release_type=album">{{ _('Albums') }}</a>

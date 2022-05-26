@@ -71,7 +71,7 @@ def get_release_groups_for_label(label_id, release_types=None, limit=None, offse
     release_groups = cache.get(key)
     if not release_groups:
         release_groups = db.get_release_groups_for_label(
-            label_id=label_id,
+            label_mbid=label_id,
             release_types=release_types,
             limit=limit,
             offset=offset
