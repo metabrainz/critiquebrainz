@@ -265,24 +265,22 @@
   {% endif %}
 {% endmacro %}
 
-{% macro show_life_span(entity, show_full_date) %}
-  {% if entity['life-span'] is defined %}
-    
-    ({% if entity['life-span']['begin'] is defined %}
-      {% if show_full_date %}
+{%- macro show_life_span(entity, show_full_date) %}
+  {%- if entity['life-span'] is defined %}
+    {%- if entity['life-span']['begin'] is defined %}
+      {%- if show_full_date -%}
         {{ entity['life-span']['begin'] }}
-      {% else %}
+      {%- else -%}
         {{ entity['life-span']['begin'][:4] }}
-      {% endif %}
-    {% endif %}
-    -
-    {% if entity['life-span']['end'] is defined %}
-      {% if show_full_date %}
+      {%- endif %}
+    {%- endif %}
+    {%- if entity['life-span']['end'] is defined %}
+    –
+      {%- if show_full_date -%}
         {{ entity['life-span']['end'] }}
-      {% else %}
+      {%- else -%}
         {{ entity['life-span']['end'][:4] }}
-      {% endif %}
-    {% endif %})
-
-  {% endif %}
-{% endmacro %}
+      {%- endif %}
+    {%- endif %}
+  {%- endif %}
+{%- endmacro %}
