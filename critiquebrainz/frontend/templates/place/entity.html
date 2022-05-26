@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_avg_rating, entity_rate_form, display_pagination with context %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_life_span, display_pagination with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ place.name }} - CritiqueBrainz{% endblock %}
@@ -150,8 +150,7 @@
         <thead>
           <tr>
             <th style="width: 75%;">{{ _('Title') }}</th>
-            <th>{{ _('Begin Date') }}</th>
-            <th>{{ _('End Date') }}</th>
+            <th>{{ _('Date') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -162,20 +161,7 @@
                   {{ event.name }}
                 </a>
               </td>
-              <td>
-                {% if event['life-span'] is defined and event['life-span']['begin'] is defined %}
-                  {{ event['life-span']['begin'] }}
-                {% else %}
-                  -
-                {% endif %}
-              </td>
-              <td>
-                {% if event['life-span'] is defined and event['life-span']['end'] is defined %}
-                  {{ event['life-span']['end'] }}
-                {% else %}
-                  -
-                {% endif %}
-              </td>
+              <td>{{ show_life_span(event, True) }}</td>
             </tr>
           {% endfor %}
         </tbody>
