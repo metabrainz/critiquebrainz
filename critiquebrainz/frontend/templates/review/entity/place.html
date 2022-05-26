@@ -27,7 +27,7 @@
   </h2>
 {% endblock %}
 
-{% if place['coordinates'] %}
+{% if place['coordinates'] is defined %}
   {% set lat = place['coordinates']['latitude'] | float %}
   {% set long = place['coordinates']['longitude'] | float %}
   {% set sidebar_visible = True %}
