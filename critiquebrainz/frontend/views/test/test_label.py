@@ -17,15 +17,17 @@ class LabelViewsTestCase(FrontendTestCase):
         # Singles tab
         response = self.client.get('/label/c029628b-6633-439e-bcee-ed02e8a338f7?release_type=single')
         self.assert200(response)
-        self.assertIn('Pictures in the Mirror', str(response.data))
+        self.assertIn('Besser gehts nicht', str(response.data))
 
         # EPs tab
         response = self.client.get('/label/c029628b-6633-439e-bcee-ed02e8a338f7?release_type=ep')
         self.assert200(response)
+        self.assertIn('Potpourri', str(response.data))
 
         # Broadcasts tab
         response = self.client.get('/label/c029628b-6633-439e-bcee-ed02e8a338f7?release_type=broadcast')
         self.assert200(response)
+        self.assertIn('No releases found', str(response.data))
         
         # Other releases tab
         response = self.client.get('/label/c029628b-6633-439e-bcee-ed02e8a338f7?release_type=other')
