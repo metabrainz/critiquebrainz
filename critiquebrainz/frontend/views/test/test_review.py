@@ -267,7 +267,7 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def test_place_review_pages(self):
         review = db_review.create(
-            entity_id="c5c9c210-b7a0-4f6e-937e-02a586c8e14c",
+            entity_id="0eaeb901-ac0d-4631-846e-3d6b0a50b83c",
             entity_type="place",
             user_id=self.user.id,
             text="A great place.",

@@ -21,13 +21,13 @@
     {% endif %}
 
     {{ _('%(place)s', place=event_name) }}
-    {% if place['life-span'] and place['life-span']['begin'] %}
+    {% if place['life-span'] is defined and place['life-span']['begin'] is defined %}
       <small>{{ place['life-span']['begin'][:4] }}</small>
     {% endif %}
   </h2>
 {% endblock %}
 
-{% if place['coordinates'] %}
+{% if place['coordinates'] is defined %}
   {% set lat = place['coordinates']['latitude'] | float %}
   {% set long = place['coordinates']['longitude'] | float %}
   {% set sidebar_visible = True %}

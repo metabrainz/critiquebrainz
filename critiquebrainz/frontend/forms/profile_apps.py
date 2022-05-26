@@ -18,3 +18,11 @@ class ApplicationForm(FlaskForm):
     redirect_uri = StringField(lazy_gettext('Authorization callback URL'), [
         validators.InputRequired(message=lazy_gettext("Authorization callback URL field is empty.")),
         validators.URL(require_tld=False, message=lazy_gettext("Authorization callback URL is invalid."))])
+
+    def validate_redirect_uri(self, field):
+        if not field.data.startswith(("http://", "https://")):
+            raise validators.ValidationError(lazy_gettext('Authorization callback URL must use http or https'))
+
+    def validate_website(self, field):
+        if not field.data.startswith(("http://", "https://")):
+            raise validators.ValidationError(lazy_gettext('Homepage URL must use http or https'))

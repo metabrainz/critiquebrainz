@@ -156,6 +156,7 @@ def list_reports(**kwargs):
                review_uuid,
                review_user_id,
                entity_id,
+               entity_type,
                review_user_display_name
           FROM "user"
     INNER JOIN (spam_report
@@ -164,6 +165,7 @@ def list_reports(**kwargs):
                            SELECT review.id as review_uuid,
                                   "user".id as review_user_id,
                                   review.entity_id,
+                                  review.entity_type,
                                   "user".display_name as review_user_display_name
                              FROM review
                        INNER JOIN "user"
@@ -173,6 +175,7 @@ def list_reports(**kwargs):
                        ON spam_report.revision_id = revision.id)
             ON spam_report.user_id = "user".id
             {}
+      ORDER BY spam_report.reported_at desc
         OFFSET :offset
          LIMIT :limit
     """.format(filterstr))
@@ -190,6 +193,7 @@ def list_reports(**kwargs):
                     },
                     "id": spam_report["review_uuid"],
                     "entity_id": spam_report.pop("entity_id"),
+                    "entity_type": spam_report.pop("entity_type"),
                     "last_revision": db_revision.get(spam_report.pop("review_uuid"))[0],
                 }
 

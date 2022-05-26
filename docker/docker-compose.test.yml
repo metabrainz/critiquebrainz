@@ -13,7 +13,7 @@ services:
       - ./pg_custom:/docker-entrypoint-initdb.d/
 
   musicbrainz_db:
-    image: metabrainz/brainzutils-mb-sample-database:schema-25-2021-04-04.0
+    image: metabrainz/brainzutils-mb-sample-database:schema-27-2022-05-20.0
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
 

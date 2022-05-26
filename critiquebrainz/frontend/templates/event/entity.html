@@ -30,7 +30,7 @@
 
   {% if event['place-rels'] is defined %}
     {% set place = event['place-rels'][0]['place'] %}
-    {% if place['coordinates'] %}
+    {% if place['coordinates'] is defined %}
       {% set lat = place['coordinates']['latitude'] | float %}
       {% set long = place['coordinates']['longitude'] | float %}
     {% endif %}
