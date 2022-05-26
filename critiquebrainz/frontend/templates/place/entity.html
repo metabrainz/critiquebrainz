@@ -112,16 +112,26 @@
             </ul>
           {% endif %}
 
-        {% if place['place-rels'] is defined %}
+        {% if place['part-of'] is defined %}
           <b>{{ _('Part of') }}</b>
             <ul class="list-unstyled">
-              {% for relation in place['place-rels'] %}
+              {% for relation in place['part-of'] %}
                 <li class="clearfix">
                   <a href="{{ url_for('place.entity', id=relation['place'].mbid) }}">{{ relation['place']['name'] }}</a>
                 </li>
               {% endfor %}
             </ul>
         {% endif %}
+        {% if place['parts'] is defined %}
+        <b>{{ _('Parts') }}</b>
+          <ul class="list-unstyled">
+            {% for relation in place['parts'] %}
+              <li class="clearfix">
+                <a href="{{ url_for('place.entity', id=relation['place'].mbid) }}">{{ relation['place']['name'] }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+      {% endif %}
 
       <div class="external-links">
         <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
