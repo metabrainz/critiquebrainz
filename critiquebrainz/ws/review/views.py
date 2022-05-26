@@ -341,8 +341,8 @@ def review_list_handler():
     :query entity_id: UUID of an entity to retrieve reviews for **(optional)**
     :query entity_type: One of the supported reviewable entities. :data:`critiquebrainz.db.review.ENTITY_TYPES` **(optional)**
     :query user_id: user's UUID **(optional)**
-    :query sort: ``popularity`` or ``published_on`` **(optional)**
-    :query sort_order: ``asc`` or ``desc`` **(optional)**
+    :query sort: ``popularity`` or ``published_on`` **(optional)**. Defaults to ``published_on``
+    :query sort_order: ``asc`` or ``desc`` **(optional)**. Defaults to ``desc``
     :query limit: results limit, min is 0, max is 50, default is 50 **(optional)**
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
@@ -369,6 +369,11 @@ def review_list_handler():
         sort = 'published_on'
     if sort == 'rating':
         sort = 'popularity'
+
+    if not sort:
+        sort = 'published_on'
+    if not sort_order:
+        sort_order = 'desc'
 
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
     offset = Parser.int('uri', 'offset', optional=True) or 0
