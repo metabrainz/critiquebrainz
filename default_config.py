@@ -7,6 +7,9 @@ SECRET_KEY = "CHANGE_THIS"
 SQLALCHEMY_DATABASE_URI = "postgresql://critiquebrainz:critiquebrainz@db:5432/critiquebrainz"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+# BookBrainz Database
+BB_DATABASE_URI = "postgresql://bookbrainz:bookbrainz@db:5432/bookbrainz"
+
 # MusicBrainz Database
 MB_DATABASE_URI = "postgresql://musicbrainz:musicbrainz@musicbrainz_db:5432/musicbrainz_db"
 

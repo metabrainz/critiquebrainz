@@ -75,6 +75,10 @@ def create_app(debug=None, config_path=None):
 
     add_robots(app)
 
+    # BookBrainz Database
+    import critiquebrainz.frontend.external.bookbrainz_db as bookbrainz_db 
+    bookbrainz_db.init_db_engine(app.config.get("BB_DATABASE_URI"))
+    
     # MusicBrainz Database
     from brainzutils import musicbrainz_db
     musicbrainz_db.init_db_engine(app.config.get("MB_DATABASE_URI"))
