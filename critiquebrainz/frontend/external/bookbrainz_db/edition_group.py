@@ -29,6 +29,9 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
     Returns:
         A dictionary containing info of multiple edition groups keyed by their BBID.
     """
+    if bbids == []:
+        return {}
+
     key = cache.gen_key('edition-groups', bbids)
     edition_groups = cache.get(key)
     if not edition_groups:
