@@ -13,6 +13,7 @@ from critiquebrainz.frontend.external.musicbrainz_db import place
 from critiquebrainz.frontend.external.musicbrainz_db import release_group
 from critiquebrainz.frontend.external.musicbrainz_db import work
 from critiquebrainz.frontend.external.musicbrainz_db import recording
+from critiquebrainz.frontend.external.bookbrainz_db import edition_group
 
 
 def get_multiple_entities(entities):
@@ -41,6 +42,7 @@ def get_multiple_entities(entities):
     place_mbids = [entity[0] for entity in entities if entity[1] == 'place']
     event_mbids = [entity[0] for entity in entities if entity[1] == 'event']
     work_mbids = [entity[0] for entity in entities if entity[1] == 'work']
+    edition_group_bbids = [entity[0] for entity in entities if entity[1] == 'edition_group']
 
     release_groups = fetch_multiple_release_groups(
         release_group_mbids,
@@ -71,6 +73,11 @@ def get_multiple_entities(entities):
         recording_mbids,
     )
     entities_info.update(recordings)
+    edition_groups = edition_group.fetch_multiple_edition_groups(
+        edition_group_bbids,
+    )
+    entities_info.update(edition_groups)
+    
     return entities_info
 
 
@@ -90,6 +97,8 @@ def get_entity_by_id(id, entity_type):
         entity = work.get_work_by_mbid(str(id))
     elif entity_type == 'recording':
         entity = recording.get_recording_by_mbid(str(id))
+    elif entity_type == 'edition_group':
+        entity = edition_group.get_edition_group_by_bbid(str(id))
     else:
         raise ValueError('Unknown entity type')
     return entity
