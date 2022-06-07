@@ -50,8 +50,8 @@ class RateViewsTestCase(FrontendTestCase):
             url_for('rate.rate'),
             data=payload
         )
-
-        self.assertRedirects(response, '/release-group/{}'.format(entity_id))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, '/release-group/{}'.format(entity_id))
 
         reviews, review_count = db_review.list_reviews(
             entity_id=entity_id,
@@ -128,7 +128,8 @@ class RateViewsTestCase(FrontendTestCase):
         }
 
         response = self.client.post(url_for('rate.rate'), data=payload)
-        self.assertRedirects(response, '/artist/{}'.format(test_entity_id))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, '/artist/{}'.format(test_entity_id))
         reviews, review_count = db_review.list_reviews(
             entity_id=test_entity_id,
             entity_type='artist',

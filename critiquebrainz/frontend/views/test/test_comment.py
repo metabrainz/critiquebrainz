@@ -71,7 +71,8 @@ class CommentViewsTestCase(FrontendTestCase):
             url_for("comment.create"),
             data=payload,
         )
-        self.assertRedirects(response, url_for("review.entity", id=self.review["id"]))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, url_for("review.entity", id=self.review["id"]))
         self.assertEqual(comment_count, db_comment.count_comments(review_id=self.review["id"]))
         response = self.client.get(url_for("review.entity", id=self.review["id"]))
         self.assert200(response)
@@ -108,7 +109,8 @@ class CommentViewsTestCase(FrontendTestCase):
             url_for("comment.create"),
             data=payload,
         )
-        self.assertRedirects(response, url_for("review.entity", id=self.review["id"]))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, url_for("review.entity", id=self.review["id"]))
         self.assertEqual(comment_count + 1, db_comment.count_comments(review_id=self.review["id"]))
 
         response = self.client.get(url_for("review.entity", id=self.review["id"]))
