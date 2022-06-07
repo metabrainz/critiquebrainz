@@ -34,7 +34,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
 
 RUN pip install --upgrade pip==21.0.1
 
-RUN pip install --no-cache-dir uWSGI==2.0.18
+RUN pip install --no-cache-dir uWSGI==2.0.20
 
 RUN mkdir /code
 WORKDIR /code
