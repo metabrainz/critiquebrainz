@@ -5,9 +5,10 @@ import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db 
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_identifiers
+from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
 
 
-def get_edition_group_by_bbid(bbid: uuid.UUID):
+def get_edition_group_by_bbid(bbid: uuid.UUID) -> dict:
     """
     Get info related to an edition group using its BookBrainz ID.
     Args:
@@ -69,6 +70,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
                 edition_group = dict(edition_group)
                 edition_group['bbid'] = str(edition_group['bbid'])
                 edition_group['identifiers'] = fetch_identifiers(edition_group['identifier_set_id'])
+                edition_group['rels'] = fetch_relationships( edition_group['relationship_set_id'], ['Edition'])
                 results[edition_group['bbid']] = edition_group
             
             edition_groups = results
