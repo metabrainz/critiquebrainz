@@ -111,7 +111,8 @@ class SpotifyMappingViewsTestCase(FrontendTestCase):
     def test_spotify_add(self, search, get_multiple_albums, get_release_group_by_mbid):
         # test `release_group_id` variable not supplied
         response = self.client.get("/mapping/spotify/add")
-        self.assertRedirects(response, url_for('frontend.index'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, url_for('frontend.index'))
 
         # test for non-existent release group
         get_release_group_by_mbid.return_value = None

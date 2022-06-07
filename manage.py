@@ -86,7 +86,7 @@ def clear_memcached():
 
 @click.option("--force", "-f", is_flag=True,
               help="Drop existing tables and types.")
-@cli.command()
+@cli.command("init_db")
 def init_db(force=False):
     """Initialize the database.
 

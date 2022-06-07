@@ -1,13 +1,6 @@
-FROM metabrainz/python:3.8-20210115
+FROM metabrainz/python:3.10-20220315
 
 ENV PYTHONUNBUFFERED 1
-
-# remove expired let's encrypt certificate and install new ones
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates \
-    && rm -rf /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt \
-    && update-ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
      && apt-get install -y --no-install-recommends \
@@ -41,7 +34,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
 
 RUN pip install --upgrade pip==21.0.1
 
-RUN pip install --no-cache-dir uWSGI==2.0.18
+RUN pip install --no-cache-dir uWSGI==2.0.20
 
 RUN mkdir /code
 WORKDIR /code

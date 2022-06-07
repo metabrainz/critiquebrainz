@@ -101,4 +101,5 @@ class ProfileApplicationsViewsTestCase(FrontendTestCase):
 
         self.temporary_login(self.user)
         response = self.client.get('/profile/applications/%s/token/delete' % app["client_id"])
-        self.assertRedirects(response, '/profile/applications/')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.location, '/profile/applications/')
