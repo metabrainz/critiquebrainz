@@ -305,7 +305,7 @@ def create_base_archive(connection, *, location, meta_files_dir=None):
         cursor = connection.connection.cursor()
         try:
             with open(os.path.join(base_archive_tables_dir, 'user_sanitised'), 'w') as f:
-                cursor.copy_to(f, '"user"', columns=('id', 'created', 'display_name', 'musicbrainz_id'))
+                cursor.copy_to(f, 'user', columns=('id', 'created', 'display_name', 'musicbrainz_id'))
             with open(os.path.join(base_archive_tables_dir, 'license'), 'w') as f:
                 cursor.copy_to(f, 'license', columns=_TABLES["license"])
         except Exception as e:
@@ -352,15 +352,15 @@ def create_reviews_archive(connection, *, location, meta_files_dir=None, license
         archive_name = "cbdump-reviews-all.tar.bz2"
         safe_name = 'cb-reviews-all'
 
-    REVIEW_SQL = """(
+    REVIEW_SQL = """COPY (
         SELECT {columns}
           FROM review
          WHERE is_hidden = false
            AND is_draft = false
                {license_where_clause}
-    )""".format(columns=', '.join(_TABLES["review"]), license_where_clause=license_where_clause)
+    ) TO STDOUT""".format(columns=', '.join(_TABLES["review"]), license_where_clause=license_where_clause)
 
-    REVISION_SQL = """(
+    REVISION_SQL = """COPY (
         SELECT {columns}
           FROM revision
           JOIN review
@@ -368,12 +368,12 @@ def create_reviews_archive(connection, *, location, meta_files_dir=None, license
          WHERE review.is_hidden = false
            AND review.is_draft = false
                {license_where_clause}
-    )""".format(
+    ) TO STDOUT""".format(
         columns=', '.join(['revision.' + column for column in _TABLES['revision']]),
         license_where_clause=license_where_clause,
     )
 
-    VOTE_SQL = """(
+    VOTE_SQL = """COPY (
         SELECT {columns}
           FROM vote
           JOIN ( SELECT revision.id
@@ -385,7 +385,7 @@ def create_reviews_archive(connection, *, location, meta_files_dir=None, license
                         {license_where_clause}
                 ) AS rev
             ON vote.revision_id = rev.id
-    )""".format(
+    ) TO STDOUT""".format(
         columns=', '.join(['vote.' + column for column in _TABLES['vote']]),
         license_where_clause=license_where_clause,
     )
@@ -399,16 +399,16 @@ def create_reviews_archive(connection, *, location, meta_files_dir=None, license
         cursor = connection.connection.cursor()
         try:
             with open(os.path.join(reviews_tables_dir, 'review'), 'w') as f:
-                cursor.copy_to(f, REVIEW_SQL)
+                cursor.copy_expert(REVIEW_SQL, f)
 
             with open(os.path.join(reviews_tables_dir, 'revision'), 'w') as f:
-                cursor.copy_to(f, REVISION_SQL)
+                cursor.copy_expert(REVISION_SQL, f)
 
             with open(os.path.join(reviews_tables_dir, 'avg_rating'), 'w') as f:
-                cursor.copy_to(f, "(SELECT {columns} FROM avg_rating)".format(columns=", ".join(_TABLES["avg_rating"])))
+                cursor.copy_to(f, "avg_rating", columns=_TABLES["avg_rating"])
 
             with open(os.path.join(reviews_tables_dir, 'vote'), 'w') as f:
-                cursor.copy_to(f, VOTE_SQL)
+                cursor.copy_expert(VOTE_SQL, f)
 
         except Exception as e:
             print("Error {} occurred while copying tables during the creation of the reviews archive!".format(e))
@@ -502,7 +502,7 @@ def import_data(file_name, table_name, columns=None):
         with open(file_name, 'r') as f:
             if columns is None:
                 columns = _TABLES[table_name]
-            cursor.copy_from(f, '"{table_name}"'.format(table_name=table_name), columns=columns)
+            cursor.copy_from(f, table_name, columns=columns)
             connection.commit()
 
     finally:
