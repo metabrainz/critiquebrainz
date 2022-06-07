@@ -1,4 +1,5 @@
 import os
+from critiquebrainz.ws.oauth import oauth
 
 from flask_testing import TestCase
 
@@ -10,6 +11,7 @@ class FrontendTestCase(TestCase):
 
     def create_app(self):
         app = create_app(config_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'test_config.py'))
+        oauth.init_app(app)
         return app
 
     def setUp(self):
