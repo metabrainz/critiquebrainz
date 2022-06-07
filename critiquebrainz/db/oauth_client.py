@@ -30,11 +30,12 @@ def create(*, user_id, name, desc, website, redirect_uri):
         }
     """
     with db.engine.connect() as connection:
-        connection.execute(sqlalchemy.text("""
+        row = connection.execute(sqlalchemy.text("""
             INSERT INTO oauth_client (client_id, client_secret, redirect_uri,
                         user_id, name, "desc", website)
                  VALUES (:client_id, :client_secret, :redirect_uri,
                         :user_id, :name, :desc, :website)
+                  RETURNING client_id, client_secret, redirect_uri, user_id, name, "desc", website
         """), {
             "client_id": generate_string(CLIENT_ID_LENGTH),
             "client_secret": generate_string(CLIENT_SECRET_LENGTH),
@@ -44,6 +45,7 @@ def create(*, user_id, name, desc, website, redirect_uri):
             "website": website,
             "desc": desc,
         })
+        return dict(row.fetchone())
 
 
 def update(*, client_id, name=None, desc=None, website=None, redirect_uri=None):
