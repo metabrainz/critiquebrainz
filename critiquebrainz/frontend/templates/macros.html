@@ -81,6 +81,13 @@
         {{ _('Recording') }}
       </span>
     {% endif %}
+  {% elif entity_type == 'edition_group'  %}
+    <img src="{{ get_static_path('images/placeholder_disc.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type edition-group">
+        {{ _('Edition Group') }}
+      </span>
+    {% endif %}
   {% elif entity_type == 'release_group' %}
     <img {{ attributes }} />
     {% if overlay_type %}
