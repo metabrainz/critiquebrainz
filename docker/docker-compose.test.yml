@@ -4,10 +4,10 @@ services:
 
   db:
     image: postgres:12.3
+    user: postgres
     environment:
-      POSTGRES_USER: critiquebrainz
-      POSTGRES_PASSWORD: critiquebrainz
-      POSTGRES_DB: critiquebrainz
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     command: postgres -F
     volumes:
       - ./pg_custom:/docker-entrypoint-initdb.d/

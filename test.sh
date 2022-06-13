@@ -37,6 +37,10 @@ function setup {
                 run --rm critiquebrainz dockerize \
                   -wait tcp://db:5432 -timeout 60s \
                 bash -c "python3 manage.py init_db"
+    
+    docker-compose -f ${COMPOSE_FILE_LOC} \
+                   -p ${COMPOSE_PROJECT_NAME} \
+                   run --rm critiquebrainz bash scripts/download-import-bookbrainz-dump.sh
 }
 
 function is_db_running {
