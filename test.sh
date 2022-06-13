@@ -40,7 +40,7 @@ function setup {
     
     docker-compose -f ${COMPOSE_FILE_LOC} \
                    -p ${COMPOSE_PROJECT_NAME} \
-                   run --rm critiquebrainz bash scripts/download-import-dump.sh
+                   run --rm critiquebrainz bash scripts/download-import-bookbrainz-dump.sh
 }
 
 function is_db_running {

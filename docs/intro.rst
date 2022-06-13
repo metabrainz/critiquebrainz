@@ -124,7 +124,7 @@ A BookBrainz database is also required for running CritiqueBrainz.
 You can import the database dump by downloading and importing the data in
 a single command::
 
-    $ ./develop.sh run --rm critiquebrainz bash scripts/download-import-dump.sh
+    $ ./develop.sh run --rm critiquebrainz bash scripts/download-import-bookbrainz-dump.sh
 
 Next, initialize the CritiqueBrainz database::
 
