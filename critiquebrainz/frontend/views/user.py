@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities
+from critiquebrainz.frontend.external.musicbrainz_db import mbstore
 from flask_babel import gettext
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound, BadRequest
@@ -42,7 +42,7 @@ def reviews(user_id):
     
     # Load info about entities for reviews
     entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
-    entities_info = get_multiple_entities(entities)
+    entities_info = mbstore.get_multiple_entities(entities)
 
     # If we don't have metadata for a review, remove it from the list
     # This will have the effect of removing an item from the 3x9 grid of reviews, but it
