@@ -76,6 +76,28 @@ def process_identifiers(identifiers: List) -> List:
         34: "https://www.imdb.com/list/",
     }
     
+
+    icon_map = {
+        1: "musicbrainz-16.svg",
+        2: "musicbrainz-16.svg",
+        3: "musicbrainz-16.svg",
+        4: "wikidata-16.svg",
+        12: "viaf-16.png",
+        29: "viaf-16.png",
+        31: "viaf-16.png",
+        14: "librarything-16.png",
+        15: "librarything-16.png",
+        16: "imdb-16.png",
+        17: "musicbrainz-16.svg",
+        18: "wikidata-16.svg",
+        19: "wikidata-16.svg",
+        20: "wikidata-16.svg",
+        21: "wikidata-16.svg",
+        30: "wikidata-16.svg",
+        32: "musicbrainz-16.svg",
+        34: "imdb-16.png",
+    }
+    
     for identifier in identifiers:
         value = identifier['value']
         type_id = identifier['type_id']
@@ -83,10 +105,16 @@ def process_identifiers(identifiers: List) -> List:
             url = url_map[13] + value.replace(" ", "") # Remove spaces first (see BB-499)
         else:
             url = url_map[type_id] + value
+        
+        if type_id in icon_map:
+            icon = icon_map[type_id]
+        else:
+            icon = None
         external_urls.append({
             'name': identifier['label'],
             'url': url,
             'value': value,
+            'icon': icon,
         })
 
     return external_urls
