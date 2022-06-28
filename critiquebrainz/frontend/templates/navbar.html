@@ -90,7 +90,7 @@
       </ul>
       <form class="navbar-form navbar-right" role="search" method="GET" action="{{ url_for('search.index') }}">
         <div class="form-group">
-          <input type="text" name="query" class="form-control input-sm" placeholder="{{ _('Search') }}">
+          <input type="text" name="query" class="form-control input-sm" placeholder="{{ _('Search') }}" required>
         </div>
         <div class="form-group">
           <select id="type-selector" name="type" class="form-control input-sm">
