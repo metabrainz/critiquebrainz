@@ -16,7 +16,7 @@
   <div class="form-group">
     <label for="input-query" class="col-sm-2 control-label">{{ _('Query') }}</label>
     <div class="col-sm-3">
-      <input id="input-query" name="query" class="form-control" value="{{ request.args.get('query', default='') }}">
+      <input id="input-query" name="query" class="form-control" required value="{{ request.args.get('query', default='') }}">
     </div>
   </div>
   <div class="form-group">
