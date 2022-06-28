@@ -6,6 +6,8 @@ from critiquebrainz.db import users as db_users
 def mail_review_report(user, reason, review):
     report_email_address = current_app.config.get('ADMIN_NOTIFICATION_EMAIL_ADDRESS')
     if report_email_address:
+        if not isinstance(report_email_address, list):
+            report_email_address = [report_email_address]
         text = render_template(
             "emails/review_report.txt",
             username=user.display_name,
