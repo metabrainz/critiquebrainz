@@ -1,17 +1,17 @@
 {% extends 'review/entity/base.html' %}
 {% from 'macros.html' import show_life_span with context %}
 
-{% set edition_group = entity %}
+{% set bb_edition_group = entity %}
 
 {% block title %}
-  {% set edition_group_name = edition_group.name | default(_('[Unknown edition group]')) %}
+  {% set edition_group_name = bb_edition_group.name | default(_('[Unknown edition group]')) %}
   {{ _('Review of "%(edition_group)s" by %(user)s', edition_group=edition_group_name, user=review.user.display_name) }} - CritiqueBrainz
 {% endblock %}
 
 {% block entity_title %}
   <h2 id="title">
-    {% if edition_group %}
-      {% set edition_group_name = '<a href="%s">' | safe % url_for('edition_group.entity', id=review.entity_id) ~ edition_group.name ~ '</a>'|safe %}
+    {% if bb_edition_group %}
+      {% set edition_group_name = '<a href="%s">' | safe % url_for('bb_edition_group.entity', id=review.entity_id) ~ bb_edition_group.name ~ '</a>'|safe %}
     {% else %}
       {% set edition_group_name =  _('[Unknown edition group]') %}
     {% endif %}

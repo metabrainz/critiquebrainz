@@ -29,7 +29,7 @@ ENTITY_TYPES = [
     "artist",
     "label",
     "recording",
-    "edition_group"
+    "bb_edition_group"
 ]
 
 supported_languages = []
