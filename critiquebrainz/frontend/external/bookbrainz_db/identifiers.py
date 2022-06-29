@@ -12,6 +12,9 @@ def fetch_identifiers(identifier_set_id: int) -> List:
     Returns:
         List of identifiers.
     """
+    if not identifier_set_id:
+        return None
+    
     key = cache.gen_key('identifier', identifier_set_id)
     identifiers = cache.get(key)
     if not identifiers:

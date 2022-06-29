@@ -40,6 +40,9 @@ def fetch_relationships(relationship_set_id: int, relation_types: List) -> List:
     """
     Fetch relationships from the database.
     """
+    if not relationship_set_id:
+        return None
+
     key = cache.gen_key('bb_relationship', relationship_set_id)
     relationships = cache.get(key)
     relation_types = get_mapped_relationships(relation_types)
