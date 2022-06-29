@@ -23,3 +23,10 @@
     </small>
   </h2>
 {% endblock %}
+
+{% block show_entity_type %}
+  <h4>
+    <img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}"/>
+    {{ _('MusicBrainz Artist') }} <a href="https://musicbrainz.org/artist/{{ review.entity_id }}">{{ _('View on MusicBrainz') }}</a>
+  </h4>
+{% endblock %}

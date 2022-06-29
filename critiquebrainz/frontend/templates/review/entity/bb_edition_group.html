@@ -11,11 +11,21 @@
 {% block entity_title %}
   <h2 id="title">
     {% if bb_edition_group %}
-      {% set edition_group_name = '<a href="%s">' | safe % url_for('bb_edition_group.entity', id=review.entity_id) ~ bb_edition_group.name ~ '</a>'|safe %}
+      {% set edition_group_name = '<a href="%s">' | safe % url_for('artist.entity', id=review.entity_id) ~ bb_edition_group.name ~ '</a>'|safe %}
     {% else %}
       {% set edition_group_name =  _('[Unknown edition group]') %}
     {% endif %}
 
     {{ _('%(edition_group)s', edition_group=edition_group_name) }}
+    {% if bb_edition_group.disambiguation_comment is defined and bb_edition_group.disambiguation_comment %}
+      <small>{{ bb_edition_group.disambiguation_comment }}</small>
+    {% endif %}
   </h2>
+{% endblock %}
+
+{% block show_entity_type %}
+  <h4>
+    <img src="{{ get_static_path('favicons/bookbrainz-16.svg') }}"/>
+    {{ _('BookBrainz Edition Group') }} <a href="https://bookbrainz.org/edition-group/{{ review.entity_id }}">{{ _('View on BookBrainz') }}</a>
+  </h4>
 {% endblock %}

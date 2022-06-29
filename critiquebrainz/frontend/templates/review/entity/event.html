@@ -54,3 +54,10 @@
     </div>
   {% endif %}
 {% endblock %}
+
+{% block show_entity_type %}
+  <h4>
+    <img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}"/>
+    {{ _('MusicBrainz Event') }} <a href="https://musicbrainz.org/event/{{ review.entity_id }}">{{ _('View on MusicBrainz') }}</a>
+  </h4>
+{% endblock %}
