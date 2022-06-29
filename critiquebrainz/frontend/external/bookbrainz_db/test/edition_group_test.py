@@ -17,7 +17,7 @@ class EditionGroupTestCase(DataTestCase):
         self.assertEqual(edition_group_info["bbid"], self.bbid1)
         self.assertEqual(edition_group_info["name"], "Dragon in Exile")
         self.assertEqual(edition_group_info["sort_name"], "Dragon in Exile")
-        self.assertEqual(edition_group_info["label"], "Book")
+        self.assertEqual(edition_group_info["edition_group_type"], "Book")
 
 
     def test_fetch_multiple_edition_groups(self):
@@ -25,7 +25,7 @@ class EditionGroupTestCase(DataTestCase):
         self.assertEqual(len(edition_groups), 2)
         self.assertEqual(edition_groups[self.bbid2]["bbid"], self.bbid2)
         self.assertEqual(edition_groups[self.bbid2]["name"], "Stephen King Goes to the Movies")
-        self.assertEqual(edition_groups[self.bbid2]["label"], "Book")
+        self.assertEqual(edition_groups[self.bbid2]["edition_group_type"], "Book")
         self.assertEqual(edition_groups[self.bbid3]["bbid"], self.bbid3)
         self.assertEqual(edition_groups[self.bbid3]["name"], "Harry Potter and the Deathly Hallows")
-        self.assertEqual(edition_groups[self.bbid3]["label"], "Book")
+        self.assertEqual(edition_groups[self.bbid3]["edition_group_type"], "Book")
