@@ -127,13 +127,18 @@ def create_app(debug=None, config_path=None):
     app.jinja_env.add_extension('jinja2.ext.do')
     from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, track_length_ms, parameterize
     from critiquebrainz.frontend.external.musicbrainz_db.entities import get_entity_by_id
+    from critiquebrainz.frontend.external.musicbrainz_db import mbstore, development_get_entity_by_id
+    mbstore.init_app(app)
     from critiquebrainz.frontend.forms.utils import get_language_name
     app.jinja_env.filters['date'] = reformat_date
     app.jinja_env.filters['datetime'] = reformat_datetime
     app.jinja_env.filters['track_length'] = track_length
     app.jinja_env.filters['track_length_ms'] = track_length_ms
     app.jinja_env.filters['parameterize'] = parameterize
-    app.jinja_env.filters['entity_details'] = get_entity_by_id
+    if app.config["DEBUG"]:
+        app.jinja_env.filters['entity_details'] = development_get_entity_by_id
+    else:
+        app.jinja_env.filters['entity_details'] = get_entity_by_id
     app.jinja_env.filters['language_name'] = get_language_name
     app.context_processor(lambda: dict(get_static_path=static_manager.get_static_path))
 

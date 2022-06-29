@@ -18,7 +18,7 @@ from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud, notify_moderators
-from critiquebrainz.frontend.external.musicbrainz_db.entities import get_multiple_entities, get_entity_by_id
+from critiquebrainz.frontend.external.musicbrainz_db import mbstore
 from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
@@ -86,7 +86,7 @@ def browse():
 
     # Loading info about entities for reviews
     entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
-    entities_info = get_multiple_entities(entities)
+    entities_info = mbstore.get_multiple_entities(entities)
 
     # If we don't have metadata for a review, remove it from the list
     # This will have the effect of removing an item from the 3x9 grid of reviews, but it
@@ -137,7 +137,7 @@ def entity(id, rev=None):
         spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
         soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
 
-    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    entity = mbstore.get_entity_by_id(review["entity_id"], review["entity_type"])
     if not entity:
         raise NotFound("This review is for an item that doesn't exist")
 
@@ -196,7 +196,7 @@ def redirect_to_entity(review_id, revision_id):
 @review_bp.route('/<uuid:id>/revisions/compare')
 def compare(id):
     review = get_review_or_404(id)
-    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    entity = mbstore.get_entity_by_id(review["entity_id"], review["entity_type"])
     if not entity:
         raise NotFound("This review is for an item that doesn't exist")
 
@@ -231,7 +231,7 @@ def compare(id):
 @review_bp.route('/<uuid:id>/revisions')
 def revisions(id):
     review = get_review_or_404(id)
-    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    entity = mbstore.get_entity_by_id(review["entity_id"], review["entity_type"])
     if not entity:
         raise NotFound("This review is for an item that doesn't exist")
 
@@ -255,7 +255,7 @@ def revisions(id):
 @review_bp.route('/<uuid:id>/revisions/more')
 def revisions_more(id):
     review = get_review_or_404(id)
-    entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    entity = mbstore.get_entity_by_id(review["entity_id"], review["entity_type"])
     if not entity:
         raise NotFound("This review is for an item that doesn't exist")
 
@@ -345,7 +345,7 @@ def create(entity_type=None, entity_id=None):
             flash.success(gettext("Review has been published!"))
         return redirect(url_for('.entity', id=review['id']))
 
-    _entity = get_entity_by_id(entity_id, entity_type)
+    _entity = mbstore.get_entity_by_id(entity_id, entity_type)
     data = {
         "form": form,
         "entity_type": entity_type,
@@ -427,7 +427,7 @@ def edit(id):
         data["spotify_mappings"] = mbspotify.mappings(str(review["entity_id"]))
         data["soundcloud_url"] = soundcloud.get_url(str(review["entity_id"]))
 
-    _entity = get_entity_by_id(review["entity_id"], review["entity_type"])
+    _entity = mbstore.get_entity_by_id(review["entity_id"], review["entity_type"])
     data["entity_title"] = get_entity_title(_entity)
     data["entity"] = _entity
     return render_template('review/modify/edit.html', **data)
