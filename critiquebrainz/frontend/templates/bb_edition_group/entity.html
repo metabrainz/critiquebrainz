@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form with context %}
+{% from 'common.html' import rating_script with context %}
+
+
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">
+    {{ edition_group.name }}
+    {% if edition_group.disambiguation_comment is defined and edition_group.disambiguation_comment %}
+      <small>({{ edition_group.disambiguation_comment }})</small>
+    {% endif %}
+  </h2>
+  {% if not my_review %}
+    <a id="write-review" href="{{ url_for('review.create', entity_type ='bb_edition_group', entity_id=id) }}"
+       role="button" class="btn btn-success pull-right">
+      <span class="glyphicon glyphicon-plus-sign"></span> {{ _('Write a review') }}
+    </a>
+  {% else %}
+    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
+       role="button" class="btn btn-primary pull-right">
+      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
+    </a>
+  {% endif %}
+</div>
+
+<div id="edition-group-details" class="row">
+  <div class="col-md-9">
+    {{ entity_rate_form('bb_edition_group', 'edition group') }}
+    <br/><br/>
+    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+    {% if not reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ _('Published on') }}</th>
+            <th>{{ _('Votes (+/-)') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for review in reviews %}
+            <tr data-review-id="{{ review.id }}">
+              <td>
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                    {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
+                </a>
+              </td>
+              <td>{{ review.published_on | date }}</td>
+              <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <ul class="pagination">
+        {% set pages = count//limit %}
+        {% if count%limit %}
+          {% set pages = pages+1 %}
+        {% endif %}
+        {% if pages>1 %}
+          {% for p in range(pages) %}
+            {% set p_offset = p*limit %}
+            <li {% if offset == p_offset %}class="active"{% endif %}>
+              <a href="{{ url_for('bb_edition_group.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <div class="col-md-3">
+    <h4>{{ _('Edition Group information') }}</h4>
+    {% if edition_group['label'] is defined and edition_group['label']  %}
+      <p class="text-muted">{{ edition_group.label }}</p>
+    {% endif %}
+    {% if avg_rating %}
+      <div class="avg-rating">
+        {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
+      </div>
+    {% endif %}
+    
+    {% if edition_group['author_credits'] is defined and edition_group['author_credits'] %}
+      <b>{{ _('Author') }}</b>
+      <ul class="list-unstyled">
+        {% for author in edition_group.author_credits %}
+          <li>{{ author.name }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+      
+    {% if edition_group['identifiers'] is defined and edition_group['identifiers'] %}
+      <b>{{ _('External links') }}</b>
+      <ul class="list-unstyled external-links">
+        {% for identifier in edition_group['identifiers'] %}
+          <li class="clearfix">
+            <div class="favicon-container">
+                {% if identifier.icon is defined and identifier.icon %}
+                    <img src="{{ get_static_path('favicons/' + identifier.icon) }}" />
+                {% else %}
+                    <img src="{{ get_static_path('favicons/external-16.png') }}" />
+                {% endif %}
+            </div>
+            <a href="{{ identifier.url }}">{{ identifier.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <div class="external-links">
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/bookbrainz-16.svg') }}" /></div>
+      <a href="https://bookbrainz.org/edition-group/{{ edition_group.bbid }}"><em>{{ _('Edit on BookBrainz') }}</em></a>
+    </div>
+    <br/>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  {{ rating_script }}
+{% endblock %}
