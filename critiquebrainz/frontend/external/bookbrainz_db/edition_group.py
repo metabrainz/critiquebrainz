@@ -6,7 +6,6 @@ import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_identifiers
 from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
-from critiquebrainz.frontend.external.bookbrainz_db.author_credits import fetch_author_credits
 
 
 def get_edition_group_by_bbid(bbid: uuid.UUID) -> dict:
@@ -39,7 +38,26 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
     if not edition_groups:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
-                SELECT * FROM edition_group WHERE bbid in :bbids and master = 't';
+                SELECT 
+                    bbid,
+                    edition_group.name,
+                    sort_name,
+                    edition_group_type,
+                    disambiguation,
+                    identifier_set_id,
+                    relationship_set_id,
+                    JSON_AGG( acn order by "position" ASC) as artist_credits
+                FROM edition_group 
+                LEFT JOIN author_credit_name acn on acn.author_credit_id = edition_group.author_credit_id 
+                WHERE bbid in :bbids and master = 't'
+                GROUP BY 
+                    bbid,
+                    edition_group.name,
+                    sort_name,
+                    edition_group_type,
+                    disambiguation,
+                    identifier_set_id,
+                    relationship_set_id;
                 """), {'bbids': tuple(bbids)})
             
             edition_groups = result.fetchall()
@@ -49,7 +67,6 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
                 edition_group['bbid'] = str(edition_group['bbid'])
                 edition_group['identifiers'] = fetch_identifiers(edition_group['identifier_set_id'])
                 edition_group['rels'] = fetch_relationships( edition_group['relationship_set_id'], ['Edition'])
-                edition_group['author_credits'] = fetch_author_credits(edition_group['author_credit_id'])
                 results[edition_group['bbid']] = edition_group
             
             edition_groups = results
