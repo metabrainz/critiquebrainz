@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from critiquebrainz.frontend.external.musicbrainz_db import mbstore
+from critiquebrainz.frontend.external import mbstore
 from flask_babel import gettext
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound, BadRequest
