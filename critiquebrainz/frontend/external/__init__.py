@@ -77,6 +77,14 @@ def development_get_entity_by_id(entity_id, entity_type):
 
 def get_dummy_item(entity_id, entity_type):
     """Get something that looks just enough like a MusicBrainz entity to display in a CB template"""
+    if entity_type.startswith("bb_"):
+        return {
+            "bbid": entity_id,
+            "title": entity_type + " missing from sample database",
+            "name": entity_type + " missing from sample database",
+            "disambiguation": "This dummy item exists if DEBUG=True so that the review can be viewed",
+        }
+
     return {"mbid": entity_id,
             "title": entity_type + " missing from sample database",
             "name": entity_type + " missing from sample database",

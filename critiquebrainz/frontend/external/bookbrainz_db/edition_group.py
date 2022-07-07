@@ -15,6 +15,18 @@ def get_edition_group_by_bbid(bbid: uuid.UUID) -> dict:
         bbid : BBID of the edition group.
     Returns:
         A dictionary containing the basic information related to the edition group.
+        It includes the following keys:
+            - bbid: BookBrainz ID of the edition group.
+            - name: Name of the edition group.
+            - sort_name: Sort name of the edition group.
+            - edition_group_type: Type of the edition group.
+            - disambiguation: Disambiguation of the edition group.
+            - identifiers: A list of dictionaries containing the basic information on the identifiers.
+            - rels: A list of dictionaries containing the basic information on the relationships.
+            - artist_credits: A list of dictionaries containing the basic information on the artist credits.
+
+        Returns None if the edition group is not found.
+
     """
     edition_group = fetch_multiple_edition_groups([bbid])
     if not edition_group:
@@ -33,25 +45,27 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
     if bbids == []:
         return {}
 
-    key = cache.gen_key('edition-groups', bbids)
-    edition_groups = cache.get(key)
-    if not edition_groups:
+    bbids = [str(uuid.UUID(bbid)) for bbid in bbids]
+
+    bb_edition_group_key = cache.gen_key('edition-groups', bbids)
+    results = cache.get(bb_edition_group_key)
+    if not results:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
                 SELECT 
-                    bbid,
+                    bbid::text,
                     edition_group.name,
                     sort_name,
                     edition_group_type,
                     disambiguation,
                     identifier_set_id,
                     relationship_set_id,
-                    JSON_AGG( acn order by "position" ASC) as artist_credits
-                FROM edition_group 
-                LEFT JOIN author_credit_name acn on acn.author_credit_id = edition_group.author_credit_id 
-                WHERE bbid in :bbids and master = 't'
-                GROUP BY 
-                    bbid,
+                    json_agg( acn ORDER BY "position" ASC ) as artist_credits
+               FROM edition_group 
+          LEFT JOIN author_credit_name acn ON acn.author_credit_id = edition_group.author_credit_id 
+              WHERE bbid in :bbids
+                AND master = 't'
+           GROUP BY bbid,
                     edition_group.name,
                     sort_name,
                     edition_group_type,
@@ -64,14 +78,13 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
             results = {}
             for edition_group in edition_groups:
                 edition_group = dict(edition_group)
-                edition_group['bbid'] = str(edition_group['bbid'])
                 edition_group['identifiers'] = fetch_identifiers(edition_group['identifier_set_id'])
                 edition_group['rels'] = fetch_relationships( edition_group['relationship_set_id'], ['Edition'])
                 results[edition_group['bbid']] = edition_group
             
             edition_groups = results
-            cache.set(key, edition_groups, DEFAULT_CACHE_EXPIRATION)
+            cache.set(bb_edition_group_key, results, DEFAULT_CACHE_EXPIRATION)
     
-    if not edition_groups:
-        return None
-    return edition_groups
+    if not results:
+        return {}
+    return results

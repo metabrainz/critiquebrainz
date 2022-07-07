@@ -29,7 +29,7 @@ def get_mapped_relationships(relation_types):
 
         for relation_type in relation_types:
             if relation_type not in relationships_mapping:
-                raise bb_exceptions.InvalidTypeError("Bad release_types: {rtype} is not supported".format(rtype=relation_type))
+                raise bb_exceptions.InvalidTypeError("Bad relation: {rtype} is not supported".format(rtype=relation_type))
             else:
                 mapped_relation_types.append(relationships_mapping[relation_type])
 
@@ -52,8 +52,8 @@ def fetch_relationships(relationship_set_id: int, relation_types: List) -> List:
                 SELECT
                     rel.id as id,
                     reltype.label as label,
-                    rel.source_bbid as source_bbid,
-                    rel.target_bbid as target_bbid,
+                    rel.source_bbid::text as source_bbid,
+                    rel.target_bbid::text as target_bbid,
                     reltype.target_entity_type as target_entity_type,
                     reltype.source_entity_type as source_entity_type
                 FROM bookbrainz.relationship_set__relationship rels
@@ -64,9 +64,6 @@ def fetch_relationships(relationship_set_id: int, relation_types: List) -> List:
             """), {'relationship_set_id': relationship_set_id, 'relation_types': tuple(relation_types)})
             relationships = result.fetchall()
             relationships = [dict(relationship) for relationship in relationships]
-            for relationship in relationships:
-                relationship['source_bbid'] = str(relationship['source_bbid'])
-                relationship['target_bbid'] = str(relationship['target_bbid'])
             cache.set(key, relationships, DEFAULT_CACHE_EXPIRATION)
 
     if not relationships:

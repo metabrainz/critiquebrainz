@@ -10,13 +10,17 @@ def fetch_identifiers(identifier_set_id: int) -> List:
     Args:
         identifier_set_id (int): Identifier set ID.
     Returns:
-        List of identifiers.
+        List of identifiers containing the following fields:
+            - name (str): Identifier name.
+            - url (str): Identifier URL.
+            - value (str): Identifier value.
+            - icon (str): Identifier icon.
     """
     if not identifier_set_id:
         return None
     
-    key = cache.gen_key('identifier', identifier_set_id)
-    identifiers = cache.get(key)
+    bb_identifiers_key = cache.gen_key('identifier', identifier_set_id)
+    identifiers = cache.get(bb_identifiers_key)
     if not identifiers:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
@@ -28,11 +32,11 @@ def fetch_identifiers(identifier_set_id: int) -> List:
                 LEFT JOIN bookbrainz.identifier iden on idens.identifier_id = iden.id
                 LEFT JOIN bookbrainz.identifier_type idtype on iden.type_id = idtype.id
                 WHERE idens.set_id = :identifier_set_id;
-                """), ({'identifier_set_id': identifier_set_id}))
+                """), {'identifier_set_id': identifier_set_id})
             identifiers = result.fetchall()
             identifiers = [dict(identifier) for identifier in identifiers]
             identifiers = process_identifiers(identifiers)
-            cache.set(key, identifiers, DEFAULT_CACHE_EXPIRATION)
+            cache.set(bb_identifiers_key, identifiers, DEFAULT_CACHE_EXPIRATION)
 
     if not identifiers:
         return None
@@ -44,39 +48,39 @@ def process_identifiers(identifiers: List) -> List:
     external_urls = []
 
     url_map = {
-        1: "https://musicbrainz.org/release/",
-        2: "https://musicbrainz.org/artist/",
-        3: "https://musicbrainz.org/work/",
-        4: "https://www.wikidata.org/wiki/",
-        5: "https://www.amazon.com/dp/",
-        6: "https://openlibrary.org/books/",
-        8: "https://openlibrary.org/works/",
-        9: "https://isbnsearch.org/isbn/",
-        10: "https://isbnsearch.org/isbn/",
-        11: "https://www.barcodelookup.com/",
-        12: "https://viaf.org/viaf/",
-        29: "https://viaf.org/viaf/",
-        31: "https://viaf.org/viaf/",
-        13: "http://www.isni.org/",
-        14: "https://www.librarything.com/work/",
-        15: "https://www.librarything.com/author/",
-        16: "https://www.imdb.com/title/",
-        17: "https://musicbrainz.org/label/",
-        18: "https://www.wikidata.org/wiki/",
-        19: "https://www.wikidata.org/wiki/",
-        20: "https://www.wikidata.org/wiki/",
-        21: "https://www.wikidata.org/wiki/",
-        30: "https://www.wikidata.org/wiki/",
-        22: "https://www.archive.org/details/",
-        23: "https://www.openlibrary.org/authors/",
-        24: "https://lccn.loc.gov/",
-        25: "https://www.orcid.org/",
-        26: "https://www.worldcat.org/oclc/",
-        27: "https://www.goodreads.com/author/show/",
-        28: "https://www.goodreads.com/book/show/",
-        32: "https://musicbrainz.org/series/",
-        33: "https://www.goodreads.com/series/",
-        34: "https://www.imdb.com/list/",
+        1: "https://musicbrainz.org/release/{value}",
+        2: "https://musicbrainz.org/artist/{value}",
+        3: "https://musicbrainz.org/work/{value}",
+        4: "https://www.wikidata.org/wiki/{value}",
+        5: "https://www.amazon.com/dp/{value}",
+        6: "https://openlibrary.org/books/{value}",
+        8: "https://openlibrary.org/works/{value}",
+        9: "https://isbnsearch.org/isbn/{value}",
+        10: "https://isbnsearch.org/isbn/{value}",
+        11: "https://www.barcodelookup.com/{value}",
+        12: "https://viaf.org/viaf/{value}",
+        29: "https://viaf.org/viaf/{value}",
+        31: "https://viaf.org/viaf/{value}",
+        13: "http://www.isni.org/{value}",
+        14: "https://www.librarything.com/work/{value}",
+        15: "https://www.librarything.com/author/{value}",
+        16: "https://www.imdb.com/title/{value}",
+        17: "https://musicbrainz.org/label/{value}",
+        18: "https://www.wikidata.org/wiki/{value}",
+        19: "https://www.wikidata.org/wiki/{value}",
+        20: "https://www.wikidata.org/wiki/{value}",
+        21: "https://www.wikidata.org/wiki/{value}",
+        30: "https://www.wikidata.org/wiki/{value}",
+        22: "https://www.archive.org/details/{value}",
+        23: "https://www.openlibrary.org/authors/{value}",
+        24: "https://lccn.loc.gov/{value}",
+        25: "https://www.orcid.org/{value}",
+        26: "https://www.worldcat.org/oclc/{value}",
+        27: "https://www.goodreads.com/author/show/{value}",
+        28: "https://www.goodreads.com/book/show/{value}",
+        32: "https://musicbrainz.org/series/{value}",
+        33: "https://www.goodreads.com/series/{value}",
+        34: "https://www.imdb.com/list/{value}",
     }
     
 
@@ -104,15 +108,17 @@ def process_identifiers(identifiers: List) -> List:
     for identifier in identifiers:
         value = identifier['value']
         type_id = identifier['type_id']
+
         if type_id == 13: 
-            url = url_map[13] + value.replace(" ", "") # Remove spaces first (see BB-499)
+            value = value.replace(" ", "") # Remove spaces first (see BB-499)
+
+        if type_id in url_map:
+            url = url_map[type_id].format(value=value)
         else:
-            url = url_map[type_id] + value
-        
-        if type_id in icon_map:
-            icon = icon_map[type_id]
-        else:
-            icon = None
+            url = None
+
+
+        icon = icon_map.get(type_id, None)
         external_urls.append({
             'name': identifier['label'],
             'url': url,
