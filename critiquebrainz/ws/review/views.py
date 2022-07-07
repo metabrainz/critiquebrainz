@@ -2,7 +2,8 @@ import logging
 
 from brainzutils import cache
 from flask import Blueprint, jsonify
-
+from critiquebrainz.frontend.external.musicbrainz_db import mbstore
+import critiquebrainz.db.avg_rating as db_avg_rating
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import (
     vote as db_vote,
@@ -347,6 +348,7 @@ def review_list_handler():
     :query offset: result offset, default is 0 **(optional)**
     :query language: language code (ISO 639-1) **(optional)**
     :query review_type: ``review`` or ``rating``. If set, only return reviews which have a text review, or a rating **(optional)**
+    :query include_metadata: ``true`` or ``false``. Include metadata of the entity **(optional)**
 
     :resheader Content-Type: *application/json*
     """
@@ -363,6 +365,7 @@ def review_list_handler():
     sort = Parser.string('uri', 'sort', valid_values=['popularity', 'published_on', 'rating', 'created'], optional=True)
     sort_order = Parser.string('uri', 'sort_order', valid_values=['asc', 'desc'], optional=True)
     review_type = Parser.string('uri', 'review_type', valid_values=['rating', 'review'], optional=True)
+    include_metadata = Parser.string('uri', 'include_metadata', optional=True)
 
     # "rating" and "created" sort values are deprecated and but allowed here for backward compatibility
     if sort == 'created':
@@ -374,6 +377,12 @@ def review_list_handler():
         sort = 'published_on'
     if not sort_order:
         sort_order = 'desc'
+
+    # If an entity_id is given, then also include the average rating for the entity.
+    if entity_id:
+        include_avg_rating = True
+    else:
+        include_avg_rating = False
 
     limit = Parser.int('uri', 'limit', min=1, max=50, optional=True) or 50
     offset = Parser.int('uri', 'offset', optional=True) or 0
@@ -389,9 +398,10 @@ def review_list_handler():
                               f'offset={offset}', f'language={language}', f'review_type={review_type}')
     cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
 
-    if cached_result:
+    if False:
         reviews = cached_result['reviews']
         count = cached_result['count']
+        avg_rating = cached_result['avg_rating']
     else:
         reviews, count = db_review.list_reviews(
             entity_id=entity_id,
@@ -404,11 +414,37 @@ def review_list_handler():
             language=language,
             review_type=review_type
         )
+
         reviews = [db_review.to_dict(p) for p in reviews]
+
+
+        if include_metadata == 'true':
+            entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
+            entities_info = mbstore.get_multiple_entities(entities)
+
+            retrieved_entity_mbids = entities_info.keys()
+            reviews = [review for review in reviews if str(review["entity_id"]) in retrieved_entity_mbids]
+            for review in reviews:
+                review[review['entity_type']] = entities_info[str(review["entity_id"])]
+
+
+        if include_avg_rating:
+            if reviews and not entity_type:
+                entity_type = reviews[0]["entity_type"] if reviews  else None
+            
+            if entity_type:
+                avg_rating = db_avg_rating.get(entity_id, entity_type)['rating']
+            else:
+                avg_rating = None
+                include_avg_rating = False
+
+        else:
+            avg_rating = None
 
         cache.set(cache_key, {
             'reviews': reviews,
             'count': count,
+            'avg_rating': avg_rating
         }, expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
         # When we cache the results of a request, we include (entity_id, user_id, sort, limit, offset, language, review_type)
@@ -422,6 +458,9 @@ def review_list_handler():
                    expirein=REVIEW_CACHE_TIMEOUT,
                    namespace=REVIEW_CACHE_NAMESPACE)
 
+    if include_avg_rating:
+        return jsonify(limit=limit, offset=offset, count=count, reviews=reviews, avg_rating=avg_rating)
+    
     return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
 
 
