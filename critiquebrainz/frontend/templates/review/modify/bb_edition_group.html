@@ -1,5 +1,3 @@
-{% from 'macros.html' import show_life_span with context %}
-
 <div class="col-md-12">
   <dl class="dl-horizontal">
     <dt>{{ _('Edition Group') }}</dt>
@@ -7,7 +5,7 @@
       <a href="{{ url_for('bb_edition_group.entity', id=entity['bbid']) }}" target="_blank">{{ entity['name'] }}</a>
     </dd>
     <dt>{{ _('Type') }}</dt>
-    <dd>{{ entity['label'] is defined and entity['label'] or '-' }}</dd>
+    <dd>{{ entity['edition_group_type'] is defined and entity['edition_group_type'] or '-' }}</dd>
     {% block more_info %}
     {# Information like creation date, votes etc. #}
     {% endblock %}

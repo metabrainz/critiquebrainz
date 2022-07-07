@@ -1,24 +1,13 @@
 {% extends 'review/entity/base.html' %}
-{% from 'macros.html' import show_life_span with context %}
 
 {% set bb_edition_group = entity %}
 
-{% block title %}
-  {% set edition_group_name = bb_edition_group.name | default(_('[Unknown edition group]')) %}
-  {{ _('Review of "%(edition_group)s" by %(user)s', edition_group=edition_group_name, user=review.user.display_name) }} - CritiqueBrainz
-{% endblock %}
-
 {% block entity_title %}
   <h2 id="title">
-    {% if bb_edition_group %}
-      {% set edition_group_name = '<a href="%s">' | safe % url_for('bb_edition_group.entity', id=review.entity_id) ~ bb_edition_group.name ~ '</a>'|safe %}
-    {% else %}
-      {% set edition_group_name =  _('[Unknown edition group]') %}
-    {% endif %}
-
+    {% set edition_group_name = '<a href="%s">' | safe % url_for('bb_edition_group.entity', id=review.entity_id) ~ bb_edition_group.name ~ '</a>'|safe %}
     {{ _('%(edition_group)s', edition_group=edition_group_name) }}
-    {% if bb_edition_group.disambiguation_comment is defined and bb_edition_group.disambiguation_comment %}
-      <small>{{ bb_edition_group.disambiguation_comment }}</small>
+    {% if bb_edition_group.disambiguation is defined and bb_edition_group.disambiguation %}
+      <small>{{ bb_edition_group.disambiguation }}</small>
     {% endif %}
   </h2>
 {% endblock %}
