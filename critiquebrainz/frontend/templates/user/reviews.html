@@ -80,7 +80,7 @@
 
               {%- elif review.entity_type == 'bb_edition_group' -%}
                 <strong>{{ entity.name | default(_('[Unknown edition group]')) }}</strong>
-                {% if entity['edition_group_type'] is defined %}
+                {% if entity['edition_group_type'] is defined and entity['edition_group_type'] %}
                   ({{ entity.edition_group_type }})
                 {% endif %}
               
@@ -89,11 +89,7 @@
             </a>
             <br />
             <span class="label {{ review.entity_type | replace('_', '-') }}">
-              {% if review.entity_type == "bb_edition_group" %}
-                {{_(' Edition Group') }}                
-              {% else %}
-                {{ review.entity_type | replace('_', ' ') | title }}
-              {% endif %}
+                {{ entity_names[review.entity_type] }}
             </span>
           </td>
           {% if (current_user.is_authenticated and current_user == user) or current_user.is_admin() %}
