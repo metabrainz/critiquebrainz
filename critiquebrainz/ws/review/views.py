@@ -398,7 +398,7 @@ def review_list_handler():
                               f'offset={offset}', f'language={language}', f'review_type={review_type}')
     cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
 
-    if False:
+    if cached_result:
         reviews = cached_result['reviews']
         count = cached_result['count']
         avg_rating = cached_result['avg_rating']
