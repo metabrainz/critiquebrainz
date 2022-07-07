@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, entity_rate_form, show_avg_rating, display_pagination with context %}
+{% from 'macros.html' import cover_art, entity_rate_form, show_avg_rating, display_pagination, show_review_buttons with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ artist.name }} - CritiqueBrainz{% endblock %}
@@ -51,18 +51,7 @@
       <small>({{ artist.comment }})</small>
     {% endif %}
   </h2>
-
-  {% if my_review is not defined %}
-    <a id="write-review" href="{{ url_for('review.create', entity_type='artist', entity_id=id) }}"
-        role="button" class="btn btn-success pull-right">
-      <span class="glyphicon glyphicon-plus-sign"></span> {{ _('Write a review') }}
-    </a>
-  {% else %}
-    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
-        role="button" class="btn btn-primary pull-right">
-      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
-    </a>
-  {% endif %}
+  {{ show_review_buttons(id, my_review, "artist") }}
 </div>
 
 <div class="row">

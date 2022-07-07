@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_avg_rating, entity_rate_form with context %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_review_buttons with context %}
 {% from 'common.html' import rating_script with context %}
 
 
@@ -7,21 +7,11 @@
 <div class="clearfix">
   <h2 class="pull-left">
     {{ edition_group.name }}
-    {% if edition_group.disambiguation_comment is defined and edition_group.disambiguation_comment %}
-      <small>({{ edition_group.disambiguation_comment }})</small>
+    {% if edition_group.disambiguation is defined and edition_group.disambiguation %}
+      <small>({{ edition_group.disambiguation }})</small>
     {% endif %}
   </h2>
-  {% if not my_review %}
-    <a id="write-review" href="{{ url_for('review.create', entity_type ='bb_edition_group', entity_id=id) }}"
-       role="button" class="btn btn-success pull-right">
-      <span class="glyphicon glyphicon-plus-sign"></span> {{ _('Write a review') }}
-    </a>
-  {% else %}
-    <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
-       role="button" class="btn btn-primary pull-right">
-      <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
-    </a>
-  {% endif %}
+  {{ show_review_buttons(id, my_review, "bb_edition_group") }}
 </div>
 
 <div id="edition-group-details" class="row">
@@ -73,8 +63,8 @@
 
   <div class="col-md-3">
     <h4>{{ _('Edition Group information') }}</h4>
-    {% if edition_group['label'] is defined and edition_group['label']  %}
-      <p class="text-muted">{{ edition_group.label }}</p>
+    {% if edition_group['edition_group_type'] is defined and edition_group['edition_group_type']  %}
+      <p class="text-muted">{{ edition_group.edition_group_type }}</p>
     {% endif %}
     {% if avg_rating %}
       <div class="avg-rating">

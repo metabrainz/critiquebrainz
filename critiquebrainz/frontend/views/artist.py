@@ -97,6 +97,7 @@ def entity(id):
         release_groups_limit=BROWSE_RELEASE_GROUPS_LIMIT,
         release_group_count=release_group_count,
         band_members=band_members,
+        my_review=my_review,
     )
 
 
