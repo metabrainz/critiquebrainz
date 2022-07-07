@@ -315,3 +315,30 @@ class ReviewViewsTestCase(WebServiceTestCase):
         db_review.create(**self.review)
         cache_keys = cache.smembers(track_key, namespace="Review")
         self.assertEqual(set(), cache_keys)
+
+    def test_entity_metadata(self):
+        entity_id = "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+        db_review.create(
+            entity_id="f59c5520-5f46-4d2c-b2c4-822eabf53419",
+            entity_type='artist',
+            user_id=self.user.id,
+            text="Testing! This text should be on the page.",
+            rating=5,
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        db_review.create(
+            entity_id="f59c5520-5f46-4d2c-b2c4-822eabf53419",
+            entity_type='artist',
+            user_id=self.another_user.id,
+            text="Testing again! This text should be on the page.",
+            rating=4,
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+        resp = self.client.get('/review/', query_string={'include_metadata': 'true', 'entity_id': entity_id})
+        self.assert200(resp)
+
+        self.assertEqual(resp.json["reviews"][0]["artist"]["name"], 'Linkin Park')
+        self.assertEqual(resp.json["reviews"][0]["artist"]["type"], 'Group')
+        self.assertEqual(resp.json["avg_rating"], 4.5)
