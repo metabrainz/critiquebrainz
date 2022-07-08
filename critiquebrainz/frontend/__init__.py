@@ -126,8 +126,8 @@ def create_app(debug=None, config_path=None):
     # issue [https://github.com/PyCQA/pylint/issues/2563] with pylint is resolved
     app.jinja_env.add_extension('jinja2.ext.do')
     from critiquebrainz.utils import reformat_date, reformat_datetime, track_length, track_length_ms, parameterize
-    from critiquebrainz.frontend.external.musicbrainz_db.entities import get_entity_by_id
-    from critiquebrainz.frontend.external.musicbrainz_db import mbstore, development_get_entity_by_id
+    from critiquebrainz.frontend.external.entities import get_entity_by_id
+    from critiquebrainz.frontend.external import mbstore, development_get_entity_by_id
     mbstore.init_app(app)
     from critiquebrainz.frontend.forms.utils import get_language_name
     app.jinja_env.filters['date'] = reformat_date

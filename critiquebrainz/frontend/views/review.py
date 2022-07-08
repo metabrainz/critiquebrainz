@@ -18,7 +18,7 @@ from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.external import mbspotify, soundcloud, notify_moderators
-from critiquebrainz.frontend.external.musicbrainz_db import mbstore
+from critiquebrainz.frontend.external import mbstore
 from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
