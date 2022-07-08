@@ -29,5 +29,8 @@ then
     exit $?
 fi
 
+export PGPASSWORD=$DB_PASSWORD
+psql -f admin/sql/update_bb_db.sql -h $DB_HOSTNAME -p $DB_PORT -U $DB_USER -d $DB_NAME
+
 # Clean up the dump file if it imported correctly.
 rm -f $DUMP_FILE
