@@ -4,7 +4,7 @@ from typing import List
 import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db 
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
-from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_identifiers
+from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
 from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
 
 
@@ -78,7 +78,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
             results = {}
             for edition_group in edition_groups:
                 edition_group = dict(edition_group)
-                edition_group['identifiers'] = fetch_identifiers(edition_group['identifier_set_id'])
+                edition_group['identifiers'] = fetch_bb_external_identifiers(edition_group['identifier_set_id'])
                 edition_group['rels'] = fetch_relationships( edition_group['relationship_set_id'], ['Edition'])
                 results[edition_group['bbid']] = edition_group
             

@@ -20,9 +20,8 @@ def get_mapped_relationships(relation_types):
     relation_types = [relation_type.lower() for relation_type in relation_types]
     with db.bb_engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""
-            SELECT
-                label
-            FROM bookbrainz.relationship_type
+            SELECT label
+              FROM relationship_type
         """))
         relationships = [relationship[0] for relationship in result.fetchall()]
         relationships_mapping = {relationship.lower(): relationship for relationship in relationships}
@@ -49,18 +48,17 @@ def fetch_relationships(relationship_set_id: int, relation_types: List) -> List:
     if not relationships:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
-                SELECT
-                    rel.id as id,
-                    reltype.label as label,
-                    rel.source_bbid::text as source_bbid,
-                    rel.target_bbid::text as target_bbid,
-                    reltype.target_entity_type as target_entity_type,
-                    reltype.source_entity_type as source_entity_type
-                FROM bookbrainz.relationship_set__relationship rels
-                LEFT JOIN bookbrainz.relationship rel on rels.relationship_id = rel.id
-                LEFT JOIN bookbrainz.relationship_type reltype on rel.type_id = reltype.id
-                WHERE rels.set_id = :relationship_set_id
-                AND reltype.label in :relation_types
+                SELECT rel.id as id,
+                       reltype.label as label,
+                       rel.source_bbid::text as source_bbid,
+                       rel.target_bbid::text as target_bbid,
+                       reltype.target_entity_type as target_entity_type,
+                       reltype.source_entity_type as source_entity_type
+                  FROM relationship_set__relationship rels
+             LEFT JOIN relationship rel on rels.relationship_id = rel.id
+             LEFT JOIN relationship_type reltype on rel.type_id = reltype.id
+                 WHERE rels.set_id = :relationship_set_id
+                   AND reltype.label in :relation_types
             """), {'relationship_set_id': relationship_set_id, 'relation_types': tuple(relation_types)})
             relationships = result.fetchall()
             relationships = [dict(relationship) for relationship in relationships]
