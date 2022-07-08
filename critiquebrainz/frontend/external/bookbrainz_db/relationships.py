@@ -42,9 +42,9 @@ def fetch_relationships(relationship_set_id: int, relation_types: List) -> List:
     if not relationship_set_id:
         return None
 
-    key = cache.gen_key('bb_relationship', relationship_set_id)
-    relationships = cache.get(key)
     relation_types = get_mapped_relationships(relation_types)
+    key = cache.gen_key('bb_relationship', relationship_set_id, relation_types)
+    relationships = cache.get(key)
     if not relationships:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
