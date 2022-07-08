@@ -6,7 +6,9 @@
   {% block entity_title %}{% endblock %}
   {% if avg_rating %}
     {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
+    <br/><br/>
   {% endif %}
+  {% block show_entity_type %}{% endblock show_entity_type %}
 
   <div id="review-content" class="row">
     {% block sidebar %}{% endblock %}

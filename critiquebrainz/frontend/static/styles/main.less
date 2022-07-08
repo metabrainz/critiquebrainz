@@ -16,6 +16,7 @@
 @place-color: @yellow;
 @work-color: @blue;
 @label-color: @blue;
+@eg-color: @blue;
 
 body {
   padding-bottom: 25px;
@@ -145,6 +146,9 @@ ul.sharing {
     }
     &.event {
       background-color: fade(@event-color, 70%);
+    }
+    &.bb-edition-group {
+        background-color: fade(@eg-color, 70%);
     }
   }
 
@@ -522,6 +526,9 @@ a#edit-review { margin-top: 20px; }
           }
           &.event {
             background-color: fade(@event-color, 70%);
+          }
+          &.bb-edition-group {
+            background-color: fade(@eg-color, 70%);
           }
         }
       }

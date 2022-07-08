@@ -49,10 +49,22 @@ def reviews(user_id):
     # happens so infrequently that we don't bother to back-fill it.
     retrieved_entity_mbids = entities_info.keys()
     reviews = [r for r in reviews if str(r["entity_id"]) in retrieved_entity_mbids]
+    
+    entity_names = {
+        'artist': gettext('Artist'),
+        'release_group': gettext('Release Group'),
+        'label': gettext('Label'),
+        'recording': gettext('Recording'),
+        'place': gettext('Place'),
+        'event': gettext('Event'),
+        'work': gettext('Work'),
+        'bb_edition_group': gettext('Edition Group'),
+    }
 
+    
     return render_template('user/reviews.html', section='reviews', user=user,
                            reviews=reviews, page=page, limit=limit, count=count,
-                           entities=entities_info)
+                           entities=entities_info, entity_names=entity_names)
 
 
 @user_bp.route('/<uuid:user_id>/info')

@@ -23,6 +23,8 @@
     <a href="{{ url_for('review.browse', entity_type='place', sort=sort, sort_order=sort_order) }}">{{ _('Place') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'work' }}>
     <a href="{{ url_for('review.browse', entity_type='work', sort=sort, sort_order=sort_order) }}">{{ _('Work') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'bb_edition_group' }}>
+    <a href="{{ url_for('review.browse', entity_type='bb_edition_group', sort=sort, sort_order=sort_order) }}">{{ _('Edition Group') }}</a></li>
 
   <div class="btn-group dropdown pull-right">
     <button class="btn btn-default dropdown-toggle" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
