@@ -1,30 +1,22 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_avg_rating, entity_rate_form, show_external_reviews, show_review_buttons with context %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_review_buttons with context %}
 {% from 'common.html' import rating_script with context %}
 
-{% block title %}
-  {{ _('Recording "%(name)s" by %(artist)s', name=recording.name, artist=recording['artist-credit-phrase']) }}
-  - CritiqueBrainz
-{% endblock %}
 
 {% block content %}
 <div class="clearfix">
   <h2 class="pull-left">
-    {{ recording.name }} {{ _('by') }}
-    {% for credit in recording['artists'] %}
-    {% if credit.name %}
-        <a href="{{ url_for('artist.entity', id=credit.mbid) }}">{{ credit.name }}</a>
-        {% if credit.join_phrase is defined %}{{ credit.join_phrase }}{% endif %}
+    {{ edition_group.name }}
+    {% if edition_group.disambiguation is defined and edition_group.disambiguation %}
+      <small>({{ edition_group.disambiguation }})</small>
     {% endif %}
-    {% endfor %}
   </h2>
-
-  {{ show_review_buttons(id, my_review, "recording") }}
+  {{ show_review_buttons(id, my_review, "bb_edition_group") }}
 </div>
 
-<div id="recording-details" class="row">
+<div id="edition-group-details" class="row">
   <div class="col-md-9">
-    {{ entity_rate_form('recording', 'recording') }}
+    {{ entity_rate_form('bb_edition_group', 'edition group') }}
     <br/><br/>
     <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
     {% if not reviews %}
@@ -61,7 +53,7 @@
           {% for p in range(pages) %}
             {% set p_offset = p*limit %}
             <li {% if offset == p_offset %}class="active"{% endif %}>
-              <a href="{{ url_for('recording.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+              <a href="{{ url_for('bb_edition_group.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
             </li>
           {% endfor %}
         {% endif %}
@@ -70,45 +62,54 @@
   </div>
 
   <div class="col-md-3">
-    <h4>{{ _('Recording information') }}</h4>
+    <h4>{{ _('Edition Group information') }}</h4>
+    {% if edition_group['edition_group_type'] is defined and edition_group['edition_group_type']  %}
+      <p class="text-muted">{{ edition_group.edition_group_type }}</p>
+    {% endif %}
     {% if avg_rating %}
       <div class="avg-rating">
         {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
       </div>
     {% endif %}
-    {% if external_reviews %}
-      <b>{{ _('External reviews') }}</b>
-      <ul class="list-unstyled external-links">
-        {{ show_external_reviews(external_reviews) }}
+    
+    {% if edition_group['author_credits'] is defined and edition_group['author_credits'] %}
+      <b>{{ _('Author') }}</b>
+      <ul class="list-unstyled">
+        {% for author in edition_group.author_credits %}
+          <li>{{ author.name }}</li>
+        {% endfor %}
       </ul>
     {% endif %}
-    {% if recording['external-urls'] is defined %}
+      
+    {% if edition_group['identifiers'] is defined and edition_group['identifiers'] %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
-        {% for url in recording['external-urls'] %}
+        {% for identifier in edition_group['identifiers'] %}
           <li class="clearfix">
             <div class="favicon-container">
-              {% if url.icon %}
-                <img src="{{ get_static_path('favicons/'+url.icon) }}" />
-              {% else %}
-                <img src="{{ get_static_path('favicons/external-16.png') }}" />
-              {% endif %}
+                {% if identifier.icon is defined and identifier.icon %}
+                    <img src="{{ get_static_path('favicons/' + identifier.icon) }}" />
+                {% else %}
+                    <img src="{{ get_static_path('favicons/external-16.png') }}" />
+                {% endif %}
             </div>
-            <a href="{{ url.url.url }}">{{ url.name }}</a>
-            {% if url.disambiguation %}<span class="text-muted">({{ url.disambiguation }})</span>{% endif %}
+            <a href="{{ identifier.url }}">{{ identifier.name }}</a>
           </li>
         {% endfor %}
       </ul>
     {% endif %}
 
     <div class="external-links">
-      <div class="favicon-container"><img src="{{ get_static_path('favicons/musicbrainz-16.svg') }}" /></div>
-      <a href="https://musicbrainz.org/recording/{{ recording.mbid }}"><em>{{ _('Edit on MusicBrainz') }}</em></a>
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/bookbrainz-16.svg') }}" /></div>
+      <a href="https://bookbrainz.org/edition-group/{{ edition_group.bbid }}"><em>{{ _('Edit on BookBrainz') }}</em></a>
     </div>
+    <br/>
+
   </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
-    {{ rating_script }}
+  {{ rating_script }}
 {% endblock %}

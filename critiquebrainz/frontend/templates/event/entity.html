@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_avg_rating, entity_rate_form, show_external_reviews with context %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_external_reviews, show_review_buttons with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ event.name }} - CritiqueBrainz{% endblock %}
@@ -14,18 +14,7 @@
     <h2 class="pull-left">
       {{ event.name }}
     </h2>
-
-    {% if not my_review %}
-      <a id="write-review" href="{{ url_for('review.create', entity_type='event', entity_id=id) }}"
-         role="button" class="btn btn-success pull-right">
-        <span class="glyphicon glyphicon-plus-sign"></span> {{ _('Write a review') }}
-      </a>
-    {% else %}
-      <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
-         role="button" class="btn btn-primary pull-right">
-        <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
-      </a>
-    {% endif %}
+    {{ show_review_buttons(id, my_review, "event") }}
   </div>
 
   {% if event['place-rels'] is defined %}

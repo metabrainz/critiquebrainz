@@ -291,3 +291,17 @@
     {%- endif %}
   {%- endif %}
 {%- endmacro %}
+
+{% macro show_review_buttons(id, my_review, entity_type) %}
+    {% if not my_review %}
+        <a id="write-review" href="{{ url_for('review.create', entity_type=entity_type, entity_id=id) }}"
+            role="button" class="btn btn-success pull-right">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ _('Write a review') }}
+        </a>
+        {% else %}
+        <a id="edit-review" href="{{ url_for('review.edit', id=my_review.id) }}"
+            role="button" class="btn btn-primary pull-right">
+            <span class="glyphicon glyphicon-edit"></span> {{ _('Edit my review') }}
+        </a>
+    {% endif %}
+{% endmacro %}
