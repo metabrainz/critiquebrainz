@@ -119,7 +119,7 @@
     {% elif type == "bb_edition_group" %}
       <tr>
         <td>
-          <a href="{{ url_for('edition_group.entity', id=result.bbid) }}">{{ result['name'] }}</a>
+          <a href="{{ url_for('bb_edition_group.entity', id=result.bbid) }}">{{ result['name'] }}</a>
           {% if result['disambiguation'] is defined and result['disambiguation'] %}<small class="text-muted">({{ result['disambiguation'] }})</small>{% endif %}
         </td>
         <td>
