@@ -24,6 +24,8 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_labels(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "recording":
             count, results = musicbrainz.search_recordings(query, limit=RESULTS_LIMIT, offset=offset)
+        elif type == "bb_edition_group":
+            count, results = musicbrainz.search_editon_group(query, limit=RESULTS_LIMIT, offset=offset)
         else:
             count, results = 0, []
     else:

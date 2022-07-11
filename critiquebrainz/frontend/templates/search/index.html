@@ -30,6 +30,7 @@
         <option value="place" {% if type=="place" %}selected="selected"{% endif %}>{{ _('Place') }}</option>
         <option value="release-group" {% if type=="release-group" %}selected="selected"{% endif %}>{{ _('Release group') }}</option>
         <option value="recording" {% if type=="recording" %}selected="selected"{% endif %}>{{ _('Recording') }}</option>
+        <option value="bb_edition_group" {% if type=="bb_edition_group" %}selected="selected"{% endif %}>{{ _('Edition Group') }}</option>
       </select>
     </div>
   </div>
@@ -98,6 +99,13 @@
           <th>{{ _('Length') }}</th>
           <th>{{ _('Artist') }}</th>
           <th>{{ _('Release group') }}</th>
+          <th>{{ _('Write a review') }}</th>
+        </tr>
+      {% elif type == "bb_edition_group" %}
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Author') }}</th>
           <th>{{ _('Write a review') }}</th>
         </tr>
       {% endif %}
