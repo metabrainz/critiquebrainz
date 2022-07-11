@@ -1,4 +1,5 @@
 from flask import Blueprint, request, render_template, jsonify
+from requests import HTTPError, JSONDecodeError, Timeout
 
 from critiquebrainz.frontend.external import musicbrainz
 from werkzeug.exceptions import BadRequest
@@ -25,7 +26,14 @@ def search_wrapper(query, type, offset=None):
         elif type == "recording":
             count, results = musicbrainz.search_recordings(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "bb_edition_group":
-            count, results = musicbrainz.search_editon_group(query, limit=RESULTS_LIMIT, offset=offset)
+            try:
+                count, results = musicbrainz.search_editon_group(query, limit=RESULTS_LIMIT, offset=offset)
+            except HTTPError:
+                raise BadRequest('Request failed while searching for edition groups.')
+            except JSONDecodeError:
+                raise BadRequest('Request failed while searching for edition groups.')
+            except Timeout:
+                raise BadRequest('Request timed out while searching for edition groups.')
         else:
             count, results = 0, []
     else:

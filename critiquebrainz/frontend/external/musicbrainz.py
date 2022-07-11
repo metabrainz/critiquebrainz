@@ -25,7 +25,9 @@ def init(app_name, app_version, hostname=None):
 def search_editon_group(query='', limit=None, offset=None):
     baseURL = 'https://bookbrainz.org/search/search'
     params = {'q': query, 'type': 'EditionGroup', 'size': limit, 'from': offset}
-    data = requests.get(baseURL, params=params).json()
+    data = requests.get(baseURL, params=params, timeout=5)
+    data.raise_for_status()
+    data = data.json()
     count = data['total']
     results = data['results']
     bbids = [result["bbid"] for result in results]
