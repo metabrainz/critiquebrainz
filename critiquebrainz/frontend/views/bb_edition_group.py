@@ -8,10 +8,10 @@ from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, EDITION_GROUP_REVIEWS_LIMIT
 
 
-edition_group_bp = Blueprint('edition_group', __name__)
+bb_edition_group_bp = Blueprint('bb_edition_group', __name__)
 
 
-@edition_group_bp.route('/<uuid:id>')
+@bb_edition_group_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
     edition_group = bb_edition_group.get_edition_group_by_bbid(id)
