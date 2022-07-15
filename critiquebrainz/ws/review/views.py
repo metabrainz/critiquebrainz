@@ -2,7 +2,7 @@ import logging
 
 from brainzutils import cache
 from flask import Blueprint, jsonify
-from critiquebrainz.frontend.external.musicbrainz_db import mbstore
+from critiquebrainz.frontend.external import mbstore
 import critiquebrainz.db.avg_rating as db_avg_rating
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import (
