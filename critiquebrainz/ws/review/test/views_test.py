@@ -341,4 +341,4 @@ class ReviewViewsTestCase(WebServiceTestCase):
 
         self.assertEqual(resp.json["reviews"][0]["artist"]["name"], 'Linkin Park')
         self.assertEqual(resp.json["reviews"][0]["artist"]["type"], 'Group')
-        self.assertEqual(resp.json["avg_rating"], 4.5)
+        self.assertEqual(resp.json["average_rating"], 4.5)

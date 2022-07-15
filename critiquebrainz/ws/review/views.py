@@ -350,6 +350,8 @@ def review_list_handler():
     :query review_type: ``review`` or ``rating``. If set, only return reviews which have a text review, or a rating **(optional)**
     :query include_metadata: ``true`` or ``false``. Include metadata of the entity **(optional)**
 
+    **NOTE:** If entity_id is provided, then additional top-level item "average_rating" which is the average of all ratings for this entity is also included.
+
     :resheader Content-Type: *application/json*
     """
     # TODO: This checking is added to keep old clients working and needs to be removed.
@@ -458,10 +460,11 @@ def review_list_handler():
                    expirein=REVIEW_CACHE_TIMEOUT,
                    namespace=REVIEW_CACHE_NAMESPACE)
 
+
+    result = {"limit": limit, "offset": offset, "count": count, "reviews": reviews} 
     if include_avg_rating:
-        return jsonify(limit=limit, offset=offset, count=count, reviews=reviews, avg_rating=avg_rating)
-    
-    return jsonify(limit=limit, offset=offset, count=count, reviews=reviews)
+        result["average_rating"] = avg_rating 
+    return jsonify(**result)
 
 
 # don't need to add OPTIONS here because its already added
