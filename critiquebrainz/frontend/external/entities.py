@@ -71,6 +71,7 @@ def get_multiple_entities(entities):
     entities_info.update(works)
     recordings = fetch_multiple_recordings(
         recording_mbids,
+        includes=['artists'],
     )
     entities_info.update(recordings)
     edition_groups = edition_group.fetch_multiple_edition_groups(
