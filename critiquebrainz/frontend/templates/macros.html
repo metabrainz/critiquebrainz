@@ -88,6 +88,13 @@
         {{ _('Edition Group') }}
       </span>
     {% endif %}
+  {% elif entity_type == 'bb_literary_work'  %}
+    <img src="{{ get_static_path('images/placeholder_literary_work.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type bb-literary-work">
+        {{ _('Literary Work') }}
+      </span>
+    {% endif %}
   {% elif entity_type == 'release_group' %}
     <img {{ attributes }} />
     {% if overlay_type %}
