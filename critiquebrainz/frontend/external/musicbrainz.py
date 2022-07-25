@@ -7,8 +7,6 @@ Package musicbrainzngs is available at https://pypi.python.org/pypi/musicbrainzn
 More information about the MusicBrainz webservice can be found at http://wiki.musicbrainz.org/XML_Web_Service.
 """
 import musicbrainzngs
-import requests
-from critiquebrainz.frontend.external.bookbrainz_db.edition_group import fetch_multiple_edition_groups
 
 DEFAULT_CACHE_EXPIRATION = 12 * 60 * 60  # seconds (12 hours)
 THREAD_POOL_PROCESSES = 10
@@ -20,19 +18,6 @@ def init(app_name, app_version, hostname=None):
     musicbrainzngs.set_useragent(app_name, app_version)
     if hostname:
         musicbrainzngs.set_hostname(hostname)
-
-
-def search_editon_group(query='', limit=None, offset=None):
-    baseURL = 'https://bookbrainz.org/search/search'
-    params = {'q': query, 'type': 'EditionGroup', 'size': limit, 'from': offset}
-    data = requests.get(baseURL, params=params, timeout=5)
-    data.raise_for_status()
-    data = data.json()
-    count = data['total']
-    results = data['results']
-    bbids = [result["bbid"] for result in results]
-    edition_group_data = fetch_multiple_edition_groups(bbids).values()
-    return count, edition_group_data
 
 
 def search_release_groups(query='', artist='', release_group='', limit=None, offset=None):
