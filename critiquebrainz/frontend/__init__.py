@@ -154,6 +154,7 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.recording import recording_bp
     from critiquebrainz.frontend.views.event import event_bp
     from critiquebrainz.frontend.views.bb_edition_group import bb_edition_group_bp
+    from critiquebrainz.frontend.views.bb_author import bb_author_bp
     from critiquebrainz.frontend.views.mapping import mapping_bp
     from critiquebrainz.frontend.views.user import user_bp
     from critiquebrainz.frontend.views.profile import profile_bp
@@ -180,6 +181,7 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(event_bp, url_prefix='/event')
     app.register_blueprint(place_bp, url_prefix='/place')
     app.register_blueprint(bb_edition_group_bp, url_prefix='/edition-group')
+    app.register_blueprint(bb_author_bp, url_prefix='/author')
     app.register_blueprint(mapping_bp, url_prefix='/mapping')
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(profile_bp, url_prefix='/profile')
