@@ -21,16 +21,16 @@ class LiteraryWorkViewsTestCase(FrontendTestCase):
     def test_literary_work_page(self):
         db_review.create(
             user_id=self.user.id,
-            entity_id='65e71f2e-7245-42df-b93e-89463a28f75c',
+            entity_id='0e03bc2a-2867-4687-afee-e211ece30772',
             entity_type='bb_literary_work',
             text='This is a test review',
             is_draft=False,
             license_id=self.license['id'],
             language='en',
         )
-        response = self.client.get('/literary-work/65e71f2e-7245-42df-b93e-89463a28f75c')
+        response = self.client.get('/literary-work/0e03bc2a-2867-4687-afee-e211ece30772')
         self.assert200(response)
-        self.assertIn("Harry Potter and the Philosopher's Stone", str(response.data))
+        self.assertIn("Oliver Twist", str(response.data))
         # Test if there is a review from test user
         self.assertIn('test user', str(response.data))
     
