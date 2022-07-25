@@ -1,7 +1,7 @@
 import requests
 from critiquebrainz.frontend.external.bookbrainz_db.edition_group import fetch_multiple_edition_groups
 
-def search_editon_group(query='', limit=None, offset=None):
+def search_edition_group(query='', limit=None, offset=None):
     baseURL = 'https://bookbrainz.org/search/search'
     params = {'q': query, 'type': 'EditionGroup', 'size': limit, 'from': offset}
     data = requests.get(baseURL, params=params, timeout=5)

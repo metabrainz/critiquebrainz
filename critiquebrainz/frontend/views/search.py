@@ -28,7 +28,7 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_recordings(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "bb_edition_group":
             try:
-                count, results = bookbrainz.search_editon_group(query, limit=RESULTS_LIMIT, offset=offset)
+                count, results = bookbrainz.search_edition_group(query, limit=RESULTS_LIMIT, offset=offset)
             except (HTTPError, JSONDecodeError, Timeout) :
                 raise ServiceUnavailable('Request failed while searching for edition groups.')
         else:
