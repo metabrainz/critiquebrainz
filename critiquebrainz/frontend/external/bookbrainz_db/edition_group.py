@@ -23,7 +23,7 @@ def get_edition_group_by_bbid(bbid: uuid.UUID) -> dict:
             - disambiguation: Disambiguation of the edition group.
             - identifiers: A list of dictionaries containing the basic information on the identifiers.
             - rels: A list of dictionaries containing the basic information on the relationships.
-            - artist_credits: A list of dictionaries containing the basic information on the artist credits.
+            - author_credits: A list of dictionaries containing the basic information on the author credits.
 
         Returns None if the edition group is not found.
 
@@ -60,7 +60,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
                     disambiguation,
                     identifier_set_id,
                     relationship_set_id,
-                    json_agg( acn ORDER BY "position" ASC ) as artist_credits
+                    json_agg( acn ORDER BY "position" ASC ) as author_credits
                FROM edition_group 
           LEFT JOIN author_credit_name acn ON acn.author_credit_id = edition_group.author_credit_id 
               WHERE bbid in :bbids
