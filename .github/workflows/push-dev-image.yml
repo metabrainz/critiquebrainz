@@ -41,6 +41,7 @@ jobs:
         run: |
           docker build \
             --tag metabrainz/critiquebrainz:"${{ github.event.inputs.tag }}" \
-            --build-arg GIT_COMMIT_SHA="${{ github.sha }}" .
+            --build-arg GIT_COMMIT_SHA="${{ github.sha }}" \
+            --target critiquebrainz-prod .
       - name: Push development image
         run: docker push metabrainz/critiquebrainz:"${{ github.event.inputs.tag }}"

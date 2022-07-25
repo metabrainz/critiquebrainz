@@ -35,3 +35,4 @@ jobs:
         cache-to: metabrainz/critiquebrainz:cache
         push: true
         tags: metabrainz/critiquebrainz:${{ steps.get_tag.outputs.TAG }}
+        target: critiquebrainz-prod

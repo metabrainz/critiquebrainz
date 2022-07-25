@@ -23,7 +23,8 @@ services:
   critiquebrainz:
     build:
       context: ..
-      dockerfile: ./docker/Dockerfile.dev
+      dockerfile: ./Dockerfile
+      target: critiquebrainz-dev
     volumes:
       - ..:/code
     depends_on:

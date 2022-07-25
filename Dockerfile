@@ -1,6 +1,10 @@
-FROM metabrainz/python:3.10-20220315
+FROM metabrainz/python:3.10-20220315 as critiquebrainz-base
 
 ENV PYTHONUNBUFFERED 1
+
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 RUN apt-get update \
      && apt-get install -y --no-install-recommends \
@@ -24,9 +28,6 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends postgresql-client-$PG_MAJOR \
     && rm -rf /var/lib/apt/lists/*
 
-# Specifying password so that client doesn't ask scripts for it...
-ENV PGPASSWORD "critiquebrainz"
-
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
    && apt-get install -y nodejs \
@@ -43,19 +44,16 @@ WORKDIR /code
 COPY ./requirements.txt /code/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Node dependencies
-COPY ./package.json ./package-lock.json /code/
-RUN npm install
+RUN useradd --create-home --shell /bin/bash critiquebrainz
+
+FROM critiquebrainz-base as critiquebrainz-dev
 
 COPY . /code/
-
-# Build static files
-RUN npm run build
 
 # Compile translations
 RUN pybabel compile -d critiquebrainz/frontend/translations
 
-RUN useradd --create-home --shell /bin/bash critiquebrainz
+FROM critiquebrainz-base as critiquebrainz-prod
 
 ############
 # Services #
@@ -84,6 +82,18 @@ RUN touch /etc/service/cron-config/down
 
 RUN touch /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log \
     && chown critiquebrainz:critiquebrainz /var/log/dump_backup.log /var/log/public_dump_create.log /var/log/json_dump_create.log
+
+# Node dependencies
+COPY ./package.json ./package-lock.json /code/
+RUN npm install
+
+COPY . /code/
+
+# Build static files
+RUN npm run build
+
+# Compile translations
+RUN pybabel compile -d critiquebrainz/frontend/translations
 
 ARG GIT_COMMIT_SHA
 ENV GIT_SHA ${GIT_COMMIT_SHA}
