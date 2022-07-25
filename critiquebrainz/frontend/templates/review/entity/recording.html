@@ -14,6 +14,20 @@
     {% else %}
       {{ _('[Unknown recording]') }}
     {% endif %}
+    {% if recording['artists'] is defined and recording['artists'] %}
+      {% set artist = [] %}
+      {% for credit in recording['artists'] %}
+        {% if credit.name %}
+          {% do artist.append('<a href="%s">'|safe % url_for('artist.entity', id=credit.mbid) ~ credit.name ~ '</a>'|safe) %}
+          {% if credit.join_phrase is defined %}
+            {% do artist.append(credit.join_phrase) %}
+          {% endif %}
+        {% else %}
+          {% do artist.append(credit) %}
+        {% endif %}
+      {% endfor %}
+      {{ _('by') }} {{ artist|join() }}
+    {% endif %}
   </h2>
 {% endblock %}
 
