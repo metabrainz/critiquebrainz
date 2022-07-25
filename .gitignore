@@ -21,6 +21,8 @@ pip-delete-this-directory.txt
 # Test results
 htmlcov
 .coverage
+/reports
+/.cache
 
 .transifexrc
 

@@ -116,6 +116,32 @@
       </td>
       <td>{{ write_a_review(entity_type='label', entity_id=result.id) }}</td>
     </tr>
+    {% elif type == "bb_edition_group" %}
+      <tr>
+        <td>
+          <a href="{{ url_for('bb_edition_group.entity', id=result.bbid) }}">{{ result['name'] }}</a>
+          {% if result['disambiguation'] is defined and result['disambiguation'] %}<small class="text-muted">({{ result['disambiguation'] }})</small>{% endif %}
+        </td>
+        <td>
+          {% if result['edition_group_type'] is defined and result['edition_group_type']  %}
+            {{ result['edition_group_type'] }}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td>
+          {% if result['author_credits'] is defined and result['author_credits'] %}
+            {% if len(result["author_credits"]) > 1 %}
+              {{ result['author_credits'][0]['name'] }} + {{ len(result["author_credits"]) - 1 }} more
+            {% else %}
+              {{ result['author_credits'][0]['name'] }}
+            {% endif %}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td>{{ write_a_review(entity_type='bb_edition_group', entity_id=result.bbid) }}</td>
+      </tr>
 
   {% endif %}
 {% endfor %}

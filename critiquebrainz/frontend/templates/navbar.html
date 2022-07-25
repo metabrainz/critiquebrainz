@@ -94,13 +94,18 @@
         </div>
         <div class="form-group">
           <select id="type-selector" name="type" class="form-control input-sm">
-            <option value="artist">{{ _('Artist') }}</option>
-            <option value="work">{{ _('Work') }}</option>
-            <option value="label">{{ _('Label') }}</option>
-            <option value="event">{{ _('Event') }}</option>
-            <option value="place">{{ _('Place') }}</option>
-            <option value="release-group">{{ _('Release group') }}</option>
-            <option value="recording">{{ _('Recording') }}</option>
+            <optgroup label="MusicBrainz">
+              <option value="artist">{{ _('Artist') }}</option>
+              <option value="work">{{ _('Work') }}</option>
+              <option value="label">{{ _('Label') }}</option>
+              <option value="event">{{ _('Event') }}</option>
+              <option value="place">{{ _('Place') }}</option>
+              <option value="release-group">{{ _('Release group') }}</option>
+              <option value="recording">{{ _('Recording') }}</option>
+            </optgroup>
+            <optgroup label="BookBrainz">
+              <option value="bb_edition_group">{{ _('Edition Group') }}</option>
+            </optgroup>
           </select>
         </div>
         <button type="submit" class="btn input-sm"><span class="glyphicon glyphicon-search"></span></button>
