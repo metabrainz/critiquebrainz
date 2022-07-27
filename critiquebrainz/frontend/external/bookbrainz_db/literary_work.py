@@ -57,7 +57,10 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID]) -> dict:
                     disambiguation,
                     identifier_set_id,
                     relationship_set_id,
-                    json_agg(mbl.name) as languages
+                    COALESCE (json_agg(mbl.name)
+                             FILTER (WHERE mbl IS NOT NULL),
+                             '[]'
+                             ) as languages
                 FROM work
            LEFT JOIN bookbrainz.language_set__language lsl ON lsl.set_id = work.language_set_id
            LEFT JOIN musicbrainz.language mbl on mbl.id = lsl.language_id
