@@ -131,8 +131,8 @@
         </td>
         <td>
           {% if result['author_credits'] is defined and result['author_credits'] %}
-            {% if len(result["author_credits"]) > 1 %}
-              {{ result['author_credits'][0]['name'] }} + {{ len(result["author_credits"]) - 1 }} more
+            {% if result["author_credits"]|length > 1 %}
+              {{ result['author_credits'][0]['name'] }} + {{ result["author_credits"]|length - 1 }} more
             {% else %}
               {{ result['author_credits'][0]['name'] }}
             {% endif %}
