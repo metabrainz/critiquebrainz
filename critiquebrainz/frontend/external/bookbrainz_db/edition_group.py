@@ -74,7 +74,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
                     edition_group_type,
                     disambiguation,
                     identifier_set_id,
-                    relationship_set_id;
+                    relationship_set_id
                 """), {'bbids': tuple(bbids)})
             
             edition_groups = result.fetchall()
