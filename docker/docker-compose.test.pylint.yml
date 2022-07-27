@@ -1,8 +1,0 @@
-# Docker Compose file that runs pylint and flake8
-version: "2"
-services:
-
-  critiquebrainz:
-    build:
-      context: ..
-      dockerfile: ./docker/Dockerfile.test.pylint

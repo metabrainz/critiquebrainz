@@ -22,7 +22,8 @@ services:
   critiquebrainz:
     build:
       context: ..
-      dockerfile: ./docker/Dockerfile.dev
+      dockerfile: ./Dockerfile
+      target: critiquebrainz-dev
     volumes:
       - ../:/code:z
       - ../data/app:/data:z
