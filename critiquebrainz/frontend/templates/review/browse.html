@@ -9,6 +9,22 @@
 <ul class="nav nav-pills">
   <li role="presentation" {{ "class=active" if entity_type == None }}>
     <a href="{{ url_for('review.browse', entity_type='all', sort=sort, sort_order=sort_order) }}">{{ _('All') }}</a></li>
+  <div class="btn-group dropdown pull-right">
+    <button class="btn btn-default dropdown-toggle" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{ _('Sort by') }}: {{ sort_options[sort, sort_order] }}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+        <li {% if sort == 'popularity' and sort_order == 'desc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='popularity', sort_order='desc') }}">{{ sort_options['popularity', 'desc'] }}</a></li>
+        <li {% if sort == 'popularity' and sort_order == 'asc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='popularity', sort_order='asc') }}">{{ sort_options['popularity', 'asc'] }}</a></li>
+        <li {% if sort == 'published_on' and sort_order == 'desc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='desc') }}">{{ sort_options['published_on', 'desc'] }}</a></li>
+        <li {% if sort == 'published_on' and sort_order == 'asc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='asc') }}">{{ sort_options['published_on', 'asc'] }}</a></li>
+    </ul>
+  </div>
+</ul>
+<ul class="nav nav-pills">
+  <li role="presentation" {{ "class=active" if entity_type == 'musicbrainz' }}>
+    <a href="{{ url_for('review.browse', entity_type='musicbrainz', sort=sort, sort_order=sort_order) }}">{{ _('MusicBrainz') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'release_group' }}>
     <a href="{{ url_for('review.browse', entity_type='release_group', sort=sort, sort_order=sort_order) }}">{{ _('Release group') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'artist' }}>
@@ -23,21 +39,14 @@
     <a href="{{ url_for('review.browse', entity_type='place', sort=sort, sort_order=sort_order) }}">{{ _('Place') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'work' }}>
     <a href="{{ url_for('review.browse', entity_type='work', sort=sort, sort_order=sort_order) }}">{{ _('Work') }}</a></li>
+</ul>
+<ul class="nav nav-pills">
+  <li role="presentation" {{ "class=active" if entity_type == 'bookbrainz' }}>
+    <a href="{{ url_for('review.browse', entity_type='bookbrainz', sort=sort, sort_order=sort_order) }}">{{ _('BookBrainz') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'bb_edition_group' }}>
     <a href="{{ url_for('review.browse', entity_type='bb_edition_group', sort=sort, sort_order=sort_order) }}">{{ _('Edition Group') }}</a></li>
-
-  <div class="btn-group dropdown pull-right">
-    <button class="btn btn-default dropdown-toggle" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{ _('Sort by') }}: {{ sort_options[sort, sort_order] }}
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-        <li {% if sort == 'popularity' and sort_order == 'desc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='popularity', sort_order='desc') }}">{{ sort_options['popularity', 'desc'] }}</a></li>
-        <li {% if sort == 'popularity' and sort_order == 'asc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='popularity', sort_order='asc') }}">{{ sort_options['popularity', 'asc'] }}</a></li>
-        <li {% if sort == 'published_on' and sort_order == 'desc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='desc') }}">{{ sort_options['published_on', 'desc'] }}</a></li>
-        <li {% if sort == 'published_on' and sort_order == 'asc' %}class="active"{% endif %}><a href="{{ url_for('review.browse', entity_type=entity_type, sort='published_on', sort_order='asc') }}">{{ sort_options['published_on', 'asc'] }}</a></li>
-    </ul>
-  </div>
+  <li role="presentation" {{ "class=active" if entity_type == 'bb_literary_work' }}>
+    <a href="{{ url_for('review.browse', entity_type='bb_literary_work', sort=sort, sort_order=sort_order) }}">{{ _('Literary Work') }}</a></li>
 </ul>
 
 <div id="reviews-browse" class="row">

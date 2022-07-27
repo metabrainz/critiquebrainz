@@ -41,7 +41,7 @@ def get_review_or_404(review_id):
 
 valid_browse_sort = ['published_on', 'popularity']
 valid_browse_sort_order = ['asc', 'desc']
-
+valid_entity_types = ENTITY_TYPES + ['musicbrainz', 'bookbrainz']
 
 @review_bp.route('/')
 def browse():
@@ -58,7 +58,7 @@ def browse():
         ('published_on', 'asc'): gettext('Oldest')
     }
 
-    if entity_type and entity_type not in ENTITY_TYPES:
+    if entity_type and entity_type not in valid_entity_types:
         raise BadRequest("Not a valid entity type.")
 
     if sort not in valid_browse_sort:

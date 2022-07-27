@@ -33,6 +33,21 @@ ENTITY_TYPES = [
     "bb_literary_work"
 ]
 
+MUSICBRAINZ_ENTITY_TYPES = [
+    "event",
+    "place",
+    "release_group",
+    "work",
+    "artist",
+    "label",
+    "recording"
+]
+
+BOOKBRAINZ_ENTITY_TYPES = [
+    "bb_edition_group",
+    "bb_literary_work"
+]
+
 supported_languages = []
 for lang in list(pycountry.languages):
     if 'iso639_1_code' in dir(lang):
@@ -418,8 +433,15 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
         filter_data["entity_id"] = entity_id
 
     if entity_type is not None:
-        filters.append("entity_type = :entity_type")
-        filter_data["entity_type"] = entity_type
+        if entity_type == 'musicbrainz':
+            filters.append("entity_type in :entity_type")
+            filter_data["entity_type"] = tuple(MUSICBRAINZ_ENTITY_TYPES)
+        elif entity_type == 'bookbrainz':
+            filters.append("entity_type in :entity_type")
+            filter_data["entity_type"] = tuple(BOOKBRAINZ_ENTITY_TYPES)
+        else:
+            filters.append("entity_type = :entity_type")
+            filter_data["entity_type"] = entity_type
 
     if license_id is not None:
         filters.append("license_id = :license_id")
