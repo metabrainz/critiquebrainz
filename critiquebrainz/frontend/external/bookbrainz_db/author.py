@@ -60,7 +60,7 @@ def fetch_multiple_authors(bbids: List[uuid.UUID]) -> dict:
 					end_day,
 					end_area_id,
 					author.ended,
-					gender_id,
+					gender.name as gender,
 					COALESCE (json_agg(area)
                              FILTER (WHERE area IS NOT NULL),
                              '[]'
@@ -70,6 +70,8 @@ def fetch_multiple_authors(bbids: List[uuid.UUID]) -> dict:
 				 ON begin_area_id = area.id
 				 OR end_area_id = area.id
 				 OR area_id = area.id
+          LEFT JOIN musicbrainz.gender
+                 ON gender_id = gender.id
 			  WHERE bbid IN :bbids
 				AND master = 't'
 			GROUP BY bbid,
@@ -89,7 +91,7 @@ def fetch_multiple_authors(bbids: List[uuid.UUID]) -> dict:
 					 end_day,
 					 end_area_id,
 					 author.ended,
-					 gender_id
+					 gender.name
 			"""), {'bbids': tuple(bbids)})
 
 			authors = result.fetchall()
