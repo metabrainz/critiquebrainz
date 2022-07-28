@@ -74,23 +74,39 @@
     {% endif %}
     
     {% if begin_date is defined and begin_date %}
-      <b>{{ _('Date of Birth') }}</b>
+      {% if author['author_type'] and author['author_type'] == 'Group' %}
+        <b>{{ _('Date Founded') }}</b>
+      {% else %}
+        <b>{{ _('Date of Birth') }}</b>
+      {% endif %}
       <p>{{ begin_date | date }}</p>
     {% endif %}
 
     {% if begin_area is defined and begin_area %}
-      <b>{{ _('Place of Birth') }}</b>
-      <p><a href="http://musicbrainz.org/area/{{begin_area.gid}}">{{ begin_area['name'] }}</a></p>
+      {% if author['author_type'] and author['author_type'] == 'Group' %}
+        <b>{{ _('Place Founded') }}</b>
+      {% else %}
+        <b>{{ _('Place of Birth') }}</b>
+      {% endif %}
+      <p><a href="https://musicbrainz.org/area/{{begin_area.gid}}">{{ begin_area['name'] }}</a></p>
     {% endif %}
     
     {% if author.ended and end_date is defined and end_date %}
-      <b>{{ _('Date of Death') }}</b>
+      {% if author['author_type'] and author['author_type'] == 'Group' %}
+        <b>{{ _('Date of Dissolution') }}</b>
+      {% else %}
+        <b>{{ _('Date of Death') }}</b>
+      {% endif %}
       <p>{{ end_date | date }}</p>
     {% endif %}
     
     {% if end_area is defined and end_area %}
-      <b>{{ _('Place of Death') }}</b>
-      <p><a href="http://musicbrainz.org/area/{{end_area.gid}}">{{ end_area['name'] }}</a></p>
+      {% if author['author_type'] and author['author_type'] == 'Group' %}
+        <b>{{ _('Place of Dissolution') }}</b>
+      {% else %}
+        <b>{{ _('Place of Death') }}</b>
+      {% endif %}
+      <p><a href="https://musicbrainz.org/area/{{end_area.gid}}">{{ end_area['name'] }}</a></p>
     {% endif %}
     
     {% if author['identifiers'] is defined and author['identifiers'] %}
