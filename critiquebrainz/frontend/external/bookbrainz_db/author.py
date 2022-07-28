@@ -61,7 +61,10 @@ def fetch_multiple_authors(bbids: List[uuid.UUID]) -> dict:
 					end_area_id,
 					author.ended,
 					gender_id,
-					json_agg(area) as area_info
+					COALESCE (json_agg(area)
+                             FILTER (WHERE area IS NOT NULL),
+                             '[]'
+                             ) as area_info
 			   FROM author
 		  LEFT JOIN musicbrainz.area area 
 				 ON begin_area_id = area.id
