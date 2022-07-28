@@ -29,7 +29,8 @@ ENTITY_TYPES = [
     "artist",
     "label",
     "recording",
-    "bb_edition_group"
+    "bb_edition_group",
+    "bb_author"
 ]
 
 supported_languages = []

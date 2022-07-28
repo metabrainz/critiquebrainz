@@ -17,6 +17,7 @@
 @work-color: @blue;
 @label-color: @blue;
 @eg-color: @blue;
+@author-color: #754e37;
 
 body {
   padding-bottom: 25px;
@@ -149,6 +150,9 @@ ul.sharing {
     }
     &.bb-edition-group {
         background-color: fade(@eg-color, 70%);
+    }
+    &.bb-author {
+        background-color: fade(@author-color, 70%);
     }
   }
 
@@ -529,6 +533,9 @@ a#edit-review { margin-top: 20px; }
           }
           &.bb-edition-group {
             background-color: fade(@eg-color, 70%);
+          }
+          &.bb-author {
+            background-color: fade(@author-color, 70%);
           }
         }
       }

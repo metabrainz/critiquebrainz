@@ -106,6 +106,8 @@ def get_entity_by_id(id, entity_type):
         entity = recording.get_recording_by_mbid(str(id))
     elif entity_type == 'bb_edition_group':
         entity = edition_group.get_edition_group_by_bbid(str(id))
+    elif entity_type == 'bb_author':
+        entity = author.get_author_by_bbid(str(id))
     else:
         raise ValueError('Unknown entity type')
     return entity
