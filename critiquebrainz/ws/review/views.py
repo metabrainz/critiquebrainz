@@ -3,7 +3,7 @@ import logging
 from brainzutils import cache
 from flask import Blueprint, jsonify
 from critiquebrainz.frontend.external import mbstore
-import critiquebrainz.db.avg_rating as db_avg_rating
+from critiquebrainz.frontend.views import get_avg_rating
 import critiquebrainz.db.review as db_review
 from critiquebrainz.db import (
     vote as db_vote,
@@ -435,7 +435,9 @@ def review_list_handler():
                 entity_type = reviews[0]["entity_type"] if reviews  else None
             
             if entity_type:
-                avg_rating = db_avg_rating.get(entity_id, entity_type)['rating']
+                avg_rating = get_avg_rating(entity_id, entity_type)
+                if avg_rating:
+                    avg_rating = avg_rating['rating']
             else:
                 avg_rating = None
                 include_avg_rating = False
