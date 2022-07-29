@@ -84,6 +84,12 @@
                   ({{ entity.edition_group_type }})
                 {% endif %}
               
+              {%- elif review.entity_type == 'bb_publisher' -%}
+                <strong>{{ entity.name | default(_('[Unknown Publisher]')) }}</strong>
+                {% if entity['publisher_type'] is defined and entity['publisher_type'] %}
+                  ({{ entity.publisher_type }})
+                {% endif %}
+              
               {%- endif -%}
 
             </a>

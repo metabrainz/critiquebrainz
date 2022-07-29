@@ -88,6 +88,13 @@
         {{ _('Edition Group') }}
       </span>
     {% endif %}
+  {% elif entity_type == 'bb_publisher'  %}
+    <img src="{{ get_static_path('images/placeholder_publisher.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type bb-publisher">
+        {{ _('Publisher') }}
+      </span>
+    {% endif %}
   {% elif entity_type == 'release_group' %}
     <img {{ attributes }} />
     {% if overlay_type %}

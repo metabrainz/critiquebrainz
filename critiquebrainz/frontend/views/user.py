@@ -59,6 +59,7 @@ def reviews(user_id):
         'event': gettext('Event'),
         'work': gettext('Work'),
         'bb_edition_group': gettext('Edition Group'),
+        'bb_publisher': gettext('Publisher'),
     }
 
     
