@@ -295,8 +295,8 @@ class ReviewViewsTestCase(WebServiceTestCase):
         cache_keys = cache.smembers(track_key, namespace="Review")
         self.assertEqual(set(), cache_keys)
 
-        expected_cache_keys = {'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=popularity_sort_order=desc_entity_type=None_limit=50_offset=0_language=None_review_type=None',
-                               'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=published_on_sort_order=desc_entity_type=None_limit=5_offset=0_language=None_review_type=None'}
+        expected_cache_keys = {'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=popularity_sort_order=desc_entity_type=None_limit=50_offset=0_language=None_review_type=None_include_metadata=None',
+                               'list_entity_id=90878b63-f639-3c8b-aefb-190bdf3d1790_user_id=None_sort=published_on_sort_order=desc_entity_type=None_limit=5_offset=0_language=None_review_type=None_include_metadata=None'}
 
         # Test cache keys are recorded
         self.client.get('/review/', query_string={'sort': 'rating', 'entity_id': entity_id})

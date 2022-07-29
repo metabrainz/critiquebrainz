@@ -397,7 +397,7 @@ def review_list_handler():
 
     cache_key = cache.gen_key('list', f'entity_id={entity_id}', f'user_id={user_id}', f'sort={sort}',
                               f'sort_order={sort_order}', f'entity_type={entity_type}', f'limit={limit}',
-                              f'offset={offset}', f'language={language}', f'review_type={review_type}')
+                              f'offset={offset}', f'language={language}', f'review_type={review_type}', f'include_metadata={include_metadata}')
     cached_result = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
 
     if cached_result:
