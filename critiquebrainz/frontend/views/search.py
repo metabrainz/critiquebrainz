@@ -31,6 +31,11 @@ def search_wrapper(query, type, offset=None):
                 count, results = bookbrainz.search_edition_group(query, limit=RESULTS_LIMIT, offset=offset)
             except (HTTPError, JSONDecodeError, Timeout) :
                 raise ServiceUnavailable('Request failed while searching for edition groups.')
+        elif type == "bb_publisher":
+            try:
+                count, results = bookbrainz.search_publisher(query, limit=RESULTS_LIMIT, offset=offset)
+            except (HTTPError, JSONDecodeError, Timeout) :
+                raise ServiceUnavailable('Request failed while searching for publishers.')
         else:
             count, results = 0, []
     else:
