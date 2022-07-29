@@ -31,7 +31,7 @@ def fetch_bb_external_identifiers(identifier_set_id: int) -> List:
                   FROM identifier_set__identifier idens
              LEFT JOIN identifier iden on idens.identifier_id = iden.id
              LEFT JOIN identifier_type idtype on iden.type_id = idtype.id
-                 WHERE idens.set_id = :identifier_set_id;
+                 WHERE idens.set_id = :identifier_set_id
                 """), {'identifier_set_id': identifier_set_id})
             identifiers = result.fetchall()
             identifiers = [dict(identifier) for identifier in identifiers]

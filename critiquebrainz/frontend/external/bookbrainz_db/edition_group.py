@@ -60,7 +60,10 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
                     disambiguation,
                     identifier_set_id,
                     relationship_set_id,
-                    json_agg( acn ORDER BY "position" ASC ) as author_credits
+                    COALESCE( json_agg( acn ORDER BY "position" ASC )
+                              FILTER (WHERE acn IS NOT NULL),
+                              '[]'
+                            ) as author_credits
                FROM edition_group 
           LEFT JOIN author_credit_name acn ON acn.author_credit_id = edition_group.author_credit_id 
               WHERE bbid in :bbids
@@ -71,7 +74,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
                     edition_group_type,
                     disambiguation,
                     identifier_set_id,
-                    relationship_set_id;
+                    relationship_set_id
                 """), {'bbids': tuple(bbids)})
             
             edition_groups = result.fetchall()

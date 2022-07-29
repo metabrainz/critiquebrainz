@@ -29,3 +29,15 @@ class EditionGroupTestCase(DataTestCase):
         self.assertEqual(edition_groups[self.bbid3]["bbid"], self.bbid3)
         self.assertEqual(edition_groups[self.bbid3]["name"], "Harry Potter and the Deathly Hallows")
         self.assertEqual(edition_groups[self.bbid3]["edition_group_type"], "Book")
+
+
+    def test_author_credits_for_edition_groups(self):
+        edition_groups = edition_group.fetch_multiple_edition_groups([self.bbid2, self.bbid3])
+
+        # If there is no author credits, the author credits should be an empty list.
+        self.assertEqual(edition_groups[self.bbid2]["author_credits"], [])
+        
+        # If there is author credits, the author credits should be a list of authors.
+        self.assertEqual(len(edition_groups[self.bbid3]["author_credits"]), 1)
+        self.assertEqual(edition_groups[self.bbid3]["author_credits"][0]["name"], "Test Author")
+        self.assertEqual(edition_groups[self.bbid3]["author_credits"][0]["author_bbid"], "e5c4e68b-bfce-4c77-9ca2-0f0a2d4d09f0")
