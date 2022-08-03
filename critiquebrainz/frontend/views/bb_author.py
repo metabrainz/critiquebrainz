@@ -5,16 +5,33 @@ from werkzeug.exceptions import NotFound, BadRequest
 from flask_babel import gettext
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.bookbrainz_db.author as bb_author
+import critiquebrainz.frontend.external.bookbrainz_db.literary_work as bb_literary_work
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, AUTHOR_REVIEWS_LIMIT
 
 bb_author_bp = Blueprint('bb_author', __name__)
+
+LITERARY_WORK_TYPE_NOVEL = 'Novel'
+LITERARY_WORK_TYPE_SHORT_STORY = 'Short Story'
+LITERARY_WORK_TYPE_POEM = 'Poem'
+LITERARY_WORK_TYPE_OTHER = 'other'
+VALID_LITERARY_WORK_PARAMS = [LITERARY_WORK_TYPE_NOVEL, LITERARY_WORK_TYPE_SHORT_STORY, LITERARY_WORK_TYPE_POEM, LITERARY_WORK_TYPE_OTHER]
 
 @bb_author_bp.route('/<uuid:id>')
 def entity(id):
 	id = str(id)
 	author = bb_author.get_author_by_bbid(id)
 
+	literary_work_type = request.args.get('literary_work_type')
+	if not literary_work_type:
+		literary_work_type = LITERARY_WORK_TYPE_NOVEL
+
+	if literary_work_type not in VALID_LITERARY_WORK_PARAMS:  # supported literary_work types
+		raise BadRequest("Unsupported literary_work type.")
+	
+	literary_work_bbid = [rel['target_bbid'] for rel in  author['rels']]
+	literary_works = bb_literary_work.fetch_multiple_literary_works(literary_work_bbid, literary_work_type)
+	
 	if author is None:
 		raise NotFound(gettext("Sorry, we couldn't find an author with that BookBrainz ID."))
 
@@ -72,6 +89,8 @@ def entity(id):
 	return render_template('bb_author/entity.html',
 						   id=author['bbid'],
 						   author=author,
+						   literary_works=literary_works,
+						   literary_work_type=literary_work_type,
 						   begin_date=begin_date,
 						   end_date=end_date,
 						   begin_area=begin_area,

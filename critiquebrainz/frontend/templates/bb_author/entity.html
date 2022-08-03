@@ -60,6 +60,58 @@
         {% endif %}
       </ul>
     {% endif %}
+
+    <h4>{{ _('Literary Works') }}</h4>
+    <ul class="nav nav-tabs">
+      <li {% if literary_work_type=='Novel' %}class="active"{% endif %}>
+        <a href="{{ url_for('bb_author.entity', id=author.bbid) }}?literary_work_type=Novel">{{ _('Novel') }}</a>
+      </li>
+      <li {% if literary_work_type=='Short Story' %}class="active"{% endif %}>
+        <a href="{{ url_for('bb_author.entity', id=author.bbid) }}?literary_work_type=Short Story">{{ _('Short Story') }}</a>
+      </li>
+      <li {% if literary_work_type=='Poem' %}class="active"{% endif %}>
+        <a href="{{ url_for('bb_author.entity', id=author.bbid) }}?literary_work_type=Poem">{{ _('Poem') }}</a>
+      </li>
+      <li {% if literary_work_type=='other' %}class="active"{% endif %}>
+        <a href="{{ url_for('bb_author.entity', id=author.bbid) }}?literary_work_type=other">{{ _('Other Works') }}</a>
+      </li>
+    </ul>
+    {% if literary_works is defined and literary_works %}
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th>{{ _('#') }}</th>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Language') }}</th>
+        </tr>
+        </thead>
+        <tbody>
+          {% for literary_work in literary_works.values() %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>
+                <a href="{{ url_for('bb_literary_work.entity', id=literary_work.bbid) }}">
+                  {{ literary_work.name }}
+                </a>
+              </td>
+              <td>
+                {% if literary_work['languages'] is defined and literary_work['languages'] %}
+                  {% if literary_work["languages"]|length > 1 %}
+                    {{ literary_work['languages'][0] }} + {{ literary_work["languages"]|length - 1 }} more
+                  {% else %}
+                    {{ literary_work['languages'][0] }}
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No works found') }}</p>
+    {% endif %}
   </div>
 
   <div class="col-md-3">
