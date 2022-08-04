@@ -75,6 +75,11 @@
       </div>
     {% endif %}
 
+    {% if series['series_ordering_type'] is defined and series['series_ordering_type'] %}
+      <b>{{ _('Ordering Type') }}</b>
+      <p>{{ series['series_ordering_type'] }}</p>
+    {% endif %}
+
     {% if series['identifiers'] is defined and series['identifiers'] %}
       <b>{{ _('External links') }}</b>
       <ul class="list-unstyled external-links">
