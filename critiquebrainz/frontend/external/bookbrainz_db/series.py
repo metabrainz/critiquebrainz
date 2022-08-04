@@ -59,22 +59,22 @@ def fetch_multiple_series(bbids: List[uuid.UUID]) -> dict:
     if not results:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
-				SELECT 
-					bbid::text,
-					series.name,
-					sort_name,
-					entity_type as series_type,
-					disambiguation,
-					identifier_set_id,
-					relationship_set_id,
+                SELECT 
+                    bbid::text,
+                    series.name,
+                    sort_name,
+                    entity_type as series_type,
+                    disambiguation,
+                    identifier_set_id,
+                    relationship_set_id,
                     series_ordering_type.label as series_ordering_type
-			   FROM series
-		  LEFT JOIN series_ordering_type
-				 ON series.ordering_type_id = series_ordering_type.id
-			  WHERE bbid IN :bbids
-				AND master = 't'
+               FROM series
+          LEFT JOIN series_ordering_type
+                 ON series.ordering_type_id = series_ordering_type.id
+              WHERE bbid IN :bbids
+                AND master = 't'
                 AND entity_type IS NOT NULL
-			"""), {'bbids': tuple(bbids)})
+            """), {'bbids': tuple(bbids)})
 
             data = result.fetchall()
             results = {}
