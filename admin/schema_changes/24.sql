@@ -1,0 +1,1 @@
+ALTER TYPE entity_types ADD VALUE 'bb_series' AFTER 'bb_author';
