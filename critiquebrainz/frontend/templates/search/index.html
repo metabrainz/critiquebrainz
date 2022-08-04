@@ -34,6 +34,7 @@
         </optgroup>
         <optgroup label="BookBrainz">
           <option value="bb_edition_group" {% if type=="bb_edition_group" %}selected="selected"{% endif %}>{{ _('Edition Group') }}</option>
+          <option value="bb_series" {% if type=="bb_series" %}selected="selected"{% endif %}>{{ _('Series') }}</option>
         </optgroup>
       </select>
     </div>
@@ -110,6 +111,13 @@
           <th>{{ _('Name') }}</th>
           <th>{{ _('Type') }}</th>
           <th>{{ _('Author') }}</th>
+          <th>{{ _('Write a review') }}</th>
+        </tr>
+      {% elif type == "bb_series" %}
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Ordering Type') }}</th>
           <th>{{ _('Write a review') }}</th>
         </tr>
       {% endif %}
