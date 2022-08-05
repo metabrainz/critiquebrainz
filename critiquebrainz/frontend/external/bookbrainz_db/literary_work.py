@@ -82,6 +82,7 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
            LEFT JOIN musicbrainz.language mbl on mbl.id = lsl.language_id
                 WHERE bbid IN :bbids
                     AND master = 't'
+                    AND data_id IS NOT NULL
                     {work_type_filter_string}
                GROUP BY bbid,
                         work.name,
