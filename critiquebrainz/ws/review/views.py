@@ -340,7 +340,7 @@ def review_list_handler():
         }
 
     :query entity_id: UUID of an entity to retrieve reviews for **(optional)**
-    :query entity_type: One of the supported reviewable entities. ``musicbrainz`` (for reviews about MusicBrainz entities) or ``bookbrainz`` (for reviews about bookbrainz entities) or one of the following entity types :data:`critiquebrainz.db.review.ENTITY_TYPES` **(optional)**
+    :query entity_type: ``musicbrainz`` (for reviews about MusicBrainz entities) or ``bookbrainz`` (for reviews about bookbrainz entities) or one of the following entity types :data:`critiquebrainz.db.review.ENTITY_TYPES` **(optional)**
     :query user_id: user's UUID **(optional)**
     :query sort: ``popularity`` or ``published_on`` **(optional)**. Defaults to ``published_on``
     :query sort_order: ``asc`` or ``desc`` **(optional)**. Defaults to ``desc``
