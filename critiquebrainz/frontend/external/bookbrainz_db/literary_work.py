@@ -38,7 +38,11 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
     Get info related to multiple literary works using their BookBrainz IDs. 
     Args:
         bbids (list): List of BBID of literary works.
-        work_type (str): Filter the results by work type.
+        work_type (str): Filter the results by work type. It includes the following values:
+            - Novel
+            - Short Story
+            - Poem
+            - Other - all other work types like articles, plays, etc.
         limit (int): Limit the number of results.
         offset (int): Offset the results.
     Returns:
@@ -49,16 +53,18 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
 
     bbids = [str(uuid.UUID(bbid)) for bbid in bbids]
 
-    if limit is None:
-        limit = len(bbids)
-
-    if work_type is None:
-        work_type_filter_string = ''
-    elif work_type in WORK_TYPE_FILTER_OPTIONS:
-        work_type_filter_string = 'AND work_type = \'%s\'' % work_type
+    query_params = {
+        'bbids': tuple(bbids),
+        'limit': limit,
+        'offset': offset,
+    }
+    work_type_filter_string = ''
+    if work_type in WORK_TYPE_FILTER_OPTIONS:
+        work_type_filter_string = 'AND work_type = :work_type'
+        query_params['work_type'] = work_type
     elif work_type == 'other':
-        work_type_filter_string = 'AND ( work_type IS NULL OR work_type NOT IN (\'%s\'))' % '\', \''.join(
-            WORK_TYPE_FILTER_OPTIONS)
+        work_type_filter_string = 'AND ( work_type IS NULL OR work_type NOT IN :ommitted_work_types )'
+        query_params['ommitted_work_types'] = WORK_TYPE_FILTER_OPTIONS
 
     bb_literary_work_key = cache.gen_key('literary-works', bbids, limit, offset, work_type)
     results = cache.get(bb_literary_work_key)
@@ -94,7 +100,7 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
                 LIMIT :limit
                OFFSET :offset
             """.format(work_type_filter_string=work_type_filter_string)
-            ), {'bbids': tuple(bbids), 'limit': limit, 'offset': offset})
+            ), query_params)
 
             literary_works = result.fetchall()
             results = {}

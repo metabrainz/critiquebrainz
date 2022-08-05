@@ -4,6 +4,7 @@ from requests import HTTPError, JSONDecodeError, Timeout
 from critiquebrainz.frontend.external import musicbrainz
 from critiquebrainz.frontend.external import bookbrainz
 from werkzeug.exceptions import BadRequest, ServiceUnavailable
+from critiquebrainz.db.review import BOOKBRAINZ_ENTITY_TYPES
 
 search_bp = Blueprint('search', __name__)
 
@@ -26,16 +27,11 @@ def search_wrapper(query, type, offset=None):
             count, results = musicbrainz.search_labels(query, limit=RESULTS_LIMIT, offset=offset)
         elif type == "recording":
             count, results = musicbrainz.search_recordings(query, limit=RESULTS_LIMIT, offset=offset)
-        elif type == "bb_edition_group":
+        elif type in BOOKBRAINZ_ENTITY_TYPES:
             try:
-                count, results = bookbrainz.search_edition_group(query, limit=RESULTS_LIMIT, offset=offset)
+                count, results = bookbrainz.search_bookbrainz_entities(type, query, limit=RESULTS_LIMIT, offset=offset)
             except (HTTPError, JSONDecodeError, Timeout) :
-                raise ServiceUnavailable('Request failed while searching for edition groups.')
-        elif type == "bb_literary_work":
-            try:
-                count, results = bookbrainz.search_literary_work(query, limit=RESULTS_LIMIT, offset=offset)
-            except (HTTPError, JSONDecodeError, Timeout) :
-                raise ServiceUnavailable('Request failed while searching for literary works.')
+                raise ServiceUnavailable('Request failed while searching for {}'.format(type))
         else:
             count, results = 0, []
     else:

@@ -16,7 +16,7 @@ def entity(id):
     literary_work = bb_literary_work.get_literary_work_by_bbid(id)
 
     if literary_work is None:
-        raise NotFound(gettext("Sorry, we couldn't find a literary work with that BookBrainz ID."))
+        raise NotFound(gettext("Sorry, we couldn't find a work with that BookBrainz ID."))
 
     try:
         reviews_limit = int(request.args.get('limit', default=LITERARY_WORK_REVIEWS_LIMIT))

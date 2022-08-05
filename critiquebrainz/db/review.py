@@ -21,18 +21,6 @@ DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
 DEFAULT_LANG = "en"
 
 #: list of allowed entity_type 's for writing/querying a review
-ENTITY_TYPES = [
-    "event",
-    "place",
-    "release_group",
-    "work",
-    "artist",
-    "label",
-    "recording",
-    "bb_edition_group",
-    "bb_literary_work"
-]
-
 MUSICBRAINZ_ENTITY_TYPES = [
     "event",
     "place",
@@ -47,6 +35,8 @@ BOOKBRAINZ_ENTITY_TYPES = [
     "bb_edition_group",
     "bb_literary_work"
 ]
+
+ENTITY_TYPES = MUSICBRAINZ_ENTITY_TYPES + BOOKBRAINZ_ENTITY_TYPES
 
 supported_languages = []
 for lang in list(pycountry.languages):
@@ -600,7 +590,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
 
     Args:
         entity_id (uuid): ID of the entity that has been reviewed.
-        entity_type (str): Type of the entity that has been reviewed.
+        entity_type (str): Type of the entity that has been reviewed. Can be either one of the entities supported or 
+                            "musicbrainz" (for reviews about MusicBrainz entities) or "bookbrainz" (for reviews about bookbrainz entities).
         user_id (uuid): ID of the author.
         sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
                     "published_on" (order by publish time) or "random" (order randomly).
