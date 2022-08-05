@@ -68,6 +68,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
           LEFT JOIN author_credit_name acn ON acn.author_credit_id = edition_group.author_credit_id 
               WHERE bbid in :bbids
                 AND master = 't'
+                AND data_id IS NOT NULL
            GROUP BY bbid,
                     edition_group.name,
                     sort_name,

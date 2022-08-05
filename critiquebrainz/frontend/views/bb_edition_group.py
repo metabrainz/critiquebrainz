@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import current_user
 from werkzeug.exceptions import NotFound, BadRequest
 from flask_babel import gettext
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.bookbrainz_db.edition_group as bb_edition_group
+import critiquebrainz.frontend.external.bookbrainz_db.redirects as bb_redirects
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, EDITION_GROUP_REVIEWS_LIMIT
 
@@ -14,6 +15,11 @@ bb_edition_group_bp = Blueprint('bb_edition_group', __name__)
 @bb_edition_group_bp.route('/<uuid:id>')
 def entity(id):
     id = str(id)
+
+    redirected_bbid = bb_redirects.get_redirected_bbid(id)
+    if redirected_bbid:
+        return redirect(url_for('bb_edition_group.entity', id=redirected_bbid))
+
     edition_group = bb_edition_group.get_edition_group_by_bbid(id)
 
     if edition_group is None:
