@@ -350,7 +350,7 @@ def review_list_handler():
     :query review_type: ``review`` or ``rating``. If set, only return reviews which have a text review, or a rating **(optional)**
     :query include_metadata: ``true`` or ``false``. Include metadata of the entity **(optional)**
 
-    **NOTE:** If entity_id is provided, then additional top-level item "average_rating" which is the average of all ratings for this entity is also included.
+    **NOTE:** If entity_id is provided, then additional top-level item "average_rating" which includes the average of all ratings for this entity and the total count of these ratings is also included.
 
     :resheader Content-Type: *application/json*
     """
@@ -403,7 +403,7 @@ def review_list_handler():
     if cached_result:
         reviews = cached_result['reviews']
         count = cached_result['count']
-        avg_rating = cached_result['avg_rating']
+        avg_rating_data = cached_result['avg_rating_data']
     else:
         reviews, count = db_review.list_reviews(
             entity_id=entity_id,
@@ -435,20 +435,23 @@ def review_list_handler():
                 entity_type = reviews[0]["entity_type"] if reviews  else None
             
             if entity_type:
-                avg_rating = get_avg_rating(entity_id, entity_type)
-                if avg_rating:
-                    avg_rating = avg_rating['rating']
+                avg_rating_data = get_avg_rating(entity_id, entity_type)
+                if avg_rating_data:
+                    avg_rating_data = {
+                        "rating": avg_rating_data["rating"],
+                        "count": avg_rating_data["count"]
+                    }
             else:
-                avg_rating = None
+                avg_rating_data = None
                 include_avg_rating = False
 
         else:
-            avg_rating = None
+            avg_rating_data = None
 
         cache.set(cache_key, {
             'reviews': reviews,
             'count': count,
-            'avg_rating': avg_rating
+            'avg_rating_data': avg_rating_data
         }, expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
         # When we cache the results of a request, we include (entity_id, user_id, sort, limit, offset, language, review_type)
@@ -465,7 +468,7 @@ def review_list_handler():
 
     result = {"limit": limit, "offset": offset, "count": count, "reviews": reviews} 
     if include_avg_rating:
-        result["average_rating"] = avg_rating 
+        result["average_rating"] = avg_rating_data 
     return jsonify(**result)
 
 
