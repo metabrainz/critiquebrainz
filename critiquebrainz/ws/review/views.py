@@ -28,6 +28,17 @@ review_bp = Blueprint('ws_review', __name__)
 REVIEW_CACHE_NAMESPACE = "Review"
 REVIEW_CACHE_TIMEOUT = 30 * 60  # 30 minutes
 
+entity_name_map = {
+    'artist': 'Artist',
+    'release_group': 'Release Group',
+    'label': 'Label',
+    'recording': 'Recording',
+    'place': 'Place',
+    'event': 'Event',
+    'work': 'Work',
+    'bb_edition_group': 'Edition Group',
+}
+
 
 def get_review_or_404(review_id):
     """Get a review using review ID or raise error 404"""
@@ -516,7 +527,7 @@ def review_post_handler(user):
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
         if db_review.list_reviews(user_id=user.id, entity_id=entity_id)[1]:
-            raise InvalidRequest(desc='You have already published a review for this album')
+            raise InvalidRequest(desc='You have already published a review for this {entity_name}'.format(entity_name=entity_name_map[entity_type]))
         return entity_id, entity_type, text, rating, license_choice, language, is_draft
 
     if user.is_review_limit_exceeded:
