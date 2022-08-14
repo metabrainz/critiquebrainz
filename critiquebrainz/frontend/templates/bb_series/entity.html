@@ -60,6 +60,221 @@
         {% endif %}
       </ul>
     {% endif %}
+
+    {% if series_rels_info is defined and series_rels_info %}
+
+      {% if series.series_type == 'Author' %}
+        <h4>{{ _('Author') }}</h4>
+          <table class="table table-condensed table-hover">
+            <thead>
+            <tr>
+              <th>{{ _('#') }}</th>
+              <th>{{ _('Name') }}</th>
+              <th>{{ _('Gender') }}</th>
+              <th>{{ _('Type') }}</th>
+            </tr>
+            </thead> 
+            <tbody>
+              {% for rel in series_rels_info %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>
+                    <a href="{{ url_for('bb_author.entity', id=rel.bbid) }}">
+                      {{ rel.name }}
+                    </a>
+                  </td>
+                  <td>
+                    {% if rel['gender'] is defined and rel['gender']  %}
+                      {{ rel['gender'] }}
+                    {% else %}
+                      -
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if rel['author_type'] is defined and rel['author_type']  %}
+                      {{ rel['author_type'] }}
+                    {% else %}
+                      -
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+
+      {% elif series.series_type == 'Edition' %}
+        <h4>{{ _('Edition') }}</h4>
+        <table class="table table-condensed table-hover">
+          <thead>
+          <tr>
+            <th>{{ _('#') }}</th>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Language') }}</th>
+            <th>{{ _('Format') }}</th>
+          </tr>
+          </thead>
+          <tbody>
+            {% for rel in series_rels_info %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                  <a href="https://bookbrainz.org/edition/{{rel.bbid}}">
+                    {{ rel.name }}
+                  </a>
+                </td>
+                <td>
+                  {% if rel['languages'] is defined and rel['languages'] %}
+                    {% if rel["languages"]|length > 1 %}
+                      {{ rel['languages'][0] }} + {{ rel["languages"]|length - 1 }} more
+                    {% else %}
+                      {{ rel['languages'][0] }}
+                    {% endif %}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  {% if rel['format'] is defined and rel['format']  %}
+                    {{ rel['format'] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+      {% elif series.series_type == 'EditionGroup' %}
+        <h4>{{ _('Edition Groups') }}</h4>
+        <table class="table table-condensed table-hover">
+          <thead>
+          <tr>
+            <th>{{ _('#') }}</th>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Author') }}</th>
+            <th>{{ _('Type') }}</th>
+          </tr>
+          </thead> 
+          <tbody>
+            {% for rel in series_rels_info %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                  <a href="{{ url_for('bb_edition_group.entity', id=rel.bbid) }}">
+                    {{ rel.name }}
+                  </a>
+                </td>
+                <td>
+                  {% if rel['author_credits'] is defined and rel['author_credits'] %}
+                    {% if rel["author_credits"]|length > 1 %}
+                      {{ rel['author_credits'][0]['name'] }} + {{ rel["author_credits"]|length - 1 }} more
+                    {% else %}
+                      {{ rel['author_credits'][0]['name'] }}
+                    {% endif %}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  {% if rel['edition_group_type'] is defined and rel['edition_group_type']  %}
+                    {{ rel['edition_group_type'] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+      {% elif series.series_type == 'Publisher' %}
+        <h4>{{ _('Publisher') }}</h4>
+        <table class="table table-condensed table-hover">
+          <thead>
+          <tr>
+            <th>{{ _('#') }}</th>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Area') }}</th>
+            <th>{{ _('Type') }}</th>
+          </tr>
+          </thead> 
+          <tbody>
+            {% for rel in series_rels_info %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                  <a href="https://bookbrainz.org/publisher/{{rel.bbid}}">
+                    {{ rel.name }}
+                  </a>
+                </td>
+                <td>
+                  {% if rel['area_name'] is defined and rel['area_name'] %}
+                    <a href="https://musicbrainz.org/area/{{rel.area_mbid}}">{{ rel['area_name'] }}</a>
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  {% if rel['publisher_type'] is defined and rel['publisher_type']  %}
+                    {{ rel['publisher_type'] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+      {% elif series.series_type == 'Work' %}
+        <h4>{{ _('Literary Works') }}</h4>
+        <table class="table table-condensed table-hover">
+          <thead>
+          <tr>
+            <th>{{ _('#') }}</th>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Languages') }}</th>
+            <th>{{ _('Type') }}</th>
+          </tr>
+          </thead> 
+          <tbody>
+            {% for rel in series_rels_info %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                  <a href="{{ url_for('bb_literary_work.entity', id=rel.bbid) }}">
+                    {{ rel.name }}
+                  </a>
+                </td>
+                <td>
+                  {% if rel['languages'] is defined and rel['languages'] %}
+                    {% if rel["languages"]|length > 1 %}
+                      {{ rel['languages'][0] }} + {{ rel["languages"]|length - 1 }} more
+                    {% else %}
+                      {{ rel['languages'][0] }}
+                    {% endif %}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  {% if rel['work_type'] is defined and rel['work_type']  %}
+                    {{ rel['work_type'] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    {% endif %}
   </div>
   
 

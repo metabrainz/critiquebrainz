@@ -6,6 +6,11 @@ import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
 from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
+from critiquebrainz.frontend.external.bookbrainz_db.author import fetch_multiple_authors
+from critiquebrainz.frontend.external.bookbrainz_db.edition import fetch_multiple_editions
+from critiquebrainz.frontend.external.bookbrainz_db.edition_group import fetch_multiple_edition_groups
+from critiquebrainz.frontend.external.bookbrainz_db.literary_work import fetch_multiple_literary_works
+from critiquebrainz.frontend.external.bookbrainz_db.publisher import fetch_multiple_publishers
 
 SERIES_REL_MAP = {
     'Author': 'Author Series',
@@ -31,7 +36,7 @@ def get_series_by_bbid(bbid: uuid.UUID) -> dict:
             - disambiguation: Disambiguation of the series.
             - identifiers: A list of dictionaries containing the basic information on the identifiers.
             - rels: A list of dictionaries containing the basic information on the relationships.
-        
+
         Returns None if the series is not found.
     """
 
@@ -86,6 +91,45 @@ def fetch_multiple_series(bbids: List[uuid.UUID]) -> dict:
                 results[series['bbid']] = series
 
             cache.set(bb_series_key, results, DEFAULT_CACHE_EXPIRATION)
+
+    if not results:
+        return {}
+    return results
+
+
+def fetch_series_rels_info(entity_type: str, bbids: List[uuid.UUID]) -> dict:
+    """
+    Get info related to multiple series using their BookBrainz IDs.
+    Args:
+        - entity_type: Type of the entity.
+        - bbids (list): List of the rels of Series.
+
+    Returns:
+        A dictionary containing information of the rels of series keyed by their BBID.
+    """
+
+    if bbids == []:
+        return {}
+
+    bb_series_rels_info_key = cache.gen_key('series_rels_info', bbids)
+    results = cache.get(bb_series_rels_info_key)
+    if not results:
+        if entity_type == 'Author':
+            results = fetch_multiple_authors(bbids)
+
+        elif entity_type == 'Edition':
+            results = fetch_multiple_editions(bbids)
+
+        elif entity_type == 'EditionGroup':
+            results = fetch_multiple_edition_groups(bbids)
+
+        elif entity_type == 'Publisher':
+            results = fetch_multiple_publishers(bbids)
+
+        elif entity_type == 'Work':
+            results = fetch_multiple_literary_works(bbids)
+
+        cache.set(bb_series_rels_info_key, results, DEFAULT_CACHE_EXPIRATION)
 
     if not results:
         return {}
