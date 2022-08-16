@@ -16,13 +16,13 @@ bb_edition_group_bp = Blueprint('bb_edition_group', __name__)
 def entity(id):
     id = str(id)
 
-    redirected_bbid = bb_redirects.get_redirected_bbid(id)
-    if redirected_bbid:
-        return redirect(url_for('bb_edition_group.entity', id=redirected_bbid))
-
     edition_group = bb_edition_group.get_edition_group_by_bbid(id)
 
     if edition_group is None:
+        redirected_bbid = bb_redirects.get_redirected_bbid(id)
+        if redirected_bbid:
+            return redirect(url_for('bb_edition_group.entity', id=redirected_bbid))
+
         raise NotFound(gettext("Sorry, we couldn't find an edition group with that BookBrainz ID."))
 
     try:
