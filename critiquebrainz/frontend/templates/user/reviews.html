@@ -83,6 +83,23 @@
                 {% if entity['edition_group_type'] is defined and entity['edition_group_type'] %}
                   ({{ entity.edition_group_type }})
                 {% endif %}
+              {%- elif review.entity_type == 'bb_literary_work' -%}
+                <strong>{{ entity.name | default(_('[Unknown Literary Work]')) }}</strong>
+                {% if entity['work_type'] is defined and entity['work_type'] %}
+                  ({{ entity.work_type }})
+                {% endif %}
+              
+              {%- elif review.entity_type == 'bb_author' -%}
+                <strong>{{ entity.name | default(_('[Unknown Author]')) }}</strong>
+                {% if entity['author_type'] is defined and entity['author_type'] %}
+                  ({{ entity.author_type }})
+                {% endif %}
+              
+              {%- elif review.entity_type == 'bb_series' -%}
+                <strong>{{ entity.name | default(_('[Unknown series]')) }}</strong>
+                {% if entity['series_type'] is defined and entity['series_type'] %}
+                  ({{ entity.series_type }})
+                {% endif %}
               
               {%- endif -%}
 

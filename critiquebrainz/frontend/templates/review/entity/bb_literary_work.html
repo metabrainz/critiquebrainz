@@ -1,0 +1,25 @@
+{% extends 'review/entity/base.html' %}
+
+{% set bb_literary_work = entity %}
+
+{% block title %}
+  {% set literary_work_name = bb_literary_work.name %}
+  {{ _('Review of "%(literary_work)s" by %(user)s', literary_work=literary_work_name, user=review.user.display_name) }} - CritiqueBrainz
+{% endblock %}
+
+{% block entity_title %}
+  <h2 id="title">
+    {% set literary_work_name = '<a href="%s">' | safe % url_for('bb_literary_work.entity', id=review.entity_id) ~ bb_literary_work.name ~ '</a>'|safe %}
+    {{ _('%(bb_literary_work)s', bb_literary_work=literary_work_name) }}
+    {% if bb_literary_work.disambiguation is defined and bb_literary_work.disambiguation %}
+      <small>{{ bb_literary_work.disambiguation }}</small>
+    {% endif %}
+  </h2>
+{% endblock %}
+
+{% block show_entity_type %}
+  <h4>
+    <img src="{{ get_static_path('favicons/bookbrainz-16.svg') }}"/>
+    {{ _('BookBrainz Literary Work') }} <a href="https://bookbrainz.org/work/{{ review.entity_id }}">{{ _('View on BookBrainz') }}</a>
+  </h4>
+{% endblock %}

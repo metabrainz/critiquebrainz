@@ -16,7 +16,10 @@
 @place-color: @yellow;
 @work-color: @blue;
 @label-color: @blue;
-@eg-color: @blue;
+@eg-color: @brown;
+@literary-color: @brown;
+@author-color: @brown;
+@series-color: @brown;
 
 body {
   padding-bottom: 25px;
@@ -149,6 +152,15 @@ ul.sharing {
     }
     &.bb-edition-group {
         background-color: fade(@eg-color, 70%);
+    }
+    &.bb-literary-work {
+        background-color: fade(@literary-color, 70%);
+    }
+    &.bb-author {
+        background-color: fade(@author-color, 70%);
+    }
+    &.bb-series {
+      background-color: fade(@series-color, 70%);
     }
   }
 
@@ -529,6 +541,15 @@ a#edit-review { margin-top: 20px; }
           }
           &.bb-edition-group {
             background-color: fade(@eg-color, 70%);
+          }
+          &.bb-literary-work {
+            background-color: fade(@literary-color, 70%);
+          }
+          &.bb-author {
+            background-color: fade(@author-color, 70%);
+          }
+          &.bb-series {
+            background-color: fade(@series-color, 70%);
           }
         }
       }

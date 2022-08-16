@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_review_buttons with context %}
+{% from 'common.html' import rating_script with context %}
+
+{% block title %}{{ author.name }} - CritiqueBrainz{% endblock %}
+
+{% block content %}
+<div class="clearfix">
+  <h2 class="pull-left">
+    {{ author.name }}
+    {% if author.disambiguation is defined and author.disambiguation %}
+      <small>({{ author.disambiguation }})</small>
+    {% endif %}
+  </h2>
+  {{ show_review_buttons(id, my_review, "bb_author") }}
+</div>
+
+<div id="author-details" class="row">
+  <div class="col-md-9">
+    {{ entity_rate_form('bb_author', 'author') }}
+    <br/><br/>
+    <h4 style="margin-bottom:0;">{{ _('Reviews') }}</h4>
+    {% if not reviews %}
+      <p class="lead" style="text-align: center;">{{ _('No reviews found') }}</p>
+    {% else %}
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ _('Published on') }}</th>
+            <th>{{ _('Votes (+/-)') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for review in reviews %}
+            <tr data-review-id="{{ review.id }}">
+              <td>
+                <a href="{{ url_for('review.entity', id=review.id) }}">
+                    {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
+                </a>
+              </td>
+              <td>{{ review.published_on | date }}</td>
+              <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <ul class="pagination">
+        {% set pages = count//limit %}
+        {% if count%limit %}
+          {% set pages = pages+1 %}
+        {% endif %}
+        {% if pages>1 %}
+          {% for p in range(pages) %}
+            {% set p_offset = p*limit %}
+            <li {% if offset == p_offset %}class="active"{% endif %}>
+              <a href="{{ url_for('bb_author.entity', id=id, limit=limit, offset=p*limit) }}">{{ p+1 }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    {% endif %}
+
+    <h4>{{ _('Literary Works') }}</h4>
+    <ul class="nav nav-tabs">
+      <li {% if literary_work_type=='Novel' %}class="active"{% endif %}>
+        <a href="{{ url_for('bb_author.entity', id=author.bbid) }}?literary_work_type=Novel">{{ _('Novel') }}</a>
+      </li>
+      <li {% if literary_work_type=='Short Story' %}class="active"{% endif %}>
+        <a href="{{ url_for('bb_author.entity', id=author.bbid) }}?literary_work_type=Short Story">{{ _('Short Story') }}</a>
+      </li>
+      <li {% if literary_work_type=='Poem' %}class="active"{% endif %}>
+        <a href="{{ url_for('bb_author.entity', id=author.bbid) }}?literary_work_type=Poem">{{ _('Poem') }}</a>
+      </li>
+      <li {% if literary_work_type=='other' %}class="active"{% endif %}>
+        <a href="{{ url_for('bb_author.entity', id=author.bbid) }}?literary_work_type=other">{{ _('Other Works') }}</a>
+      </li>
+    </ul>
+    {% if literary_works is defined and literary_works %}
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Language') }}</th>
+        </tr>
+        </thead>
+        <tbody>
+          {% for literary_work in literary_works.values() %}
+            <tr>
+              <td>
+                <a href="{{ url_for('bb_literary_work.entity', id=literary_work.bbid) }}">
+                  {{ literary_work.name }}
+                </a>
+              </td>
+              <td>
+                {% if literary_work['languages'] is defined and literary_work['languages'] %}
+                  {% if literary_work["languages"]|length > 1 %}
+                    {{ literary_work['languages'][0] }} + {{ literary_work["languages"]|length - 1 }} more
+                  {% else %}
+                    {{ literary_work['languages'][0] }}
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="lead" style="text-align:center; margin-top:20px;">{{ _('No works found') }}</p>
+    {% endif %}
+  </div>
+
+  <div class="col-md-3">
+    <h4>{{ _('Author information') }}</h4>
+    {% if author['author_type'] is defined and author['author_type']  %}
+      <p class="text-muted">{{ author.author_type }}</p>
+    {% endif %}
+    {% if avg_rating %}
+      <div class="avg-rating">
+        {{ show_avg_rating(avg_rating.rating, avg_rating.count) }}
+      </div>
+    {% endif %}
+    
+    {% if begin_date is defined and begin_date %}
+      {% if author['author_type'] and author['author_type'] == 'Group' %}
+        <b>{{ _('Date Founded') }}</b>
+      {% else %}
+        <b>{{ _('Date of Birth') }}</b>
+      {% endif %}
+      <p>{{ begin_date | date }}</p>
+    {% endif %}
+
+    {% if begin_area is defined and begin_area %}
+      {% if author['author_type'] and author['author_type'] == 'Group' %}
+        <b>{{ _('Place Founded') }}</b>
+      {% else %}
+        <b>{{ _('Place of Birth') }}</b>
+      {% endif %}
+      <p><a href="https://musicbrainz.org/area/{{begin_area.gid}}">{{ begin_area['name'] }}</a></p>
+    {% endif %}
+    
+    {% if author.ended and end_date is defined and end_date %}
+      {% if author['author_type'] and author['author_type'] == 'Group' %}
+        <b>{{ _('Date of Dissolution') }}</b>
+      {% else %}
+        <b>{{ _('Date of Death') }}</b>
+      {% endif %}
+      <p>{{ end_date | date }}</p>
+    {% endif %}
+    
+    {% if end_area is defined and end_area %}
+      {% if author['author_type'] and author['author_type'] == 'Group' %}
+        <b>{{ _('Place of Dissolution') }}</b>
+      {% else %}
+        <b>{{ _('Place of Death') }}</b>
+      {% endif %}
+      <p><a href="https://musicbrainz.org/area/{{end_area.gid}}">{{ end_area['name'] }}</a></p>
+    {% endif %}
+    
+    {% if author['identifiers'] is defined and author['identifiers'] %}
+      <b>{{ _('External links') }}</b>
+      <ul class="list-unstyled external-links">
+        {% for identifier in author['identifiers'] %}
+          <li class="clearfix">
+            <div class="favicon-container">
+                {% if identifier.icon is defined and identifier.icon %}
+                    <img src="{{ get_static_path('favicons/' + identifier.icon) }}" />
+                {% else %}
+                    <img src="{{ get_static_path('favicons/external-16.png') }}" />
+                {% endif %}
+            </div>
+            <a href="{{ identifier.url }}">{{ identifier.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <div class="external-links">
+      <div class="favicon-container"><img src="{{ get_static_path('favicons/bookbrainz-16.svg') }}" /></div>
+      <a href="https://bookbrainz.org/author/{{ author.bbid }}"><em>{{ _('Edit on BookBrainz') }}</em></a>
+    </div>
+    <br/>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  {{ rating_script }}
+{% endblock %}

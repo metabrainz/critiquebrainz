@@ -13,5 +13,8 @@ CREATE TYPE entity_types AS ENUM (
     'artist',
     'label',
     'recording',
-    'bb_edition_group'
+    'bb_edition_group',
+    'bb_literary_work',
+    'bb_author',
+    'bb_series'
 );

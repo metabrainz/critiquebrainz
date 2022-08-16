@@ -20,17 +20,25 @@ REVIEW_CACHE_NAMESPACE = "Review"
 DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
 DEFAULT_LANG = "en"
 
-#: list of allowed entity_type 's for writing/querying a review
-ENTITY_TYPES = [
+#: list of allowed entity_type's for writing/querying a review
+MUSICBRAINZ_ENTITY_TYPES = [
     "event",
     "place",
     "release_group",
     "work",
     "artist",
     "label",
-    "recording",
-    "bb_edition_group"
+    "recording"
 ]
+
+BOOKBRAINZ_ENTITY_TYPES = [
+    "bb_edition_group",
+    "bb_literary_work",
+    "bb_author",
+    "bb_series",
+]
+
+ENTITY_TYPES = MUSICBRAINZ_ENTITY_TYPES + BOOKBRAINZ_ENTITY_TYPES
 
 supported_languages = []
 for lang in list(pycountry.languages):
@@ -417,8 +425,15 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
         filter_data["entity_id"] = entity_id
 
     if entity_type is not None:
-        filters.append("entity_type = :entity_type")
-        filter_data["entity_type"] = entity_type
+        if entity_type == 'musicbrainz':
+            filters.append("entity_type in :entity_type")
+            filter_data["entity_type"] = tuple(MUSICBRAINZ_ENTITY_TYPES)
+        elif entity_type == 'bookbrainz':
+            filters.append("entity_type in :entity_type")
+            filter_data["entity_type"] = tuple(BOOKBRAINZ_ENTITY_TYPES)
+        else:
+            filters.append("entity_type = :entity_type")
+            filter_data["entity_type"] = entity_type
 
     if license_id is not None:
         filters.append("license_id = :license_id")
@@ -577,7 +592,8 @@ def list_reviews(*, inc_drafts=False, inc_hidden=False, entity_id=None, entity_t
 
     Args:
         entity_id (uuid): ID of the entity that has been reviewed.
-        entity_type (str): Type of the entity that has been reviewed.
+        entity_type (str): Type of the entity that has been reviewed. Can be either one of the entities supported or 
+                            "musicbrainz" (for reviews about MusicBrainz entities) or "bookbrainz" (for reviews about bookbrainz entities).
         user_id (uuid): ID of the author.
         sort (str): Order of the returned reviews. Can be either "popularity" (order by difference in +/- votes),
                     "published_on" (order by publish time) or "random" (order randomly).
