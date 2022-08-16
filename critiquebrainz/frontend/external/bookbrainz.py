@@ -36,14 +36,3 @@ def search_bookbrainz_entities(entity_type, query='', limit=None, offset=None):
     bbids = [result["bbid"] for result in results]
     entity_data = fetch_bb_data(entity_type, bbids)
     return count, entity_data
-
-def search_series(query='', limit=None, offset=None):
-    params = {'q': query, 'type': 'Series', 'size': limit, 'from': offset}
-    data = requests.get(BASE_URL, params=params, timeout=5)
-    data.raise_for_status()
-    data = data.json()
-    count = data['total']
-    results = data['results']
-    bbids = [result["bbid"] for result in results]
-    entity_data = fetch_bb_data(entity_type, bbids)
-    return count, entity_data
