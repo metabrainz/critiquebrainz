@@ -80,7 +80,6 @@
       <table class="table table-condensed table-hover">
         <thead>
         <tr>
-          <th>{{ _('#') }}</th>
           <th>{{ _('Name') }}</th>
           <th>{{ _('Language') }}</th>
         </tr>
@@ -88,7 +87,6 @@
         <tbody>
           {% for literary_work in literary_works.values() %}
             <tr>
-              <td>{{ loop.index }}</td>
               <td>
                 <a href="{{ url_for('bb_literary_work.entity', id=literary_work.bbid) }}">
                   {{ literary_work.name }}
