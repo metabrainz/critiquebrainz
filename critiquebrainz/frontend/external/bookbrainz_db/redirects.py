@@ -14,7 +14,7 @@ def get_redirected_bbid(bbid: uuid.UUID) -> str:
         The redirected BBID.
     Returns None if the BBID is not redirected.
     """
-    bb_redirect_key = cache.gen_key('redirects', bbid)
+    bb_redirect_key = cache.gen_key('bb_redirects', bbid)
     results = cache.get(bb_redirect_key)
 
     if not results:
