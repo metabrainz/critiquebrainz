@@ -2,6 +2,7 @@ import critiquebrainz.db.avg_rating as db_avg_rating
 import critiquebrainz.db.exceptions as db_exceptions
 
 ARTIST_REVIEWS_LIMIT = 5
+AUTHOR_REVIEWS_LIMIT = 10
 EDITION_GROUP_REVIEWS_LIMIT = 10
 LABEL_REVIEWS_LIMIT = 5
 LITERARY_WORK_REVIEWS_LIMIT = 10

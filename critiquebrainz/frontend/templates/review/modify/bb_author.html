@@ -1,0 +1,14 @@
+<div class="col-md-12">
+  <dl class="dl-horizontal">
+    <dt>{{ _('Author') }}</dt>
+    <dd>
+      <a href="{{ url_for('bb_author.entity', id=entity['bbid']) }}" target="_blank" >{{ entity['name'] }}</a>
+    </dd>
+    <dt>{{ _('Type') }}</dt>
+    <dd>
+      {{ entity['author_type'] is defined and entity['author_type'] or '-' }}
+    </dd>
+    {% block more_info %} {# Information like creation date, votes etc. #}
+    {% endblock %}
+  </dl>
+</div>

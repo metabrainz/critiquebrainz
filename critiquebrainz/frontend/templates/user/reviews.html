@@ -89,6 +89,12 @@
                   ({{ entity.work_type }})
                 {% endif %}
               
+              {%- elif review.entity_type == 'bb_author' -%}
+                <strong>{{ entity.name | default(_('[Unknown Author]')) }}</strong>
+                {% if entity['author_type'] is defined and entity['author_type'] %}
+                  ({{ entity.author_type }})
+                {% endif %}
+              
               {%- endif -%}
 
             </a>

@@ -15,6 +15,7 @@ from critiquebrainz.frontend.external.musicbrainz_db import work
 from critiquebrainz.frontend.external.musicbrainz_db import recording
 from critiquebrainz.frontend.external.bookbrainz_db import edition_group
 from critiquebrainz.frontend.external.bookbrainz_db import literary_work
+from critiquebrainz.frontend.external.bookbrainz_db import author
 
 
 def get_multiple_entities(entities):
@@ -45,6 +46,7 @@ def get_multiple_entities(entities):
     work_mbids = [entity[0] for entity in entities if entity[1] == 'work']
     edition_group_bbids = [entity[0] for entity in entities if entity[1] == 'bb_edition_group']
     literary_work_bbids = [entity[0] for entity in entities if entity[1] == 'bb_literary_work']
+    author_bbids = [entity[0] for entity in entities if entity[1] == 'bb_author']
 
     release_groups = fetch_multiple_release_groups(
         release_group_mbids,
@@ -84,6 +86,10 @@ def get_multiple_entities(entities):
         literary_work_bbids,
     )
     entities_info.update(literary_works)
+    authors = author.fetch_multiple_authors(
+        author_bbids,
+    )
+    entities_info.update(authors)
     
     return entities_info
 
@@ -108,6 +114,8 @@ def get_entity_by_id(id, entity_type):
         entity = edition_group.get_edition_group_by_bbid(str(id))
     elif entity_type == 'bb_literary_work':
         entity = literary_work.get_literary_work_by_bbid(str(id))
+    elif entity_type == 'bb_author':
+        entity = author.get_author_by_bbid(str(id))
     else:
         raise ValueError('Unknown entity type')
     return entity

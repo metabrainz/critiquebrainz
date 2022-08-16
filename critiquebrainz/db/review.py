@@ -20,7 +20,7 @@ REVIEW_CACHE_NAMESPACE = "Review"
 DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
 DEFAULT_LANG = "en"
 
-#: list of allowed entity_type 's for writing/querying a review
+#: list of allowed entity_type's for writing/querying a review
 MUSICBRAINZ_ENTITY_TYPES = [
     "event",
     "place",
@@ -33,7 +33,8 @@ MUSICBRAINZ_ENTITY_TYPES = [
 
 BOOKBRAINZ_ENTITY_TYPES = [
     "bb_edition_group",
-    "bb_literary_work"
+    "bb_literary_work",
+    "bb_author",
 ]
 
 ENTITY_TYPES = MUSICBRAINZ_ENTITY_TYPES + BOOKBRAINZ_ENTITY_TYPES

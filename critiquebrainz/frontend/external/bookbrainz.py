@@ -1,19 +1,23 @@
 import requests
 from critiquebrainz.frontend.external.bookbrainz_db.edition_group import fetch_multiple_edition_groups
 from critiquebrainz.frontend.external.bookbrainz_db.literary_work import fetch_multiple_literary_works
+from critiquebrainz.frontend.external.bookbrainz_db.author import fetch_multiple_authors
+
 BASE_URL = 'https://bookbrainz.org/search/search'
 
 MAP_BB_ENTITY_TYPE = {
     'bb_edition_group': 'EditionGroup',
     'bb_literary_work': 'Work',
+    'bb_author': 'Author',
 }
-
 
 def fetch_bb_data(entity_type, bbids):
     if entity_type == 'bb_edition_group':
         return fetch_multiple_edition_groups(bbids).values()
     elif entity_type == 'bb_literary_work':
         return fetch_multiple_literary_works(bbids).values()
+    elif entity_type == 'bb_author':
+        return fetch_multiple_authors(bbids).values()
 
 
 def search_bookbrainz_entities(entity_type, query='', limit=None, offset=None):

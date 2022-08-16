@@ -60,6 +60,7 @@ def reviews(user_id):
         'work': gettext('Work'),
         'bb_edition_group': gettext('Edition Group'),
         'bb_literary_work': gettext('Literary Work'),
+        'bb_author': gettext('Author'),
     }
 
     
