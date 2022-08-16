@@ -102,6 +102,13 @@
         {{ _('Author') }}
       </span>
     {% endif %}
+  {% elif entity_type == 'bb_series'  %}
+    <img src="{{ get_static_path('images/placeholder_series.svg') }}" {{ attributes }} />
+    {% if overlay_type %}
+      <span class="entity-type bb-series">
+        {{ _('Series') }}
+      </span>
+    {% endif %}
   {% elif entity_type == 'release_group' %}
     <img {{ attributes }} />
     {% if overlay_type %}

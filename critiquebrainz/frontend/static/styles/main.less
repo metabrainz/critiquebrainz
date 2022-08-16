@@ -19,6 +19,7 @@
 @eg-color: @brown;
 @literary-color: @brown;
 @author-color: @brown;
+@series-color: @brown;
 
 body {
   padding-bottom: 25px;
@@ -157,6 +158,9 @@ ul.sharing {
     }
     &.bb-author {
         background-color: fade(@author-color, 70%);
+    }
+    &.bb-series {
+      background-color: fade(@series-color, 70%);
     }
   }
 
@@ -543,6 +547,9 @@ a#edit-review { margin-top: 20px; }
           }
           &.bb-author {
             background-color: fade(@author-color, 70%);
+          }
+          &.bb-series {
+            background-color: fade(@series-color, 70%);
           }
         }
       }

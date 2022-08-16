@@ -95,6 +95,12 @@
                   ({{ entity.author_type }})
                 {% endif %}
               
+              {%- elif review.entity_type == 'bb_series' -%}
+                <strong>{{ entity.name | default(_('[Unknown series]')) }}</strong>
+                {% if entity['series_type'] is defined and entity['series_type'] %}
+                  ({{ entity.series_type }})
+                {% endif %}
+              
               {%- endif -%}
 
             </a>

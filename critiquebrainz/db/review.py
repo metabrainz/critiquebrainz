@@ -35,6 +35,7 @@ BOOKBRAINZ_ENTITY_TYPES = [
     "bb_edition_group",
     "bb_literary_work",
     "bb_author",
+    "bb_series",
 ]
 
 ENTITY_TYPES = MUSICBRAINZ_ENTITY_TYPES + BOOKBRAINZ_ENTITY_TYPES
