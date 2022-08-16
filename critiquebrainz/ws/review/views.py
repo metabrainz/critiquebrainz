@@ -441,6 +441,11 @@ def review_list_handler():
                         "rating": avg_rating_data["rating"],
                         "count": avg_rating_data["count"]
                     }
+                else:
+                    avg_rating_data = {
+                        "rating": None,
+                        "count": 0
+                    }
             else:
                 avg_rating_data = None
                 include_avg_rating = False
