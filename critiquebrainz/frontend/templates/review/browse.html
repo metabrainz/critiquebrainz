@@ -47,6 +47,10 @@
     <a href="{{ url_for('review.browse', entity_type='bb_edition_group', sort=sort, sort_order=sort_order) }}">{{ _('Edition Group') }}</a></li>
   <li role="presentation" {{ "class=active" if entity_type == 'bb_literary_work' }}>
     <a href="{{ url_for('review.browse', entity_type='bb_literary_work', sort=sort, sort_order=sort_order) }}">{{ _('Literary Work') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'bb_author' }}>
+    <a href="{{ url_for('review.browse', entity_type='bb_author', sort=sort, sort_order=sort_order) }}">{{ _('Author') }}</a></li>
+  <li role="presentation" {{ "class=active" if entity_type == 'bb_series' }}>
+    <a href="{{ url_for('review.browse', entity_type='bb_series', sort=sort, sort_order=sort_order) }}">{{ _('Series') }}</a></li>
 </ul>
 
 <div id="reviews-browse" class="row">
