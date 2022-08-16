@@ -23,6 +23,9 @@ def entity(id):
     id = str(id)
     author = bb_author.get_author_by_bbid(id)
 
+    if author is None:
+        raise NotFound(gettext("Sorry, we couldn't find an author with that BookBrainz ID."))
+
     literary_work_type = request.args.get('literary_work_type')
     if not literary_work_type:
         literary_work_type = LITERARY_WORK_TYPE_NOVEL
@@ -30,11 +33,12 @@ def entity(id):
     if literary_work_type not in VALID_LITERARY_WORK_PARAMS:  # supported literary_work types
         raise BadRequest("Unsupported literary_work type.")
 
-    literary_work_bbid = [rel['target_bbid'] for rel in author['rels']]
+    if author['rels']:
+        literary_work_bbid = [rel['target_bbid'] for rel in author['rels']]
+    else:
+        literary_work_bbid = []
     literary_works = bb_literary_work.fetch_multiple_literary_works(literary_work_bbid, literary_work_type)
 
-    if author is None:
-        raise NotFound(gettext("Sorry, we couldn't find an author with that BookBrainz ID."))
 
     try:
         reviews_limit = int(request.args.get('limit', default=AUTHOR_REVIEWS_LIMIT))
