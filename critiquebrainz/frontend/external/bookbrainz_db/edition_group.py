@@ -92,3 +92,47 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
     if not results:
         return {}
     return results
+
+
+def fetch_work_for_edition_group(bbid: uuid.UUID):
+    """
+    Get works linked to an edition group using its BookBrainz ID.
+
+    Args:
+        bbid : BBID of the edition group.
+    Returns:
+        A tuple containing the list of work bbids linked to edition group.
+
+    """
+
+    bb_edition_group_work = cache.gen_key('bb-edition-groups-works', bbid)
+    results = cache.get(bb_edition_group_work)
+    if not results:
+        with db.bb_engine.connect() as connection:
+            result = connection.execute(sqlalchemy.text("""
+             SELECT DISTINCT(rel.target_bbid::text)
+               FROM edition_group
+         INNER JOIN edition ON edition.edition_group_bbid = edition_group.bbid
+         INNER JOIN relationship_set__relationship rels on rels.set_id = edition.relationship_set_id
+          LEFT JOIN relationship rel on rels.relationship_id = rel.id
+              WHERE edition_group.bbid = :bbid
+                AND edition_group.master = 't'
+                AND edition_group.data_id IS NOT NULL
+                AND edition.master = 't'
+                AND edition.data_id IS NOT NULL
+                AND rel.type_id = 10
+                """), {'bbid': str(bbid)})
+
+            works = result.fetchall()
+            work_bbids = []
+
+            for work in works:
+                work = dict(work)
+                work_bbids.append(work['target_bbid'])
+
+            results = work_bbids
+            cache.set(bb_edition_group_work, results, DEFAULT_CACHE_EXPIRATION)
+
+    if not results:
+        return []
+    return results

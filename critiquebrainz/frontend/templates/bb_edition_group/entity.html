@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_avg_rating, entity_rate_form, show_review_buttons with context %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_review_buttons, display_pagination with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ edition_group.name }} - CritiqueBrainz{% endblock %}
@@ -59,6 +59,51 @@
           {% endfor %}
         {% endif %}
       </ul>
+    {% endif %}
+
+    {% if works is defined and works %}
+      <h4>{{ _('Literary Works') }}</h4>
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Languages') }}</th>
+            <th>{{ _('Type') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for work in works %}
+            <tr>
+              <td>
+                <a href="{{ url_for('bb_literary_work.entity', id=work.bbid) }}">
+                  {{ work.name }}
+                </a>
+              </td>
+              <td>
+                {% if work['languages'] is defined and work['languages'] %}
+                  {% if work["languages"]|length > 1 %}
+                    {{ work['languages'][0] }} + {{ work["languages"]|length - 1 }} more
+                  {% else %}
+                    {{ work['languages'][0] }}
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>
+                {% if work['work_type'] is defined and work['work_type']  %}
+                  {{ work.work_type }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {{ display_pagination(page, works_count, works_limit, 'bb_edition_group.entity', {'id': id}) }}
+
     {% endif %}
   </div>
 
