@@ -66,14 +66,18 @@ def entity(id):
     if page < 1:
         return redirect(url_for('bb_literary_work.entity', id=id))
 
-    work_rels_bbid = [rel['source_bbid'] for rel in literary_work['rels']]
-    work_rels_count = len(work_rels_bbid)
-
-    work_rels_info = bb_literary_work.fetch_multiple_literary_works(
-        bbids=work_rels_bbid,
-        limit=BROWSE_LITERARY_WORK_LIMIT,
-        offset=(page - 1) * BROWSE_LITERARY_WORK_LIMIT
-    ).values()
+    if literary_work['rels']:
+        work_rels_bbid = [rel['source_bbid'] for rel in literary_work['rels']]
+        work_rels_count = len(work_rels_bbid)
+        work_rels_info = bb_literary_work.fetch_multiple_literary_works(
+            bbids=work_rels_bbid,
+            limit=BROWSE_LITERARY_WORK_LIMIT,
+            offset=(page - 1) * BROWSE_LITERARY_WORK_LIMIT
+        ).values()
+    else:
+        work_rels_bbid = []
+        work_rels_count = 0
+        work_rels_info = []
 
     return render_template('bb_literary_work/entity.html',
                            id=literary_work['bbid'],
