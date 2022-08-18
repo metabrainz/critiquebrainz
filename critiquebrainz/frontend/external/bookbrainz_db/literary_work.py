@@ -107,7 +107,7 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
             for literary_work in literary_works:
                 literary_work = dict(literary_work)
                 literary_work['identifiers'] = fetch_bb_external_identifiers(literary_work['identifier_set_id'])
-                literary_work['rels'] = fetch_relationships(literary_work['relationship_set_id'], ['Edition'])
+                literary_work['rels'] = fetch_relationships(literary_work['relationship_set_id'], ['Translation'])
                 results[literary_work['bbid']] = literary_work
 
             cache.set(bb_literary_work_key, results, DEFAULT_CACHE_EXPIRATION)
