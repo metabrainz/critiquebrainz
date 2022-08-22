@@ -5,7 +5,7 @@
 Our primary Git repository is located at https://github.com/metabrainz/critiquebrainz. That's where all changes
 should be submitted.
 
-If you want to submit a bug report or suggest an improvement, please use our [bug tracker](http://tickets.musicbrainz.org/browse/CB).
+If you want to submit a bug report or suggest an improvement, please use our [bug tracker](https://tickets.metabrainz.org/browse/CB).
 Try to provide a good description for the ticket. If it's a bug report, tell us how the issue can be reproduced.
 
 **All MetaBrainz projects have a set of general contribution guidelines: https://github.com/metabrainz/guidelines.** Make sure
