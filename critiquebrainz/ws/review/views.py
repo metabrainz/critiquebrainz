@@ -28,17 +28,6 @@ review_bp = Blueprint('ws_review', __name__)
 REVIEW_CACHE_NAMESPACE = "Review"
 REVIEW_CACHE_TIMEOUT = 30 * 60  # 30 minutes
 
-entity_name_map = {
-    'artist': 'Artist',
-    'release_group': 'Release Group',
-    'label': 'Label',
-    'recording': 'Recording',
-    'place': 'Place',
-    'event': 'Event',
-    'work': 'Work',
-    'bb_edition_group': 'Edition Group',
-}
-
 
 def get_review_or_404(review_id):
     """Get a review using review ID or raise error 404"""
