@@ -21,13 +21,13 @@
 
 ## About
 
-CritiqueBrainz is a repository for Creative Commons licensed music reviews. Here you can read what other people have written about an album or event and write your own review!
+CritiqueBrainz is a repository for Creative Commons licensed music and book reviews. Here you can read what other people have written about an album or event and write your own review!
 
-CritiqueBrainz is based on data from [MusicBrainz](https://musicbrainz.org) - open music encyclopedia.
+CritiqueBrainz is based on data from [MusicBrainz](https://musicbrainz.org) - open music encyclopedia and [BookBrainz](https://bookbrainz.org) - open book encyclopedia.
 Everyone - including you - can participate and contribute.
 
 CritiqueBrainz is operated by the [MetaBrainz Foundation](https://metabrainz.org)
-which has a long-standing history of curating, protecting and making music data available to the
+which has a long-standing history of curating, protecting and making music and book data available to the
 public.
 
 For more information about this project, look at our
