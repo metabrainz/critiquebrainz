@@ -223,6 +223,26 @@ class ReviewViewsTestCase(WebServiceTestCase):
         resp = self.client.post('/review/', headers=self.header(self.another_user), data=json.dumps(review_3))
         self.assert200(resp)
 
+    def test_review_same_entity_type(self):
+        """Submitting a review for the same entity id from the same user results in an error
+           even if the review is drafted or hidden
+        """
+        review = dict(
+            entity_id=self.review['entity_id'],
+            entity_type='release_group',
+            text=self.review['text'],
+            rating=str(self.review['rating']),
+            license_choice=self.license["id"],
+            language='en',
+            is_draft=True
+        )
+        resp = self.client.post('/review/', headers=self.header(self.user), data=json.dumps(review))
+        self.assert200(resp)
+
+        resp = self.client.post('/review/', headers=self.header(self.user), data=json.dumps(review))
+        self.assert400(resp)
+        self.assertEqual(resp.json['description'], 'You have already published a review for this Release Group')
+
     def test_review_vote_entity(self):
         review = self.create_dummy_review()
         resp = self.client.get('/review/%s/vote' % review["id"], headers=self.header(self.user))

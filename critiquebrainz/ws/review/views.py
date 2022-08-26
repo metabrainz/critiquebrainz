@@ -512,7 +512,7 @@ def review_post_handler(user):
             raise InvalidRequest(desc='Review must have either text or rating')
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
-        if db_review.list_reviews(user_id=user.id, entity_id=entity_id)[1]:
+        if db_review.list_reviews(inc_drafts=True, inc_hidden=True, entity_id=entity_id, user_id=user.id)[1]:
             raise InvalidRequest(desc='You have already published a review for this {entity_name}'.format(
                 entity_name=db_review.ENTITY_TYPES_MAPPING[entity_type]))
         return entity_id, entity_type, text, rating, license_choice, language, is_draft
