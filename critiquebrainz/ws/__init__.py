@@ -83,6 +83,9 @@ def create_app(debug=None, config_path=None):
     else:
         logging.warning("Redis is not defined in config file. Skipping initialization.")
 
+    from critiquebrainz.frontend import babel
+    babel.init_app(app, domain='cb_webservice')
+
     # OAuth
     from critiquebrainz.ws.oauth import oauth
     oauth.init_app(app)
