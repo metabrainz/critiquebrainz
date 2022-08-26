@@ -7,7 +7,7 @@ import pycountry
 import sqlalchemy
 from brainzutils import cache
 from flask import current_app
-from flask_babel import gettext
+from flask_babel import lazy_gettext
 
 from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
@@ -23,20 +23,20 @@ DEFAULT_LANG = "en"
 
 #: list of allowed entity_type's for writing/querying a review
 MUSICBRAINZ_ENTITY_TYPES = {
-    "event": gettext("Event"),
-    "place": gettext("Place"),
-    "release_group": gettext("Release Group"),
-    "work": gettext("Work"),
-    "artist": gettext("Artist"),
-    "label": gettext("Label"),
-    "recording": gettext("Recording"),
+    "event": lazy_gettext("Event"),
+    "place": lazy_gettext("Place"),
+    "release_group": lazy_gettext("Release Group"),
+    "work": lazy_gettext("Work"),
+    "artist": lazy_gettext("Artist"),
+    "label": lazy_gettext("Label"),
+    "recording": lazy_gettext("Recording"),
 }
 
 BOOKBRAINZ_ENTITY_TYPES = {
-    "bb_edition_group": gettext("Edition Group"),
-    "bb_literary_work": gettext("Literary Work"),
-    "bb_author": gettext("Author"),
-    "bb_series": gettext("Series"),
+    "bb_edition_group": lazy_gettext("Edition Group"),
+    "bb_literary_work": lazy_gettext("Literary Work"),
+    "bb_author": lazy_gettext("Author"),
+    "bb_series": lazy_gettext("Series"),
 }
 
 ENTITY_TYPES_MAPPING = {**MUSICBRAINZ_ENTITY_TYPES, **BOOKBRAINZ_ENTITY_TYPES}
