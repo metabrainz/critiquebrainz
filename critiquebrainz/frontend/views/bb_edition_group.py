@@ -68,7 +68,7 @@ def entity(id):
     if page < 1:
         return redirect(url_for('bb_edition_group.entity', id=id))
 
-    work_bbids = bb_edition_group.fetch_work_for_edition_group(bbid=id)
+    work_bbids = bb_edition_group.fetch_works_for_edition_group(bbid=id)
     works_count = len(work_bbids)
 
     works_info = bb_literary_work.fetch_multiple_literary_works(

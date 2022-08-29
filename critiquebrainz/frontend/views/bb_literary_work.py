@@ -82,7 +82,7 @@ def entity(id):
     return render_template('bb_literary_work/entity.html',
                            id=literary_work['bbid'],
                            literary_work=literary_work,
-                           work_rels_info=work_rels_info,
+                           translation_rels_works=work_rels_info,
                            work_rels_count=work_rels_count,
                            work_rels_limit=BROWSE_LITERARY_WORK_LIMIT,
                            page=page,

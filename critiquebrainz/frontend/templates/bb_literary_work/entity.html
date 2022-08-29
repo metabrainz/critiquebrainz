@@ -61,8 +61,8 @@
       </ul>
     {% endif %}
 
-    {% if work_rels_info is defined and work_rels_info %}
-      <h4>{{ _('Translations') }}</h4>
+    {% if translation_rels_works %}
+      <h4>{{ _('Translations of this work') }}</h4>
       <table class="table table-condensed table-hover">
         <thead>
           <tr>
@@ -72,27 +72,27 @@
           </tr>
         </thead>
         <tbody>
-          {% for work in work_rels_info %}
+          {% for translation_rel in translation_rels_works %}
             <tr>
               <td>
-                <a href="{{ url_for('bb_literary_work.entity', id=work.bbid) }}">
-                  {{ work.name }}
+                <a href="{{ url_for('bb_literary_work.entity', id=translation_rel.bbid) }}">
+                  {{ translation_rel.name }}
                 </a>
               </td>
               <td>
-                {% if work['languages'] is defined and work['languages'] %}
-                  {% if work["languages"]|length > 1 %}
-                    {{ work['languages'][0] }} + {{ work["languages"]|length - 1 }} more
+                {% if translation_rel['languages'] is defined and translation_rel['languages'] %}
+                  {% if translation_rel["languages"]|length > 1 %}
+                    {{ translation_rel['languages'][0] }} + {{ translation_rel["languages"]|length - 1 }} more
                   {% else %}
-                    {{ work['languages'][0] }}
+                    {{ translation_rel['languages'][0] }}
                   {% endif %}
                 {% else %}
                   -
                 {% endif %}
               </td>
               <td>
-                {% if work['work_type'] is defined and work['work_type']  %}
-                  {{ work.work_type }}
+                {% if translation_rel['work_type'] is defined and translation_rel['work_type']  %}
+                  {{ translation_rel.work_type }}
                 {% else %}
                   -
                 {% endif %}

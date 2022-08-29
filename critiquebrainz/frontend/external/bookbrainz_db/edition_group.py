@@ -3,7 +3,7 @@ from brainzutils import cache
 from typing import List
 import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db 
-from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
+from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION, BB_RELATIONSHIP_EDITION_WORK_CONTAINS
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
 from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
 
@@ -94,7 +94,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
     return results
 
 
-def fetch_work_for_edition_group(bbid: uuid.UUID):
+def fetch_works_for_edition_group(bbid: uuid.UUID):
     """
     Get works linked to an edition group using its BookBrainz ID.
 
@@ -120,8 +120,8 @@ def fetch_work_for_edition_group(bbid: uuid.UUID):
                 AND edition_group.data_id IS NOT NULL
                 AND edition.master = 't'
                 AND edition.data_id IS NOT NULL
-                AND rel.type_id = 10
-                """), {'bbid': str(bbid)})
+                AND rel.type_id = :relationship_type_id
+                """), {'bbid': str(bbid), 'relationship_type_id': BB_RELATIONSHIP_EDITION_WORK_CONTAINS})
 
             works = result.fetchall()
             work_bbids = []
