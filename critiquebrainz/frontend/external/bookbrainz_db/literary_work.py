@@ -5,9 +5,10 @@ import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
-from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, WORK_WORK_TRANSLATION_REL_ID
+from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, WORK_WORK_TRANSLATION_REL_ID, EDITION_WORK_CONTAINS_REL_ID
 
 WORK_TYPE_FILTER_OPTIONS = ('Novel', 'Short Story', 'Poem')
+
 
 def get_literary_work_by_bbid(bbid: uuid.UUID) -> dict:
     """
@@ -114,4 +115,45 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
 
     if not results:
         return {}
+    return results
+
+
+def fetch_edition_groups_for_works(bbid: uuid.UUID):
+    """
+    Get edition groups for a literary work.
+    Args:
+        bbid : BBID of the literary work.
+    Returns:
+        A tuple containing the list of edition groups bbids linked to literary work.
+    """
+    bb_work_edition_groups_key = cache.gen_key('bb_work_edition_groups', bbid)
+    results = cache.get(bb_work_edition_groups_key)
+    if not results:
+        with db.bb_engine.connect() as connection:
+            result = connection.execute(sqlalchemy.text("""
+             SELECT DISTINCT(edition.edition_group_bbid::text)
+               FROM work
+         INNER JOIN relationship_set__relationship rels on rels.set_id = work.relationship_set_id
+          LEFT JOIN relationship rel on rels.relationship_id = rel.id
+         INNER JOIN edition ON rel.source_bbid = edition.bbid
+              WHERE work.bbid = :bbid
+                AND work.master = 't'
+                AND work.data_id IS NOT NULL
+                AND edition.master = 't'
+                AND edition.data_id IS NOT NULL
+                AND rel.type_id = :relationship_type_id
+                """), {'bbid': str(bbid), 'relationship_type_id': EDITION_WORK_CONTAINS_REL_ID})
+
+            edition_groups = result.fetchall()
+            edition_group_bbids = []
+
+            for edition_group in edition_groups:
+                edition_group = dict(edition_group)
+                edition_group_bbids.append(edition_group['edition_group_bbid'])
+
+            results = edition_group_bbids
+            cache.set(bb_work_edition_groups_key, results, DEFAULT_CACHE_EXPIRATION)
+
+    if not results:
+        return []
     return results
