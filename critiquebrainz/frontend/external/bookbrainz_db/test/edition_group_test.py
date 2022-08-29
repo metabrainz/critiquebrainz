@@ -41,3 +41,11 @@ class EditionGroupTestCase(DataTestCase):
         self.assertEqual(len(edition_groups[self.bbid3]["author_credits"]), 1)
         self.assertEqual(edition_groups[self.bbid3]["author_credits"][0]["name"], "Test Author")
         self.assertEqual(edition_groups[self.bbid3]["author_credits"][0]["author_bbid"], "e5c4e68b-bfce-4c77-9ca2-0f0a2d4d09f0")
+
+    def test_fetch_works_for_edition_group(self):
+        works_bbids = edition_group.fetch_works_for_edition_group(self.bbid2)
+        self.assertEqual(len(works_bbids), 5)
+        self.assertEqual(works_bbids[0], "5dd33da7-740b-451b-98fc-2556783de658")
+
+        works_bbids_2 = edition_group.fetch_works_for_edition_group(self.bbid1)
+        self.assertEqual(len(works_bbids_2), 0)
