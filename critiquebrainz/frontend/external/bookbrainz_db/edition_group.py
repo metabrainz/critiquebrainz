@@ -3,9 +3,9 @@ from brainzutils import cache
 from typing import List
 import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db 
-from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION, BB_RELATIONSHIP_EDITION_WORK_CONTAINS
+from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
-from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
+from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, EDITION_EDITION_GROUP_EDITION_REL_ID, EDITION_WORK_CONTAINS_REL_ID
 
 
 def get_edition_group_by_bbid(bbid: uuid.UUID) -> dict:
@@ -83,7 +83,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
             for edition_group in edition_groups:
                 edition_group = dict(edition_group)
                 edition_group['identifiers'] = fetch_bb_external_identifiers(edition_group['identifier_set_id'])
-                edition_group['rels'] = fetch_relationships( edition_group['relationship_set_id'], ['Edition'])
+                edition_group['rels'] = fetch_relationships( edition_group['relationship_set_id'], [EDITION_EDITION_GROUP_EDITION_REL_ID])
                 results[edition_group['bbid']] = edition_group
             
             edition_groups = results
@@ -121,7 +121,7 @@ def fetch_works_for_edition_group(bbid: uuid.UUID):
                 AND edition.master = 't'
                 AND edition.data_id IS NOT NULL
                 AND rel.type_id = :relationship_type_id
-                """), {'bbid': str(bbid), 'relationship_type_id': BB_RELATIONSHIP_EDITION_WORK_CONTAINS})
+                """), {'bbid': str(bbid), 'relationship_type_id': EDITION_WORK_CONTAINS_REL_ID})
 
             works = result.fetchall()
             work_bbids = []

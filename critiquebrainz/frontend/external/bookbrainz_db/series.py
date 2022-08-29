@@ -5,20 +5,13 @@ import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
-from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
+from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, SERIES_REL_MAP
 from critiquebrainz.frontend.external.bookbrainz_db.author import fetch_multiple_authors
 from critiquebrainz.frontend.external.bookbrainz_db.edition import fetch_multiple_editions
 from critiquebrainz.frontend.external.bookbrainz_db.edition_group import fetch_multiple_edition_groups
 from critiquebrainz.frontend.external.bookbrainz_db.literary_work import fetch_multiple_literary_works
 from critiquebrainz.frontend.external.bookbrainz_db.publisher import fetch_multiple_publishers
 
-SERIES_REL_MAP = {
-    'Author': 'Author Series',
-    'Edition': 'Edition Series',
-    'EditionGroup': 'Edition Group Series',
-    'Publisher': 'Publisher Series',
-    'Work': 'Work Series',
-}
 
 
 def get_series_by_bbid(bbid: uuid.UUID) -> dict:

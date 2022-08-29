@@ -5,7 +5,7 @@ import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
-from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
+from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, WORK_WORK_TRANSLATION_REL_ID
 
 WORK_TYPE_FILTER_OPTIONS = ('Novel', 'Short Story', 'Poem')
 
@@ -107,7 +107,7 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
             for literary_work in literary_works:
                 literary_work = dict(literary_work)
                 literary_work['identifiers'] = fetch_bb_external_identifiers(literary_work['identifier_set_id'])
-                literary_work['rels'] = fetch_relationships(literary_work['relationship_set_id'], ['Translation'])
+                literary_work['rels'] = fetch_relationships(literary_work['relationship_set_id'], [WORK_WORK_TRANSLATION_REL_ID])
                 results[literary_work['bbid']] = literary_work
 
             cache.set(bb_literary_work_key, results, DEFAULT_CACHE_EXPIRATION)

@@ -6,49 +6,33 @@ import critiquebrainz.frontend.external.bookbrainz_db as db
 import critiquebrainz.frontend.external.bookbrainz_db.exceptions as bb_exceptions
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 
+AUTHOR_WORK_AUTHOR_REL_ID = 8
+EDITION_EDITION_GROUP_EDITION_REL_ID = 3
+EDITION_WORK_CONTAINS_REL_ID = 10
+WORK_WORK_TRANSLATION_REL_ID = 56
 
-def get_mapped_relationships(relation_types):
-    """Get relation types mapped to their case sensitive name in bookbrainz.
-    relationship_type table.
-    
-    Args:
-        relation_types (list): List of relation types.
-    Returns:
-        List of mapped relation types.
-    """
-    mapped_relation_types = []
-    relation_types = [relation_type.lower() for relation_type in relation_types]
-    with db.bb_engine.connect() as connection:
-        result = connection.execute(sqlalchemy.text("""
-            SELECT label
-              FROM relationship_type
-        """))
-        relationships = [relationship[0] for relationship in result.fetchall()]
-        relationships_mapping = {relationship.lower(): relationship for relationship in relationships}
+SERIES_REL_MAP = {
+    'Author': 70,
+    'Edition': 72,
+    'EditionGroup': 73,
+    'Publisher': 74,
+    'Work': 71,
+}
 
-        for relation_type in relation_types:
-            if relation_type not in relationships_mapping:
-                raise bb_exceptions.InvalidTypeError("Bad relation: {rtype} is not supported".format(rtype=relation_type))
-            else:
-                mapped_relation_types.append(relationships_mapping[relation_type])
-
-    return mapped_relation_types
-
-
-def fetch_relationships(relationship_set_id: int, relation_types: List) -> List:
+def fetch_relationships(relationship_set_id: int, relation_types_id: List) -> List:
     """
     Fetch relationships from the database.
     """
     if not relationship_set_id:
         return None
 
-    relation_types = get_mapped_relationships(relation_types)
-    key = cache.gen_key('bb_relationship', relationship_set_id, relation_types)
+    key = cache.gen_key('bb_relationship', relationship_set_id, relation_types_id)
     relationships = cache.get(key)
     if not relationships:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
                 SELECT rel.id as id,
+                       reltype.id as relation_type_id,
                        reltype.label as label,
                        rel.source_bbid::text as source_bbid,
                        rel.target_bbid::text as target_bbid,
@@ -58,8 +42,8 @@ def fetch_relationships(relationship_set_id: int, relation_types: List) -> List:
              LEFT JOIN relationship rel on rels.relationship_id = rel.id
              LEFT JOIN relationship_type reltype on rel.type_id = reltype.id
                  WHERE rels.set_id = :relationship_set_id
-                   AND reltype.label in :relation_types
-            """), {'relationship_set_id': relationship_set_id, 'relation_types': tuple(relation_types)})
+                   AND reltype.id in :relation_types_id
+            """), {'relationship_set_id': relationship_set_id, 'relation_types_id': tuple(relation_types_id)})
             relationships = result.fetchall()
             relationships = [dict(relationship) for relationship in relationships]
             cache.set(key, relationships, DEFAULT_CACHE_EXPIRATION)
