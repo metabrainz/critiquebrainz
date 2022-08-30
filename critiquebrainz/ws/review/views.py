@@ -419,7 +419,6 @@ def review_list_handler():
 
         reviews = [db_review.to_dict(p) for p in reviews]
 
-
         if include_metadata == 'true':
             entities = [(str(review["entity_id"]), review["entity_type"]) for review in reviews]
             entities_info = mbstore.get_multiple_entities(entities)
@@ -429,11 +428,10 @@ def review_list_handler():
             for review in reviews:
                 review[review['entity_type']] = entities_info[str(review["entity_id"])]
 
-
         if include_avg_rating:
             if reviews and not entity_type:
-                entity_type = reviews[0]["entity_type"] if reviews  else None
-            
+                entity_type = reviews[0]["entity_type"] if reviews else None
+
             if entity_type:
                 avg_rating_data = get_avg_rating(entity_id, entity_type)
                 if avg_rating_data:
@@ -470,10 +468,9 @@ def review_list_handler():
                    expirein=REVIEW_CACHE_TIMEOUT,
                    namespace=REVIEW_CACHE_NAMESPACE)
 
-
-    result = {"limit": limit, "offset": offset, "count": count, "reviews": reviews} 
+    result = {"limit": limit, "offset": offset, "count": count, "reviews": reviews}
     if include_avg_rating:
-        result["average_rating"] = avg_rating_data 
+        result["average_rating"] = avg_rating_data
     return jsonify(**result)
 
 
@@ -515,8 +512,9 @@ def review_post_handler(user):
             raise InvalidRequest(desc='Review must have either text or rating')
         if language and language not in supported_languages:
             raise InvalidRequest(desc='Unsupported language')
-        if db_review.list_reviews(user_id=user.id, entity_id=entity_id)[1]:
-            raise InvalidRequest(desc='You have already published a review for this album')
+        if db_review.list_reviews(inc_drafts=True, inc_hidden=True, entity_id=entity_id, user_id=user.id)[1]:
+            raise InvalidRequest(desc='You have already published a review for this {entity_name}'.format(
+                entity_name=db_review.ENTITY_TYPES_MAPPING[entity_type]))
         return entity_id, entity_type, text, rating, license_choice, language, is_draft
 
     if user.is_review_limit_exceeded:

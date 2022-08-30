@@ -2,8 +2,8 @@ from flask import g, request
 from flask_babel import Babel, Locale
 
 
-def init_app(app):
-    babel = Babel(app)
+def init_app(app, domain='messages'):
+    babel = Babel(app, default_domain=domain)
 
     app.config['LANGUAGES'] = {}
     for language in app.config['SUPPORTED_LANGUAGES']:

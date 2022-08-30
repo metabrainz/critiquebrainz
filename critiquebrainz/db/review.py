@@ -7,6 +7,7 @@ import pycountry
 import sqlalchemy
 from brainzutils import cache
 from flask import current_app
+from flask_babel import lazy_gettext
 
 from critiquebrainz import db
 from critiquebrainz.db import (exceptions as db_exceptions,
@@ -21,24 +22,25 @@ DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
 DEFAULT_LANG = "en"
 
 #: list of allowed entity_type's for writing/querying a review
-MUSICBRAINZ_ENTITY_TYPES = [
-    "event",
-    "place",
-    "release_group",
-    "work",
-    "artist",
-    "label",
-    "recording"
-]
+MUSICBRAINZ_ENTITY_TYPES = {
+    "event": lazy_gettext("Event"),
+    "place": lazy_gettext("Place"),
+    "release_group": lazy_gettext("Release Group"),
+    "work": lazy_gettext("Work"),
+    "artist": lazy_gettext("Artist"),
+    "label": lazy_gettext("Label"),
+    "recording": lazy_gettext("Recording"),
+}
 
-BOOKBRAINZ_ENTITY_TYPES = [
-    "bb_edition_group",
-    "bb_literary_work",
-    "bb_author",
-    "bb_series",
-]
+BOOKBRAINZ_ENTITY_TYPES = {
+    "bb_edition_group": lazy_gettext("Edition Group"),
+    "bb_literary_work": lazy_gettext("Literary Work"),
+    "bb_author": lazy_gettext("Author"),
+    "bb_series": lazy_gettext("Series"),
+}
 
-ENTITY_TYPES = MUSICBRAINZ_ENTITY_TYPES + BOOKBRAINZ_ENTITY_TYPES
+ENTITY_TYPES_MAPPING = {**MUSICBRAINZ_ENTITY_TYPES, **BOOKBRAINZ_ENTITY_TYPES}
+ENTITY_TYPES = list(ENTITY_TYPES_MAPPING.keys())
 
 supported_languages = []
 for lang in list(pycountry.languages):
@@ -427,10 +429,10 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
     if entity_type is not None:
         if entity_type == 'musicbrainz':
             filters.append("entity_type in :entity_type")
-            filter_data["entity_type"] = tuple(MUSICBRAINZ_ENTITY_TYPES)
+            filter_data["entity_type"] = tuple(MUSICBRAINZ_ENTITY_TYPES.keys())
         elif entity_type == 'bookbrainz':
             filters.append("entity_type in :entity_type")
-            filter_data["entity_type"] = tuple(BOOKBRAINZ_ENTITY_TYPES)
+            filter_data["entity_type"] = tuple(BOOKBRAINZ_ENTITY_TYPES.keys())
         else:
             filters.append("entity_type = :entity_type")
             filter_data["entity_type"] = entity_type
