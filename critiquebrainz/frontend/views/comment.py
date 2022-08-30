@@ -19,13 +19,13 @@
 from flask import Blueprint, redirect, url_for, render_template, request
 from flask_babel import gettext
 from flask_login import current_user, login_required
-from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound
 
 import critiquebrainz.db.comment as db_comment
 from critiquebrainz.db import exceptions as db_exceptions
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.comment import CommentEditForm
+from critiquebrainz.frontend.views import markdown
 from critiquebrainz.frontend.views.review import get_review_or_404
 
 comment_bp = Blueprint('comment', __name__)
@@ -76,7 +76,7 @@ def delete(id):
         flash.success(gettext("Comment has been deleted."))
         return redirect(url_for('review.entity', id=comment["review_id"]))
     if comment:
-        comment["text_html"] = markdown(comment["last_revision"]["text"], safe_mode="escape")
+        comment["text_html"] = markdown.format_markdown_as_safe_html(comment["last_revision"]["text"])
     return render_template('review/delete_comment.html', review=review, comment=comment)
 
 

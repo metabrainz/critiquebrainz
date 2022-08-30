@@ -5,7 +5,6 @@ from flask import Blueprint, render_template, request, redirect, url_for, jsonif
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
 from langdetect import detect
-from markdown import markdown
 from werkzeug.exceptions import Unauthorized, NotFound, Forbidden, BadRequest
 
 import critiquebrainz.db.comment as db_comment
@@ -24,6 +23,7 @@ from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.forms.review import ReviewCreateForm, ReviewEditForm, ReviewReportForm
 from critiquebrainz.frontend.login import admin_view
 from critiquebrainz.frontend.views import get_avg_rating
+from critiquebrainz.frontend.views import markdown
 from critiquebrainz.utils import side_by_side_diff
 
 review_bp = Blueprint('review', __name__)
@@ -161,7 +161,7 @@ def entity(id, rev=None):
     if revision["text"] is None:
         review["text_html"] = None
     else:
-        review["text_html"] = markdown(revision['text'], safe_mode="escape")
+        review["text_html"] = markdown.format_markdown_as_safe_html(revision['text'])
 
     review["rating"] = revision["rating"]
 
@@ -175,7 +175,7 @@ def entity(id, rev=None):
 
     comments, count = db_comment.list_comments(review_id=id)
     for comment in comments:
-        comment["text_html"] = markdown(comment["last_revision"]["text"], safe_mode="escape")
+        comment["text_html"] = markdown.format_markdown_as_safe_html(comment["last_revision"]["text"])
     comment_form = CommentEditForm(review_id=id)
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
                            spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,

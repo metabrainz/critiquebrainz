@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
 from flask import Blueprint, render_template
 from flask_babel import format_number
-from markdown import markdown
 
+from critiquebrainz.frontend.views import markdown
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.users as db_users
 
@@ -16,7 +16,7 @@ def index():
     popular_reviews = db_review.get_popular_reviews_for_index()
     for review in popular_reviews:
         # Preparing text for preview
-        preview = markdown(review['text'], safe_mode="escape")
+        preview = markdown.format_markdown_as_safe_html(review['text'])
         review['preview'] = ''.join(BeautifulSoup(preview, "html.parser").findAll(text=True))
 
     # Recent reviews
