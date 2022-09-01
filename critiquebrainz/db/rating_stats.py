@@ -46,6 +46,9 @@ def get_stats(entity_id, entity_type):
     for rating in ratings:
         ratings_stats[rating] += 1
     
-    average_rating = sum(ratings)/len(ratings)
+    if ratings:
+        average_rating = sum(ratings)/len(ratings)
+    else:
+        average_rating = 0
 
     return ratings_stats, average_rating

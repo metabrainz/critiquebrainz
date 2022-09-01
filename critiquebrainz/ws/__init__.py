@@ -7,6 +7,7 @@ from brainzutils.flask import CustomFlask
 
 deploy_env = os.environ.get('DEPLOY_ENV', '')
 CONSUL_CONFIG_FILE_RETRY_COUNT = 10
+REVIEWS_LIMIT = 5
 
 
 def create_app(debug=None, config_path=None):
@@ -109,11 +110,21 @@ def _register_blueprints(app):
     from critiquebrainz.ws.user.views import user_bp
     from critiquebrainz.ws.review.bulk import bulk_review_bp
     from critiquebrainz.ws.artist.views import artist_bp
+    from critiquebrainz.ws.label.views import label_bp
+    from critiquebrainz.ws.event.views import event_bp
+    from critiquebrainz.ws.place.views import place_bp
+    from critiquebrainz.ws.recording.views import recording_bp
     from critiquebrainz.ws.release_group.views import release_group_bp
+    from critiquebrainz.ws.work.views import work_bp
     app.register_blueprint(oauth_bp, url_prefix="/oauth")
     app.register_blueprint(review_bp, url_prefix="/review")
     app.register_blueprint(user_bp, url_prefix="/user")
     app.register_blueprint(bulk_review_bp, url_prefix="/reviews")
     app.register_blueprint(artist_bp, url_prefix="/artist")
+    app.register_blueprint(label_bp, url_prefix="/label")
+    app.register_blueprint(event_bp, url_prefix="/event")
+    app.register_blueprint(place_bp, url_prefix="/place")
+    app.register_blueprint(recording_bp, url_prefix="/recording")
     app.register_blueprint(release_group_bp, url_prefix="/release-group")
+    app.register_blueprint(work_bp, url_prefix="/work")
 

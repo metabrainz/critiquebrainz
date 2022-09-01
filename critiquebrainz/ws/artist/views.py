@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.rating_stats as db_rating_stats
-import brainzutils.musicbrainz_db.exceptions as db_exceptions
-from brainzutils.musicbrainz_db import artist as db_artist
+from critiquebrainz.frontend.external.musicbrainz_db import artist as db_artist
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound
+from critiquebrainz.ws.parser import Parser
+from critiquebrainz.ws import REVIEWS_LIMIT
 
 artist_bp = Blueprint('ws_artist', __name__)
 
@@ -27,202 +28,249 @@ def artist_entity_handler(artist_mbid):
 
         {
             "artist": {
-                "id": "b7d92248-97e3-4450-8057-6fe06738f735", 
-                "name": "Shawn Mendes", 
-                "sort_name": "Mendes, Shawn", 
-                "type": "Person"
-            }, 
-            "avg_rating": 5.0, 
+                "artist-rels": [
+                    {
+                        "artist": {
+                            "life-span": {
+                                "begin": "1981-07-17"
+                            },
+                            "mbid": "60bc1e7d-d974-4205-bc9f-9dd3dba93534",
+                            "name": "Sergey Semenov",
+                            "sort_name": "Sergey Semenov",
+                            "type": "Person"
+                        },
+                        "begin-year": 2011,
+                        "direction": "backward",
+                        "end-year": null,
+                        "type": "member of band",
+                        "type-id": "5be4c609-9afa-4ea0-910b-12ffb71e3821"
+                    },
+                    {
+                        "artist": {
+                            "life-span": {
+                                "begin": "2020-10-01"
+                            },
+                            "mbid": "ba2f69b0-dcda-4f81-b324-17f73f36980c",
+                            "name": "DJ Repeet",
+                            "sort_name": "Repeet, DJ",
+                            "type": "Character"
+                        },
+                        "begin-year": 2020,
+                        "direction": "backward",
+                        "end-year": null,
+                        "type": "member of band",
+                        "type-id": "5be4c609-9afa-4ea0-910b-12ffb71e3821"
+                    }
+                ],
+                "band-members": [
+                    {
+                        "artist": {
+                            "life-span": {
+                                "begin": "1981-07-17"
+                            },
+                            "mbid": "60bc1e7d-d974-4205-bc9f-9dd3dba93534",
+                            "name": "Sergey Semenov",
+                            "sort_name": "Sergey Semenov",
+                            "type": "Person"
+                        },
+                        "begin-year": 2011,
+                        "direction": "backward",
+                        "end-year": null,
+                        "type": "member of band",
+                        "type-id": "5be4c609-9afa-4ea0-910b-12ffb71e3821"
+                    },
+                    {
+                        "artist": {
+                            "life-span": {
+                                "begin": "2020-10-01"
+                            },
+                            "mbid": "ba2f69b0-dcda-4f81-b324-17f73f36980c",
+                            "name": "DJ Repeet",
+                            "sort_name": "Repeet, DJ",
+                            "type": "Character"
+                        },
+                        "begin-year": 2020,
+                        "direction": "backward",
+                        "end-year": null,
+                        "type": "member of band",
+                        "type-id": "5be4c609-9afa-4ea0-910b-12ffb71e3821"
+                    }
+                ],
+                "external-urls": [
+                    {
+                        "begin-year": null,
+                        "direction": "forward",
+                        "end-year": null,
+                        "icon": "discogs-16.png",
+                        "name": "Discogs",
+                        "type": "discogs",
+                        "type-id": "04a5b104-a4c2-4bac-99a1-7b837c37d9e4",
+                        "url": {
+                            "mbid": "694f02d8-1be0-4c69-ae04-4c63686d3fdb",
+                            "url": "https://www.discogs.com/artist/10091563"
+                        }
+                    }
+                    {
+                        "begin-year": null,
+                        "direction": "forward",
+                        "end-year": null,
+                        "icon": "wikidata-16.png",
+                        "name": "Wikidata",
+                        "type": "wikidata",
+                        "type-id": "689870a4-a1e4-4912-b17f-7b2664215698",
+                        "url": {
+                            "mbid": "bddc058d-4cb6-4ced-a05c-de3bf2b60692",
+                            "url": "https://www.wikidata.org/wiki/Q109645393"
+                        }
+                    }
+                ],
+                "life-span": {
+                    "begin": "2011-07-17"
+                },
+                "mbid": "df602ea4-c143-425d-a235-d7641f7634fd",
+                "name": "Senkino",
+                "sort_name": "Senkino",
+                "type": "Group"
+            },
+            "average_rating": 5.0,
             "latest_reviews": [
                 {
-                "created": "Mon, 24 Jan 2022 18:11:59 GMT", 
-                "edits": 0, 
-                "entity_id": "b7d92248-97e3-4450-8057-6fe06738f735", 
-                "entity_type": "artist", 
-                "full_name": "Creative Commons Attribution-ShareAlike 3.0 Unported", 
-                "id": "89fb94fd-3e65-4e52-8d16-5bdca4572883", 
-                "info_url": "https://creativecommons.org/licenses/by-sa/3.0/", 
-                "is_draft": false, 
-                "is_hidden": false, 
-                "language": "en", 
-                "last_revision": {
-                    "id": 11258, 
-                    "rating": 5, 
-                    "review_id": "89fb94fd-3e65-4e52-8d16-5bdca4572883", 
-                    "text": null, 
-                    "timestamp": "Mon, 24 Jan 2022 18:11:59 GMT"
-                }, 
-                "last_updated": "Mon, 24 Jan 2022 18:11:59 GMT", 
-                "license_id": "CC BY-SA 3.0", 
-                "popularity": 0, 
-                "published_on": "Mon, 24 Jan 2022 18:11:59 GMT", 
-                "rating": 5, 
-                "source": null, 
-                "source_url": null, 
-                "text": null, 
-                "user": {
-                    "created": "Sun, 23 Jan 2022 15:17:48 GMT", 
-                    "display_name": "Ashutosh Aswal", 
-                    "id": "36b854f0-8601-4eab-8e59-3733e7f8de24", 
-                    "karma": 0, 
-                    "user_type": "Noob"
-                }, 
-                "votes_negative_count": 0, 
-                "votes_positive_count": 0
-                }, 
-                {
-                "created": "Thu, 27 Jan 2022 16:54:09 GMT", 
-                "edits": 0, 
-                "entity_id": "b7d92248-97e3-4450-8057-6fe06738f735", 
-                "entity_type": "artist", 
-                "full_name": "Creative Commons Attribution-ShareAlike 3.0 Unported", 
-                "id": "d326c9d2-1e4c-448d-be05-5f6cd872de0d", 
-                "info_url": "https://creativecommons.org/licenses/by-sa/3.0/", 
-                "is_draft": false, 
-                "is_hidden": false, 
-                "language": "en", 
-                "last_revision": {
-                    "id": 11265, 
-                    "rating": 5, 
-                    "review_id": "d326c9d2-1e4c-448d-be05-5f6cd872de0d", 
-                    "text": null, 
-                    "timestamp": "Thu, 27 Jan 2022 16:54:09 GMT"
-                }, 
-                "last_updated": "Thu, 27 Jan 2022 16:54:09 GMT", 
-                "license_id": "CC BY-SA 3.0", 
-                "popularity": 0, 
-                "published_on": "Thu, 27 Jan 2022 16:54:09 GMT", 
-                "rating": 5, 
-                "source": null, 
-                "source_url": null, 
-                "text": null, 
-                "user": {
-                    "created": "Sat, 09 Feb 2019 13:06:27 GMT", 
-                    "display_name": "amCap1712", 
-                    "id": "23f97b7f-3ea3-4557-b808-1cb08474b28b", 
-                    "karma": 0, 
-                    "user_type": "Noob"
-                }, 
-                "votes_negative_count": 0, 
-                "votes_positive_count": 0
+                    "created": "Wed, 24 Nov 2021 02:59:15 GMT",
+                    "edits": 0,
+                    "entity_id": "df602ea4-c143-425d-a235-d7641f7634fd",
+                    "entity_type": "artist",
+                    "full_name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+                    "id": "0a3548a7-a014-4e71-a65b-d45fce677cf0",
+                    "info_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+                    "is_draft": false,
+                    "is_hidden": false,
+                    "language": "en",
+                    "last_revision": {
+                        "id": 11139,
+                        "rating": 5,
+                        "review_id": "0a3548a7-a014-4e71-a65b-d45fce677cf0",
+                        "text": null,
+                        "timestamp": "Wed, 24 Nov 2021 02:59:15 GMT"
+                    },
+                    "last_updated": "Wed, 24 Nov 2021 02:59:15 GMT",
+                    "license_id": "CC BY-SA 3.0",
+                    "popularity": 0,
+                    "published_on": "Wed, 24 Nov 2021 02:59:15 GMT",
+                    "rating": 5,
+                    "source": null,
+                    "source_url": null,
+                    "text": null,
+                    "user": {
+                        "created": "Wed, 24 Nov 2021 02:56:16 GMT",
+                        "display_name": "Rada87",
+                        "id": "5e784575-4bb8-4a9f-8334-2cb87f073cf0",
+                        "karma": 0,
+                        "user_type": "Noob"
+                    },
+                    "votes_negative_count": 0,
+                    "votes_positive_count": 0
                 }
-            ], 
-            "rating_stats": {
-                "1": 0, 
-                "2": 0, 
-                "3": 0, 
-                "4": 0, 
-                "5": 2
-            }, 
-            "reviews_count": 2, 
+            ],
+            "ratings_stats": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+            },
+            "reviews_count": 1,
             "top_reviews": [
                 {
-                "created": "Mon, 24 Jan 2022 18:11:59 GMT", 
-                "edits": 0, 
-                "entity_id": "b7d92248-97e3-4450-8057-6fe06738f735", 
-                "entity_type": "artist", 
-                "full_name": "Creative Commons Attribution-ShareAlike 3.0 Unported", 
-                "id": "89fb94fd-3e65-4e52-8d16-5bdca4572883", 
-                "info_url": "https://creativecommons.org/licenses/by-sa/3.0/", 
-                "is_draft": false, 
-                "is_hidden": false, 
-                "language": "en", 
-                "last_revision": {
-                    "id": 11258, 
-                    "rating": 5, 
-                    "review_id": "89fb94fd-3e65-4e52-8d16-5bdca4572883", 
-                    "text": null, 
-                    "timestamp": "Mon, 24 Jan 2022 18:11:59 GMT"
-                }, 
-                "last_updated": "Mon, 24 Jan 2022 18:11:59 GMT", 
-                "license_id": "CC BY-SA 3.0", 
-                "popularity": 0, 
-                "published_on": "Mon, 24 Jan 2022 18:11:59 GMT", 
-                "rating": 5, 
-                "source": null, 
-                "source_url": null, 
-                "text": null, 
-                "user": {
-                    "created": "Sun, 23 Jan 2022 15:17:48 GMT", 
-                    "display_name": "Ashutosh Aswal", 
-                    "id": "36b854f0-8601-4eab-8e59-3733e7f8de24", 
-                    "karma": 0, 
-                    "user_type": "Noob"
-                }, 
-                "votes_negative_count": 0, 
-                "votes_positive_count": 0
-                }, 
-                {
-                "created": "Thu, 27 Jan 2022 16:54:09 GMT", 
-                "edits": 0, 
-                "entity_id": "b7d92248-97e3-4450-8057-6fe06738f735", 
-                "entity_type": "artist", 
-                "full_name": "Creative Commons Attribution-ShareAlike 3.0 Unported", 
-                "id": "d326c9d2-1e4c-448d-be05-5f6cd872de0d", 
-                "info_url": "https://creativecommons.org/licenses/by-sa/3.0/", 
-                "is_draft": false, 
-                "is_hidden": false, 
-                "language": "en", 
-                "last_revision": {
-                    "id": 11265, 
-                    "rating": 5, 
-                    "review_id": "d326c9d2-1e4c-448d-be05-5f6cd872de0d", 
-                    "text": null, 
-                    "timestamp": "Thu, 27 Jan 2022 16:54:09 GMT"
-                }, 
-                "last_updated": "Thu, 27 Jan 2022 16:54:09 GMT", 
-                "license_id": "CC BY-SA 3.0", 
-                "popularity": 0, 
-                "published_on": "Thu, 27 Jan 2022 16:54:09 GMT", 
-                "rating": 5, 
-                "source": null, 
-                "source_url": null, 
-                "text": null, 
-                "user": {
-                    "created": "Sat, 09 Feb 2019 13:06:27 GMT", 
-                    "display_name": "amCap1712", 
-                    "id": "23f97b7f-3ea3-4557-b808-1cb08474b28b", 
-                    "karma": 0, 
-                    "user_type": "Noob"
-                }, 
-                "votes_negative_count": 0, 
-                "votes_positive_count": 0
+                    "created": "Wed, 24 Nov 2021 02:59:15 GMT",
+                    "edits": 0,
+                    "entity_id": "df602ea4-c143-425d-a235-d7641f7634fd",
+                    "entity_type": "artist",
+                    "full_name": "Creative Commons Attribution-ShareAlike 3.0 Unported",
+                    "id": "0a3548a7-a014-4e71-a65b-d45fce677cf0",
+                    "info_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+                    "is_draft": false,
+                    "is_hidden": false,
+                    "language": "en",
+                    "last_revision": {
+                        "id": 11139,
+                        "rating": 5,
+                        "review_id": "0a3548a7-a014-4e71-a65b-d45fce677cf0",
+                        "text": null,
+                        "timestamp": "Wed, 24 Nov 2021 02:59:15 GMT"
+                    },
+                    "last_updated": "Wed, 24 Nov 2021 02:59:15 GMT",
+                    "license_id": "CC BY-SA 3.0",
+                    "popularity": 0,
+                    "published_on": "Wed, 24 Nov 2021 02:59:15 GMT",
+                    "rating": 5,
+                    "source": null,
+                    "source_url": null,
+                    "text": null,
+                    "user": {
+                        "created": "Wed, 24 Nov 2021 02:56:16 GMT",
+                        "display_name": "Rada87",
+                        "id": "5e784575-4bb8-4a9f-8334-2cb87f073cf0",
+                        "karma": 0,
+                        "user_type": "Noob"
+                    },
+                    "votes_negative_count": 0,
+                    "votes_positive_count": 0
                 }
             ]
         }
 
     :statuscode 200: no error
     :statuscode 404: artist not found
-    
+
     :resheader Content-Type: *application/json*
     """
 
-    try:
-        artist = db_artist.get_artist_by_id(str(artist_mbid))
-    except db_exceptions.NoDataFoundException:
+    artist = db_artist.get_artist_by_mbid(str(artist_mbid))
+    if not artist:
         raise NotFound("Can't find an artist with ID: {artist_mbid}".format(artist_mbid=artist_mbid))
+
+    user_id = Parser.uuid('uri', 'user_id', optional=True)
+    if user_id:
+        user_review, _ = db_review.list_reviews(
+            entity_id=artist['mbid'],
+            entity_type='artist',
+            user_id=user_id
+        )
+        if user_review:
+            user_review = db_review.to_dict(user_review[0])
+        else:
+            user_review = None
 
     ratings_stats, average_rating = db_rating_stats.get_stats(artist_mbid, "artist")
 
-    reviews_limit = 5
-
     top_reviews, reviews_count = db_review.list_reviews(
-        entity_id=artist['id'],
+        entity_id=artist['mbid'],
         entity_type='artist',
         sort='popularity',
-        limit=reviews_limit,
+        limit=REVIEWS_LIMIT,
         offset=0,
     )
 
     latest_reviews, reviews_count = db_review.list_reviews(
-        entity_id=artist['id'],
+        entity_id=artist['mbid'],
         entity_type='artist',
         sort='published_on',
-        limit=reviews_limit,
+        limit=REVIEWS_LIMIT,
         offset=0,
     )
-    
-    top_reviews = [db_review.to_dict(p) for p in top_reviews]
-    latest_reviews = [db_review.to_dict(p) for p in latest_reviews]
 
-    return jsonify(artist=artist, avg_rating=average_rating, rating_stats=ratings_stats, reviews_count=reviews_count, top_reviews=top_reviews, latest_reviews=latest_reviews)
+    top_reviews = [db_review.to_dict(review) for review in top_reviews]
+    latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
+
+    result = {
+        "artist": artist,
+        "average_rating": average_rating,
+        "ratings_stats": ratings_stats,
+        "reviews_count": reviews_count,
+        "top_reviews": top_reviews,
+        "latest_reviews": latest_reviews
+    }
+    if user_id:
+        result['user_review'] = user_review
+
+    return jsonify(**result)

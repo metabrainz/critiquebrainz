@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify
 import critiquebrainz.db.review as db_review
 import critiquebrainz.db.rating_stats as db_rating_stats
-from brainzutils.musicbrainz_db import release_group as db_release_group
-import brainzutils.musicbrainz_db.exceptions as db_exceptions
+from critiquebrainz.frontend.external.musicbrainz_db import release_group as db_release_group
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound
+from critiquebrainz.ws.parser import Parser
+from critiquebrainz.ws import REVIEWS_LIMIT
+
 
 release_group_bp = Blueprint('ws_release_group', __name__)
 
@@ -26,7 +28,7 @@ def release_group_entity_handler(release_group_mbid):
     .. code-block:: json
 
     {
-        "avg_rating": 4.0,
+        "average_rating": 4.0,
         "latest_reviews": [
             {
                 "created": "Wed, 01 Dec 2021 16:28:50 GMT",
@@ -58,14 +60,14 @@ def release_group_entity_handler(release_group_mbid):
                     "created": "Sat, 15 Aug 2020 15:48:39 GMT",
                     "display_name": "sound.and.vision",
                     "id": "dfdae69f-275f-41a2-82c7-ac5d1f9c8129",
-                    "karma": 16,
+                    "karma": 27,
                     "user_type": "Noob"
                 },
                 "votes_negative_count": 0,
                 "votes_positive_count": 1
             }
         ],
-        "rating_stats": {
+        "ratings_stats": {
             "1": 0,
             "2": 0,
             "3": 0,
@@ -73,7 +75,28 @@ def release_group_entity_handler(release_group_mbid):
             "5": 0
         },
         "release_group": {
-            "id": "f0bd8ae8-321f-43d8-af87-e2f90d1b3817",
+            "artist-credit": [
+                {
+                    "artist": {
+                        "comment": "add compilations to this artist",
+                        "mbid": "89ad4ac3-39f7-470e-963a-56509c546377",
+                        "name": "Various Artists",
+                        "sort_name": "Various Artists",
+                        "type": "Other"
+                    },
+                    "name": "Various Artists"
+                }
+            ],
+            "artist-credit-phrase": "Various Artists",
+            "first-release-year": 2004,
+            "mbid": "f0bd8ae8-321f-43d8-af87-e2f90d1b3817",
+            "rating": 60,
+            "release-list": [
+                {
+                    "mbid": "f51d400c-3303-447f-8f3c-595e1b1352bf",
+                    "name": "Hollywood Greats"
+                }
+            ],
             "title": "Hollywood Greats",
             "type": "Album"
         },
@@ -109,7 +132,7 @@ def release_group_entity_handler(release_group_mbid):
                     "created": "Sat, 15 Aug 2020 15:48:39 GMT",
                     "display_name": "sound.and.vision",
                     "id": "dfdae69f-275f-41a2-82c7-ac5d1f9c8129",
-                    "karma": 16,
+                    "karma": 27,
                     "user_type": "Noob"
                 },
                 "votes_negative_count": 0,
@@ -117,39 +140,60 @@ def release_group_entity_handler(release_group_mbid):
             }
         ]
     }
+
     :statuscode 200: no error
     :statuscode 404: release group not found
-    
+
     :resheader Content-Type: *application/json*
     """
-    
 
-    try:
-        release_group = db_release_group.get_release_group_by_id(str(release_group_mbid))
-    except db_exceptions.NoDataFoundException:
-        raise NotFound("Can't find an release group with ID: {release_group_mbid}".format(release_group_mbid=release_group_mbid))
+    release_group = db_release_group.get_release_group_by_mbid(str(release_group_mbid))
+
+    if not release_group:
+        raise NotFound("Can't find a release group with ID: {release_group_mbid}".format(release_group_mbid=release_group_mbid))
+
+    user_id = Parser.uuid('uri', 'user_id', optional=True)
+    if user_id:
+        user_review, _ = db_review.list_reviews(
+            entity_id=release_group['mbid'],
+            entity_type='release_group',
+            user_id=user_id
+        )
+        if user_review:
+            user_review = db_review.to_dict(user_review[0])
+        else:
+            user_review = None
 
     ratings_stats, average_rating = db_rating_stats.get_stats(release_group_mbid, "release_group")
 
-    reviews_limit = 5
-
     top_reviews, reviews_count = db_review.list_reviews(
-        entity_id=release_group_mbid,
+        entity_id=release_group['mbid'],
         entity_type='release_group',
         sort='popularity',
-        limit=reviews_limit,
+        limit=REVIEWS_LIMIT,
         offset=0,
     )
 
     latest_reviews, reviews_count = db_review.list_reviews(
-        entity_id=release_group_mbid,
+        entity_id=release_group['mbid'],
         entity_type='release_group',
         sort='published_on',
-        limit=reviews_limit,
+        limit=REVIEWS_LIMIT,
         offset=0,
     )
 
-    top_reviews = [db_review.to_dict(p) for p in top_reviews]
-    latest_reviews = [db_review.to_dict(p) for p in latest_reviews]
+    top_reviews = [db_review.to_dict(review) for review in top_reviews]
+    latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
 
-    return jsonify(release_group=release_group, avg_rating=average_rating, rating_stats=ratings_stats, reviews_count=reviews_count, top_reviews=top_reviews, latest_reviews=latest_reviews)
+    result = {
+        "release_group": release_group,
+        "average_rating": average_rating,
+        "ratings_stats": ratings_stats,
+        "reviews_count": reviews_count,
+        "top_reviews": top_reviews,
+        "latest_reviews": latest_reviews
+    }
+    if user_id:
+        result['user_review'] = user_review
+
+    return jsonify(**result)
