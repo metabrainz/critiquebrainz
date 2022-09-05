@@ -8,6 +8,8 @@ from brainzutils.flask import CustomFlask
 deploy_env = os.environ.get('DEPLOY_ENV', '')
 CONSUL_CONFIG_FILE_RETRY_COUNT = 10
 REVIEWS_LIMIT = 5
+REVIEW_CACHE_NAMESPACE = "Review"
+REVIEW_CACHE_TIMEOUT = 30 * 60  # 30 minutes
 
 
 def create_app(debug=None, config_path=None):

@@ -6,6 +6,8 @@ from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound
 from critiquebrainz.ws.parser import Parser
 from critiquebrainz.ws import REVIEWS_LIMIT
+from critiquebrainz.ws import REVIEWS_LIMIT, REVIEW_CACHE_NAMESPACE, REVIEW_CACHE_TIMEOUT
+from brainzutils import cache
 
 label_bp = Blueprint('ws_label', __name__)
 
@@ -170,38 +172,63 @@ def label_entity_handler(label_mbid):
     if not label:
         raise NotFound("Can't find a label with ID: {label_mbid}".format(label_mbid=label_mbid))
 
+    user_review = None
+
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     if user_id:
-        user_review, _ = db_review.list_reviews(
-            entity_id=label['mbid'],
-            entity_type='label',
-            user_id=user_id
-        )
-        if user_review:
-            user_review = db_review.to_dict(user_review[0])
-        else:
-            user_review = None
+        user_review_cache_key = cache.gen_key('entity_api', label['mbid'], user_id, "user_review")
+        user_review = cache.get(user_review_cache_key)
+        if not user_review:
+            user_review, _ = db_review.list_reviews(
+                entity_id=label['mbid'],
+                entity_type='label',
+                user_id=user_id
+            )
+            if user_review:
+                user_review = db_review.to_dict(user_review[0])
+            else:
+                user_review = None
+
+            cache.set(user_review_cache_key, user_review,
+                      expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
     ratings_stats, average_rating = db_rating_stats.get_stats(label_mbid, "label")
 
-    top_reviews, reviews_count = db_review.list_reviews(
-        entity_id=label['mbid'],
-        entity_type='label',
-        sort='popularity',
-        limit=REVIEWS_LIMIT,
-        offset=0,
-    )
+    top_reviews_cache_key = cache.gen_key("entity_api_label", label['mbid'], "top_reviews")
+    top_reviews_cached_result = cache.get(top_reviews_cache_key, REVIEW_CACHE_NAMESPACE)
 
-    latest_reviews, reviews_count = db_review.list_reviews(
-        entity_id=label['mbid'],
-        entity_type='label',
-        sort='published_on',
-        limit=REVIEWS_LIMIT,
-        offset=0,
-    )
+    if top_reviews_cached_result:
+        top_reviews, reviews_count = top_reviews_cached_result
+    else:
+        top_reviews, reviews_count = db_review.list_reviews(
+            entity_id=label['mbid'],
+            entity_type='label',
+            sort='popularity',
+            limit=REVIEWS_LIMIT,
+            offset=0,
+        )
+        top_reviews = [db_review.to_dict(review) for review in top_reviews]
 
-    top_reviews = [db_review.to_dict(review) for review in top_reviews]
-    latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
+        cache.set(top_reviews_cache_key, (top_reviews, reviews_count),
+                  expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
+
+    latest_reviews_cache_key = cache.gen_key("entity_api_label", label['mbid'], "latest_reviews")
+    latest_reviews_cached_result = cache.get(latest_reviews_cache_key, REVIEW_CACHE_NAMESPACE)
+
+    if latest_reviews_cached_result:
+        latest_reviews, reviews_count = latest_reviews_cached_result
+    else:
+        latest_reviews, reviews_count = db_review.list_reviews(
+            entity_id=label['mbid'],
+            entity_type='label',
+            sort='published_on',
+            limit=REVIEWS_LIMIT,
+            offset=0,
+        )
+        latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
+
+        cache.set(latest_reviews_cache_key, (latest_reviews, reviews_count),
+                  expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
     result = {
         "label": label,

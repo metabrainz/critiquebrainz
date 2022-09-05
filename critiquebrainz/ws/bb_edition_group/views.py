@@ -5,7 +5,8 @@ from critiquebrainz.frontend.external.bookbrainz_db import edition_group as db_e
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound
 from critiquebrainz.ws.parser import Parser
-from critiquebrainz.ws import REVIEWS_LIMIT
+from critiquebrainz.ws import REVIEWS_LIMIT, REVIEW_CACHE_NAMESPACE, REVIEW_CACHE_TIMEOUT
+from brainzutils import cache
 
 edition_group_bp = Blueprint('ws_edition_group', __name__)
 
@@ -144,38 +145,63 @@ def edition_group_entity_handler(edition_group_bbid):
     if not edition_group:
         raise NotFound("Can't find an edition_group with ID: {edition_group_bbid}".format(edition_group_bbid=edition_group_bbid))
 
+    user_review = []
+
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     if user_id:
-        user_review, _ = db_review.list_reviews(
-            entity_id=edition_group['bbid'],
-            entity_type='bb_edition_group',
-            user_id=user_id
-        )
-        if user_review:
-            user_review = db_review.to_dict(user_review[0])
-        else:
-            user_review = None
+        user_review_cache_key = cache.gen_key('entity_api', edition_group['bbid'], user_id, "user_review")
+        user_review = cache.get(user_review_cache_key)
+        if not user_review:
+            user_review, _ = db_review.list_reviews(
+                entity_id=edition_group['bbid'],
+                entity_type='bb_edition_group',
+                user_id=user_id
+            )
+            if user_review:
+                user_review = db_review.to_dict(user_review[0])
+            else:
+                user_review = []
+
+            cache.set(user_review_cache_key, user_review,
+                      expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
     ratings_stats, average_rating = db_rating_stats.get_stats(edition_group_bbid, "bb_edition_group")
 
-    top_reviews, reviews_count = db_review.list_reviews(
-        entity_id=edition_group['bbid'],
-        entity_type='bb_edition_group',
-        sort='popularity',
-        limit=REVIEWS_LIMIT,
-        offset=0,
-    )
+    top_reviews_cache_key = cache.gen_key("entity_api_bb_edition_group", edition_group['bbid'], "top_reviews")
+    top_reviews_cached_result = cache.get(top_reviews_cache_key, REVIEW_CACHE_NAMESPACE)
 
-    latest_reviews, reviews_count = db_review.list_reviews(
-        entity_id=edition_group['bbid'],
-        entity_type='bb_edition_group',
-        sort='published_on',
-        limit=REVIEWS_LIMIT,
-        offset=0,
-    )
+    if top_reviews_cached_result:
+        top_reviews, reviews_count = top_reviews_cached_result
+    else:
+        top_reviews, reviews_count = db_review.list_reviews(
+            entity_id=edition_group['bbid'],
+            entity_type='bb_edition_group',
+            sort='popularity',
+            limit=REVIEWS_LIMIT,
+            offset=0,
+        )
+        top_reviews = [db_review.to_dict(review) for review in top_reviews]
 
-    top_reviews = [db_review.to_dict(review) for review in top_reviews]
-    latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
+        cache.set(top_reviews_cache_key, (top_reviews, reviews_count),
+                  expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
+
+    latest_reviews_cache_key = cache.gen_key("entity_api_bb_edition_group", edition_group['bbid'], "latest_reviews")
+    latest_reviews_cached_result = cache.get(latest_reviews_cache_key, REVIEW_CACHE_NAMESPACE)
+
+    if latest_reviews_cached_result:
+        latest_reviews, reviews_count = latest_reviews_cached_result
+    else:
+        latest_reviews, reviews_count = db_review.list_reviews(
+            entity_id=edition_group['bbid'],
+            entity_type='bb_edition_group',
+            sort='published_on',
+            limit=REVIEWS_LIMIT,
+            offset=0,
+        )
+        latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
+
+        cache.set(latest_reviews_cache_key, (latest_reviews, reviews_count),
+                  expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
     result = {
         "edition_group": edition_group,

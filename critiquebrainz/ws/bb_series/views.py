@@ -5,7 +5,8 @@ from critiquebrainz.frontend.external.bookbrainz_db import series as db_series
 from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound
 from critiquebrainz.ws.parser import Parser
-from critiquebrainz.ws import REVIEWS_LIMIT
+from critiquebrainz.ws import REVIEWS_LIMIT, REVIEW_CACHE_NAMESPACE, REVIEW_CACHE_TIMEOUT
+from brainzutils import cache
 
 series_bp = Blueprint('ws_series', __name__)
 
@@ -136,38 +137,63 @@ def series_entity_handler(series_bbid):
     if not series:
         raise NotFound("Can't find a series with ID: {series_bbid}".format(series_bbid=series_bbid))
 
+    user_review = []
+
     user_id = Parser.uuid('uri', 'user_id', optional=True)
     if user_id:
-        user_review, _ = db_review.list_reviews(
-            entity_id=series['bbid'],
-            entity_type='bb_series',
-            user_id=user_id
-        )
-        if user_review:
-            user_review = db_review.to_dict(user_review[0])
-        else:
-            user_review = None
+        user_review_cache_key = cache.gen_key('entity_api', series['bbid'], user_id, "user_review")
+        user_review = cache.get(user_review_cache_key)
+        if not user_review:
+            user_review, _ = db_review.list_reviews(
+                entity_id=series['bbid'],
+                entity_type='bb_series',
+                user_id=user_id
+            )
+            if user_review:
+                user_review = db_review.to_dict(user_review[0])
+            else:
+                user_review = []
+
+            cache.set(user_review_cache_key, user_review,
+                      expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
     ratings_stats, average_rating = db_rating_stats.get_stats(series_bbid, "bb_series")
 
-    top_reviews, reviews_count = db_review.list_reviews(
-        entity_id=series['bbid'],
-        entity_type='bb_series',
-        sort='popularity',
-        limit=REVIEWS_LIMIT,
-        offset=0,
-    )
+    top_reviews_cache_key = cache.gen_key("entity_api_bb_series", series['bbid'], "top_reviews")
+    top_reviews_cached_result = cache.get(top_reviews_cache_key, REVIEW_CACHE_NAMESPACE)
 
-    latest_reviews, reviews_count = db_review.list_reviews(
-        entity_id=series['bbid'],
-        entity_type='bb_series',
-        sort='published_on',
-        limit=REVIEWS_LIMIT,
-        offset=0,
-    )
+    if top_reviews_cached_result:
+        top_reviews, reviews_count = top_reviews_cached_result
+    else:
+        top_reviews, reviews_count = db_review.list_reviews(
+            entity_id=series['bbid'],
+            entity_type='bb_series',
+            sort='popularity',
+            limit=REVIEWS_LIMIT,
+            offset=0,
+        )
+        top_reviews = [db_review.to_dict(review) for review in top_reviews]
 
-    top_reviews = [db_review.to_dict(review) for review in top_reviews]
-    latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
+        cache.set(top_reviews_cache_key, (top_reviews, reviews_count),
+                  expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
+
+    latest_reviews_cache_key = cache.gen_key("entity_api_bb_series", series['bbid'], "latest_reviews")
+    latest_reviews_cached_result = cache.get(latest_reviews_cache_key, REVIEW_CACHE_NAMESPACE)
+
+    if latest_reviews_cached_result:
+        latest_reviews, reviews_count = latest_reviews_cached_result
+    else:
+        latest_reviews, reviews_count = db_review.list_reviews(
+            entity_id=series['bbid'],
+            entity_type='bb_series',
+            sort='published_on',
+            limit=REVIEWS_LIMIT,
+            offset=0,
+        )
+        latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
+
+        cache.set(latest_reviews_cache_key, (latest_reviews, reviews_count),
+                  expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
     result = {
         "series": series,

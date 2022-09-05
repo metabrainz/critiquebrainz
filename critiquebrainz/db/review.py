@@ -296,14 +296,16 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
         db_revision.update_rating(review_id)
 
         result = connection.execute(sqlalchemy.text("""
-                    SELECT review.entity_id
+                    SELECT review.entity_id,
+                           review.entity_type,
+                           review.user_id
                       FROM review
                      WHERE review.id = :review_id
                 """), {
             "review_id": review_id,
         })
         review = dict(result.fetchone())
-        invalidate_ws_entity_cache(review["entity_id"])
+        invalidate_ws_entity_cache(review["entity_id"], review["entity_type"], review["user_id"])
 
 
 def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
@@ -385,11 +387,11 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
     if rating:
         db_revision.update_rating(review_id)
 
-    invalidate_ws_entity_cache(entity_id)
+    invalidate_ws_entity_cache(entity_id, entity_type, user_id)
     return get_by_id(review_id)
 
 
-def invalidate_ws_entity_cache(entity_id):
+def invalidate_ws_entity_cache(entity_id, entity_type, user_id):
     cache_keys_for_entity_id_key = cache.gen_key('ws_cache', entity_id)
     cache_keys_to_delete = cache.smembers(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
     if cache_keys_to_delete:
@@ -401,6 +403,13 @@ def invalidate_ws_entity_cache(entity_id):
     if cache_keys_to_delete:
         cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
         cache.delete(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
+
+    cache_keys_for_top_reviews_key = cache.gen_key('entity_api', entity_type, entity_id, "top_reviews")
+    cache_keys_for_latest_reviews_key = cache.gen_key('entity_api', entity_type, entity_id, "latest_reviews")
+    cache_keys_for_user_reviews_key = cache.gen_key('entity_api', entity_id, user_id, "user_reviews")
+    cache.delete(cache_keys_for_top_reviews_key, namespace=REVIEW_CACHE_NAMESPACE)
+    cache.delete(cache_keys_for_latest_reviews_key, namespace=REVIEW_CACHE_NAMESPACE)
+    cache.delete(cache_keys_for_user_reviews_key, namespace=REVIEW_CACHE_NAMESPACE)
 
 
 # pylint: disable=too-many-branches
