@@ -132,9 +132,13 @@
         <td>
           {% if result['author_credits'] is defined and result['author_credits'] %}
             {% if result["author_credits"]|length > 1 %}
-              {{ result['author_credits'][0]['name'] }} + {{ result["author_credits"]|length - 1 }} more
+              <a href="{{ url_for('bb_author.entity', id=result['author_credits'][0]['author_bbid']) }}">
+                {{ result['author_credits'][0]['name'] }}
+              </a> + {{ result["author_credits"]|length - 1 }} more
             {% else %}
-              {{ result['author_credits'][0]['name'] }}
+              <a href="{{ url_for('bb_author.entity', id=result['author_credits'][0]['author_bbid']) }}">
+                {{ result['author_credits'][0]['name'] }}
+              </a>
             {% endif %}
           {% else %}
             -

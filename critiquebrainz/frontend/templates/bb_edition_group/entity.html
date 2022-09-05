@@ -122,7 +122,11 @@
       <b>{{ _('Author') }}</b>
       <ul class="list-unstyled">
         {% for author in edition_group.author_credits %}
-          <li>{{ author.name }}</li>
+          <li>
+            <a href="{{ url_for('bb_author.entity', id=author.author_bbid) }}">
+              {{ author.name }}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     {% endif %}
