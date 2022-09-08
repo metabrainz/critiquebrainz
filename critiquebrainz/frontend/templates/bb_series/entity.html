@@ -170,9 +170,13 @@
                 <td>
                   {% if rel['author_credits'] is defined and rel['author_credits'] %}
                     {% if rel["author_credits"]|length > 1 %}
-                      {{ rel['author_credits'][0]['name'] }} + {{ rel["author_credits"]|length - 1 }} more
+                      <a href="{{ url_for('bb_author.entity', id=rel['author_credits'][0]['author_bbid']) }}">
+                        {{ rel['author_credits'][0]['name'] }}
+                      </a> + {{ rel["author_credits"]|length - 1 }} more
                     {% else %}
-                      {{ rel['author_credits'][0]['name'] }}
+                      <a href="{{ url_for('bb_author.entity', id=rel['author_credits'][0]['author_bbid']) }}">
+                        {{ rel['author_credits'][0]['name'] }}
+                      </a>
                     {% endif %}
                   {% else %}
                     -

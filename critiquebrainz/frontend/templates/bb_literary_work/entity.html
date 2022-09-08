@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_avg_rating, entity_rate_form, show_review_buttons with context %}
+{% from 'macros.html' import show_avg_rating, entity_rate_form, show_review_buttons, display_pagination with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}{{ literary_work.name }} - CritiqueBrainz{% endblock %}
@@ -60,6 +60,99 @@
         {% endif %}
       </ul>
     {% endif %}
+
+    {% if translation_rels_works %}
+      <h4>{{ _('Translations of this work') }}</h4>
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Languages') }}</th>
+            <th>{{ _('Type') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for translation_rel in translation_rels_works %}
+            <tr>
+              <td>
+                <a href="{{ url_for('bb_literary_work.entity', id=translation_rel.bbid) }}">
+                  {{ translation_rel.name }}
+                </a>
+              </td>
+              <td>
+                {% if translation_rel['languages'] is defined and translation_rel['languages'] %}
+                  {% if translation_rel["languages"]|length > 1 %}
+                    {{ translation_rel['languages'][0] }} + {{ translation_rel["languages"]|length - 1 }} more
+                  {% else %}
+                    {{ translation_rel['languages'][0] }}
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>
+                {% if translation_rel['work_type'] is defined and translation_rel['work_type']  %}
+                  {{ translation_rel.work_type }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {{ display_pagination(page, work_rels_count, work_rels_limit, 'bb_literary_work.entity', {'id': id}) }}
+
+    {% endif %}
+
+    {% if edition_groups_info %}
+      <h4>{{ _('Edition Group of this work') }}</h4>
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Author') }}</th>
+            <th>{{ _('Type') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for edition_group in edition_groups_info %}
+            <tr>
+              <td>
+                <a href="{{ url_for('bb_edition_group.entity', id=edition_group.bbid) }}">
+                  {{ edition_group.name }}
+                </a>
+              </td>
+              <td>
+                {% if edition_group['author_credits'] is defined and edition_group['author_credits'] %}
+                  {% if edition_group["author_credits"]|length > 1 %}
+                    <a href="{{ url_for('bb_author.entity', id=edition_group['author_credits'][0]['author_bbid']) }}">
+                      {{ edition_group['author_credits'][0]['name'] }}
+                    </a> + {{ result["author_credits"]|length - 1 }} more
+                  {% else %}
+                    <a href="{{ url_for('bb_author.entity', id=edition_group['author_credits'][0]['author_bbid']) }}">
+                      {{ edition_group['author_credits'][0]['name'] }}
+                    </a>
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>
+                {% if edition_group['edition_group_type'] is defined and edition_group['edition_group_type']  %}
+                  {{ edition_group.edition_group_type }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    {% endif %}
+
   </div>
 
   <div class="col-md-3">

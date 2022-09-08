@@ -5,7 +5,7 @@ import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db 
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
-from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships
+from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, AUTHOR_WORK_AUTHOR_REL_ID
 
 def get_author_by_bbid(bbid: uuid.UUID) -> dict:
 	"""
@@ -100,7 +100,7 @@ def fetch_multiple_authors(bbids: List[uuid.UUID]) -> dict:
 				author = dict(author)
 				author['bbid'] = str(author['bbid'])
 				author['identifiers'] = fetch_bb_external_identifiers(author['identifier_set_id'])
-				author['rels'] = fetch_relationships( author['relationship_set_id'], ['Author'])
+				author['rels'] = fetch_relationships( author['relationship_set_id'], [AUTHOR_WORK_AUTHOR_REL_ID])
 				results[author['bbid']] = author
 
 			cache.set(bb_author_key, results, DEFAULT_CACHE_EXPIRATION)

@@ -6,8 +6,8 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.bookbrainz_db.edition_group as bb_edition_group
 import critiquebrainz.frontend.external.bookbrainz_db.redirects as bb_redirects
 from critiquebrainz.frontend.forms.rate import RatingEditForm
-from critiquebrainz.frontend.views import get_avg_rating, EDITION_GROUP_REVIEWS_LIMIT
-
+from critiquebrainz.frontend.views import get_avg_rating, EDITION_GROUP_REVIEWS_LIMIT, BROWSE_LITERARY_WORK_LIMIT
+import critiquebrainz.frontend.external.bookbrainz_db.literary_work as bb_literary_work
 
 bb_edition_group_bp = Blueprint('bb_edition_group', __name__)
 
@@ -56,9 +56,34 @@ def entity(id):
     rating_form = RatingEditForm(entity_id=id, entity_type='bb_edition_group')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
+    page = request.args.get('page')
+    if page:
+        try:
+            page = int(page)
+        except ValueError:
+            raise BadRequest("Invalid page number!")
+    else:
+        page = 1
+
+    if page < 1:
+        return redirect(url_for('bb_edition_group.entity', id=id))
+
+    work_bbids = bb_edition_group.fetch_works_for_edition_group(bbid=id)
+    works_count = len(work_bbids)
+
+    works_info = bb_literary_work.fetch_multiple_literary_works(
+        bbids=work_bbids,
+        limit=BROWSE_LITERARY_WORK_LIMIT,
+        offset=(page - 1) * BROWSE_LITERARY_WORK_LIMIT,
+    ).values()
+
     return render_template('bb_edition_group/entity.html',
                            id=edition_group['bbid'],
                            edition_group=edition_group,
+                           works=works_info,
+                           works_count=works_count,
+                           page=page,
+                           works_limit=BROWSE_LITERARY_WORK_LIMIT,
                            reviews=reviews,
                            my_review=my_review,
                            count=count,
