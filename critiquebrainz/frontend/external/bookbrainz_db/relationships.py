@@ -22,7 +22,7 @@ def fetch_relationships(relationship_set_id: int, relation_types_id: List, order
     Fetch relationships from the database.
     Args:
         relationship_set_id (int): ID of the relationship set.
-        relation_types (list): List of relation types.
+        relation_types_id (list): List of relation type ids.
         ordering_type (int): ID of the ordering type. (optional)
 
     Returns:
