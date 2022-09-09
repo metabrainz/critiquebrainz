@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
 import critiquebrainz.db.rating_stats as db_rating_stats
 from critiquebrainz.frontend.external.musicbrainz_db import release_group as db_release_group
 from critiquebrainz.decorators import crossdomain
@@ -145,6 +146,8 @@ def release_group_entity_handler(release_group_mbid):
     :statuscode 200: no error
     :statuscode 404: release group not found
 
+    :query username: User's username **(optional)**
+
     :resheader Content-Type: *application/json*
     """
 
@@ -155,23 +158,28 @@ def release_group_entity_handler(release_group_mbid):
 
     user_review = None
 
-    user_id = Parser.uuid('uri', 'user_id', optional=True)
-    if user_id:
-        user_review_cache_key = cache.gen_key('entity_api', release_group['mbid'], user_id, "user_review")
+    username = Parser.string('uri', 'username', optional=True)
+    if username:
+        user_review_cache_key = cache.gen_key('entity_api', release_group['mbid'], username, "user_review")
         user_review = cache.get(user_review_cache_key)
         if not user_review:
-            user_review, _ = db_review.list_reviews(
-                entity_id=release_group['mbid'],
-                entity_type='release_group',
-                user_id=user_id
-            )
-            if user_review:
-                user_review = db_review.to_dict(user_review[0])
-            else:
-                user_review = None
+            user = db_users.get_by_mbid(username)
+            if user:
+                user_id = user['id']
 
-            cache.set(user_review_cache_key, user_review,
-                      expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
+                user_review, _ = db_review.list_reviews(
+                    entity_id=release_group['mbid'],
+                    entity_type='release_group',
+                    user_id=user_id
+                )
+                if user_review:
+                    user_review = db_review.to_dict(user_review[0])
+
+                cache.set(user_review_cache_key, user_review,
+                        expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
+
+            else:
+                user_review = []
 
     ratings_stats, average_rating = db_rating_stats.get_stats(release_group_mbid, "release_group")
 
@@ -219,7 +227,8 @@ def release_group_entity_handler(release_group_mbid):
         "top_reviews": top_reviews,
         "latest_reviews": latest_reviews
     }
-    if user_id:
+
+    if username:
         result['user_review'] = user_review
 
     return jsonify(**result)

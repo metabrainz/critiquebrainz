@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 import critiquebrainz.db.review as db_review
+import critiquebrainz.db.users as db_users
 import critiquebrainz.db.rating_stats as db_rating_stats
 from critiquebrainz.frontend.external.bookbrainz_db import edition_group as db_edition_group
 from critiquebrainz.decorators import crossdomain
@@ -137,6 +138,8 @@ def edition_group_entity_handler(edition_group_bbid):
     :statuscode 200: no error
     :statuscode 404: edition group not found
 
+    :query username: User's username **(optional)**
+
     :resheader Content-Type: *application/json*
     """
 
@@ -147,23 +150,28 @@ def edition_group_entity_handler(edition_group_bbid):
 
     user_review = []
 
-    user_id = Parser.uuid('uri', 'user_id', optional=True)
-    if user_id:
-        user_review_cache_key = cache.gen_key('entity_api', edition_group['bbid'], user_id, "user_review")
+    username = Parser.string('uri', 'username', optional=True)
+    if username:
+        user_review_cache_key = cache.gen_key('entity_api', edition_group['bbid'], username, "user_review")
         user_review = cache.get(user_review_cache_key)
         if not user_review:
-            user_review, _ = db_review.list_reviews(
-                entity_id=edition_group['bbid'],
-                entity_type='bb_edition_group',
-                user_id=user_id
-            )
-            if user_review:
-                user_review = db_review.to_dict(user_review[0])
+            user = db_users.get_by_mbid(username)
+            if user:
+                user_id = user['id']
+
+                user_review, _ = db_review.list_reviews(
+                    entity_id=edition_group['bbid'],
+                    entity_type='bb_edition_group',
+                    user_id=user_id
+                )
+                if user_review:
+                    user_review = db_review.to_dict(user_review[0])
+
+                cache.set(user_review_cache_key, user_review,
+                        expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
+
             else:
                 user_review = []
-
-            cache.set(user_review_cache_key, user_review,
-                      expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
     ratings_stats, average_rating = db_rating_stats.get_stats(edition_group_bbid, "bb_edition_group")
 
@@ -211,7 +219,8 @@ def edition_group_entity_handler(edition_group_bbid):
         "top_reviews": top_reviews,
         "latest_reviews": latest_reviews
     }
-    if user_id:
+
+    if username:
         result['user_review'] = user_review
 
     return jsonify(**result)
