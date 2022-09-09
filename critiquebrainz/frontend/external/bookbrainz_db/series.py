@@ -65,7 +65,8 @@ def fetch_multiple_series(bbids: List[str]) -> dict:
                     disambiguation,
                     identifier_set_id,
                     relationship_set_id,
-                    series_ordering_type.label as series_ordering_type
+                    series_ordering_type.label as series_ordering_type,
+                    series_ordering_type.id as series_ordering_type_id
                FROM series
           LEFT JOIN series_ordering_type
                  ON series.ordering_type_id = series_ordering_type.id
@@ -80,7 +81,9 @@ def fetch_multiple_series(bbids: List[str]) -> dict:
                 series = dict(series)
                 series['bbid'] = str(series['bbid'])
                 series['identifiers'] = fetch_bb_external_identifiers(series['identifier_set_id'])
-                series['rels'] = fetch_relationships(series['relationship_set_id'], [SERIES_REL_MAP[series['series_type']]])
+                series['rels'] = fetch_relationships(series['relationship_set_id'],
+                                                     [SERIES_REL_MAP[series['series_type']]],
+                                                     series['series_ordering_type_id'])
                 results[series['bbid']] = series
 
             cache.set(bb_series_key, results, DEFAULT_CACHE_EXPIRATION)

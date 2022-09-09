@@ -77,7 +77,13 @@
             <tbody>
               {% for rel in series_rels_info %}
                 <tr>
-                  <td>{{ loop.index }}</td>
+                  <td>
+                    {% if rel['number'] is defined and rel['number']  %}
+                      {{ rel['number'] }}
+                    {% else %}
+                      -
+                    {% endif %}
+                  </td>
                   <td>
                     <a href="{{ url_for('bb_author.entity', id=rel.bbid) }}">
                       {{ rel.name }}
@@ -117,7 +123,13 @@
           <tbody>
             {% for rel in series_rels_info %}
               <tr>
-                <td>{{ loop.index }}</td>
+                <td>
+                  {% if rel['number'] is defined and rel['number']  %}
+                    {{ rel['number'] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
                 <td>
                   <a href="https://bookbrainz.org/edition/{{rel.bbid}}">
                     {{ rel.name }}
@@ -161,7 +173,13 @@
           <tbody>
             {% for rel in series_rels_info %}
               <tr>
-                <td>{{ loop.index }}</td>
+                <td>
+                  {% if rel['number'] is defined and rel['number']  %}
+                    {{ rel['number'] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
                 <td>
                   <a href="{{ url_for('bb_edition_group.entity', id=rel.bbid) }}">
                     {{ rel.name }}
@@ -209,7 +227,13 @@
           <tbody>
             {% for rel in series_rels_info %}
               <tr>
-                <td>{{ loop.index }}</td>
+                <td>
+                  {% if rel['number'] is defined and rel['number']  %}
+                    {{ rel['number'] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
                 <td>
                   <a href="https://bookbrainz.org/publisher/{{rel.bbid}}">
                     {{ rel.name }}
@@ -249,7 +273,13 @@
           <tbody>
             {% for rel in series_rels_info %}
               <tr>
-                <td>{{ loop.index }}</td>
+                <td>
+                  {% if rel['number'] is defined and rel['number']  %}
+                    {{ rel['number'] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
                 <td>
                   <a href="{{ url_for('bb_literary_work.entity', id=rel.bbid) }}">
                     {{ rel.name }}
