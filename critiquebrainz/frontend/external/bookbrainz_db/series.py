@@ -81,9 +81,15 @@ def fetch_multiple_series(bbids: List[str]) -> dict:
                 series = dict(series)
                 series['bbid'] = str(series['bbid'])
                 series['identifiers'] = fetch_bb_external_identifiers(series['identifier_set_id'])
-                series['rels'] = fetch_relationships(series['relationship_set_id'],
-                                                     [SERIES_REL_MAP[series['series_type']]],
-                                                     series['series_ordering_type_id'])
+                series_rels = fetch_relationships(series['relationship_set_id'],
+                                                  [SERIES_REL_MAP[series['series_type']]])
+                if series['series_ordering_type_id'] == 2:
+                    series['rels'] = sorted(series_rels, key=lambda i: (
+                        i['attributes']['position'] is None, i['attributes']['position']))
+                else:
+                    series['rels'] = sorted(series_rels, key=lambda i: (
+                        i['attributes']['number'] is None, i['attributes']['number']))
+
                 results[series['bbid']] = series
 
             cache.set(bb_series_key, results, DEFAULT_CACHE_EXPIRATION)
