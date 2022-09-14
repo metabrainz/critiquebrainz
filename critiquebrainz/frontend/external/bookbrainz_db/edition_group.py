@@ -65,43 +65,43 @@ def fetch_multiple_edition_groups(bbids: List[str]) -> dict:
                               '[]'
                             ) as author_credits,
                     COALESCE (json_agg(DISTINCT relationships)
-							 FILTER (WHERE relationships IS NOT NULL),
-							 '[]'
-							 ) as rels,
-					COALESCE (json_agg(DISTINCT identifiers)
-							 FILTER (WHERE identifiers IS NOT NULL),
-							 '[]'
-							 ) as identifiers
+                             FILTER (WHERE relationships IS NOT NULL),
+                             '[]'
+                             ) as rels,
+                    COALESCE (json_agg(DISTINCT identifiers)
+                             FILTER (WHERE identifiers IS NOT NULL),
+                             '[]'
+                             ) as identifiers
                FROM edition_group 
           LEFT JOIN author_credit_name acn ON acn.author_credit_id = edition_group.author_credit_id 
           LEFT JOIN LATERAL (
                      SELECT rel.id as id,
-							reltype.id as relationship_type_id,
-							reltype.label as label,
-							rel.source_bbid::text as source_bbid,
-							rel.target_bbid::text as target_bbid,
-							reltype.target_entity_type as target_entity_type,
-							reltype.source_entity_type as source_entity_type,
-							COALESCE(
-								jsonb_object_agg(relatttype.name, relatttext.text_value)
-									FILTER (WHERE relatts IS NOT NULL),
-									'[]'
-								) as attributes
-					   FROM relationship_set__relationship rels
-				  LEFT JOIN relationship rel ON rels.relationship_id = rel.id
-				  LEFT JOIN relationship_type reltype ON rel.type_id = reltype.id
-				  LEFT JOIN relationship_attribute_set__relationship_attribute relatts ON rel.attribute_set_id = relatts.set_id
-				  LEFT JOIN relationship_attribute relatt ON relatts.attribute_id = relatt.id
-				  LEFT JOIN relationship_attribute_type relatttype ON relatt.attribute_type = relatttype.id
-				  LEFT JOIN relationship_attribute_text_value relatttext ON relatts.attribute_id = relatttext.attribute_id
-					  WHERE rels.set_id = edition_group.relationship_set_id
-				   GROUP BY rel.id,
-							reltype.id,
-							reltype.label,
-							rel.source_bbid,
-							rel.target_bbid,
-							reltype.target_entity_type,
-							reltype.source_entity_type
+                            reltype.id as relationship_type_id,
+                            reltype.label as label,
+                            rel.source_bbid::text as source_bbid,
+                            rel.target_bbid::text as target_bbid,
+                            reltype.target_entity_type as target_entity_type,
+                            reltype.source_entity_type as source_entity_type,
+                            COALESCE(
+                                jsonb_object_agg(relatttype.name, relatttext.text_value)
+                                    FILTER (WHERE relatts IS NOT NULL),
+                                    '[]'
+                                ) as attributes
+                       FROM relationship_set__relationship rels
+                  LEFT JOIN relationship rel ON rels.relationship_id = rel.id
+                  LEFT JOIN relationship_type reltype ON rel.type_id = reltype.id
+                  LEFT JOIN relationship_attribute_set__relationship_attribute relatts ON rel.attribute_set_id = relatts.set_id
+                  LEFT JOIN relationship_attribute relatt ON relatts.attribute_id = relatt.id
+                  LEFT JOIN relationship_attribute_type relatttype ON relatt.attribute_type = relatttype.id
+                  LEFT JOIN relationship_attribute_text_value relatttext ON relatts.attribute_id = relatttext.attribute_id
+                      WHERE rels.set_id = edition_group.relationship_set_id
+                   GROUP BY rel.id,
+                            reltype.id,
+                            reltype.label,
+                            rel.source_bbid,
+                            rel.target_bbid,
+                            reltype.target_entity_type,
+                            reltype.source_entity_type
                 ) AS relationships ON TRUE
           LEFT JOIN LATERAL (
                      SELECT iden.type_id as type_id,
@@ -109,9 +109,9 @@ def fetch_multiple_edition_groups(bbids: List[str]) -> dict:
                             idtype.display_template as url_template,
                             iden.value as value
                        FROM identifier_set__identifier idens
-				  LEFT JOIN identifier iden on idens.identifier_id = iden.id
-				  LEFT JOIN identifier_type idtype on iden.type_id = idtype.id
-					  WHERE idens.set_id = edition_group.identifier_set_id
+                  LEFT JOIN identifier iden on idens.identifier_id = iden.id
+                  LEFT JOIN identifier_type idtype on iden.type_id = idtype.id
+                      WHERE idens.set_id = edition_group.identifier_set_id
                 ) AS identifiers ON TRUE
               WHERE bbid in :bbids
                 AND master = 't'
