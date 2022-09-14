@@ -4,15 +4,17 @@ import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 
+MB_ARTIST_IDENTIFIER_TYPE = 2
+MB_WORK_IDENTIFIER_TYPE = 3
 
-def get_author_for_artist(artist_mbid) -> List:
+def get_authors_for_artist(artist_mbid) -> List:
     """
     Get the author BBIDs for an artist MBID.
     Args:
         artist_mbid (str): MusicBrainz ID of the artist.
     Returns:
         List of author BBIDs.
-        None if no author BBIDs are found.
+        Empty List if no author BBIDs are found.
     """
 
     artist_mbid = str(artist_mbid)
@@ -27,11 +29,11 @@ def get_author_for_artist(artist_mbid) -> List:
              LEFT JOIN identifier_set__identifier idens ON idens.set_id = author.identifier_set_id
              LEFT JOIN identifier iden ON idens.identifier_id = iden.id
                  WHERE iden.value = :artist_mbid
-                   AND iden.type_id = 2
+                   AND iden.type_id = :identifier_type
                    AND master = 't'
                    AND author.data_id IS NOT NULL
               GROUP BY bbid
-                """), {'artist_mbid': artist_mbid})
+                """), {'artist_mbid': artist_mbid, 'identifier_type': MB_ARTIST_IDENTIFIER_TYPE})
             authors = result.fetchall()
 
             author_bbids = []
@@ -42,17 +44,18 @@ def get_author_for_artist(artist_mbid) -> List:
             cache.set(bb_author_mb_artist_key, author_bbids, DEFAULT_CACHE_EXPIRATION)
 
     if not author_bbids:
-        return None
+        return []
     return author_bbids
 
 
-def get_literary_work_for_work(work_mbid) -> List:
+def get_literary_works_for_work(work_mbid) -> List:
     """
     Get the literary work BBIDs for a work MBID.
     Args:
         work_mbid (str): MusicBrainz ID of the work.
     Returns:
         List of literary work BBIDs.
+        Empty List if no literary work BBIDs are found.
     """
 
     work_mbid = str(work_mbid)
@@ -67,11 +70,11 @@ def get_literary_work_for_work(work_mbid) -> List:
              LEFT JOIN identifier_set__identifier idens ON idens.set_id = work.identifier_set_id
              LEFT JOIN identifier iden ON idens.identifier_id = iden.id
                  WHERE iden.value = :work_mbid
-                   AND iden.type_id = 3
+                   AND iden.type_id = :identifier_type
                    AND master = 't'
                    AND work.data_id IS NOT NULL
               GROUP BY bbid
-                """), {'work_mbid': work_mbid})
+                """), {'work_mbid': work_mbid, 'identifier_type': MB_WORK_IDENTIFIER_TYPE})
 
             literary_works = result.fetchall()
             work_bbids = []
@@ -82,6 +85,6 @@ def get_literary_work_for_work(work_mbid) -> List:
             cache.set(bb_literary_work_mb_work_key, work_bbids, DEFAULT_CACHE_EXPIRATION)
 
     if not work_bbids:
-        return None
+        return []
 
     return work_bbids

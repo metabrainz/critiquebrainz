@@ -11,7 +11,7 @@ import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_relea
 from critiquebrainz.frontend.views import get_avg_rating, BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.external.bookbrainz_db import author as bb_author
-from critiquebrainz.frontend.external.bookbrainz_db.common_entity import get_author_for_artist
+from critiquebrainz.frontend.external.bookbrainz_db.common_entity import get_authors_for_artist
 
 artist_bp = Blueprint('artist', __name__)
 
@@ -27,7 +27,7 @@ def entity(id):
     if artist is None:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
 
-    author_bbids = get_author_for_artist(id)
+    author_bbids = get_authors_for_artist(id)
     author_info = {}
     if author_bbids:
         author_info = bb_author.fetch_multiple_authors(author_bbids)

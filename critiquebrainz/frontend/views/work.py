@@ -7,7 +7,7 @@ import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.work as mb_work
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, WORK_REVIEWS_LIMIT, BROWSE_RECORDING_LIMIT
-from critiquebrainz.frontend.external.bookbrainz_db.common_entity import get_literary_work_for_work
+from critiquebrainz.frontend.external.bookbrainz_db.common_entity import get_literary_works_for_work
 from critiquebrainz.frontend.external.bookbrainz_db import literary_work as bb_literary_work
 
 work_bp = Blueprint('work', __name__)
@@ -20,7 +20,7 @@ def entity(id):
     if work is None:
         raise NotFound(gettext("Sorry, we couldn't find a work with that MusicBrainz ID."))
 
-    literary_work_bbids = get_literary_work_for_work(id)
+    literary_work_bbids = get_literary_works_for_work(id)
     literary_work_info = {}
     if literary_work_bbids:
         literary_work_info = bb_literary_work.fetch_multiple_literary_works(literary_work_bbids)

@@ -93,38 +93,36 @@
       </div>
     {% endif %}
 
-    {% if author_info is defined and author_info %}
-      {% for author in author_info %}
-        <h4> {{ _('This entity is also in the BookBrainz Database as ') }}
-          <a href="{{ url_for('bb_author.entity', id=author.bbid ) }}">{{ author.name }}</a>.
-        </h4>
-        {% if author.reviews_count %}
-          <h4 >{{ _('Reviews') }}</h4>
-          <table class="table table-condensed table-hover">
-            <thead>
-              <tr>
-                <th></th>
-                <th>{{ _('Published on') }}</th>
-                <th>{{ _('Votes (+/-)') }}</th>
+    {% for author in author_info %}
+      <h4> {{ _('This entity is also in the BookBrainz Database as ') }}
+        <a href="{{ url_for('bb_author.entity', id=author.bbid ) }}">{{ author.name }}</a>.
+      </h4>
+      {% if author.reviews_count %}
+        <h4 >{{ _('Reviews') }}</h4>
+        <table class="table table-condensed table-hover">
+          <thead>
+            <tr>
+              <th></th>
+              <th>{{ _('Published on') }}</th>
+              <th>{{ _('Votes (+/-)') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for review in author.reviews %}
+              <tr data-review-id="{{ review.id }}">
+                <td>
+                  <a href="{{ url_for('review.entity', id=review.id) }}">
+                    {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
+                  </a>
+                </td>
+                <td>{{ review.published_on | date }}</td>
+                <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
               </tr>
-            </thead>
-            <tbody>
-              {% for review in author.reviews %}
-                <tr data-review-id="{{ review.id }}">
-                  <td>
-                    <a href="{{ url_for('review.entity', id=review.id) }}">
-                      {{ _('by %(reviewer)s', reviewer=review.user.display_name) }}
-                    </a>
-                  </td>
-                  <td>{{ review.published_on | date }}</td>
-                  <td>{{ review.votes_positive_count }}/{{ review.votes_negative_count }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    {% endfor %}
 
     <ul class="pagination"></ul>
     <h4>{{ _('Discography') }}</h4>
