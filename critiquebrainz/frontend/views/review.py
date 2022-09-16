@@ -353,7 +353,7 @@ def create(entity_type=None, entity_id=None):
     }
     if not _entity:
         flash.error(gettext("You can only write a review for an entity that exists on MusicBrainz!"))
-        return redirect(url_for('search.selector', next=url_for('.create')))
+        return redirect(url_for('search.index'))
 
     data["entity_title"] = get_entity_title(_entity)
     if entity_type == "release_group":
