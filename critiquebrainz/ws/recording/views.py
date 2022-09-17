@@ -148,7 +148,7 @@ def recording_entity_handler(recording_mbid):
     username = Parser.string('uri', 'username', optional=True)
     if username:
         user_review_cache_key = cache.gen_key('entity_api', recording['mbid'], username, "user_review")
-        user_review = cache.get(user_review_cache_key)
+        user_review = cache.get(user_review_cache_key, REVIEW_CACHE_NAMESPACE)
         if not user_review:
             user = db_users.get_by_mbid(username)
             if user:
@@ -156,7 +156,7 @@ def recording_entity_handler(recording_mbid):
 
                 user_review, _ = db_review.list_reviews(
                     entity_id=recording['mbid'],
-                    entity_type='label',
+                    entity_type='recording',
                     user_id=user_id
                 )
                 if user_review:

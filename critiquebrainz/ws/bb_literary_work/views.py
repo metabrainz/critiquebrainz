@@ -173,7 +173,7 @@ def literary_work_entity_handler(literary_work_bbid):
     username = Parser.string('uri', 'username', optional=True)
     if username:
         user_review_cache_key = cache.gen_key('entity_api', literary_work['bbid'], username, "user_review")
-        user_review = cache.get(user_review_cache_key)
+        user_review = cache.get(user_review_cache_key, REVIEW_CACHE_NAMESPACE)
         if not user_review:
             user = db_users.get_by_mbid(username)
             if user:
