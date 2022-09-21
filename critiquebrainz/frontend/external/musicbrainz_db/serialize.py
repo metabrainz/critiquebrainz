@@ -1,6 +1,6 @@
 from mbdata.utils.models import get_link_target
 
-from critiquebrainz.frontend.external.musicbrainz_db.utils import ENTITY_MODELS
+from brainzutils.musicbrainz_db.utils import ENTITY_MODELS
 
 
 def to_dict_relationships(data, source_obj, relationship_objs):

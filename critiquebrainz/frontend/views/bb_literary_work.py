@@ -17,7 +17,7 @@ def entity(id):
     id = str(id)
     literary_work = bb_literary_work.get_literary_work_by_bbid(id)
 
-    if literary_work is None:
+    if not literary_work:
         redirected_bbid = bb_redirects.get_redirected_bbid(id)
         if redirected_bbid:
             return redirect(url_for('bb_literary_work.entity', id=redirected_bbid))

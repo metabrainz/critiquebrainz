@@ -12,4 +12,4 @@ class BBRelationshipTestCase(DataTestCase):
         self.assertEqual(relationship[0]["target_bbid"], "9f49df73-8ee5-4c5f-8803-427c9b216d8f")
 
         relationship = relationships.fetch_relationships(99999999, [relationships.EDITION_EDITION_GROUP_EDITION_REL_ID])
-        self.assertEqual(relationship, None)
+        self.assertEqual(relationship, [])

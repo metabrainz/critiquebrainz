@@ -6,7 +6,7 @@ import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
-def get_publisher_by_bbid(bbid: uuid.UUID) -> dict:
+def get_publisher_by_bbid(bbid: str) -> dict:
     """
     Get info related to a publisher using its BookBrainz ID.
     Args:
@@ -19,22 +19,22 @@ def get_publisher_by_bbid(bbid: uuid.UUID) -> dict:
             - publisher_type: Type of the publisher.
             - disambiguation: Disambiguation of the publisher.
 
-        Returns None if the publisher is not found.
+        Returns an empty dictionary if the publisher is not found.
     """
 
     publisher = fetch_multiple_publishers([bbid])
     if not publisher:
-        return None
+        return {}
     return publisher[bbid]
 
 
-def fetch_multiple_publishers(bbids: List[uuid.UUID]) -> dict:
+def fetch_multiple_publishers(bbids: List[str]) -> dict:
     """
     Get info related to multiple publishers using their BookBrainz IDs. 
     Args:
-            bbids (list): List of BBID of publishers.
+        bbids (list): List of BBID of publishers.
     Returns:
-            A dictionary containing info of multiple publishers keyed by their BBID.
+        A dictionary containing info of multiple publishers keyed by their BBID.
     """
     if bbids == []:
         return {}
