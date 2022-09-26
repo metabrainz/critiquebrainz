@@ -37,7 +37,9 @@ class ReviewEditForm(FlaskForm):
         choices=[
             ('CC BY-SA 3.0', lazy_gettext('Allow commercial use of this review(<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA 3.0 license</a>)')),  # noqa: E501
             ('CC BY-NC-SA 3.0', lazy_gettext('Do not allow commercial use of this review, unless approved by MetaBrainz Foundation (<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">CC BY-NC-SA 3.0 license</a>)')),  # noqa: E501
-        ])
+        ],
+        validate_choice=False
+    )
     remember_license = BooleanField(lazy_gettext("Remember this license choice for further preference"))
     language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
     rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
@@ -62,6 +64,19 @@ class ReviewEditForm(FlaskForm):
             # https://wtforms.readthedocs.io/en/2.3.x/_modules/wtforms/validators/#InputRequired
             if not field.raw_data or not field.raw_data[0]:
                 raise ValidationError(lazy_gettext("You need to choose a license"))
+
+            # choice validation for RadioField's is done in pre_validate in WTForms which executes prior to
+            # this validator. it does not take into consideration whether the review is draft or not so we
+            # have to disable it with validate_choice = False to allow no choice in license field. so we also
+            # have to manually validate the license choice here
+            match = False
+            for value, label in field.choices:
+                if value == field.data:
+                    match = True
+                    break
+
+            if not match:
+                raise ValidationError(lazy_gettext("Not a valid choice"))
 
 
 class ReviewCreateForm(ReviewEditForm):
