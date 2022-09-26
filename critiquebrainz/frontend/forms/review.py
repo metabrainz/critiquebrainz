@@ -76,7 +76,7 @@ class ReviewEditForm(FlaskForm):
                     break
 
             if not match:
-                raise ValidationError(lazy_gettext("Not a valid choice"))
+                raise ValidationError(lazy_gettext("Not a valid license choice."))
 
 
 class ReviewCreateForm(ReviewEditForm):

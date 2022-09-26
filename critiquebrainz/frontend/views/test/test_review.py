@@ -145,6 +145,73 @@ class ReviewViewsTestCase(FrontendTestCase):
                                    follow_redirects=True)
         self.assertIn("You have already published a review for this entity", str(response.data))
 
+    def test_draft_without_license_choice(self):
+        review = db_review.create(
+            entity_id="0cef1de0-6ff1-38e1-80cb-ff11ee2c69e2",
+            entity_type="release_group",
+            user_id=self.user.id,
+            text=self.review_text,
+            rating=self.review_rating,
+            is_draft=True,
+            license_id=None,
+        )
+
+        data = dict(
+            entity_id='0cef1de0-6ff1-38e1-80cb-ff11ee2c69e2',
+            entity_type='release_group',
+            state='draft',
+            text=self.review_text,
+            language='en',
+            agreement='True',
+            rating=5,
+        )
+        self.temporary_login(self.user)
+
+        # test draft review without license choice works
+        response = self.client.post(
+            "/review/%s/edit" % review["id"],
+            data=data,
+            query_string=data,
+            follow_redirects=True
+        )
+        self.assert200(response)
+        self.assertIn(self.review_text, str(response.data))
+
+        # test publishing draft review without license causes error
+        data["state"] = "publish"
+        response = self.client.post(
+            "/review/%s/edit" % review["id"],
+            data=data,
+            query_string=data,
+            follow_redirects=True
+        )
+        self.assert200(response)
+        self.assertIn('You need to choose a license.', str(response.data))
+
+        # test publishing draft with invalid license causes error
+        data["license_choice"] = "GPL"
+        response = self.client.post(
+            "/review/%s/edit" % review["id"],
+            data=data,
+            query_string=data,
+            follow_redirects=True
+        )
+        self.assert200(response)
+        self.assertIn('Not a valid license choice.', str(response.data))
+
+        # test publishing with a correct license choice works
+        data["license_choice"] = self.license["id"]
+        response = self.client.post(
+            "/review/%s/edit" % review["id"],
+            data=data,
+            query_string=data,
+            follow_redirects=True
+        )
+        self.assert200(response)
+        self.assertIn(self.review_text, str(response.data))
+        self.assertNotIn('You need to choose a license.', str(response.data))
+        self.assertNotIn('Not a valid license choice.', str(response.data))
+
     def test_edit_draft_without_changes(self):
         self.temporary_login(self.user)
 
