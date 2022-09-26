@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.pool import NullPool
 
 # This value must be incremented after schema changes on exported tables!
@@ -24,5 +24,5 @@ def init_db_engine(connect_str):
 def run_sql_script(sql_file_path):
     with open(sql_file_path) as sql:
         connection = engine.connect()
-        connection.execute(sql.read())
+        connection.execute(text(sql.read()))
         connection.close()
