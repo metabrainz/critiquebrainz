@@ -21,7 +21,7 @@ import sqlalchemy
 import critiquebrainz.db as db
 
 
-def create(comment_id, text):
+def create(conn, comment_id, text):
     """ Create a new revision for comment with specified ID.
 
     Args:
@@ -31,14 +31,13 @@ def create(comment_id, text):
     Returns:
         int: the ID of the new revision created.
     """
-    with db.engine.connect() as connection:
-        result = connection.execute(sqlalchemy.text("""
-            INSERT INTO comment_revision (comment_id, text)
-                 VALUES (:comment_id, :text)
-              RETURNING id
-            """), {
-                'comment_id': comment_id,
-                'text': text,
-                })
+    result = conn.execute(sqlalchemy.text("""
+        INSERT INTO comment_revision (comment_id, text)
+             VALUES (:comment_id, :text)
+          RETURNING id
+        """), {
+            'comment_id': comment_id,
+            'text': text,
+            })
 
-        return result.fetchone()['id']
+    return result.fetchone()['id']

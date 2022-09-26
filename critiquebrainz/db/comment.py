@@ -36,7 +36,7 @@ def create(*, user_id, text, review_id, is_draft=False):
     Returns:
         the newly created comment in dict form
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO comment (user_id, review_id, is_draft)
                  VALUES (:user_id, :review_id, :is_draft)
@@ -47,7 +47,7 @@ def create(*, user_id, text, review_id, is_draft=False):
                 'is_draft': is_draft,
                 })
         comment_id = result.fetchone()['id']
-        db_comment_revision.create(comment_id, text)
+        db_comment_revision.create(connection, comment_id, text)
     return get_by_id(comment_id)
 
 
@@ -225,7 +225,7 @@ def delete(comment_id):
     Args:
         comment_id (uuid): the ID of the comment to be deleted.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM comment
@@ -266,7 +266,7 @@ def update(comment_id, *, text=None, is_draft=None, is_hidden=None):
 
     setstr = ', '.join(updates)
     update_data['comment_id'] = comment_id
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
                 UPDATE comment
                    SET {setstr}
@@ -274,7 +274,7 @@ def update(comment_id, *, text=None, is_draft=None, is_hidden=None):
             """.format(setstr=setstr)), update_data)
 
     if text is not None:
-        db_comment_revision.create(comment_id, text)
+        db_comment_revision.create(connection, comment_id, text)
 
 
 def count_comments(*, review_id=None, user_id=None, is_hidden=None, is_draft=None):

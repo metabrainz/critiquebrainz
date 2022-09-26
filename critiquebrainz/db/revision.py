@@ -30,7 +30,7 @@ def get(review_id, limit=1, offset=0):
             "votes_negative": (int),
         }
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             SELECT id,
                    review_id,

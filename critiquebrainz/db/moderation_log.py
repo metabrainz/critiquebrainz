@@ -38,7 +38,7 @@ def create(*, admin_id, review_id=None, user_id=None,
         raise ValueError("No review ID or user ID specified.")
     if action not in AdminActions.get_all_actions():
         raise ValueError("Please specify a valid action.")
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO moderation_log(admin_id, user_id, review_id, action, timestamp, reason)
                  VALUES (:admin_id, :user_id, :review_id, :action, :timestamp, :reason)

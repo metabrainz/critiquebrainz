@@ -49,7 +49,7 @@ def archive(user_id, revision_id):
         user_id(uuid): ID of the reporter.
         revision_id(uuid): ID of the revision of the reported review.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE spam_report
                SET is_archived = 'true'
@@ -79,7 +79,7 @@ def create(revision_id, user_id, reason):
             "is_archived": (bool)
         }
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO spam_report (user_id, reason, revision_id, reported_at, is_archived)
                  VALUES (:user_id, :reason, :revision_id, :reported_at, :is_archived)

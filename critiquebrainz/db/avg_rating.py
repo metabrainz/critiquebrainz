@@ -46,7 +46,7 @@ def update(entity_id, entity_type):
         delete(entity_id, entity_type)
         return
     avg_rating = int(sum / count + 0.5)
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO avg_rating(entity_id, entity_type, rating, count)
                  VALUES (:entity_id, :entity_type, :rating, :count)
@@ -70,7 +70,7 @@ def delete(entity_id, entity_type):
         entity_id (uuid): ID of the entity
         entity_type (str): Type of the entity
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM avg_rating

@@ -29,7 +29,7 @@ def create(*, user_id, name, desc, website, redirect_uri):
             "redirect_uri": redirect_uri,
         }
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         row = connection.execute(sqlalchemy.text("""
             INSERT INTO oauth_client (client_id, client_secret, redirect_uri,
                         user_id, name, "desc", website)
@@ -83,7 +83,7 @@ def update(*, client_id, name=None, desc=None, website=None, redirect_uri=None):
     """.format(update_str=update_str))
 
     if update_str:
-        with db.engine.connect() as connection:
+        with db.engine.begin() as connection:
             connection.execute(query, update_data)
 
 
@@ -93,7 +93,7 @@ def delete(client_id):
     Args:
         client_id(str): ID of the OAuth Client.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM oauth_client

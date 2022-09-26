@@ -47,7 +47,7 @@ def submit(user_id, revision_id, vote):
         revision_id (id): ID of a review revision that the vote is associated with.
         vote (bool): `False` if it's a negative vote, `True` if positive.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO vote (user_id, revision_id, vote, rated_at)
                  VALUES (:user_id, :revision_id, :vote, :rated_at)
@@ -67,7 +67,7 @@ def delete(user_id, revision_id):
         user_id (uuid): ID of a user.
         revision_id (id): ID of a review revision that the vote is associated with.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE FROM vote
                   WHERE user_id = :user_id AND revision_id = :revision_id

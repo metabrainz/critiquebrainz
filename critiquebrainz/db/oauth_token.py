@@ -35,7 +35,7 @@ def create(*, client_id, scopes, access_token, refresh_token, expires, user_id):
         "user_id": user_id,
         "scopes": scopes,
     }
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO oauth_token(client_id, access_token, refresh_token, expires, scopes, user_id)
                  VALUES (:client_id, :access_token, :refresh_token, :expires, :scopes, :user_id)
@@ -128,7 +128,7 @@ def delete(*, client_id=None, refresh_token=None, user_id=None):
         filters.append("user_id = :user_id")
         filter_data["user_id"] = user_id
     filterstr = " AND ".join(filters)
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM oauth_token

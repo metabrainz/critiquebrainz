@@ -35,7 +35,7 @@ def create(*, client_id, scopes, code, expires, redirect_uri, user_id):
         "user_id": user_id,
         "scopes": scopes,
     }
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO oauth_grant(client_id, code, expires, redirect_uri, scopes, user_id)
                  VALUES (:client_id, :code, :expires, :redirect_uri, :scopes, :user_id)
@@ -108,7 +108,7 @@ def delete(*, client_id, code):
         client_id (str): ID of the OAuth Client.
         code (str): The authorization code returned from authorization request.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM oauth_grant

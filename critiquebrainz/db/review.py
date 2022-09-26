@@ -210,7 +210,7 @@ def set_hidden_state(review_id, *, is_hidden):
         is_hidden (bool): True if review has to be hidden, False if not.
     """
     review = get_by_id(review_id)
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE review
                SET is_hidden = :is_hidden
@@ -290,7 +290,7 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
          WHERE id = :review_id
     """.format(setstr=setstr))
 
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         if setstr:
             updated_info["review_id"] = review_id
             connection.execute(query, updated_info)
@@ -363,7 +363,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
     else:
         published_on = datetime.now()
 
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url, published_on)
             VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url, :published_on)
@@ -731,7 +731,7 @@ def delete(review_id):
         review_id: ID of the review to be deleted.
     """
     review = get_by_id(review_id)
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM review
