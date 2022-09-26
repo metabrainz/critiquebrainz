@@ -81,7 +81,7 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
     """.format(where_clause=where_clause))
     with db.engine.connect() as connection:
         result = connection.execute(query, filter_data)
-        count = result.fetchone()[0]
+        count = result.fetchone().count
 
     filter_data["limit"] = limit
     filter_data["offset"] = offset
@@ -142,7 +142,7 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
     with db.engine.connect() as connection:
         result = connection.execute(query, filter_data)
         logs = []
-        for log in result.fetchall():
+        for log in result.mappings():
             log = dict(log)
             log["user"] = {
                 "id": log["user_id"],

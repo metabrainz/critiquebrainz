@@ -42,7 +42,7 @@ def fetch_relationships(relationship_set_id: int, relation_types_id: List) -> Li
                  WHERE rels.set_id = :relationship_set_id
                    AND reltype.id in :relation_types_id
             """), {'relationship_set_id': relationship_set_id, 'relation_types_id': tuple(relation_types_id)})
-            relationships = result.fetchall()
+            relationships = result.mappings()
             relationships = [dict(relationship) for relationship in relationships]
             cache.set(key, relationships, DEFAULT_CACHE_EXPIRATION)
 

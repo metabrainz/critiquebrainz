@@ -57,7 +57,7 @@ def get(review_id, limit=1, offset=0):
             "limit": limit
         })
 
-        rows = result.fetchall()
+        rows = result.mappings().all()
         if not rows:
             raise db_exceptions.NoDataFoundException("Cannot find specified review.")
         rows = [dict(row) for row in rows]

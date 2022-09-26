@@ -34,7 +34,7 @@ def get_redirected_bbid(bbid: str) -> str | None:
                 FROM redirects
             """), {'bbid': bbid})
 
-            redirect_bbids = result.fetchall()
+            redirect_bbids = result.mappings()
 
             results = []
             for redirect_bbid in redirect_bbids:

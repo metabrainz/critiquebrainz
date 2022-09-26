@@ -59,7 +59,7 @@ def get_licenses_list(connection):
           FROM license
     """)
     results = connection.execute(query)
-    return [dict(row) for row in results.fetchall()]
+    return [dict(row) for row in results.mappings()]
 
 
 def list_licenses():

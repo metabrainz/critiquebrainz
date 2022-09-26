@@ -41,7 +41,7 @@ def create(*, client_id, scopes, code, expires, redirect_uri, user_id):
                  VALUES (:client_id, :code, :expires, :redirect_uri, :scopes, :user_id)
               RETURNING id
         """), grant)
-        grant["id"] = result.fetchone()[0]
+        grant["id"] = result.first().id
     return grant
 
 
@@ -97,8 +97,8 @@ def list_grants(*, client_id=None, code=None, limit=1, offset=None):
              LIMIT :limit
             OFFSET :offset
         """.format(where_clause=filterstr)), filter_data)
-        rows = results.fetchall()
-    return [dict(row) for row in rows]
+        rows = results.mappings()
+        return [dict(row) for row in rows]
 
 
 def delete(*, client_id, code):
@@ -136,9 +136,9 @@ def get_scopes(grant_id):
         """), {
             "grant_id": grant_id,
         })
-        scopes = result.fetchone()
+        scopes = result.mappings().first()
     if not scopes:
         raise db_exceptions.NoDataFoundException("No grant exists with ID: {grant_id}".format(grant_id=grant_id))
-    if scopes[0] is None:
+    if scopes["scopes"] is None:
         return list()
-    return scopes[0].split()
+    return scopes["scopes"].split()

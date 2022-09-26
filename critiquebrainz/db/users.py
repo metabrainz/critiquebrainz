@@ -41,7 +41,7 @@ def get_many_by_mb_username(usernames):
         """.format(columns=','.join(USER_GET_COLUMNS))), {
             'musicbrainz_usernames': usernames,
         })
-        row = result.fetchall()
+        row = result.mappings()
         users = [dict(r) for r in row]
         return users
 
@@ -81,11 +81,10 @@ def get_user_by_id(connection, user_id):
     result = connection.execute(query, {
         "user_id": user_id
     })
-    row = result.fetchone()
-    if not row:
-        return None
-    row = dict(row)
-    return row
+    row = result.mappings().first()
+    if row:
+        return dict(row)
+    return None
 
 
 def get_by_id(user_id):
@@ -159,7 +158,7 @@ def create(**user_data):
             "license_choice": license_choice,
             "musicbrainz_row_id": musicbrainz_row_id,
         })
-        new_id = result.fetchone()[0]
+        new_id = result.fetchone().id
     return get_by_id(new_id)
 
 
@@ -189,11 +188,10 @@ def get_by_mbid(musicbrainz_username):
         """.format(columns=','.join(USER_GET_COLUMNS))), {
             "musicbrainz_username": musicbrainz_username,
         })
-        row = result.fetchone()
-        if not row:
-            return None
-        row = dict(row)
-    return row
+        row = result.mappings().first()
+        if row:
+            return dict(row)
+    return None
 
 
 def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
@@ -280,7 +278,7 @@ def total_count():
               FROM "user"
         """))
 
-        return result.fetchone()[0]
+        return result.fetchone().count
 
 
 def list_users(limit=None, offset=0):
@@ -313,9 +311,8 @@ def list_users(limit=None, offset=0):
             "limit": limit,
             "offset": offset
         })
-        rows = result.fetchall()
-        rows = [dict(row) for row in rows]
-    return rows
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def unblock(user_id):
@@ -371,8 +368,8 @@ def has_voted(user_id, review_id):
             "revision_id": last_revision['id'],
             "user_id": user_id
         })
-        count = result.fetchone()[0]
-    return count > 0
+        count = result.fetchone().count
+        return count > 0
 
 
 def karma(user_id):
@@ -448,8 +445,8 @@ def reviews(user_id):
             "user_id": user_id
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def get_votes(user_id, from_date=datetime.utcfromtimestamp(0)):
@@ -478,8 +475,8 @@ def get_votes(user_id, from_date=datetime.utcfromtimestamp(0)):
             "from_date": from_date
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def get_reviews(user_id, from_date=datetime.utcfromtimestamp(0)):
@@ -531,8 +528,8 @@ def get_reviews(user_id, from_date=datetime.utcfromtimestamp(0)):
             "from_date": from_date
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def get_comments(user_id, from_date=datetime.utcfromtimestamp(0)):
@@ -576,8 +573,8 @@ def get_comments(user_id, from_date=datetime.utcfromtimestamp(0)):
             "from_date": from_date
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def update(user_id, user_new_info):
@@ -661,8 +658,8 @@ def clients(user_id):
             "user_id": user_id
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def tokens(user_id):
@@ -702,8 +699,8 @@ def tokens(user_id):
             "user_id": user_id
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def get_by_mb_row_id(musicbrainz_row_id, musicbrainz_id=None):
@@ -733,7 +730,7 @@ def get_by_mb_row_id(musicbrainz_row_id, musicbrainz_id=None):
              WHERE musicbrainz_row_id = :musicbrainz_row_id
              {optional_filter}
         """.format(columns=','.join(USER_GET_COLUMNS), optional_filter=filter_str)), filter_data)
-
-        if result.rowcount:
-            return dict(result.fetchone())
+        row = result.mappings().first()
+        if row:
+            return dict(row)
         return None

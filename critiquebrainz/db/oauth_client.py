@@ -45,7 +45,7 @@ def create(*, user_id, name, desc, website, redirect_uri):
             "website": website,
             "desc": desc,
         })
-        return dict(row.fetchone())
+        return dict(row.mappings().first())
 
 
 def update(*, client_id, name=None, desc=None, website=None, redirect_uri=None):
@@ -134,7 +134,7 @@ def get_client(client_id):
         """), {
             "client_id": client_id,
         })
-        row = result.fetchone()
+        row = result.mappings().first()
         if not row:
             raise db_exceptions.NoDataFoundException("Can't find OAuth client with ID: {id}".format(id=client_id))
-    return dict(row)
+        return dict(row)

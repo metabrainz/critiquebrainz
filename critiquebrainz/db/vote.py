@@ -31,7 +31,7 @@ def get(user_id, revision_id):
             "user_id": user_id,
             "revision_id": revision_id,
         })
-        row = result.fetchone()
+        row = result.mappings().first()
         if not row:
             raise db_exceptions.NoDataFoundException("Cannot find specified vote.")
         return dict(row)
@@ -85,4 +85,4 @@ def get_count():
             SELECT count(*)
               FROM vote
         """))
-        return result.fetchone()[0]
+        return result.fetchone().count

@@ -38,8 +38,8 @@ def get(user_id, revision_id):
             "revision_id": revision_id,
         })
 
-        report = result.fetchone()
-    return dict(report) if report else None
+        report = result.mappings().first()
+        return dict(report) if report else None
 
 
 def archive(user_id, revision_id):
@@ -185,7 +185,7 @@ def list_reports(**kwargs):
 
     with db.engine.connect() as connection:
         result = connection.execute(query, filter_data)
-        spam_reports = result.fetchall()
+        spam_reports = result.mappings()
         if spam_reports:
             spam_reports = [dict(spam_report) for spam_report in spam_reports]
             for spam_report in spam_reports:

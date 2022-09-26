@@ -42,6 +42,7 @@ def update(entity_id, entity_type):
 
     # Calculate average rating and update it
     sum, count = row[0], row[1]
+
     if count == 0:
         delete(entity_id, entity_type)
         return
@@ -111,7 +112,7 @@ def get(entity_id, entity_type):
             "entity_type": entity_type
         })
 
-        avg_rating = result.fetchone()
+        avg_rating = result.mappings().first()
         if not avg_rating:
             raise db_exceptions.NoDataFoundException("""No rating for the entity with ID: {id} and Type: {type}""".
                                                      format(id=entity_id, type=entity_type))

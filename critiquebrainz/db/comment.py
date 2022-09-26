@@ -46,7 +46,7 @@ def create(*, user_id, text, review_id, is_draft=False):
                 'review_id': review_id,
                 'is_draft': is_draft,
                 })
-        comment_id = result.fetchone()['id']
+        comment_id = result.fetchone().id
         db_comment_revision.create(connection, comment_id, text)
     return get_by_id(comment_id)
 
@@ -100,7 +100,7 @@ def get_by_id(comment_id):
                 'comment_id': comment_id,
                 })
 
-        comment = result.fetchone()
+        comment = result.mappings().first()
         if not comment:
             raise db_exceptions.NoDataFoundException('Can\'t find comment with ID: {id}'.format(id=comment_id))
 
@@ -199,7 +199,7 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
             OFFSET :offset
             """.format(where_clause=filterstr)), query_vals)
 
-        rows = [dict(row) for row in result.fetchall()]
+        rows = [dict(row) for row in result.mappings()]
         for row in rows:
             row['last_revision'] = {
                 'id': row.pop('last_revision_id'),
@@ -273,8 +273,8 @@ def update(comment_id, *, text=None, is_draft=None, is_hidden=None):
                  WHERE id = :comment_id
             """.format(setstr=setstr)), update_data)
 
-    if text is not None:
-        db_comment_revision.create(connection, comment_id, text)
+        if text is not None:
+            db_comment_revision.create(connection, comment_id, text)
 
 
 def count_comments(*, review_id=None, user_id=None, is_hidden=None, is_draft=None):
@@ -317,4 +317,4 @@ def count_comments(*, review_id=None, user_id=None, is_hidden=None, is_draft=Non
               FROM comment
             {where_condition}
             """.format(where_condition=filterstr)), filter_data)
-        return result.fetchone()[0]
+        return result.fetchone().count

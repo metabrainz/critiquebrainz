@@ -74,7 +74,7 @@ def fetch_multiple_series(bbids: List[str]) -> dict:
                 AND entity_type IS NOT NULL
             """), {'bbids': tuple(bbids)})
 
-            data = result.fetchall()
+            data = result.mappings()
             results = {}
             for series in data:
                 series = dict(series)

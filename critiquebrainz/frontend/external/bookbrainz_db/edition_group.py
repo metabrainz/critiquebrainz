@@ -78,7 +78,7 @@ def fetch_multiple_edition_groups(bbids: List[str]) -> dict:
                     relationship_set_id
                 """), {'bbids': tuple(bbids)})
             
-            edition_groups = result.fetchall()
+            edition_groups = result.mappings()
             results = {}
             for edition_group in edition_groups:
                 edition_group = dict(edition_group)
@@ -123,7 +123,7 @@ def fetch_works_for_edition_group(bbid: uuid.UUID):
                 AND rel.type_id = :relationship_type_id
                 """), {'bbid': str(bbid), 'relationship_type_id': EDITION_WORK_CONTAINS_REL_ID})
 
-            works = result.fetchall()
+            works = result.mappings()
             work_bbids = []
 
             for work in works:

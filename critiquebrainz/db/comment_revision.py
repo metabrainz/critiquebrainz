@@ -40,4 +40,4 @@ def create(conn, comment_id, text):
             'text': text,
             })
 
-    return result.fetchone()['id']
+    return result.fetchone().id
