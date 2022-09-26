@@ -63,7 +63,7 @@ class ReviewEditForm(FlaskForm):
         else:
             # https://wtforms.readthedocs.io/en/2.3.x/_modules/wtforms/validators/#InputRequired
             if not field.raw_data or not field.raw_data[0]:
-                raise ValidationError(lazy_gettext("You need to choose a license"))
+                raise ValidationError(lazy_gettext("You need to choose a license."))
 
             # choice validation for RadioField's is done in pre_validate in WTForms which executes prior to
             # this validator. it does not take into consideration whether the review is draft or not so we
