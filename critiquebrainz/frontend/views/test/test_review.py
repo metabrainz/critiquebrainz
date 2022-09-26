@@ -179,6 +179,7 @@ class ReviewViewsTestCase(FrontendTestCase):
 
         # test publishing draft review without license causes error
         data["state"] = "publish"
+        data["rating"] = 4
         response = self.client.post(
             "/review/%s/edit" % review["id"],
             data=data,
