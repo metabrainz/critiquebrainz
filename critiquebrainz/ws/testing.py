@@ -4,7 +4,8 @@ from flask_testing import TestCase
 
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.users as db_users
-from critiquebrainz.data.utils import create_all, drop_tables, drop_types
+from critiquebrainz import db
+from critiquebrainz.data.utils import ADMIN_SQL_DIR
 from critiquebrainz.ws import create_app
 from critiquebrainz.ws.oauth import oauth
 
@@ -25,9 +26,7 @@ class WebServiceTestCase(TestCase):
 
     @staticmethod
     def reset_db():
-        drop_tables()
-        drop_types()
-        create_all()
+        db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'reset_tables.sql'))
 
     @staticmethod
     def create_dummy_client(user):

@@ -2,7 +2,8 @@ import os
 
 from flask_testing import TestCase
 
-from critiquebrainz.data.utils import create_all, drop_tables, drop_types
+from critiquebrainz import db
+from critiquebrainz.data.utils import ADMIN_SQL_DIR
 from critiquebrainz.frontend import create_app
 
 
@@ -21,6 +22,4 @@ class DataTestCase(TestCase):
 
     @staticmethod
     def reset_db():
-        drop_tables()
-        drop_types()
-        create_all()
+        db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'reset_tables.sql'))
