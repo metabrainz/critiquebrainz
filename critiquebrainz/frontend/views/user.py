@@ -23,7 +23,7 @@ def reviews(user_ref):
     else:
         user = db_users.get_user_by_ref(user_ref)
         if not user:
-            raise NotFound("Can't find a user with reference: {user_ref}".format(user_ref=user_ref))
+            raise NotFound("Can't find a user with id or username: {user_ref}".format(user_ref=user_ref))
         user = User(user)
 
     user_id = user.id
@@ -66,7 +66,7 @@ def info(user_ref):
     else:
         user = db_users.get_user_by_ref(user_ref)
         if not user:
-            raise NotFound("Can't find a user with reference: {user_ref}".format(user_ref=user_ref))
+            raise NotFound("Can't find a user with id or username: {user_ref}".format(user_ref=user_ref))
         user = User(user)
     return render_template('user/info.html', section='info', user=user)
 
@@ -77,7 +77,7 @@ def info(user_ref):
 def block(user_ref):
     user = db_users.get_user_by_ref(user_ref)
     if not user:
-        raise NotFound("Can't find a user with reference: {user_ref}".format(user_ref=user_ref))
+        raise NotFound("Can't find a user with id or username: {user_ref}".format(user_ref=user_ref))
     user = User(user)
     if user.is_blocked:
         flash.info(gettext("This account is already blocked."))
@@ -100,7 +100,7 @@ def block(user_ref):
 def unblock(user_ref):
     user = db_users.get_user_by_ref(user_ref)
     if not user:
-        raise NotFound("Can't find a user with reference: {user_ref}".format(user_ref=user_ref))
+        raise NotFound("Can't find a user with id or username: {user_ref}".format(user_ref=user_ref))
     user = User(user)
 
     if not user.is_blocked:

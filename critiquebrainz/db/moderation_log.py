@@ -160,8 +160,7 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
                 "id": log["review_id"],
                 "entity_id": log.pop("entity_id"),
                 "user": {
-                    "id": log["review_user_id"],
-                    "id": log["review_user_id"],
+                    "id": log.pop("review_user_id"),
                     "display_name": log.pop("review_user_name"),
                     "musicbrainz_username": log.pop("review_user_username"),
                     "user_ref": log.pop("review_user_ref"),
