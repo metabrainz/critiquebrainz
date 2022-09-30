@@ -12,56 +12,18 @@ from critiquebrainz.db.user import User
 from critiquebrainz.frontend import flash
 from critiquebrainz.frontend.forms.log import AdminActionForm
 from critiquebrainz.frontend.login import admin_view
-import uuid
 user_bp = Blueprint('user', __name__)
-
-
-def get_user_from_username_or_id(username_or_id):
-    """
-    Get user by username or id.
-    """
-    try:
-        uuid.UUID(username_or_id)
-        user_id = str(username_or_id)
-        user = db_users.get_by_id(user_id)
-        if not user:
-            raise NotFound("Can't find a user with ID: {user_id}".format(user_id=user_id))
-
-    except ValueError:
-        mb_username = str(username_or_id)
-        user = db_users.get_by_mbid(mb_username)
-        if not user:
-            raise NotFound("Can't find a user with username: {mb_username}".format(mb_username=mb_username))
-
-    return user
-
-
-def get_loggedin_user_by_username_or_id(username_or_id):
-    """
-    Get logged in user by username or id.
-    """
-    try:
-        uuid.UUID(username_or_id)
-        user_id = str(username_or_id)
-        if current_user.is_authenticated and current_user.id == user_id:
-            return current_user
-
-        return None
-
-    except ValueError:
-        mb_username = str(username_or_id)
-        if current_user.is_authenticated and current_user.musicbrainz_username == mb_username:
-            return current_user
-
-    return None
 
 
 @user_bp.route('/<string:user_ref>')
 def reviews(user_ref):
 
-    user = get_loggedin_user_by_username_or_id(user_ref)
-    if not user:
-        user = get_user_from_username_or_id(user_ref)
+    if current_user.is_authenticated and current_user.user_ref == user_ref:
+        user = current_user
+    else:
+        user = db_users.get_user_by_ref(user_ref)
+        if not user:
+            raise NotFound("Can't find a user with reference: {user_ref}".format(user_ref=user_ref))
         user = User(user)
 
     user_id = user.id
@@ -99,9 +61,12 @@ def reviews(user_ref):
 @user_bp.route('/<string:user_ref>/info')
 def info(user_ref):
 
-    user = get_loggedin_user_by_username_or_id(user_ref)
-    if not user:
-        user = get_user_from_username_or_id(user_ref)
+    if current_user.is_authenticated and current_user.user_ref == user_ref:
+        user = current_user
+    else:
+        user = db_users.get_user_by_ref(user_ref)
+        if not user:
+            raise NotFound("Can't find a user with reference: {user_ref}".format(user_ref=user_ref))
         user = User(user)
     return render_template('user/info.html', section='info', user=user)
 
@@ -110,19 +75,21 @@ def info(user_ref):
 @login_required
 @admin_view
 def block(user_ref):
-    user = get_user_from_username_or_id(user_ref)
-    user['username_or_id'] = user['musicbrainz_username'] or user['id']
-    if user['is_blocked']:
+    user = db_users.get_user_by_ref(user_ref)
+    if not user:
+        raise NotFound("Can't find a user with reference: {user_ref}".format(user_ref=user_ref))
+    user = User(user)
+    if user.is_blocked:
         flash.info(gettext("This account is already blocked."))
-        return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
+        return redirect(url_for('user.reviews', user_ref=user.user_ref))
 
     form = AdminActionForm()
     if form.validate_on_submit():
-        db_users.block(user['id'])
+        db_users.block(user.id)
         db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_BLOCK_USER,
-                                 reason=form.reason.data, user_id=user['id'])
+                                 reason=form.reason.data, user_id=user.id)
         flash.success(gettext("This user account has been blocked."))
-        return redirect(url_for('user.reviews', user_ref=user['username_or_id']))
+        return redirect(url_for('user.reviews', user_ref=user.user_ref))
 
     return render_template('log/action.html', user=user, form=form, action=AdminActions.ACTION_BLOCK_USER.value)
 
@@ -131,19 +98,21 @@ def block(user_ref):
 @login_required
 @admin_view
 def unblock(user_ref):
-    user = get_user_from_username_or_id(user_ref)
-    user['username_or_id'] = user['musicbrainz_username'] or user['id']
+    user = db_users.get_user_by_ref(user_ref)
+    if not user:
+        raise NotFound("Can't find a user with reference: {user_ref}".format(user_ref=user_ref))
+    user = User(user)
 
-    if not user['is_blocked']:
+    if not user.is_blocked:
         flash.info(gettext("This account is not blocked."))
-        return redirect(url_for('user.reviews', user_ref=user['musicbrainz_username'] or user['id']))
+        return redirect(url_for('user.reviews', user_ref=user.user_ref))
 
     form = AdminActionForm()
     if form.validate_on_submit():
-        db_users.unblock(user['id'])
+        db_users.unblock(user.id)
         db_moderation_log.create(admin_id=current_user.id, action=AdminActions.ACTION_UNBLOCK_USER,
-                                 reason=form.reason.data, user_id=user['id'])
+                                 reason=form.reason.data, user_id=user.id)
         flash.success(gettext("This user account has been unblocked."))
-        return redirect(url_for('user.reviews', user_ref=user['username_or_id']))
+        return redirect(url_for('user.reviews', user_ref=user.user_ref))
 
     return render_template('log/action.html', user=user, form=form, action=AdminActions.ACTION_UNBLOCK_USER.value)

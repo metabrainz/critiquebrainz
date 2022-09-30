@@ -88,6 +88,7 @@ def get_by_id(comment_id):
                    "user".created as user_created,
                    "user".display_name,
                    "user".musicbrainz_id,
+                   COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                    "user".is_blocked
               FROM comment c
               JOIN comment_revision cr ON c.id = cr.comment_id
@@ -115,6 +116,7 @@ def get_by_id(comment_id):
             'email': comment.pop('email'),
             'created': comment.pop('user_created'),
             'musicbrainz_username': comment.pop('musicbrainz_id'),
+            'user_ref': comment.pop('user_ref'),
             'is_blocked': comment.pop('is_blocked')
         })
         return comment
@@ -167,6 +169,7 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
                    "user".created as user_created,
                    "user".display_name,
                    "user".musicbrainz_id,
+                   COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                    "user".is_blocked,
                    MIN(comment_revision.timestamp) as created,
                    latest_revision.id as last_revision_id,
@@ -208,6 +211,7 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
                 'display_name': row.pop('display_name'),
                 'is_blocked': row.pop('is_blocked'),
                 'musicbrainz_username': row.pop('musicbrainz_id'),
+                'user_ref': row.pop('user_ref'),
                 'email': row.pop('email'),
                 'created': row.pop('user_created'),
             })

@@ -1,5 +1,5 @@
 {% macro link_user(user) %}
-  <a href="{{ url_for('user.info', user_ref= user.username_or_id) }}">{{ user.display_name }}</a>
+  <a href="{{ url_for('user.info', user_ref= user.user_ref) }}">{{ user.display_name }}</a>
 {% endmacro %}
 
 {% macro link_review(review) %}

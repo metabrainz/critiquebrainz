@@ -15,6 +15,7 @@ USER_GET_COLUMNS = [
     'created',
     'musicbrainz_id as musicbrainz_username',
     'musicbrainz_row_id',
+    'COALESCE(musicbrainz_id, id::text) AS user_ref',
     'license_choice',
     'is_blocked',
 ]
@@ -44,6 +45,27 @@ def get_many_by_mb_username(usernames):
         row = result.fetchall()
         users = [dict(r) for r in row]
         return users
+
+
+def get_user_by_ref(user_ref):
+    """Get user from user_ref.
+
+    Args:
+        user_ref(str): ID or MusicBrainz
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT {columns}
+              FROM "user"
+             WHERE musicbrainz_id = :user_ref
+                OR id::text = :user_ref
+        """.format(columns=','.join(USER_GET_COLUMNS))), {
+            'user_ref': user_ref,
+        })
+        row = result.fetchone()
+        if row:
+            return dict(row)
+        return None
 
 
 def get_user_by_id(connection, user_id):

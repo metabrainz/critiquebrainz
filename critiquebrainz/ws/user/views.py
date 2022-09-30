@@ -6,7 +6,6 @@ from critiquebrainz.decorators import crossdomain
 from critiquebrainz.ws.exceptions import NotFound
 from critiquebrainz.ws.oauth import oauth
 from critiquebrainz.ws.parser import Parser
-from critiquebrainz.frontend.views.user import get_user_from_username_or_id
 
 user_bp = Blueprint('ws_user', __name__)
 
@@ -226,9 +225,8 @@ def user_entity_handler(user_ref):
 
     :resheader Content-Type: *application/json*
     """
-    try:
-        user = get_user_from_username_or_id(user_ref)
-    except:
+    user = db_users.get_user_by_ref(user_ref)
+    if not user:
         raise NotFound("Can't find a user with ID or Username: {user_ref}".format(user_ref=user_ref))
     
     inc = Parser.list('uri', 'inc', User.allowed_includes, optional=True) or []

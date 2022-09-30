@@ -31,7 +31,7 @@
                 <tr>
                   <td>{{ loop.index }}</td>
                   <td>
-                    <a href="{{ url_for('user.info', user_ref= user.username_or_id) }}">{{ user.display_name }}</a>
+                    <a href="{{ url_for('user.info', user_ref= user.user_ref) }}">{{ user.display_name }}</a>
                   </td>
                   <td>{{ user["review_count"] }}</td>
                   <td>{{ user["comment_count"] }}</td>
