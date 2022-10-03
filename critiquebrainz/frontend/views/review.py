@@ -417,8 +417,6 @@ def edit(id):
             raise BadRequest(lazy_gettext("Changing license of a published review\
                 or converting a published review back to drafts is not allowed."))
 
-        if form.state.data == "publish" and review["is_draft"] == True:
-            db_revision.delete_draft_revisons(review["id"])
 
         flash.success(gettext("Review has been updated."))
         return redirect(url_for('.entity', id=review["id"]))
