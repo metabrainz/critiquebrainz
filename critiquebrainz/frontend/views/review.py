@@ -391,10 +391,10 @@ def edit(id):
     # a draft review without changes is allowed.
     if form.state.data == "draft" and review["is_draft"] \
             and form.text.data == review["text"] and form.rating.data == review["rating"]:
-        form.errors["edit"] = ["You must edit either text or rating to update the draft."]
+        form.form_errors.append("You must edit either text or rating to update the draft.")
     elif not review["is_draft"] and form.text.data == review["text"] \
-        and form.rating.data == review["rating"]:
-        form.errors["edit"] = ["You must edit either text or rating to update the review."]
+            and form.rating.data == review["rating"]:
+        form.form_errors.append("You must edit either text or rating to update the review.")
     elif form.validate_on_submit():
         if review["is_draft"]:
             license_choice = form.license_choice.data

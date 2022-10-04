@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext
 from wtforms import StringField, BooleanField, RadioField, validators
-from wtforms.fields.html5 import EmailField
+from wtforms.fields import EmailField
 
 
 class ProfileEditForm(FlaskForm):
