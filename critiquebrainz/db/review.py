@@ -151,6 +151,7 @@ def get_by_ids(review_ids: List[uuid.UUID]):
                    "user".created as user_created,
                    "user".display_name,
                    "user".musicbrainz_id,
+                   COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                    "user".is_blocked,
                    license.full_name,
                    license.info_url
@@ -182,6 +183,7 @@ def get_by_ids(review_ids: List[uuid.UUID]):
             "display_name": review.pop("display_name", None),
             "is_blocked": review.pop("is_blocked", False),
             "musicbrainz_username": review.pop("musicbrainz_id"),
+            "user_ref": review.pop("user_ref"),
             "email": review.pop("email"),
             "created": review.pop("user_created"),
         })
@@ -524,6 +526,7 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
                "user".email,
                "user".created as user_created,
                "user".musicbrainz_id,
+               COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                review.published_on,
                MIN(revision.timestamp) as created,
                SUM(
@@ -578,6 +581,7 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
                 "display_name": row.pop("display_name"),
                 "is_blocked": row.pop("is_blocked"),
                 "musicbrainz_username": row.pop("musicbrainz_id"),
+                "user_ref": row.pop("user_ref"),
                 "email": row.pop("email"),
                 "created": row.pop("user_created"),
             })
@@ -714,6 +718,7 @@ def get_popular_reviews_for_index():
                     "review_id": review["id"],
                 }
             reviews = [to_dict(review, confidential=True) for review in reviews]
+
         cache.set(cache_key, reviews, 1 * 60 * 60, namespace=REVIEW_CACHE_NAMESPACE)  # 1 hour
     shuffle(reviews)
     return reviews[:limit]

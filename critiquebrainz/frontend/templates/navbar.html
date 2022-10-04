@@ -26,7 +26,7 @@
               </a>
               <ul class="dropdown-menu" role="menu">
                 <li>
-                  <a href="{{ url_for('user.reviews', user_id=current_user.id) }}">
+                  <a href="{{ url_for('user.reviews', user_ref= current_user.user_ref) }}">
                     {{ _('Profile') }}
                   </a>
                 </li>

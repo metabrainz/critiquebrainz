@@ -15,10 +15,11 @@ class User(AdminMixin):
         self.email = user.get('email')
         self.created = user.get('created')
         self.musicbrainz_username = user.get('musicbrainz_username')
+        self.user_ref = user.get('user_ref')
         self.is_blocked = user.get('is_blocked', False)
         self.license_choice = user.get('license_choice', None)
         self.musicbrainz_row_id = user.get('musicbrainz_row_id', None)
-
+    
     @property
     def is_vote_limit_exceeded(self):
         return self.votes_today_count() >= self.user_type.votes_per_day
@@ -118,6 +119,7 @@ class User(AdminMixin):
             response.update(dict(
                 email=self.email,
                 musicbrainz_username=self.musicbrainz_username,
+                user_ref=self.user_ref,
                 license_choice=self.license_choice,
             ))
 

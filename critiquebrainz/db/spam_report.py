@@ -155,9 +155,11 @@ def list_reports(**kwargs):
                is_archived,
                review_uuid,
                review_user_id,
+               review_user_ref,
                entity_id,
                entity_type,
-               review_user_display_name
+               review_user_display_name,
+               COALESCE(musicbrainz_id, "user".id::text) AS reporter_ref
           FROM "user"
     INNER JOIN (spam_report
                INNER JOIN (revision
@@ -166,7 +168,8 @@ def list_reports(**kwargs):
                                   "user".id as review_user_id,
                                   review.entity_id,
                                   review.entity_type,
-                                  "user".display_name as review_user_display_name
+                                  "user".display_name as review_user_display_name,
+                                  COALESCE(musicbrainz_id, "user".id::text) AS review_user_ref
                              FROM review
                        INNER JOIN "user"
                                ON "user".id = review.user_id)
@@ -190,6 +193,7 @@ def list_reports(**kwargs):
                     "user": {
                         "id": spam_report.pop("review_user_id"),
                         "display_name": spam_report.pop("review_user_display_name"),
+                        "user_ref": spam_report.pop("review_user_ref"),
                     },
                     "id": spam_report["review_uuid"],
                     "entity_id": spam_report.pop("entity_id"),
@@ -200,5 +204,6 @@ def list_reports(**kwargs):
                 spam_report["user"] = {
                     "id": spam_report.pop("reporter_id"),
                     "display_name": spam_report.pop("reporter_name"),
+                    "user_ref": spam_report.pop("reporter_ref"),
                 }
     return spam_reports, len(spam_reports)

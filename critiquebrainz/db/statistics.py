@@ -61,6 +61,7 @@ def get_users_with_review_count(from_date=date(1970, 1, 1), to_date=date.today()
         {
             "id": (uuid),
             "display_name": (str),
+            "user_ref": (str),
             "review_count": (int),
         }
     """
@@ -68,6 +69,7 @@ def get_users_with_review_count(from_date=date(1970, 1, 1), to_date=date.today()
         result = connection.execute(sqlalchemy.text("""
             SELECT id,
                    display_name,
+                   COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                    COALESCE(rc, 0) AS review_count
               FROM "user"
          LEFT JOIN (SELECT user_id,
@@ -102,6 +104,7 @@ def get_users_with_vote_count(from_date=date(1970, 1, 1), to_date=date.today() +
         {
             "id": (uuid),
             "display_name": (str),
+            "user_ref": (str),
             "vote_count": (int),
         }
     """
@@ -109,6 +112,7 @@ def get_users_with_vote_count(from_date=date(1970, 1, 1), to_date=date.today() +
         result = connection.execute(sqlalchemy.text("""
             SELECT id,
                    display_name,
+                   COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                    COALESCE(vc, 0) AS vote_count
               FROM "user"
          LEFT JOIN (SELECT user_id,
@@ -141,6 +145,7 @@ def get_users_with_comment_count(from_date=date(1970, 1, 1), to_date=date.today(
         {
             "id": (uuid),
             "display_name": (str),
+            "user_ref": (str),
             "comment_count": (int),
         }
     """
@@ -148,6 +153,7 @@ def get_users_with_comment_count(from_date=date(1970, 1, 1), to_date=date.today(
         result = connection.execute(sqlalchemy.text("""
             SELECT id,
                    display_name,
+                   COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                    COALESCE(cc, 0) AS comment_count
               FROM "user"
          LEFT JOIN (SELECT user_id,
@@ -193,6 +199,7 @@ def get_top_users(from_date=date(1970, 1, 1), to_date=date.today() + timedelta(1
         {
             "id": (uuid),
             "display_name": (str),
+            "user_ref": (str),
             "review_count": (int),
             "comment_count": (int),
             "vote_count": (int),

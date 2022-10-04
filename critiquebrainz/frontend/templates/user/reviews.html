@@ -148,7 +148,7 @@
       </tbody>
     </table>
 
-    {{ display_pagination(page, count, limit, 'user.reviews', {'user_id':user.id}) }}
+    {{ display_pagination(page, count, limit, 'user.reviews', {'user_ref':user.user_ref}) }}
 
   {% endif %}
 {% endblock %}

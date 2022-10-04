@@ -307,7 +307,7 @@ def create(entity_type=None, entity_id=None):
     if current_user.is_blocked:
         flash.error(gettext("You are not allowed to write new reviews because your "
                             "account has been blocked by a moderator."))
-        return redirect(url_for('user.reviews', user_id=current_user.id))
+        return redirect(url_for('user.reviews', user_ref=current_user.user_ref))
 
     # Checking if the user already wrote a review for this entity
     reviews, count = db_review.list_reviews(user_id=current_user.id, entity_id=entity_id, inc_drafts=True, inc_hidden=True)
@@ -324,7 +324,7 @@ def create(entity_type=None, entity_id=None):
 
     if current_user.is_review_limit_exceeded:
         flash.error(gettext("You have exceeded your limit of reviews per day."))
-        return redirect(url_for('user.reviews', user_id=current_user.id))
+        return redirect(url_for('user.reviews', user_ref=current_user.user_ref))
 
     form = ReviewCreateForm(default_license_id=current_user.license_choice, default_language=get_locale())
 
@@ -449,7 +449,7 @@ def delete(id):
     if request.method == 'POST':
         db_review.delete(review["id"])
         flash.success(gettext("Review has been deleted."))
-        return redirect(url_for('user.reviews', user_id=current_user.id))
+        return redirect(url_for('user.reviews', user_ref=current_user.user_ref))
     return render_template('review/delete.html', review=review)
 
 
