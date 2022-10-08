@@ -5,4 +5,7 @@ INSERT INTO license (id, full_name, info_url)
              'Creative Commons Attribution-ShareAlike 4.0 International',
              'https://creativecommons.org/licenses/by-sa/4.0/');
 
+UPDATE "user" 
+   SET license_choice = NULL;
+
 COMMIT;

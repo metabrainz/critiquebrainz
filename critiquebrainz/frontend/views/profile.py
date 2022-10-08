@@ -16,15 +16,13 @@ def edit():
     if form.validate_on_submit():
         db_users.update(current_user.id, user_new_info={
             "display_name": form.display_name.data,
-            "email": form.email.data,
-            "license_choice": form.license_choice.data,
+            "email": form.email.data
         })
         flash.success(gettext("Profile updated."))
         return redirect(url_for('user.reviews', user_ref= current_user.user_ref))
 
     form.display_name.data = current_user.display_name
     form.email.data = current_user.email
-    form.license_choice.data = current_user.license_choice
     return render_template('profile/edit.html', form=form)
 
 
