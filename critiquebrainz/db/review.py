@@ -18,7 +18,7 @@ from critiquebrainz.db import (exceptions as db_exceptions,
 from critiquebrainz.db.user import User
 
 REVIEW_CACHE_NAMESPACE = "Review"
-DEFAULT_LICENSE_ID = "CC BY-SA 3.0"
+DEFAULT_LICENSE_ID = "CC BY-SA 4.0"
 DEFAULT_LANG = "en"
 
 #: list of allowed entity_type's for writing/querying a review
