@@ -36,7 +36,7 @@ class ReviewEditForm(FlaskForm):
     language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
     rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
 
-    def __init__(self, default_license_id='CC BY-SA 4.0', default_language='en', **kwargs):
+    def __init__(self, default_language='en', **kwargs):
         kwargs.setdefault('language', default_language)
         FlaskForm.__init__(self, **kwargs)
 
