@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+
 
 const frontEndStaticDir = path.resolve(__dirname, 'critiquebrainz/frontend/static');
 
@@ -49,7 +50,9 @@ module.exports = (env, argv) => {
           {
             loader: 'less-loader',
             options: {
-              relativeUrls: false
+              lessOptions: {
+                relativeUrls: false
+              }
             }
           }
         ]
@@ -61,7 +64,7 @@ module.exports = (env, argv) => {
         filename: isProd ? '[name].[contenthash].css' : '[name].css',
         chunkFilename: '[name].[contenthash].css'
       }),
-      new ManifestPlugin()
+      new WebpackManifestPlugin()
     ]
   }
 };
