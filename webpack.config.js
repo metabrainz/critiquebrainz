@@ -20,6 +20,7 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(frontEndStaticDir, 'build/'),
       filename: isProd ? '[name].[contenthash].js' : '[name].js',
+      publicPath: '',
     },
     module: {
       rules: [
@@ -39,7 +40,10 @@ module.exports = (env, argv) => {
             loader: 'style-loader'
           },
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              esModule: false,
+            },
           },
           {
             loader: 'css-loader',
