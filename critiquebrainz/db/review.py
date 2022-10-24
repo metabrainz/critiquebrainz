@@ -717,7 +717,7 @@ def get_popular_reviews_for_index():
                     "rating": review["rating"],
                     "review_id": review["id"],
                 }
-            reviews = [to_dict(review, confidential=True) for review in reviews]
+            reviews = [to_dict(review, confidential=False) for review in reviews]
 
         cache.set(cache_key, reviews, 1 * 60 * 60, namespace=REVIEW_CACHE_NAMESPACE)  # 1 hour
     shuffle(reviews)
