@@ -79,7 +79,7 @@ def fetch_multiple_editions(bbids: List[str]) -> dict:
                     format
                 """), {'bbids': tuple(bbids)})
 
-            editions = result.fetchall()
+            editions = result.mappings()
             results = {}
             for edition in editions:
                 edition = dict(edition)

@@ -165,7 +165,7 @@ def get_by_ids(review_ids: List[uuid.UUID]):
             "review_ids": tuple(map(str, review_ids)),
         })
 
-        reviews = result.fetchall()
+        reviews = result.mappings().fetchall()
 
     results = []
     for review in reviews:
@@ -210,7 +210,7 @@ def set_hidden_state(review_id, *, is_hidden):
         is_hidden (bool): True if review has to be hidden, False if not.
     """
     review = get_by_id(review_id)
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE review
                SET is_hidden = :is_hidden
@@ -242,7 +242,7 @@ def get_count(*, is_draft=False, is_hidden=False):
             "is_drafted": is_draft,
             "is_hidden": is_hidden,
         })
-        return result.fetchone()[0]
+        return result.fetchone().count
 
 
 def update(review_id, *, drafted, text=None, rating=None, license_id=None, language=None, is_draft=None):
@@ -290,13 +290,15 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
          WHERE id = :review_id
     """.format(setstr=setstr))
 
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         if setstr:
             updated_info["review_id"] = review_id
             connection.execute(query, updated_info)
         db_revision.create(connection, review_id, text, rating)
-        db_revision.update_rating(review_id)
 
+    db_revision.update_rating(review_id)
+
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
                     SELECT review.entity_id
                       FROM review
@@ -304,7 +306,7 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
                 """), {
             "review_id": review_id,
         })
-        review = dict(result.fetchone())
+        review = dict(result.mappings().first())
         invalidate_ws_entity_cache(review["entity_id"])
 
 
@@ -363,7 +365,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
     else:
         published_on = datetime.now()
 
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO review (id, entity_id, entity_type, user_id, edits, is_draft, is_hidden, license_id, language, source, source_url, published_on)
             VALUES (:id, :entity_id, :entity_type, :user_id, :edits, :is_draft, :is_hidden, :license_id, :language, :source, :source_url, :published_on)
@@ -562,7 +564,7 @@ def get_reviews_list(connection, *, inc_drafts=False, inc_hidden=False, entity_i
     filter_data["offset"] = offset
 
     results = connection.execute(query, filter_data)
-    rows = results.fetchall()
+    rows = results.mappings()
     rows = [dict(row) for row in rows]
 
     # Organise last revision info in reviews
@@ -704,9 +706,8 @@ def get_popular_reviews_for_index():
                 "limit": defined_limit,
                 "last_month": datetime.now() - timedelta(weeks=4)
             })
-            reviews = results.fetchall()
+            reviews = [dict(review) for review in results.mappings()]
 
-        reviews = [dict(review) for review in reviews]
         if reviews:
             for review in reviews:
                 review["rating"] = RATING_SCALE_1_5.get(review["rating"])
@@ -731,7 +732,7 @@ def delete(review_id):
         review_id: ID of the review to be deleted.
     """
     review = get_by_id(review_id)
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM review
@@ -757,7 +758,7 @@ def check_review_deleted(review_id) -> bool:
             "review_id": review_id,
         })
 
-        return dict(result.fetchone())["exists"]
+        return result.first().exists
 
 
 def get_distinct_entities(connection):
@@ -771,7 +772,7 @@ def get_distinct_entities(connection):
     """)
 
     results = connection.execute(query)
-    return {row[0] for row in results.fetchall()}
+    return {row["entity_id"] for row in results.mappings()}
 
 
 def distinct_entities():
@@ -808,5 +809,4 @@ def reviewed_entities(*, entity_ids, entity_type):
             "entity_type": entity_type,
             "entity_ids": tuple(entity_ids),
         })
-        reviewed_ids = [str(row[0]) for row in results.fetchall()]
-    return reviewed_ids
+        return [str(row["entity_id"]) for row in results.mappings()]

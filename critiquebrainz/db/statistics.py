@@ -85,7 +85,7 @@ def get_users_with_review_count(from_date=date(1970, 1, 1), to_date=date.today()
             "to_date": to_date,
         })
 
-        reviewers = result.fetchall()
+        reviewers = result.mappings()
         if not reviewers:
             raise db_exceptions.NoDataFoundException("Can't get users with review count!")
         reviewers = [dict(reviewer) for reviewer in reviewers]
@@ -126,7 +126,7 @@ def get_users_with_vote_count(from_date=date(1970, 1, 1), to_date=date.today() +
             "to_date": to_date,
         })
 
-        voters = result.fetchall()
+        voters = result.mappings()
         if not voters:
             raise db_exceptions.NoDataFoundException("Can't get users with vote count!")
         voters = [dict(voter) for voter in voters]
@@ -172,7 +172,7 @@ def get_users_with_comment_count(from_date=date(1970, 1, 1), to_date=date.today(
             "to_date": to_date,
         })
 
-        commenters = result.fetchall()
+        commenters = result.mappings()
         if not commenters:
             raise db_exceptions.NoDataFoundException("Can't get users with comment count!")
         commenters = [dict(commenter) for commenter in commenters]

@@ -70,7 +70,7 @@ def fetch_multiple_publishers(bbids: List[str]) -> dict:
 				AND master = 't'
 			"""), {'bbids': tuple(bbids)})
 
-            publishers = result.fetchall()
+            publishers = result.mappings()
             results = {}
             for publisher in publishers:
                 publisher = dict(publisher)

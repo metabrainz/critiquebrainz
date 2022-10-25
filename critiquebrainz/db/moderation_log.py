@@ -38,7 +38,7 @@ def create(*, admin_id, review_id=None, user_id=None,
         raise ValueError("No review ID or user ID specified.")
     if action not in AdminActions.get_all_actions():
         raise ValueError("Please specify a valid action.")
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO moderation_log(admin_id, user_id, review_id, action, timestamp, reason)
                  VALUES (:admin_id, :user_id, :review_id, :action, :timestamp, :reason)
@@ -81,7 +81,7 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
     """.format(where_clause=where_clause))
     with db.engine.connect() as connection:
         result = connection.execute(query, filter_data)
-        count = result.fetchone()[0]
+        count = result.fetchone().count
 
     filter_data["limit"] = limit
     filter_data["offset"] = offset
@@ -142,7 +142,7 @@ def list_logs(*, admin_id=None, limit=None, offset=None):
     with db.engine.connect() as connection:
         result = connection.execute(query, filter_data)
         logs = []
-        for log in result.fetchall():
+        for log in result.mappings():
             log = dict(log)
             log["user"] = {
                 "id": log["user_id"],

@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine
+from flask_debugtoolbar.panels import sqlalchemy
+from sqlalchemy import create_engine, text
 from sqlalchemy.pool import NullPool
 
 # This value must be incremented after schema changes on exported tables!
@@ -22,7 +23,22 @@ def init_db_engine(connect_str):
 
 
 def run_sql_script(sql_file_path):
-    with open(sql_file_path) as sql:
-        connection = engine.connect()
-        connection.execute(sql.read())
-        connection.close()
+    with open(sql_file_path) as sql, engine.begin() as connection:
+        connection.execute(text(sql.read()))
+
+
+def run_sql_script_without_transaction(sql_file_path):
+    with open(sql_file_path) as sql, engine.connect().execution_options(isolation_level="AUTOCOMMIT") as connection:
+        lines = sql.read().splitlines()
+        try:
+            for line in lines:
+                # TODO: Not a great way of removing comments. The alternative is to catch
+                #  the exception sqlalchemy.exc.ProgrammingError "can't execute an empty query"
+                if line and not line.startswith("--"):
+                    connection.execute(text(line))
+        except sqlalchemy.exc.ProgrammingError as e:
+            print("Error: {}".format(e))
+            return False
+        finally:
+            connection.close()
+        return True
