@@ -19,7 +19,6 @@ from unittest import mock
 from flask import url_for
 
 import critiquebrainz.db.users as db_users
-import critiquebrainz.frontend.external.musicbrainz_db.exceptions as mb_exceptions
 from critiquebrainz.db.user import User
 from critiquebrainz.frontend.external.exceptions import ExternalServiceException
 from critiquebrainz.frontend.testing import FrontendTestCase
