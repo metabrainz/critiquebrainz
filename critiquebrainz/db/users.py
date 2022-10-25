@@ -253,7 +253,7 @@ def update_username(user, new_musicbrainz_id: str):
          WHERE id = :cb_id
     """.format(", ".join(updates))
 
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text(query), {
             "cb_id": user["id"],
             "new_musicbrainz_id": new_musicbrainz_id,
