@@ -28,8 +28,7 @@ def run_sql_script(sql_file_path):
 
 
 def run_sql_script_without_transaction(sql_file_path):
-    with open(sql_file_path) as sql, engine.begin() as connection:
-        connection.connection.set_isolation_level(0)
+    with open(sql_file_path) as sql, engine.connect().execution_options(isolation_level="AUTOCOMMIT") as connection:
         lines = sql.read().splitlines()
         try:
             for line in lines:
@@ -41,6 +40,5 @@ def run_sql_script_without_transaction(sql_file_path):
             print("Error: {}".format(e))
             return False
         finally:
-            connection.connection.set_isolation_level(1)
             connection.close()
         return True
