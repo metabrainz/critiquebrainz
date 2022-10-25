@@ -34,7 +34,7 @@ def get_authors_for_artist(artist_mbid) -> List:
                    AND author.data_id IS NOT NULL
               GROUP BY bbid
                 """), {'artist_mbid': artist_mbid, 'identifier_type': MB_ARTIST_IDENTIFIER_TYPE})
-            authors = result.fetchall()
+            authors = result.mappings()
 
             author_bbids = []
             for author in authors:
@@ -76,7 +76,7 @@ def get_literary_works_for_work(work_mbid) -> List:
               GROUP BY bbid
                 """), {'work_mbid': work_mbid, 'identifier_type': MB_WORK_IDENTIFIER_TYPE})
 
-            literary_works = result.fetchall()
+            literary_works = result.mappings()
             work_bbids = []
             for literary_work in literary_works:
                 literary_work = dict(literary_work)

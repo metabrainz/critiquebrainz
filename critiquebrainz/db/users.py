@@ -61,7 +61,7 @@ def get_user_by_ref(user_ref):
         """.format(columns=','.join(USER_GET_COLUMNS))), {
             'user_ref': user_ref,
         })
-        row = result.fetchone()
+        row = result.mappings().first()
         if row:
             return dict(row)
         return None
