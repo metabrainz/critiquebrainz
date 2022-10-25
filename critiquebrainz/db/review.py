@@ -165,41 +165,41 @@ def get_by_ids(review_ids: List[uuid.UUID]):
             "review_ids": tuple(map(str, review_ids)),
         })
 
-        reviews = result.mappings()
+        reviews = result.mappings().fetchall()
 
-        results = []
-        for review in reviews:
-            review = dict(review)
-            review["rating"] = RATING_SCALE_1_5.get(review["rating"])
-            review["last_revision"] = {
-                "id": review.pop("last_revision_id"),
-                "timestamp": review.pop("timestamp"),
-                "text": review.get("text"),
-                "rating": review.get("rating"),
-                "review_id": review.get("id"),
-            }
-            review["user"] = User({
-                "id": review["user_id"],
-                "display_name": review.pop("display_name", None),
-                "is_blocked": review.pop("is_blocked", False),
-                "musicbrainz_username": review.pop("musicbrainz_id"),
-                "user_ref": review.pop("user_ref"),
+    results = []
+    for review in reviews:
+        review = dict(review)
+        review["rating"] = RATING_SCALE_1_5.get(review["rating"])
+        review["last_revision"] = {
+            "id": review.pop("last_revision_id"),
+            "timestamp": review.pop("timestamp"),
+            "text": review.get("text"),
+            "rating": review.get("rating"),
+            "review_id": review.get("id"),
+        }
+        review["user"] = User({
+            "id": review["user_id"],
+            "display_name": review.pop("display_name", None),
+            "is_blocked": review.pop("is_blocked", False),
+            "musicbrainz_username": review.pop("musicbrainz_id"),
+            "user_ref": review.pop("user_ref"),
             "email": review.pop("email"),
-                "created": review.pop("user_created"),
-            })
-            review["license"] = {
-                "id": review["license_id"],
-                "info_url": review["info_url"],
-                "full_name": review["full_name"],
-            }
-            votes = db_revision.votes(review["last_revision"]["id"])
-            review["votes"] = {
-                "positive": votes["positive"],
-                "negative": votes["negative"],
-            }
-            review["popularity"] = review["votes"]["positive"] - review["votes"]["negative"]
-            results.append(review)
-        return results
+            "created": review.pop("user_created"),
+        })
+        review["license"] = {
+            "id": review["license_id"],
+            "info_url": review["info_url"],
+            "full_name": review["full_name"],
+        }
+        votes = db_revision.votes(review["last_revision"]["id"])
+        review["votes"] = {
+            "positive": votes["positive"],
+            "negative": votes["negative"],
+        }
+        review["popularity"] = review["votes"]["positive"] - review["votes"]["negative"]
+        results.append(review)
+    return results
 
 
 def set_hidden_state(review_id, *, is_hidden):
