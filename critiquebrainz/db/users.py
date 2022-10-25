@@ -236,6 +236,39 @@ def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
     return user
 
 
+def update_username(user, new_musicbrainz_id: str):
+    """ Update the email field and MusicBrainz ID of the user specified by the lb_id
+
+    Args:
+        user: critiquebrainz user
+        new_musicbrainz_id: MusicBrainz username of a user
+    """
+    # update display name only if the user has not changed it to something else than exising mb username
+    update_display_name = user["musicbrainz_username"] == user["display_name"]
+
+    updates = ["musicbrainz_id = :new_musicbrainz_id"]
+    if update_display_name:
+        updates.append("display_name = :new_musicbrainz_id")
+
+    query = """
+        UPDATE "user"
+           SET {}
+         WHERE id = :cb_id
+    """.format(", ".join(updates))
+
+    with db.engine.connect() as connection:
+        connection.execute(sqlalchemy.text(query), {
+            "cb_id": user["id"],
+            "new_musicbrainz_id": new_musicbrainz_id,
+        })
+
+    user = dict(user)
+    user["musicbrainz_username"] = new_musicbrainz_id
+    if update_display_name:
+        user["display_name"] = new_musicbrainz_id
+    return user
+
+
 def total_count():
     """Returns the total number of users of CritiqueBrainz.
 
