@@ -113,13 +113,13 @@ class User(AdminMixin):
             created=self.created,
             karma=self.karma,
             user_type=self.user_type.label,
+            musicbrainz_username=self.musicbrainz_username,
+            user_ref=self.user_ref,
         )
 
         if confidential is True:
             response.update(dict(
                 email=self.email,
-                musicbrainz_username=self.musicbrainz_username,
-                user_ref=self.user_ref,
                 license_choice=self.license_choice,
             ))
 
