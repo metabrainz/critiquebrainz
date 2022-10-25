@@ -18,7 +18,7 @@ def entity(id):
 
     edition_group = bb_edition_group.get_edition_group_by_bbid(id)
 
-    if edition_group is None:
+    if not edition_group:
         redirected_bbid = bb_redirects.get_redirected_bbid(id)
         if redirected_bbid:
             return redirect(url_for('bb_edition_group.entity', id=redirected_bbid))

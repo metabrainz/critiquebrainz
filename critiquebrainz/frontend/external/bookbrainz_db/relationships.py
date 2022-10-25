@@ -1,9 +1,7 @@
 from typing import List
-import uuid
 from brainzutils import cache
 import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db
-import critiquebrainz.frontend.external.bookbrainz_db.exceptions as bb_exceptions
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 AUTHOR_WORK_AUTHOR_REL_ID = 8
@@ -24,7 +22,7 @@ def fetch_relationships(relationship_set_id: int, relation_types_id: List) -> Li
     Fetch relationships from the database.
     """
     if not relationship_set_id:
-        return None
+        return []
 
     key = cache.gen_key('bb_relationship', relationship_set_id, relation_types_id)
     relationships = cache.get(key)
@@ -49,5 +47,5 @@ def fetch_relationships(relationship_set_id: int, relation_types_id: List) -> Li
             cache.set(key, relationships, DEFAULT_CACHE_EXPIRATION)
 
     if not relationships:
-        return None
+        return []
     return relationships

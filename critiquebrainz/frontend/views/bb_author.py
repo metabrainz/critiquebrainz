@@ -24,7 +24,7 @@ def entity(id):
     id = str(id)
     author = bb_author.get_author_by_bbid(id)
 
-    if author is None:
+    if not author:
         redirected_bbid = bb_redirects.get_redirected_bbid(id)
         if redirected_bbid:
             return redirect(url_for('bb_author.entity', id=redirected_bbid))
