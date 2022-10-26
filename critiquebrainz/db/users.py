@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime
-from hashlib import md5
 
 import sqlalchemy
 
@@ -15,6 +14,7 @@ USER_GET_COLUMNS = [
     'created',
     'musicbrainz_id as musicbrainz_username',
     'musicbrainz_row_id',
+    'COALESCE(musicbrainz_id, id::text) AS user_ref',
     'license_choice',
     'is_blocked',
 ]
@@ -41,9 +41,30 @@ def get_many_by_mb_username(usernames):
         """.format(columns=','.join(USER_GET_COLUMNS))), {
             'musicbrainz_usernames': usernames,
         })
-        row = result.fetchall()
+        row = result.mappings()
         users = [dict(r) for r in row]
         return users
+
+
+def get_user_by_ref(user_ref):
+    """Get user from user_ref.
+
+    Args:
+        user_ref(str): ID or MusicBrainz
+    """
+    with db.engine.connect() as connection:
+        result = connection.execute(sqlalchemy.text("""
+            SELECT {columns}
+              FROM "user"
+             WHERE musicbrainz_id = :user_ref
+                OR id::text = :user_ref
+        """.format(columns=','.join(USER_GET_COLUMNS))), {
+            'user_ref': user_ref,
+        })
+        row = result.mappings().first()
+        if row:
+            return dict(row)
+        return None
 
 
 def get_user_by_id(connection, user_id):
@@ -60,11 +81,10 @@ def get_user_by_id(connection, user_id):
     result = connection.execute(query, {
         "user_id": user_id
     })
-    row = result.fetchone()
-    if not row:
-        return None
-    row = dict(row)
-    return row
+    row = result.mappings().first()
+    if row:
+        return dict(row)
+    return None
 
 
 def get_by_id(user_id):
@@ -121,7 +141,7 @@ def create(**user_data):
     if user_data:
         raise TypeError('Unexpected **user_data: %r' % user_data)
 
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO "user" (id, display_name, email, created, musicbrainz_id,
                                 is_blocked, license_choice, musicbrainz_row_id)
@@ -138,7 +158,7 @@ def create(**user_data):
             "license_choice": license_choice,
             "musicbrainz_row_id": musicbrainz_row_id,
         })
-        new_id = result.fetchone()[0]
+        new_id = result.fetchone().id
     return get_by_id(new_id)
 
 
@@ -168,11 +188,10 @@ def get_by_mbid(musicbrainz_username):
         """.format(columns=','.join(USER_GET_COLUMNS))), {
             "musicbrainz_username": musicbrainz_username,
         })
-        row = result.fetchone()
-        if not row:
-            return None
-        row = dict(row)
-    return row
+        row = result.mappings().first()
+        if row:
+            return dict(row)
+    return None
 
 
 def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
@@ -214,6 +233,39 @@ def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
     return user
 
 
+def update_username(user, new_musicbrainz_id: str):
+    """ Update the email field and MusicBrainz ID of the user specified by the lb_id
+
+    Args:
+        user: critiquebrainz user
+        new_musicbrainz_id: MusicBrainz username of a user
+    """
+    # update display name only if the user has not changed it to something else than exising mb username
+    update_display_name = user["musicbrainz_username"] == user["display_name"]
+
+    updates = ["musicbrainz_id = :new_musicbrainz_id"]
+    if update_display_name:
+        updates.append("display_name = :new_musicbrainz_id")
+
+    query = """
+        UPDATE "user"
+           SET {}
+         WHERE id = :cb_id
+    """.format(", ".join(updates))
+
+    with db.engine.begin() as connection:
+        connection.execute(sqlalchemy.text(query), {
+            "cb_id": user["id"],
+            "new_musicbrainz_id": new_musicbrainz_id,
+        })
+
+    user = dict(user)
+    user["musicbrainz_username"] = new_musicbrainz_id
+    if update_display_name:
+        user["display_name"] = new_musicbrainz_id
+    return user
+
+
 def total_count():
     """Returns the total number of users of CritiqueBrainz.
 
@@ -226,7 +278,7 @@ def total_count():
               FROM "user"
         """))
 
-        return result.fetchone()[0]
+        return result.fetchone().count
 
 
 def list_users(limit=None, offset=0):
@@ -259,9 +311,8 @@ def list_users(limit=None, offset=0):
             "limit": limit,
             "offset": offset
         })
-        rows = result.fetchall()
-        rows = [dict(row) for row in rows]
-    return rows
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def unblock(user_id):
@@ -270,7 +321,7 @@ def unblock(user_id):
     Args:
         user_id(uuid): ID of user to be unblocked.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE "user"
                SET is_blocked = 'false'
@@ -286,7 +337,7 @@ def block(user_id):
     Args:
         user_id(uuid): ID of user to be blocked.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE "user"
                SET is_blocked = 'true'
@@ -317,8 +368,8 @@ def has_voted(user_id, review_id):
             "revision_id": last_revision['id'],
             "user_id": user_id
         })
-        count = result.fetchone()[0]
-    return count > 0
+        count = result.fetchone().count
+        return count > 0
 
 
 def karma(user_id):
@@ -394,8 +445,8 @@ def reviews(user_id):
             "user_id": user_id
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def get_votes(user_id, from_date=datetime.utcfromtimestamp(0)):
@@ -424,8 +475,8 @@ def get_votes(user_id, from_date=datetime.utcfromtimestamp(0)):
             "from_date": from_date
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def get_reviews(user_id, from_date=datetime.utcfromtimestamp(0)):
@@ -477,8 +528,8 @@ def get_reviews(user_id, from_date=datetime.utcfromtimestamp(0)):
             "from_date": from_date
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def get_comments(user_id, from_date=datetime.utcfromtimestamp(0)):
@@ -522,8 +573,8 @@ def get_comments(user_id, from_date=datetime.utcfromtimestamp(0)):
             "from_date": from_date
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def update(user_id, user_new_info):
@@ -553,7 +604,7 @@ def update(user_id, user_new_info):
             """.format(setstr))
     if user_new_info:
         user_new_info["user_id"] = user_id
-        with db.engine.connect() as connection:
+        with db.engine.begin() as connection:
             connection.execute(query, user_new_info)
 
 
@@ -564,7 +615,7 @@ def delete(user_id):
     Args:
         user_id(uuid): ID of the user to be deleted.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM "user"
@@ -607,8 +658,8 @@ def clients(user_id):
             "user_id": user_id
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def tokens(user_id):
@@ -648,8 +699,8 @@ def tokens(user_id):
             "user_id": user_id
         })
 
-        rows = result.fetchall()
-    return [dict(row) for row in rows]
+        rows = result.mappings()
+        return [dict(row) for row in rows]
 
 
 def get_by_mb_row_id(musicbrainz_row_id, musicbrainz_id=None):
@@ -679,7 +730,7 @@ def get_by_mb_row_id(musicbrainz_row_id, musicbrainz_id=None):
              WHERE musicbrainz_row_id = :musicbrainz_row_id
              {optional_filter}
         """.format(columns=','.join(USER_GET_COLUMNS), optional_filter=filter_str)), filter_data)
-
-        if result.rowcount:
-            return dict(result.fetchone())
+        row = result.mappings().first()
+        if row:
+            return dict(row)
         return None

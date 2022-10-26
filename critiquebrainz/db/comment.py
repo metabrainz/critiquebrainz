@@ -36,7 +36,7 @@ def create(*, user_id, text, review_id, is_draft=False):
     Returns:
         the newly created comment in dict form
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO comment (user_id, review_id, is_draft)
                  VALUES (:user_id, :review_id, :is_draft)
@@ -46,8 +46,8 @@ def create(*, user_id, text, review_id, is_draft=False):
                 'review_id': review_id,
                 'is_draft': is_draft,
                 })
-        comment_id = result.fetchone()['id']
-        db_comment_revision.create(comment_id, text)
+        comment_id = result.fetchone().id
+        db_comment_revision.create(connection, comment_id, text)
     return get_by_id(comment_id)
 
 
@@ -88,6 +88,7 @@ def get_by_id(comment_id):
                    "user".created as user_created,
                    "user".display_name,
                    "user".musicbrainz_id,
+                   COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                    "user".is_blocked
               FROM comment c
               JOIN comment_revision cr ON c.id = cr.comment_id
@@ -99,7 +100,7 @@ def get_by_id(comment_id):
                 'comment_id': comment_id,
                 })
 
-        comment = result.fetchone()
+        comment = result.mappings().first()
         if not comment:
             raise db_exceptions.NoDataFoundException('Can\'t find comment with ID: {id}'.format(id=comment_id))
 
@@ -115,6 +116,7 @@ def get_by_id(comment_id):
             'email': comment.pop('email'),
             'created': comment.pop('user_created'),
             'musicbrainz_username': comment.pop('musicbrainz_id'),
+            'user_ref': comment.pop('user_ref'),
             'is_blocked': comment.pop('is_blocked')
         })
         return comment
@@ -167,6 +169,7 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
                    "user".created as user_created,
                    "user".display_name,
                    "user".musicbrainz_id,
+                   COALESCE("user".musicbrainz_id, "user".id::text) as user_ref,
                    "user".is_blocked,
                    MIN(comment_revision.timestamp) as created,
                    latest_revision.id as last_revision_id,
@@ -196,7 +199,7 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
             OFFSET :offset
             """.format(where_clause=filterstr)), query_vals)
 
-        rows = [dict(row) for row in result.fetchall()]
+        rows = [dict(row) for row in result.mappings()]
         for row in rows:
             row['last_revision'] = {
                 'id': row.pop('last_revision_id'),
@@ -208,6 +211,7 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
                 'display_name': row.pop('display_name'),
                 'is_blocked': row.pop('is_blocked'),
                 'musicbrainz_username': row.pop('musicbrainz_id'),
+                'user_ref': row.pop('user_ref'),
                 'email': row.pop('email'),
                 'created': row.pop('user_created'),
             })
@@ -221,7 +225,7 @@ def delete(comment_id):
     Args:
         comment_id (uuid): the ID of the comment to be deleted.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM comment
@@ -262,15 +266,15 @@ def update(comment_id, *, text=None, is_draft=None, is_hidden=None):
 
     setstr = ', '.join(updates)
     update_data['comment_id'] = comment_id
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
                 UPDATE comment
                    SET {setstr}
                  WHERE id = :comment_id
             """.format(setstr=setstr)), update_data)
 
-    if text is not None:
-        db_comment_revision.create(comment_id, text)
+        if text is not None:
+            db_comment_revision.create(connection, comment_id, text)
 
 
 def count_comments(*, review_id=None, user_id=None, is_hidden=None, is_draft=None):
@@ -313,4 +317,4 @@ def count_comments(*, review_id=None, user_id=None, is_hidden=None, is_draft=Non
               FROM comment
             {where_condition}
             """.format(where_condition=filterstr)), filter_data)
-        return result.fetchone()[0]
+        return result.fetchone().count

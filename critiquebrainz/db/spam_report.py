@@ -38,8 +38,8 @@ def get(user_id, revision_id):
             "revision_id": revision_id,
         })
 
-        report = result.fetchone()
-    return dict(report) if report else None
+        report = result.mappings().first()
+        return dict(report) if report else None
 
 
 def archive(user_id, revision_id):
@@ -49,7 +49,7 @@ def archive(user_id, revision_id):
         user_id(uuid): ID of the reporter.
         revision_id(uuid): ID of the revision of the reported review.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             UPDATE spam_report
                SET is_archived = 'true'
@@ -79,7 +79,7 @@ def create(revision_id, user_id, reason):
             "is_archived": (bool)
         }
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO spam_report (user_id, reason, revision_id, reported_at, is_archived)
                  VALUES (:user_id, :reason, :revision_id, :reported_at, :is_archived)
@@ -155,9 +155,11 @@ def list_reports(**kwargs):
                is_archived,
                review_uuid,
                review_user_id,
+               review_user_ref,
                entity_id,
                entity_type,
-               review_user_display_name
+               review_user_display_name,
+               COALESCE(musicbrainz_id, "user".id::text) AS reporter_ref
           FROM "user"
     INNER JOIN (spam_report
                INNER JOIN (revision
@@ -166,7 +168,8 @@ def list_reports(**kwargs):
                                   "user".id as review_user_id,
                                   review.entity_id,
                                   review.entity_type,
-                                  "user".display_name as review_user_display_name
+                                  "user".display_name as review_user_display_name,
+                                  COALESCE(musicbrainz_id, "user".id::text) AS review_user_ref
                              FROM review
                        INNER JOIN "user"
                                ON "user".id = review.user_id)
@@ -182,7 +185,7 @@ def list_reports(**kwargs):
 
     with db.engine.connect() as connection:
         result = connection.execute(query, filter_data)
-        spam_reports = result.fetchall()
+        spam_reports = result.mappings()
         if spam_reports:
             spam_reports = [dict(spam_report) for spam_report in spam_reports]
             for spam_report in spam_reports:
@@ -190,6 +193,7 @@ def list_reports(**kwargs):
                     "user": {
                         "id": spam_report.pop("review_user_id"),
                         "display_name": spam_report.pop("review_user_display_name"),
+                        "user_ref": spam_report.pop("review_user_ref"),
                     },
                     "id": spam_report["review_uuid"],
                     "entity_id": spam_report.pop("entity_id"),
@@ -200,5 +204,6 @@ def list_reports(**kwargs):
                 spam_report["user"] = {
                     "id": spam_report.pop("reporter_id"),
                     "display_name": spam_report.pop("reporter_name"),
+                    "user_ref": spam_report.pop("reporter_ref"),
                 }
     return spam_reports, len(spam_reports)

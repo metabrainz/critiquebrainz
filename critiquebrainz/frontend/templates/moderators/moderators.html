@@ -10,7 +10,7 @@
     {% for mod in moderators %}
       <li>
         {% if mod['critiquebrainz_id'] is defined and mod['critiquebrainz_id'] %}
-          <a href="{{ url_for('user.info', user_id=mod['critiquebrainz_id']) }}">
+          <a href="{{ url_for('user.info', user_ref= mod['musicbrainz_username']) }}">
             {{ mod['musicbrainz_username'] }}
           </a>
         {% else %}

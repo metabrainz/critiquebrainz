@@ -207,7 +207,8 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(count, 1)
         self.assertEqual(len(reviews), 1)
 
-    @mock.patch('brainzutils.cache.get')
+
+    @mock.patch('critiquebrainz.db.review.cache.get')
     def test_get_popular(self, cache_get):
         cache_get.return_value = None
         reviews = db_review.get_popular_reviews_for_index()
@@ -234,14 +235,34 @@ class ReviewTestCase(DataTestCase):
             rating=review["rating"],
             is_draft=False,
         )
+
+        # User has no associated MusicBrainz account
+        user_3 = User(db_users.get_or_create(3, None, new_user_data={
+            "display_name": "test user 3",
+        }))
+        review2 = db_review.create(
+            entity_id="e7aad618-fa86-3983-9e77-405e21796eca",
+            entity_type="release_group",
+            user_id=user_3.id,
+            text="Another great review",
+            is_draft=False,
+            license_id=self.license["id"],
+        )
+
         reviews = db_review.get_popular_reviews_for_index()
-        self.assertEqual(len(reviews), 1)
-        self.assertEqual(reviews[0]["is_draft"], False)
+        self.assertEqual(len(reviews), 2)
+
+        listed_review_1 = [r for r in reviews if r["id"] == str(review["id"])][0]
+        self.assertEqual(listed_review_1["is_draft"], False)
+        self.assertEqual(listed_review_1["user"]["user_ref"], "Tester")
+
+        listed_review_2 = [r for r in reviews if r["id"] == str(review2["id"])][0]
+        self.assertEqual(listed_review_2["user"]["user_ref"], user_3.id)
 
         # A hidden review should not be in popular reviews
         db_review.set_hidden_state(review["id"], is_hidden=True)
         reviews = db_review.get_popular_reviews_for_index()
-        self.assertEqual(len(reviews), 0)
+        self.assertEqual(len(reviews), 1)
 
     def test_set_hidden_state(self):
         review = db_review.create(

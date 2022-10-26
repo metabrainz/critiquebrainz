@@ -5,7 +5,7 @@ import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
-def get_redirected_bbid(bbid: uuid.UUID) -> str:
+def get_redirected_bbid(bbid: str) -> str | None:
     """
     Get the redirected BBID for a given BBID.
     Args:
@@ -34,7 +34,7 @@ def get_redirected_bbid(bbid: uuid.UUID) -> str:
                 FROM redirects
             """), {'bbid': bbid})
 
-            redirect_bbids = result.fetchall()
+            redirect_bbids = result.mappings()
 
             results = []
             for redirect_bbid in redirect_bbids:

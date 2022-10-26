@@ -17,7 +17,7 @@ def fetch_bb_external_identifiers(identifier_set_id: int) -> List:
             - icon (str): Identifier icon.
     """
     if not identifier_set_id:
-        return None
+        return []
     
     bb_identifiers_key = cache.gen_key('identifier', identifier_set_id)
     identifiers = cache.get(bb_identifiers_key)
@@ -33,13 +33,13 @@ def fetch_bb_external_identifiers(identifier_set_id: int) -> List:
              LEFT JOIN identifier_type idtype on iden.type_id = idtype.id
                  WHERE idens.set_id = :identifier_set_id
                 """), {'identifier_set_id': identifier_set_id})
-            identifiers = result.fetchall()
+            identifiers = result.mappings()
             identifiers = [dict(identifier) for identifier in identifiers]
             identifiers = process_bb_identifiers(identifiers)
             cache.set(bb_identifiers_key, identifiers, DEFAULT_CACHE_EXPIRATION)
 
     if not identifiers:
-        return None
+        return []
     return identifiers
 
 

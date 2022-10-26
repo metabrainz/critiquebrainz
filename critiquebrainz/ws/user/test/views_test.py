@@ -26,9 +26,13 @@ class UserViewsTestCase(WebServiceTestCase):
     def test_user_entity_handler(self):
         user = User(db_users.create(
             display_name='Tester 1',
+            musicbrainz_username='tester1',
             email='tester1@testing.org',
         ))
         resp = self.client.get('/user/{user_id}'.format(user_id=user.id)).json
         self.assertEqual(resp['user']['display_name'], 'Tester 1')
+
+        resp2 = self.client.get('/user/{username}'.format(username=user.musicbrainz_username)).json
+        self.assertEqual(resp2['user']['display_name'], 'Tester 1')
         # Test if user with specified ID does not exist
         self.assert404(self.client.get('/user/e7aad618-fd86-3983-9e77-405e21796eca'))

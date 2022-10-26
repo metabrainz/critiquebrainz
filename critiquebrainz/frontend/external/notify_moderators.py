@@ -1,6 +1,5 @@
 from brainzutils.mail import send_mail
 from flask import current_app, render_template, url_for
-from critiquebrainz.db import users as db_users
 
 
 def mail_review_report(user, reason, review):

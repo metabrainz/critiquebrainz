@@ -29,7 +29,7 @@ def create(*, user_id, name, desc, website, redirect_uri):
             "redirect_uri": redirect_uri,
         }
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         row = connection.execute(sqlalchemy.text("""
             INSERT INTO oauth_client (client_id, client_secret, redirect_uri,
                         user_id, name, "desc", website)
@@ -45,7 +45,7 @@ def create(*, user_id, name, desc, website, redirect_uri):
             "website": website,
             "desc": desc,
         })
-        return dict(row.fetchone())
+        return dict(row.mappings().first())
 
 
 def update(*, client_id, name=None, desc=None, website=None, redirect_uri=None):
@@ -83,7 +83,7 @@ def update(*, client_id, name=None, desc=None, website=None, redirect_uri=None):
     """.format(update_str=update_str))
 
     if update_str:
-        with db.engine.connect() as connection:
+        with db.engine.begin() as connection:
             connection.execute(query, update_data)
 
 
@@ -93,7 +93,7 @@ def delete(client_id):
     Args:
         client_id(str): ID of the OAuth Client.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM oauth_client
@@ -134,7 +134,7 @@ def get_client(client_id):
         """), {
             "client_id": client_id,
         })
-        row = result.fetchone()
+        row = result.mappings().first()
         if not row:
             raise db_exceptions.NoDataFoundException("Can't find OAuth client with ID: {id}".format(id=client_id))
-    return dict(row)
+        return dict(row)

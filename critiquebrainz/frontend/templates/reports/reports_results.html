@@ -23,14 +23,14 @@
   {% set entity = report.review.entity_id | entity_details(entity_type=report.review.entity_type) %}
   <tr>
     <td>{{ report.reported_at | date }}</td>
-    <td><a href="{{ url_for('user.info', user_id=report.user.id) }}">{{ report.user.display_name }}</a></td>
+    <td><a href="{{ url_for('user.info', user_ref= report.user.user_ref) }}">{{ report.user.display_name }}</a></td>
     <td>{{ report.reason }}</td>
     <td>
       <a href="{{ url_for('review.entity', id=report.review.id) }}">
         {{ entity_description(entity, report.review.entity_type) }}
       </a> ({{report.review.entity_type | title}})
     </td>
-    <td><a href="{{ url_for('user.info', user_id=report.review.user.id) }}">{{ report.review.user.display_name }}</a></td>
+    <td><a href="{{ url_for('user.info', user_ref= report.review.user.user_ref) }}">{{ report.review.user.display_name }}</a></td>
     <td>
       <div class="btn-group">
         <a href="{{ url_for('review.redirect_to_entity', review_id=report.review.id, revision_id=report.revision_id) }}"
@@ -51,12 +51,12 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="{{ url_for('user.reviews', user_id=report.review.user.id) }}">
+            <a href="{{ url_for('user.reviews', user_ref= report.review.user.user_ref) }}">
                View review's author
             </a>
           </li>
           <li>
-            <a href="{{ url_for('user.block', user_id=report.review.user.id) }}">
+            <a href="{{ url_for('user.block', user_ref= report.review.user.user_ref) }}">
                Block review's author
             </a>
           </li>

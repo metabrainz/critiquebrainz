@@ -16,10 +16,10 @@ class ReviewViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(ReviewViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
+        self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": u"Tester",
         }))
-        self.hacker = User(db_users.get_or_create(2, "9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
+        self.hacker = User(db_users.get_or_create(2, "Hacker", new_user_data={
             "display_name": u"Hacker!",
         }))
         self.license = db_license.create(

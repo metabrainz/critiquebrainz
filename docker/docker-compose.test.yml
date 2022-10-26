@@ -33,3 +33,4 @@ services:
       - critiquebrainz_redis
     environment:
       PGPASSWORD: critiquebrainz
+      SQLALCHEMY_WARN_20: 1
