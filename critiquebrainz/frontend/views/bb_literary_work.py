@@ -8,6 +8,7 @@ import critiquebrainz.frontend.external.bookbrainz_db.edition_group as bb_editio
 import critiquebrainz.frontend.external.bookbrainz_db.redirects as bb_redirects
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, LITERARY_WORK_REVIEWS_LIMIT, BROWSE_LITERARY_WORK_LIMIT
+from brainzutils.musicbrainz_db.work import fetch_multiple_works
 
 bb_literary_work_bp = Blueprint('bb_literary_work', __name__)
 
@@ -17,12 +18,34 @@ def entity(id):
     id = str(id)
     literary_work = bb_literary_work.get_literary_work_by_bbid(id)
 
-    if literary_work is None:
+    if not literary_work:
         redirected_bbid = bb_redirects.get_redirected_bbid(id)
         if redirected_bbid:
             return redirect(url_for('bb_literary_work.entity', id=redirected_bbid))
 
         raise NotFound(gettext("Sorry, we couldn't find a work with that BookBrainz ID."))
+
+    mb_work_info = {}
+    if literary_work['identifiers']:
+        mb_work_mbid = []
+        for identifier in literary_work['identifiers']:
+            if identifier['name'] == 'MusicBrainz Work ID':
+                mb_work_mbid.append(identifier['value'])
+
+        if mb_work_mbid:
+            mb_work_info = fetch_multiple_works(mb_work_mbid)
+            for work in mb_work_info:
+                reviews, count = db_review.list_reviews(
+                    entity_id=work,
+                    entity_type='work',
+                    sort='popularity',
+                    limit=LITERARY_WORK_REVIEWS_LIMIT,
+                    offset=0,
+                )
+                mb_work_info[work]['reviews'] = reviews
+                mb_work_info[work]['reviews_count'] = count
+
+    mb_work_info = mb_work_info.values()
 
     try:
         reviews_limit = int(request.args.get('limit', default=LITERARY_WORK_REVIEWS_LIMIT))
@@ -92,6 +115,7 @@ def entity(id):
                            edition_groups_info=edition_groups_info,
                            page=page,
                            reviews=reviews,
+                           mb_work_info=mb_work_info,
                            my_review=my_review,
                            count=count,
                            rating_form=rating_form,

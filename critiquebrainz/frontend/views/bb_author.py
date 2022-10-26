@@ -9,6 +9,7 @@ import critiquebrainz.frontend.external.bookbrainz_db.literary_work as bb_litera
 import critiquebrainz.frontend.external.bookbrainz_db.redirects as bb_redirects
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, AUTHOR_REVIEWS_LIMIT
+from brainzutils.musicbrainz_db.artist import fetch_multiple_artists
 
 bb_author_bp = Blueprint('bb_author', __name__)
 
@@ -24,11 +25,33 @@ def entity(id):
     id = str(id)
     author = bb_author.get_author_by_bbid(id)
 
-    if author is None:
+    if not author:
         redirected_bbid = bb_redirects.get_redirected_bbid(id)
         if redirected_bbid:
             return redirect(url_for('bb_author.entity', id=redirected_bbid))
         raise NotFound(gettext("Sorry, we couldn't find an author with that BookBrainz ID."))
+
+    artist_info = {}
+    if author['identifiers']:
+        mb_artist_mbid = []
+        for identifier in author['identifiers']:
+            if identifier['name'] == 'MusicBrainz Artist ID':
+                mb_artist_mbid.append(identifier['value'])
+
+        if mb_artist_mbid:
+            artist_info = fetch_multiple_artists(mb_artist_mbid)
+            for artist in artist_info:
+                reviews, count = db_review.list_reviews(
+                    entity_id=artist,
+                    entity_type='artist',
+                    sort='popularity',
+                    limit=AUTHOR_REVIEWS_LIMIT,
+                    offset=0,
+                )
+                artist_info[artist]['reviews'] = reviews
+                artist_info[artist]['reviews_count'] = count
+
+    artist_info = artist_info.values()
 
     literary_work_type = request.args.get('literary_work_type')
     if not literary_work_type:
@@ -103,6 +126,7 @@ def entity(id):
                            end_date=end_date,
                            begin_area=begin_area,
                            end_area=end_area,
+                           artist_info=artist_info,
                            reviews=reviews,
                            my_review=my_review,
                            count=count,

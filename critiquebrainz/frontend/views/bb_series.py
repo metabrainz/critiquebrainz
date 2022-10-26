@@ -16,7 +16,7 @@ def entity(id):
     id = str(id)
     series = bb_series.get_series_by_bbid(id)
 
-    if series is None:
+    if not series:
         redirected_bbid = bb_redirects.get_redirected_bbid(id)
         if redirected_bbid:
             return redirect(url_for('bb_series.entity', id=redirected_bbid))

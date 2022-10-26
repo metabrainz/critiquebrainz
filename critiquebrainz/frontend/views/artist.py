@@ -10,6 +10,8 @@ import critiquebrainz.frontend.external.musicbrainz_db.artist as mb_artist
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
 from critiquebrainz.frontend.views import get_avg_rating, BROWSE_RELEASE_GROUPS_LIMIT, ARTIST_REVIEWS_LIMIT
 from critiquebrainz.frontend.forms.rate import RatingEditForm
+from critiquebrainz.frontend.external.bookbrainz_db import author as bb_author
+from critiquebrainz.frontend.external.bookbrainz_db.common_entity import get_authors_for_artist
 
 artist_bp = Blueprint('artist', __name__)
 
@@ -24,6 +26,23 @@ def entity(id):
     artist = mb_artist.get_artist_by_mbid(str(id))
     if artist is None:
         raise NotFound(gettext("Sorry, we couldn't find an artist with that MusicBrainz ID."))
+
+    author_bbids = get_authors_for_artist(id)
+    author_info = {}
+    if author_bbids:
+        author_info = bb_author.fetch_multiple_authors(author_bbids)
+        for author in author_info:
+            reviews, count = db_review.list_reviews(
+                entity_id=author,
+                entity_type='bb_author',
+                sort='popularity',
+                limit=ARTIST_REVIEWS_LIMIT,
+                offset=0,
+            )
+            author_info[author]['reviews'] = reviews
+            author_info[author]['reviews_count'] = count
+
+    author_info = author_info.values()
 
     # Note that some artists might not have a list of members because they are not a band
     band_members = _get_band_members(artist)
@@ -89,6 +108,7 @@ def entity(id):
         release_type=release_type,
         release_groups=release_groups,
         page=page,
+        author_info=author_info,
         reviews=reviews,
         reviews_limit=artist_reviews_limit,
         reviews_count=reviews_count,
