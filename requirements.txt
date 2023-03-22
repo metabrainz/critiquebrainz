@@ -26,7 +26,7 @@ Jinja2==3.1.2
 werkzeug==2.2.3
 Flask-DebugToolbar==0.13.1
 Flask-UUID==0.2
-sentry-sdk[flask]==1.5.8
+sentry-sdk[flask]==1.14.0
 redis==4.2.2
 msgpack==0.5.6
 requests==2.27.1
