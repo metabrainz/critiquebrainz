@@ -21,7 +21,7 @@ class LiteraryWorkTestCase(DataTestCase):
         literary_works = literary_work.fetch_multiple_literary_works([self.bbid2, self.bbid3])
         self.assertEqual(len(literary_works), 2)
         self.assertEqual(literary_works[self.bbid2]["bbid"], self.bbid2)
-        self.assertEqual(literary_works[self.bbid2]["name"], "Harry Potter and the Philosopher's Stone")
+        self.assertEqual(literary_works[self.bbid2]["name"], "Harry Potter and the Philosopher’s Stone")
         self.assertEqual(literary_works[self.bbid2]["work_type"], "Novel")
         self.assertEqual(literary_works[self.bbid3]["bbid"], self.bbid3)
         self.assertEqual(literary_works[self.bbid3]["name"], "Oliver Twist")
@@ -33,4 +33,4 @@ class LiteraryWorkTestCase(DataTestCase):
         self.assertEqual(edition_group_bbids_1[0], "02ae4cfc-6412-4693-93b1-e24dce5e31f9")
 
         edition_group_bbids_2 = literary_work.fetch_edition_groups_for_works(self.bbid3)
-        self.assertEqual(len(edition_group_bbids_2), 0)
+        self.assertEqual(len(edition_group_bbids_2), 1)
