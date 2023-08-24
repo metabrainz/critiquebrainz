@@ -18,15 +18,17 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-02-12 16:21+0000\n"
-"PO-Revision-Date: 2021-03-02 10:23+0000\n"
-"Last-Translator: Transifex Bot <>\n"
-"Language-Team: German (http://www.transifex.com/musicbrainz/critiquebrainz/language/de/)\n"
+"PO-Revision-Date: 2023-08-29 23:27+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: German <https://translations.metabrainz.org/projects/"
+"critiquebrainz/frontend/de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.0\n"
-"Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
 msgid ""
@@ -102,13 +104,13 @@ msgstr "Aufnahmestudio"
 
 #: critiquebrainz/frontend/forms/comment.py:11
 msgid "Add a comment..."
-msgstr ""
+msgstr "Kommentar hinzufügen …"
 
 #: critiquebrainz/frontend/forms/comment.py:12
 #: critiquebrainz/frontend/views/comment.py:62
 #: critiquebrainz/frontend/views/comment.py:105
 msgid "Comment must not be empty!"
-msgstr ""
+msgstr "Kommentar darf nicht leer sein."
 
 #: critiquebrainz/frontend/forms/log.py:8
 msgid "You need to specify a reason for taking this action."
@@ -145,7 +147,7 @@ msgstr "Zeige meinen Gravatar"
 
 #: critiquebrainz/frontend/forms/profile.py:16
 msgid "Preferred License Choice"
-msgstr ""
+msgstr "Bevorzugte Lizenzauswahl"
 
 #: critiquebrainz/frontend/forms/profile.py:17
 msgid ""
@@ -153,6 +155,9 @@ msgid ""
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
 "target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
+"Kommerzielle Nutzung meiner Rezension erlauben (<a href=\"https"
+"://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3."
+"0-Lizenz</a>)"
 
 #: critiquebrainz/frontend/forms/profile.py:18
 msgid ""
@@ -160,6 +165,9 @@ msgid ""
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
+"Kommerzielle Nutzung dieser Rezension nicht erlauben, außer wenn durch "
+"MetaBrainz Stiftung genehmigt (<a href=\"https://creativecommons.org/"
+"licenses/by-nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0-Lizenz</a>)"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
@@ -238,7 +246,10 @@ msgid ""
 "Allow commercial use of this review(<a "
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
 "target=\"_blank\">CC BY-SA 3.0 license</a>)"
-msgstr "Erlaube die kommerzielle Nutzung dieser Rezension (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 Lizenz</a>) "
+msgstr ""
+"Erlaube die kommerzielle Nutzung dieser Rezension (<a href=\"https"
+"://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 "
+"Lizenz</a>)"
 
 #: critiquebrainz/frontend/forms/review.py:38
 msgid ""
@@ -249,11 +260,11 @@ msgstr "Kommerzielle Nutzung dieser Rezension nicht erlauben, nur wenn durch Met
 
 #: critiquebrainz/frontend/forms/review.py:40
 msgid "You need to choose a license"
-msgstr ""
+msgstr "Es muss eine Lizenz gewählt werden"
 
 #: critiquebrainz/frontend/forms/review.py:41
 msgid "Remember this license choice for further preference"
-msgstr ""
+msgstr "Diese Lizenzwahl zukünftig merken"
 
 #: critiquebrainz/frontend/forms/review.py:42
 #: critiquebrainz/frontend/forms/review.py:61
@@ -302,20 +313,20 @@ msgstr "[Unbekannter Künstler]"
 #: critiquebrainz/frontend/templates/review/entity/artist.html:18
 #, python-format
 msgid "%(artist)s"
-msgstr ""
+msgstr "%(artist)s"
 
 #: critiquebrainz/frontend/templates/entity_review.html:9
 #: critiquebrainz/frontend/templates/review/entity/label.html:18
 #, python-format
 msgid "%(label)s"
-msgstr ""
+msgstr "%(label)s"
 
 #: critiquebrainz/frontend/templates/entity_review.html:9
 #: critiquebrainz/frontend/templates/review/entity/label.html:6
 #: critiquebrainz/frontend/templates/review/entity/label.html:15
 #: critiquebrainz/frontend/templates/review/modify/label.html:8
 msgid "[Unknown label]"
-msgstr ""
+msgstr "[Unbekanntes Label]"
 
 #: critiquebrainz/frontend/templates/entity_review.html:11
 #: critiquebrainz/frontend/templates/review/entity/event.html:18
@@ -355,7 +366,7 @@ msgstr "[Unbekannter Ort]"
 #: critiquebrainz/frontend/templates/review/entity/work.html:18
 #, python-format
 msgid "%(work)s"
-msgstr ""
+msgstr "%(work)s"
 
 #: critiquebrainz/frontend/templates/entity_review.html:15
 #: critiquebrainz/frontend/templates/review/entity/work.html:6
@@ -363,7 +374,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/work.html:8
 #: critiquebrainz/frontend/templates/user/reviews.html:53
 msgid "[Unknown work]"
-msgstr ""
+msgstr "[Unbekanntes Werk]"
 
 #: critiquebrainz/frontend/templates/footer.html:5
 msgid "Admin zone:"
@@ -520,7 +531,7 @@ msgstr "Ort"
 #: critiquebrainz/frontend/templates/search/selector.html:22
 #: critiquebrainz/frontend/templates/search/selector.html:114
 msgid "Work"
-msgstr ""
+msgstr "Werk"
 
 #: critiquebrainz/frontend/templates/macros.html:60
 #: critiquebrainz/frontend/templates/navbar.html:97
@@ -545,7 +556,7 @@ msgstr "Künstler"
 #: critiquebrainz/frontend/templates/search/selector.html:25
 #: critiquebrainz/frontend/templates/search/selector.html:134
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: critiquebrainz/frontend/templates/macros.html:74
 #: critiquebrainz/frontend/templates/search/selector.html:13
@@ -554,11 +565,11 @@ msgstr "Veröffentlichungsgruppe"
 
 #: critiquebrainz/frontend/templates/macros.html:79
 msgid "We don't have cover art for this release group."
-msgstr ""
+msgstr "Wir haben für diese Veröffentlichungsgruppe kein Cover-Art."
 
 #: critiquebrainz/frontend/templates/macros.html:83
 msgid "See how to add cover art!"
-msgstr ""
+msgstr "Lerne, wie man Cover-Art hinzufügt!"
 
 #: critiquebrainz/frontend/templates/macros.html:104
 #, python-format
@@ -591,12 +602,12 @@ msgstr "Basierend auf %(number)s Bewertungen"
 #: critiquebrainz/frontend/templates/macros.html:180
 #, python-format
 msgid "%(user)s"
-msgstr ""
+msgstr "%(user)s"
 
 #: critiquebrainz/frontend/templates/macros.html:197
 #, python-format
 msgid "<h4><a href=\"%(link)s\">Sign in</a> to rate!</h4>"
-msgstr ""
+msgstr "<h4>Zum Bewerten <a href=\"%(link)s\">einloggen</a>!</h4>"
 
 #: critiquebrainz/frontend/templates/navbar.html:6
 msgid "Toggle navigation"
@@ -703,13 +714,13 @@ msgstr "von %(reviewer)s"
 #: critiquebrainz/frontend/templates/label/entity.html:59
 #: critiquebrainz/frontend/templates/work/entity.html:59
 msgid "Hide reviews"
-msgstr ""
+msgstr "Rezensionen verbergen"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:96
 #: critiquebrainz/frontend/templates/label/entity.html:61
 #: critiquebrainz/frontend/templates/work/entity.html:61
 msgid "Show all reviews"
-msgstr ""
+msgstr "Alle Rezensionen anzeigen"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:102
 msgid "Discography"
@@ -837,7 +848,7 @@ msgstr "Veranstaltungsinformationen"
 
 #: critiquebrainz/frontend/templates/event/entity.html:132
 msgid "External reviews"
-msgstr ""
+msgstr "Externe Rezensionen"
 
 #: critiquebrainz/frontend/templates/index/about.html:8
 msgid "What is CritiqueBrainz?"
@@ -890,7 +901,7 @@ msgstr "\n<strong>Bitte beachte dies ist eine frühe Version der Regelseite</str
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:14
 msgid "General tips"
-msgstr ""
+msgstr "Allgemeine Tipps"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:16
 msgid "Read some good reviews"
@@ -904,7 +915,7 @@ msgstr "Du kannst viele sehr gute Rezensionen auf CritiqueBrainz und anderen Web
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:20
 msgid "Write in a comfortable voice"
-msgstr ""
+msgstr "Schreibe in einer angenehmen Sprache"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:21
 msgid ""
@@ -920,7 +931,9 @@ msgstr "Rezensionen auf CritiqueBrainz müssen nicht in Englisch sein."
 msgid ""
 "You are more than welcome to write review in a language that you prefer to use. Choose a language in\n"
 "                which you can express your emotions/thoughts freely."
-msgstr "Wähle die Sprache die du bevorzugst und in welcher du in der Lage bist deine Emotionen und Gedanken frei auszudrücken. "
+msgstr ""
+"Wähle die Sprache die du bevorzugst und in welcher du in der Lage bist deine "
+"Emotionen und Gedanken frei auszudrücken."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:30
 msgid "Formatting"
@@ -939,7 +952,7 @@ msgstr "Gut formatierte Rezensionen sind einfacher zu lesen und zu verstehen."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:40
 msgid "Content tips"
-msgstr ""
+msgstr "Inhaltliche Tipps"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:43
 msgid "Write a short description."
@@ -951,86 +964,114 @@ msgstr "Liefere einen Kontext zum Objekt deiner Rezension."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:47
 msgid "Follow your thinking and feelings."
-msgstr ""
+msgstr "Folge deinen Gedanken und deinem Gefühl."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:48
 msgid ""
 "A good reviewer is one who reviews a something based on what <em>they</em> "
 "feel rather than others."
 msgstr ""
+"Ein guter Rezensent ist jemand, der eine Sache auf der Grundlage seiner "
+"<em>eigenen</em> Gefühle und nicht der anderer beurteilt."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:51
 msgid "Good reviews are neither too short nor too long"
-msgstr ""
+msgstr "Gute Rezensionen sind weder zu kurz noch zu lang"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:52
 msgid ""
 "It's better to make your reviews neither too short nor too long. Try to write something which gives readers\n"
 "            a clear image as to what something is like while not being too boring."
 msgstr ""
+"Es ist besser, wenn deine Rezensionen weder zu kurz noch zu lang sind. "
+"Versuche, etwas zu schreiben, das den Lesern ein klares Bild davon "
+"vermittelt, wie etwas ist, aber dabei nicht zu langweilig ist."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:56
 msgid "Don't mention just the factual data."
-msgstr ""
+msgstr "Erwähne nicht nur die faktischen Daten."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:57
 msgid ""
 "Sometimes people mention only factual data in their reviews which makes a "
 "review look more like a press release."
 msgstr ""
+"Manchmal werden in Rezensionen nur Fakten genannt, so dass sich die "
+"Rezension eher wie eine Pressemitteilung ließt."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:61
 msgid "Specific review types"
-msgstr ""
+msgstr "Spezifische Rezensionsarten"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:62
 msgid ""
 "In addition to the general tips given above, here are some specific tips for each review type which might\n"
 "           help you to strengthen your review."
 msgstr ""
+"Zusätzlich zu den oben genannten allgemeinen Tipps findest du hier einige "
+"spezifische Tipps für jede Art von Rezension, die dir helfen könnten, eine "
+"bessere Rezension zu schreiben."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:65
 msgid "Albums (Release Groups)"
-msgstr ""
+msgstr "Alben (Veröffentlichungsgruppen)"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:68
 msgid ""
 "Describing the instrumental arrangement - Mentioning about the rhythmic effects, describing the variety of\n"
 "      instruments used in the song and how were the digital effects etc."
 msgstr ""
+"Beschreibung des instrumentalen Arrangements – Erwähnung der rhythmischen "
+"Effekte, Beschreibung der Vielfalt der Instrumente, die in dem Lied "
+"verwendet wurden, und wie die digitalen Effekte waren usw."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:72
 msgid "You may tell about lyrics and the recording quality -"
-msgstr ""
+msgstr "Du kannst über die Texte und die Aufnahmequalität schreiben –"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:75
+#, fuzzy
 msgid ""
 "Lyrics is what makes a song/album meaningful. You can always right about how were the lyrics? Was it\n"
 "          meaningful? Did it match the music?"
 msgstr ""
+"Texte geben einem Lied oder Album Aussagekraft. Du kannst immer darüber "
+"schreiben, wie die Texte waren. Sind sie bedeutsam? Passen sie zur Musik?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:79
 msgid ""
 "Recording quality matters a lot. If it's good it's good but if it's bad it will flop the whole album. It's\n"
 "          always better to note these things and mention about it in your review."
 msgstr ""
+"Die Aufnahmequalität spielt eine große Rolle. Wenn sie gut ist, ist sie gut "
+"ist. Aber wenn sie schlecht ist, wird das ganze Album ein Flop. Es ist immer "
+"besser, diese Dinge zu beachten und in der Rezension zu erwähnen."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:85
+#, fuzzy
 msgid ""
 "Be clear with your conclusion - If it's a must hear album give it some direction. It's always good to mention\n"
 "      the genre of the music. You may try to compare it with some other album which has been already released having the\n"
 "      same genre which will give the readers an idea as to what they can expect."
 msgstr ""
+"Treffe eine Klare Aussage – Wenn es ein „Must-Hear“-Album ist, mach das "
+"klar. Es ist immer gut das Musikgenre zu erwähnen. Du kannst versuchen, es "
+"mit einem anderen Album zu vergleichen, das bereits im selben Genre "
+"veröffentlicht wurde. Das gibt den Lesern eine Vorstellung davon, was sie "
+"erwarten können."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:91
 msgid "Events"
-msgstr ""
+msgstr "Veranstaltungen"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:94
 msgid ""
 "Describe the event place - Event reviews are enhanced by description of the event venue as to how big was it?\n"
 "      Was it sufficient for the crowd? or How well the band/artist sound in it?"
 msgstr ""
+"Beschreibe den Veranstaltungsort – Die Beschreibung des Veranstaltungsortes "
+"verbessert die Veranstaltungs-Rezension: Wie groß war er? War er ausreichend "
+"für die Menge? oder Wie gut klang die Band/der Künstler darin?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:98
 msgid ""
@@ -1038,6 +1079,10 @@ msgid ""
 "      favourite songs played, you can write about the staging of the band. Were there any things which you didn't like?\n"
 "      If yes, then why?"
 msgstr ""
+"Schreibe über die dort gespielte Musik – Du kannst beschreiben, welche "
+"Lieder auf der Veranstaltung gespielt wurden. Welches waren deine "
+"Lieblingslieder? Du kannst über die Inszenierung der Band schreiben. Gab es "
+"auch Dinge, die dir nicht gefallen haben? Wenn ja, warum?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:103
 msgid ""
@@ -1045,74 +1090,95 @@ msgid ""
 "      moments that took place. You may also write about special guests(if any) also any special effects in the event\n"
 "      which caught everyone's attention."
 msgstr ""
+"Besondere Momente, Effekte und Überraschungen – Oft gibt es bei jeder "
+"Veranstaltung besondere Momente, die du beschreiben kannst. Momente, die "
+"stattgefunden haben. Du kannst auch über besondere Gäste (falls vorhanden) "
+"oder Spezialeffekte, die die Aufmerksamkeit aller auf sich zogen, schreiben."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:108
 msgid ""
 "Writing about Event atmosphere - You may always describe about the crowd, how well the artists/band were able to\n"
 "      entertain the crowd? Was the crowd exciting or was it a monotonous atmosphere?"
 msgstr ""
+"Über die Atmosphäre der Veranstaltung schreiben – Du kannst immer über das "
+"Publikum schreiben: Wie gut konnten die Künstler oder die Band die Menge "
+"unterhalten? War die Menge begeistert oder war es eine eintönige Atmosphäre?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:113
 msgid "Places"
-msgstr ""
+msgstr "Örtlichkeiten"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:116
 msgid ""
 "Description about the location - You may describe where the place is located, whether it's located in the heart\n"
 "      of the city or is it located on the periphery."
 msgstr ""
+"Beschreibung der Örtlichkeit – Du kannst beschreiben, wo sich der Ort "
+"befindet, ob er im Herzen der Stadt oder in der Peripherie liegt."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:120
 msgid ""
 "Writing about the architecture - If it's a musical stadium people want to know about how many people can the\n"
 "      place occupy, how well the artist sounds in each corner of the place etc."
 msgstr ""
+"Über die Architektur schreiben – Wenn es sich um ein Musikstadion handelt, "
+"wollen die Leute wissen, wie viele Leute dort Platz finden, wie gut der "
+"Künstler in jeder Ecke des Stadions klingt usw."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:126
 msgid "💡 Note:"
-msgstr ""
+msgstr "💡 Hinweis:"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:127
 msgid ""
 "Try to be <strong>honest</strong> while reviewing, simply don't follow the trend. Review the album as to what\n"
 "    you felt. And try to follow active voice."
 msgstr ""
+"Versuche <strong>ehrlich</strong> mit deiner Rezension zu sein, folge nicht "
+"einfach dem Trend. Bespreche das Album so, wie du es gefühlt hast. Versuche "
+"im Aktiv zu schreiben."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:131
 msgid "Common mistakes"
-msgstr ""
+msgstr "Häufige Fehler"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:133
 msgid "Writing long reviews that lack specific details."
 msgstr ""
+"Das Verfassen langer Rezensionen, denen es an spezifischen Details fehlt."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:134
 msgid ""
 "Forgetting to check the factual information in the review after completing "
 "the writing process."
 msgstr ""
+"Vergessen, die sachlichen Informationen in der Rezension nach Abschluss des "
+"Schreibvorgangs zu überprüfen."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:135
 msgid "Overlooking proofreading</strong> the review after finishing it."
-msgstr ""
+msgstr "Vergessen des Korrekturlesens der Rezension nach deren Fertigstellung."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:136
 msgid "Mistakes such as punctuation, typo errors, capitalization etc."
-msgstr ""
+msgstr "Fehler wie Zeichensetzung, Tippfehler, Großschreibung usw."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:137
 msgid ""
 "Writing in slangs - Try to write in proper English (or whatever language you prefer).\n"
 "              It's better not to write reviews in slangs."
 msgstr ""
+"Schreiben in Umgangssprache. Versuche, in richtigem Englisch oder Deutsch ("
+"oder deiner bevorzugten Sprache) zu schreiben. Es ist besser, keine "
+"Rezensionen in Umgangssprache zu schreiben."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:141
 msgid "Additional material"
-msgstr ""
+msgstr "Zusätzliches Material"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:142
 msgid "Some good review websites:"
-msgstr ""
+msgstr "Einige gute Rezensions-Webseiten:"
 
 #: critiquebrainz/frontend/templates/index/index.html:10
 msgid "Welcome to CritiqueBrainz!"
@@ -1132,25 +1198,25 @@ msgstr "CritiqueBrainz basiert auf Daten von MusicBrainz - die offene Musik-Enzy
 
 #: critiquebrainz/frontend/templates/index/index.html:28
 msgid "Number"
-msgstr ""
+msgstr "Nummer"
 
 #: critiquebrainz/frontend/templates/index/index.html:33
 msgid "Number of Reviews"
-msgstr ""
+msgstr "Anzahl Rezensionen"
 
 #: critiquebrainz/frontend/templates/index/index.html:34
 #, python-format
 msgid "%(review_count)s"
-msgstr ""
+msgstr "%(review_count)s"
 
 #: critiquebrainz/frontend/templates/index/index.html:37
 msgid "Number of Users"
-msgstr ""
+msgstr "Anzahl Benutzer"
 
 #: critiquebrainz/frontend/templates/index/index.html:38
 #, python-format
 msgid "%(user_count)s"
-msgstr ""
+msgstr "%(user_count)s"
 
 #: critiquebrainz/frontend/templates/index/index.html:50
 msgid "Popular reviews"
@@ -1166,7 +1232,7 @@ msgstr "Alle Rezensionen anzeigen..."
 
 #: critiquebrainz/frontend/templates/label/entity.html:70
 msgid "Label information"
-msgstr ""
+msgstr "Labelinformationen"
 
 #: critiquebrainz/frontend/templates/log/action.html:12
 #, python-format
@@ -1176,7 +1242,7 @@ msgstr "Rezension von „%(rg)s“ durch %(user)s verstecken"
 #: critiquebrainz/frontend/templates/log/action.html:14
 #, python-format
 msgid "Unhide %(user)s's review of \"%(rg)s\""
-msgstr ""
+msgstr "Rezension von „%(rg)s“ durch %(user)s anzeigen"
 
 #: critiquebrainz/frontend/templates/log/action.html:16
 #, python-format
@@ -1186,7 +1252,7 @@ msgstr "%(user)s blockieren"
 #: critiquebrainz/frontend/templates/log/action.html:18
 #, python-format
 msgid "Unblock %(user)s"
-msgstr ""
+msgstr "%(user)s entsperren"
 
 #: critiquebrainz/frontend/templates/log/action.html:39
 msgid "Please provide a reason for taking this action (required)"
@@ -1220,12 +1286,12 @@ msgstr "Rezension"
 #: critiquebrainz/frontend/templates/log/log_results.html:18
 #, python-format
 msgid "%(admin)s hid a %(review)s written by %(user)s"
-msgstr ""
+msgstr "%(admin)s hat %(review)s geschrieben von %(user)s versteckt"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:23
 #, python-format
 msgid "%(admin)s unhid a %(review)s written by %(user)s"
-msgstr ""
+msgstr "%(admin)s hat %(review)s geschrieben von %(user)s eingeblendet"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:28
 #, python-format
@@ -1235,7 +1301,7 @@ msgstr "%(admin)s blockierte %(user)s"
 #: critiquebrainz/frontend/templates/log/log_results.html:33
 #, python-format
 msgid "%(admin)s unblocked %(user)s"
-msgstr ""
+msgstr "%(admin)s hat %(user)s entsperrt"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:37
 msgid "Reason:"
@@ -1353,7 +1419,7 @@ msgstr "Ortsinformationen"
 
 #: critiquebrainz/frontend/templates/place/entity.html:122
 msgid "Part of"
-msgstr ""
+msgstr "Teil von"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:3
 #: critiquebrainz/frontend/templates/profile/delete.html:6
@@ -1557,11 +1623,11 @@ msgstr "Rezension löschen"
 #: critiquebrainz/frontend/templates/review/delete_comment.html:13
 #, python-format
 msgid "Edit comment on %(user)s's review of \"%(entity)s\""
-msgstr ""
+msgstr "Kommentar in %(user)ss Rezension von „%(entity)s“ bearbeiten"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:17
 msgid "Deleting comment!"
-msgstr ""
+msgstr "Lösche Kommentar!"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:21
 #, python-format
@@ -1569,10 +1635,12 @@ msgid ""
 "Are you sure you want to delete your comment on %(user)s's review of "
 "\"%(entity)s\"?"
 msgstr ""
+"Bist du sicher, dass du deinen Kommentar für %(user)ss Rezension von "
+"„%(entity)s“ löschen möchtest?"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:27
 msgid "Delete comment"
-msgstr ""
+msgstr "Kommentar löschen"
 
 #: critiquebrainz/frontend/templates/review/report.html:6
 #: critiquebrainz/frontend/templates/review/report.html:9
@@ -1632,7 +1700,7 @@ msgstr "Wähle zwei verschiedene Revisionen aus"
 #: critiquebrainz/frontend/templates/review/entity/artist.html:7
 #, python-format
 msgid "Review of \"%(artist)s\" by %(user)s"
-msgstr ""
+msgstr "Rezension von „%(artist)s“ von %(user)s"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:18
 msgid "<b>This review has not been published yet!</b> Only you can see it."
@@ -1706,19 +1774,19 @@ msgstr "Diese Rezension löschen"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:11
 msgid "Delete this comment"
-msgstr ""
+msgstr "Diesen Kommentar löschen"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:15
 msgid "Edit this comment"
-msgstr ""
+msgstr "Diesen Kommentar bearbeiten"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:43
 msgid "Add comment"
-msgstr ""
+msgstr "Kommentar hinzufügen"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:78
 msgid "Update comment"
-msgstr ""
+msgstr "Kommentar aktualisieren"
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:7
 #, python-format
@@ -1728,7 +1796,7 @@ msgstr "Rezension von „%(event)s“ von %(user)s"
 #: critiquebrainz/frontend/templates/review/entity/label.html:7
 #, python-format
 msgid "Review of \"%(label)s\" by %(user)s"
-msgstr ""
+msgstr "Rezension von „%(label)s“ von %(user)s"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:12
 #, python-format
@@ -1738,7 +1806,7 @@ msgstr "Rezension von „%(place)s“ von %(user)s"
 #: critiquebrainz/frontend/templates/review/entity/work.html:7
 #, python-format
 msgid "Review of \"%(work)s\" by %(user)s"
-msgstr ""
+msgstr "Rezension von „%(work)s“ von %(user)s"
 
 #: critiquebrainz/frontend/templates/review/modify/artist.html:10
 #: critiquebrainz/frontend/templates/review/modify/label.html:13
@@ -1768,6 +1836,10 @@ msgid ""
 "You can read the <a href=\"%(style_guide_url)s\" target=\"_blank\">style guide</a> for writing good CritiqueBrainz reviews!<br/>\n"
 "                Furthermore, you can use <a href=\"%(markdown_url)s\" target=\"_blank\">Markdown</a> syntax to apply custom formatting."
 msgstr ""
+"Lese die <a href=\"%(style_guide_url)s\" target=\"_blank\">Stilrichtlinien</"
+"a> für das Schreiben guter CritiqueBrainz-Rezensionen!<br/>\n"
+"Außerdem kannst du die <a href=\"%(markdown_url)s\" target=\"_blank\""
+">Markdown-Syntax</a> verwenden, um eigene Formatierungen vorzunehmen."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:34
 msgid "Please, specify language of this review:"
@@ -1837,7 +1909,7 @@ msgstr "Ort"
 #: critiquebrainz/frontend/templates/search/index.html:84
 #: critiquebrainz/frontend/templates/search/selector.html:207
 msgid "Artists"
-msgstr ""
+msgstr "Künstler"
 
 #: critiquebrainz/frontend/templates/review/modify/work.html:18
 #: critiquebrainz/frontend/templates/search/results.html:35
@@ -1889,7 +1961,7 @@ msgstr "Sortiername"
 #: critiquebrainz/frontend/templates/search/index.html:83
 #: critiquebrainz/frontend/templates/search/selector.html:206
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: critiquebrainz/frontend/templates/search/index.html:95
 #: critiquebrainz/frontend/templates/search/selector.html:219
@@ -1936,11 +2008,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/search/selector.html:179
 msgid "Gender"
-msgstr ""
+msgstr "Geschlecht"
 
 #: critiquebrainz/frontend/templates/search/selector.html:180
 msgid "Area"
-msgstr ""
+msgstr "Gebiet"
 
 #: critiquebrainz/frontend/templates/search/selector.html:224
 msgid "Continue"
@@ -1948,16 +2020,16 @@ msgstr "Weiter"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:14
 msgid "Top 10 Contributors Overall"
-msgstr ""
+msgstr "Top 10 Beiträge insgesamt"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:21
 msgid "User"
-msgstr ""
+msgstr "Benutzer"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:23
 #: critiquebrainz/frontend/templates/user/info.html:48
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:24
 #: critiquebrainz/frontend/templates/user/info.html:42
@@ -1966,7 +2038,7 @@ msgstr "Stimmen"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:25
 msgid "Total Score"
-msgstr ""
+msgstr "Gesamtwertung"
 
 #: critiquebrainz/frontend/templates/user/base.html:27
 #: critiquebrainz/frontend/templates/user/info.html:3
@@ -2037,19 +2109,19 @@ msgstr "Älter"
 
 #: critiquebrainz/frontend/templates/work/entity.html:67
 msgid "Recordings"
-msgstr ""
+msgstr "Aufnahmen"
 
 #: critiquebrainz/frontend/templates/work/entity.html:69
 msgid "No recordings found"
-msgstr ""
+msgstr "Keine Aufnahmen gefunden"
 
 #: critiquebrainz/frontend/templates/work/entity.html:76
 msgid "Length"
-msgstr ""
+msgstr "Länge"
 
 #: critiquebrainz/frontend/templates/work/entity.html:117
 msgid "Work information"
-msgstr ""
+msgstr "Werksinformationen"
 
 #: critiquebrainz/frontend/views/artist.py:26
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
@@ -2058,51 +2130,56 @@ msgstr "Leider konnten wir keinen Künstler mit dieser MusicBrainz-ID finden."
 #: critiquebrainz/frontend/views/comment.py:39
 #, python-format
 msgid "Can't find a comment with ID: %(comment_id)s"
-msgstr ""
+msgstr "Kann keinen Kommentar mit ID %(comment_id)s finden"
 
 #: critiquebrainz/frontend/views/comment.py:50
 msgid ""
 "You are not allowed to write new comments because your account has been "
 "blocked by a moderator."
 msgstr ""
+"Du kannst keine neuen Kommentare schreiben, weil dein Konto von einem "
+"Moderator gesperrt wurde."
 
 #: critiquebrainz/frontend/views/comment.py:59
 msgid "Comment has been saved!"
-msgstr ""
+msgstr "Kommentar wurde gespeichert!"
 
 #: critiquebrainz/frontend/views/comment.py:73
 msgid "Only the author can delete this comment."
-msgstr ""
+msgstr "Nur der Autor kann diesen Kommentar löschen."
 
 #: critiquebrainz/frontend/views/comment.py:76
 msgid "Comment has been deleted."
-msgstr ""
+msgstr "Kommentar wurde gelöscht."
 
 #: critiquebrainz/frontend/views/comment.py:88
 msgid "Only the author can edit this comment."
-msgstr ""
+msgstr "Nur der Autor kann diesen Kommentar bearbeiten."
 
 #: critiquebrainz/frontend/views/comment.py:90
 msgid ""
 "You are not allowed to edit comments because your account has been blocked "
 "by a moderator."
 msgstr ""
+"Du kannst keine Kommentare bearbeiten, weil dein Konto von einem Moderator "
+"gesperrt wurde."
 
 #: critiquebrainz/frontend/views/comment.py:100
 msgid "Comment has been updated."
-msgstr ""
+msgstr "Kommentar wurde aktualisiert."
 
 #: critiquebrainz/frontend/views/comment.py:102
 msgid "You must change some content of the comment to update it!"
-msgstr ""
+msgstr "Du musst den Inhalt des Kommentars ändern, um ihn speichern zu können!"
 
 #: critiquebrainz/frontend/views/event.py:42
 msgid "Sorry, we couldn't find an event with that MusicBrainz ID."
 msgstr ""
+"Leider konnten wir keine Veranstaltung mit dieser MusicBrainz-ID finden."
 
 #: critiquebrainz/frontend/views/label.py:21
 msgid "Sorry, we couldn't find a label with that MusicBrainz ID."
-msgstr ""
+msgstr "Leider konnten wir kein Label mit dieser MusicBrainz-ID finden."
 
 #: critiquebrainz/frontend/views/log.py:18
 msgid "No logs to display."
@@ -2136,11 +2213,11 @@ msgstr "Spotify-Zuordnung wurde hinzugefügt!"
 
 #: critiquebrainz/frontend/views/mapping.py:131
 msgid "Could not add Spotify mapping!"
-msgstr ""
+msgstr "Spotify-Zuordnung konnte nicht hinzugefügt werden!"
 
 #: critiquebrainz/frontend/views/mapping.py:164
 msgid "This album is not mapped to Spotify yet!"
-msgstr "Dieses Album ist noch nicht Spotify zugeordnet. "
+msgstr "Dieses Album ist noch nicht Spotify zugeordnet."
 
 #: critiquebrainz/frontend/views/mapping.py:170
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
@@ -2148,7 +2225,7 @@ msgstr "Die falsche Spotify-Zuordnung wurde gemeldet. Vielen Dank!"
 
 #: critiquebrainz/frontend/views/mapping.py:172
 msgid "Could not report incorrect Spotify mapping!"
-msgstr ""
+msgstr "Falsche Spotify-Zuordnung konnte nicht gemeldet werden!"
 
 #: critiquebrainz/frontend/views/place.py:39
 msgid "Sorry, we couldn't find a place with that MusicBrainz ID."
@@ -2175,6 +2252,8 @@ msgid ""
 "You are not allowed to rate any entity because your account has been blocked"
 " by a moderator."
 msgstr ""
+"Du darfst dieses Element nicht bewerten, weil dein Konto durch einen "
+"Moderator blockiert wurde."
 
 #: critiquebrainz/frontend/views/release.py:19
 msgid "Sorry, we couldn't find a release with that MusicBrainz ID."
@@ -2191,7 +2270,7 @@ msgstr "Meldung wurde archiviert."
 #: critiquebrainz/frontend/views/review.py:38
 #, python-format
 msgid "Can't find a review with ID: %(review_id)s!"
-msgstr ""
+msgstr "Kann keine Rezension mit ID %(review_id)s finden!"
 
 #: critiquebrainz/frontend/views/review.py:58
 msgid "No reviews to display."
@@ -2247,7 +2326,7 @@ msgstr "Du darfst keine neuen Rezensionen schreiben, weil dein Konto durch einen
 
 #: critiquebrainz/frontend/views/review.py:240
 msgid "You have already published a review for this entity"
-msgstr ""
+msgstr "Du hast für dieses Element bereits eine Rezension veröffentlicht"
 
 #: critiquebrainz/frontend/views/review.py:244
 msgid "You have exceeded your limit of reviews per day."
@@ -2273,7 +2352,7 @@ msgstr "Du kannst nur eine Rezension für ein Objekt schreiben, das auf MusicBra
 #: critiquebrainz/frontend/views/review.py:279
 #: critiquebrainz/frontend/views/review.py:290
 msgid "Please provide some text or a rating for this review."
-msgstr ""
+msgstr "Bitte geben Sie einen Text oder eine Bewertung für diese Rezension ein."
 
 #: critiquebrainz/frontend/views/review.py:302
 msgid "Only author can edit this review."
@@ -2347,7 +2426,7 @@ msgstr "Rezension wird bereits verborgen."
 
 #: critiquebrainz/frontend/views/review.py:478
 msgid "Review is not hidden."
-msgstr ""
+msgstr "Rezension ist nicht versteckt."
 
 #: critiquebrainz/frontend/views/review.py:486
 msgid "Review is not hidden anymore."
@@ -2363,7 +2442,7 @@ msgstr "Dieses Konto wurde gesperrt."
 
 #: critiquebrainz/frontend/views/user.py:81
 msgid "This account is not blocked."
-msgstr ""
+msgstr "Dieses Konto wurde blockiert."
 
 #: critiquebrainz/frontend/views/user.py:89
 msgid "This user account has been unblocked."
@@ -2371,4 +2450,4 @@ msgstr "Dieses Konto wurde entsperrt."
 
 #: critiquebrainz/frontend/views/work.py:21
 msgid "Sorry, we couldn't find a work with that MusicBrainz ID."
-msgstr ""
+msgstr "Leider konnten wir kein Werk mit dieser MusicBrainz-ID finden."
