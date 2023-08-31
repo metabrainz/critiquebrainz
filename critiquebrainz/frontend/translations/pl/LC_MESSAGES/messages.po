@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-05-31 20:20+0100\n"
+"POT-Creation-Date: 2023-08-31 13:30+0100\n"
 "PO-Revision-Date: 2021-03-02 10:23+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Polish (http://www.transifex.com/musicbrainz/critiquebrainz/"
@@ -537,7 +537,7 @@ msgid "Release Group"
 msgstr "Grupa wydań"
 
 #: critiquebrainz/frontend/templates/macros.html:121
-msgid "We don't have cover art for this release group."
+msgid "We don’t have cover art for this release group."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:125
@@ -555,11 +555,9 @@ msgstr "Wyświetl informacje o mapowaniu do Spotify"
 
 #: critiquebrainz/frontend/templates/macros.html:161
 msgid ""
-"We don't have a mapping between this release group and Spotify. Please help "
+"We don’t have a mapping between this release group and Spotify. Please help "
 "us find the right album."
 msgstr ""
-"Ta grupa wydań nie została jeszcze dopasowana na Spotify. Pomóż nam znaleźć "
-"odpowiedni album."
 
 #: critiquebrainz/frontend/templates/macros.html:165
 msgid "Match this!"
@@ -1081,47 +1079,40 @@ msgstr "Czym jest CritiqueBrainz?"
 msgid ""
 "<strong>CritiqueBrainz is a repository for Creative Commons licensed music "
 "and book reviews.</strong>\n"
-"  Here you can read what others have written about an album or event and "
-"write your own review!\n"
-"  It is based on data from MusicBrainz - open music encyclopedia and "
-"BookBrainz - open book encyclopedia."
+"  It is based on data from MusicBrainz and BookBrainz, open music and book "
+"encyclopedias."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/index/about.html:15
+#: critiquebrainz/frontend/templates/index/about.html:14
 msgid "What is it for?"
 msgstr "Czemu służy?"
 
-#: critiquebrainz/frontend/templates/index/about.html:17
+#: critiquebrainz/frontend/templates/index/about.html:16
 msgid ""
 "Projects like Wikipedia, MusicBrainz and BookBrainz are good at aggregating "
-"information about\n"
-"  music and books, but not suited for expressing opinions about it. That's "
-"not their purpose.\n"
-"  CritiqueBrainz fills the gap between music and book critics and raw data."
+"information\n"
+"  about music and books, but their purpose is not suited to expressing "
+"opinions.\n"
+"  CritiqueBrainz fills the gap between raw data and music and book critics."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/index/about.html:22
+#: critiquebrainz/frontend/templates/index/about.html:21
 msgid ""
-"This is an open platform. That means everyone - including you - can "
-"participate\n"
-"  and contribute. If you are good at writing and want to share your thoughts "
-"about\n"
-"  an album - feel free to write a new review. If that's not your thing and "
-"you just\n"
-"  want to read opinions - that's fine too."
+"This is an open platform. That means everyone can participate and "
+"contribute.\n"
+"  If you want to share your thoughts, you can rate and/or review an album or "
+"a book.\n"
+"  If you would like, you can read our guide on\n"
+"  <a href=”https://wiki.musicbrainz.org/"
+"How_to_write_Good_Critiquebrainz_Reviews”>How to Write Good CritiqueBrainz "
+"Reviews</a>.\n"
+"  If you just want to read opinions, that’s fine too."
 msgstr ""
-"To otwarta platforma. Oznacza to, że wszyscy - łącznie z tobą - mogą "
-"przyczynić się\n"
-"do jej rozwoju. Jeśli nie straszne ci pióro i chciałbyś podzielić się "
-"swoimi\n"
-"przemyśleniami na temat albumów - napisz recenzję. Jeśli nie masz do tego\n"
-"smykałki - możesz recenzje innych czytać."
 
 #: critiquebrainz/frontend/templates/index/about.html:28
 msgid ""
-"After reading a review you can mark it as useful or not. That will help "
-"other\n"
-"  music and book enthusiasts like you find good reviews."
+"After reading a review you can mark it as useful or not. This helps other\n"
+"  music and book enthusiasts find good reviews."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:32
@@ -1141,7 +1132,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:40
 msgid ""
-"Content has to be a 'review' or a otherwise genuine reflection on the "
+"Content has to be a “review” or a otherwise genuine reflection on the "
 "entity.\n"
 " Artists/labels are welcome to reflect on their own work, as long as it "
 "meets this requirement\n"
@@ -1150,12 +1141,16 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:45
 msgid ""
-"No plagiarising or copying from other sources, unless you are the copyright "
-"holder.\n"
-" If you're not sure if you are allowed to post it, don't."
+"Your submissions must be your original work. Do not submit content that you "
+"do not hold\n"
+"  the copyright to, or is not your own. This includes plagiarism and "
+"primarily LLM (Large Language\n"
+"  Model) or AI generated content. You may wish to use LLM as a tool, but be "
+"aware that obviously\n"
+"  LLM generated content will be removed."
 msgstr ""
 
-#: critiquebrainz/frontend/templates/index/about.html:49
+#: critiquebrainz/frontend/templates/index/about.html:51
 msgid ""
 "If you have had a review hidden please check the Code of Conduct and the "
 "guidelines,\n"
@@ -1204,17 +1199,14 @@ msgstr "Napisz czystym głosem"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:21
 msgid ""
-"A good review probably won't sound like an academic paper, and probably "
-"won't sound like a YouTube\n"
+"A good review probably won’t sound like an academic paper, and probably "
+"won’t sound like a YouTube\n"
 "                comment, but it should sound like <em>you</em>."
 msgstr ""
-"Dobra recenzja prawdopodobnie nie będzie brzmieć jak wykład akademicki i "
-"prawdopodobnie nie będzie brzmieć jak komentarz YouTube'a, ale powinna "
-"brzmieć jak <em> Ty </em>."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:25
-msgid "Reviews on CritiqueBrainz don't have to be in English"
-msgstr "Recenzje na CritiqueBrainz nie muszą być w języku angielskim"
+msgid "Reviews on CritiqueBrainz don’t have to be in English"
+msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:26
 msgid ""
@@ -1279,18 +1271,15 @@ msgstr "Dobre recenzje nie są ani zbyt krótkie, ani zbyt długie"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:52
 msgid ""
-"It's better to make your reviews neither too short nor too long. Try to "
+"It’s better to make your reviews neither too short nor too long. Try to "
 "write something which gives readers\n"
 "            a clear image as to what something is like while not being too "
 "boring."
 msgstr ""
-"Najlepiej jeśli sprawisz, by Twoje recenzje nie były ani zbyt krótkie, ani "
-"za długie. Spróbuj napisać coś, co da czytelnikom jasny obraz tego, o czym "
-"piszesz, bez zanudzania."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:56
-msgid "Don't mention just the factual data."
-msgstr "Nie zmieniaj faktycznych danych."
+msgid "Don’t mention just the factual data."
+msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:57
 msgid ""
@@ -1344,28 +1333,21 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:79
 msgid ""
-"Recording quality matters a lot. If it's good it's good but if it's bad it "
-"will flop the whole album. It's\n"
+"Recording quality matters a lot. If it’s good it’s good but if it’s bad it "
+"will flop the whole album. It’s\n"
 "          always better to note these things and mention about it in your "
 "review."
 msgstr ""
-"Jakość nagrywania ma bardzo duże znaczenie. Jeśli jest dobre, to w porządku, "
-"ale jeśli jest zła, to rzutuje na cały album. Zawsze \n"
-"lepiej jest odnotować te rzeczy i wspomnieć o tym w swojej recenzji."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:85
 msgid ""
-"Be clear with your conclusion - If it's a must hear album give it some "
-"direction. It's always good to mention\n"
+"Be clear with your conclusion - If it’s a must hear album give it some "
+"direction. It’s always good to mention\n"
 "      the genre of the music. You may try to compare it with some other "
 "album which has been already released having the\n"
 "      same genre which will give the readers an idea as to what they can "
 "expect."
 msgstr ""
-"Wyraź swoją konkluzję - jeśli jest to album, którego warto posłuchać, "
-"podziel się taką radą. Zawsze dobrze jest wspomnieć o rodzaju muzyki. Możesz "
-"spróbować porównać go z innym albumem, który został już wydany z tego samego "
-"gatunku, który da czytelnikom wskazówkę, czego mogą się spodziewać."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:91
 #: critiquebrainz/frontend/templates/place/entity.html:134
@@ -1387,14 +1369,9 @@ msgid ""
 "Writing about the music played there - You may describe which songs were "
 "played in the event. Which were your\n"
 "      favourite songs played, you can write about the staging of the band. "
-"Were there any things which you didn't like?\n"
+"Were there any things which you didn’t like?\n"
 "      If yes, then why?"
 msgstr ""
-"Wspomnij o muzyce tam odtwarzanej - możesz opisać, które utwory zostały "
-"odtworzone. Jakie były twoje \n"
-"ulubione piosenki, możesz napisać o inscenizacji zespołu. Czy były jakieś "
-"rzeczy, które ci się nie podobały? \n"
-"Jeśli tak, to dlaczego?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:103
 msgid ""
@@ -1402,13 +1379,8 @@ msgid ""
 "every event, you may describe such\n"
 "      moments that took place. You may also write about special guests(if "
 "any) also any special effects in the event\n"
-"      which caught everyone's attention."
+"      which caught everyone’s attention."
 msgstr ""
-"Specjalne momenty, efekty i niespodzianki - Często zdarzają się wyjątkowe "
-"momenty na imprezie, możesz je opisać,\n"
-" jeśli miały miejsce. Możesz także napisać o specjalnych gościach (jeśli "
-"byli) także o efektach specjalnych,\n"
-" które przyciągnęły uwagę wszystkich."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:108
 msgid ""
@@ -1429,23 +1401,17 @@ msgstr "Miejsca"
 #: critiquebrainz/frontend/templates/index/guidelines.html:116
 msgid ""
 "Description about the location - You may describe where the place is "
-"located, whether it's located in the heart\n"
+"located, whether it’s located in the heart\n"
 "      of the city or is it located on the periphery."
 msgstr ""
-"Opis lokalizacji - Możesz opisać, gdzie znajduje się to miejsce, czy "
-"znajduje się w sercu miasta, \n"
-"czy też znajduje się na jego obrzeżach."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:120
 msgid ""
-"Writing about the architecture - If it's a musical stadium people want to "
+"Writing about the architecture - If it’s a musical stadium people want to "
 "know about how many people can the\n"
 "      place occupy, how well the artist sounds in each corner of the place "
 "etc."
 msgstr ""
-"Pisząc o architekturze - Jeśli jest to stadion, ludzie chcą wiedzieć, ile "
-"osób \n"
-"może pomieścić, jak dobrze brzmi artysta w każdym zakątku tego miejsca itp."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:126
 msgid "💡 Note:"
@@ -1453,13 +1419,10 @@ msgstr "💡 Uwaga:"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:127
 msgid ""
-"Try to be <strong>honest</strong> while reviewing, simply don't follow the "
+"Try to be <strong>honest</strong> while reviewing, simply don’t follow the "
 "trend. Review the album as to what\n"
 "    you felt. And try to follow active voice."
 msgstr ""
-"Staraj się być <strong>szczerym</strong> podczas recenzowania, nie podążaj "
-"za trendem. Zrecenzuj album pod kątem tego, \n"
-"co czujesz. I staraj się podążać za własnym, wewnętrznym głosem."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:131
 msgid "Common mistakes"
@@ -1488,11 +1451,8 @@ msgstr "Błędy takie jak interpunkcja, błędy literowe, wielkie litery itp."
 msgid ""
 "Writing in slangs - Try to write in proper English (or whatever language you "
 "prefer).\n"
-"              It's better not to write reviews in slangs."
+"              It’s better not to write reviews in slangs."
 msgstr ""
-"Pisanie w slangach - staraj się pisać po angielsku (lub w jakimkolwiek innym "
-"języku). \n"
-"Lepiej nie pisać recenzji w slangach."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:141
 msgid "Additional material"
@@ -1570,12 +1530,12 @@ msgstr "[Nieznana grupa wydań]"
 
 #: critiquebrainz/frontend/templates/log/action.html:12
 #, python-format
-msgid "Hide %(user)s's review of \"%(rg)s\""
-msgstr "Ukryj recenzję \"%(rg)s\" autorstwa %(user)s"
+msgid "Hide %(user)s’s review of \"%(rg)s\""
+msgstr ""
 
 #: critiquebrainz/frontend/templates/log/action.html:14
 #, python-format
-msgid "Unhide %(user)s's review of \"%(rg)s\""
+msgid "Unhide %(user)s’s review of \"%(rg)s\""
 msgstr ""
 
 #: critiquebrainz/frontend/templates/log/action.html:16
@@ -1699,10 +1659,8 @@ msgid "Report incorrect mapping"
 msgstr "Zgłoś nieprawidłowe zmapowanie"
 
 #: critiquebrainz/frontend/templates/moderators/moderators.html:8
-msgid "These users respond to reports and make sure that spammers don't spam."
+msgid "These users respond to reports and make sure that spammers don’t spam."
 msgstr ""
-"Ci użytkownicy reagują na zgłoszenia i zapewniają, że spamerzy nie będą "
-"spamować."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
@@ -1996,7 +1954,7 @@ msgstr "Usuń recenzję"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:11
 #, python-format
-msgid "Edit comment on %(user)s's review of \"%(entity)s\""
+msgid "Edit comment on %(user)s’s review of \"%(entity)s\""
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:15
@@ -2006,7 +1964,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/delete_comment.html:19
 #, python-format
 msgid ""
-"Are you sure you want to delete your comment on %(user)s's review of "
+"Are you sure you want to delete your comment on %(user)s’s review of "
 "\"%(entity)s\"?"
 msgstr ""
 
@@ -2021,7 +1979,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/report.html:12
 #: critiquebrainz/frontend/templates/review/report.html:15
 #, python-format
-msgid "Report %(user)s's review of \"%(title)s\""
+msgid "Report %(user)s’s review of \"%(title)s\""
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/report.html:29
@@ -2147,8 +2105,8 @@ msgid "You found this review useful."
 msgstr "Ta recenzja była przydatna."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:108
-msgid "You didn't find this review useful."
-msgstr "Ta recenzja nie była przydatna."
+msgid "You didn’t find this review useful."
+msgstr ""
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:110
 msgid "Delete your vote"
@@ -2970,6 +2928,156 @@ msgstr "To konto zostało odblokowane."
 #: critiquebrainz/frontend/views/work.py:21
 msgid "Sorry, we couldn't find a work with that MusicBrainz ID."
 msgstr ""
+
+#~ msgid ""
+#~ "We don't have a mapping between this release group and Spotify. Please "
+#~ "help us find the right album."
+#~ msgstr ""
+#~ "Ta grupa wydań nie została jeszcze dopasowana na Spotify. Pomóż nam "
+#~ "znaleźć odpowiedni album."
+
+#~ msgid ""
+#~ "This is an open platform. That means everyone - including you - can "
+#~ "participate\n"
+#~ "  and contribute. If you are good at writing and want to share your "
+#~ "thoughts about\n"
+#~ "  an album - feel free to write a new review. If that's not your thing "
+#~ "and you just\n"
+#~ "  want to read opinions - that's fine too."
+#~ msgstr ""
+#~ "To otwarta platforma. Oznacza to, że wszyscy - łącznie z tobą - mogą "
+#~ "przyczynić się\n"
+#~ "do jej rozwoju. Jeśli nie straszne ci pióro i chciałbyś podzielić się "
+#~ "swoimi\n"
+#~ "przemyśleniami na temat albumów - napisz recenzję. Jeśli nie masz do "
+#~ "tego\n"
+#~ "smykałki - możesz recenzje innych czytać."
+
+#~ msgid ""
+#~ "A good review probably won't sound like an academic paper, and probably "
+#~ "won't sound like a YouTube\n"
+#~ "                comment, but it should sound like <em>you</em>."
+#~ msgstr ""
+#~ "Dobra recenzja prawdopodobnie nie będzie brzmieć jak wykład akademicki i "
+#~ "prawdopodobnie nie będzie brzmieć jak komentarz YouTube'a, ale powinna "
+#~ "brzmieć jak <em> Ty </em>."
+
+#~ msgid "Reviews on CritiqueBrainz don't have to be in English"
+#~ msgstr "Recenzje na CritiqueBrainz nie muszą być w języku angielskim"
+
+#~ msgid ""
+#~ "It's better to make your reviews neither too short nor too long. Try to "
+#~ "write something which gives readers\n"
+#~ "            a clear image as to what something is like while not being "
+#~ "too boring."
+#~ msgstr ""
+#~ "Najlepiej jeśli sprawisz, by Twoje recenzje nie były ani zbyt krótkie, "
+#~ "ani za długie. Spróbuj napisać coś, co da czytelnikom jasny obraz tego, o "
+#~ "czym piszesz, bez zanudzania."
+
+#~ msgid "Don't mention just the factual data."
+#~ msgstr "Nie zmieniaj faktycznych danych."
+
+#~ msgid ""
+#~ "Recording quality matters a lot. If it's good it's good but if it's bad "
+#~ "it will flop the whole album. It's\n"
+#~ "          always better to note these things and mention about it in your "
+#~ "review."
+#~ msgstr ""
+#~ "Jakość nagrywania ma bardzo duże znaczenie. Jeśli jest dobre, to w "
+#~ "porządku, ale jeśli jest zła, to rzutuje na cały album. Zawsze \n"
+#~ "lepiej jest odnotować te rzeczy i wspomnieć o tym w swojej recenzji."
+
+#~ msgid ""
+#~ "Be clear with your conclusion - If it's a must hear album give it some "
+#~ "direction. It's always good to mention\n"
+#~ "      the genre of the music. You may try to compare it with some other "
+#~ "album which has been already released having the\n"
+#~ "      same genre which will give the readers an idea as to what they can "
+#~ "expect."
+#~ msgstr ""
+#~ "Wyraź swoją konkluzję - jeśli jest to album, którego warto posłuchać, "
+#~ "podziel się taką radą. Zawsze dobrze jest wspomnieć o rodzaju muzyki. "
+#~ "Możesz spróbować porównać go z innym albumem, który został już wydany z "
+#~ "tego samego gatunku, który da czytelnikom wskazówkę, czego mogą się "
+#~ "spodziewać."
+
+#~ msgid ""
+#~ "Writing about the music played there - You may describe which songs were "
+#~ "played in the event. Which were your\n"
+#~ "      favourite songs played, you can write about the staging of the "
+#~ "band. Were there any things which you didn't like?\n"
+#~ "      If yes, then why?"
+#~ msgstr ""
+#~ "Wspomnij o muzyce tam odtwarzanej - możesz opisać, które utwory zostały "
+#~ "odtworzone. Jakie były twoje \n"
+#~ "ulubione piosenki, możesz napisać o inscenizacji zespołu. Czy były jakieś "
+#~ "rzeczy, które ci się nie podobały? \n"
+#~ "Jeśli tak, to dlaczego?"
+
+#~ msgid ""
+#~ "Special moments, effects and surprises - Often there are special moments "
+#~ "in every event, you may describe such\n"
+#~ "      moments that took place. You may also write about special guests(if "
+#~ "any) also any special effects in the event\n"
+#~ "      which caught everyone's attention."
+#~ msgstr ""
+#~ "Specjalne momenty, efekty i niespodzianki - Często zdarzają się wyjątkowe "
+#~ "momenty na imprezie, możesz je opisać,\n"
+#~ " jeśli miały miejsce. Możesz także napisać o specjalnych gościach (jeśli "
+#~ "byli) także o efektach specjalnych,\n"
+#~ " które przyciągnęły uwagę wszystkich."
+
+#~ msgid ""
+#~ "Description about the location - You may describe where the place is "
+#~ "located, whether it's located in the heart\n"
+#~ "      of the city or is it located on the periphery."
+#~ msgstr ""
+#~ "Opis lokalizacji - Możesz opisać, gdzie znajduje się to miejsce, czy "
+#~ "znajduje się w sercu miasta, \n"
+#~ "czy też znajduje się na jego obrzeżach."
+
+#~ msgid ""
+#~ "Writing about the architecture - If it's a musical stadium people want to "
+#~ "know about how many people can the\n"
+#~ "      place occupy, how well the artist sounds in each corner of the "
+#~ "place etc."
+#~ msgstr ""
+#~ "Pisząc o architekturze - Jeśli jest to stadion, ludzie chcą wiedzieć, ile "
+#~ "osób \n"
+#~ "może pomieścić, jak dobrze brzmi artysta w każdym zakątku tego miejsca "
+#~ "itp."
+
+#~ msgid ""
+#~ "Try to be <strong>honest</strong> while reviewing, simply don't follow "
+#~ "the trend. Review the album as to what\n"
+#~ "    you felt. And try to follow active voice."
+#~ msgstr ""
+#~ "Staraj się być <strong>szczerym</strong> podczas recenzowania, nie "
+#~ "podążaj za trendem. Zrecenzuj album pod kątem tego, \n"
+#~ "co czujesz. I staraj się podążać za własnym, wewnętrznym głosem."
+
+#~ msgid ""
+#~ "Writing in slangs - Try to write in proper English (or whatever language "
+#~ "you prefer).\n"
+#~ "              It's better not to write reviews in slangs."
+#~ msgstr ""
+#~ "Pisanie w slangach - staraj się pisać po angielsku (lub w jakimkolwiek "
+#~ "innym języku). \n"
+#~ "Lepiej nie pisać recenzji w slangach."
+
+#, python-format
+#~ msgid "Hide %(user)s's review of \"%(rg)s\""
+#~ msgstr "Ukryj recenzję \"%(rg)s\" autorstwa %(user)s"
+
+#~ msgid ""
+#~ "These users respond to reports and make sure that spammers don't spam."
+#~ msgstr ""
+#~ "Ci użytkownicy reagują na zgłoszenia i zapewniają, że spamerzy nie będą "
+#~ "spamować."
+
+#~ msgid "You didn't find this review useful."
+#~ msgstr "Ta recenzja nie była przydatna."
 
 #~ msgid "Show my Gravatar"
 #~ msgstr "Wyświetlaj mój Gravatar"
