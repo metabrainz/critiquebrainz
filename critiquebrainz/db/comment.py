@@ -102,7 +102,7 @@ def get_by_id(comment_id):
 
         comment = result.mappings().first()
         if not comment:
-            raise db_exceptions.NoDataFoundException('Can\'t find comment with ID: {id}'.format(id=comment_id))
+            raise db_exceptions.NoDataFoundException('Can’t find comment with ID: {id}'.format(id=comment_id))
 
         comment = dict(comment)
         comment['last_revision'] = {

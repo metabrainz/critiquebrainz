@@ -54,7 +54,7 @@
 <hr />
 
 <p>
-  <p>{{ _('If you can\'t find the right album in search results, you can paste a Spotify link there:') }}</p>
+  <p>{{ _('If you can’t find the right album in search results, you can paste a Spotify link there:') }}</p>
   <form class="form-inline" role="form" action="{{ url_for('mapping.spotify_confirm') }}" method="GET">
     <div class="form-group">
       <input type="hidden" name="release_group_id" value="{{ release_group.mbid }}">
@@ -73,7 +73,7 @@
 
 <p>
   <strong>
-    {{ _('It\'s fine if you can\'t find the right album. It might not be available on Spotify yet.') }}
+    {{ _('It’s fine if you can’t find the right album. It might not be available on Spotify yet.') }}
     {{ _('You can <a href="%(link)s">go back to the release group page</a>.', link=url_for('release_group.entity', id=release_group.mbid)) }}
   </strong>
 </p>
