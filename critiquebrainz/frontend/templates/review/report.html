@@ -9,10 +9,10 @@
   {% set e_title = _('Unknown entity') %}
 {% endif %}
 
-{% block title %}{{ _('Report %(user)s\'s review of "%(title)s"', title=e_title, user=review.user.display_name) }} - CritiqueBrainz{% endblock %}
+{% block title %}{{ _('Report %(user)s’s review of "%(title)s"', title=e_title, user=review.user.display_name) }} - CritiqueBrainz{% endblock %}
 
 {% block content %}
-  <h2>{{ _('Report %(user)s\'s review of "%(title)s"', title=e_title, user=review.user.display_name) }}</h2>
+  <h2>{{ _('Report %(user)s’s review of "%(title)s"', title=e_title, user=review.user.display_name) }}</h2>
   <hr />
 
   {% for field in form.errors %}
