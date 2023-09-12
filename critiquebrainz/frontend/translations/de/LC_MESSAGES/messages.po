@@ -10,7 +10,7 @@
 # Larson März <larson@protonmail.ch>, 2017
 # Leo_Verto <leotheverto@googlemail.com>, 2016
 # Mannshoch <micet2004-github@yahoo.de>, 2018
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2014
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2014, 2023.
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015
 # Shepard, 2014
 msgid ""
@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2023-08-29 23:27+0000\n"
+"PO-Revision-Date: 2023-09-12 06:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/de/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -230,7 +230,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/forms/profile_apps.py:28
 msgid "Homepage URL must use http or https"
-msgstr ""
+msgstr "Die Homepage-URL muss http oder https verwenden"
 
 #: critiquebrainz/frontend/forms/rate.py:26
 #: critiquebrainz/frontend/forms/review.py:43
@@ -290,7 +290,7 @@ msgstr "Du musst Administrator sein, um diese Seite sehen zu können."
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/recording/entity.html:13
 msgid "by"
-msgstr ""
+msgstr "von"
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/review/entity/artist.html:7
@@ -508,7 +508,7 @@ msgstr "Label"
 #: critiquebrainz/frontend/templates/review/modify/recording.html:6
 #: critiquebrainz/frontend/templates/search/index.html:33
 msgid "Recording"
-msgstr ""
+msgstr "Aufnahme"
 
 #: critiquebrainz/frontend/templates/macros.html:88
 #: critiquebrainz/frontend/templates/navbar.html:108
@@ -524,7 +524,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/bb_literary_work.html:3
 #: critiquebrainz/frontend/templates/search/index.html:38
 msgid "Literary Work"
-msgstr ""
+msgstr "Literarisches Werk"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:122
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:148
@@ -546,7 +546,7 @@ msgstr "Autor"
 #: critiquebrainz/frontend/templates/review/modify/bb_series.html:3
 #: critiquebrainz/frontend/templates/search/index.html:39
 msgid "Series"
-msgstr ""
+msgstr "Serie"
 
 #: critiquebrainz/frontend/templates/macros.html:116
 msgid "Release Group"
@@ -554,7 +554,7 @@ msgstr "Veröffentlichungsgruppe"
 
 #: critiquebrainz/frontend/templates/macros.html:121
 msgid "We don’t have cover art for this release group."
-msgstr ""
+msgstr "Wir haben für diese Veröffentlichungsgruppe kein Cover-Art."
 
 #: critiquebrainz/frontend/templates/macros.html:125
 msgid "See how to add cover art!"
@@ -574,6 +574,8 @@ msgid ""
 "We don’t have a mapping between this release group and Spotify. Please help "
 "us find the right album."
 msgstr ""
+"Dieser Veröffentlichungsgruppe ist kein Album auf Spotify zugeordnet. Bitte "
+"hilf uns, das richtige Album auf Spotify zu finden."
 
 #: critiquebrainz/frontend/templates/macros.html:165
 msgid "Match this!"
@@ -587,8 +589,8 @@ msgstr "(keine)"
 #, python-format
 msgid "based on %(num)s rating"
 msgid_plural "based on %(num)s ratings"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Basierend auf %(num)s Bewertung"
+msgstr[1] "Basierend auf %(num)s Bewertungen"
 
 #: critiquebrainz/frontend/templates/macros.html:220
 #, python-format
@@ -609,7 +611,7 @@ msgstr "mehr"
 
 #: critiquebrainz/frontend/templates/macros.html:259
 msgid "Page Navigation"
-msgstr ""
+msgstr "Seitennavigation"
 
 #: critiquebrainz/frontend/templates/macros.html:262
 msgid "Previous"
@@ -857,23 +859,23 @@ msgstr ""
 #: critiquebrainz/frontend/templates/bb_author/entity.html:97
 #: critiquebrainz/frontend/templates/bb_series/entity.html:239
 msgid "Literary Works"
-msgstr ""
+msgstr "Literarische Werke"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:100
 msgid "Novel"
-msgstr ""
+msgstr "Roman"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:103
 msgid "Short Story"
-msgstr ""
+msgstr "Kurzgeschichte"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:106
 msgid "Poem"
-msgstr ""
+msgstr "Gedicht"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:109
 msgid "Other Works"
-msgstr ""
+msgstr "Andere Werke"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:116
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:69
@@ -900,11 +902,11 @@ msgstr "Name"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:144
 msgid "No works found"
-msgstr ""
+msgstr "Keine Werke gefunden"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:149
 msgid "Author information"
-msgstr ""
+msgstr "Autoreninformationen"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:161
 msgid "Date Founded"
@@ -912,7 +914,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:163
 msgid "Date of Birth"
-msgstr ""
+msgstr "Geburtsdatum"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:170
 msgid "Place Founded"
@@ -920,7 +922,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:172
 msgid "Place of Birth"
-msgstr ""
+msgstr "Geburtsort"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:179
 msgid "Date of Dissolution"
@@ -928,7 +930,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:181
 msgid "Date of Death"
-msgstr ""
+msgstr "Todestag"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:188
 msgid "Place of Dissolution"
@@ -943,7 +945,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:231
 #: critiquebrainz/frontend/templates/bb_series/entity.html:322
 msgid "Edit on BookBrainz"
-msgstr ""
+msgstr "Auf BookBrainz bearbeiten"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:65
 msgid "Works for this Edition Group"
@@ -954,7 +956,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:203
 #: critiquebrainz/frontend/templates/bb_series/entity.html:245
 msgid "Languages"
-msgstr ""
+msgstr "Sprachen"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:71
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:104
@@ -990,7 +992,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:98
 msgid "Translations of this work"
-msgstr ""
+msgstr "Übersetzungen dieses Werks"
 
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:143
 msgid "Edition Group of this work"
@@ -1006,7 +1008,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/bb_series/entity.html:203
 #: critiquebrainz/frontend/templates/bb_series/entity.html:243
 msgid "#"
-msgstr ""
+msgstr "Nr."
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:73
 #: critiquebrainz/frontend/templates/search/index.html:129
@@ -1015,11 +1017,11 @@ msgstr "Geschlecht"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:107
 msgid "Edition"
-msgstr ""
+msgstr "Ausgabe"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:114
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:151
 msgid "Edition Groups"
@@ -1027,7 +1029,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:199
 msgid "Publisher"
-msgstr ""
+msgstr "Herausgeber"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:205
 msgid "Area"
@@ -1035,11 +1037,11 @@ msgstr "Gebiet"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:286
 msgid "Series information"
-msgstr ""
+msgstr "Serieninformationen"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:298
 msgid "Ordering Type"
-msgstr ""
+msgstr "Reihenfolgentyp"
 
 #: critiquebrainz/frontend/templates/errors/400.html:2
 msgid "Invalid request"
@@ -1094,6 +1096,10 @@ msgid ""
 "  It is based on data from MusicBrainz and BookBrainz, open music and book "
 "encyclopedias."
 msgstr ""
+"<strong>CritiqueBrainz ist eine Sammlung von unter Creative Commons "
+"lizenzierten Musik- und Buchrezensionen.</strong>\n"
+"Es basiert auf Daten von MusicBrainz und BookBrainz, offenen Musik- und Buch-"
+"Enzyklopädien."
 
 #: critiquebrainz/frontend/templates/index/about.html:14
 msgid "What is it for?"
@@ -1107,6 +1113,10 @@ msgid ""
 "opinions.\n"
 "  CritiqueBrainz fills the gap between raw data and music and book critics."
 msgstr ""
+"Projekte wie Wikipedia, MusicBrainz und BookBrainz sind gut beim Sammeln von "
+"Informationen über Musik und Bücher, aber nicht geeignet um Meinungen über "
+"sie zu äußern. CritiqueBrainz schließt die Lücke zwischen Rohdaten und Musik-"
+" und Buchkritik."
 
 #: critiquebrainz/frontend/templates/index/about.html:21
 msgid ""
@@ -1120,16 +1130,28 @@ msgid ""
 "Reviews</a>.\n"
 "  If you just want to read opinions, that’s fine too."
 msgstr ""
+"Dies ist eine offene Plattform. Das bedeutet, jeder kann mitmachen und "
+"beitragen.\n"
+"Wenn du deine Meinung mitteilen möchtest, kannst du ein Album oder ein Buch "
+"bewerten und/oder rezensieren.\n"
+"Wenn du möchtest, kannst du unseren Leitfaden <a href=\"https://wiki."
+"musicbrainz.org/How_to_write_Good_Critiquebrainz_Reviews\">„Wie man gute "
+"CritiqueBrainz-Rezensionen schreibt“</a> lesen.\n"
+"Wenn du nur Meinungen lesen willst, ist das auch in Ordnung."
 
 #: critiquebrainz/frontend/templates/index/about.html:28
 msgid ""
 "After reading a review you can mark it as useful or not. This helps other\n"
 "  music and book enthusiasts find good reviews."
 msgstr ""
+"Nach dem Lesen einer Rezension kannst du diese als sinnvoll oder nicht "
+"sinnvoll markieren.\n"
+"Das wird anderen Musik- und Buch-Enthusiasten wie dir helfen gute "
+"Rezensionen zu finden."
 
 #: critiquebrainz/frontend/templates/index/about.html:32
 msgid "Code of Conduct"
-msgstr ""
+msgstr "Verhaltensregeln"
 
 #: critiquebrainz/frontend/templates/index/about.html:34
 msgid ""
@@ -1140,7 +1162,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:38
 msgid "Guidelines"
-msgstr ""
+msgstr "Richtlinien"
 
 #: critiquebrainz/frontend/templates/index/about.html:40
 msgid ""
@@ -1215,10 +1237,13 @@ msgid ""
 "won’t sound like a YouTube\n"
 "                comment, but it should sound like <em>you</em>."
 msgstr ""
+"Eine gute Rezension klingt wahrscheinlich nicht nach einem akademischen "
+"Aufsatz und auch nicht wie ein YouTube-Kommentar. Es sollte aber dennoch wie "
+"<em>du</em> klingen."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:25
 msgid "Reviews on CritiqueBrainz don’t have to be in English"
-msgstr ""
+msgstr "Rezensionen auf CritiqueBrainz müssen nicht auf Englisch sein"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:26
 msgid ""
@@ -1241,10 +1266,10 @@ msgid ""
 "emphasize parts of your review, add links to\n"
 "          additional information, insert images when necessary."
 msgstr ""
-"Rezensionen können die <a href=\"https://en.wikipedia.org/wiki/Markdown"
-"\">Markdown</a> Auszeichnungssprache verwenden. Das sollte es einfacher "
-"machen Rezensionen zu schreiben und angemessen zu formatieren. Nutze sie um "
-"Elemente hervorzuheben, links zu weiteren Informationen  hinzu zufügen und "
+"Rezensionen können die <a href=\"https://en.wikipedia.org/wiki/Markdown\""
+">Markdown</a> Auszeichnungssprache verwenden. Das sollte es einfacher machen "
+"Rezensionen zu schreiben und angemessen zu formatieren. Nutze sie um "
+"Elemente hervorzuheben, links zu weiteren Informationen hinzu zufügen und "
 "hinterlege Bilder wenn nötig."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:37
@@ -1286,10 +1311,13 @@ msgid ""
 "            a clear image as to what something is like while not being too "
 "boring."
 msgstr ""
+"Es ist besser, wenn deine Rezensionen weder zu kurz noch zu lang sind. "
+"Versuche, etwas zu schreiben, das den Lesern ein klares Bild davon "
+"vermittelt, wie etwas ist, aber dabei nicht zu langweilig ist."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:56
 msgid "Don’t mention just the factual data."
-msgstr ""
+msgstr "Erwähne nicht nur die faktischen Daten."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:57
 msgid ""
@@ -1348,8 +1376,12 @@ msgid ""
 "          always better to note these things and mention about it in your "
 "review."
 msgstr ""
+"Die Aufnahmequalität spielt eine große Rolle. Wenn sie gut ist, ist sie gut "
+"ist. Aber wenn sie schlecht ist, wird das ganze Album ein Flop. Es ist immer "
+"besser, diese Dinge zu beachten und in der Rezension zu erwähnen."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:85
+#, fuzzy
 msgid ""
 "Be clear with your conclusion - If it’s a must hear album give it some "
 "direction. It’s always good to mention\n"
@@ -1358,6 +1390,11 @@ msgid ""
 "      same genre which will give the readers an idea as to what they can "
 "expect."
 msgstr ""
+"Treffe eine Klare Aussage – Wenn es ein „Must-Hear“-Album ist, mach das "
+"klar. Es ist immer gut das Musikgenre zu erwähnen. Du kannst versuchen, es "
+"mit einem anderen Album zu vergleichen, das bereits im selben Genre "
+"veröffentlicht wurde. Das gibt den Lesern eine Vorstellung davon, was sie "
+"erwarten können."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:91
 #: critiquebrainz/frontend/templates/place/entity.html:134
@@ -1383,6 +1420,10 @@ msgid ""
 "Were there any things which you didn’t like?\n"
 "      If yes, then why?"
 msgstr ""
+"Schreibe über die dort gespielte Musik – Du kannst beschreiben, welche "
+"Lieder auf der Veranstaltung gespielt wurden. Welches waren deine "
+"Lieblingslieder? Du kannst über die Inszenierung der Band schreiben. Gab es "
+"auch Dinge, die dir nicht gefallen haben? Wenn ja, warum?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:103
 msgid ""
@@ -1392,6 +1433,10 @@ msgid ""
 "any) also any special effects in the event\n"
 "      which caught everyone’s attention."
 msgstr ""
+"Besondere Momente, Effekte und Überraschungen – Oft gibt es bei jeder "
+"Veranstaltung besondere Momente, die du beschreiben kannst. Momente, die "
+"stattgefunden haben. Du kannst auch über besondere Gäste (falls vorhanden) "
+"oder Spezialeffekte, die die Aufmerksamkeit aller auf sich zogen, schreiben."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:108
 msgid ""
@@ -1414,6 +1459,8 @@ msgid ""
 "located, whether it’s located in the heart\n"
 "      of the city or is it located on the periphery."
 msgstr ""
+"Beschreibung der Örtlichkeit – Du kannst beschreiben, wo sich der Ort "
+"befindet, ob er im Herzen der Stadt oder in der Peripherie liegt."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:120
 msgid ""
@@ -1422,6 +1469,9 @@ msgid ""
 "      place occupy, how well the artist sounds in each corner of the place "
 "etc."
 msgstr ""
+"Über die Architektur schreiben – Wenn es sich um ein Musikstadion handelt, "
+"wollen die Leute wissen, wie viele Leute dort Platz finden, wie gut der "
+"Künstler in jeder Ecke des Stadions klingt usw."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:126
 msgid "💡 Note:"
@@ -1433,6 +1483,9 @@ msgid ""
 "trend. Review the album as to what\n"
 "    you felt. And try to follow active voice."
 msgstr ""
+"Versuche <strong>ehrlich</strong> mit deiner Rezension zu sein, folge nicht "
+"einfach dem Trend. Bespreche das Album so, wie du es gefühlt hast. Versuche "
+"im Aktiv zu schreiben."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:131
 msgid "Common mistakes"
@@ -1465,6 +1518,9 @@ msgid ""
 "prefer).\n"
 "              It’s better not to write reviews in slangs."
 msgstr ""
+"Schreiben in Umgangssprache: Versuche, in richtigem Englisch oder Deutsch ("
+"oder deiner bevorzugten Sprache) zu schreiben. Es ist besser, keine "
+"Rezensionen in Umgangssprache zu schreiben."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:141
 msgid "Additional material"
@@ -1485,6 +1541,10 @@ msgid ""
 "        Here you can read what other people have written about an album or "
 "event and write your own review!"
 msgstr ""
+"CritiqueBrainz ist eine Sammlung von unter Creative Commons lizenzierte "
+"Musik- und Buchrezensionen.\n"
+"Hier kannst du lesen, was andere über ein Album oder eine Veranstaltung "
+"geschrieben haben und deine eigene Rezension schreiben!"
 
 #: critiquebrainz/frontend/templates/index/index.html:16
 msgid ""
@@ -1492,6 +1552,9 @@ msgid ""
 "and BookBrainz - open book encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
 msgstr ""
+"CritiqueBrainz basiert auf Daten von MusicBrainz, die offene Musik-"
+"Enzyklopädie, und BookBrainz, die offene Buch-Enzyklopädie.\n"
+"<br>Alle – auch du – können daran teilnehmen und beitragen."
 
 #: critiquebrainz/frontend/templates/index/index.html:28
 msgid "Number"
@@ -1529,7 +1592,7 @@ msgstr "Alle Rezensionen anzeigen..."
 
 #: critiquebrainz/frontend/templates/label/entity.html:68
 msgid "Releases"
-msgstr ""
+msgstr "Veröffentlichungen"
 
 #: critiquebrainz/frontend/templates/label/entity.html:122
 msgid "Label information"
@@ -1543,12 +1606,12 @@ msgstr "[Unbekannte Veröffentlichungsgruppe]"
 #: critiquebrainz/frontend/templates/log/action.html:12
 #, python-format
 msgid "Hide %(user)s’s review of \"%(rg)s\""
-msgstr ""
+msgstr "Rezension von „%(rg)s“ durch %(user)s verstecken"
 
 #: critiquebrainz/frontend/templates/log/action.html:14
 #, python-format
 msgid "Unhide %(user)s’s review of \"%(rg)s\""
-msgstr ""
+msgstr "Rezension von „%(rg)s“ durch %(user)s anzeigen"
 
 #: critiquebrainz/frontend/templates/log/action.html:16
 #, python-format
@@ -1673,6 +1736,8 @@ msgstr "Falsche Spotify-Zuordnung melden"
 #: critiquebrainz/frontend/templates/moderators/moderators.html:8
 msgid "These users respond to reports and make sure that spammers don’t spam."
 msgstr ""
+"Diese Nutzer antworten auf Meldungen und stellen sicher, dass Spammer nicht "
+"spammen."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
@@ -1726,23 +1791,23 @@ msgstr "Teil von"
 
 #: critiquebrainz/frontend/templates/place/entity.html:116
 msgid "Parts"
-msgstr ""
+msgstr "Teile"
 
 #: critiquebrainz/frontend/templates/place/entity.html:137
 msgid "Concerts"
-msgstr ""
+msgstr "Konzerte"
 
 #: critiquebrainz/frontend/templates/place/entity.html:140
 msgid "Festivals"
-msgstr ""
+msgstr "Festivals"
 
 #: critiquebrainz/frontend/templates/place/entity.html:143
 msgid "Other Events"
-msgstr ""
+msgstr "Andere Veranstaltungen"
 
 #: critiquebrainz/frontend/templates/place/entity.html:147
 msgid "No events found"
-msgstr ""
+msgstr "Keine Veranstaltungen gefunden"
 
 #: critiquebrainz/frontend/templates/place/entity.html:152
 #: critiquebrainz/frontend/templates/search/index.html:97
@@ -1752,7 +1817,7 @@ msgstr "Titel"
 
 #: critiquebrainz/frontend/templates/place/entity.html:153
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:3
 #: critiquebrainz/frontend/templates/profile/delete.html:6
@@ -1867,11 +1932,11 @@ msgstr "Zugriff widerrufen"
 #: critiquebrainz/frontend/templates/recording/entity.html:6
 #, python-format
 msgid "Recording \"%(name)s\" by %(artist)s"
-msgstr ""
+msgstr "Aufnahme „%(name)s“ von %(artist)s"
 
 #: critiquebrainz/frontend/templates/recording/entity.html:73
 msgid "Recording information"
-msgstr ""
+msgstr "Aufnahmeinformationen"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:3
 #: critiquebrainz/frontend/templates/reports/reports.html:6
@@ -1924,11 +1989,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/review/browse.html:27
 msgid "MusicBrainz"
-msgstr ""
+msgstr "MusicBrainz"
 
 #: critiquebrainz/frontend/templates/review/browse.html:45
 msgid "BookBrainz"
-msgstr ""
+msgstr "BookBrainz"
 
 #: critiquebrainz/frontend/templates/review/compare.html:3
 msgid "Difference between revisions"
@@ -1947,7 +2012,7 @@ msgstr "Stand vom"
 #: critiquebrainz/frontend/templates/review/delete.html:11
 #, python-format
 msgid "Delete review of \"%(entity)s\""
-msgstr ""
+msgstr "Rezension von „%(entity)s“ löschen"
 
 #: critiquebrainz/frontend/templates/review/delete.html:15
 msgid "Deleting review"
@@ -1971,7 +2036,7 @@ msgstr "Rezension löschen"
 #: critiquebrainz/frontend/templates/review/delete_comment.html:11
 #, python-format
 msgid "Edit comment on %(user)s’s review of \"%(entity)s\""
-msgstr ""
+msgstr "Kommentar in %(user)ss Rezension von „%(entity)s“ bearbeiten"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:15
 msgid "Deleting comment!"
@@ -1983,6 +2048,8 @@ msgid ""
 "Are you sure you want to delete your comment on %(user)s’s review of "
 "\"%(entity)s\"?"
 msgstr ""
+"Bist du sicher, dass du deinen Kommentar für %(user)ss Rezension von "
+"„%(entity)s“ löschen möchtest?"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:25
 msgid "Delete comment"
@@ -1996,7 +2063,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/report.html:15
 #, python-format
 msgid "Report %(user)s’s review of \"%(title)s\""
-msgstr ""
+msgstr "Rezension von „%(title)s“ durch %(user)s melden"
 
 #: critiquebrainz/frontend/templates/review/report.html:29
 msgid "Please provide a description of the violation (required)"
@@ -2059,7 +2126,7 @@ msgstr "%(artist)s"
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:30
 msgid "MusicBrainz Artist"
-msgstr ""
+msgstr "MusicBrainz-Künstler"
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:30
 #: critiquebrainz/frontend/templates/review/entity/event.html:61
@@ -2067,7 +2134,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/entity/place.html:56
 #: critiquebrainz/frontend/templates/review/entity/work.html:30
 msgid "View on MusicBrainz"
-msgstr ""
+msgstr "Auf MusicBrainz anzeigen"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:20
 msgid "<b>This review has not been published yet!</b> Only you can see it."
@@ -2122,7 +2189,7 @@ msgstr "Du fandest diese Rezension hilfreich."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:108
 msgid "You didn’t find this review useful."
-msgstr ""
+msgstr "Du fandest diese Rezension nicht hilfreich."
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:110
 msgid "Delete your vote"
@@ -2144,33 +2211,33 @@ msgstr "Diese Rezension löschen"
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:7
 #, python-format
 msgid "Review of \"%(bb_author)s\" by %(user)s"
-msgstr ""
+msgstr "Rezension von „%(bb_author)s“ von %(user)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:13
 #, python-format
 msgid "%(bb_author)s"
-msgstr ""
+msgstr "%(bb_author)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:23
 msgid "BookBrainz Author"
-msgstr ""
+msgstr "BookBrainz-Autor"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:23
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:22
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:23
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:23
 msgid "View on BookBrainz"
-msgstr ""
+msgstr "Auf BookBrainz anzeigen"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:6
 #, python-format
 msgid "Review of \"%(edition_group)s\" by %(user)s"
-msgstr ""
+msgstr "Rezension von „%(edition_group)s“ von %(user)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:12
 #, python-format
 msgid "%(edition_group)s"
-msgstr ""
+msgstr "%(edition_group)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:22
 msgid "BookBrainz Edition Group"
@@ -2179,12 +2246,12 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:7
 #, python-format
 msgid "Review of \"%(literary_work)s\" by %(user)s"
-msgstr ""
+msgstr "Rezension von „%(literary_work)s“ von %(user)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:13
 #, python-format
 msgid "%(bb_literary_work)s"
-msgstr ""
+msgstr "%(bb_literary_work)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:23
 msgid "BookBrainz Literary Work"
@@ -2193,16 +2260,16 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:7
 #, python-format
 msgid "Review of \"%(bb_series)s\" by %(user)s"
-msgstr ""
+msgstr "Rezension von „%(bb_series)s“ von %(user)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:13
 #, python-format
 msgid "%(bb_series)s"
-msgstr ""
+msgstr "%(bb_series)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:23
 msgid "BookBrainz Series"
-msgstr ""
+msgstr "BookBrainz-Serie"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:11
 msgid "Delete this comment"
@@ -2238,7 +2305,7 @@ msgstr "%(event)s"
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:61
 msgid "MusicBrainz Event"
-msgstr ""
+msgstr "MusicBrainz-Veranstaltung"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:7
 #: critiquebrainz/frontend/templates/review/entity/label.html:16
@@ -2258,7 +2325,7 @@ msgstr "%(label)s"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:30
 msgid "MusicBrainz Label"
-msgstr ""
+msgstr "MusicBrainz-Label"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:12
 #: critiquebrainz/frontend/templates/review/entity/place.html:21
@@ -2278,7 +2345,7 @@ msgstr "%(place)s"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:56
 msgid "MusicBrainz Place"
-msgstr ""
+msgstr "MusicBrainz-Örtlichkeit"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:7
 #: critiquebrainz/frontend/templates/review/entity/work.html:16
@@ -2298,7 +2365,7 @@ msgstr "%(work)s"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:30
 msgid "MusicBrainz Work"
-msgstr ""
+msgstr "MusicBrainz-Werk"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:21
 msgid "Rating:"
@@ -2313,9 +2380,9 @@ msgid ""
 "\"_blank\">Markdown</a> syntax to apply custom formatting."
 msgstr ""
 "Lese die <a href=\"%(style_guide_url)s\" target=\"_blank\">Stilrichtlinien</"
-"a> für das Schreiben guter CritiqueBrainz-Rezensionen!<br/>\n"
-"Außerdem kannst du die <a href=\"%(markdown_url)s\" target=\"_blank"
-"\">Markdown-Syntax</a> verwenden, um eigene Formatierungen vorzunehmen."
+"a> für das Schreiben guter CritiqueBrainz-Rezensionen!<br>\n"
+"Außerdem kannst du die <a href=\"%(markdown_url)s\" target=\"_blank\""
+">Markdown-Syntax</a> verwenden, um eigene Formatierungen vorzunehmen."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:34
 msgid "Please, specify language of this review:"
@@ -2539,7 +2606,7 @@ msgstr "Dieser Monat"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:66
 msgid "[Unknown recording]"
-msgstr ""
+msgstr "[Unbekannte Aufnahme]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:82
 msgid "[Unknown edition group]"
@@ -2547,15 +2614,15 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/user/reviews.html:87
 msgid "[Unknown Literary Work]"
-msgstr ""
+msgstr "[Unbekanntes literarisches Werk]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:93
 msgid "[Unknown Author]"
-msgstr ""
+msgstr "[Unbekannter Autor]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:99
 msgid "[Unknown series]"
-msgstr ""
+msgstr "[Unbekannte Serie]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:123
 msgid "Hidden"
@@ -2583,7 +2650,7 @@ msgstr "Leider konnten wir keinen Künstler mit dieser MusicBrainz-ID finden."
 
 #: critiquebrainz/frontend/views/bb_author.py:32
 msgid "Sorry, we couldn't find an author with that BookBrainz ID."
-msgstr ""
+msgstr "Leider konnten wir keinen Autor mit dieser BookBrainz-ID finden."
 
 #: critiquebrainz/frontend/views/bb_edition_group.py:26
 msgid "Sorry, we couldn't find an edition group with that BookBrainz ID."
@@ -2591,11 +2658,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/views/bb_literary_work.py:26
 msgid "Sorry, we couldn't find a work with that BookBrainz ID."
-msgstr ""
+msgstr "Leider konnten wir kein Werk mit dieser BookBrainz-ID finden."
 
 #: critiquebrainz/frontend/views/bb_series.py:24
 msgid "Sorry, we couldn't find a series with that BookBrainz ID."
-msgstr ""
+msgstr "Leider konnten wir keine Serie mit dieser BookBrainz-ID finden."
 
 #: critiquebrainz/frontend/views/comment.py:39
 #, python-format
@@ -2729,7 +2796,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/views/recording.py:19
 msgid "Sorry, we couldn't find a recording with that MusicBrainz ID."
-msgstr ""
+msgstr "Leider konnten wir keine Aufnahme mit dieser MusicBrainz-ID finden."
 
 #: critiquebrainz/frontend/views/release.py:19
 msgid "Sorry, we couldn't find a release with that MusicBrainz ID."
@@ -2754,19 +2821,19 @@ msgstr "Kann keine Rezension mit ID %(review_id)s finden!"
 
 #: critiquebrainz/frontend/views/review.py:55
 msgid "Least Popular"
-msgstr ""
+msgstr "Unbeliebteste"
 
 #: critiquebrainz/frontend/views/review.py:56
 msgid "Most Popular"
-msgstr ""
+msgstr "Beliebteste"
 
 #: critiquebrainz/frontend/views/review.py:57
 msgid "Newest"
-msgstr ""
+msgstr "Neueste"
 
 #: critiquebrainz/frontend/views/review.py:58
 msgid "Oldest"
-msgstr ""
+msgstr "Älteste"
 
 #: critiquebrainz/frontend/views/review.py:85
 msgid "No reviews to display."
@@ -2860,7 +2927,7 @@ msgid ""
 "published review back to drafts is not allowed."
 msgstr ""
 "Das ändern der Lizenz einer bereits publizierten Rezension oder ändern einer "
-"solchen zurück in einen Entwurf ist leider nicht erlaubt"
+"solchen zurück in einen Entwurf ist leider nicht erlaubt."
 
 #: critiquebrainz/frontend/views/review.py:420
 msgid "Review has been updated."
