@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2023-09-12 06:27+0000\n"
+"PO-Revision-Date: 2023-09-21 08:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/de/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.1\n"
+"X-Generator: Weblate 5.0.2\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -550,7 +550,7 @@ msgstr "Serie"
 
 #: critiquebrainz/frontend/templates/macros.html:116
 msgid "Release Group"
-msgstr "Veröffentlichungsgruppe"
+msgstr "Veröf­fent­li­­chungs­grup­pe"
 
 #: critiquebrainz/frontend/templates/macros.html:121
 msgid "We don’t have cover art for this release group."
