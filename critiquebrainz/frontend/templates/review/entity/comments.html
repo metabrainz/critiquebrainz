@@ -13,7 +13,7 @@
             </a>
             <button class="comment-edit-button btn btn-primary btn-xs"
                     title="{{ _('Edit this comment') }}">
-              <span class="glyphicon glyphicon-edit"></span>  
+              <span class="glyphicon glyphicon-edit"></span>
             </button>
           {% endif %}
           <span style="float:right;">
@@ -48,12 +48,12 @@
 
 
 {% block scripts %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+<link rel="stylesheet" href="{{ get_static_path('wysiwyg-editor.css') }}"/>
   <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
   <script>
     $(document).ready(function() {
       commentMdes = {};
-      commentMdes["commentAddForm"] = new SimpleMDE({
+      commentMdes["commentAddForm"] = new EasyMDE({
         element: $("#comment-add-form").find(".comment-text")[0],
         spellChecker: false
       });
@@ -92,8 +92,8 @@
         commentContentDiv.toggle();
 
         if (!commentMdes[commentDivId]) {
-          // if no simplemde object is created for this comment, create it
-          commentMdes[commentDivId] = new SimpleMDE({
+          // if no EasyMDE object is created for this comment, create it
+          commentMdes[commentDivId] = new EasyMDE({
             element: commentText,
             spellChecker: false
           });

@@ -13,11 +13,11 @@
   "dependencies": {
     "bootstrap": "^3.4.1",
     "bootstrap-rating-input": "javiertoledo/bootstrap-rating-input#0a4ebb7d",
+    "easymde": "^2.18.0",
     "jquery": "3.5.1",
     "leaflet": "1.1.0",
     "path": "0.12.7",
-    "popper.js": "^1.14.1",
-    "simplemde": "^1.11.2"
+    "popper.js": "^1.14.1"
   },
   "private": true,
   "devDependencies": {
