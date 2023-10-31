@@ -11,6 +11,9 @@ jobs:
   test:
     name: Run test suite
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
 
     steps:
     - uses: actions/checkout@v2
@@ -24,6 +27,12 @@ jobs:
 
     - name: Run tests
       run: ./test.sh
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: ${{ always() }}
+      with:
+        files: reports/tests.xml
 
   prod:
       name: Build Production Image
