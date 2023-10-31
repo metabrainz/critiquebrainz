@@ -27,7 +27,7 @@ werkzeug==2.2.3
 Flask-DebugToolbar==0.13.1
 Flask-UUID==0.2
 sentry-sdk[flask]==1.14.0
-redis==4.2.2
+redis==4.4.4
 msgpack==0.5.6
 requests==2.31.0
 SQLAlchemy==1.4.41
