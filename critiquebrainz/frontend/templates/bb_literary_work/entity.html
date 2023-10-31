@@ -162,7 +162,7 @@
                   {% if edition_group["author_credits"]|length > 1 %}
                     <a href="{{ url_for('bb_author.entity', id=edition_group['author_credits'][0]['author_bbid']) }}">
                       {{ edition_group['author_credits'][0]['name'] }}
-                    </a> + {{ result["author_credits"]|length - 1 }} more
+                    </a> + {{ edition_group["author_credits"]|length - 1 }} more
                   {% else %}
                     <a href="{{ url_for('bb_author.entity', id=edition_group['author_credits'][0]['author_bbid']) }}">
                       {{ edition_group['author_credits'][0]['name'] }}
