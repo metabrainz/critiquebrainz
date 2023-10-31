@@ -60,11 +60,11 @@
 
 {% block scripts %}
   {{ super() }}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+  <link rel="stylesheet" href="{{ get_static_path('wysiwyg-editor.css') }}"/>
   <script src="{{ get_static_path('wysiwyg-editor.js') }}"></script>
   <script>
     $(document).ready(function() {
-      reviewContentEditor = new SimpleMDE({
+      reviewContentEditor = new EasyMDE({
         element: $('#review-content')[0],
         spellChecker: false
       });
@@ -84,7 +84,7 @@
       oldReviewLength = reviewContentEditor.value().length
       languageSelector = $('#review-language')[0]
       // Detect the language of the review on change
-      // codemirror is the underlying editor behind SimpleMDE.
+      // codemirror is the underlying editor behind EasyMDE.
       reviewContentEditor.codemirror.on("change", function() {
         const MIN_DIFFERENCE = 10
 
