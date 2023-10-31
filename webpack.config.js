@@ -34,7 +34,7 @@ module.exports = (env, argv) => {
         ]
       },
       {
-        test: /\.less$/,
+        test: /\.(le|c)ss$/,
         use: [
           {
             loader: 'style-loader'
