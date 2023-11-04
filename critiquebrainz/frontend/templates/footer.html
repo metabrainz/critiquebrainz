@@ -11,7 +11,7 @@
 
 <section class="footer">
   <hr />
-  <div class="row">
+  <div class="row footer-links">
     <div class="col-sm-12 col-md-6">
       <h3>
         <img src="{{ url_for('static', filename='images/logo_text.svg') }}" alt="CritiqueBrainz" width="250">
@@ -100,13 +100,13 @@
       </ul>
     </div>
   </div>
-  <div class="row center-p">
-    <div class="col-md-3 d-none d-md-block hidden-xs section-line">
+  <div class="row center-p section-line footer-credits">
+    <div class="footer-source-link">
       <p>
         {{ _("OSS Geek? {url|Contribute Here}")|expand({'url': 'https://github.com/metabrainz/critiquebrainz'})|safe }}
       </p>
     </div>
-    <div class="col-md-6 section-line">
+    <div class="footer-foundation">
       <p>
         {% set expand={
         'metabrainz': '<img src="' + url_for('static', filename='images/metabrainz-icon-detail.svg') + '"
@@ -116,7 +116,7 @@
         {{ _("Brought to you by {metabrainz}")|expand(expand)|safe }}
       </p>
     </div>
-    <div class="col-md-3 d-none d-md-block hidden-xs section-line">
+    <div class="footer-ticket-link">
       <p>
         {{ _("Found an Issue? {url|Report Here}")|expand({'url': 'https://tickets.metabrainz.org/browse/CB'})|safe
         }}
