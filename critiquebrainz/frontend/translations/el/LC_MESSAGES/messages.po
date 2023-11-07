@@ -1200,8 +1200,8 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:32
 msgid ""
-"Reviews can use the <a href=\"https://en.wikipedia.org/wiki/Markdown"
-"\">Markdown</a> markup language. This should\n"
+"Reviews can use the <a href=\"https://en.wikipedia.org/wiki/"
+"Markdown\">Markdown</a> markup language. This should\n"
 "          make it easier to write reviews and format them well. Use it to "
 "emphasize parts of your review, add links to\n"
 "          additional information, insert images when necessary."
@@ -2237,8 +2237,8 @@ msgstr ""
 msgid ""
 "You can read the <a href=\"%(style_guide_url)s\" target=\"_blank\">style "
 "guide</a> for writing good CritiqueBrainz reviews!<br/>\n"
-"                Furthermore, you can use <a href=\"%(markdown_url)s\" target="
-"\"_blank\">Markdown</a> syntax to apply custom formatting."
+"                Furthermore, you can use <a href=\"%(markdown_url)s\" "
+"target=\"_blank\">Markdown</a> syntax to apply custom formatting."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:34

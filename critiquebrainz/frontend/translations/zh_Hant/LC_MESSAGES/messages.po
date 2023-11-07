@@ -14,7 +14,7 @@ msgstr ""
 "projects/critiquebrainz/frontend/zh_Hant/>\n"
 "Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.0.2\n"
@@ -22,8 +22,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
 msgid ""
-"Spotify mapping server is unavailable. You will not see an embedded "
-"player."
+"Spotify mapping server is unavailable. You will not see an embedded player."
 msgstr "未能連接至Spotify配對伺服器，您將不能看見嵌入式播放器。"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:32
@@ -138,16 +137,15 @@ msgstr ""
 
 #: critiquebrainz/frontend/forms/profile.py:16
 msgid ""
-"Allow commercial use of my reviews (<a "
-"href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
-"target=\"_blank\">CC BY-SA 3.0 license</a>)"
+"Allow commercial use of my reviews (<a href=\"https://creativecommons.org/"
+"licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
 
 #: critiquebrainz/frontend/forms/profile.py:17
 msgid ""
 "Do not allow commercial use of my reviews, unless approved by MetaBrainz "
-"Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
-"sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
+"Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
+"target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
@@ -233,22 +231,21 @@ msgstr "文字長度必須為%(min)d及%(max)d個字元之間。"
 
 #: critiquebrainz/frontend/forms/review.py:37
 msgid ""
-"Allow commercial use of this review(<a "
-"href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
-"target=\"_blank\">CC BY-SA 3.0 license</a>)"
+"Allow commercial use of this review(<a href=\"https://creativecommons.org/"
+"licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
-"允許他人將評論作商業用途（<a href=\"https://creativecommons.org/licenses/"
-"by-sa/3.0/\" target=\"_blank\">創用CC姓名標示─相同方式分享3.0授權條款</a>）"
+"允許他人將評論作商業用途（<a href=\"https://creativecommons.org/licenses/by-"
+"sa/3.0/\" target=\"_blank\">創用CC姓名標示─相同方式分享3.0授權條款</a>）"
 
 #: critiquebrainz/frontend/forms/review.py:38
 msgid ""
-"Do not allow commercial use of this review, unless approved by MetaBrainz"
-" Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
-"sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
+"Do not allow commercial use of this review, unless approved by MetaBrainz "
+"Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
+"target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
-"禁止他人在未經MetaBrainz基金會同意，將評論作商業用途（<a href=\"https"
-"://creativecommons.org/licenses/by-nc-sa/3.0/\" target=\"_blank\""
-">創用CC姓名標示─非商業性─相同方式分享3.0授權條款</a>）"
+"禁止他人在未經MetaBrainz基金會同意，將評論作商業用途（<a href=\"https://"
+"creativecommons.org/licenses/by-nc-sa/3.0/\" target=\"_blank\">創用CC姓名標示"
+"─非商業性─相同方式分享3.0授權條款</a>）"
 
 #: critiquebrainz/frontend/forms/review.py:40
 msgid "You need to choose a license"
@@ -421,10 +418,11 @@ msgstr "應用程式"
 
 #: critiquebrainz/frontend/templates/macros.html:33
 msgid ""
-"Manage access to your profile for other apps (can allow complete access "
-"to your profile and remove existing access authorizations)."
-msgstr "管理其他應用程式存取個人資料的設定（可授權全面存取個人資料或撤銷現有的授權）"
-"。"
+"Manage access to your profile for other apps (can allow complete access to "
+"your profile and remove existing access authorizations)."
+msgstr ""
+"管理其他應用程式存取個人資料的設定（可授權全面存取個人資料或撤銷現有的授"
+"權）。"
 
 #: critiquebrainz/frontend/templates/macros.html:33
 msgid "Authorization"
@@ -553,8 +551,8 @@ msgstr "檢視Spotify配對資料"
 
 #: critiquebrainz/frontend/templates/macros.html:161
 msgid ""
-"We don’t have a mapping between this release group and Spotify. Please "
-"help us find the right album."
+"We don’t have a mapping between this release group and Spotify. Please help "
+"us find the right album."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:165
@@ -1070,10 +1068,10 @@ msgstr "CritiqueBrainz是什麼？"
 
 #: critiquebrainz/frontend/templates/index/about.html:10
 msgid ""
-"<strong>CritiqueBrainz is a repository for Creative Commons licensed "
-"music and book reviews.</strong>\n"
-"  It is based on data from MusicBrainz and BookBrainz, open music and "
-"book encyclopedias."
+"<strong>CritiqueBrainz is a repository for Creative Commons licensed music "
+"and book reviews.</strong>\n"
+"  It is based on data from MusicBrainz and BookBrainz, open music and book "
+"encyclopedias."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:14
@@ -1082,31 +1080,29 @@ msgstr "這是用來做什麼的？"
 
 #: critiquebrainz/frontend/templates/index/about.html:16
 msgid ""
-"Projects like Wikipedia, MusicBrainz and BookBrainz are good at "
-"aggregating information\n"
+"Projects like Wikipedia, MusicBrainz and BookBrainz are good at aggregating "
+"information\n"
 "  about music and books, but their purpose is not suited to expressing "
 "opinions.\n"
-"  CritiqueBrainz fills the gap between raw data and music and book "
-"critics."
+"  CritiqueBrainz fills the gap between raw data and music and book critics."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:21
 msgid ""
 "This is an open platform. That means everyone can participate and "
 "contribute.\n"
-"  If you want to share your thoughts, you can rate and/or review an album"
-" or a book.\n"
+"  If you want to share your thoughts, you can rate and/or review an album or "
+"a book.\n"
 "  If you would like, you can read our guide on\n"
-"  <a "
-"href=”https://wiki.musicbrainz.org/How_to_write_Good_Critiquebrainz_Reviews”>How"
-" to Write Good CritiqueBrainz Reviews</a>.\n"
+"  <a href=”https://wiki.musicbrainz.org/"
+"How_to_write_Good_Critiquebrainz_Reviews”>How to Write Good CritiqueBrainz "
+"Reviews</a>.\n"
 "  If you just want to read opinions, that’s fine too."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:28
 msgid ""
-"After reading a review you can mark it as useful or not. This helps other"
-"\n"
+"After reading a review you can mark it as useful or not. This helps other\n"
 "  music and book enthusiasts find good reviews."
 msgstr ""
 
@@ -1136,12 +1132,12 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:45
 msgid ""
-"Your submissions must be your original work. Do not submit content that "
-"you do not hold\n"
+"Your submissions must be your original work. Do not submit content that you "
+"do not hold\n"
 "  the copyright to, or is not your own. This includes plagiarism and "
 "primarily LLM (Large Language\n"
-"  Model) or AI generated content. You may wish to use LLM as a tool, but "
-"be aware that obviously\n"
+"  Model) or AI generated content. You may wish to use LLM as a tool, but be "
+"aware that obviously\n"
 "  LLM generated content will be removed."
 msgstr ""
 
@@ -1161,10 +1157,10 @@ msgstr "評論指引"
 #: critiquebrainz/frontend/templates/index/guidelines.html:9
 msgid ""
 "\n"
-"      <strong>Please note that this is an early version of the guidelines"
-" page.</strong>\n"
-"      Feel free to suggest improvements to this page and report any "
-"issues that you find. Thanks!\n"
+"      <strong>Please note that this is an early version of the guidelines "
+"page.</strong>\n"
+"      Feel free to suggest improvements to this page and report any issues "
+"that you find. Thanks!\n"
 "  "
 msgstr ""
 "\n"
@@ -1181,9 +1177,10 @@ msgstr "閱讀一些好的評論"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:17
 msgid ""
-"You can find a lot of great reviews on CritiqueBrainz and other websites."
-" Use them for inspiration."
-msgstr "您可以在CritiqueBrainz和其他網站找到許多很棒的評論。這些評論可以幫助您寫出更"
+"You can find a lot of great reviews on CritiqueBrainz and other websites. "
+"Use them for inspiration."
+msgstr ""
+"您可以在CritiqueBrainz和其他網站找到許多很棒的評論。這些評論可以幫助您寫出更"
 "好的音樂評論。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:20
@@ -1203,8 +1200,8 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:26
 msgid ""
-"You are more than welcome to write review in a language that you prefer "
-"to use. Choose a language in\n"
+"You are more than welcome to write review in a language that you prefer to "
+"use. Choose a language in\n"
 "                which you can express your emotions/thoughts freely."
 msgstr "只要您選擇的語言能讓您暢所欲言，我們歡迎您用該語言寫出您的評論。"
 
@@ -1214,16 +1211,15 @@ msgstr "格式"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:32
 msgid ""
-"Reviews can use the <a "
-"href=\"https://en.wikipedia.org/wiki/Markdown\">Markdown</a> markup "
-"language. This should\n"
-"          make it easier to write reviews and format them well. Use it to"
-" emphasize parts of your review, add links to\n"
+"Reviews can use the <a href=\"https://en.wikipedia.org/wiki/"
+"Markdown\">Markdown</a> markup language. This should\n"
+"          make it easier to write reviews and format them well. Use it to "
+"emphasize parts of your review, add links to\n"
 "          additional information, insert images when necessary."
 msgstr ""
-"您可以在評論中使用<a href=\"https://en.wikipedia.org/wiki/Markdown\">Markdown"
-"</a>標記式語言，強調評論內容、連結至更多資訊和插入圖片等，讓撰寫評論和編排內"
-"容變得更方便。"
+"您可以在評論中使用<a href=\"https://en.wikipedia.org/wiki/"
+"Markdown\">Markdown</a>標記式語言，強調評論內容、連結至更多資訊和插入圖片等，"
+"讓撰寫評論和編排內容變得更方便。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:37
 msgid "Properly formatted review is easier to read and understand."
@@ -1247,8 +1243,8 @@ msgstr "寫出您的所思所想。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:48
 msgid ""
-"A good reviewer is one who reviews a something based on what "
-"<em>they</em> feel rather than others."
+"A good reviewer is one who reviews a something based on what <em>they</em> "
+"feel rather than others."
 msgstr "一位好的評論員不會理會別人的感想，只會着重於<em>自己</em>的所思所想。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:51
@@ -1259,8 +1255,8 @@ msgstr "好的評論不會過短，也不會過長"
 msgid ""
 "It’s better to make your reviews neither too short nor too long. Try to "
 "write something which gives readers\n"
-"            a clear image as to what something is like while not being "
-"too boring."
+"            a clear image as to what something is like while not being too "
+"boring."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:56
@@ -1269,8 +1265,8 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:57
 msgid ""
-"Sometimes people mention only factual data in their reviews which makes a"
-" review look more like a press release."
+"Sometimes people mention only factual data in their reviews which makes a "
+"review look more like a press release."
 msgstr "一篇只有資料性內容的評論，看起來只會像似一篇新聞稿。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:61
@@ -1279,10 +1275,11 @@ msgstr "評論類型"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:62
 msgid ""
-"In addition to the general tips given above, here are some specific tips "
-"for each review type which might\n"
+"In addition to the general tips given above, here are some specific tips for "
+"each review type which might\n"
 "           help you to strengthen your review."
-msgstr "除了以上概括性的提示，這裡還有一些比較具體的提示，適用於特定的評論類型，讓您"
+msgstr ""
+"除了以上概括性的提示，這裡還有一些比較具體的提示，適用於特定的評論類型，讓您"
 "改善您的評論寫作技巧。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:65
@@ -1302,18 +1299,19 @@ msgstr "您可以評論歌曲的歌詞和錄音品質："
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:75
 msgid ""
-"Lyrics is what makes a song/album meaningful. You can always right about "
-"how were the lyrics? Was it\n"
+"Lyrics is what makes a song/album meaningful. You can always right about how "
+"were the lyrics? Was it\n"
 "          meaningful? Did it match the music?"
-msgstr "歌詞能讓一首歌甚至一張專輯更有內涵。歌詞有沒有深度？音樂與歌詞的搭配是否合適"
-"？"
+msgstr ""
+"歌詞能讓一首歌甚至一張專輯更有內涵。歌詞有沒有深度？音樂與歌詞的搭配是否合"
+"適？"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:79
 msgid ""
-"Recording quality matters a lot. If it’s good it’s good but if it’s bad "
-"it will flop the whole album. It’s\n"
-"          always better to note these things and mention about it in your"
-" review."
+"Recording quality matters a lot. If it’s good it’s good but if it’s bad it "
+"will flop the whole album. It’s\n"
+"          always better to note these things and mention about it in your "
+"review."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:85
@@ -1333,38 +1331,40 @@ msgstr "活動"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:94
 msgid ""
-"Describe the event place - Event reviews are enhanced by description of "
-"the event venue as to how big was it?\n"
-"      Was it sufficient for the crowd? or How well the band/artist sound "
-"in it?"
-msgstr "描述活動的地點：活動地點大小是否合適？是否能夠容納全部觀眾？樂隊和歌手的音色"
+"Describe the event place - Event reviews are enhanced by description of the "
+"event venue as to how big was it?\n"
+"      Was it sufficient for the crowd? or How well the band/artist sound in "
+"it?"
+msgstr ""
+"描述活動的地點：活動地點大小是否合適？是否能夠容納全部觀眾？樂隊和歌手的音色"
 "如何？"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:98
 msgid ""
 "Writing about the music played there - You may describe which songs were "
 "played in the event. Which were your\n"
-"      favourite songs played, you can write about the staging of the "
-"band. Were there any things which you didn’t like?\n"
+"      favourite songs played, you can write about the staging of the band. "
+"Were there any things which you didn’t like?\n"
 "      If yes, then why?"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:103
 msgid ""
-"Special moments, effects and surprises - Often there are special moments "
-"in every event, you may describe such\n"
-"      moments that took place. You may also write about special guests(if"
-" any) also any special effects in the event\n"
+"Special moments, effects and surprises - Often there are special moments in "
+"every event, you may describe such\n"
+"      moments that took place. You may also write about special guests(if "
+"any) also any special effects in the event\n"
 "      which caught everyone’s attention."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:108
 msgid ""
-"Writing about Event atmosphere - You may always describe about the crowd,"
-" how well the artists/band were able to\n"
+"Writing about Event atmosphere - You may always describe about the crowd, "
+"how well the artists/band were able to\n"
 "      entertain the crowd? Was the crowd exciting or was it a monotonous "
 "atmosphere?"
-msgstr "描述活動的氣氛：您可以形容一下觀眾的反應和表演者能不能夠帶動現場的氣氛。"
+msgstr ""
+"描述活動的氣氛：您可以形容一下觀眾的反應和表演者能不能夠帶動現場的氣氛。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:113
 msgid "Places"
@@ -1379,10 +1379,10 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:120
 msgid ""
-"Writing about the architecture - If it’s a musical stadium people want to"
-" know about how many people can the\n"
-"      place occupy, how well the artist sounds in each corner of the "
-"place etc."
+"Writing about the architecture - If it’s a musical stadium people want to "
+"know about how many people can the\n"
+"      place occupy, how well the artist sounds in each corner of the place "
+"etc."
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:126
@@ -1391,8 +1391,8 @@ msgstr "💡註："
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:127
 msgid ""
-"Try to be <strong>honest</strong> while reviewing, simply don’t follow "
-"the trend. Review the album as to what\n"
+"Try to be <strong>honest</strong> while reviewing, simply don’t follow the "
+"trend. Review the album as to what\n"
 "    you felt. And try to follow active voice."
 msgstr ""
 
@@ -1406,8 +1406,8 @@ msgstr "寫長篇評論時忽略細節。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:134
 msgid ""
-"Forgetting to check the factual information in the review after "
-"completing the writing process."
+"Forgetting to check the factual information in the review after completing "
+"the writing process."
 msgstr "寫完評論後，沒有檢查資料是否正確。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:135
@@ -1420,8 +1420,8 @@ msgstr "使用錯誤標點符號、別字或錯誤文法等。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:137
 msgid ""
-"Writing in slangs - Try to write in proper English (or whatever language "
-"you prefer).\n"
+"Writing in slangs - Try to write in proper English (or whatever language you "
+"prefer).\n"
 "              It’s better not to write reviews in slangs."
 msgstr ""
 
@@ -1439,16 +1439,16 @@ msgstr "歡迎來到CritiqueBrainz！"
 
 #: critiquebrainz/frontend/templates/index/index.html:12
 msgid ""
-"CritiqueBrainz is a repository for Creative Commons licensed music and "
-"book reviews.\n"
-"        Here you can read what other people have written about an album "
-"or event and write your own review!"
+"CritiqueBrainz is a repository for Creative Commons licensed music and book "
+"reviews.\n"
+"        Here you can read what other people have written about an album or "
+"event and write your own review!"
 msgstr ""
 
 #: critiquebrainz/frontend/templates/index/index.html:16
 msgid ""
-"CritiqueBrainz is based on data from MusicBrainz - open music "
-"encyclopedia and BookBrainz - open book encyclopedia.\n"
+"CritiqueBrainz is based on data from MusicBrainz - open music encyclopedia "
+"and BookBrainz - open book encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
 msgstr ""
 
@@ -1574,8 +1574,8 @@ msgstr "原因："
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to"
-" access your profile data."
+"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"access your profile data."
 msgstr "請使用您的MusicBrainz帳號登入，再授權CritiqueBrainz存取您的用戶資料。"
 
 #: critiquebrainz/frontend/templates/login/index.html:11
@@ -1653,8 +1653,8 @@ msgstr "網站"
 #: critiquebrainz/frontend/templates/oauth/prompt.html:24
 #, python-format
 msgid ""
-"%(client)s is requesting permission to access the following parts of your"
-" profile:"
+"%(client)s is requesting permission to access the following parts of your "
+"profile:"
 msgstr "%(client)s正在要求存取以下個人資料："
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:31
@@ -1721,8 +1721,9 @@ msgstr "您確定要刪除帳號嗎？"
 msgid ""
 "All your data (i.e. reviews, votes, reports) will be purged. You "
 "<strong>cannot</strong> undo this action."
-msgstr "我們將會清除您所有的資料（即評論、投票紀錄和舉報紀錄）。經清除後，我們將<stro"
-"ng>不可恢復</strong>您的資料。"
+msgstr ""
+"我們將會清除您所有的資料（即評論、投票紀錄和舉報紀錄）。經清除後，我們將"
+"<strong>不可恢復</strong>您的資料。"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:14
 msgid "Yes, I want to delete my account"
@@ -2351,27 +2352,26 @@ msgstr "撰寫評論"
 
 #: critiquebrainz/frontend/templates/review/modify/write.html:17
 msgid ""
-"You acknowledge and agree that your contributed reviews to CritiqueBrainz"
-" are licensed under a\n"
-"            Creative Commons Attribution-ShareAlike 3.0 Unported or "
-"Creative Commons Attribution-ShareAlike-NonCommercial\n"
-"            license as per your choice above. You agree to license your "
-"work under this license.\n"
-"            You represent and warrant that you own or control all rights "
-"in and to the work, that nothing in the work\n"
-"            infringes the rights of any third-party, and that you have "
-"the permission to use and to license the work\n"
-"            under the selected Creative Commons license. Finally, you "
-"give the MetaBrainz Foundation permission to license\n"
+"You acknowledge and agree that your contributed reviews to CritiqueBrainz "
+"are licensed under a\n"
+"            Creative Commons Attribution-ShareAlike 3.0 Unported or Creative "
+"Commons Attribution-ShareAlike-NonCommercial\n"
+"            license as per your choice above. You agree to license your work "
+"under this license.\n"
+"            You represent and warrant that you own or control all rights in "
+"and to the work, that nothing in the work\n"
+"            infringes the rights of any third-party, and that you have the "
+"permission to use and to license the work\n"
+"            under the selected Creative Commons license. Finally, you give "
+"the MetaBrainz Foundation permission to license\n"
 "            this content for commercial use outside of Creative Commons "
 "licenses in order to support the operations of the organization."
 msgstr ""
 "您明白並同意對CritiqueBrainz所貢獻之評論均依照您以上所選擇的\n"
-"「創用CC姓名標示─相同方式分享3."
-"0未本地化授權條款」或「創用CC姓名標示─非商業性─相同方式分享3."
-"0授權條款」發表。\n"
-"您聲明及保證您擁有且控制對作品或作品中的所有權利，作品完全不侵犯第三人之權利"
-"，以及您得到以已選之創用CC授權條款使用授權及對作品授權。\n"
+"「創用CC姓名標示─相同方式分享3.0未本地化授權條款」或「創用CC姓名標示─非商業性"
+"─相同方式分享3.0授權條款」發表。\n"
+"您聲明及保證您擁有且控制對作品或作品中的所有權利，作品完全不侵犯第三人之權"
+"利，以及您得到以已選之創用CC授權條款使用授權及對作品授權。\n"
 "最後，您授權MetaBrainz基金會以支持其運作為目的，授權此內容在創用CC授權條款外"
 "商業使用。"
 
@@ -2565,8 +2565,8 @@ msgstr ""
 
 #: critiquebrainz/frontend/views/comment.py:90
 msgid ""
-"You are not allowed to edit comments because your account has been "
-"blocked by a moderator."
+"You are not allowed to edit comments because your account has been blocked "
+"by a moderator."
 msgstr ""
 
 #: critiquebrainz/frontend/views/comment.py:100
@@ -2654,8 +2654,8 @@ msgstr "您刪除了一個應用程式。"
 
 #: critiquebrainz/frontend/views/rate.py:37
 msgid ""
-"You are not allowed to rate any entity because your account has been "
-"blocked by a moderator."
+"You are not allowed to rate any entity because your account has been blocked "
+"by a moderator."
 msgstr ""
 
 #: critiquebrainz/frontend/views/recording.py:19
@@ -2722,7 +2722,8 @@ msgid "Review has been hidden. You need to be an administrator to view it."
 msgstr "評論已經被隱藏，只有管理員才可檢閱評論。"
 
 #: critiquebrainz/frontend/views/review.py:148
-msgid "You are viewing an old revision, the review has been updated since then."
+msgid ""
+"You are viewing an old revision, the review has been updated since then."
 msgstr "您正在檢視一個舊版本，評論後來已經被更新。"
 
 #: critiquebrainz/frontend/views/review.py:150
