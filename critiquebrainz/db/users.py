@@ -15,7 +15,6 @@ USER_GET_COLUMNS = [
     'musicbrainz_id as musicbrainz_username',
     'musicbrainz_row_id',
     'COALESCE(musicbrainz_id, id::text) AS user_ref',
-    'license_choice',
     'is_blocked',
 ]
 
@@ -101,8 +100,7 @@ def get_by_id(user_id):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "is_blocked": (bool),
-            "license_choice": (str)
+            "is_blocked": (bool)
         }
     """
     with db.engine.connect() as connection:
@@ -118,7 +116,6 @@ def create(**user_data):
         musicbrainz_row_id (int): the MusicBrainz row ID of the user,
         email(str, optional): email of the user.
         is_blocked(bool, optional): whether user is blocked(default: false).
-        license_choice(str, optional): preferred license for reviews by the user
 
     Returns:
         Dictionary with the following structure:
@@ -128,15 +125,13 @@ def create(**user_data):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "is_blocked": (bool),
-            "license_choice": (str)
+            "is_blocked": (bool)
         }
     """
     display_name = user_data.pop('display_name')
     musicbrainz_username = user_data.pop('musicbrainz_username', None)
     email = user_data.pop('email', None)
     is_blocked = user_data.pop('is_blocked', False)
-    license_choice = user_data.pop('license_choice', None)
     musicbrainz_row_id = user_data.pop('musicbrainz_row_id', None)
     if user_data:
         raise TypeError('Unexpected **user_data: %r' % user_data)
@@ -144,9 +139,9 @@ def create(**user_data):
     with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
             INSERT INTO "user" (id, display_name, email, created, musicbrainz_id,
-                                is_blocked, license_choice, musicbrainz_row_id)
+                                is_blocked, musicbrainz_row_id)
                  VALUES (:id, :display_name, :email, :created, :musicbrainz_id,
-                        :is_blocked, :license_choice, :musicbrainz_row_id)
+                        :is_blocked, :musicbrainz_row_id)
               RETURNING id
         """), {
             "id": str(uuid.uuid4()),
@@ -155,7 +150,6 @@ def create(**user_data):
             "created": datetime.now(),
             "musicbrainz_id": musicbrainz_username,
             "is_blocked": is_blocked,
-            "license_choice": license_choice,
             "musicbrainz_row_id": musicbrainz_row_id,
         })
         new_id = result.fetchone().id
@@ -176,8 +170,7 @@ def get_by_mbid(musicbrainz_username):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "is_blocked": (bool),
-            "license_choice": (str)
+            "is_blocked": (bool)
         }
     """
     with db.engine.connect() as connection:
@@ -206,7 +199,6 @@ def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
             "display_name": Display name of the user.
             "email": email of the user(optional).
             "is_blocked": whether user is blocked(default: false, optional).
-            "license_choice": preferred license for reviews by the user(optional)
         }
 
     Returns:
@@ -217,8 +209,7 @@ def get_or_create(musicbrainz_row_id, musicbrainz_username, new_user_data):
             "email": (str),
             "created": (datetime),
             "musicbrainz_username": (str),
-            "is_blocked": (bool),
-            "license_choice": (str)
+            "is_blocked": (bool)
         }
     """
     user = get_by_mb_row_id(musicbrainz_row_id, musicbrainz_username)
@@ -297,7 +288,6 @@ def list_users(limit=None, offset=0):
             "created": (datetime),
             "musicbrainz_username": (str),
             "is_blocked": (bool),
-            "license_choice": (str),
             "musicbrainz_row_id": (int),
         }
     """
@@ -586,7 +576,6 @@ def update(user_id, user_new_info):
         {
             "display_name": (str),
             "email": (str)
-            "license_choice": (str)
         }
     """
     updates = []
@@ -594,8 +583,6 @@ def update(user_id, user_new_info):
         updates.append("display_name = :display_name")
     if "email" in user_new_info:
         updates.append("email = :email")
-    if "license_choice" in user_new_info:
-        updates.append("license_choice = :license_choice")
 
     setstr = ", ".join(updates)
     query = sqlalchemy.text("""UPDATE "user"

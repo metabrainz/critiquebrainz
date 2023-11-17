@@ -326,19 +326,15 @@ def create(entity_type=None, entity_id=None):
         flash.error(gettext("You have exceeded your limit of reviews per day."))
         return redirect(url_for('user.reviews', user_ref=current_user.user_ref))
 
-    form = ReviewCreateForm(default_license_id=current_user.license_choice, default_language=get_locale())
+    form = ReviewCreateForm(default_language=get_locale())
 
     if form.validate_on_submit():
         is_draft = form.state.data == 'draft'
         if form.text.data == '':
             form.text.data = None
         review = db_review.create(user_id=current_user.id, entity_id=entity_id, entity_type=entity_type,
-                                  text=form.text.data, rating=form.rating.data, license_id=form.license_choice.data,
+                                  text=form.text.data, rating=form.rating.data,
                                   language=form.language.data, is_draft=is_draft)
-        if form.remember_license.data:
-            db_users.update(current_user.id, user_new_info={
-                "license_choice": form.license_choice.data,
-            })
         if is_draft:
             flash.success(gettext("Review has been saved!"))
         else:
@@ -382,9 +378,6 @@ def edit(id):
         "entity_type": review["entity_type"],
         "review": review,
     }
-    if not review["is_draft"]:
-        # Can't change license if review is published.
-        del form.license_choice
 
     # The purpose of the check is to not create unnecessary revisions. So updating a draft review
     # without changes or editing a published review without changes is not allowed. But publishing
@@ -397,7 +390,7 @@ def edit(id):
         form.form_errors.append("You must edit either text or rating to update the review.")
     elif form.validate_on_submit():
         if review["is_draft"]:
-            license_choice = form.license_choice.data
+            license_choice = db_review.DEFAULT_LICENSE_ID
         else:
             license_choice = None
         if form.text.data == '':

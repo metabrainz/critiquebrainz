@@ -490,7 +490,6 @@ def review_post_handler(user):
     :json string entity_type: One of the supported reviewable entities. 'release_group' or 'event' etc.
     :json string text: Text part of review, min length is 25, max is 5000 **(optional)**
     :json integer rating: Rating part of review, min is 1, max is 5 **(optional)**
-    :json string license_choice: license ID
     :json string language: language code (ISO 639-1), default is ``en`` **(optional)**
     :json boolean is_draft: whether the review should be saved as a draft or not, default is ``False`` **(optional)**
 
@@ -506,7 +505,6 @@ def review_post_handler(user):
         entity_type = Parser.string('json', 'entity_type', valid_values=ENTITY_TYPES)
         text = Parser.string('json', 'text', min=min_review_length, max=REVIEW_TEXT_MAX_LENGTH, optional=True)
         rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX, optional=True)
-        license_choice = Parser.string('json', 'license_choice')
         language = Parser.string('json', 'language', min=2, max=3, optional=True) or 'en'
         if text is None and rating is None:
             raise InvalidRequest(desc='Review must have either text or rating')
@@ -515,18 +513,17 @@ def review_post_handler(user):
         if db_review.list_reviews(inc_drafts=True, inc_hidden=True, entity_id=entity_id, user_id=user.id)[1]:
             raise InvalidRequest(desc='You have already published a review for this {entity_name}'.format(
                 entity_name=db_review.ENTITY_TYPES_MAPPING[entity_type]))
-        return entity_id, entity_type, text, rating, license_choice, language, is_draft
+        return entity_id, entity_type, text, rating, language, is_draft
 
     if user.is_review_limit_exceeded:
         raise LimitExceeded('You have exceeded your limit of reviews per day.')
-    entity_id, entity_type, text, rating, license_choice, language, is_draft = fetch_params()
+    entity_id, entity_type, text, rating, language, is_draft = fetch_params()
     review = db_review.create(
         user_id=user.id,
         entity_id=entity_id,
         entity_type=entity_type,
         text=text,
         rating=rating,
-        license_id=license_choice,
         language=language,
         is_draft=is_draft,
     )
