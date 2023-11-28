@@ -31,6 +31,14 @@ class ProfileViewsTestCase(FrontendTestCase):
         response = self.client.post('/profile/edit', data=data,
                                     query_string=data, follow_redirects=True)
         self.assert200(response)
+
+        # because the g global persists for entire duration of the test, we need to manually logout/login
+        # the user again for the current_user to be refreshed. in production, this would happen automatically
+        # as the current_user is loaded at the start of each request/request context.
+        self.temporary_login(self.user)
+
+        response = self.client.post(f'/user/{self.user.id}')
+        self.assert200(response)
         self.assertIn(data['display_name'], str(response.data))
 
     def test_delete(self):

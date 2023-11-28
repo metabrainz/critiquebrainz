@@ -3,8 +3,6 @@ from flask_babel import Babel, Locale
 
 
 def init_app(app, domain='messages'):
-    babel = Babel(app, default_domain=domain)
-
     app.config['LANGUAGES'] = {}
     for language in app.config['SUPPORTED_LANGUAGES']:
         app.config['LANGUAGES'][language] = Locale.parse(language).language_name
@@ -21,7 +19,6 @@ def init_app(app, domain='messages'):
         g.after_request_callbacks.append(f)
         return f
 
-    @babel.localeselector
     def get_locale():  # pylint: disable=unused-variable
         supported_languages = app.config['SUPPORTED_LANGUAGES']
         language_arg = request.args.get('l')
@@ -38,3 +35,6 @@ def init_app(app, domain='messages'):
                 return language_cookie
 
         return request.accept_languages.best_match(supported_languages)
+
+    babel = Babel()
+    babel.init_app(app, default_domain=domain, locale_selector=get_locale)
