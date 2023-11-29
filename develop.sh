@@ -7,14 +7,21 @@ if [[ ! -d "docker" ]]; then
     exit -1
 fi
 
+echo "Checking docker compose version"
+if docker compose version &> /dev/null; then
+    DOCKER_COMPOSE_CMD="docker compose"
+else
+    DOCKER_COMPOSE_CMD="docker-compose"
+fi
+
 function invoke_docker_compose {
-    exec docker-compose -f docker/docker-compose.dev.yml \
+    exec $DOCKER_COMPOSE_CMD -f docker/docker-compose.dev.yml \
                 -p critiquebrainz \
                 "$@"
 }
 
 function invoke_docker_compose_test {
-    exec docker-compose -f docker/docker-compose.test.yml \
+    exec $DOCKER_COMPOSE_CMD -f docker/docker-compose.test.yml \
                 -p critiquebrainz_test \
                 "$@"
 }
