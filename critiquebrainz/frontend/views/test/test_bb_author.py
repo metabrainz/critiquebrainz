@@ -6,6 +6,7 @@ import critiquebrainz.db.users as db_users
 from critiquebrainz.db.user import User
 from critiquebrainz.frontend.testing import FrontendTestCase
 
+
 class AuthorViewsTestCase(FrontendTestCase):
 
     def setUp(self):
