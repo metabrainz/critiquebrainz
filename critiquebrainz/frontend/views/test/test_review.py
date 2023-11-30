@@ -2,7 +2,7 @@ from unittest import mock
 from unittest.mock import patch
 from urllib.parse import urlparse
 
-from flask import current_app, url_for
+from flask import url_for
 
 import critiquebrainz.db.license as db_license
 import critiquebrainz.db.review as db_review

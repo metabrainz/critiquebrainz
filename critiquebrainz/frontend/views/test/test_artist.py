@@ -1,8 +1,8 @@
 from unittest import mock
 
-from critiquebrainz.db.user import User
 from critiquebrainz.frontend.testing import FrontendTestCase
 from critiquebrainz.db import users as db_users
+
 
 def return_release_groups(*, artist_id, release_types=None, limit=None, offset=None):
     # pylint: disable=unused-argument
@@ -30,6 +30,7 @@ def return_release_groups(*, artist_id, release_types=None, limit=None, offset=N
 class ArtistViewsTestCase(FrontendTestCase):
 
     def setUp(self):
+        from critiquebrainz.db.user import User
         super(ArtistViewsTestCase, self).setUp()
         self.reviewer = User(db_users.get_or_create(
             1, "Reviewer", new_user_data={"display_name": u"Reviewer"}
