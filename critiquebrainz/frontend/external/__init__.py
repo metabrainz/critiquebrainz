@@ -10,6 +10,7 @@ from flask import current_app, _app_ctx_stack
 
 from critiquebrainz.frontend.external.entities import get_entity_by_id, get_multiple_entities
 
+
 class MBDataAccess(object):
     """A data access object which switches between database get methods or development versions
     This is useful because we won't show a review if we cannot find its metadata in the
@@ -50,6 +51,7 @@ class MBDataAccess(object):
             if not hasattr(ctx, 'get_multiple_entities'):
                 ctx.get_multiple_entities = self.get_multiple_entities_method
             return ctx.get_multiple_entities
+
 
 mbstore = MBDataAccess()
 

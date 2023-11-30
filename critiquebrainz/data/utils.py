@@ -30,6 +30,10 @@ def drop_types():
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'drop_types.sql'))
 
 
+def clear_tables():
+    db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'clear_tables.sql'))
+
+
 def explode_db_uri(uri):
     """Extracts database connection info from the URI.
 

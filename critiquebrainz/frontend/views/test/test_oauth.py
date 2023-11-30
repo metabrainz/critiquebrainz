@@ -9,6 +9,7 @@ from urllib.parse import urlparse, parse_qs
 
 class OauthTestCase(FrontendTestCase):
     def setUp(self):
+        super().setUp()
         from critiquebrainz.db.user import User
         self.user = User(db_users.get_or_create(2, "9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
             "display_name": u"User",

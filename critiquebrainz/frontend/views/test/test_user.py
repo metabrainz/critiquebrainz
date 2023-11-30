@@ -12,7 +12,9 @@ class UserViewsTestCase(FrontendTestCase):
         self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": u"Tester",
         }))
-        self.hacker = User(db_users.create(musicbrainz_row_id = 2, display_name = u"Hacker"))
+        self.hacker = User(db_users.get_or_create(2, "Hacker", new_user_data={
+            "display_name": u"Hacker",
+        }))
         self.admin = User(db_users.get_or_create(3, "Admin", new_user_data={
             "display_name": u"Admin",
         }))

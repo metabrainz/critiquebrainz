@@ -1,6 +1,5 @@
 from math import ceil
 
-from brainzutils.musicbrainz_db.exceptions import NoDataFoundException
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_babel import gettext, get_locale, lazy_gettext
 from flask_login import login_required, current_user
