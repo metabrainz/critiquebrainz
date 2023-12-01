@@ -37,7 +37,7 @@ class ProfileViewsTestCase(FrontendTestCase):
         # as the current_user is loaded at the start of each request/request context.
         self.temporary_login(self.user)
 
-        response = self.client.post(f'/user/{self.user.id}')
+        response = self.client.get(f'/user/{self.user.id}')
         self.assert200(response)
         self.assertIn(data['display_name'], str(response.data))
 
