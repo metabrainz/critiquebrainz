@@ -9,46 +9,118 @@
   </div>
 {% endif %}
 
-<div class="footer">
-  <div class="row">
-    <div class="col-sm-2">
-      <div class="title"><a href="{{ url_for('review.browse') }}">{{ _('Reviews') }}</a></div>
-      <ul>
-        <li><a href="{{ url_for('review.create') }}">{{ _('Write a review') }}</a></li>
+<section class="footer">
+  <hr />
+  <div class="row footer-links">
+    <div class="col-sm-12 col-md-6">
+      <h3>
+        <img src="{{ url_for('static', filename='images/logo_text.svg') }}" alt="CritiqueBrainz" width="250">
+      </h3>
+      <br>
+      <p>
+        {{ _("CritiqueBrainz is a repository for Creative Commons licensed music and book reviews. It is based on data from MusicBrainz and BookBrainz, open music and book encyclopedias.") }}
+      </p>
+      <ul class="list-unstyled">
+        <li>
+          {{ _("Development IRC: {url|#metabrainz}")|expand({'url':
+          'https://kiwiirc.com/nextclient/irc.libera.chat/?#metabrainz'})|safe }}
+        </li>
       </ul>
     </div>
-    <div class="col-sm-2">
-      <div class="title"><a href="https://critiquebrainz.readthedocs.io">{{ _('Developers') }}</a></div>
-      <ul>
-        <li><a href="https://critiquebrainz.readthedocs.io/api.html">{{ _('Web API') }}</a></li>
-        <li><a href="https://github.com/metabrainz/critiquebrainz">{{ _('Source code') }}</a></li>
-        <li><a href="http://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/">{{ _('Data dumps') }}</a></li>
+    <br>
+    <div class="col-xs-12 col-sm-4 col-md-2">
+      <h3>{{ _("About") }}</h3>
+      <ul class="list-unstyled">
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="{{ url_for('frontend.about') }}">{{ _('The project') }}</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="{{ url_for('review.create') }}">{{ _('Write a review') }}</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="https://blog.musicbrainz.org/tag/critiquebrainz/">{{ _('Blog') }}</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="{{ url_for('moderators.mods_list') }}">{{ _('Moderators') }}</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="{{ url_for('log.browse') }}">{{ _('Moderation log') }}</a>
+        </li>
       </ul>
     </div>
-    <div class="col-sm-2">
-      <div class="title"><a href="{{ url_for('frontend.about') }}">{{ _('About the project') }}</a></div>
-      <ul>
-        <li><a href="http://blog.musicbrainz.org/tag/critiquebrainz/">{{ _('Blog') }}</a></li>
-        <li><a href="{{ url_for('moderators.mods_list') }}">{{ _('Moderators') }}</a></li>
-        <li><a href="{{ url_for('log.browse') }}">{{ _('Moderation log') }}</a></li>
+    <div class="col-xs-12 col-sm-4 col-md-2">
+      <h3>{{ _("Fellow Projects") }}</h3>
+      <ul class="list-unstyled">
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="https://musicbrainz.org/" target="_blank"
+            rel="noopener noreferrer">MusicBrainz</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="https://bookbrainz.org/" target="_blank"
+            rel="noopener noreferrer">BookBrainz</a>
+        </li>
+        <li class="item-list-a">
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="https://listenbrainz.org/" target="_blank"
+            rel="noopener noreferrer">ListenBrainz</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="https://picard.musicbrainz.org/" target="_blank"
+            rel="noopener noreferrer">Picard</a>
+        </li>
       </ul>
     </div>
-    {# Last block should fill up the rest of this row. #}
-    <div class="col-sm-6">
-      <div id="language-selector" class="btn-group dropup pull-right">
-        <button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
-          <span class="glyphicon glyphicon-globe"></span> {{ _('Language') }} <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          {% for language in config.LANGUAGES|dictsort(false, 'value') %}
-            <li><a href="{{ language[0] | parameterize('l') }}">{{ language[1]|capitalize }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
+    <div class="col-xs-12 col-sm-4 col-md-2">
+      <h3>{{ _("Developers") }}</h3>
+      <ul class="list-unstyled">
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="https://critiquebrainz.readthedocs.io">{{ _('Documentation') }}</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="https://critiquebrainz.readthedocs.io/api.html">{{ _('Web API') }}</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="https://github.com/metabrainz/critiquebrainz">{{ _('Source code') }}</a>
+        </li>
+        <li>
+          <i class="glyphicon glyphicon-menu-right"></i>
+          <a href="http://ftp.musicbrainz.org/pub/musicbrainz/critiquebrainz/">{{ _('Data dumps') }}</a>
+        </li>
+      </ul>
     </div>
   </div>
-  <div class="meb-credit">
-    {{ _('Project of the %(metabrainz_fdn)s',
-         metabrainz_fdn='<a href="https://metabrainz.org">MetaBrainz Foundation</a>'|safe) }}
+  <div class="row center-p section-line footer-credits">
+    <div class="footer-source-link">
+      <p>
+        {{ _("OSS Geek? {url|Contribute Here}")|expand({'url': 'https://github.com/metabrainz/critiquebrainz'})|safe }}
+      </p>
+    </div>
+    <div class="footer-foundation">
+      <p>
+        {% set expand={
+        'metabrainz': '<img src="' + url_for('static', filename='images/metabrainz-icon-detail.svg') + '"
+          alt="MetaBrainz" width="30" height="30"> <span> MetaBrainz Foundation </span>'
+        }
+        %}
+        {{ _("Brought to you by {metabrainz}")|expand(expand)|safe }}
+      </p>
+    </div>
+    <div class="footer-ticket-link">
+      <p>
+        {{ _("Found an Issue? {url|Report Here}")|expand({'url': 'https://tickets.metabrainz.org/browse/CB'})|safe
+        }}
+      </p>
+    </div>
   </div>
-</div>
+</section>
