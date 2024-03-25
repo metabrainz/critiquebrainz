@@ -11,13 +11,15 @@
 # qwe qwe <matsuk-nikita@rambler.ru>, 2021
 # arsinclair <romanio412@gmail.com>, 2017
 # Roman Tsukanov, 2014
+# wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2023-08-29 23:27+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-03-25 12:28+0000\n"
+"Last-Translator: wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz"
+".org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/ru/>\n"
 "Language: ru\n"
@@ -25,9 +27,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 4.18.2\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -41,7 +43,7 @@ msgstr ""
 #: critiquebrainz/frontend/external/relationships/place.py:27
 #: critiquebrainz/frontend/external/relationships/release_group.py:19
 msgid "Wikidata"
-msgstr "Wikidata"
+msgstr "Викиданные"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:33
 #: critiquebrainz/frontend/external/relationships/label.py:20
@@ -119,19 +121,19 @@ msgstr "Укажите причину для этого действия."
 
 #: critiquebrainz/frontend/forms/profile.py:8
 msgid "Display name"
-msgstr "Display name"
+msgstr "Отображаемое имя"
 
 #: critiquebrainz/frontend/forms/profile.py:9
 msgid "Display name field is empty."
-msgstr "Поле отображаемого имени пусто"
+msgstr "Поле отображаемого имени пусто."
 
 #: critiquebrainz/frontend/forms/profile.py:10
 msgid "Display name needs to be at least 3 characters long."
-msgstr "Display name needs to be at least 3 characters long."
+msgstr "Отображаемое имя должно состоять из как минимум трех символов."
 
 #: critiquebrainz/frontend/forms/profile.py:11
 msgid "Display name needs to be at most 64 characters long."
-msgstr "Display name needs to be at most 64 characters long."
+msgstr "Отображаемое имя должно состоять из не более 64 символов."
 
 #: critiquebrainz/frontend/forms/profile.py:12
 #: critiquebrainz/frontend/templates/user/info.html:22
@@ -151,9 +153,9 @@ msgid ""
 "Allow commercial use of my reviews (<a href=\"https://creativecommons.org/"
 "licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
-"Разрешить коммерческое использование моих отзывов (<a href=\"https://"
-"creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">лицензия CC BY-"
-"SA 3.0</a>)"
+"Разрешить коммерческое использование моих рецензий по <a href=\"https"
+"://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">лицензии CC "
+"BY-SA 3.0</a>"
 
 #: critiquebrainz/frontend/forms/profile.py:17
 msgid ""
@@ -161,8 +163,8 @@ msgid ""
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
-"Не разрешать коммерческое использование моих отзывов, если только это не "
-"будет одобрено MetaBrainz Foundation (<a href=\"https://creativecommons.org/"
+"Не разрешать коммерческое использование моих рецензий, если только это не "
+"будет одобрено Фондом MetaBrainz (<a href=\"https://creativecommons.org/"
 "licenses/by-nc-sa/3.0/\" target=\"_blank\">лицензия CC BY-NC-SA 3.0</a>)"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
@@ -229,7 +231,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/forms/profile_apps.py:28
 msgid "Homepage URL must use http or https"
-msgstr ""
+msgstr "Адрес домашней страницы должен содержать http или https"
 
 #: critiquebrainz/frontend/forms/rate.py:26
 #: critiquebrainz/frontend/forms/review.py:43
@@ -401,7 +403,7 @@ msgstr "Язык"
 #: critiquebrainz/frontend/templates/footer.html:51
 #, python-format
 msgid "Project of the %(metabrainz_fdn)s"
-msgstr ""
+msgstr "Проект %(metabrainz_fdn)s"
 
 #: critiquebrainz/frontend/templates/macros.html:4
 #: critiquebrainz/frontend/templates/reports/reports.html:28
@@ -543,7 +545,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:116
 msgid "Release Group"
-msgstr "Группа релиза"
+msgstr "Группа релизов"
 
 #: critiquebrainz/frontend/templates/macros.html:121
 msgid "We don’t have cover art for this release group."
@@ -662,7 +664,7 @@ msgstr "Поиск"
 #: critiquebrainz/frontend/templates/search/index.html:83
 #: critiquebrainz/frontend/templates/search/index.html:108
 msgid "Release group"
-msgstr "Группа релиза"
+msgstr "Группа релизов"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:61
 #: critiquebrainz/frontend/templates/bb_author/entity.html:24
