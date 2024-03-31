@@ -5,13 +5,13 @@
 # Translators:
 # Luca Salini, 2016-2017,2020
 # Luca Salini, 2014-2016
-# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023.
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2023-09-28 08:27+0000\n"
+"PO-Revision-Date: 2024-03-31 10:28+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -1391,7 +1391,7 @@ msgid ""
 msgstr ""
 "I testi sono ciò che rende una canzone/un album significativo. Puoi sempre "
 "descrivere come erano i testi.\n"
-"          Erano pieni di significato? Si accordavano alla musica?"
+"          Erano significativi? Si accordavano alla musica?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:79
 msgid ""
