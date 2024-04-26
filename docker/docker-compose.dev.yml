@@ -57,4 +57,4 @@ services:
       dockerfile: Dockerfile.webpack
     command: npm run dev
     volumes:
-      - ..:/code:z
+      - ../critiquebrainz:/code/critiquebrainz:z
