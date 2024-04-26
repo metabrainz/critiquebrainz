@@ -212,7 +212,8 @@ class CritiqueBrainzAuthorizationProvider:
                 raise exceptions.InvalidToken
 
             token_scopes = token["scope"]
-            for scope in scopes:
+            new_scopes = [f"critiquebrainz:{s}" for s in scopes]
+            for scope in new_scopes:
                 if scope not in token_scopes:
                     raise exceptions.InvalidToken
 
