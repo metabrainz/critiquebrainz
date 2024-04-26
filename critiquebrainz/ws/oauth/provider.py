@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from functools import wraps
 
-from flask import request
+import requests
+from flask import request, current_app
 
 import critiquebrainz.db.exceptions as db_exceptions
 import critiquebrainz.db.oauth_client as db_oauth_client
@@ -184,12 +185,38 @@ class CritiqueBrainzAuthorizationProvider:
 
         return access_token, 'Bearer', self.token_expire, refresh_token
 
+    def get_authorized_user_meb(self, access_token, scopes):
+        """ Query MeB OAuth provider to check validity of the access token """
+        response = requests.post(
+            f"https://{current_app.config['MUSICBRAINZ_HOSTNAME']}/new-oauth2/introspect",
+            data={
+                "client_id": current_app.config['MUSICBRAINZ_CLIENT_ID'],
+                "client_secret": current_app.config['MUSICBRAINZ_CLIENT_SECRET'],
+                "token": access_token,
+            }
+        )
+        if response.status_code != 200:
+            raise exceptions.InvalidToken
+        data = response.json()
+        if data["active"] is False:
+            raise exceptions.InvalidToken
+        for scope in scopes:
+            if scope not in data["scope"]:
+                raise exceptions.InvalidToken
+        user = User(db_users.get_by_mb_row_id(data["metabrainz_user_id"]))
+        return user
+
     def get_authorized_user(self, scopes):
         authorization = request.headers.get('Authorization')
         if self.validate_authorization_header(authorization) is False:
             raise NotAuthorized
 
         access_token = authorization.split()[1]
+
+        # tokens that start with meba_ are issued by MeB OAuth provider
+        if access_token.startswith("meba_"):
+            return self.get_authorized_user_meb(access_token, scopes)
+
         token = self.fetch_access_token(access_token)
         if token is None:
             raise exceptions.InvalidToken

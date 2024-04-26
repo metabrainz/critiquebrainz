@@ -1,6 +1,3 @@
-# Docker Compose file for development
-version: "3.4"
-
 volumes:
   cb_home:
   cb_postgres:
@@ -44,7 +41,7 @@ services:
     image: redis:4.0-alpine
 
   musicbrainz_db:
-    image: metabrainz/musicbrainz-test-database:beta
+    image: metabrainz/musicbrainz-test-database:production
     volumes:
       - ../data/mbdata:/var/lib/postgresql/data/pgdata:z
     environment:
@@ -60,4 +57,4 @@ services:
       dockerfile: Dockerfile.webpack
     command: npm run dev
     volumes:
-      - ..:/code:z
+      - ../critiquebrainz:/code/critiquebrainz:z
