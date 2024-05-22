@@ -15,7 +15,7 @@ class LiteraryWorkTestCase(DataTestCase):
         literary_work_info = literary_work.get_literary_work_by_bbid(self.bbid1)
         self.assertEqual(literary_work_info["bbid"], self.bbid1)
         self.assertEqual(literary_work_info["name"], "Assassin's Creed: Brotherhood")
-        self.assertEqual(literary_work_info["sort_name"], "Brotherhood, Assassin's Creed:")
+        self.assertEqual(literary_work_info["sort_name"], "Assassin's Creed: Brotherhood")
         self.assertEqual(literary_work_info["work_type"], "Novel")
 
     def test_fetch_multiple_literary_works(self):

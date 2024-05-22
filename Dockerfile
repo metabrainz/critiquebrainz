@@ -1,4 +1,4 @@
-FROM metabrainz/python:3.10-20220315 as critiquebrainz-base
+FROM metabrainz/python:3.11-20231006 as critiquebrainz-base
 
 ENV PYTHONUNBUFFERED 1
 
@@ -39,7 +39,7 @@ RUN mkdir -p /etc/apt/keyrings \
 
 RUN pip install --upgrade pip==21.0.1
 
-RUN pip install --no-cache-dir uWSGI==2.0.20
+RUN pip install --no-cache-dir uWSGI==2.0.23
 
 RUN mkdir /code
 WORKDIR /code

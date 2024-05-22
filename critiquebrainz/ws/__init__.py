@@ -86,6 +86,9 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend import babel
     babel.init_app(app, domain='cb_webservice')
 
+    from critiquebrainz.frontend.external import mbstore
+    mbstore.init_app(app)
+
     # OAuth
     from critiquebrainz.ws.oauth import oauth
     oauth.init_app(app)

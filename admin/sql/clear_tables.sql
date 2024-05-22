@@ -1,0 +1,13 @@
+DELETE FROM comment_revision;
+DELETE FROM comment;
+DELETE FROM vote;
+DELETE FROM spam_report;
+DELETE FROM revision;
+DELETE FROM oauth_grant;
+DELETE FROM oauth_token;
+DELETE FROM oauth_client;
+DELETE FROM moderation_log;
+DELETE FROM review;
+DELETE FROM "user";
+DELETE FROM license;
+DELETE FROM avg_rating;

@@ -4,7 +4,6 @@ from datetime import datetime
 import sqlalchemy
 
 from critiquebrainz import db
-from critiquebrainz.db import revision as db_revision
 
 
 USER_GET_COLUMNS = [
@@ -305,6 +304,7 @@ def list_users(limit=None, offset=0):
         result = connection.execute(sqlalchemy.text("""
             SELECT {columns}
               FROM "user"
+          ORDER BY musicbrainz_row_id
              LIMIT :limit
             OFFSET :offset
         """.format(columns=','.join(USER_GET_COLUMNS))), {
@@ -357,6 +357,7 @@ def has_voted(user_id, review_id):
     Returns:
         (bool): True if has voted else False.
     """
+    from critiquebrainz.db import revision as db_revision
     last_revision = db_revision.get(review_id, limit=1)[0]
     with db.engine.connect() as connection:
         result = connection.execute(sqlalchemy.text("""

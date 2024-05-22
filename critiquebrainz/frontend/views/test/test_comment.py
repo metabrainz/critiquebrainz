@@ -96,13 +96,20 @@ class CommentViewsTestCase(FrontendTestCase):
 
         # blocked user should not be allowed to comment
         db_users.block(self.commenter.id)
+        # because the g global persists for entire duration of the test, we need to manually logout/login
+        # the user again for the current_user to be refreshed. in production, this would happen automatically
+        # as the current_user is loaded at the start of each request/request context.
+        self.temporary_login(self.commenter)
+
         response = self.client.post(
             url_for("comment.create"),
             data=payload,
             follow_redirects=True,
         )
         self.assertIn("You are not allowed to write new comments", str(response.data))
+
         db_users.unblock(self.commenter.id)
+        self.temporary_login(self.commenter)
 
         # comment with some text and a valid review_id must be saved
         response = self.client.post(

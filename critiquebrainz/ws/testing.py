@@ -1,33 +1,21 @@
 import os
 
-from flask_testing import TestCase
-
 import critiquebrainz.db.oauth_client as db_oauth_client
 import critiquebrainz.db.users as db_users
-from critiquebrainz.data.utils import create_all, drop_tables, drop_types
+from critiquebrainz.testing import ServerTestCase
 from critiquebrainz.ws import create_app
 from critiquebrainz.ws.oauth import oauth
 
 
-class WebServiceTestCase(TestCase):
+class WebServiceTestCase(ServerTestCase):
 
-    def create_app(self):
-        app = create_app(config_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'test_config.py'))
+    @classmethod
+    def create_app(cls):
+        app = create_app(
+            config_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'test_config.py')
+        )
         oauth.init_app(app)
         return app
-
-    def setUp(self):
-        self.reset_db()
-        # TODO(roman): Add stuff form fixtures.
-
-    def tearDown(self):
-        pass
-
-    @staticmethod
-    def reset_db():
-        drop_tables()
-        drop_types()
-        create_all()
 
     @staticmethod
     def create_dummy_client(user):
