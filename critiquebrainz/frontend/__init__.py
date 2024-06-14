@@ -110,9 +110,9 @@ def create_app(debug=None, config_path=None):
         name='musicbrainz',
         client_id=app.config['MUSICBRAINZ_CLIENT_ID'],
         client_secret=app.config['MUSICBRAINZ_CLIENT_SECRET'],
-        authorize_url="https://musicbrainz.org/oauth2/authorize",
-        access_token_url="https://musicbrainz.org/oauth2/token",
-        base_url="https://musicbrainz.org/",
+        authorize_url="https://test.musicbrainz.org/new-oauth2/authorize",
+        access_token_url="https://test.musicbrainz.org/new-oauth2/token",
+        base_url="https://test.musicbrainz.org/",
     )
 
     # APIs
