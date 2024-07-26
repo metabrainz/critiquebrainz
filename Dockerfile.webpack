@@ -3,5 +3,7 @@ FROM node:20
 RUN mkdir /code
 WORKDIR /code
 
-COPY package.json package-lock.json webpack.config.js /code/
+COPY package.json package-lock.json /code/
 RUN npm install
+
+COPY webpack.config.js .babelrc /code/
