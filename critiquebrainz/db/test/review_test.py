@@ -138,9 +138,10 @@ class ReviewTestCase(DataTestCase):
         self.assertEqual(retrieved_review["text"], "Testing update")
         self.assertEqual(retrieved_review["rating"], None)
 
-        # Updating should create a new revision.
+        # Updating should create a new revision but since the review is getting published from draft,
+        # the older revision should be deleted.
         revisions = db_revision.get(retrieved_review["id"], limit=None)
-        self.assertEqual(len(revisions), 3)
+        self.assertEqual(len(revisions), 1)
         self.assertEqual(revisions[0]["timestamp"], retrieved_review["last_revision"]["timestamp"])
         self.assertEqual(revisions[0]["text"], retrieved_review["text"])
         self.assertEqual(revisions[0]["rating"], retrieved_review["rating"])

@@ -242,6 +242,7 @@ def review_modify_handler(review_id, user):
 
     :json string text: Text part of review, min length is 25, max is 5000 **(optional)**
     :json integer rating: Rating part of review, min is 1, max is 5 **(optional)**
+    :json boolean is_draft: Whether the review is a draft or not **(optional)**
 
     **NOTE:** Please provide only those parameters which need to be updated
 
@@ -262,24 +263,36 @@ def review_modify_handler(review_id, user):
             rating = Parser.int('json', 'rating', min=REVIEW_RATING_MIN, max=REVIEW_RATING_MAX)
         except MissingDataError:
             rating = review['rating']
-        if text is None and rating is None:
+
+        try:
+            is_draft = Parser.bool('json', 'is_draft')
+        except MissingDataError:
+            is_draft = review['is_draft']
+
+        if not review['is_draft'] and is_draft:  # If trying to convert published review into draft
+            raise InvalidRequest(desc='Converting published reviews back to drafts is not allowed.')
+
+        if text is None and rating is None and review['is_draft'] == is_draft:
             raise InvalidRequest(desc='Review must have either text or rating')
-        return text, rating
+
+        return text, rating, is_draft
 
     review = get_review_or_404(review_id)
     if review["is_hidden"]:
         raise NotFound("Review has been hidden.")
     if str(review["user_id"]) != user.id:
         raise AccessDenied
-    text, rating = fetch_params(review)
-    if (text == review['text']) and (rating == review['rating']):
+    text, rating, is_draft = fetch_params(review)
+
+    if (text == review['text']) and (rating == review['rating']) and (is_draft == review['is_draft']):
         return jsonify(message='Request processed successfully', review=dict(id=review["id"]))
 
     db_review.update(
         review_id=review_id,
         drafted=review["is_draft"],
         text=text,
-        rating=rating
+        rating=rating,
+        is_draft=is_draft
     )
     return jsonify(message='Request processed successfully',
                    review=dict(id=review["id"]))
