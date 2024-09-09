@@ -27,6 +27,7 @@ SECRET_KEY = "CHANGE_THIS"
 #MUSICBRAINZ_USERAGENT = "CritiqueBrainz Custom"
 MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
+MUSICBRAINZ_OAUTH_URL = ""
 
 # Server with Spotify mappings
 # https://github.com/metabrainz/mbspotify

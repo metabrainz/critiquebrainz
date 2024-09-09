@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from functools import wraps
 
-from flask import request
+import requests
+from flask import request, current_app
 
 import critiquebrainz.db.exceptions as db_exceptions
 import critiquebrainz.db.oauth_client as db_oauth_client
@@ -184,24 +185,53 @@ class CritiqueBrainzAuthorizationProvider:
 
         return access_token, 'Bearer', self.token_expire, refresh_token
 
+    def introspect_meb_token(self, access_token):
+        response = requests.post(
+            current_app.config["MUSICBRAINZ_OAUTH_URL"] + "/introspect",
+            data={
+                "client_id": current_app.config["MUSICBRAINZ_CLIENT_ID"],
+                "client_secret": current_app.config["MUSICBRAINZ_CLIENT_SECRET"],
+                "token": access_token,
+                "token_type_hint": "access_token",
+            }
+        )
+        return response.json()
+
     def get_authorized_user(self, scopes):
         authorization = request.headers.get('Authorization')
         if self.validate_authorization_header(authorization) is False:
             raise NotAuthorized
 
         access_token = authorization.split()[1]
-        token = self.fetch_access_token(access_token)
-        if token is None:
-            raise exceptions.InvalidToken
 
-        if token["expires"] < datetime.now():
-            raise exceptions.InvalidToken
-
-        for scope in scopes:
-            if scope not in db_oauth_token.get_scopes(token["id"]):
+        if access_token.startswith("meba_"):
+            token = self.introspect_meb_token(access_token)
+            if not token["active"]:
                 raise exceptions.InvalidToken
-        user = User(db_users.get_by_id(token["user_id"]))
-        return user
+            if datetime.fromtimestamp(token["expires_at"]) < datetime.now():
+                raise exceptions.InvalidToken
+
+            token_scopes = token["scope"]
+            for scope in scopes:
+                if scope not in token_scopes:
+                    raise exceptions.InvalidToken
+
+            user = User(db_users.get_by_mbid(token["sub"]))
+            return user
+        else:
+            token = self.fetch_access_token(access_token)
+            if token is None:
+                raise exceptions.InvalidToken
+            if token["expires"] < datetime.now():
+                raise exceptions.InvalidToken
+
+            token_scopes = db_oauth_token.get_scopes(token["id"])
+            for scope in scopes:
+                if scope not in token_scopes:
+                    raise exceptions.InvalidToken
+
+            user = User(db_users.get_by_id(token["user_id"]))
+            return user
 
     def require_auth(self, *scopes):
         def decorator(f):

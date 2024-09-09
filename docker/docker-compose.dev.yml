@@ -1,6 +1,3 @@
-# Docker Compose file for development
-version: "3.4"
-
 volumes:
   cb_home:
   cb_postgres:
