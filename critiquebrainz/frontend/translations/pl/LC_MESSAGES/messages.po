@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2024-09-06 19:42+0000\n"
+"PO-Revision-Date: 2024-09-09 20:42+0000\n"
 "Last-Translator: Echelon666 <echelon01@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/pl/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.7.1\n"
+"X-Generator: Weblate 5.7.2\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -2663,6 +2663,7 @@ msgstr ""
 "MusicBrainz."
 
 #: critiquebrainz/frontend/views/bb_author.py:32
+#, fuzzy
 msgid "Sorry, we couldn't find an author with that BookBrainz ID."
 msgstr ""
 "Niestety, nie udało nam się znaleźć autora o takim identyfikatorze "
