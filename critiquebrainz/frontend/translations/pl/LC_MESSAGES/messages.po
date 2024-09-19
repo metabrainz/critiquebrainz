@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2024-09-09 20:42+0000\n"
+"PO-Revision-Date: 2024-09-19 18:42+0000\n"
 "Last-Translator: Echelon666 <echelon01@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/pl/>\n"
@@ -283,7 +283,7 @@ msgstr "Aby wyświetlić tę stronę, musisz posiadać uprawnienia administrator
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/recording/entity.html:13
 msgid "by"
-msgstr ""
+msgstr "przez"
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/review/entity/artist.html:7
@@ -538,7 +538,7 @@ msgstr "Autor"
 #: critiquebrainz/frontend/templates/review/modify/bb_series.html:3
 #: critiquebrainz/frontend/templates/search/index.html:39
 msgid "Series"
-msgstr ""
+msgstr "Serie"
 
 #: critiquebrainz/frontend/templates/macros.html:116
 msgid "Release Group"
@@ -2139,7 +2139,7 @@ msgstr "%(artist)s"
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:30
 msgid "MusicBrainz Artist"
-msgstr ""
+msgstr "Wykonawca MusicBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:30
 #: critiquebrainz/frontend/templates/review/entity/event.html:61
@@ -2233,7 +2233,7 @@ msgstr "%(bb_author)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:23
 msgid "BookBrainz Author"
-msgstr ""
+msgstr "Autor BookBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:23
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:22
@@ -2253,8 +2253,9 @@ msgid "%(edition_group)s"
 msgstr "%(edition_group)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:22
+#, fuzzy
 msgid "BookBrainz Edition Group"
-msgstr ""
+msgstr "Grupa wydawnicza BookBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:7
 #, python-format
@@ -2268,7 +2269,7 @@ msgstr "%(bb_literary_work)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:23
 msgid "BookBrainz Literary Work"
-msgstr ""
+msgstr "Dzieło literackie BookBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:7
 #, python-format
@@ -2282,7 +2283,7 @@ msgstr "%(bb_series)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:23
 msgid "BookBrainz Series"
-msgstr ""
+msgstr "Serie BookBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:11
 msgid "Delete this comment"
@@ -2318,13 +2319,13 @@ msgstr "%(event)s"
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:61
 msgid "MusicBrainz Event"
-msgstr ""
+msgstr "Wydarzenie MusicBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:7
 #: critiquebrainz/frontend/templates/review/entity/label.html:16
 #: critiquebrainz/frontend/templates/user/reviews.html:76
 msgid "[Unknown label]"
-msgstr ""
+msgstr "[Nieznana wytwórnia]"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:8
 #, python-format
@@ -2338,7 +2339,7 @@ msgstr "%(label)s"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:30
 msgid "MusicBrainz Label"
-msgstr ""
+msgstr "Wytwórnia MusicBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:12
 #: critiquebrainz/frontend/templates/review/entity/place.html:21
@@ -2364,7 +2365,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/entity/work.html:16
 #: critiquebrainz/frontend/templates/user/reviews.html:54
 msgid "[Unknown work]"
-msgstr ""
+msgstr "[Nieznane dzieło]"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:8
 #, python-format
@@ -2378,7 +2379,7 @@ msgstr "%(work)s"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:30
 msgid "MusicBrainz Work"
-msgstr ""
+msgstr "Dzieło MusicBrainz"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:21
 msgid "Rating:"
@@ -2545,7 +2546,7 @@ msgstr "Nie udało się wczytać większej liczby wyników!"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:14
 msgid "Top 10 Contributors Overall"
-msgstr ""
+msgstr "Ogółem 10 najlepszych autorów"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:21
 msgid "User"
@@ -2618,23 +2619,23 @@ msgstr "Ten miesiąc"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:66
 msgid "[Unknown recording]"
-msgstr ""
+msgstr "[Nieznane nagranie]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:82
 msgid "[Unknown edition group]"
-msgstr ""
+msgstr "[Nieznana grupa edycji]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:87
 msgid "[Unknown Literary Work]"
-msgstr ""
+msgstr "[Nieznane dzieło literackie]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:93
 msgid "[Unknown Author]"
-msgstr ""
+msgstr "[Nieznany autor]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:99
 msgid "[Unknown series]"
-msgstr ""
+msgstr "[Nieznane serie]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:123
 msgid "Hidden"
