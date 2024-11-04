@@ -17,7 +17,6 @@ class User(AdminMixin):
         self.musicbrainz_username = user.get('musicbrainz_username')
         self.user_ref = user.get('user_ref')
         self.is_blocked = user.get('is_blocked', False)
-        self.license_choice = user.get('license_choice', None)
         self.musicbrainz_row_id = user.get('musicbrainz_row_id', None)
     
     @property
@@ -120,7 +119,8 @@ class User(AdminMixin):
         if confidential is True:
             response.update(dict(
                 email=self.email,
-                license_choice=self.license_choice,
+                musicbrainz_username=self.musicbrainz_username,
+                user_ref=self.user_ref,
             ))
 
         if 'user_type' in includes:
