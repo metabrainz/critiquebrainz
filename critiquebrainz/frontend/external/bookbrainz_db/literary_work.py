@@ -4,8 +4,8 @@ from typing import List
 import sqlalchemy
 import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
-from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
-from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, WORK_WORK_TRANSLATION_REL_ID, EDITION_WORK_CONTAINS_REL_ID
+from critiquebrainz.frontend.external.bookbrainz_db.identifiers import process_bb_identifiers
+from critiquebrainz.frontend.external.bookbrainz_db.relationships import EDITION_WORK_CONTAINS_REL_ID
 
 WORK_TYPE_FILTER_OPTIONS = ('Novel', 'Short Story', 'Poem')
 
@@ -80,13 +80,60 @@ def fetch_multiple_literary_works(bbids: List[str], work_type=None, limit=None, 
                     disambiguation,
                     identifier_set_id,
                     relationship_set_id,
-                    COALESCE (json_agg(mbl.name)
+                    COALESCE (json_agg(DISTINCT mbl.name)
                              FILTER (WHERE mbl IS NOT NULL),
                              '[]'
-                             ) as languages
+                             ) as languages,
+                    COALESCE (json_agg(DISTINCT relationships)
+                             FILTER (WHERE relationships IS NOT NULL),
+                             '[]'
+                             ) as rels,
+                    COALESCE (json_agg(DISTINCT identifiers)
+                             FILTER (WHERE identifiers IS NOT NULL),
+                             '[]'
+                             ) as identifiers
                 FROM work
            LEFT JOIN bookbrainz.language_set__language lsl ON lsl.set_id = work.language_set_id
            LEFT JOIN musicbrainz.language mbl on mbl.id = lsl.language_id
+           LEFT JOIN LATERAL (
+                         SELECT rel.id as id,
+                                reltype.id as relationship_type_id,
+                                reltype.label as label,
+                                rel.source_bbid::text as source_bbid,
+                                rel.target_bbid::text as target_bbid,
+                                reltype.target_entity_type as target_entity_type,
+                                reltype.source_entity_type as source_entity_type,
+                                COALESCE( 
+                                    jsonb_object_agg(relatttype.name, relatttext.text_value)
+                                    FILTER (WHERE relatts IS NOT NULL),
+                                    '[]'
+                                ) as attributes
+                           FROM relationship_set__relationship rels
+                      LEFT JOIN relationship rel ON rels.relationship_id = rel.id
+                      LEFT JOIN relationship_type reltype ON rel.type_id = reltype.id
+                      LEFT JOIN relationship_attribute_set__relationship_attribute relatts ON rel.attribute_set_id = relatts.set_id
+                      LEFT JOIN relationship_attribute relatt ON relatts.attribute_id = relatt.id
+                      LEFT JOIN relationship_attribute_type relatttype ON relatt.attribute_type = relatttype.id
+                      LEFT JOIN relationship_attribute_text_value relatttext ON relatts.attribute_id = relatttext.attribute_id
+                          WHERE rels.set_id = work.relationship_set_id
+                       GROUP BY rel.id,
+                                reltype.id,
+                                reltype.label,
+                                rel.source_bbid,
+                                rel.target_bbid,
+                                reltype.target_entity_type,
+                                reltype.source_entity_type
+                    ) AS relationships ON TRUE
+           LEFT JOIN LATERAL (
+                         SELECT iden.type_id as type_id,
+                                idtype.label as label,
+                                idtype.display_template as url_template,
+                                iden.value as value
+                            FROM identifier_set__identifier idens
+                        LEFT JOIN identifier iden on idens.identifier_id = iden.id
+                        LEFT JOIN identifier_type idtype on iden.type_id = idtype.id
+                            WHERE idens.set_id = work.identifier_set_id
+                    ) AS identifiers ON TRUE
                 WHERE bbid IN :bbids
                     AND master = 't'
                     AND data_id IS NOT NULL
@@ -107,8 +154,7 @@ def fetch_multiple_literary_works(bbids: List[str], work_type=None, limit=None, 
             results = {}
             for literary_work in literary_works:
                 literary_work = dict(literary_work)
-                literary_work['identifiers'] = fetch_bb_external_identifiers(literary_work['identifier_set_id'])
-                literary_work['rels'] = fetch_relationships(literary_work['relationship_set_id'], [WORK_WORK_TRANSLATION_REL_ID])
+                literary_work['identifiers'] = process_bb_identifiers(literary_work['identifiers'])
                 results[literary_work['bbid']] = literary_work
 
             cache.set(bb_literary_work_key, results, DEFAULT_CACHE_EXPIRATION)
