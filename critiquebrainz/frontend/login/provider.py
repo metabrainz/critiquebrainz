@@ -74,7 +74,7 @@ class MusicBrainzAuthentication(BaseAuthentication):
                 data=data,
                 decoder=musicbrainz_auth_session_decoder,
             )
-            data = s.get('userinfo').json()
+            data = s.get('new-oauth2/userinfo').json()
             musicbrainz_id = data.get('sub')
             musicbrainz_row_id = data.get('metabrainz_user_id')
             user = db_users.get_or_create(musicbrainz_row_id, musicbrainz_id, new_user_data={
