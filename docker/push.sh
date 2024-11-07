@@ -4,12 +4,11 @@
 # and push it to the Docker Hub, with an optional tag (by default "beta").
 #
 # Usage:
-#   $ ./push.sh [env] [tag]
+#   $ ./push.sh [tag]
 
 cd "$(dirname "${BASH_SOURCE[0]}")/../"
 
-ENV=${1:-beta}
-TAG=${2:-beta}
+TAG=${1:-beta}
 docker build -t metabrainz/critiquebrainz:$TAG \
         --build-arg GIT_COMMIT_SHA=$(git rev-parse HEAD) .
 docker push metabrainz/critiquebrainz:$TAG
