@@ -9,27 +9,41 @@ class UserViewsTestCase(FrontendTestCase):
 
     def setUp(self):
         super(UserViewsTestCase, self).setUp()
-        self.user = User(db_users.get_or_create(1, "aef06569-098f-4218-a577-b413944d9493", new_user_data={
+        self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
             "display_name": u"Tester",
         }))
-        self.admin = User(db_users.get_or_create(2, "9371e5c7-5995-4471-a5a9-33481f897f9c", new_user_data={
+        self.hacker = User(db_users.get_or_create(2, "Hacker", new_user_data={
+            "display_name": u"Hacker",
+        }))
+        self.admin = User(db_users.get_or_create(3, "Admin", new_user_data={
             "display_name": u"Admin",
         }))
 
     def test_reviews(self):
         # test reviews for user not in db
         response = self.client.get("/user/{user_id}".format(user_id="random-user-id"))
-        self.assert404(response, "Can't find a user with ID: random-user-id")
+        self.assert404(response, "Can't find a user with id or username: random-user-id")
 
         # test reviews for user present in db, but not logged in
         response = self.client.get("/user/{user_id}".format(user_id=self.user.id))
         self.assert200(response)
         self.assertIn("Tester", str(response.data))
 
+        # test reviews for user present in db, and logged in
+        self.temporary_login(self.user)
+        response = self.client.get("/user/{user_id}".format(user_id=self.user.id))
+        self.assert200(response)
+        self.assertIn("Tester", str(response.data))
+
+        # test reviews for user present in db, but without musicbrainz_id
+        response = self.client.get("/user/{user_id}".format(user_id=self.hacker.id))
+        self.assert200(response)
+        self.assertIn("Hacker", str(response.data))
+
     def test_info(self):
         # test info for user not in db
         response = self.client.get("/user/{user_id}/info".format(user_id="random-user-id"))
-        self.assert404(response, "Can't find a user with ID: random-user-id")
+        self.assert404(response, "Can't find a user with id or username: random-user-id")
 
         # test info for user present in db
         response = self.client.get("/user/{user_id}/info".format(user_id=self.user.id))
@@ -42,7 +56,7 @@ class UserViewsTestCase(FrontendTestCase):
 
         # test block user when user is not in db
         response = self.client.get("/user/{user_id}/block".format(user_id="random-user-id"))
-        self.assert404(response, "Can't find a user with ID: random-user-id")
+        self.assert404(response, "Can't find a user with id or username: random-user-id")
 
         # make self.admin a moderator
         is_user_admin.return_value = True
@@ -67,7 +81,7 @@ class UserViewsTestCase(FrontendTestCase):
 
         # test unblock user when user is not in db
         response = self.client.get("/user/{user_id}/unblock".format(user_id="random-user-id"))
-        self.assert404(response, "Can't find a user with ID: random-user-id")
+        self.assert404(response, "Can't find a user with id or username: random-user-id")
 
         # admin unblocks tester
         response = self.client.post(

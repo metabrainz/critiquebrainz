@@ -18,6 +18,10 @@ def create_app(debug=None, config_path=None):
         use_flask_uuid=True,
     )
 
+    # Template utilities
+    from critiquebrainz.expand import expand
+    app.jinja_env.filters['expand'] = expand
+
     # Configuration files
     app.config.from_pyfile(os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
@@ -76,9 +80,9 @@ def create_app(debug=None, config_path=None):
     add_robots(app)
 
     # BookBrainz Database
-    import critiquebrainz.frontend.external.bookbrainz_db as bookbrainz_db 
+    import critiquebrainz.frontend.external.bookbrainz_db as bookbrainz_db
     bookbrainz_db.init_db_engine(app.config.get("BB_DATABASE_URI"))
-    
+
     # MusicBrainz Database
     from brainzutils import musicbrainz_db
     musicbrainz_db.init_db_engine(app.config.get("MB_DATABASE_URI"))

@@ -10,7 +10,7 @@ from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_r
 WORK_TYPE_FILTER_OPTIONS = ('Novel', 'Short Story', 'Poem')
 
 
-def get_literary_work_by_bbid(bbid: uuid.UUID) -> dict:
+def get_literary_work_by_bbid(bbid: str) -> dict:
     """
     Get info related to a literary work using its BookBrainz ID.
     Args:
@@ -26,15 +26,15 @@ def get_literary_work_by_bbid(bbid: uuid.UUID) -> dict:
             - identifiers: A list of dictionaries containing the basic information on the identifiers.
             - rels: A list of dictionaries containing the basic information on the relationships.
 
-        Returns None if the literary work is not found.
+        Returns an  empty dictionary if the literary work is not found.
     """
     literary_work = fetch_multiple_literary_works([bbid])
     if not literary_work:
-        return None
+        return {}
     return literary_work[bbid]
 
 
-def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=None, offset=0) -> dict:
+def fetch_multiple_literary_works(bbids: List[str], work_type=None, limit=None, offset=0) -> dict:
     """
     Get info related to multiple literary works using their BookBrainz IDs. 
     Args:
@@ -103,7 +103,7 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
             """.format(work_type_filter_string=work_type_filter_string)
             ), query_params)
 
-            literary_works = result.fetchall()
+            literary_works = result.mappings()
             results = {}
             for literary_work in literary_works:
                 literary_work = dict(literary_work)
@@ -118,13 +118,13 @@ def fetch_multiple_literary_works(bbids: List[uuid.UUID], work_type=None, limit=
     return results
 
 
-def fetch_edition_groups_for_works(bbid: uuid.UUID):
+def fetch_edition_groups_for_works(bbid: str) -> list:
     """
     Get edition groups for a literary work.
     Args:
         bbid : BBID of the literary work.
     Returns:
-        A tuple containing the list of edition groups bbids linked to literary work.
+        A list containing the list of edition groups bbids linked to literary work.
     """
     bb_work_edition_groups_key = cache.gen_key('bb_work_edition_groups', bbid)
     results = cache.get(bb_work_edition_groups_key)
@@ -144,7 +144,7 @@ def fetch_edition_groups_for_works(bbid: uuid.UUID):
                 AND rel.type_id = :relationship_type_id
                 """), {'bbid': str(bbid), 'relationship_type_id': EDITION_WORK_CONTAINS_REL_ID})
 
-            edition_groups = result.fetchall()
+            edition_groups = result.mappings()
             edition_group_bbids = []
 
             for edition_group in edition_groups:

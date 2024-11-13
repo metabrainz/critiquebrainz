@@ -14,7 +14,7 @@ from critiquebrainz.frontend.external.bookbrainz_db.publisher import fetch_multi
 
 
 
-def get_series_by_bbid(bbid: uuid.UUID) -> dict:
+def get_series_by_bbid(bbid: str) -> dict:
     """
     Get info related to a series using its BookBrainz ID.
     Args:
@@ -30,22 +30,22 @@ def get_series_by_bbid(bbid: uuid.UUID) -> dict:
             - identifiers: A list of dictionaries containing the basic information on the identifiers.
             - rels: A list of dictionaries containing the basic information on the relationships.
 
-        Returns None if the series is not found.
+        Returns empty dictionary if the series is not found.
     """
 
     series = fetch_multiple_series([bbid])
     if not series:
-        return None
+        return {}
     return series[bbid]
 
 
-def fetch_multiple_series(bbids: List[uuid.UUID]) -> dict:
+def fetch_multiple_series(bbids: List[str]) -> dict:
     """
     Get info related to multiple series using their BookBrainz IDs. 
     Args:
-            bbids (list): List of BBID of series.
+        bbids (list): List of BBID of series.
     Returns:
-            A dictionary containing info of multiple series keyed by their BBID.
+        A dictionary containing info of multiple series keyed by their BBID.
     """
     if bbids == []:
         return {}
@@ -74,7 +74,7 @@ def fetch_multiple_series(bbids: List[uuid.UUID]) -> dict:
                 AND entity_type IS NOT NULL
             """), {'bbids': tuple(bbids)})
 
-            data = result.fetchall()
+            data = result.mappings()
             results = {}
             for series in data:
                 series = dict(series)
@@ -90,7 +90,7 @@ def fetch_multiple_series(bbids: List[uuid.UUID]) -> dict:
     return results
 
 
-def fetch_series_rels_info(entity_type: str, bbids: List[uuid.UUID]) -> dict:
+def fetch_series_rels_info(entity_type: str, bbids: List[str]) -> dict:
     """
     Get info related to multiple series using their BookBrainz IDs.
     Args:

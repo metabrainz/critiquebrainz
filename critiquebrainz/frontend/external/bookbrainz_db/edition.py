@@ -6,7 +6,7 @@ import critiquebrainz.frontend.external.bookbrainz_db as db
 from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRATION
 
 
-def get_edition_by_bbid(bbid: uuid.UUID) -> dict:
+def get_edition_by_bbid(bbid: str) -> dict:
     """
     Get info related to an edition using its BookBrainz ID.
     Args:
@@ -20,16 +20,16 @@ def get_edition_by_bbid(bbid: uuid.UUID) -> dict:
             - disambiguation: Disambiguation of the edition.
             - author_credits: A list of dictionaries containing the basic information on the author credits.
 
-        Returns None if the edition is not found.
+        Returns an empty dictionary if the edition is not found.
 
     """
     edition = fetch_multiple_editions([bbid])
     if not edition:
-        return None
+        return {}
     return edition[bbid]
 
 
-def fetch_multiple_editions(bbids: List[uuid.UUID]) -> dict:
+def fetch_multiple_editions(bbids: List[str]) -> dict:
     """
     Get info related to multiple editions using their BookBrainz IDs. 
     Args:
@@ -79,7 +79,7 @@ def fetch_multiple_editions(bbids: List[uuid.UUID]) -> dict:
                     format
                 """), {'bbids': tuple(bbids)})
 
-            editions = result.fetchall()
+            editions = result.mappings()
             results = {}
             for edition in editions:
                 edition = dict(edition)

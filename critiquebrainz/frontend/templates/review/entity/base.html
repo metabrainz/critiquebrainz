@@ -105,7 +105,7 @@
                       {% if vote.vote == True %}
                         <span class="text-success">{{ _('You found this review useful.') }}</span>
                       {% else %}
-                        <span class="text-warning">{{ _('You didn\'t find this review useful.') }}</span>
+                        <span class="text-warning">{{ _('You didn’t find this review useful.') }}</span>
                       {% endif %}
                       <a href="{{ url_for('review.vote_delete', id=review.id) }}" class="btn btn-default btn-xs" title="{{ _('Delete your vote') }}"><span class="glyphicon glyphicon-trash"></span></a>
                     {% endif %}
@@ -133,7 +133,7 @@
         <hr/>
         <h3>
           Other reviews by
-          {{ '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) }}
+          {{ '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_ref= review.user.user_ref), review.user.display_name) }}
         </h3>
         <div id="other-reviews" class="row">
           {% for review in other_reviews %}

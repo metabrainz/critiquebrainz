@@ -7,7 +7,7 @@ from critiquebrainz.frontend.external.bookbrainz_db import DEFAULT_CACHE_EXPIRAT
 from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_external_identifiers
 from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, AUTHOR_WORK_AUTHOR_REL_ID
 
-def get_author_by_bbid(bbid: uuid.UUID) -> dict:
+def get_author_by_bbid(bbid: str) -> dict:
 	"""
 	Get info related to an author using its BookBrainz ID.
 	Args:
@@ -23,15 +23,23 @@ def get_author_by_bbid(bbid: uuid.UUID) -> dict:
 			- identifiers: A list of dictionaries containing the basic information on the identifiers.
 			- rels: A list of dictionaries containing the basic information on the relationships.
 		
-		Returns None if the author is not found.
+		Returns an empty dictionary if the author is not found.
 	"""
 	author = fetch_multiple_authors([bbid])
 	if not author:
-		return None
+		return {}
 	return author[bbid]
 
 
-def fetch_multiple_authors(bbids: List[uuid.UUID]) -> dict:
+def fetch_multiple_authors(bbids: List[str]) -> dict:
+	"""
+	Get info related to multiple authors using their BookBrainz IDs. 
+	Args:
+		bbids (list): List of BBID of authors.
+	Returns:
+		A dictionary containing info of multiple authors keyed by their BBID.
+	"""
+
 	if bbids == []:
 		return {}
 
@@ -94,7 +102,7 @@ def fetch_multiple_authors(bbids: List[uuid.UUID]) -> dict:
 					 gender.name
 			"""), {'bbids': tuple(bbids)})
 
-			authors = result.fetchall()
+			authors = result.mappings()
 			results = {}
 			for author in authors:
 				author = dict(author)

@@ -118,7 +118,7 @@
     {% endif %}
     <div id="mb-call-to-act" class="spotify-player" style="display:none;">
       <span class="text-muted">
-        {{ _('We don\'t have cover art for this release group.') }}
+        {{ _('We don’t have cover art for this release group.') }}
       </span>
       <div style="text-align:center;font-weight:bold;">
         <a style="font-size:16px"; href='https://musicbrainz.org/doc/How_to_Add_Cover_Art' rel='nofollow'>
@@ -141,7 +141,7 @@
 {% endmacro %}
 
 {% macro review_credit(review) %}
-  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=review.user.id), review.user.display_name) %}
+  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_ref=review.user.user_ref), review.user.display_name) %}
   {{ _('Review by %(user)s', user=user_string) }}
 {% endmacro %}
 
@@ -158,7 +158,7 @@
       </em>
     {% elif show_add_message %}
       <span class="text-muted">
-        {{ _('We don\'t have a mapping between this release group and Spotify. Please help us find the right album.') }}
+        {{ _('We don’t have a mapping between this release group and Spotify. Please help us find the right album.') }}
       </span>
       <div style="text-align:center;font-weight:bold;">
         <a style="font-size:16px;" href="{{ url_for('mapping.spotify_add', release_group_id=release_group_id) }}" rel="nofollow">
@@ -216,7 +216,7 @@
 {% endmacro %}
 
 {% macro comment_credit(comment) %}
-  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_id=comment.user.id), comment.user.display_name) %}
+  {% set user_string = '<a href="%s">%s</a>'|safe % (url_for('user.reviews', user_ref= comment.user.user_ref), comment.user.display_name) %}
   {{ _('%(user)s', user=user_string) }}
 {% endmacro %}
 

@@ -17,40 +17,47 @@ if [[ ! -d "docker" ]]; then
     exit -1
 fi
 
+echo "Checking docker compose version"
+if docker compose version &> /dev/null; then
+    DOCKER_COMPOSE_CMD="docker compose"
+else
+    DOCKER_COMPOSE_CMD="docker-compose"
+fi
+
+function invoke_docker_compose_cmd {
+    $DOCKER_COMPOSE_CMD \
+      -f ${COMPOSE_FILE_LOC} \
+      -p ${COMPOSE_PROJECT_NAME} \
+      "$@"
+}
+
 function build_containers {
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                build critiquebrainz
+    invoke_docker_compose_cmd build critiquebrainz
 }
 
 function bring_up_db {
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                up -d db musicbrainz_db critiquebrainz_redis
+    invoke_docker_compose_cmd up -d db musicbrainz_db critiquebrainz_redis
 }
 
 function setup {
     echo "Running setup"
     # PostgreSQL Database initialization
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                run --rm critiquebrainz dockerize \
-                  -wait tcp://db:5432 -timeout 60s \
-                bash -c "python3 manage.py init_db"
+    invoke_docker_compose_cmd \
+      run --rm critiquebrainz dockerize \
+      -wait tcp://db:5432 -timeout 60s \
+      bash -c "python3 manage.py init_db"
     
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                   run --rm critiquebrainz bash scripts/download-import-bookbrainz-dump.sh
+    invoke_docker_compose_cmd \
+      run --rm critiquebrainz bash scripts/download-import-bookbrainz-dump.sh
 
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                   run --rm critiquebrainz bash scripts/add-test-bookbrainz-data.sh
+    invoke_docker_compose_cmd \
+      run --rm critiquebrainz bash scripts/add-test-bookbrainz-data.sh
                    
 }
 
 function is_db_running {
     # Check if the database container is running
-    containername="${COMPOSE_PROJECT_NAME}_db_1"
+    containername="${COMPOSE_PROJECT_NAME}-db-1"
     res=`docker ps --filter "name=$containername" --filter "status=running" -q`
     if [[ -n "$res" ]]; then
         return 0
@@ -60,7 +67,7 @@ function is_db_running {
 }
 
 function is_db_exists {
-    containername="${COMPOSE_PROJECT_NAME}_db_1"
+    containername="${COMPOSE_PROJECT_NAME}-db-1"
     res=`docker ps --filter "name=$containername" --filter "status=exited" -q`
     if [[ -n "$res" ]]; then
         return 0
@@ -71,26 +78,21 @@ function is_db_exists {
 
 function dc_stop {
     # Stopping all unit test containers associated with this project
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                stop
+    invoke_docker_compose_cmd stop
 }
 
 function dc_down {
     # Shutting down all unit test containers associated with this project
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                down
+    invoke_docker_compose_cmd down
 }
 
 function run_tests {
     echo "Running tests"
-    docker-compose -f ${COMPOSE_FILE_LOC} \
-                   -p ${COMPOSE_PROJECT_NAME} \
-                run --rm critiquebrainz \
-                dockerize -wait tcp://db:5432 -timeout 60s \
-                dockerize -wait tcp://musicbrainz_db:5432 -timeout 600s \
-                pytest --junitxml=reports/tests.xml "$@"
+    invoke_docker_compose_cmd \
+      run --rm critiquebrainz \
+      dockerize -wait tcp://db:5432 -timeout 60s \
+      dockerize -wait tcp://musicbrainz_db:5432 -timeout 600s \
+      pytest --junitxml=reports/tests.xml "$@"
 }
 
 
@@ -102,7 +104,7 @@ if [[ "$1" == "-s" ]]; then
 fi
 
 if [[ "$1" == "-d" ]]; then
-    echo "Running docker-compose down"
+    echo "Running $DOCKER_COMPOSE_CMD down"
     dc_down
     exit 0
 fi

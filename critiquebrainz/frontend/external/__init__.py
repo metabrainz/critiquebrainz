@@ -6,9 +6,9 @@ This package (api) provides modules to access external services:
 
 See documentation in each module for information about usage.
 """
-from flask import current_app, _app_ctx_stack
-
+from flask import current_app, g
 from critiquebrainz.frontend.external.entities import get_entity_by_id, get_multiple_entities
+
 
 class MBDataAccess(object):
     """A data access object which switches between database get methods or development versions
@@ -37,19 +37,17 @@ class MBDataAccess(object):
 
     @property
     def get_entity_by_id(self):
-        ctx = _app_ctx_stack.top
-        if ctx is not None:
-            if not hasattr(ctx, 'get_entity_by_id'):
-                ctx.get_entity_by_id = self.get_entity_by_id_method
-            return ctx.get_entity_by_id
+        if not hasattr(g, 'get_entity_by_id'):
+            g.get_entity_by_id = self.get_entity_by_id_method
+        return g.get_entity_by_id
 
     @property
     def get_multiple_entities(self):
-        ctx = _app_ctx_stack.top
-        if ctx is not None:
-            if not hasattr(ctx, 'get_multiple_entities'):
-                ctx.get_multiple_entities = self.get_multiple_entities_method
-            return ctx.get_multiple_entities
+        if not hasattr(g, 'get_multiple_entities'):
+            g.get_multiple_entities = self.get_multiple_entities_method
+        return g.get_multiple_entities
+
+
 
 mbstore = MBDataAccess()
 
@@ -64,6 +62,7 @@ def development_get_multiple_entities(entities):
     for mbid, entity_type in missing_entities:
         data[mbid] = get_dummy_item(mbid, entity_type)
     return data
+
 
 def development_get_entity_by_id(entity_id, entity_type):
     """Same as get_entity_by_id, but always returns a dummy item if the requested entity

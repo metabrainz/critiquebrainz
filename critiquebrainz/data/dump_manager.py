@@ -9,9 +9,10 @@ from datetime import datetime
 from time import gmtime, strftime
 
 import click
+import orjson
 import sqlalchemy
 from flask import current_app, jsonify
-from flask.json import JSONEncoder
+from flask.json.provider import JSONProvider
 from psycopg2.sql import SQL, Identifier
 
 from critiquebrainz import db
@@ -147,7 +148,7 @@ def json(location, rotate=False):
     """
     create_path(location)
 
-    current_app.json_encoder = DumpJSONEncoder
+    current_app.json_encoder = OrJSONProvider
 
     print("Creating new archives...")
     with db.engine.begin() as connection:
@@ -450,7 +451,26 @@ def importer(archive):
     with tarfile.open(archive, 'r:bz2') as archive:
         # TODO(roman): Read data from the archive without extracting it into temporary directory.
         temp_dir = tempfile.mkdtemp()
-        archive.extractall(temp_dir)
+        def is_within_directory(directory, target):
+            
+            abs_directory = os.path.abspath(directory)
+            abs_target = os.path.abspath(target)
+        
+            prefix = os.path.commonprefix([abs_directory, abs_target])
+            
+            return prefix == abs_directory
+        
+        def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+        
+            for member in tar.getmembers():
+                member_path = os.path.join(path, member.name)
+                if not is_within_directory(path, member_path):
+                    raise Exception("Attempted Path Traversal in Tar File")
+        
+            tar.extractall(path, members, numeric_owner=numeric_owner) 
+            
+        
+        safe_extract(archive, temp_dir)
 
         # Verifying schema version
         try:
@@ -522,16 +542,9 @@ def reset_sequence(table_names):
         connection.close()
 
 
-class DumpJSONEncoder(JSONEncoder):
-    """Custom JSON encoder for database dumps."""
+class OrJSONProvider(JSONProvider):
+    def dumps(self, obj, **kwargs):
+        return orjson.dumps(obj).decode()
 
-    def default(self, o):  # pylint: disable=method-hidden
-        try:
-            if isinstance(o, datetime):
-                return o.isoformat()
-            iterable = iter(o)
-        except TypeError:
-            pass
-        else:
-            return list(iterable)
-        return JSONEncoder.default(self, o)
+    def loads(self, s, **kwargs):
+        return orjson.loads(s)

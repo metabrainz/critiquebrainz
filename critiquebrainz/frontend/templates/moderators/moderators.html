@@ -5,12 +5,12 @@
 {% block content %}
   <div id="moderators-list">
     <h2>{{ _('Moderators') }}</h2>
-    <p><em>{{ _('These users respond to reports and make sure that spammers don\'t spam.') }}</em></p>
+    <p><em>{{ _('These users respond to reports and make sure that spammers don’t spam.') }}</em></p>
     <ul>
     {% for mod in moderators %}
       <li>
         {% if mod['critiquebrainz_id'] is defined and mod['critiquebrainz_id'] %}
-          <a href="{{ url_for('user.info', user_id=mod['critiquebrainz_id']) }}">
+          <a href="{{ url_for('user.info', user_ref= mod['musicbrainz_username']) }}">
             {{ mod['musicbrainz_username'] }}
           </a>
         {% else %}

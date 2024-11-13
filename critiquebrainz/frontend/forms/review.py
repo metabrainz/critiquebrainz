@@ -47,8 +47,8 @@ class ReviewEditForm(FlaskForm):
         kwargs.setdefault('language', default_language)
         FlaskForm.__init__(self, **kwargs)
 
-    def validate(self):
-        if not super(ReviewEditForm, self).validate():
+    def validate(self, extra_validators=None):
+        if not super(ReviewEditForm, self).validate(extra_validators):
             return False
         if not self.text.data and not self.rating.data:
             self.text.errors.append("You must provide some text or a rating to complete this review.")

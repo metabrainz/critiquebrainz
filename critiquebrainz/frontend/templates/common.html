@@ -1,5 +1,5 @@
 {% set rating_script %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+<link rel="stylesheet" href="{{ get_static_path('wysiwyg-editor.css') }}"/>
 <script>
     $(document).ready(function () {
         $("#ratestars").click(function (e) {

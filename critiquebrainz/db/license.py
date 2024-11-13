@@ -23,7 +23,7 @@ def create(*, id, full_name, info_url=None):
         "full_name": full_name,
         "info_url": info_url,
     }
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             INSERT INTO license(id, full_name, info_url)
                  VALUES (:id, :full_name, :info_url)
@@ -37,7 +37,7 @@ def delete(*, id):
     Args:
         id (str): ID of the license.
     """
-    with db.engine.connect() as connection:
+    with db.engine.begin() as connection:
         connection.execute(sqlalchemy.text("""
             DELETE
               FROM license
@@ -59,7 +59,7 @@ def get_licenses_list(connection):
           FROM license
     """)
     results = connection.execute(query)
-    return [dict(row) for row in results.fetchall()]
+    return [dict(row) for row in results.mappings()]
 
 
 def list_licenses():

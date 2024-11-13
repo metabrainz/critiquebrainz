@@ -8,7 +8,7 @@ from critiquebrainz.frontend.external.bookbrainz_db.identifiers import fetch_bb_
 from critiquebrainz.frontend.external.bookbrainz_db.relationships import fetch_relationships, EDITION_EDITION_GROUP_EDITION_REL_ID, EDITION_WORK_CONTAINS_REL_ID
 
 
-def get_edition_group_by_bbid(bbid: uuid.UUID) -> dict:
+def get_edition_group_by_bbid(bbid: str) -> dict:
     """
     Get info related to an edition group using its BookBrainz ID.
     Args:
@@ -25,16 +25,16 @@ def get_edition_group_by_bbid(bbid: uuid.UUID) -> dict:
             - rels: A list of dictionaries containing the basic information on the relationships.
             - author_credits: A list of dictionaries containing the basic information on the author credits.
 
-        Returns None if the edition group is not found.
+        Returns an empty dictionary if the edition group is not found.
 
     """
     edition_group = fetch_multiple_edition_groups([bbid])
     if not edition_group:
-        return None
+        return {}
     return edition_group[bbid]
 
 
-def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
+def fetch_multiple_edition_groups(bbids: List[str]) -> dict:
     """
     Get info related to multiple edition groups using their BookBrainz IDs. 
     Args:
@@ -78,7 +78,7 @@ def fetch_multiple_edition_groups(bbids: List[uuid.UUID]) -> dict:
                     relationship_set_id
                 """), {'bbids': tuple(bbids)})
             
-            edition_groups = result.fetchall()
+            edition_groups = result.mappings()
             results = {}
             for edition_group in edition_groups:
                 edition_group = dict(edition_group)
@@ -123,7 +123,7 @@ def fetch_works_for_edition_group(bbid: uuid.UUID):
                 AND rel.type_id = :relationship_type_id
                 """), {'bbid': str(bbid), 'relationship_type_id': EDITION_WORK_CONTAINS_REL_ID})
 
-            works = result.fetchall()
+            works = result.mappings()
             work_bbids = []
 
             for work in works:

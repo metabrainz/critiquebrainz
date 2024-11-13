@@ -14,7 +14,7 @@ ADMIN_SQL_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 
 
 
 def create_all():
-    db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_extensions.sql'))
+    db.run_sql_script_without_transaction(os.path.join(ADMIN_SQL_DIR, 'create_extensions.sql'))
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_types.sql'))
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_tables.sql'))
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'create_primary_keys.sql'))
@@ -28,6 +28,10 @@ def drop_tables():
 
 def drop_types():
     db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'drop_types.sql'))
+
+
+def clear_tables():
+    db.run_sql_script(os.path.join(ADMIN_SQL_DIR, 'clear_tables.sql'))
 
 
 def explode_db_uri(uri):
