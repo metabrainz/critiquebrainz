@@ -98,6 +98,7 @@ def create_app(debug=None, config_path=None):
 
     app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
+    _register_converters(app)
     _register_blueprints(app)
 
     return app
@@ -114,30 +115,14 @@ def _register_blueprints(app):
     from critiquebrainz.ws.review.views import review_bp
     from critiquebrainz.ws.user.views import user_bp
     from critiquebrainz.ws.review.bulk import bulk_review_bp
-    from critiquebrainz.ws.artist.views import artist_bp
-    from critiquebrainz.ws.label.views import label_bp
-    from critiquebrainz.ws.event.views import event_bp
-    from critiquebrainz.ws.place.views import place_bp
-    from critiquebrainz.ws.recording.views import recording_bp
-    from critiquebrainz.ws.release_group.views import release_group_bp
-    from critiquebrainz.ws.work.views import work_bp
-    from critiquebrainz.ws.bb_author.views import author_bp
-    from critiquebrainz.ws.bb_edition_group.views import edition_group_bp
-    from critiquebrainz.ws.bb_literary_work.views import literary_work_bp
-    from critiquebrainz.ws.bb_series.views import series_bp
+    from critiquebrainz.ws.entity.views import entity_bp
     app.register_blueprint(oauth_bp, url_prefix="/oauth")
     app.register_blueprint(review_bp, url_prefix="/review")
     app.register_blueprint(user_bp, url_prefix="/user")
     app.register_blueprint(bulk_review_bp, url_prefix="/reviews")
-    app.register_blueprint(artist_bp, url_prefix="/artist")
-    app.register_blueprint(label_bp, url_prefix="/label")
-    app.register_blueprint(event_bp, url_prefix="/event")
-    app.register_blueprint(place_bp, url_prefix="/place")
-    app.register_blueprint(recording_bp, url_prefix="/recording")
-    app.register_blueprint(release_group_bp, url_prefix="/release-group")
-    app.register_blueprint(work_bp, url_prefix="/work")
-    app.register_blueprint(author_bp, url_prefix="/author")
-    app.register_blueprint(edition_group_bp, url_prefix="/edition-group")
-    app.register_blueprint(literary_work_bp, url_prefix="/literary-work")
-    app.register_blueprint(series_bp, url_prefix="/series")
+    app.register_blueprint(entity_bp)
 
+
+def _register_converters(app):
+    from critiquebrainz.ws.entity.views import EntityNameConverter
+    app.url_map.converters['entity_name'] = EntityNameConverter
