@@ -45,9 +45,32 @@ class EntityNameConverter(BaseConverter):
         return str(value)
 
 
+def _get_cached_reviews(entity_id: str, entity_type: str, sort_type: str, 
+                       cache_namespace: str = REVIEW_CACHE_NAMESPACE) -> tuple[list, int]:
+    """Helper function to fetch and cache reviews."""
+    cache_key = cache.gen_key(f"entity_api_{entity_type}", entity_id, f"{sort_type}_reviews")
+    cached_result = cache.get(cache_key, cache_namespace)
+
+    if cached_result:
+        return cached_result
+
+    reviews, count = db_review.list_reviews(
+        entity_id=entity_id,
+        entity_type=entity_type,
+        sort=sort_type,
+        limit=REVIEWS_LIMIT,
+        offset=0,
+    )
+    reviews = [db_review.to_dict(review) for review in reviews]
+
+    cache.set(cache_key, (reviews, count),
+              expirein=REVIEW_CACHE_TIMEOUT, namespace=cache_namespace)
+    return reviews, count
+
+
 @entity_bp.route('/<entity_name:entity_name>/<uuid:entity_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(headers="Authorization, Content-Type")
-def entity_handler(entity_name, entity_id):
+def entity_handler(entity_name: str, entity_id: str):
     """Get list of reviews.
 
     **Request Example:**
@@ -171,70 +194,31 @@ def entity_handler(entity_name, entity_id):
     entity_type = ENTITY_URL_TYPE_MAPPING.get(entity_name)
     entity = get_entity_by_id(entity_id, entity_type)
     if not entity:
-        raise NotFound("Can't find a {entity_name} with ID: {entity_id}"
-                       .format(entity_name=entity_name, entity_id=entity_id))
+        raise NotFound(f"Can't find a {entity_name} with ID: {entity_id}")
 
+    # Get user review if username provided
     user_review = []
     username = Parser.string('uri', 'username', optional=True)
     if username:
-        user_review_cache_key = cache.gen_key('entity_api', entity_id, username, "user_review")
-        user_review = cache.get(user_review_cache_key, REVIEW_CACHE_NAMESPACE)
+        cache_key = cache.gen_key('entity_api', entity_id, entity_type, username, "user_review")
+        user_review = cache.get(cache_key, REVIEW_CACHE_NAMESPACE)
+
         if not user_review:
             user = db_users.get_by_mbid(username)
             if user:
-                user_id = user['id']
-
-                user_review, _ = db_review.list_reviews(
+                reviews, _ = db_review.list_reviews(
                     entity_id=entity_id,
                     entity_type=entity_type,
-                    user_id=user_id
+                    user_id=user['id']
                 )
-                if user_review:
-                    user_review = db_review.to_dict(user_review[0])
+                user_review = db_review.to_dict(reviews[0]) if reviews else []
+                cache.set(cache_key, user_review,
+                         expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
-                cache.set(user_review_cache_key, user_review,
-                        expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
-
-            else:
-                user_review = []
-
+    # Get ratings and reviews
     ratings_stats, average_rating = db_rating_stats.get_stats(entity_id, entity_type)
-
-    top_reviews_cache_key = cache.gen_key(f"entity_api_{entity_type}", entity_id, "top_reviews")
-    top_reviews_cached_result = cache.get(top_reviews_cache_key, REVIEW_CACHE_NAMESPACE)
-
-    if top_reviews_cached_result:
-        top_reviews, reviews_count = top_reviews_cached_result
-    else:
-        top_reviews, reviews_count = db_review.list_reviews(
-            entity_id=entity_id,
-            entity_type=entity_type,
-            sort='popularity',
-            limit=REVIEWS_LIMIT,
-            offset=0,
-        )
-        top_reviews = [db_review.to_dict(review) for review in top_reviews]
-
-        cache.set(top_reviews_cache_key, (top_reviews, reviews_count),
-                  expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
-
-    latest_reviews_cache_key = cache.gen_key(f"entity_api_{entity_type}", entity_id, "latest_reviews")
-    latest_reviews_cached_result = cache.get(latest_reviews_cache_key, REVIEW_CACHE_NAMESPACE)
-
-    if latest_reviews_cached_result:
-        latest_reviews, reviews_count = latest_reviews_cached_result
-    else:
-        latest_reviews, reviews_count = db_review.list_reviews(
-            entity_id=entity_id,
-            entity_type=entity_type,
-            sort='published_on',
-            limit=REVIEWS_LIMIT,
-            offset=0,
-        )
-        latest_reviews = [db_review.to_dict(review) for review in latest_reviews]
-
-        cache.set(latest_reviews_cache_key, (latest_reviews, reviews_count),
-                  expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
+    top_reviews, reviews_count = _get_cached_reviews(entity_id, entity_type, 'popularity')
+    latest_reviews, _ = _get_cached_reviews(entity_id, entity_type, 'published_on')
 
     result = {
         "entity": entity,
@@ -248,4 +232,4 @@ def entity_handler(entity_name, entity_id):
     if username:
         result['user_review'] = user_review
 
-    return jsonify(**result)
+    return jsonify(result)
