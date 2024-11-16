@@ -409,9 +409,12 @@ def invalidate_ws_entity_cache(entity_id, entity_type, user_id):
         cache.delete(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
 
     # Invalidate top and latest reviews caches
-    for sort_type in ['popularity', 'published_on']:
-        cache_key = cache.gen_key(f'entity_api_{entity_type}', entity_id, f"{sort_type}_reviews")
-        cache.delete(cache_key, namespace=REVIEW_CACHE_NAMESPACE)
+    cache_keys_to_delete = [
+        cache.gen_key(f'entity_api_{entity_type}', entity_id, review_type, f"{sort_type}_reviews")
+        for sort_type in ('popularity', 'published_on')
+        for review_type in ('review', 'rating', None)
+    ]
+    cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
 
     user = db_users.get_by_id(user_id)
     if user and 'musicbrainz_username' in user.keys() and user['musicbrainz_username']:

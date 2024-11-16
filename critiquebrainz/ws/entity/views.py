@@ -45,10 +45,10 @@ class EntityNameConverter(BaseConverter):
         return str(value)
 
 
-def _get_cached_reviews(entity_id: str, entity_type: str, sort_type: str, 
+def _get_cached_reviews(entity_id: str, entity_type: str, review_type: str, sort_type: str,
                        cache_namespace: str = REVIEW_CACHE_NAMESPACE) -> tuple[list, int]:
     """Helper function to fetch and cache reviews."""
-    cache_key = cache.gen_key(f"entity_api_{entity_type}", entity_id, f"{sort_type}_reviews")
+    cache_key = cache.gen_key(f"entity_api_{entity_type}", entity_id, review_type, f"{sort_type}_reviews")
     cached_result = cache.get(cache_key, cache_namespace)
 
     if cached_result:
@@ -58,6 +58,7 @@ def _get_cached_reviews(entity_id: str, entity_type: str, sort_type: str,
         entity_id=entity_id,
         entity_type=entity_type,
         sort=sort_type,
+        review_type=review_type,
         limit=REVIEWS_LIMIT,
         offset=0,
     )
@@ -187,6 +188,7 @@ def entity_handler(entity_name: str, entity_id: str):
     :statuscode 404: series not found
 
     :query username: User's username **(optional)**
+    :query review_type: ``review`` or ``rating``. If set, only return reviews which have a text review, or a rating **(optional)**
 
     :resheader Content-Type: *application/json*
     """
@@ -195,6 +197,8 @@ def entity_handler(entity_name: str, entity_id: str):
     entity = get_entity_by_id(entity_id, entity_type)
     if not entity:
         raise NotFound(f"Can't find a {entity_name} with ID: {entity_id}")
+
+    review_type = Parser.string('uri', 'review_type', valid_values=['rating', 'review'], optional=True)
 
     # Get user review if username provided
     user_review = []
@@ -217,8 +221,8 @@ def entity_handler(entity_name: str, entity_id: str):
 
     # Get ratings and reviews
     ratings_stats, average_rating = db_rating_stats.get_stats(entity_id, entity_type)
-    top_reviews, reviews_count = _get_cached_reviews(entity_id, entity_type, 'popularity')
-    latest_reviews, _ = _get_cached_reviews(entity_id, entity_type, 'published_on')
+    top_reviews, reviews_count = _get_cached_reviews(entity_id, entity_type, review_type, 'popularity')
+    latest_reviews, _ = _get_cached_reviews(entity_id, entity_type, review_type, 'published_on')
 
     result = {
         "entity": entity,
