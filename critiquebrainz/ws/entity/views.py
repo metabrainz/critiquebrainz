@@ -69,6 +69,22 @@ def _get_cached_reviews(entity_id: str, entity_type: str, review_type: str, sort
     return reviews, count
 
 
+def _get_cached_rating_stats(entity_id: str, entity_type: str,
+                           cache_namespace: str = REVIEW_CACHE_NAMESPACE) -> tuple[dict, float]:
+    """Helper function to fetch and cache rating statistics."""
+    cache_key = cache.gen_key(f"entity_api_{entity_type}", entity_id, "rating_stats")
+    cached_result = cache.get(cache_key, cache_namespace)
+
+    if cached_result:
+        return cached_result
+
+    ratings_stats, average_rating = db_rating_stats.get_stats(entity_id, entity_type)
+    
+    cache.set(cache_key, (ratings_stats, average_rating),
+              expirein=REVIEW_CACHE_TIMEOUT, namespace=cache_namespace)
+    return ratings_stats, average_rating
+
+
 @entity_bp.route('/<entity_name:entity_name>/<uuid:entity_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(headers="Authorization, Content-Type")
 def entity_handler(entity_name: str, entity_id: str):
@@ -220,7 +236,7 @@ def entity_handler(entity_name: str, entity_id: str):
                          expirein=REVIEW_CACHE_TIMEOUT, namespace=REVIEW_CACHE_NAMESPACE)
 
     # Get ratings and reviews
-    ratings_stats, average_rating = db_rating_stats.get_stats(entity_id, entity_type)
+    ratings_stats, average_rating = _get_cached_rating_stats(entity_id, entity_type)
     top_reviews, reviews_count = _get_cached_reviews(entity_id, entity_type, review_type, 'popularity')
     latest_reviews, _ = _get_cached_reviews(entity_id, entity_type, review_type, 'published_on')
 
