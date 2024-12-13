@@ -6,13 +6,14 @@
 # Dariusz Kowalski <darkow666@gmail.com>, 2019
 # Debeat <krystian4842@gmail.com>, 2015-2016
 # Echelon666 <echelon01@wp.pl>, 2024.
+# Peter69 <echelon01@wp.pl>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2024-09-19 18:42+0000\n"
-"Last-Translator: Echelon666 <echelon01@wp.pl>\n"
+"PO-Revision-Date: 2024-12-13 08:42+0000\n"
+"Last-Translator: Peter69 <echelon01@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/pl/>\n"
 "Language: pl\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.4\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -138,7 +139,7 @@ msgstr "Pole adresu e-mail zawiera nieprawidłowy adres."
 
 #: critiquebrainz/frontend/forms/profile.py:15
 msgid "Preferred License Choice"
-msgstr ""
+msgstr "Preferowany Wybór Licencji"
 
 #: critiquebrainz/frontend/forms/profile.py:16
 msgid ""
@@ -508,7 +509,7 @@ msgstr "Nagranie"
 #: critiquebrainz/frontend/templates/review/modify/bb_edition_group.html:3
 #: critiquebrainz/frontend/templates/search/index.html:37
 msgid "Edition Group"
-msgstr ""
+msgstr "Grupa Edycji"
 
 #: critiquebrainz/frontend/templates/macros.html:95
 #: critiquebrainz/frontend/templates/navbar.html:109
@@ -562,10 +563,13 @@ msgid "View Spotify mapping information"
 msgstr "Wyświetl informacje o mapowaniu do Spotify"
 
 #: critiquebrainz/frontend/templates/macros.html:161
+#, fuzzy
 msgid ""
 "We don’t have a mapping between this release group and Spotify. Please help "
 "us find the right album."
 msgstr ""
+"Nie mamy mapowania między tą grupą wydawniczą a Spotify. Pomóż nam znaleźć "
+"odpowiedni album."
 
 #: critiquebrainz/frontend/templates/macros.html:165
 msgid "Match this!"
@@ -2359,7 +2363,7 @@ msgstr "%(place)s"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:56
 msgid "MusicBrainz Place"
-msgstr ""
+msgstr "Miejsce MusicBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:7
 #: critiquebrainz/frontend/templates/review/entity/work.html:16
@@ -2771,8 +2775,9 @@ msgid "Spotify mapping has been added!"
 msgstr "Mapowanie Spotify zostało dodane!"
 
 #: critiquebrainz/frontend/views/mapping.py:131
+#, fuzzy
 msgid "Could not add Spotify mapping!"
-msgstr ""
+msgstr "Nie udało się dodać mapowania Spotify!"
 
 #: critiquebrainz/frontend/views/mapping.py:163
 msgid "This album is not mapped to Spotify yet!"
@@ -2783,8 +2788,9 @@ msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr "Nieprawidłowe mapowanie Spotify zostało zgłoszone. Dzięki!"
 
 #: critiquebrainz/frontend/views/mapping.py:171
+#, fuzzy
 msgid "Could not report incorrect Spotify mapping!"
-msgstr ""
+msgstr "Nie można zgłosić nieprawidłowego mapowania Spotify!"
 
 #: critiquebrainz/frontend/views/place.py:45
 msgid "Sorry, we couldn't find a place with that MusicBrainz ID."
