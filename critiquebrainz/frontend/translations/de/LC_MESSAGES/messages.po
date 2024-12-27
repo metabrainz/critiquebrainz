@@ -13,13 +13,14 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2014, 2023.
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015
 # Shepard, 2014
+# chaban <chaban@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2023-10-07 10:27+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-12-27 16:42+0000\n"
+"Last-Translator: chaban <chaban@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/de/>\n"
 "Language: de\n"
@@ -27,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -414,7 +415,7 @@ msgstr "Rezension"
 
 #: critiquebrainz/frontend/templates/macros.html:25
 msgid "Modify profile info and delete your profile."
-msgstr "Ändere deine Profil-Infos und lösche dein Profil"
+msgstr "Ändere deine Profil-Infos und lösche dein Profil."
 
 #: critiquebrainz/frontend/templates/macros.html:25
 msgid "Profile data"
@@ -422,7 +423,7 @@ msgstr "Profildaten"
 
 #: critiquebrainz/frontend/templates/macros.html:28
 msgid "Create and modify your reviews."
-msgstr "Erstelle und bearbeite deine Rezensionen"
+msgstr "Erstelle und bearbeite deine Rezensionen."
 
 #: critiquebrainz/frontend/templates/macros.html:30
 msgid "Modify your applications (create, edit, delete)."
@@ -1625,7 +1626,7 @@ msgstr "%(user)s entsperren"
 
 #: critiquebrainz/frontend/templates/log/action.html:39
 msgid "Please provide a reason for taking this action (required)"
-msgstr "Du musst einen Grund angeben um dies durchzuführen (erforderlich)."
+msgstr "Du musst einen Grund angeben, um dies durchzuführen (erforderlich)."
 
 #: critiquebrainz/frontend/templates/log/action.html:43
 #: critiquebrainz/frontend/templates/mapping/confirm.html:27
@@ -2112,7 +2113,7 @@ msgstr "Ältere Revisionen konnten nicht geladen werden!"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:74
 msgid "Select two different revisions."
-msgstr "Wähle zwei verschiedene Revisionen aus"
+msgstr "Wähle zwei verschiedene Revisionen aus."
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:8
 #, python-format
