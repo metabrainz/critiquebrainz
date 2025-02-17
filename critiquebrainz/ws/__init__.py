@@ -7,6 +7,9 @@ from brainzutils.flask import CustomFlask
 
 deploy_env = os.environ.get('DEPLOY_ENV', '')
 CONSUL_CONFIG_FILE_RETRY_COUNT = 10
+REVIEWS_LIMIT = 5
+REVIEW_CACHE_NAMESPACE = "Review"
+REVIEW_CACHE_TIMEOUT = 30 * 60  # 30 minutes
 
 
 def create_app(debug=None, config_path=None):
@@ -95,6 +98,7 @@ def create_app(debug=None, config_path=None):
 
     app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
+    _register_converters(app)
     _register_blueprints(app)
 
     return app
@@ -111,7 +115,14 @@ def _register_blueprints(app):
     from critiquebrainz.ws.review.views import review_bp
     from critiquebrainz.ws.user.views import user_bp
     from critiquebrainz.ws.review.bulk import bulk_review_bp
+    from critiquebrainz.ws.entity.views import entity_bp
     app.register_blueprint(oauth_bp, url_prefix="/oauth")
     app.register_blueprint(review_bp, url_prefix="/review")
     app.register_blueprint(user_bp, url_prefix="/user")
     app.register_blueprint(bulk_review_bp, url_prefix="/reviews")
+    app.register_blueprint(entity_bp)
+
+
+def _register_converters(app):
+    from critiquebrainz.ws.entity.views import EntityNameConverter
+    app.url_map.converters['entity_name'] = EntityNameConverter
