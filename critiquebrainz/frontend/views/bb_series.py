@@ -54,14 +54,28 @@ def entity(id):
     rating_form = RatingEditForm(entity_id=id, entity_type='bb_series')
     rating_form.rating.data = my_review['rating'] if my_review else None
 
-    rels_bbid = [rel['source_bbid'] for rel in series['rels']]
+    rels_bbid = []
+    rels_order_number = []
+    for rel in series['rels']:
+        rels_bbid.append(rel['source_bbid'])
+        if 'number' in rel['attributes']:
+            rels_order_number.append(rel['attributes']['number'])
+        else:
+            rels_order_number.append(None)
+
     series_rels_info = bb_series.fetch_series_rels_info(series['series_type'], rels_bbid)
-    series_rels_info = series_rels_info.values()
+
+    series_items = []
+    for index, bbid in enumerate(rels_bbid):
+        item = series_rels_info[bbid]
+        number = rels_order_number[index]
+        item['number'] = number
+        series_items.append(item)
 
     return render_template('bb_series/entity.html',
                            id=series['bbid'],
                            series=series,
-                           series_rels_info=series_rels_info,
+                           series_rels_info=series_items,
                            reviews=reviews,
                            my_review=my_review,
                            count=count,
