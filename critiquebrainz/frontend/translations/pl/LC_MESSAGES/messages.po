@@ -7,13 +7,14 @@
 # Debeat <krystian4842@gmail.com>, 2015-2016
 # Echelon666 <echelon01@wp.pl>, 2024.
 # Peter69 <echelon01@wp.pl>, 2024.
+# PS <weblate@wp.pl>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2024-12-13 08:42+0000\n"
-"Last-Translator: Peter69 <echelon01@wp.pl>\n"
+"PO-Revision-Date: 2025-04-23 19:20+0000\n"
+"Last-Translator: PS <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/pl/>\n"
 "Language: pl\n"
@@ -23,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 5.11\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -580,18 +581,18 @@ msgid "(none)"
 msgstr "(Żaden)"
 
 #: critiquebrainz/frontend/templates/macros.html:215
-#, python-format
+#, fuzzy, python-format
 msgid "based on %(num)s rating"
 msgid_plural "based on %(num)s ratings"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "na podstawie %(num)s oceny"
+msgstr[1] "na podstawie %(num)s ocen"
+msgstr[2] "na podstawie %(num)s ocen"
+msgstr[3] "na podstawie %(num)s ocen"
 
 #: critiquebrainz/frontend/templates/macros.html:220
-#, python-format
+#, fuzzy, python-format
 msgid "%(user)s"
-msgstr ""
+msgstr "%(user)s"
 
 #: critiquebrainz/frontend/templates/macros.html:237
 #, python-format
