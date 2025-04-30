@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2025-04-23 19:20+0000\n"
+"PO-Revision-Date: 2025-04-30 15:20+0000\n"
 "Last-Translator: PS <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/pl/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.11.1\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -1527,8 +1527,9 @@ msgstr ""
 "Zapominając sprawdzić faktyczne informacje w recenzji po zakończeniu pisania."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:135
+#, fuzzy
 msgid "Overlooking proofreading</strong> the review after finishing it."
-msgstr "Z widokiem na korektę</strong> recenzji po jej zakończeniu."
+msgstr "Pominięcie korekty recenzji po jej ukończeniu."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:136
 msgid "Mistakes such as punctuation, typo errors, capitalization etc."
