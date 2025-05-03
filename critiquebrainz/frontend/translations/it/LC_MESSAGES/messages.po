@@ -5,15 +5,15 @@
 # Translators:
 # Luca Salini, 2016-2017,2020
 # Luca Salini, 2014-2016
-# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2024-03-31 10:28+0000\n"
-"Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
-"metabrainz.org>\n"
+"PO-Revision-Date: 2025-05-03 17:20+0000\n"
+"Last-Translator: \"salo.rock\" "
+"<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/it/>\n"
 "Language: it\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.11.3\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -162,11 +162,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
-msgstr "Nome applicazione"
+msgstr "Nome dell'applicazione"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:8
 msgid "Application name field is empty."
-msgstr "Il campo nome applicazione è vuoto."
+msgstr "Il campo nome dell'applicazione è vuoto."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:9
 msgid "Application name needs to be at least 3 characters long."
@@ -466,7 +466,7 @@ msgstr "Evento"
 #: critiquebrainz/frontend/templates/review/modify/place.html:5
 #: critiquebrainz/frontend/templates/search/index.html:31
 msgid "Place"
-msgstr "Luogo"
+msgstr "Posto"
 
 #: critiquebrainz/frontend/templates/macros.html:60
 #: critiquebrainz/frontend/templates/navbar.html:99
@@ -1226,10 +1226,10 @@ msgid ""
 "  "
 msgstr ""
 "\n"
-"      <strong>Questa è una versione iniziale della pagina di linee guida.</"
-"strong>\n"
-"      Sentiti libero di suggerire miglioramenti a questa pagina e di "
-"segnalare qualsiasi problema tu possa trovare. Grazie!\n"
+"      <strong>Questa è una versione iniziale della pagina di linee "
+"guida.</strong>\n"
+"      Suggerisci pure miglioramenti a questa pagina e segnala qualsiasi "
+"problema tu possa trovare. Grazie!\n"
 "  "
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:14
@@ -1433,10 +1433,10 @@ msgid ""
 "      Was it sufficient for the crowd? or How well the band/artist sound in "
 "it?"
 msgstr ""
-"Descrivi il luogo dell'evento. Le recensioni di eventi sono potenziate da "
-"una descrizione del luogo in cui si è svolto l'evento: quanto era grande? "
+"Descrivi il posto dell'evento. Le recensioni di eventi sono potenziate da "
+"una descrizione del posto in cui si è svolto l'evento: quanto era grande? "
 "Era sufficiente per il pubblico? O come si adattava il suono della band/"
-"dell'artista a quel luogo?"
+"dell'artista a quel posto?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:98
 msgid ""
@@ -1479,7 +1479,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:113
 msgid "Places"
-msgstr "Luoghi"
+msgstr "Posti"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:116
 msgid ""
@@ -1812,7 +1812,7 @@ msgstr "No, grazie"
 
 #: critiquebrainz/frontend/templates/place/entity.html:81
 msgid "Place information"
-msgstr "Informazioni sul luogo"
+msgstr "Informazioni sul posto"
 
 #: critiquebrainz/frontend/templates/place/entity.html:106
 msgid "Part of"
@@ -1902,7 +1902,7 @@ msgstr "Crea applicazione"
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:6
 #, python-format
 msgid "Edit application %(name)s"
-msgstr "Modifica applicazione %(name)s"
+msgstr "Modifica l'applicazione %(name)s"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:37
 msgid "Save changes"
@@ -2360,7 +2360,7 @@ msgstr "Etichetta su MusicBrainz"
 #: critiquebrainz/frontend/templates/review/entity/place.html:21
 #: critiquebrainz/frontend/templates/user/reviews.html:51
 msgid "[Unknown place]"
-msgstr "[luogo sconosciuto]"
+msgstr "[Posto sconosciuto]"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:13
 #, python-format
@@ -2374,7 +2374,7 @@ msgstr "%(place)s"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:56
 msgid "MusicBrainz Place"
-msgstr "Luogo su MusicBrainz"
+msgstr "Posto su MusicBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:7
 #: critiquebrainz/frontend/templates/review/entity/work.html:16
@@ -2466,7 +2466,7 @@ msgstr "Annulla cambiamenti"
 
 #: critiquebrainz/frontend/templates/review/modify/event.html:14
 msgid "Unknown place"
-msgstr "Luogo sconosciuto"
+msgstr "Posto sconosciuto"
 
 #: critiquebrainz/frontend/templates/review/modify/label.html:14
 #: critiquebrainz/frontend/templates/search/index.html:64
@@ -2478,7 +2478,7 @@ msgstr "Paese"
 #: critiquebrainz/frontend/templates/search/index.html:71
 #: critiquebrainz/frontend/templates/search/index.html:78
 msgid "Location"
-msgstr "Posizione"
+msgstr "Ubicazione"
 
 #: critiquebrainz/frontend/templates/review/modify/recording.html:10
 #: critiquebrainz/frontend/templates/search/index.html:106
@@ -2813,7 +2813,7 @@ msgstr "Non è stato possibile segnalare l'associazione sbagliata con Spotify!"
 #: critiquebrainz/frontend/views/place.py:45
 msgid "Sorry, we couldn't find a place with that MusicBrainz ID."
 msgstr ""
-"Spiacenti, non è stato possibile trovare un luogo con quell'ID di "
+"Spiacenti, non è stato possibile trovare un posto con quell'ID di "
 "MusicBrainz."
 
 #: critiquebrainz/frontend/views/profile.py:22
