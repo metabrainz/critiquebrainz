@@ -4,21 +4,23 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # silentbird <koalaleaves+musicbrainz@protonmail.com>, 2023.
+# silentbird <silentbird@users.noreply.translations.metabrainz.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2023-11-29 12:27+0000\n"
-"Last-Translator: silentbird <koalaleaves+musicbrainz@protonmail.com>\n"
-"Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
-"projects/critiquebrainz/frontend/zh_Hant/>\n"
+"PO-Revision-Date: 2025-05-27 16:20+0000\n"
+"Last-Translator: silentbird "
+"<silentbird@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: Chinese (Traditional Han script) <https://"
+"translations.metabrainz.org/projects/critiquebrainz/frontend/zh_Hant/>\n"
 "Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.2.1\n"
+"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -56,7 +58,7 @@ msgstr "Bandcamp"
 #: critiquebrainz/frontend/external/relationships/place.py:36
 #: critiquebrainz/frontend/external/relationships/release_group.py:22
 msgid "Official homepage"
-msgstr "官方網站"
+msgstr "官方首頁"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:37
 #: critiquebrainz/frontend/external/relationships/label.py:24
@@ -134,13 +136,16 @@ msgstr "電子郵件地址有誤。"
 
 #: critiquebrainz/frontend/forms/profile.py:15
 msgid "Preferred License Choice"
-msgstr ""
+msgstr "所選的授權條款"
 
 #: critiquebrainz/frontend/forms/profile.py:16
 msgid ""
 "Allow commercial use of my reviews (<a href=\"https://creativecommons.org/"
 "licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
+"允許他人將評論作商業用途（以<a href="
+"\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\""
+">創用CC姓名標示─相同方式分享3.0條款</a>授權）"
 
 #: critiquebrainz/frontend/forms/profile.py:17
 msgid ""
@@ -148,6 +153,9 @@ msgid ""
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
+"除非得到MetaBrainz基金會允許，禁止他人將評論作商業用途（以<a href="
+"\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" target=\"_blank\""
+">創用CC姓名標示─非商業性─相同方式分享3.0條款</a>授權）"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
@@ -209,11 +217,11 @@ msgstr "授權回應網址有誤。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:24
 msgid "Authorization callback URL must use http or https"
-msgstr ""
+msgstr "授權回應網址須使用https或https"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:28
 msgid "Homepage URL must use http or https"
-msgstr "主頁網址須以http或https開頭"
+msgstr "主頁網址須使用http或https"
 
 #: critiquebrainz/frontend/forms/rate.py:26
 #: critiquebrainz/frontend/forms/review.py:43
@@ -387,7 +395,7 @@ msgstr "語言"
 #: critiquebrainz/frontend/templates/footer.html:51
 #, python-format
 msgid "Project of the %(metabrainz_fdn)s"
-msgstr "一個%(metabrainz_fdn)s項目"
+msgstr "%(metabrainz_fdn)s項目"
 
 #: critiquebrainz/frontend/templates/macros.html:4
 #: critiquebrainz/frontend/templates/reports/reports.html:28
@@ -832,7 +840,7 @@ msgstr "於MusicBrainz編輯"
 #: critiquebrainz/frontend/templates/bb_author/entity.html:66
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:66
 msgid "This entity is also in the MusicBrainz Database as "
-msgstr ""
+msgstr "此實體在MusicBrainz資料庫為 "
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:97
 #: critiquebrainz/frontend/templates/bb_series/entity.html:239
@@ -916,14 +924,14 @@ msgstr "解散地"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:190
 msgid "Place of Death"
-msgstr "死亡地"
+msgstr "逝世地"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:215
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:154
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:231
 #: critiquebrainz/frontend/templates/bb_series/entity.html:322
 msgid "Edit on BookBrainz"
-msgstr ""
+msgstr "於BookBrainz編輯"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:65
 msgid "Works for this Edition Group"
