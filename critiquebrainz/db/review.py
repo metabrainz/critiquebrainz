@@ -300,14 +300,16 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
 
     with db.engine.begin() as connection:
         result = connection.execute(sqlalchemy.text("""
-                    SELECT review.entity_id
+                    SELECT review.entity_id,
+                           review.entity_type,
+                           review.user_id
                       FROM review
                      WHERE review.id = :review_id
                 """), {
             "review_id": review_id,
         })
         review = dict(result.mappings().first())
-        invalidate_ws_entity_cache(review["entity_id"])
+        invalidate_ws_entity_cache(review["entity_id"], review["entity_type"], review["user_id"])
 
 
 def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
@@ -389,11 +391,11 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
     if rating:
         db_revision.update_rating(review_id)
 
-    invalidate_ws_entity_cache(entity_id)
+    invalidate_ws_entity_cache(entity_id, entity_type, user_id)
     return get_by_id(review_id)
 
 
-def invalidate_ws_entity_cache(entity_id):
+def invalidate_ws_entity_cache(entity_id, entity_type, user_id):
     cache_keys_for_entity_id_key = cache.gen_key('ws_cache', entity_id)
     cache_keys_to_delete = cache.smembers(cache_keys_for_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
     if cache_keys_to_delete:
@@ -405,6 +407,20 @@ def invalidate_ws_entity_cache(entity_id):
     if cache_keys_to_delete:
         cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
         cache.delete(cache_keys_for_no_entity_id_key, namespace=REVIEW_CACHE_NAMESPACE)
+
+    # Invalidate top and latest reviews caches
+    cache_keys_to_delete = [
+        cache.gen_key(f'entity_api_{entity_type}', entity_id, review_type, f"{sort_type}_reviews")
+        for sort_type in ('popularity', 'published_on')
+        for review_type in ('review', 'rating', None)
+    ]
+    cache.delete_many(cache_keys_to_delete, namespace=REVIEW_CACHE_NAMESPACE)
+
+    user = db_users.get_by_id(user_id)
+    if user and 'musicbrainz_username' in user.keys() and user['musicbrainz_username']:
+        username = user["musicbrainz_username"]
+        cache_key = cache.gen_key('entity_api', entity_id, entity_type, username, "user_review")
+        cache.delete(cache_key, namespace=REVIEW_CACHE_NAMESPACE)
 
 
 # pylint: disable=too-many-branches
