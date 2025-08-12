@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2025-08-02 22:36+0000\n"
+"PO-Revision-Date: 2025-08-12 17:36+0000\n"
 "Last-Translator: erykmichalak <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/pl/>\n"
@@ -582,7 +582,7 @@ msgid "(none)"
 msgstr "(Żaden)"
 
 #: critiquebrainz/frontend/templates/macros.html:215
-#, fuzzy, python-format
+#, python-format
 msgid "based on %(num)s rating"
 msgid_plural "based on %(num)s ratings"
 msgstr[0] "na podstawie %(num)s oceny"
@@ -2031,7 +2031,7 @@ msgid "as of"
 msgstr "na"
 
 #: critiquebrainz/frontend/templates/review/delete.html:11
-#, fuzzy, python-format
+#, python-format
 msgid "Delete review of \"%(entity)s\""
 msgstr "Usuń recenzję \"%(entity)s\""
 
