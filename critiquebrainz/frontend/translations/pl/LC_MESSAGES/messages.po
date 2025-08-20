@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2025-08-12 17:36+0000\n"
+"PO-Revision-Date: 2025-08-20 14:36+0000\n"
 "Last-Translator: erykmichalak <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/pl/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -565,7 +565,6 @@ msgid "View Spotify mapping information"
 msgstr "Wyświetl informacje o mapowaniu do Spotify"
 
 #: critiquebrainz/frontend/templates/macros.html:161
-#, fuzzy
 msgid ""
 "We don’t have a mapping between this release group and Spotify. Please help "
 "us find the right album."
@@ -1183,7 +1182,6 @@ msgstr ""
 "- głównie treść promocyjna lub SEO będzie ukryta."
 
 #: critiquebrainz/frontend/templates/index/about.html:45
-#, fuzzy
 msgid ""
 "Your submissions must be your original work. Do not submit content that you "
 "do not hold\n"
@@ -1194,11 +1192,12 @@ msgid ""
 "  LLM generated content will be removed."
 msgstr ""
 "Twoje zgłoszenia muszą być Twoim oryginalnym dziełem. Nie przesyłaj treści, "
-"do których nie posiadasz praw autorskich lub które nie są Twoją własnością. "
-"Obejmuje to plagiat i przede wszystkim LLM (Large Language\n"
-"Model) lub treści generowane przez AI. Możesz chcieć użyć LLM jako "
-"narzędzia, ale pamiętaj, że oczywiście\n"
-"treści generowane przez LLM zostaną usunięte."
+"do których nie posiadasz\n"
+"  praw autorskich lub które nie są Twoją własnością. Obejmuje to plagiat i "
+"przede wszystkim modele LLM (Large Language\n"
+"  Model) lub treści generowane przez AI. Możesz chcieć użyć LLM jako "
+"narzędzia, ale pamiętaj, że\n"
+"  treści generowane przez modele LLM zostaną usunięte."
 
 #: critiquebrainz/frontend/templates/index/about.html:51
 msgid ""
@@ -1502,15 +1501,14 @@ msgid "💡 Note:"
 msgstr "💡 Uwaga:"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:127
-#, fuzzy
 msgid ""
 "Try to be <strong>honest</strong> while reviewing, simply don’t follow the "
 "trend. Review the album as to what\n"
 "    you felt. And try to follow active voice."
 msgstr ""
-"Staraj się być <strong>uczciwy</strong> podczas recenzowania, po prostu nie "
-"podążaj za trendem. Oceń album pod kątem tego, co czułeś. I staraj się "
-"stosować stronę czynną."
+"Staraj się podejść <strong>uczciwie</strong> do recenzowania, nie podążaj za "
+"trendem. Oceń album według\n"
+"    swoich własnych odczuć. Staraj się stosować stronę czynną."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:131
 msgid "Common mistakes"
@@ -1528,7 +1526,6 @@ msgstr ""
 "Zapominając sprawdzić faktyczne informacje w recenzji po zakończeniu pisania."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:135
-#, fuzzy
 msgid "Overlooking proofreading</strong> the review after finishing it."
 msgstr "Pominięcie korekty recenzji po jej ukończeniu."
 
@@ -2054,9 +2051,9 @@ msgid "Delete review"
 msgstr "Usuń recenzję"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:11
-#, fuzzy, python-format
+#, python-format
 msgid "Edit comment on %(user)s’s review of \"%(entity)s\""
-msgstr "Edytuj komentarz do recenzji %(user)s na temat %(entity)s"
+msgstr "Edytuj komentarz do recenzji %(user)s na temat \"%(entity)s\""
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:15
 msgid "Deleting comment!"
@@ -2260,9 +2257,8 @@ msgid "%(edition_group)s"
 msgstr "%(edition_group)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:22
-#, fuzzy
 msgid "BookBrainz Edition Group"
-msgstr "Grupa wydawnicza BookBrainz"
+msgstr "Grupa edycyjna BookBrainz"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:7
 #, python-format
@@ -2671,26 +2667,26 @@ msgstr ""
 "MusicBrainz."
 
 #: critiquebrainz/frontend/views/bb_author.py:32
-#, fuzzy
 msgid "Sorry, we couldn't find an author with that BookBrainz ID."
 msgstr ""
 "Niestety, nie udało nam się znaleźć autora o takim identyfikatorze "
 "BookBrainz."
 
 #: critiquebrainz/frontend/views/bb_edition_group.py:26
-#, fuzzy
 msgid "Sorry, we couldn't find an edition group with that BookBrainz ID."
-msgstr "Niestety, nie udało nam się znaleźć grupy wydań o tym BookBrainz ID."
+msgstr ""
+"Niestety, nie udało nam się znaleźć grupy wydań o takim indentyfikatorze "
+"BookBrainz."
 
 #: critiquebrainz/frontend/views/bb_literary_work.py:26
-#, fuzzy
 msgid "Sorry, we couldn't find a work with that BookBrainz ID."
-msgstr "Niestety, nie znaleźliśmy dzieła z tym identyfikatorem BookBrainz."
+msgstr ""
+"Niestety, nie udało nam się znaleźć dzieła z tym identyfikatorem BookBrainz."
 
 #: critiquebrainz/frontend/views/bb_series.py:24
-#, fuzzy
 msgid "Sorry, we couldn't find a series with that BookBrainz ID."
-msgstr "Niestety, nie znaleźliśmy serii o tym identyfikatorze BookBrainz."
+msgstr ""
+"Niestety, nie udało nam się znaleźć serii o tym identyfikatorze BookBrainz."
 
 #: critiquebrainz/frontend/views/comment.py:39
 #, python-format
@@ -2742,9 +2738,10 @@ msgid "Sorry, we couldn't find an event with that MusicBrainz ID."
 msgstr "Niestety, nie znaleźliśmy wydarzenia z tym MusicBrainz ID."
 
 #: critiquebrainz/frontend/views/label.py:20
-#, fuzzy
 msgid "Sorry, we couldn't find a label with that MusicBrainz ID."
-msgstr "Niestety, nie udało nam się znaleźć etykiety o takim MusicBrainz ID."
+msgstr ""
+"Niestety, nie udało nam się znaleźć etykiety o takim identyfikatorze "
+"MusicBrainz."
 
 #: critiquebrainz/frontend/views/log.py:19
 msgid "No logs to display."
@@ -2778,7 +2775,6 @@ msgid "Spotify mapping has been added!"
 msgstr "Mapowanie Spotify zostało dodane!"
 
 #: critiquebrainz/frontend/views/mapping.py:131
-#, fuzzy
 msgid "Could not add Spotify mapping!"
 msgstr "Nie udało się dodać mapowania Spotify!"
 
@@ -2791,7 +2787,6 @@ msgid "Incorrect Spotify mapping has been reported. Thank you!"
 msgstr "Nieprawidłowe mapowanie Spotify zostało zgłoszone. Dzięki!"
 
 #: critiquebrainz/frontend/views/mapping.py:171
-#, fuzzy
 msgid "Could not report incorrect Spotify mapping!"
 msgstr "Nie można zgłosić nieprawidłowego mapowania Spotify!"
 
