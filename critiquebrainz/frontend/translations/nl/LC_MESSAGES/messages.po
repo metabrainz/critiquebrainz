@@ -6,14 +6,15 @@
 # reneweesp <bmom43@hotmail.com>, 2019
 # Heimen Stoffels <vistausss@fastmail.com>, 2020
 # Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2014-2017,2019
+# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2023-08-29 23:27+0000\n"
-"Last-Translator: RandomMushroom128 <RandomMushroom128@users.noreply."
-"translations.metabrainz.org>\n"
+"PO-Revision-Date: 2025-09-02 07:39+0000\n"
+"Last-Translator: mfmeulenbelt "
+"<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/nl/>\n"
 "Language: nl\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -208,19 +209,19 @@ msgstr "De website-url is ongeldig."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:18
 msgid "Authorization callback URL"
-msgstr "Autorisatiecallback-url"
+msgstr "URL voor autorisatiecallback"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:19
 msgid "Authorization callback URL field is empty."
-msgstr "Het veld met de autorisatiecallback-url is blanco."
+msgstr "Het veld met de URL voor de autorisatiecallback is leeg."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:20
 msgid "Authorization callback URL is invalid."
-msgstr "De autorisatiecallback-url is ongeldig."
+msgstr "De URL voor de autorisatiecallback is ongeldig."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:24
 msgid "Authorization callback URL must use http or https"
-msgstr ""
+msgstr "De URL voor de autorisatiecallback moet http of https gebruiken"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:28
 msgid "Homepage URL must use http or https"
