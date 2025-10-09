@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2025-10-08 19:02+0000\n"
+"PO-Revision-Date: 2025-10-09 20:02+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/lt/>\n"
@@ -17,9 +17,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
-"19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
-"1 : 2);\n"
+"Plural-Forms: nplurals=3; plural="
+"(n % 10 == 1 && (n % 100 < 11 || n % 100 > 19)) ? 0 : "
+"((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? 1 : 2);\n"
 "X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.12.1\n"
 
@@ -230,16 +230,16 @@ msgstr "Pagrindinio puslapio URL turi naudoti http arba https."
 #: critiquebrainz/frontend/forms/review.py:43
 #: critiquebrainz/frontend/templates/user/reviews.html:19
 msgid "Rating"
-msgstr ""
+msgstr "Vertinimas"
 
 #: critiquebrainz/frontend/forms/review.py:30
 msgid "Text"
-msgstr ""
+msgstr "Tekstas"
 
 #: critiquebrainz/frontend/forms/review.py:33
 #, python-format
 msgid "Text length needs to be between %(min)d and %(max)d characters."
-msgstr ""
+msgstr "Teksto ilgis turi būti tarp %(min)d ir %(max)d simbolių."
 
 #: critiquebrainz/frontend/forms/review.py:37
 msgid ""
@@ -247,6 +247,9 @@ msgid ""
 "href=\"https://creativecommons.org/licenses/by-sa/3.0/\" "
 "target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
+"Leisti komercinį naudojimą šios apžvalgos (<a href="
+"\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-"
+"SA 3.0 licencija</a>)"
 
 #: critiquebrainz/frontend/forms/review.py:38
 msgid ""
@@ -254,32 +257,35 @@ msgid ""
 " Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-"
 "sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
+"Neleisti komercinio naudojimo šios apžvalgos, nebent patvirtinta „MetaBrainz“"
+" fondo (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
+"target=\"_blank\">CC BY-NC-SA 3.0 licencija</a>)"
 
 #: critiquebrainz/frontend/forms/review.py:40
 msgid "You need to choose a license"
-msgstr ""
+msgstr "Jums reikia pasirinkti licenciją"
 
 #: critiquebrainz/frontend/forms/review.py:41
 msgid "Remember this license choice for further preference"
-msgstr ""
+msgstr "Prisiminti šį licencijos pasirinkimą tolesniems pageidavimams"
 
 #: critiquebrainz/frontend/forms/review.py:42
 #: critiquebrainz/frontend/forms/review.py:61
 msgid "You need to accept the license agreement!"
-msgstr ""
+msgstr "Turite sutikti su licencijos sutartimi."
 
 #: critiquebrainz/frontend/login/__init__.py:21
 msgid "Please sign in to access this page."
-msgstr ""
+msgstr "Prisijunkite, kad pasiektumėte šį puslapį."
 
 #: critiquebrainz/frontend/login/__init__.py:48
 msgid "You must be an administrator to view this page."
-msgstr ""
+msgstr "Turite būti administratorius, kad peržiūrėtumėte šį puslapį."
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/recording/entity.html:13
 msgid "by"
-msgstr ""
+msgstr "sukūrė"
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/review/entity/artist.html:7
@@ -288,22 +294,22 @@ msgstr ""
 #: critiquebrainz/frontend/templates/user/reviews.html:67
 #: critiquebrainz/frontend/templates/user/reviews.html:70
 msgid "[Unknown artist]"
-msgstr ""
+msgstr "[Nežinomas atlikėjas]"
 
 #: critiquebrainz/frontend/templates/footer.html:5
 msgid "Admin zone:"
-msgstr ""
+msgstr "Administravimo vieta:"
 
 #: critiquebrainz/frontend/templates/footer.html:6
 msgid "Reports"
-msgstr ""
+msgstr "Ataskaitos"
 
 #: critiquebrainz/frontend/templates/footer.html:7
 #: critiquebrainz/frontend/templates/footer.html:33
 #: critiquebrainz/frontend/templates/log/browse.html:3
 #: critiquebrainz/frontend/templates/log/browse.html:6
 msgid "Moderation log"
-msgstr ""
+msgstr "Prižiūrėjimo žurnalas"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:59
 #: critiquebrainz/frontend/templates/artist/entity.html:101
@@ -329,7 +335,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/work/entity.html:20
 #: critiquebrainz/frontend/templates/work/entity.html:62
 msgid "Reviews"
-msgstr ""
+msgstr "Apžvalgos"
 
 #: critiquebrainz/frontend/templates/footer.html:17
 #: critiquebrainz/frontend/templates/label/entity.html:19
@@ -348,39 +354,39 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:130
 #: critiquebrainz/frontend/templates/search/index.html:136
 msgid "Write a review"
-msgstr ""
+msgstr "Rašyti apžvalgą"
 
 #: critiquebrainz/frontend/templates/footer.html:21
 msgid "Developers"
-msgstr ""
+msgstr "Kūrėjai"
 
 #: critiquebrainz/frontend/templates/footer.html:23
 msgid "Web API"
-msgstr ""
+msgstr "Saityno API"
 
 #: critiquebrainz/frontend/templates/footer.html:24
 msgid "Source code"
-msgstr ""
+msgstr "Šaltinio kodas"
 
 #: critiquebrainz/frontend/templates/footer.html:25
 msgid "Data dumps"
-msgstr ""
+msgstr "Duomenų išklotinės"
 
 #: critiquebrainz/frontend/templates/footer.html:29
 #: critiquebrainz/frontend/templates/index/about.html:3
 #: critiquebrainz/frontend/templates/index/about.html:6
 msgid "About the project"
-msgstr ""
+msgstr "Apie projektą"
 
 #: critiquebrainz/frontend/templates/footer.html:31
 msgid "Blog"
-msgstr ""
+msgstr "Tinklaraštis"
 
 #: critiquebrainz/frontend/templates/footer.html:32
 #: critiquebrainz/frontend/templates/moderators/moderators.html:3
 #: critiquebrainz/frontend/templates/moderators/moderators.html:7
 msgid "Moderators"
-msgstr ""
+msgstr "Prižiūrėtojai"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:117
 #: critiquebrainz/frontend/templates/bb_series/entity.html:113
@@ -389,12 +395,12 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:100
 #: critiquebrainz/frontend/templates/search/index.html:122
 msgid "Language"
-msgstr ""
+msgstr "Kalba"
 
 #: critiquebrainz/frontend/templates/footer.html:51
 #, python-format
 msgid "Project of the %(metabrainz_fdn)s"
-msgstr ""
+msgstr "„%(metabrainz_fdn)s“ projektas"
 
 #: critiquebrainz/frontend/templates/macros.html:4
 #: critiquebrainz/frontend/templates/reports/reports.html:28
@@ -2454,131 +2460,135 @@ msgstr ""
 #: critiquebrainz/frontend/templates/user/info.html:45
 #: critiquebrainz/frontend/templates/user/info.html:51
 msgid "Last 7 days"
-msgstr ""
+msgstr "Paskutinės 7 dienos"
 
 #: critiquebrainz/frontend/templates/user/info.html:40
 #: critiquebrainz/frontend/templates/user/info.html:46
 #: critiquebrainz/frontend/templates/user/info.html:52
 msgid "This month"
-msgstr ""
+msgstr "Šį mėnesį"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:66
 msgid "[Unknown recording]"
-msgstr ""
+msgstr "[Nežinomas įrašas]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:82
 msgid "[Unknown edition group]"
-msgstr ""
+msgstr "[Nežinoma leidinių grupė]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:87
 msgid "[Unknown Literary Work]"
-msgstr ""
+msgstr "[Nežinomas literatūros kūrinys]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:93
 msgid "[Unknown Author]"
-msgstr ""
+msgstr "[Nežinomas autorius]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:99
 msgid "[Unknown series]"
-msgstr ""
+msgstr "[Nežinoma serija]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:123
 msgid "Hidden"
-msgstr ""
+msgstr "Paslėptas"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:142
 msgid "Edit"
-msgstr ""
+msgstr "Redaguoti"
 
 #: critiquebrainz/frontend/templates/work/entity.html:89
 msgid "Recordings"
-msgstr ""
+msgstr "Įrašai"
 
 #: critiquebrainz/frontend/templates/work/entity.html:91
 msgid "No recordings found"
-msgstr ""
+msgstr "Įrašų nerasta"
 
 #: critiquebrainz/frontend/templates/work/entity.html:128
 msgid "Work information"
-msgstr ""
+msgstr "Kūrinio informacija"
 
 #: critiquebrainz/frontend/views/artist.py:28
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
-msgstr ""
+msgstr "Atsiprašome, negalėjome rasti atlikėjo su šiuo „MusicBrainz“ ID."
 
 #: critiquebrainz/frontend/views/bb_author.py:32
 msgid "Sorry, we couldn't find an author with that BookBrainz ID."
-msgstr ""
+msgstr "Atsiprašome, negalėjome rasti autoriaus su šiuo „BookBrainz“ ID."
 
 #: critiquebrainz/frontend/views/bb_edition_group.py:26
 msgid "Sorry, we couldn't find an edition group with that BookBrainz ID."
-msgstr ""
+msgstr "Atsiprašome, negalėjome rasti leidimų grupės su šiuo „BookBrainz“ ID."
 
 #: critiquebrainz/frontend/views/bb_literary_work.py:26
 msgid "Sorry, we couldn't find a work with that BookBrainz ID."
-msgstr ""
+msgstr "Atsiprašome, negalėjome rasti kūrinio su šiuo „BookBrainz“ ID."
 
 #: critiquebrainz/frontend/views/bb_series.py:24
 msgid "Sorry, we couldn't find a series with that BookBrainz ID."
-msgstr ""
+msgstr "Atsiprašome, negalėjome rasti serijos su šiuo „BookBrainz“ ID."
 
 #: critiquebrainz/frontend/views/comment.py:39
 #, python-format
 msgid "Can't find a comment with ID: %(comment_id)s"
-msgstr ""
+msgstr "Nepavyksta rasti komentarą su ID %(comment_id)s."
 
 #: critiquebrainz/frontend/views/comment.py:50
 msgid ""
 "You are not allowed to write new comments because your account has been "
 "blocked by a moderator."
 msgstr ""
+"Jums neleidžiama rašyti naujų komentarų, nes jūsų paskyra užblokavo "
+"prižiūrėtojas."
 
 #: critiquebrainz/frontend/views/comment.py:59
 msgid "Comment has been saved!"
-msgstr ""
+msgstr "Komentaras išsaugotas."
 
 #: critiquebrainz/frontend/views/comment.py:73
 msgid "Only the author can delete this comment."
-msgstr ""
+msgstr "Tik autorius gali ištrinti šį komentarą."
 
 #: critiquebrainz/frontend/views/comment.py:76
 msgid "Comment has been deleted."
-msgstr ""
+msgstr "Komentaras ištrintas."
 
 #: critiquebrainz/frontend/views/comment.py:88
 msgid "Only the author can edit this comment."
-msgstr ""
+msgstr "Tik autorius gali redaguoti šį komentarą."
 
 #: critiquebrainz/frontend/views/comment.py:90
 msgid ""
 "You are not allowed to edit comments because your account has been "
 "blocked by a moderator."
 msgstr ""
+"Jums neleidžiama redaguoti komentarų, nes jūsų paskyra užblokavo "
+"prižiūrėtojas."
 
 #: critiquebrainz/frontend/views/comment.py:100
 msgid "Comment has been updated."
-msgstr ""
+msgstr "Komentaras atnaujintas."
 
 #: critiquebrainz/frontend/views/comment.py:102
 msgid "You must change some content of the comment to update it!"
-msgstr ""
+msgstr "Turite pakeisti dalį komentarų turinio, kad jį atnaujintumėte."
 
 #: critiquebrainz/frontend/views/event.py:40
 msgid "Sorry, we couldn't find an event with that MusicBrainz ID."
-msgstr ""
+msgstr "Atsiprašome, negalėjome rasti renginio su šiuo „MusicBrainz“ ID."
 
 #: critiquebrainz/frontend/views/label.py:20
 msgid "Sorry, we couldn't find a label with that MusicBrainz ID."
-msgstr ""
+msgstr "Atsiprašome, negalėjome rasti leidyklos su šiuo „MusicBrainz“ ID."
 
 #: critiquebrainz/frontend/views/log.py:19
 msgid "No logs to display."
-msgstr ""
+msgstr "Nėra žurnalų rodyti."
 
 #: critiquebrainz/frontend/views/login.py:36
 #: critiquebrainz/frontend/views/login.py:38
 msgid "Login failed."
-msgstr ""
+msgstr "Prisijungimas nepavyko."
 
 #: critiquebrainz/frontend/views/mapping.py:57
 #: critiquebrainz/frontend/views/mapping.py:103
@@ -2848,8 +2858,8 @@ msgstr ""
 
 #: critiquebrainz/frontend/views/user.py:115
 msgid "This user account has been unblocked."
-msgstr ""
+msgstr "Ši naudotojo paskyra atblokuota."
 
 #: critiquebrainz/frontend/views/work.py:21
 msgid "Sorry, we couldn't find a work with that MusicBrainz ID."
-msgstr ""
+msgstr "Atsiprašome, negalėjome rasti kūrinio su šiuo „MusicBrainz“ ID."
