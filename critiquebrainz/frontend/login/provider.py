@@ -56,13 +56,15 @@ def musicbrainz_auth_session_decoder(message):
 
 class MusicBrainzAuthentication(BaseAuthentication):
 
-    def get_authentication_uri(self, **kwargs):
+    def get_authentication_uri(self, login_hint=None, **kwargs):
         csrf = generate_string(20)
         self.persist_data(csrf=csrf)
         params = dict(response_type='code',
                       redirect_uri=url_for('login.musicbrainz_post', _external=True),
                       scope='profile',
                       state=csrf)
+        if login_hint:
+            params['login_hint'] = login_hint
         return self._service.get_authorize_url(**params)
 
     def get_user(self):

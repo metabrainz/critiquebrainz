@@ -174,6 +174,7 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.comment import comment_bp
     from critiquebrainz.frontend.views.rate import rate_bp
     from critiquebrainz.frontend.views.statistics import statistics_bp
+    from critiquebrainz.frontend.views.webhook_receiver import webhook_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
@@ -202,6 +203,7 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(comment_bp, url_prefix='/comments')
     app.register_blueprint(rate_bp, url_prefix='/rate')
     app.register_blueprint(statistics_bp, url_prefix='/statistics')
+    app.register_blueprint(webhook_bp, url_prefix='/webhooks')
 
     return app
 

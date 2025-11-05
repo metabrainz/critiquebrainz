@@ -18,7 +18,8 @@ def index():
 @login_forbidden
 def musicbrainz():
     session['next'] = request.args.get('next')
-    return redirect(mb_auth.get_authentication_uri())
+    login_hint = request.args.get('login_hint')
+    return redirect(mb_auth.get_authentication_uri(login_hint=login_hint))
 
 
 @login_bp.route('/musicbrainz/post')
