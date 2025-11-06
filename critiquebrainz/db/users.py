@@ -743,3 +743,17 @@ def get_by_mb_row_id(musicbrainz_row_id, musicbrainz_id=None):
         if row:
             return dict(row)
         return None
+
+
+def update_last_login(user_id):
+    """ Update the value of last_login field for user with specified MusicBrainz ID
+
+    Args:
+        user_id: CritiqueBrainz user ID
+    """
+    with db.engine.begin() as connection:
+        connection.execute(sqlalchemy.text("""
+            UPDATE "user"
+               SET last_login = NOW()
+             WHERE id = :musicbrainz_id
+            """), {"id": user_id})

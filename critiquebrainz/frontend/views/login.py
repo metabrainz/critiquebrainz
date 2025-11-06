@@ -51,13 +51,15 @@ def musicbrainz_post():
         musicbrainz_id = info["sub"]
         musicbrainz_row_id = info["metabrainz_user_id"]
         user = db_users.get_or_create(musicbrainz_row_id, musicbrainz_id, new_user_data={
-            'display_name': musicbrainz_id,
+            "display_name": musicbrainz_id,
         })
 
         if user["musicbrainz_username"] != musicbrainz_id:
             user = db_users.update_username(user, musicbrainz_id)
 
         login_user(User(user))
+        db_users.update_last_login(user["id"])
+
         next = session.get('next')
         if next:
             return redirect(next)
