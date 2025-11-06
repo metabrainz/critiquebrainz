@@ -58,6 +58,10 @@ def create_app(debug=None, config_path=None):
         app.init_debug_toolbar()
         app.jinja_options['undefined'] = jinja2.StrictUndefined
 
+    if app.debug:
+        logger = logging.getLogger('critiquebrainz')
+        logger.setLevel(logging.DEBUG)
+
     # Error handling
     from critiquebrainz.frontend.error_handlers import init_error_handlers
     init_error_handlers(app)
