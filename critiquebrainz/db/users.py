@@ -755,5 +755,5 @@ def update_last_login(user_id):
         connection.execute(sqlalchemy.text("""
             UPDATE "user"
                SET last_login = NOW()
-             WHERE id = :musicbrainz_id
+             WHERE id = :id
             """), {"id": user_id})
