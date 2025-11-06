@@ -149,7 +149,7 @@ def create(**user_data):
                                 is_blocked, license_choice, musicbrainz_row_id)
                  VALUES (:id, :display_name, :email, :created, :musicbrainz_id,
                         :is_blocked, :license_choice, :musicbrainz_row_id)
-         ON CONFLICT (musicbrainz_row_id) DO NOTHING
+            ON CONFLICT (musicbrainz_row_id) DO NOTHING
               RETURNING id
         """), {
             "id": str(uuid.uuid4()),
@@ -162,16 +162,11 @@ def create(**user_data):
             "musicbrainz_row_id": musicbrainz_row_id,
         })
         row = result.first()
-        if row is not None:
-            return get_by_id(row.id)
 
-        # User already exists, fetch and return it
-        result = connection.execute(
-            sqlalchemy.text("""SELECT id FROM "user" WHERE musicbrainz_row_id = :musicbrainz_row_id"""),
-            {"musicbrainz_row_id": musicbrainz_row_id}
-        )
-        existing_id = result.first().id
-    return get_by_id(existing_id)
+    if row is not None:
+        return get_by_id(row.id)
+
+    return get_by_mb_row_id(musicbrainz_row_id)
 
 
 def get_by_mbid(musicbrainz_username):

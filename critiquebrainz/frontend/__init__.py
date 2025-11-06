@@ -104,16 +104,10 @@ def create_app(debug=None, config_path=None):
     babel.init_app(app)
 
     from critiquebrainz.frontend import login
+    login.oauth.init_app(app)
     login.login_manager.init_app(app)
-    from critiquebrainz.frontend.login.provider import MusicBrainzAuthentication
-    login.mb_auth = MusicBrainzAuthentication(
-        name='musicbrainz',
-        client_id=app.config['MUSICBRAINZ_CLIENT_ID'],
-        client_secret=app.config['MUSICBRAINZ_CLIENT_SECRET'],
-        authorize_url=app.config['MUSICBRAINZ_OAUTH_URL'] + "/authorize",
-        access_token_url=app.config['MUSICBRAINZ_OAUTH_URL'] + "/token",
-        base_url=app.config['MUSICBRAINZ_OAUTH_URL'],
-    )
+
+    login.oauth.register(name="musicbrainz", client_kwargs={"scope": "profile"})
 
     # APIs
     from critiquebrainz.frontend.external import mbspotify

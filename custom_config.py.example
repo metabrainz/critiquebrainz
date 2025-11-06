@@ -28,6 +28,8 @@ SECRET_KEY = "CHANGE_THIS"
 MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
 MUSICBRAINZ_OAUTH_URL = "https://musicbrainz.org/new-oauth2"
+MUSICBRAINZ_ACCESS_TOKEN_URL = f"{MUSICBRAINZ_OAUTH_URL}/token"
+MUSICBRAINZ_AUTHORIZE_URL = f"{MUSICBRAINZ_OAUTH_URL}/authorize"
 
 # Server with Spotify mappings
 # https://github.com/metabrainz/mbspotify
