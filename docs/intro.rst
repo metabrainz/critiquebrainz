@@ -41,19 +41,6 @@ MusicBrainz account). In the ``Callback URL`` field type::
 After application has been registered, set ``MUSICBRAINZ_CLIENT_ID`` and ``MUSICBRAINZ_CLIENT_SECRET``
 in your ``custom_config.py`` to the values that you see on the MusicBrainz website.
 
-Spotfiy API authentication
-''''''''''''''''''''''''''
-
-To use the Spotify Web API, you need to set the ``SPOTIFY_CLIENT_ID`` and ``SPOTIFY_CLIENT_SECRET``
-values. OAuth keys can be obtained after registering on the Spotify developer website.
-
-After registering and logging into your Spotify account, head to
-https://developer.spotify.com/my-applications/ and then register your application following the
-instructions at https://developer.spotify.com/web-api/tutorial/#registering-your-application.
-
-Finally, save the obtained ``Client ID`` and ``Client Secret`` fields in your ``custom_config.py``
-fields ``SPOTIFY_CLIENT_ID`` and ``SPOTIFY_CLIENT_SECRET`` respectively.
-
 Startup
 ^^^^^^^
 

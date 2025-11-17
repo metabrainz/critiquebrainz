@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import cover_art, show_embedded_player, show_tags, show_avg_rating, entity_rate_form, show_external_reviews, show_review_buttons with context %}
+{% from 'macros.html' import cover_art, show_tags, show_avg_rating, entity_rate_form, show_external_reviews, show_review_buttons with context %}
 {% from 'common.html' import rating_script with context %}
 
 {% block title %}
@@ -34,7 +34,6 @@
 <div id="release-group-details" class="row">
   <div class="col-md-3">
     {{ cover_art(id, 'release_group', attributes='class=cover-art', source_credit=True, release_group_page=True) }}
-    {{ show_embedded_player(soundcloud_url, id, spotify_mappings, spotify_show_add_message=True) }}
   </div>
   <div class="col-md-6">
     {{ entity_rate_form('release_group', 'release group') }}

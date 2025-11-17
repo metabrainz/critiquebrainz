@@ -29,15 +29,6 @@ MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
 MUSICBRAINZ_OAUTH_URL = "https://musicbrainz.org/new-oauth2"
 
-# Server with Spotify mappings
-# https://github.com/metabrainz/mbspotify
-#MBSPOTIFY_BASE_URI = "https://mbspotify.musicbrainz.org/"
-#MBSPOTIFY_ACCESS_KEY = ""
-
-# Spotify
-#SPOTIFY_CLIENT_ID = ""
-#SPOTIFY_CLIENT_SECRET = ""
-
 # OTHER STUFF
 
 # List of administrators (MusicBrainz usernames as strings)

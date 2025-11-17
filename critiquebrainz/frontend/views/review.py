@@ -15,7 +15,7 @@ from critiquebrainz.db import vote as db_vote, exceptions as db_exceptions, revi
 from critiquebrainz.db.moderation_log import AdminActions
 from critiquebrainz.db.review import ENTITY_TYPES
 from critiquebrainz.frontend import flash
-from critiquebrainz.frontend.external import mbspotify, soundcloud, notify_moderators
+from critiquebrainz.frontend.external import notify_moderators
 from critiquebrainz.frontend.external import mbstore
 from critiquebrainz.frontend.forms.comment import CommentEditForm
 from critiquebrainz.frontend.forms.log import AdminActionForm
@@ -130,12 +130,6 @@ def entity(id, rev=None):
             # for all other users, return a 404 as if the review didn't exist
             raise NotFound(gettext("Can't find a review with ID: %(review_id)s!", review_id=id))
 
-    spotify_mappings = None
-    soundcloud_url = None
-    if review["entity_type"] == 'release_group':
-        spotify_mappings = mbspotify.mappings(str(review["entity_id"]))
-        soundcloud_url = soundcloud.get_url(str(review["entity_id"]))
-
     entity = mbstore.get_entity_by_id(review["entity_id"], review["entity_type"])
     if not entity:
         raise NotFound("This review is for an item that doesn't exist")
@@ -177,7 +171,6 @@ def entity(id, rev=None):
         comment["text_html"] = markdown.format_markdown_as_safe_html(comment["last_revision"]["text"])
     comment_form = CommentEditForm(review_id=id)
     return render_template('review/entity/%s.html' % review["entity_type"], review=review,
-                           spotify_mappings=spotify_mappings, soundcloud_url=soundcloud_url,
                            vote=vote, other_reviews=other_reviews, avg_rating=avg_rating,
                            comment_count=count, comments=comments, comment_form=comment_form,
                            entity=entity)
@@ -355,9 +348,6 @@ def create(entity_type=None, entity_id=None):
         return redirect(url_for('search.index'))
 
     data["entity_title"] = get_entity_title(_entity)
-    if entity_type == "release_group":
-        data["spotify_mappings"] = mbspotify.mappings(entity_id)
-        data["soundcloud_url"] = soundcloud.get_url(entity_id)
 
     if not form.errors:
         flash.info(gettext("Please provide some text or a rating for this review."))
@@ -421,10 +411,6 @@ def edit(id):
     else:
         form.text.data = review["text"]
         form.rating.data = review["rating"]
-
-    if review["entity_type"] == 'release_group':
-        data["spotify_mappings"] = mbspotify.mappings(str(review["entity_id"]))
-        data["soundcloud_url"] = soundcloud.get_url(str(review["entity_id"]))
 
     _entity = mbstore.get_entity_by_id(review["entity_id"], review["entity_type"])
     data["entity_title"] = get_entity_title(_entity)
