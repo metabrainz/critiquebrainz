@@ -116,8 +116,6 @@ def create_app(debug=None, config_path=None):
     )
 
     # APIs
-    from critiquebrainz.frontend.external import mbspotify
-    mbspotify.init(app.config['MBSPOTIFY_BASE_URI'], app.config['MBSPOTIFY_ACCESS_KEY'])
     from critiquebrainz.frontend.external import musicbrainz
     musicbrainz.init(
         app_name=app.config['MUSICBRAINZ_USERAGENT'] or "CritiqueBrainz Custom",
@@ -161,7 +159,6 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.bb_literary_work import bb_literary_work_bp
     from critiquebrainz.frontend.views.bb_author import bb_author_bp
     from critiquebrainz.frontend.views.bb_series import bb_series_bp
-    from critiquebrainz.frontend.views.mapping import mapping_bp
     from critiquebrainz.frontend.views.user import user_bp
     from critiquebrainz.frontend.views.profile import profile_bp
     from critiquebrainz.frontend.views.place import place_bp
@@ -190,7 +187,6 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(bb_literary_work_bp, url_prefix='/literary-work')
     app.register_blueprint(bb_author_bp, url_prefix='/author')
     app.register_blueprint(bb_series_bp, url_prefix='/series')
-    app.register_blueprint(mapping_bp, url_prefix='/mapping')
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(profile_bp, url_prefix='/profile')
     app.register_blueprint(profile_apps_bp, url_prefix='/profile/applications')

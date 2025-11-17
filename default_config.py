@@ -65,15 +65,6 @@ MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
 MUSICBRAINZ_OAUTH_URL = ""
 
-# Spotify
-SPOTIFY_CLIENT_ID = ""
-SPOTIFY_CLIENT_SECRET = ""
-
-# mbspotify
-# https://github.com/metabrainz/mbspotify
-MBSPOTIFY_BASE_URI = "https://mbspotify.musicbrainz.org/"
-MBSPOTIFY_ACCESS_KEY = None
-
 # Flask Debug redirect
 # Set to True if you want Flask-Debug to intercept redirects
 DEBUG_TB_INTERCEPT_REDIRECTS = False

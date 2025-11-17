@@ -1,4 +1,4 @@
-{% from 'macros.html' import cover_art, show_embedded_player with context %}
+{% from 'macros.html' import cover_art with context %}
 
 <div class="col-md-5">
   <dl class="dl-horizontal">
@@ -14,9 +14,6 @@
     {# Information like creation date, votes etc. #}
     {% endblock %}
   </dl>
-</div>
-<div class="col-md-3 hidden-xs">
-  {{ show_embedded_player(soundcloud_url, entity['mbid'], spotify_mappings) }}
 </div>
 <div class="col-md-4 text-right">
   {{ cover_art(entity['mbid'], 'release_group', attributes='class=cover-art style=max-height:120px;max-width:120px;') }}

@@ -24,7 +24,6 @@ from werkzeug.exceptions import NotFound, BadRequest
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.musicbrainz_db.release as mb_release
 import critiquebrainz.frontend.external.musicbrainz_db.release_group as mb_release_group
-from critiquebrainz.frontend.external import mbspotify, soundcloud
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating
 
@@ -50,11 +49,6 @@ def entity(id):
         release = mb_release.get_release_by_mbid(release_group['release-list'][0]['mbid'])
     else:
         release = None
-    soundcloud_url = soundcloud.get_url(release_group['mbid'])
-    if soundcloud_url:
-        spotify_mappings = None
-    else:
-        spotify_mappings = mbspotify.mappings(release_group['mbid'])
 
     try:
         limit = int(request.args.get('limit', default=10))
@@ -89,6 +83,6 @@ def entity(id):
 
     return render_template('release_group/entity.html', id=release_group['mbid'], release_group=release_group,
                            reviews=reviews,
-                           release=release, my_review=my_review, spotify_mappings=spotify_mappings, tags=tags,
-                           soundcloud_url=soundcloud_url, external_reviews=external_reviews, limit=limit, offset=offset,
+                           release=release, my_review=my_review, tags=tags,
+                           external_reviews=external_reviews, limit=limit, offset=offset,
                            count=count, avg_rating=avg_rating, rating_form=rating_form, current_user=current_user)
