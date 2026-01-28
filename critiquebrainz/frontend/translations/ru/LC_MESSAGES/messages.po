@@ -11,15 +11,15 @@
 # qwe qwe <matsuk-nikita@rambler.ru>, 2021
 # arsinclair <romanio412@gmail.com>, 2017
 # Roman Tsukanov, 2014
-# wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024.
+# wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2024-03-25 12:28+0000\n"
-"Last-Translator: wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz"
-".org>\n"
+"PO-Revision-Date: 2026-01-28 17:11+0000\n"
+"Last-Translator: wileyfoxyx "
+"<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
 "critiquebrainz/frontend/ru/>\n"
 "Language: ru\n"
@@ -27,9 +27,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.4\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -361,7 +361,7 @@ msgstr "Написать обзор"
 
 #: critiquebrainz/frontend/templates/footer.html:21
 msgid "Developers"
-msgstr "Разработчики"
+msgstr "Разработчикам"
 
 #: critiquebrainz/frontend/templates/footer.html:23
 msgid "Web API"
@@ -1093,10 +1093,14 @@ msgid ""
 "  It is based on data from MusicBrainz and BookBrainz, open music and book "
 "encyclopedias."
 msgstr ""
+"<strong>CritiqueBrainz — это хранилище рецензий на музыку и книги, "
+"лицензированных Creative Commons.</strong>\n"
+"  Оно основано на данных из MusicBrainz и BookBrainz, открытых музыкальной и "
+"книжной энциклопедий."
 
 #: critiquebrainz/frontend/templates/index/about.html:14
 msgid "What is it for?"
-msgstr "What is it for?"
+msgstr "Зачем она нужна?"
 
 #: critiquebrainz/frontend/templates/index/about.html:16
 msgid ""
@@ -1106,6 +1110,11 @@ msgid ""
 "opinions.\n"
 "  CritiqueBrainz fills the gap between raw data and music and book critics."
 msgstr ""
+"Такие проекты, как Википедия, MusicBrainz и BookBrainz, хорошо справляются с "
+"агрегированием информации\n"
+"  о музыке и книгах, но их цель не подходит для выражения мнений.\n"
+"  CritiqueBrainz заполняет пробел между необработанными данными и "
+"музыкальными и книжными критиками."
 
 #: critiquebrainz/frontend/templates/index/about.html:21
 msgid ""
@@ -1128,7 +1137,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/about.html:32
 msgid "Code of Conduct"
-msgstr ""
+msgstr "Нормы поведения"
 
 #: critiquebrainz/frontend/templates/index/about.html:34
 msgid ""
@@ -1136,6 +1145,9 @@ msgid ""
 " <a href=\"https://metabrainz.org/code-of-conduct\">MetaBrainz code of "
 "conduct</a>."
 msgstr ""
+"Пользователи CritiqueBrainz должны соблюдать установленные\n"
+" <a href=\"https://metabrainz.org/code-of-conduct\">нормы поведения проектов "
+"фонда MetaBrainz</a>."
 
 #: critiquebrainz/frontend/templates/index/about.html:38
 msgid "Guidelines"
@@ -1456,6 +1468,10 @@ msgid ""
 "        Here you can read what other people have written about an album or "
 "event and write your own review!"
 msgstr ""
+"CritiqueBrainz — это хранилище рецензий на музыку и книги, лицензированных "
+"Creative Commons.\n"
+"        Здесь вы можете прочитать, что другие люди написали об альбоме или "
+"событии, и написать свою собственную рецензию!"
 
 #: critiquebrainz/frontend/templates/index/index.html:16
 msgid ""
@@ -1470,7 +1486,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/index.html:33
 msgid "Number of Reviews"
-msgstr ""
+msgstr "Кол-во обзоров"
 
 #: critiquebrainz/frontend/templates/index/index.html:34
 #, python-format
@@ -1479,7 +1495,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/index.html:37
 msgid "Number of Users"
-msgstr ""
+msgstr "Кол-во польз-ей"
 
 #: critiquebrainz/frontend/templates/index/index.html:38
 #, python-format
@@ -1594,7 +1610,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/login/index.html:11
 msgid "Sign in with MusicBrainz"
-msgstr "Зарегистрируйтесь с MusicBrainz"
+msgstr "Войти через MusicBrainz"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"
@@ -1644,6 +1660,8 @@ msgstr "Report incorrect mapping"
 #: critiquebrainz/frontend/templates/moderators/moderators.html:8
 msgid "These users respond to reports and make sure that spammers don’t spam."
 msgstr ""
+"Эти пользователи отвечают на жалобы и следят за тем, чтобы спамеры не "
+"спамили."
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
@@ -1808,7 +1826,7 @@ msgstr "Удалить"
 #: critiquebrainz/frontend/templates/profile/applications/index.html:43
 #, python-format
 msgid "Developer documentation is available at %(link)s."
-msgstr ""
+msgstr "Документация для разработчиков доступна по адресу: %(link)s."
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:47
 msgid "Authorized applications"
@@ -2065,8 +2083,7 @@ msgstr "Было загружено из %(source)s."
 #: critiquebrainz/frontend/templates/review/entity/base.html:84
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
-msgstr ""
-"<a href=\"%(link)s\">Зарегистрируйтесь</a> для того, чтобы оценить этот обзор"
+msgstr "<a href=\"%(link)s\">Выполните вход</a>, чтобы оценить этот обзор"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:88
 msgid "View older revisions"
@@ -2442,11 +2459,11 @@ msgstr "Общая информация"
 
 #: critiquebrainz/frontend/templates/user/info.html:18
 msgid "Member since"
-msgstr "Член с"
+msgstr "Дата регистрации"
 
 #: critiquebrainz/frontend/templates/user/info.html:19
 msgid "User type"
-msgstr "User type"
+msgstr "Тип пользователя"
 
 #: critiquebrainz/frontend/templates/user/info.html:20
 msgid "Karma"
