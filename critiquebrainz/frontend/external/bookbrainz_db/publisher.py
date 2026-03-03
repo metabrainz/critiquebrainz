@@ -46,29 +46,29 @@ def fetch_multiple_publishers(bbids: List[str]) -> dict:
     if not results:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
-				SELECT 
-					bbid::text,
-					publisher.name,
-					sort_name,
-					publisher_type,
-					disambiguation,
-					identifier_set_id,
-					relationship_set_id,
-					area.gid::text as area_mbid,
+                SELECT
+                    bbid::text,
+                    publisher.name,
+                    sort_name,
+                    publisher_type,
+                    disambiguation,
+                    identifier_set_id,
+                    relationship_set_id,
+                    area.gid::text as area_mbid,
                     area.name as area_name,
-					begin_year,
-					begin_month,
-					begin_day,
-					end_year,
-					end_month,
-					end_day,
-					publisher.ended
-			   FROM publisher
-		  LEFT JOIN musicbrainz.area 
-				 ON publisher.area_id = area.id
-			  WHERE bbid IN :bbids
-				AND master = 't'
-			"""), {'bbids': tuple(bbids)})
+                    begin_year,
+                    begin_month,
+                    begin_day,
+                    end_year,
+                    end_month,
+                    end_day,
+                    publisher.ended
+               FROM publisher
+          LEFT JOIN musicbrainz.area
+                 ON publisher.area_id = area.id
+              WHERE bbid IN :bbids
+                AND master = 't'
+            """), {'bbids': tuple(bbids)})
 
             publishers = result.mappings()
             results = {}

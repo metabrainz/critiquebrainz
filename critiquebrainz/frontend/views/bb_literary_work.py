@@ -5,6 +5,7 @@ from flask_babel import gettext
 import critiquebrainz.db.review as db_review
 import critiquebrainz.frontend.external.bookbrainz_db.literary_work as bb_literary_work
 import critiquebrainz.frontend.external.bookbrainz_db.edition_group as bb_edition_group
+from critiquebrainz.frontend.external.bookbrainz_db.relationships import WORK_WORK_TRANSLATION_REL_ID
 import critiquebrainz.frontend.external.bookbrainz_db.redirects as bb_redirects
 from critiquebrainz.frontend.forms.rate import RatingEditForm
 from critiquebrainz.frontend.views import get_avg_rating, LITERARY_WORK_REVIEWS_LIMIT, BROWSE_LITERARY_WORK_LIMIT
@@ -91,7 +92,11 @@ def entity(id):
         return redirect(url_for('bb_literary_work.entity', id=id))
 
     if literary_work['rels']:
-        work_rels_bbid = [rel['source_bbid'] for rel in literary_work['rels']]
+        work_rels_bbid = []
+        for rel in literary_work['rels']:
+            if rel['relationship_type_id'] == WORK_WORK_TRANSLATION_REL_ID:
+                work_rels_bbid.append(rel['source_bbid'])
+
         work_rels_count = len(work_rels_bbid)
         work_rels_info = bb_literary_work.fetch_multiple_literary_works(
             bbids=work_rels_bbid,

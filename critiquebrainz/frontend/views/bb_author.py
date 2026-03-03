@@ -13,6 +13,7 @@ from brainzutils.musicbrainz_db.artist import fetch_multiple_artists
 
 bb_author_bp = Blueprint('bb_author', __name__)
 
+AUTHOR_WORK_AUTHOR_REL_ID = 8
 LITERARY_WORK_TYPE_NOVEL = 'Novel'
 LITERARY_WORK_TYPE_SHORT_STORY = 'Short Story'
 LITERARY_WORK_TYPE_POEM = 'Poem'
@@ -61,11 +62,13 @@ def entity(id):
         raise BadRequest("Unsupported literary_work type.")
 
     if author['rels']:
-        literary_work_bbid = [rel['target_bbid'] for rel in author['rels']]
+        literary_work_bbid = []
+        for rel in author['rels']:
+            if rel['relationship_type_id'] == AUTHOR_WORK_AUTHOR_REL_ID:
+                literary_work_bbid.append(rel['target_bbid'])
     else:
         literary_work_bbid = []
     literary_works = bb_literary_work.fetch_multiple_literary_works(literary_work_bbid, literary_work_type)
-
 
     try:
         reviews_limit = int(request.args.get('limit', default=AUTHOR_REVIEWS_LIMIT))
