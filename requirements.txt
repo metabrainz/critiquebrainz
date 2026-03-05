@@ -5,7 +5,7 @@ Flask-Babel==4.0.0
 Flask-Login==0.6.3
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.2.1
-Markdown==3.3.6
+Markdown==3.8.1
 bleach==5.0.1
 musicbrainzngs==0.7.1
 pytest==7.1.1
