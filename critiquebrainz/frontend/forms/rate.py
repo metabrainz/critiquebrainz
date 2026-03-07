@@ -19,11 +19,11 @@
 from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext
 from wtforms import validators, IntegerField, StringField
-from wtforms.widgets import Input, HiddenInput
+from wtforms.widgets import HiddenInput
 
 
 class RatingEditForm(FlaskForm):
-    rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
+    rating = IntegerField(lazy_gettext("Rating"), validators=[validators.Optional()])
     entity_id = StringField(widget=HiddenInput())
     entity_type = StringField(widget=HiddenInput())
 

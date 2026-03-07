@@ -7,7 +7,7 @@ class BBRelationshipTestCase(DataTestCase):
 
     def test_bb_relationship(self):
         relationship = relationships.fetch_relationships(99999999, [relationships.AUTHOR_WORK_AUTHOR_REL_ID])
-        self.assertEqual(relationship[0]["label"], "Author")
+        self.assertEqual(relationship[0]["label"], "Writer")
         self.assertEqual(relationship[0]["source_bbid"], "e5c4e68b-bfce-4c77-9ca2-0f0a2d4d09f0")
         self.assertEqual(relationship[0]["target_bbid"], "9f49df73-8ee5-4c5f-8803-427c9b216d8f")
 

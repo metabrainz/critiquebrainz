@@ -43,9 +43,9 @@ ENTITY_TYPES_MAPPING = {**MUSICBRAINZ_ENTITY_TYPES, **BOOKBRAINZ_ENTITY_TYPES}
 ENTITY_TYPES = list(ENTITY_TYPES_MAPPING.keys())
 
 supported_languages = []
-for lang in list(pycountry.languages):
-    if 'iso639_1_code' in dir(lang):
-        supported_languages.append(lang.iso639_1_code)
+for lang in pycountry.languages:
+    if hasattr(lang, 'alpha_2'):
+        supported_languages.append(lang.alpha_2)
 
 
 # TODO(code-master5): Rename this function. It doesn't convert a review to dictionary.

@@ -1,4 +1,4 @@
-Sphinx==5.0.2
-Pygments==2.15.0
-sphinxcontrib-httpdomain==1.8.0
+Sphinx==9.1.0
+Pygments==2.19.2
+sphinxcontrib-httpdomain==2.0.0
 -r ../requirements.txt

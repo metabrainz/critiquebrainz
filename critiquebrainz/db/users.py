@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 import sqlalchemy
 
@@ -450,7 +450,7 @@ def reviews(user_id):
         return [dict(row) for row in rows]
 
 
-def get_votes(user_id, from_date=datetime.utcfromtimestamp(0)):
+def get_votes(user_id, from_date=datetime.fromtimestamp(0, timezone.utc)):
     """Get votes by a user from a specified time.
 
     Args:
@@ -480,7 +480,7 @@ def get_votes(user_id, from_date=datetime.utcfromtimestamp(0)):
         return [dict(row) for row in rows]
 
 
-def get_reviews(user_id, from_date=datetime.utcfromtimestamp(0)):
+def get_reviews(user_id, from_date=datetime.fromtimestamp(0, timezone.utc)):
     """Get reviews by a user from a specified time.
 
     Args:
@@ -533,7 +533,7 @@ def get_reviews(user_id, from_date=datetime.utcfromtimestamp(0)):
         return [dict(row) for row in rows]
 
 
-def get_comments(user_id, from_date=datetime.utcfromtimestamp(0)):
+def get_comments(user_id, from_date=datetime.fromtimestamp(0, timezone.utc)):
     """Get comments on reviews by a user from a specified time.
 
     Args:

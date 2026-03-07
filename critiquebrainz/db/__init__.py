@@ -1,5 +1,5 @@
-from flask_debugtoolbar.panels import sqlalchemy
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.pool import NullPool
 
 # This value must be incremented after schema changes on exported tables!
@@ -36,7 +36,7 @@ def run_sql_script_without_transaction(sql_file_path):
                 #  the exception sqlalchemy.exc.ProgrammingError "can't execute an empty query"
                 if line and not line.startswith("--"):
                     connection.execute(text(line))
-        except sqlalchemy.exc.ProgrammingError as e:
+        except ProgrammingError as e:
             print("Error: {}".format(e))
             return False
         finally:

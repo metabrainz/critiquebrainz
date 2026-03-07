@@ -1,4 +1,3 @@
-from distutils.command.install_egg_info import safe_name
 import bleach
 from markdown import markdown
 

@@ -1,13 +1,15 @@
 import difflib
 import random
+import re
 import string
 import urllib.parse
 
 from flask import request
 from flask_babel import format_datetime, format_date
-from flask_uuid import UUID_RE
+
 
 tags = {'+': ('<ins>', '</ins>'), '-': ('<del>', '</del>'), ' ': (' ', '')}
+UUID_RE = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
 
 
 def build_url(base, additional_params=None):
