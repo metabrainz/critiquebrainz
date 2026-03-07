@@ -3,6 +3,7 @@ Relationship processor for label entity.
 """
 import urllib.parse
 
+from flask import current_app
 from flask_babel import lazy_gettext
 
 
@@ -71,7 +72,10 @@ def _url(url_list):
                     # TODO(roman): Process other types here
                     pass
             except Exception:  # FIXME(roman): Too broad exception clause.
-                # TODO(roman): Log error.
-                pass
+                current_app.logger.error(
+                    "Failed to process label URL relation of type '%s'.",
+                    relation.get('type', 'unknown'),
+                    exc_info=True,
+                )
 
     return sorted(external_urls, key=lambda k: k['name'])
