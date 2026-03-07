@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext
 from wtforms import TextAreaField, RadioField, SelectField, BooleanField, StringField, validators, IntegerField
 from wtforms.validators import ValidationError
-from wtforms.widgets import HiddenInput, Input
+from wtforms.widgets import HiddenInput
 from critiquebrainz.db.review import supported_languages
 from critiquebrainz.frontend.forms.utils import get_language_name
 
@@ -40,7 +40,7 @@ class ReviewEditForm(FlaskForm):
         validators=[validators.InputRequired(message=lazy_gettext("You need to choose a license"))])
     remember_license = BooleanField(lazy_gettext("Remember this license choice for further preference"))
     language = SelectField(lazy_gettext("You need to accept the license agreement!"), choices=languages)
-    rating = IntegerField(lazy_gettext("Rating"), widget=Input(input_type='number'), validators=[validators.Optional()])
+    rating = IntegerField(lazy_gettext("Rating"), validators=[validators.Optional()])
 
     def __init__(self, default_license_id='CC BY-SA 3.0', default_language='en', **kwargs):
         kwargs.setdefault('license_choice', default_license_id)
