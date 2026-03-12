@@ -33,7 +33,7 @@ class StatisticsViewsTestCase(FrontendTestCase):
             "display_name": u"Tester",
         }))
         self.license = db_license.create(
-            id="CC BY-SA 3.0",
+            id="CC BY-SA 4.0",
             full_name="Test License.",
         )
 

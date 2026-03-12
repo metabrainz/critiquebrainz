@@ -36,25 +36,15 @@
     </div>
     <hr />
     {% if review is not defined or review.is_draft %}
-      <div class="form-group">
-        <div class="col-sm-12">
-          {% for choice in form.license_choice %}
-            <div class="radio">
-              <label>{{ choice }}{{ choice.label.text | safe }}</label>
-            </div>
-          {% endfor %}
-          <br /><small class="text-warning"><em>{{ _('You cannot change the license after the review is published.') }}</em></small>
-          {% if not current_user.license_choice %}
-              <br /><br />
-              <div class="checkbox">
-                <label>{{ form.remember_license }}{{ form.remember_license.label.text }}</label>
-              </div>
-          {% endif %}
-        </div>
-      </div>
+      {% if review is defined and review['license'] %}
+        <span>{{ _('You will be posting this review under ') }}<a href="{{ review['license']['info_url'] }}" target="_blank">{{review['license']['id']}}</a> license.</span>
+      {% else %}
+        <span>{{ _('You will be posting this review under ') }}<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a> license.</span>
+      {% endif %}
     {% endif %}
     {% block license_agreement_input %}{% endblock %}
   </form>
+  <br/>
   {% block buttons %}{% endblock %}
 {% endblock %}
 

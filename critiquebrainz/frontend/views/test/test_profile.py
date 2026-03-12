@@ -9,7 +9,7 @@ class ProfileViewsTestCase(FrontendTestCase):
     def setUp(self):
         super(ProfileViewsTestCase, self).setUp()
         self.license = db_license.create(
-            id="CC BY-SA 3.0",
+            id="CC BY-SA 4.0",
             full_name="Created so we can fill the form correctly.",
         )
         self.user = User(db_users.get_or_create(1, "Tester", new_user_data={
@@ -19,8 +19,7 @@ class ProfileViewsTestCase(FrontendTestCase):
     def test_edit(self):
         data = dict(
             display_name="Some User",
-            email='someuser@somesite.com',
-            license_choice=self.license["id"]
+            email='someuser@somesite.com'
         )
 
         response = self.client.post('/profile/edit', data=data,

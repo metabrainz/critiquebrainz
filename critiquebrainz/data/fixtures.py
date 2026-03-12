@@ -34,6 +34,11 @@ class LicenseData:
         full_name="Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
         info_url="https://creativecommons.org/licenses/by-nc-sa/3.0/",
     )
+    cc_by_sa_4 = dict(
+        id="CC BY-SA 4.0",
+        full_name="Creative Commons Attribution-ShareAlike 4.0 International",
+        info_url="https://creativecommons.org/licenses/by-sa/4.0/",
+    )
 
 
 # Include all objects into this tuple.

@@ -22,7 +22,7 @@ class ReviewViewsTestCase(FrontendTestCase):
             "display_name": u"Hacker!",
         }))
         self.license = db_license.create(
-            id="CC BY-SA 3.0",
+            id="CC BY-SA 4.0",
             full_name="Created so we can fill the form correctly.",
         )
         self.review_text = "Testing! This text should be on the page."
@@ -105,7 +105,6 @@ class ReviewViewsTestCase(FrontendTestCase):
             entity_type='release_group',
             state='draft',
             text=self.review_text,
-            license_choice=self.license["id"],
             language='en',
             agreement='True'
         )
@@ -153,7 +152,6 @@ class ReviewViewsTestCase(FrontendTestCase):
         data = {
             review["entity_type"]: review["entity_id"],
             "state": "draft",
-            "license_choice": self.license["id"],
             "language": 'en',
             "agreement": 'True',
             "text": review["text"],
@@ -186,7 +184,6 @@ class ReviewViewsTestCase(FrontendTestCase):
             release_group="0cef1de0-6ff1-38e1-80cb-ff11ee2c69e2",
             state='publish',
             text=updated_text,
-            license_choice=self.license["id"],
             language='en',
             agreement='True'
         )

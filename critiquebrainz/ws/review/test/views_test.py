@@ -21,7 +21,7 @@ class ReviewViewsTestCase(WebServiceTestCase):
             "display_name": "test hacker",
         }))
         self.license = db_license.create(
-            id="CC BY-SA 3.0",
+            id="CC BY-SA 4.0",
             full_name="Created so we can fill the form correctly.",
         )
         self.review = dict(
