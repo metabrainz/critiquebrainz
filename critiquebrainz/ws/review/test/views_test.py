@@ -179,6 +179,42 @@ class ReviewViewsTestCase(WebServiceTestCase):
         self.assertEqual(resp['review']['text'], data['text'])
         self.assertEqual(resp['review']['rating'], review['rating'])
 
+        draft_review = db_review.create(
+            entity_id="1eff4a06-056e-4dc7-91c4-0cbc5878f3c3",
+            entity_type='release_group',
+            user_id=self.user.id,
+            text="Testing! This is a draft review.",
+            rating=5,
+            is_draft=True,
+            license_id=self.license["id"],
+        )
+        
+        # Publishing a draft review and changing the text
+        data = dict(text="This review is now published.", is_draft=False)
+        resp = self.client.post('/review/%s' % draft_review["id"], headers=self.header(self.user), data=json.dumps(data))
+        self.assert200(resp)
+
+        resp = self.client.get('/review/%s' % draft_review["id"]).json
+        self.assertEqual(resp['review']['text'], data['text'])
+        self.assertEqual(resp['review']['is_draft'], data['is_draft'])
+        
+        draft_review_2 = db_review.create(
+            entity_id="c033d28b-fe43-3744-a5f8-50b30a100dcb",
+            entity_type='release_group',
+            user_id=self.user.id,
+            rating=5,
+            is_draft=True,
+            license_id=self.license["id"],
+        )
+        # Publishing a draft review without changing the text and ratings
+        data = dict(is_draft=False)
+        resp = self.client.post('/review/%s' % draft_review_2["id"], headers=self.header(self.user), data=json.dumps(data))
+        self.assert200(resp)
+
+        resp = self.client.get('/review/%s' % draft_review_2["id"]).json
+        self.assertEqual(resp['review']['text'], draft_review_2['text'])
+        self.assertEqual(resp['review']['is_draft'], data['is_draft'])
+
     def test_review_list(self):
         review = self.create_dummy_review()
         resp = self.client.get('/review/').json

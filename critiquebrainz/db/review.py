@@ -273,6 +273,7 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
         updates.append("language = :language")
         updated_info["language"] = language
 
+    delete_draft_revision = False
     if is_draft is not None:
         if not drafted and is_draft:  # If trying to convert published review into draft
             raise db_exceptions.BadDataException("Converting published reviews back to drafts is not allowed.")
@@ -280,6 +281,8 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
             published_on = datetime.now()
             updates.append("published_on = :published_on")
             updated_info["published_on"] = published_on
+            delete_draft_revision = True
+
         updates.append("is_draft = :is_draft")
         updated_info["is_draft"] = is_draft
 
@@ -295,6 +298,10 @@ def update(review_id, *, drafted, text=None, rating=None, license_id=None, langu
             updated_info["review_id"] = review_id
             connection.execute(query, updated_info)
         db_revision.create(connection, review_id, text, rating)
+        if not is_draft:
+            db_revision.update_rating(review_id)
+        if delete_draft_revision:
+            db_revision.delete_draft_revisons(review_id)
 
     db_revision.update_rating(review_id)
 
@@ -386,7 +393,7 @@ def create(*, entity_id, entity_type, user_id, is_draft, text=None, rating=None,
         })
         review_id = result.fetchone()[0]
         db_revision.create(connection, review_id, text, rating)
-    if rating:
+    if rating and not is_draft:
         db_revision.update_rating(review_id)
 
     invalidate_ws_entity_cache(entity_id)
