@@ -1,4 +1,4 @@
-FROM metabrainz/python:3.11-20231006 as critiquebrainz-base
+FROM metabrainz/python:3.13-20260216 AS critiquebrainz-base
 
 ENV PYTHONUNBUFFERED 1
 
@@ -22,14 +22,14 @@ RUN apt-get update \
 
 # PostgreSQL client
 RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-ENV PG_MAJOR 12
+ENV PG_MAJOR 17
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
 RUN apt-get update \
     && apt-get install -y --no-install-recommends postgresql-client-$PG_MAJOR \
     && rm -rf /var/lib/apt/lists/*
 
 # Node
-ARG NODE_MAJOR=20
+ARG NODE_MAJOR=22
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
@@ -37,9 +37,9 @@ RUN mkdir -p /etc/apt/keyrings \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip==21.0.1
+RUN pip install --upgrade pip==26.0.1
 
-RUN pip install --no-cache-dir uWSGI==2.0.23
+RUN pip install --no-cache-dir uWSGI==2.0.28
 
 RUN mkdir /code
 WORKDIR /code
@@ -50,14 +50,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN useradd --create-home --shell /bin/bash critiquebrainz
 
-FROM critiquebrainz-base as critiquebrainz-dev
+FROM critiquebrainz-base AS critiquebrainz-dev
 
 COPY . /code/
 
 # Compile translations
 RUN pybabel compile -d critiquebrainz/frontend/translations
 
-FROM critiquebrainz-base as critiquebrainz-prod
+FROM critiquebrainz-base AS critiquebrainz-prod
 
 ############
 # Services #

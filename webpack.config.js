@@ -14,7 +14,6 @@ module.exports = (env, argv) => {
       'common': path.resolve(frontEndStaticDir, 'scripts/common.js'),
       'leaflet': path.resolve(frontEndStaticDir, 'scripts/leaflet.js'),
       'rating': path.resolve(frontEndStaticDir, 'scripts/rating.js'),
-      'spotify': path.resolve(frontEndStaticDir, 'scripts/spotify.js'),
       'wysiwyg-editor': path.resolve(frontEndStaticDir, 'scripts/wysiwyg-editor.js'),
     },
     output: {

@@ -38,8 +38,8 @@ def expand(string, args, tag='a', default_attribute='href'):
 
     r = '|'.join([re.escape(k) for k in args.keys()])
 
-    r1 = re.compile('\{(' + r + ')\|(.*?)\}', re.UNICODE)
-    r2 = re.compile('\{(' + r + ')\}', re.UNICODE)
+    r1 = re.compile('\{(' + r + ')\|(.*?)}', re.UNICODE)
+    r2 = re.compile('\{(' + r + ')}', re.UNICODE)
 
     string = r1.sub(make_link, string)
     string = r2.sub(simple_expr, string)

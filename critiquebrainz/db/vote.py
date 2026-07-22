@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import sqlalchemy
 
@@ -56,7 +56,7 @@ def submit(user_id, revision_id, vote):
             "user_id": user_id,
             "revision_id": revision_id,
             "vote": vote,
-            "rated_at": datetime.utcnow(),
+            "rated_at": datetime.now(timezone.utc),
         })
 
 

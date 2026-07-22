@@ -10,10 +10,7 @@ CONSUL_CONFIG_FILE_RETRY_COUNT = 10
 
 
 def create_app(debug=None, config_path=None):
-    app = CustomFlask(
-        import_name=__name__,
-        use_flask_uuid=True,
-    )
+    app = CustomFlask(import_name=__name__)
 
     # Configuration files
     app.config.from_pyfile(os.path.join(
