@@ -63,7 +63,9 @@ MUSICBRAINZ_HOSTNAME = None
 MUSICBRAINZ_USERAGENT = "CritiqueBrainz"
 MUSICBRAINZ_CLIENT_ID = ""
 MUSICBRAINZ_CLIENT_SECRET = ""
-MUSICBRAINZ_OAUTH_URL = ""
+MUSICBRAINZ_OAUTH_URL = "https://test.metabrainz.org/oauth2"
+MUSICBRAINZ_ACCESS_TOKEN_URL = f"{MUSICBRAINZ_OAUTH_URL}/token"
+MUSICBRAINZ_AUTHORIZE_URL = f"{MUSICBRAINZ_OAUTH_URL}/authorize"
 
 # Flask Debug redirect
 # Set to True if you want Flask-Debug to intercept redirects
