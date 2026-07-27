@@ -26,8 +26,8 @@ class LoginViewsTestCase(FrontendTestCase):
         })
 
         mock_requests.post("https://test.metabrainz.org/oauth2/introspect", json={
-            "sub": "old-user-name",
-            "metabrainz_user_id": row_id
+            "sub": row_id,
+            "username": "old-user-name"
         })
 
         response = self.client.get(url_for("login.musicbrainz"))
@@ -45,8 +45,8 @@ class LoginViewsTestCase(FrontendTestCase):
 
         # change MB username without changing display name, musicbrainz id in database should update
         mock_requests.post("https://test.metabrainz.org/oauth2/introspect", json={
-            "sub": "new-user-name",
-            "metabrainz_user_id": row_id
+            "sub": row_id,
+            "username": "new-user-name"
         })
 
         response = self.client.get(url_for("login.musicbrainz"))
@@ -67,8 +67,8 @@ class LoginViewsTestCase(FrontendTestCase):
 
         # change MB username, musicbrainz id in database should not update because display name is different
         mock_requests.post("https://test.metabrainz.org/oauth2/introspect", json={
-            "sub": "another-new-user-name",
-            "metabrainz_user_id": row_id
+            "sub": row_id,
+            "username": "another-new-user-name"
         })
 
         response = self.client.get(url_for("login.musicbrainz"))

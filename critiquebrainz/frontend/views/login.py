@@ -48,8 +48,8 @@ def musicbrainz_post():
         response.raise_for_status()
         info = response.json()
 
-        musicbrainz_id = info["sub"]
-        musicbrainz_row_id = info["metabrainz_user_id"]
+        musicbrainz_id = info["username"]
+        musicbrainz_row_id = info["sub"]
         user = db_users.get_or_create(musicbrainz_row_id, musicbrainz_id, new_user_data={
             "display_name": musicbrainz_id,
         })
