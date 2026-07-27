@@ -217,7 +217,7 @@ class CritiqueBrainzAuthorizationProvider:
                 if scope not in token_scopes:
                     raise exceptions.InvalidToken
 
-            user = User(db_users.get_by_mbid(token["sub"]))
+            user = User(db_users.get_by_mbid(token["username"]))
             return user
         else:
             token = self.fetch_access_token(access_token)
