@@ -31,6 +31,11 @@ MUSICBRAINZ_OAUTH_URL = "https://test.metabrainz.org/oauth2"
 MUSICBRAINZ_ACCESS_TOKEN_URL = f"{MUSICBRAINZ_OAUTH_URL}/token"
 MUSICBRAINZ_AUTHORIZE_URL = f"{MUSICBRAINZ_OAUTH_URL}/authorize"
 
+# Shared secret used to verify the HMAC-SHA256 signature on incoming
+# MetaBrainz webhook deliveries (POST /webhooks/metabrainz). The webhook
+# endpoint returns 503 until this is set.
+METABRAINZ_WEBHOOK_SECRET = ""
+
 # OTHER STUFF
 
 # List of administrators (MusicBrainz usernames as strings)

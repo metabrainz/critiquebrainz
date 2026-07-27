@@ -67,6 +67,10 @@ MUSICBRAINZ_OAUTH_URL = "https://test.metabrainz.org/oauth2"
 MUSICBRAINZ_ACCESS_TOKEN_URL = f"{MUSICBRAINZ_OAUTH_URL}/token"
 MUSICBRAINZ_AUTHORIZE_URL = f"{MUSICBRAINZ_OAUTH_URL}/authorize"
 
+# Shared secret used to verify the HMAC-SHA256 signature on incoming
+# MetaBrainz webhook deliveries (POST /webhooks/metabrainz).
+METABRAINZ_WEBHOOK_SECRET = ""
+
 # Flask Debug redirect
 # Set to True if you want Flask-Debug to intercept redirects
 DEBUG_TB_INTERCEPT_REDIRECTS = False

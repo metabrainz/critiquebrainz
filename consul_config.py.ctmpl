@@ -22,6 +22,12 @@ MUSICBRAINZ_USERAGENT = '''{{template "KEY" "musicbrainz/useragent"}}'''
 MUSICBRAINZ_CLIENT_ID = '''{{template "KEY" "musicbrainz/client_id"}}'''
 MUSICBRAINZ_CLIENT_SECRET = '''{{template "KEY" "musicbrainz/client_secret"}}'''
 MUSICBRAINZ_OAUTH_URL = '''{{template "KEY" "musicbrainz/oauth_url"}}'''
+MUSICBRAINZ_ACCESS_TOKEN_URL = MUSICBRAINZ_OAUTH_URL + "/token"
+MUSICBRAINZ_AUTHORIZE_URL = MUSICBRAINZ_OAUTH_URL + "/authorize"
+
+# Shared secret for verifying HMAC-SHA256 signatures on incoming MetaBrainz
+# webhook deliveries (POST /webhooks/metabrainz).
+METABRAINZ_WEBHOOK_SECRET = '''{{template "KEY" "metabrainz/webhook_secret"}}'''
 
 {{if service "pgbouncer-master"}}
 {{with index (service "pgbouncer-master") 0}}
