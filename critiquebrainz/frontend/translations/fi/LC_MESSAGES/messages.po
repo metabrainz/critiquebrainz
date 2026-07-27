@@ -1234,13 +1234,13 @@ msgstr "Syy:"
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"To sign in, use your MetaBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
-msgstr "Kirjaudu MusicBrainzin käyttäjätililläsi, ja salli CritiqueBrainzin pääsy profiiliisi."
+msgstr "Kirjaudu MetaBrainzin käyttäjätililläsi, ja salli CritiqueBrainzin pääsy profiiliisi."
 
 #: critiquebrainz/frontend/templates/login/index.html:11
-msgid "Sign in with MusicBrainz"
-msgstr "Kirjaudu MusicBrainzilla"
+msgid "Sign in with MetaBrainz"
+msgstr "Kirjaudu MetaBrainzilla"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"

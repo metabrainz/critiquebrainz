@@ -1238,13 +1238,13 @@ msgstr "Begrunnelse:"
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"To sign in, use your MetaBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
-msgstr "For å logge inn, bruk MusicBrainz-kontoen din, og tildel CritiqueBrainz tilgang til profildataene dine."
+msgstr "For å logge inn, bruk MetaBrainz-kontoen din, og tildel CritiqueBrainz tilgang til profildataene dine."
 
 #: critiquebrainz/frontend/templates/login/index.html:11
-msgid "Sign in with MusicBrainz"
-msgstr "Logg inn med MusicBrainz"
+msgid "Sign in with MetaBrainz"
+msgstr "Logg inn med MetaBrainz"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"

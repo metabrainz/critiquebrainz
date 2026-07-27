@@ -4,11 +4,11 @@
 
 {% block content %}
 <h3>{{ _('Sign in') }}</h3>
-<p>{{ _('To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to access your profile data.') }}</p>
+<p>{{ _('To sign in, use your MetaBrainz account, and authorize CritiqueBrainz to access your profile data.') }}</p>
 <hr />
 <div class="well" style="max-width: 600px; margin: 0 auto;">
   <a href="{{ url_for('login.musicbrainz', next=request.args.get('next'), login_hint='login') }}"
-     class="btn btn-primary btn-lg btn-block">{{ _('Sign in with MusicBrainz') }}</a>
+     class="btn btn-primary btn-lg btn-block">{{ _('Sign in with MetaBrainz') }}</a>
   <div style="margin-top: 10px;">
     <p style="text-align: center;">{{ _("Don't have an account?") }}</p>
     <a href="{{ url_for('login.musicbrainz', next=request.args.get('next'), login_hint='register') }}"

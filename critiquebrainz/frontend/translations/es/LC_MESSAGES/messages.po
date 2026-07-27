@@ -1241,13 +1241,13 @@ msgstr "Motivo:"
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"To sign in, use your MetaBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
-msgstr "Para ingresar, utilice su cuenta MusicBrainz y permita que CritiqueBrainz tenga acceso a los datos de su perfil."
+msgstr "Para ingresar, utilice su cuenta MetaBrainz y permita que CritiqueBrainz tenga acceso a los datos de su perfil."
 
 #: critiquebrainz/frontend/templates/login/index.html:11
-msgid "Sign in with MusicBrainz"
-msgstr "Iniciar sesión con MusicBrainz"
+msgid "Sign in with MetaBrainz"
+msgstr "Iniciar sesión con MetaBrainz"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"
