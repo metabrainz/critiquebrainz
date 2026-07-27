@@ -115,7 +115,8 @@ CREATE TABLE "user" (
     musicbrainz_id      VARCHAR,
     musicbrainz_row_id  INTEGER,
     is_blocked          BOOLEAN     NOT NULL DEFAULT False,
-    license_choice      VARCHAR
+    license_choice      VARCHAR,
+    last_login          TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT TIMESTAMP 'epoch'
 );
 ALTER TABLE "user" ADD CONSTRAINT user_musicbrainz_id_key UNIQUE (musicbrainz_id);
 ALTER TABLE "user" ADD CONSTRAINT user_musicbrainz_row_id_key UNIQUE (musicbrainz_row_id);

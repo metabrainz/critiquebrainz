@@ -1,11 +1,9 @@
 from urllib.parse import urlparse, parse_qs
 
 import requests_mock
-import sqlalchemy
 from flask import url_for
 
 import critiquebrainz.db.users as db_users
-from critiquebrainz import db
 from critiquebrainz.frontend.testing import FrontendTestCase
 
 
@@ -20,14 +18,14 @@ class LoginViewsTestCase(FrontendTestCase):
         """ Tests that creating a new user, update MB username and login to CB updates MB username in CB db """
         row_id = 1111
 
-        mock_requests.post("https://musicbrainz.org/new-oauth2/token", json={
+        mock_requests.post("https://test.metabrainz.org/oauth2/token", json={
           "access_token": "UF7GvG2pl70jTogIwOhD32BhI_aIevPF",
           "expires_in": 3600,
           "token_type": "Bearer",
           "refresh_token": "GjSCBBjp4fnbE0AKo3uFu9qq9K2fFm4u"
         })
 
-        mock_requests.get("https://musicbrainz.org/new-oauth2/userinfo", json={
+        mock_requests.post("https://test.metabrainz.org/oauth2/introspect", json={
             "sub": "old-user-name",
             "metabrainz_user_id": row_id
         })
@@ -46,7 +44,7 @@ class LoginViewsTestCase(FrontendTestCase):
         self.client.get(url_for("login.logout"))
 
         # change MB username without changing display name, musicbrainz id in database should update
-        mock_requests.get("https://musicbrainz.org/new-oauth2/userinfo", json={
+        mock_requests.post("https://test.metabrainz.org/oauth2/introspect", json={
             "sub": "new-user-name",
             "metabrainz_user_id": row_id
         })
@@ -68,7 +66,7 @@ class LoginViewsTestCase(FrontendTestCase):
         db_users.update(user["id"], {"display_name": "custom-display-name"})
 
         # change MB username, musicbrainz id in database should not update because display name is different
-        mock_requests.get("https://musicbrainz.org/new-oauth2/userinfo", json={
+        mock_requests.post("https://test.metabrainz.org/oauth2/introspect", json={
             "sub": "another-new-user-name",
             "metabrainz_user_id": row_id
         })

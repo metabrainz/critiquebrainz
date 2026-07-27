@@ -55,6 +55,10 @@ def create_app(debug=None, config_path=None):
         app.init_debug_toolbar()
         app.jinja_options['undefined'] = jinja2.StrictUndefined
 
+    if app.debug:
+        logger = logging.getLogger('critiquebrainz')
+        logger.setLevel(logging.DEBUG)
+
     # Error handling
     from critiquebrainz.frontend.error_handlers import init_error_handlers
     init_error_handlers(app)
@@ -101,16 +105,10 @@ def create_app(debug=None, config_path=None):
     babel.init_app(app)
 
     from critiquebrainz.frontend import login
+    login.oauth.init_app(app)
     login.login_manager.init_app(app)
-    from critiquebrainz.frontend.login.provider import MusicBrainzAuthentication
-    login.mb_auth = MusicBrainzAuthentication(
-        name='musicbrainz',
-        client_id=app.config['MUSICBRAINZ_CLIENT_ID'],
-        client_secret=app.config['MUSICBRAINZ_CLIENT_SECRET'],
-        authorize_url=app.config['MUSICBRAINZ_OAUTH_URL'] + "/authorize",
-        access_token_url=app.config['MUSICBRAINZ_OAUTH_URL'] + "/token",
-        base_url=app.config['MUSICBRAINZ_OAUTH_URL'],
-    )
+
+    login.oauth.register(name="musicbrainz", client_kwargs={"scope": "profile"})
 
     # APIs
     from critiquebrainz.frontend.external import musicbrainz
@@ -168,6 +166,7 @@ def create_app(debug=None, config_path=None):
     from critiquebrainz.frontend.views.comment import comment_bp
     from critiquebrainz.frontend.views.rate import rate_bp
     from critiquebrainz.frontend.views.statistics import statistics_bp
+    from critiquebrainz.frontend.views.webhook_receiver import webhook_bp
 
     app.register_blueprint(frontend_bp)
     app.register_blueprint(review_bp, url_prefix='/review')
@@ -195,6 +194,7 @@ def create_app(debug=None, config_path=None):
     app.register_blueprint(comment_bp, url_prefix='/comments')
     app.register_blueprint(rate_bp, url_prefix='/rate')
     app.register_blueprint(statistics_bp, url_prefix='/statistics')
+    app.register_blueprint(webhook_bp, url_prefix='/webhooks')
 
     return app
 

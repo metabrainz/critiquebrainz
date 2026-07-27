@@ -5,6 +5,7 @@ It is based on OAuth2 protocol. MusicBrainz is the only supported provider.
 """
 from functools import wraps
 
+from authlib.integrations.flask_client import OAuth
 from flask import redirect, url_for
 from flask_babel import lazy_gettext, gettext
 from flask_login import LoginManager, current_user
@@ -14,7 +15,7 @@ import critiquebrainz.db.users as db_users
 from critiquebrainz.data.mixins import AnonymousUser
 from critiquebrainz.db.user import User
 
-mb_auth = None
+oauth = OAuth()
 
 login_manager = LoginManager()
 login_manager.login_view = 'login.index'
