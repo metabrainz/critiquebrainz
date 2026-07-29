@@ -41,29 +41,9 @@ def handle_user_created(payload: dict[str, Any], delivery_id: str) -> None:
         )
         logger.info(f"Successfully created user {payload['name']} (delivery_id: {delivery_id})")
     except Exception as e:
-        logger.error(f"Failed to create user from webhook (delivery_id: {delivery_id}): {e}", exc_info=True)
+        logger.error(
+            f"Failed to create user {payload["user_id"]}({payload['name']}) from webhook (delivery_id: {delivery_id}): {e}", exc_info=True)
         raise
-
-
-def handle_user_verified(payload: dict[str, Any], delivery_id: str) -> None:
-    """Process user.verified webhook event.
-
-    This event is triggered when a user verifies their email address.
-
-    Args:
-        payload: Webhook payload containing:
-            - user_id (int): MusicBrainz row ID of the user
-            - email (str): Verified email address
-            - verified_at (str): ISO 8601 timestamp of verification
-        delivery_id: Unique identifier for this webhook delivery (UUID)
-
-    Note:
-        Implementation pending - CritiqueBrainz doesn't currently track
-        email verification status separately.
-    """
-    logger.info(f"Processing user.verified event (delivery_id: {delivery_id})")
-    logger.warning(f"user.verified handler not yet implemented (delivery_id: {delivery_id})")
-    # TODO: Implement email verification tracking if needed
 
 
 def handle_user_updated(payload: dict[str, Any], delivery_id: str) -> None:
@@ -73,15 +53,41 @@ def handle_user_updated(payload: dict[str, Any], delivery_id: str) -> None:
     on the OAuth provider.
 
     Args:
-        payload: Webhook payload structure TBD by OAuth provider
+        payload: Webhook payload containing:
+            - user_id (int): MusicBrainz row ID of the user
+            - old (dict): Previous values for changed fields
+            - new (dict): New values for changed fields
+            - updated_at (str): ISO 8601 timestamp of the update
         delivery_id: Unique identifier for this webhook delivery (UUID)
-
-    Note:
-        Implementation pending - event structure not yet defined by provider.
     """
     logger.info(f"Processing user.updated event (delivery_id: {delivery_id})")
-    logger.warning(f"user.updated handler not yet implemented (delivery_id: {delivery_id})")
-    # TODO: Implement when OAuth provider adds this event type
+
+    user_id = payload["user_id"]
+    new_data = payload.get("new", {})
+
+    new_username = new_data.get("name")
+    has_email_update = "email" in new_data
+
+    if not new_username and not has_email_update:
+        logger.info(f"No name or email update in user.updated webhook for user_id={user_id}")
+        return
+
+    user = db_users.get_by_mb_row_id(user_id)
+    if not user:
+        logger.error(f"User with musicbrainz_row_id={user_id} not found for user.updated webhook")
+        return
+
+    try:
+        if new_username:
+            user = db_users.update_username(user, new_username)
+
+        if has_email_update:
+            db_users.update(user["id"], {"email": new_data.get("email")})
+
+        logger.info(f"Successfully updated user {user_id} (delivery_id: {delivery_id})")
+    except Exception as e:
+        logger.error(f"Failed to update user {user_id} from webhook (delivery_id: {delivery_id}): {e}", exc_info=True)
+        raise
 
 
 def handle_user_deleted(payload: dict[str, Any], delivery_id: str) -> None:
@@ -91,22 +97,30 @@ def handle_user_deleted(payload: dict[str, Any], delivery_id: str) -> None:
     OAuth provider (GDPR compliance).
 
     Args:
-        payload: Webhook payload structure TBD by OAuth provider
+        payload: Webhook payload containing:
+            - user_id (int): MusicBrainz row ID of the user
         delivery_id: Unique identifier for this webhook delivery (UUID)
-
-    Note:
-        Implementation pending - event structure not yet defined by provider.
     """
     logger.info(f"Processing user.deleted event (delivery_id: {delivery_id})")
-    logger.warning(f"user.deleted handler not yet implemented (delivery_id: {delivery_id})")
-    # TODO: Implement when OAuth provider adds this event type
+
+    user_id = payload["user_id"]
+    user = db_users.get_by_mb_row_id(user_id)
+    if not user:
+        logger.error(f"User with musicbrainz_row_id={user_id} not found for user.deleted webhook")
+        return
+
+    try:
+        db_users.delete(user["id"])
+        logger.info(f"Successfully deleted user {user_id} (delivery_id: {delivery_id})")
+    except Exception as e:
+        logger.error(f"Failed to delete user {user_id} from webhook (delivery_id: {delivery_id}): {e}", exc_info=True)
+        raise
 
 
 # Event handler registry
 # Maps event type strings to their handler functions
 EVENT_HANDLERS = {
     "user.created": handle_user_created,
-    "user.verified": handle_user_verified,
     "user.updated": handle_user_updated,
     "user.deleted": handle_user_deleted,
 }
