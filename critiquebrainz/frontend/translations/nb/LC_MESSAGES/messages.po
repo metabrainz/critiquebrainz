@@ -8,13 +8,15 @@
 # CatQuest, The Endeavouring Cat, 2017
 # CatQuest, The Endeavouring Cat, 2017
 # Kurt-Håkon Eilertsen <kurt@kheds.com>, 2014
+# "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2023-08-29 23:27+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-07-31 13:12+0000\n"
+"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
+"<monkeypython+inst@yepmail.net>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/critiquebrainz/frontend/nb_NO/>\n"
 "Language: nb\n"
@@ -22,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.0\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
@@ -101,13 +103,13 @@ msgstr "Innspillingsstudio"
 
 #: critiquebrainz/frontend/forms/comment.py:11
 msgid "Add a comment..."
-msgstr ""
+msgstr "Legg til en kommentar..."
 
 #: critiquebrainz/frontend/forms/comment.py:12
 #: critiquebrainz/frontend/views/comment.py:62
 #: critiquebrainz/frontend/views/comment.py:105
 msgid "Comment must not be empty!"
-msgstr ""
+msgstr "Kommentaren kan ikke være tom!"
 
 #: critiquebrainz/frontend/forms/log.py:8
 msgid "You need to specify a reason for taking this action."
@@ -140,13 +142,16 @@ msgstr "E-post felt er ikke en godkjent e-post adresse."
 
 #: critiquebrainz/frontend/forms/profile.py:15
 msgid "Preferred License Choice"
-msgstr ""
+msgstr "Foretrukket lisensvalg"
 
 #: critiquebrainz/frontend/forms/profile.py:16
 msgid ""
 "Allow commercial use of my reviews (<a href=\"https://creativecommons.org/"
 "licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
+"Tillat kommersiell bruk av mine anmeldelser (<a href=\"https://"
+"creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0-"
+"lisens</a>)"
 
 #: critiquebrainz/frontend/forms/profile.py:17
 msgid ""
@@ -154,6 +159,9 @@ msgid ""
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
+"Ikke tillat kommersiell bruk av anmeldelsene mine, med mindre det er "
+"godkjent av MetaBrainz-stiftelsen (<a href=\"https://creativecommons.org/"
+"licenses/by-nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0-lisens</a>)"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
@@ -216,10 +224,11 @@ msgstr "Autorisasjonstilbakekallingsadressen er ugyldig"
 #: critiquebrainz/frontend/forms/profile_apps.py:24
 msgid "Authorization callback URL must use http or https"
 msgstr ""
+"Adresse for tilbakekalling av autorisasjon kan bare bruke http eller https"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:28
 msgid "Homepage URL must use http or https"
-msgstr ""
+msgstr "Hjemmesideadressen kan bare bruke http eller https"
 
 #: critiquebrainz/frontend/forms/rate.py:26
 #: critiquebrainz/frontend/forms/review.py:43
@@ -257,11 +266,11 @@ msgstr ""
 
 #: critiquebrainz/frontend/forms/review.py:40
 msgid "You need to choose a license"
-msgstr ""
+msgstr "Du må velge en lisens"
 
 #: critiquebrainz/frontend/forms/review.py:41
 msgid "Remember this license choice for further preference"
-msgstr ""
+msgstr "Foretrekk dette lisensvalget fra nå av"
 
 #: critiquebrainz/frontend/forms/review.py:42
 #: critiquebrainz/frontend/forms/review.py:61
@@ -279,7 +288,7 @@ msgstr "Du må være administrator for å ha tilgang til denne siden."
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/recording/entity.html:13
 msgid "by"
-msgstr ""
+msgstr "av"
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/review/entity/artist.html:7
@@ -468,7 +477,7 @@ msgstr "Sted"
 #: critiquebrainz/frontend/templates/review/modify/work.html:5
 #: critiquebrainz/frontend/templates/search/index.html:28
 msgid "Work"
-msgstr ""
+msgstr "Åndsverk"
 
 #: critiquebrainz/frontend/templates/macros.html:67
 #: critiquebrainz/frontend/templates/navbar.html:98
@@ -489,7 +498,7 @@ msgstr "Artist"
 #: critiquebrainz/frontend/templates/review/modify/label.html:5
 #: critiquebrainz/frontend/templates/search/index.html:29
 msgid "Label"
-msgstr ""
+msgstr "Plateselskap"
 
 #: critiquebrainz/frontend/templates/macros.html:81
 #: critiquebrainz/frontend/templates/navbar.html:104
