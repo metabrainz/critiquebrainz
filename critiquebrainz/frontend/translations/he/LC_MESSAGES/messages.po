@@ -150,7 +150,7 @@ msgid ""
 "Do not allow commercial use of my reviews, unless approved by MetaBrainz "
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
-msgstr "לא לאפשר שימוש מסחרי בביקורת זו אלה אם אושר על ידי קרן מוזיקבריינז (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">רישיון CC BY-NC-SA 3.0 </a>)"
+msgstr "לא לאפשר שימוש מסחרי בביקורת זו אלה אם אושר על ידי קרן מטאבריינז (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">רישיון CC BY-NC-SA 3.0 </a>)"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
@@ -236,7 +236,7 @@ msgid ""
 "Do not allow commercial use of this review, unless approved by MetaBrainz "
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
-msgstr "לא לאפשר שימוש מסחרי בביקורת זו אלה אם אושר על ידי קרן מוזיקבריינז (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">רישיון CC BY-NC-SA 3.0 </a>)"
+msgstr "לא לאפשר שימוש מסחרי בביקורת זו אלה אם אושר על ידי קרן מטאבריינז (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">רישיון CC BY-NC-SA 3.0 </a>)"
 
 #: critiquebrainz/frontend/forms/review.py:40
 msgid "You need to choose a license"
@@ -1238,11 +1238,11 @@ msgstr "סיבה:"
 msgid ""
 "To sign in, use your MetaBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
-msgstr ""
+msgstr "לכניסה, ניתן להשתמש בחשבון מטאבריינז ולאפשר לקריטיקבריינז גישה לפרופיל שלכם."
 
 #: critiquebrainz/frontend/templates/login/index.html:11
 msgid "Sign in with MetaBrainz"
-msgstr ""
+msgstr "כניסה עם מטאבריינז"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"
@@ -1860,7 +1860,7 @@ msgid ""
 "            infringes the rights of any third-party, and that you have the permission to use and to license the work\n"
 "            under the selected Creative Commons license. Finally, you give the MetaBrainz Foundation permission to license\n"
 "            this content for commercial use outside of Creative Commons licenses in order to support the operations of the organization."
-msgstr "אתם מאשרים ומסכימים כי הביקורות שתרמתם לקריטיקבריינז מורשות תחת רישיון\n Creative Commons Attribution-ShareAlike 3.0 Unported או Creative Commons Attribution-ShareAlike-NonCommercial\n לפי בחירתכם לעיל. אתם מסכימים להרשות את עבודתכם במסגרת רישיון זה.\nאתם מצהירים ומתחייבים שכל הזכויות בעבודה ולגביה בבעלותכם או\nבשליטתכם , וכי שום דבר בעבודה אינו מפר זכויות של צד ג' כלשהו, וכי \nיש לכם הרשאה להשתמש בעבודה ולרשותה תחת הרישיון שנבחר על ידי Creative Commons. \nלסיום, אתם נותנים לקרן מוזיקבריינז אישור להרשות תוכן זה לשימוש מסחרי\nמעבר לרישיונות Creative Commons על מנת לתמוך בפעילות הארגון."
+msgstr "אתם מאשרים ומסכימים כי הביקורות שתרמתם לקריטיקבריינז מורשות תחת רישיון\n Creative Commons Attribution-ShareAlike 3.0 Unported או Creative Commons Attribution-ShareAlike-NonCommercial\n לפי בחירתכם לעיל. אתם מסכימים להרשות את עבודתכם במסגרת רישיון זה.\nאתם מצהירים ומתחייבים שכל הזכויות בעבודה ולגביה בבעלותכם או\nבשליטתכם , וכי שום דבר בעבודה אינו מפר זכויות של צד ג' כלשהו, וכי \nיש לכם הרשאה להשתמש בעבודה ולרשותה תחת הרישיון שנבחר על ידי Creative Commons. \nלסיום, אתם נותנים לקרן מטאבריינז אישור להרשות תוכן זה לשימוש מסחרי\nמעבר לרישיונות Creative Commons על מנת לתמוך בפעילות הארגון."
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"
