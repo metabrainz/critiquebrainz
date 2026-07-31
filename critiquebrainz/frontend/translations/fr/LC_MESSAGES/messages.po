@@ -1240,13 +1240,13 @@ msgstr "Raison :"
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"To sign in, use your MetaBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
-msgstr "Pour vous connecter, utilisez votre compte MusicBrainz et autorisez CritiqueBrainz à accéder aux données de votre profil."
+msgstr "Pour vous connecter, utilisez votre compte MetaBrainz et autorisez CritiqueBrainz à accéder aux données de votre profil."
 
 #: critiquebrainz/frontend/templates/login/index.html:11
-msgid "Sign in with MusicBrainz"
-msgstr "Se connecter avec MusicBrainz"
+msgid "Sign in with MetaBrainz"
+msgstr "Se connecter avec MetaBrainz"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"

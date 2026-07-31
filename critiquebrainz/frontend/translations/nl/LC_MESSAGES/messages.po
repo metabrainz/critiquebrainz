@@ -1236,13 +1236,13 @@ msgstr "Reden:"
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"To sign in, use your MetaBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
-msgstr "Gebruik je MusicBrainz-account om in te loggen, en geef CritiqueBrainz toestemming om je profielgegevens in te zien."
+msgstr "Gebruik je MetaBrainz-account om in te loggen, en geef CritiqueBrainz toestemming om je profielgegevens in te zien."
 
 #: critiquebrainz/frontend/templates/login/index.html:11
-msgid "Sign in with MusicBrainz"
-msgstr "Inloggen met MusicBrainz"
+msgid "Sign in with MetaBrainz"
+msgstr "Inloggen met MetaBrainz"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"

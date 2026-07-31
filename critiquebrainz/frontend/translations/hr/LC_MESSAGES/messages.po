@@ -1236,13 +1236,13 @@ msgstr "Razlog:"
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
-"To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
+"To sign in, use your MetaBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
-msgstr "Kako bi se prijavili, koristite svoj MusicBrainz račun i dopustite CritiqueBrainzu pristup vašim profilnim podatcima."
+msgstr "Kako bi se prijavili, koristite svoj MetaBrainz račun i dopustite CritiqueBrainzu pristup vašim profilnim podatcima."
 
 #: critiquebrainz/frontend/templates/login/index.html:11
-msgid "Sign in with MusicBrainz"
-msgstr "Prijavi se pomoću MusicBrainza"
+msgid "Sign in with MetaBrainz"
+msgstr "Prijavi se pomoću MetaBrainza"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"
