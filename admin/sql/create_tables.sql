@@ -1,7 +1,7 @@
 BEGIN;
 
 CREATE TABLE comment (
-    id          UUID        NOT NULL DEFAULT uuid_generate_v4(),
+    id          UUID        NOT NULL DEFAULT gen_random_uuid(),
     review_id   UUID        NOT NULL,
     user_id     UUID        NOT NULL,
     edits       INTEGER     NOT NULL DEFAULT 0,
@@ -65,7 +65,7 @@ ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_access_token_key UNIQUE (acce
 ALTER TABLE oauth_token ADD CONSTRAINT oauth_token_refresh_token_key UNIQUE (refresh_token);
 
 CREATE TABLE review (
-    id              UUID         NOT NULL DEFAULT uuid_generate_v4(),
+    id              UUID         NOT NULL DEFAULT gen_random_uuid(),
     entity_id       UUID         NOT NULL,
     entity_type     entity_types NOT NULL,
     user_id         UUID         NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE spam_report (
 );
 
 CREATE TABLE "user" (
-    id                  UUID        NOT NULL DEFAULT uuid_generate_v4(),
+    id                  UUID        NOT NULL DEFAULT gen_random_uuid(),
     display_name        VARCHAR     NOT NULL,
     email               VARCHAR,
     created             TIMESTAMP   NOT NULL,
