@@ -135,7 +135,7 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
     Returns:
         (comments, comment_count)
         where comments is list of dicts, each dict representing a comment
-              comment_count is an integer representing number of comments returned
+              comment_count is the total number of matching comments (not affected by limit/offset)
     """
     filters = []
     query_vals = {}
@@ -143,9 +143,9 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
         filters.append('comment.review_id = :review_id')
         query_vals['review_id'] = review_id
 
-    if inc_hidden:
-        filters.append('commend.is_hidden = :is_hidden')
-        query_vals['is_hidden'] = inc_hidden
+    if not inc_hidden:
+        # Exclude hidden comments by default; only include them when inc_hidden=True
+        filters.append('comment.is_hidden = false')
 
     if user_id:
         filters.append('comment.user_id = :user_id')
@@ -153,12 +153,23 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
 
     filterstr = ''
     if filters:
-        filterstr = 'WHERE {condition}'.format(condition='AND'.join(filters))
+        filterstr = 'WHERE {condition}'.format(condition=' AND '.join(filters))
 
     query_vals['limit'] = limit
     query_vals['offset'] = offset
 
     with db.engine.connect() as connection:
+        # Get the total count of matching comments (unaffected by LIMIT/OFFSET)
+        count_result = connection.execute(sqlalchemy.text("""
+            SELECT COUNT(DISTINCT comment.id)
+              FROM comment
+              JOIN comment_revision ON comment.id = comment_revision.comment_id
+              JOIN review ON comment.review_id = review.id
+              JOIN "user" ON comment.user_id = "user".id
+              {where_clause}
+            """.format(where_clause=filterstr)), query_vals)
+        total_count = count_result.fetchone()[0]
+
         result = connection.execute(sqlalchemy.text("""
             SELECT comment.id,
                    comment.review_id,
@@ -216,7 +227,7 @@ def list_comments(*, review_id=None, user_id=None, limit=20, offset=0, inc_hidde
                 'created': row.pop('user_created'),
             })
 
-    return rows, len(rows)
+    return rows, total_count
 
 
 def delete(comment_id):
