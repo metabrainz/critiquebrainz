@@ -21,18 +21,22 @@ def get_authors_for_artist(artist_mbid) -> List:
     bb_author_mb_artist_key = cache.gen_key('bb_author_mb_artist', artist_mbid)
     author_bbids = cache.get(bb_author_mb_artist_key)
 
-    if not author_bbids:
+    # Very few artists in MB will have a BookBrainz ID, so it will be common
+    # for an empty list to be cached. Hence testing for `None` rather than
+    # general falsiness.
+    if author_bbids is None:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
-                SELECT bbid::text
-                  FROM author
-             LEFT JOIN identifier_set__identifier idens ON idens.set_id = author.identifier_set_id
-             LEFT JOIN identifier iden ON idens.identifier_id = iden.id
+                SELECT ar.bbid::text AS bbid
+                  FROM identifier iden
+                  JOIN identifier_set__identifier idens ON idens.identifier_id = iden.id
+                  JOIN author_data ad ON ad.identifier_set_id = idens.set_id
+                  JOIN author_revision ar ON ar.data_id = ad.id
+                  JOIN author_header ah ON ah.bbid = ar.bbid
+                                       AND ah.master_revision_id = ar.id
                  WHERE iden.value = :artist_mbid
                    AND iden.type_id = :identifier_type
-                   AND master = 't'
-                   AND author.data_id IS NOT NULL
-              GROUP BY bbid
+              GROUP BY ar.bbid
                 """), {'artist_mbid': artist_mbid, 'identifier_type': MB_ARTIST_IDENTIFIER_TYPE})
             authors = result.mappings()
 
@@ -43,8 +47,6 @@ def get_authors_for_artist(artist_mbid) -> List:
 
             cache.set(bb_author_mb_artist_key, author_bbids, DEFAULT_CACHE_EXPIRATION)
 
-    if not author_bbids:
-        return []
     return author_bbids
 
 
@@ -62,18 +64,20 @@ def get_literary_works_for_work(work_mbid) -> List:
     bb_literary_work_mb_work_key = cache.gen_key('bb_literary_work_mb_work', work_mbid)
     work_bbids = cache.get(bb_literary_work_mb_work_key)
 
-    if not work_bbids:
+    # See the comment in `get_authors_for_artist` re: testing `None`.
+    if work_bbids is None:
         with db.bb_engine.connect() as connection:
             result = connection.execute(sqlalchemy.text("""
-                SELECT bbid::text
-                  FROM work
-             LEFT JOIN identifier_set__identifier idens ON idens.set_id = work.identifier_set_id
-             LEFT JOIN identifier iden ON idens.identifier_id = iden.id
+                SELECT wr.bbid::text AS bbid
+                  FROM identifier iden
+                  JOIN identifier_set__identifier idens ON idens.identifier_id = iden.id
+                  JOIN work_data wd ON wd.identifier_set_id = idens.set_id
+                  JOIN work_revision wr ON wr.data_id = wd.id
+                  JOIN work_header wh ON wh.bbid = wr.bbid
+                                     AND wh.master_revision_id = wr.id
                  WHERE iden.value = :work_mbid
                    AND iden.type_id = :identifier_type
-                   AND master = 't'
-                   AND work.data_id IS NOT NULL
-              GROUP BY bbid
+              GROUP BY wr.bbid
                 """), {'work_mbid': work_mbid, 'identifier_type': MB_WORK_IDENTIFIER_TYPE})
 
             literary_works = result.mappings()
@@ -83,8 +87,5 @@ def get_literary_works_for_work(work_mbid) -> List:
                 work_bbids.append(literary_work['bbid'])
 
             cache.set(bb_literary_work_mb_work_key, work_bbids, DEFAULT_CACHE_EXPIRATION)
-
-    if not work_bbids:
-        return []
 
     return work_bbids
