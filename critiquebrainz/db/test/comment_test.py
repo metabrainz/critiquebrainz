@@ -83,6 +83,47 @@ class CommentTestCase(DataTestCase):
         comments, _ = db_comment.list_comments(review_id=self.review['id'])
         self.assertEqual(len(comments), 0)
 
+    def test_list_comments_excludes_hidden_comments_by_default(self):
+        visible_comment = db_comment.create(
+            user_id=self.user.id,
+            review_id=self.review['id'],
+            text='this comment should be visible',
+        )
+        hidden_comment = db_comment.create(
+            user_id=self.user_2.id,
+            review_id=self.review['id'],
+            text='this comment should be hidden',
+        )
+        db_comment.update(hidden_comment['id'], is_hidden=True)
+
+        comments, count = db_comment.list_comments(review_id=self.review['id'])
+
+        self.assertEqual(count, 1)
+        self.assertEqual(len(comments), 1)
+        self.assertEqual(comments[0]['id'], visible_comment['id'])
+        self.assertFalse(comments[0]['is_hidden'])
+
+    def test_list_comments_includes_hidden_comments_when_requested(self):
+        visible_comment = db_comment.create(
+            user_id=self.user.id,
+            review_id=self.review['id'],
+            text='this comment should be visible',
+        )
+        hidden_comment = db_comment.create(
+            user_id=self.user_2.id,
+            review_id=self.review['id'],
+            text='this comment should be hidden',
+        )
+        db_comment.update(hidden_comment['id'], is_hidden=True)
+
+        comments, count = db_comment.list_comments(review_id=self.review['id'], inc_hidden=True)
+
+        self.assertEqual(count, 2)
+        comments_by_id = {comment['id']: comment for comment in comments}
+        self.assertEqual(set(comments_by_id.keys()), {visible_comment['id'], hidden_comment['id']})
+        self.assertFalse(comments_by_id[visible_comment['id']]['is_hidden'])
+        self.assertTrue(comments_by_id[hidden_comment['id']]['is_hidden'])
+
     def test_edit_comment(self):
         comment = db_comment.create(
             user_id=self.user.id,
