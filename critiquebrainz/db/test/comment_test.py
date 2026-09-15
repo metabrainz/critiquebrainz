@@ -124,6 +124,19 @@ class CommentTestCase(DataTestCase):
         self.assertFalse(comments_by_id[visible_comment['id']]['is_hidden'])
         self.assertTrue(comments_by_id[hidden_comment['id']]['is_hidden'])
 
+    def test_list_comments_count_is_not_limited_by_pagination(self):
+        for index in range(3):
+            db_comment.create(
+                user_id=self.user.id,
+                review_id=self.review['id'],
+                text='comment {index}'.format(index=index),
+            )
+
+        comments, count = db_comment.list_comments(review_id=self.review['id'], limit=2)
+
+        self.assertEqual(len(comments), 2)
+        self.assertEqual(count, 3)
+
     def test_edit_comment(self):
         comment = db_comment.create(
             user_id=self.user.id,
