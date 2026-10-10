@@ -2,141 +2,147 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-#
+# scientists360 <scientists360@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-10-10 11:13+0000\n"
+"Last-Translator: scientists360 "
+"<scientists360@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: Chinese (Simplified Han script) <https://"
+"translations.metabrainz.org/projects/critiquebrainz/frontend/zh_Hans/>\n"
 "Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
 msgid ""
 "Spotify mapping server is unavailable. You will not see an embedded player."
-msgstr ""
+msgstr "Spotify 映射服务器不可用。您将看不到嵌入式播放器。"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:32
 #: critiquebrainz/frontend/external/relationships/label.py:19
 #: critiquebrainz/frontend/external/relationships/place.py:27
 #: critiquebrainz/frontend/external/relationships/release_group.py:19
 msgid "Wikidata"
-msgstr ""
+msgstr "Wikidata"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:33
 #: critiquebrainz/frontend/external/relationships/label.py:20
 #: critiquebrainz/frontend/external/relationships/place.py:30
 #: critiquebrainz/frontend/external/relationships/release_group.py:20
 msgid "Discogs"
-msgstr ""
+msgstr "Discogs"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:34
 #: critiquebrainz/frontend/external/relationships/label.py:21
 #: critiquebrainz/frontend/external/relationships/release_group.py:21
 msgid "Allmusic"
-msgstr ""
+msgstr "Allmusic"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:35
 #: critiquebrainz/frontend/external/relationships/label.py:22
 msgid "Bandcamp"
-msgstr ""
+msgstr "Bandcamp"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:36
 #: critiquebrainz/frontend/external/relationships/label.py:23
 #: critiquebrainz/frontend/external/relationships/place.py:36
 #: critiquebrainz/frontend/external/relationships/release_group.py:22
 msgid "Official homepage"
-msgstr ""
+msgstr "官方首页"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:37
 #: critiquebrainz/frontend/external/relationships/label.py:24
 msgid "BBC Music"
-msgstr ""
+msgstr "BBC Music"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:49
 #: critiquebrainz/frontend/external/relationships/label.py:36
 #: critiquebrainz/frontend/external/relationships/release_group.py:35
 msgid "Lyrics"
-msgstr ""
+msgstr "歌词"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:55
 #: critiquebrainz/frontend/external/relationships/label.py:42
 #: critiquebrainz/frontend/external/relationships/release_group.py:41
 msgid "Wikipedia"
-msgstr ""
+msgstr "维基百科"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:71
 #: critiquebrainz/frontend/external/relationships/label.py:58
 msgid "YouTube"
-msgstr ""
+msgstr "YouTube"
 
 #: critiquebrainz/frontend/external/relationships/artist.py:79
 #: critiquebrainz/frontend/external/relationships/label.py:66
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #: critiquebrainz/frontend/external/relationships/place.py:33
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: critiquebrainz/frontend/external/relationships/release_group.py:23
 msgid "Recording studio"
-msgstr ""
+msgstr "录音棚"
 
 #: critiquebrainz/frontend/forms/comment.py:11
 msgid "Add a comment..."
-msgstr ""
+msgstr "添加留言…"
 
 #: critiquebrainz/frontend/forms/comment.py:12
 #: critiquebrainz/frontend/views/comment.py:62
 #: critiquebrainz/frontend/views/comment.py:105
 msgid "Comment must not be empty!"
-msgstr ""
+msgstr "留言不能为空！"
 
 #: critiquebrainz/frontend/forms/log.py:8
 msgid "You need to specify a reason for taking this action."
-msgstr ""
+msgstr "您需要指定执行此操作的原因。"
 
 #: critiquebrainz/frontend/forms/profile.py:8
 msgid "Display name"
-msgstr ""
+msgstr "显示名称"
 
 #: critiquebrainz/frontend/forms/profile.py:9
 msgid "Display name field is empty."
-msgstr ""
+msgstr "显示名称字段为空。"
 
 #: critiquebrainz/frontend/forms/profile.py:10
 msgid "Display name needs to be at least 3 characters long."
-msgstr ""
+msgstr "显示名称至少需要 3 个字符。"
 
 #: critiquebrainz/frontend/forms/profile.py:11
 msgid "Display name needs to be at most 64 characters long."
-msgstr ""
+msgstr "显示名称最多需要 64 个字符。"
 
 #: critiquebrainz/frontend/forms/profile.py:12
 #: critiquebrainz/frontend/templates/user/info.html:22
 msgid "Email"
-msgstr ""
+msgstr "电子邮件"
 
 #: critiquebrainz/frontend/forms/profile.py:14
 msgid "Email field is not a valid email address."
-msgstr ""
+msgstr "电子邮件字段不是一个有效的电子邮件地址。"
 
 #: critiquebrainz/frontend/forms/profile.py:15
 msgid "Preferred License Choice"
-msgstr ""
+msgstr "首选许可选择"
 
 #: critiquebrainz/frontend/forms/profile.py:16
 msgid ""
 "Allow commercial use of my reviews (<a href=\"https://creativecommons.org/"
 "licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
+"允许将我的评析用于商业用途（<a href=\"https://creativecommons.org/licenses/"
+"by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 许可</a>）"
 
 #: critiquebrainz/frontend/forms/profile.py:17
 msgid ""
@@ -144,93 +150,98 @@ msgid ""
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
+"除非经 MetaBrainz 基金会核准，否则不允许将我的评析用于商业用途（<a "
+"href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
+"target=\"_blank\">CC BY-NC-SA 3.0 许可</a>）"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
-msgstr ""
+msgstr "应用名称"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:8
 msgid "Application name field is empty."
-msgstr ""
+msgstr "应用名称字段为空。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:9
 msgid "Application name needs to be at least 3 characters long."
-msgstr ""
+msgstr "应用名称至少需要 3 个字符。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:10
 msgid "Application name needs to be at most 64 characters long."
-msgstr ""
+msgstr "应用名称最多 64 个字符。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:11
 #: critiquebrainz/frontend/templates/index/index.html:27
 #: critiquebrainz/frontend/templates/oauth/prompt.html:18
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:12
 msgid "Client description field is empty."
-msgstr ""
+msgstr "客户端描述字段为空。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:13
 msgid "Client description needs to be at least 3 characters long."
-msgstr ""
+msgstr "客户端描述至少需要 3 个字符。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:14
 msgid "Client description needs to be at most 512 characters long."
-msgstr ""
+msgstr "客户端描述最多 512 个字符。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:15
 msgid "Homepage"
-msgstr ""
+msgstr "首页"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:16
 msgid "Homepage field is empty."
-msgstr ""
+msgstr "首页字段为空。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:17
 msgid "Homepage is not a valid URI."
-msgstr ""
+msgstr "首页不是有效的 URI。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:18
 msgid "Authorization callback URL"
-msgstr ""
+msgstr "授权回调 URL"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:19
 msgid "Authorization callback URL field is empty."
-msgstr ""
+msgstr "授权回调 URL 字段为空。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:20
 msgid "Authorization callback URL is invalid."
-msgstr ""
+msgstr "授权回调 URL 无效。"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:24
 msgid "Authorization callback URL must use http or https"
-msgstr ""
+msgstr "授权回调 URL 必须使用 http 或 https"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:28
 msgid "Homepage URL must use http or https"
-msgstr ""
+msgstr "首页 URL 必须使用 http 或 https"
 
 #: critiquebrainz/frontend/forms/rate.py:26
 #: critiquebrainz/frontend/forms/review.py:43
 #: critiquebrainz/frontend/templates/user/reviews.html:19
 msgid "Rating"
-msgstr ""
+msgstr "评分"
 
 #: critiquebrainz/frontend/forms/review.py:30
 msgid "Text"
-msgstr ""
+msgstr "文本"
 
 #: critiquebrainz/frontend/forms/review.py:33
 #, python-format
 msgid "Text length needs to be between %(min)d and %(max)d characters."
-msgstr ""
+msgstr "文本长度需要在 %(min)d 和 %(max)d 个字符之间。"
 
 #: critiquebrainz/frontend/forms/review.py:37
 msgid ""
 "Allow commercial use of this review(<a href=\"https://creativecommons.org/"
 "licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
+"允许将本评析用于商业用途（<a href=\"https://creativecommons.org/licenses/by-"
+"sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 许可</a>）"
 
 #: critiquebrainz/frontend/forms/review.py:38
 msgid ""
@@ -238,32 +249,35 @@ msgid ""
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
+"除非经 MetaBrainz 基金会核准，否则不允许将本评析用于商业用途（<a "
+"href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
+"target=\"_blank\">CC BY-NC-SA 3.0 许可</a>）"
 
 #: critiquebrainz/frontend/forms/review.py:40
 msgid "You need to choose a license"
-msgstr ""
+msgstr "您需要选择一个许可证"
 
 #: critiquebrainz/frontend/forms/review.py:41
 msgid "Remember this license choice for further preference"
-msgstr ""
+msgstr "记住此许可证选择，供后续使用"
 
 #: critiquebrainz/frontend/forms/review.py:42
 #: critiquebrainz/frontend/forms/review.py:61
 msgid "You need to accept the license agreement!"
-msgstr ""
+msgstr "您需要接受许可证协议！"
 
 #: critiquebrainz/frontend/login/__init__.py:21
 msgid "Please sign in to access this page."
-msgstr ""
+msgstr "请登录以访问此页面。"
 
 #: critiquebrainz/frontend/login/__init__.py:48
 msgid "You must be an administrator to view this page."
-msgstr ""
+msgstr "您必须是管理员才能查看此页面。"
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/recording/entity.html:13
 msgid "by"
-msgstr ""
+msgstr "由"
 
 #: critiquebrainz/frontend/templates/entity_review.html:3
 #: critiquebrainz/frontend/templates/review/entity/artist.html:7
@@ -272,22 +286,22 @@ msgstr ""
 #: critiquebrainz/frontend/templates/user/reviews.html:67
 #: critiquebrainz/frontend/templates/user/reviews.html:70
 msgid "[Unknown artist]"
-msgstr ""
+msgstr "[未知艺术家]"
 
 #: critiquebrainz/frontend/templates/footer.html:5
 msgid "Admin zone:"
-msgstr ""
+msgstr "管理区域："
 
 #: critiquebrainz/frontend/templates/footer.html:6
 msgid "Reports"
-msgstr ""
+msgstr "报告"
 
 #: critiquebrainz/frontend/templates/footer.html:7
 #: critiquebrainz/frontend/templates/footer.html:33
 #: critiquebrainz/frontend/templates/log/browse.html:3
 #: critiquebrainz/frontend/templates/log/browse.html:6
 msgid "Moderation log"
-msgstr ""
+msgstr "审核日志"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:59
 #: critiquebrainz/frontend/templates/artist/entity.html:101
@@ -313,7 +327,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/work/entity.html:20
 #: critiquebrainz/frontend/templates/work/entity.html:62
 msgid "Reviews"
-msgstr ""
+msgstr "评论"
 
 #: critiquebrainz/frontend/templates/footer.html:17
 #: critiquebrainz/frontend/templates/label/entity.html:19
@@ -332,39 +346,39 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:130
 #: critiquebrainz/frontend/templates/search/index.html:136
 msgid "Write a review"
-msgstr ""
+msgstr "撰写评论"
 
 #: critiquebrainz/frontend/templates/footer.html:21
 msgid "Developers"
-msgstr ""
+msgstr "开发者"
 
 #: critiquebrainz/frontend/templates/footer.html:23
 msgid "Web API"
-msgstr ""
+msgstr "Web API"
 
 #: critiquebrainz/frontend/templates/footer.html:24
 msgid "Source code"
-msgstr ""
+msgstr "源代码"
 
 #: critiquebrainz/frontend/templates/footer.html:25
 msgid "Data dumps"
-msgstr ""
+msgstr "数据存档"
 
 #: critiquebrainz/frontend/templates/footer.html:29
 #: critiquebrainz/frontend/templates/index/about.html:3
 #: critiquebrainz/frontend/templates/index/about.html:6
 msgid "About the project"
-msgstr ""
+msgstr "关于项目"
 
 #: critiquebrainz/frontend/templates/footer.html:31
 msgid "Blog"
-msgstr ""
+msgstr "博客"
 
 #: critiquebrainz/frontend/templates/footer.html:32
 #: critiquebrainz/frontend/templates/moderators/moderators.html:3
 #: critiquebrainz/frontend/templates/moderators/moderators.html:7
 msgid "Moderators"
-msgstr ""
+msgstr "审核员"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:117
 #: critiquebrainz/frontend/templates/bb_series/entity.html:113
@@ -373,58 +387,60 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:100
 #: critiquebrainz/frontend/templates/search/index.html:122
 msgid "Language"
-msgstr ""
+msgstr "语言"
 
 #: critiquebrainz/frontend/templates/footer.html:51
 #, python-format
 msgid "Project of the %(metabrainz_fdn)s"
-msgstr ""
+msgstr "%(metabrainz_fdn)s 项目"
 
 #: critiquebrainz/frontend/templates/macros.html:4
 #: critiquebrainz/frontend/templates/reports/reports.html:28
 msgid "Review"
-msgstr ""
+msgstr "评论"
 
 #: critiquebrainz/frontend/templates/macros.html:25
 msgid "Modify profile info and delete your profile."
-msgstr ""
+msgstr "修改个人资料，或删除您的个人资料。"
 
 #: critiquebrainz/frontend/templates/macros.html:25
 msgid "Profile data"
-msgstr ""
+msgstr "用户数据"
 
 #: critiquebrainz/frontend/templates/macros.html:28
 msgid "Create and modify your reviews."
-msgstr ""
+msgstr "创建和修改您的评论。"
 
 #: critiquebrainz/frontend/templates/macros.html:30
 msgid "Modify your applications (create, edit, delete)."
-msgstr ""
+msgstr "修改您的应用（创建、编辑、删除）。"
 
 #: critiquebrainz/frontend/templates/macros.html:30
 #: critiquebrainz/frontend/templates/navbar.html:35
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
 msgid "Applications"
-msgstr ""
+msgstr "应用"
 
 #: critiquebrainz/frontend/templates/macros.html:33
 msgid ""
 "Manage access to your profile for other apps (can allow complete access to "
 "your profile and remove existing access authorizations)."
 msgstr ""
+"管理其他应用对您的个人资料的访问权限（可以允许完全访问您的个人资料并删除现有"
+"的授权）。"
 
 #: critiquebrainz/frontend/templates/macros.html:33
 msgid "Authorization"
-msgstr ""
+msgstr "授权"
 
 #: critiquebrainz/frontend/templates/macros.html:36
 msgid "Submit and delete your votes."
-msgstr ""
+msgstr "提交和删除您的评分。"
 
 #: critiquebrainz/frontend/templates/macros.html:36
 msgid "Review votes"
-msgstr ""
+msgstr "评论评分"
 
 #: critiquebrainz/frontend/templates/macros.html:46
 #: critiquebrainz/frontend/templates/navbar.html:101
@@ -432,7 +448,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/event.html:5
 #: critiquebrainz/frontend/templates/search/index.html:30
 msgid "Event"
-msgstr ""
+msgstr "活动"
 
 #: critiquebrainz/frontend/templates/macros.html:53
 #: critiquebrainz/frontend/templates/navbar.html:102
@@ -441,7 +457,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/place.html:5
 #: critiquebrainz/frontend/templates/search/index.html:31
 msgid "Place"
-msgstr ""
+msgstr "地点"
 
 #: critiquebrainz/frontend/templates/macros.html:60
 #: critiquebrainz/frontend/templates/navbar.html:99
@@ -449,7 +465,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/work.html:5
 #: critiquebrainz/frontend/templates/search/index.html:28
 msgid "Work"
-msgstr ""
+msgstr "作品"
 
 #: critiquebrainz/frontend/templates/macros.html:67
 #: critiquebrainz/frontend/templates/navbar.html:98
@@ -462,7 +478,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:84
 #: critiquebrainz/frontend/templates/search/index.html:107
 msgid "Artist"
-msgstr ""
+msgstr "艺术家"
 
 #: critiquebrainz/frontend/templates/macros.html:74
 #: critiquebrainz/frontend/templates/navbar.html:100
@@ -470,7 +486,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/label.html:5
 #: critiquebrainz/frontend/templates/search/index.html:29
 msgid "Label"
-msgstr ""
+msgstr "唱片公司"
 
 #: critiquebrainz/frontend/templates/macros.html:81
 #: critiquebrainz/frontend/templates/navbar.html:104
@@ -478,7 +494,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/recording.html:6
 #: critiquebrainz/frontend/templates/search/index.html:33
 msgid "Recording"
-msgstr ""
+msgstr "录音"
 
 #: critiquebrainz/frontend/templates/macros.html:88
 #: critiquebrainz/frontend/templates/navbar.html:108
@@ -486,7 +502,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/bb_edition_group.html:3
 #: critiquebrainz/frontend/templates/search/index.html:37
 msgid "Edition Group"
-msgstr ""
+msgstr "版本组"
 
 #: critiquebrainz/frontend/templates/macros.html:95
 #: critiquebrainz/frontend/templates/navbar.html:109
@@ -494,7 +510,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/bb_literary_work.html:3
 #: critiquebrainz/frontend/templates/search/index.html:38
 msgid "Literary Work"
-msgstr ""
+msgstr "文学作品"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:122
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:148
@@ -508,7 +524,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:36
 #: critiquebrainz/frontend/templates/search/index.html:115
 msgid "Author"
-msgstr ""
+msgstr "作者"
 
 #: critiquebrainz/frontend/templates/macros.html:109
 #: critiquebrainz/frontend/templates/navbar.html:110
@@ -516,119 +532,118 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/modify/bb_series.html:3
 #: critiquebrainz/frontend/templates/search/index.html:39
 msgid "Series"
-msgstr ""
+msgstr "系列"
 
 #: critiquebrainz/frontend/templates/macros.html:116
 msgid "Release Group"
-msgstr ""
+msgstr "发行品"
 
 #: critiquebrainz/frontend/templates/macros.html:121
 msgid "We don’t have cover art for this release group."
-msgstr ""
+msgstr "这个发行组还没有封面图片。"
 
 #: critiquebrainz/frontend/templates/macros.html:125
 msgid "See how to add cover art!"
-msgstr ""
+msgstr "查看如何添加封面图片！"
 
 #: critiquebrainz/frontend/templates/macros.html:145
 #, python-format
 msgid "Review by %(user)s"
-msgstr ""
+msgstr "%(user)s 的评论"
 
 #: critiquebrainz/frontend/templates/macros.html:155
 msgid "View Spotify mapping information"
-msgstr ""
+msgstr "查看 Spotify 映射信息"
 
 #: critiquebrainz/frontend/templates/macros.html:161
 msgid ""
 "We don’t have a mapping between this release group and Spotify. Please help "
 "us find the right album."
-msgstr ""
+msgstr "这个发行组与 Spotify 之间没有映射。请帮助我们找到正确的专辑。"
 
 #: critiquebrainz/frontend/templates/macros.html:165
 msgid "Match this!"
-msgstr ""
+msgstr "匹配！"
 
 #: critiquebrainz/frontend/templates/macros.html:191
 msgid "(none)"
-msgstr ""
+msgstr "(无)"
 
 #: critiquebrainz/frontend/templates/macros.html:215
 #, python-format
 msgid "based on %(num)s rating"
 msgid_plural "based on %(num)s ratings"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "基于 %(num)s 个评分"
 
 #: critiquebrainz/frontend/templates/macros.html:220
 #, python-format
 msgid "%(user)s"
-msgstr ""
+msgstr "%(user)s"
 
 #: critiquebrainz/frontend/templates/macros.html:237
 #, python-format
 msgid "<h4><a href=\"%(link)s\">Sign in</a> to rate!</h4>"
-msgstr ""
+msgstr "<h4><a href=\"%(link)s\">登录</a>即可评分！</h4>"
 
 #: critiquebrainz/frontend/templates/macros.html:248
 #: critiquebrainz/frontend/templates/review/modify/work.html:20
 #: critiquebrainz/frontend/templates/user/reviews.html:46
 #: critiquebrainz/frontend/templates/user/reviews.html:60
 msgid "more"
-msgstr ""
+msgstr "更多"
 
 #: critiquebrainz/frontend/templates/macros.html:259
 msgid "Page Navigation"
-msgstr ""
+msgstr "页面导航"
 
 #: critiquebrainz/frontend/templates/macros.html:262
 msgid "Previous"
-msgstr ""
+msgstr "上一个"
 
 #: critiquebrainz/frontend/templates/macros.html:288
 msgid "Next"
-msgstr ""
+msgstr "下一个"
 
 #: critiquebrainz/frontend/templates/label/entity.html:24
 #: critiquebrainz/frontend/templates/macros.html:325
 msgid "Edit my review"
-msgstr ""
+msgstr "编辑我的评论"
 
 #: critiquebrainz/frontend/templates/navbar.html:6
 msgid "Toggle navigation"
-msgstr ""
+msgstr "切换导航"
 
 #: critiquebrainz/frontend/templates/login/index.html:3
 #: critiquebrainz/frontend/templates/login/index.html:6
 #: critiquebrainz/frontend/templates/navbar.html:21
 #: critiquebrainz/frontend/templates/navbar.html:51
 msgid "Sign in"
-msgstr ""
+msgstr "登录"
 
 #: critiquebrainz/frontend/templates/navbar.html:30
 msgid "Profile"
-msgstr ""
+msgstr "个人资料"
 
 #: critiquebrainz/frontend/templates/navbar.html:41
 msgid "Sign out"
-msgstr ""
+msgstr "注销"
 
 #: critiquebrainz/frontend/templates/navbar.html:63
 msgid "Browse reviews"
-msgstr ""
+msgstr "浏览评论"
 
 #: critiquebrainz/frontend/templates/index/index.html:22
 #: critiquebrainz/frontend/templates/navbar.html:76
 #: critiquebrainz/frontend/templates/user/info.html:35
 msgid "Statistics"
-msgstr ""
+msgstr "统计"
 
 #: critiquebrainz/frontend/templates/navbar.html:93
 #: critiquebrainz/frontend/templates/search/index.html:7
 #: critiquebrainz/frontend/templates/search/index.html:13
 #: critiquebrainz/frontend/templates/search/index.html:46
 msgid "Search"
-msgstr ""
+msgstr "搜索"
 
 #: critiquebrainz/frontend/templates/navbar.html:103
 #: critiquebrainz/frontend/templates/review/browse.html:29
@@ -637,7 +652,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:83
 #: critiquebrainz/frontend/templates/search/index.html:108
 msgid "Release group"
-msgstr ""
+msgstr "发行品"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:61
 #: critiquebrainz/frontend/templates/bb_author/entity.html:24
@@ -654,7 +669,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/user/reviews.html:7
 #: critiquebrainz/frontend/templates/work/entity.html:22
 msgid "No reviews found"
-msgstr ""
+msgstr "未找到评论"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:67
 #: critiquebrainz/frontend/templates/artist/entity.html:106
@@ -672,7 +687,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/work/entity.html:28
 #: critiquebrainz/frontend/templates/work/entity.html:67
 msgid "Published on"
-msgstr ""
+msgstr "发布于"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:68
 #: critiquebrainz/frontend/templates/artist/entity.html:107
@@ -692,7 +707,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/work/entity.html:29
 #: critiquebrainz/frontend/templates/work/entity.html:68
 msgid "Votes (+/-)"
-msgstr ""
+msgstr "评分 (+/-)"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:76
 #: critiquebrainz/frontend/templates/artist/entity.html:115
@@ -710,93 +725,92 @@ msgstr ""
 #: critiquebrainz/frontend/templates/work/entity.html:76
 #, python-format
 msgid "by %(reviewer)s"
-msgstr ""
+msgstr "由%(reviewer)s"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:88
 #: critiquebrainz/frontend/templates/label/entity.html:60
 #: critiquebrainz/frontend/templates/place/entity.html:72
 #: critiquebrainz/frontend/templates/work/entity.html:49
 msgid "Hide reviews"
-msgstr ""
+msgstr "隐藏评论"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:90
 #: critiquebrainz/frontend/templates/label/entity.html:62
 #: critiquebrainz/frontend/templates/place/entity.html:74
 #: critiquebrainz/frontend/templates/work/entity.html:51
 msgid "Show all reviews"
-msgstr ""
+msgstr "显示所有评论"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:97
 #: critiquebrainz/frontend/templates/work/entity.html:58
 msgid "This entity is also in the BookBrainz Database as "
-msgstr ""
+msgstr "该实体在 BookBrainz 数据库中也作为 "
 
 #: critiquebrainz/frontend/templates/artist/entity.html:128
 msgid "Discography"
-msgstr ""
+msgstr "唱片目录"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:131
 #: critiquebrainz/frontend/templates/label/entity.html:71
 msgid "Albums"
-msgstr ""
+msgstr "专辑"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:134
 #: critiquebrainz/frontend/templates/label/entity.html:74
 msgid "Singles"
-msgstr ""
+msgstr "单曲"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:137
 #: critiquebrainz/frontend/templates/label/entity.html:77
 msgid "EPs"
-msgstr ""
+msgstr "EP"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:140
 #: critiquebrainz/frontend/templates/label/entity.html:80
 msgid "Broadcasts"
-msgstr ""
+msgstr "广播"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:143
 #: critiquebrainz/frontend/templates/label/entity.html:83
 msgid "Other releases"
-msgstr ""
+msgstr "其他发行品"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:147
 #: critiquebrainz/frontend/templates/label/entity.html:87
 msgid "No releases found"
-msgstr ""
+msgstr "未找到发行品"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:156
 #: critiquebrainz/frontend/templates/label/entity.html:96
 #, python-format
 msgid "%(num)d review"
 msgid_plural "%(num)d reviews"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)d 篇评析"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:182
 msgid "Artist information"
-msgstr ""
+msgstr "艺术家信息"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:188
 msgid "Member of"
-msgstr ""
+msgstr "成员"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:190
 msgid "Members"
-msgstr ""
+msgstr "成员"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:199
 #: critiquebrainz/frontend/templates/artist/entity.html:219
 msgid "View all..."
-msgstr ""
+msgstr "查看全部…"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:207
 msgid "Former member of"
-msgstr ""
+msgstr "前成员"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:209
 msgid "Former members"
-msgstr ""
+msgstr "前成员"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:226
 #: critiquebrainz/frontend/templates/bb_author/entity.html:196
@@ -808,7 +822,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/recording/entity.html:86
 #: critiquebrainz/frontend/templates/work/entity.html:131
 msgid "External links"
-msgstr ""
+msgstr "外部链接"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:246
 #: critiquebrainz/frontend/templates/event/entity.html:131
@@ -817,33 +831,33 @@ msgstr ""
 #: critiquebrainz/frontend/templates/recording/entity.html:106
 #: critiquebrainz/frontend/templates/work/entity.html:151
 msgid "Edit on MusicBrainz"
-msgstr ""
+msgstr "在 MusicBrainz 上编辑"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:66
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:66
 msgid "This entity is also in the MusicBrainz Database as "
-msgstr ""
+msgstr "该实体在 MusicBrainz 数据库中也作为 "
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:97
 #: critiquebrainz/frontend/templates/bb_series/entity.html:239
 msgid "Literary Works"
-msgstr ""
+msgstr "文学作品"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:100
 msgid "Novel"
-msgstr ""
+msgstr "小说"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:103
 msgid "Short Story"
-msgstr ""
+msgstr "短篇故事"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:106
 msgid "Poem"
-msgstr ""
+msgstr "诗歌"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:109
 msgid "Other Works"
-msgstr ""
+msgstr "其他作品"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:116
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:69
@@ -866,65 +880,65 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:127
 #: critiquebrainz/frontend/templates/search/index.html:134
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:144
 msgid "No works found"
-msgstr ""
+msgstr "未找到作品"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:149
 msgid "Author information"
-msgstr ""
+msgstr "作者信息"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:161
 msgid "Date Founded"
-msgstr ""
+msgstr "成立日期"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:163
 msgid "Date of Birth"
-msgstr ""
+msgstr "出生日期"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:170
 msgid "Place Founded"
-msgstr ""
+msgstr "成立地点"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:172
 msgid "Place of Birth"
-msgstr ""
+msgstr "出生地点"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:179
 msgid "Date of Dissolution"
-msgstr ""
+msgstr "解散日期"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:181
 msgid "Date of Death"
-msgstr ""
+msgstr "死亡日期"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:188
 msgid "Place of Dissolution"
-msgstr ""
+msgstr "解散地点"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:190
 msgid "Place of Death"
-msgstr ""
+msgstr "死亡地点"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:215
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:154
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:231
 #: critiquebrainz/frontend/templates/bb_series/entity.html:322
 msgid "Edit on BookBrainz"
-msgstr ""
+msgstr "在 BookBrainz 上编辑"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:65
 msgid "Works for this Edition Group"
-msgstr ""
+msgstr "此版本组的作品"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:70
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:103
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:203
 #: critiquebrainz/frontend/templates/bb_series/entity.html:245
 msgid "Languages"
-msgstr ""
+msgstr "语言"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:71
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:104
@@ -952,23 +966,23 @@ msgstr ""
 #: critiquebrainz/frontend/templates/search/index.html:135
 #: critiquebrainz/frontend/templates/work/entity.html:97
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #: critiquebrainz/frontend/templates/bb_edition_group/entity.html:111
 msgid "Edition Group information"
-msgstr ""
+msgstr "版本组信息"
 
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:98
 msgid "Translations of this work"
-msgstr ""
+msgstr "此作品翻译"
 
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:143
 msgid "Edition Group of this work"
-msgstr ""
+msgstr "此作品版本组"
 
 #: critiquebrainz/frontend/templates/bb_literary_work/entity.html:192
 msgid "Literary Work information"
-msgstr ""
+msgstr "文学作品信息"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:71
 #: critiquebrainz/frontend/templates/bb_series/entity.html:111
@@ -976,86 +990,86 @@ msgstr ""
 #: critiquebrainz/frontend/templates/bb_series/entity.html:203
 #: critiquebrainz/frontend/templates/bb_series/entity.html:243
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:73
 #: critiquebrainz/frontend/templates/search/index.html:129
 msgid "Gender"
-msgstr ""
+msgstr "性别"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:107
 msgid "Edition"
-msgstr ""
+msgstr "版本"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:114
 msgid "Format"
-msgstr ""
+msgstr "格式"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:151
 msgid "Edition Groups"
-msgstr ""
+msgstr "版本组"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:199
 msgid "Publisher"
-msgstr ""
+msgstr "出版商"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:205
 msgid "Area"
-msgstr ""
+msgstr "地区"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:286
 msgid "Series information"
-msgstr ""
+msgstr "系列信息"
 
 #: critiquebrainz/frontend/templates/bb_series/entity.html:298
 msgid "Ordering Type"
-msgstr ""
+msgstr "排序类型"
 
 #: critiquebrainz/frontend/templates/errors/400.html:2
 msgid "Invalid request"
-msgstr ""
+msgstr "无效请求"
 
 #: critiquebrainz/frontend/templates/errors/401.html:2
 msgid "Unauthorized"
-msgstr ""
+msgstr "未授权"
 
 #: critiquebrainz/frontend/templates/errors/403.html:2
 msgid "Access denied"
-msgstr ""
+msgstr "访问被拒绝"
 
 #: critiquebrainz/frontend/templates/errors/404.html:2
 msgid "Page not found"
-msgstr ""
+msgstr "页面未找到"
 
 #: critiquebrainz/frontend/templates/errors/500.html:2
 msgid "Internal server error"
-msgstr ""
+msgstr "内部服务器错误"
 
 #: critiquebrainz/frontend/templates/errors/503.html:2
 msgid "Service unavailable"
-msgstr ""
+msgstr "服务不可用"
 
 #: critiquebrainz/frontend/templates/errors/base.html:9
 msgid "Back to home page"
-msgstr ""
+msgstr "返回首页"
 
 #: critiquebrainz/frontend/templates/event/entity.html:40
 #: critiquebrainz/frontend/templates/review/entity/event.html:48
 msgid "Held at"
-msgstr ""
+msgstr "馆藏"
 
 #: critiquebrainz/frontend/templates/event/entity.html:96
 msgid "Event information"
-msgstr ""
+msgstr "活动信息"
 
 #: critiquebrainz/frontend/templates/event/entity.html:122
 #: critiquebrainz/frontend/templates/recording/entity.html:80
 msgid "External reviews"
-msgstr ""
+msgstr "外部评论"
 
 #: critiquebrainz/frontend/templates/index/about.html:8
 msgid "What is CritiqueBrainz?"
-msgstr ""
+msgstr "什么是 CritiqueBrainz？"
 
 #: critiquebrainz/frontend/templates/index/about.html:10
 msgid ""
@@ -1064,10 +1078,12 @@ msgid ""
 "  It is based on data from MusicBrainz and BookBrainz, open music and book "
 "encyclopedias."
 msgstr ""
+"<strong>CritiqueBrainz 是一个知识共享许可的音乐和书籍评析资料库。</strong>\n"
+"它基于开放的音乐和书籍百科全书 MusicBrainz 和 BookBrainz 的数据。"
 
 #: critiquebrainz/frontend/templates/index/about.html:14
 msgid "What is it for?"
-msgstr ""
+msgstr "它的用途是什么？"
 
 #: critiquebrainz/frontend/templates/index/about.html:16
 msgid ""
@@ -1077,6 +1093,9 @@ msgid ""
 "opinions.\n"
 "  CritiqueBrainz fills the gap between raw data and music and book critics."
 msgstr ""
+"像维基百科、MusicBrainz 和 BookBrainz 这样的项目擅长聚合音乐和书籍的信息，但"
+"它们的用途不适合表达意见。\n"
+"  CritiqueBrainz 填补了原始数据和音乐及书籍评论之间的空白。"
 
 #: critiquebrainz/frontend/templates/index/about.html:21
 msgid ""
@@ -1090,16 +1109,25 @@ msgid ""
 "Reviews</a>.\n"
 "  If you just want to read opinions, that’s fine too."
 msgstr ""
+"这是一个开放平台。这意味着每个人都可以参与和贡献。\n"
+"  如果你想分享你的想法，你可以对专辑或书籍进行评分和/或评论。\n"
+"  如果你愿意，你可以阅读我们的指南\n"
+"  <a href=\"”https://wiki.musicbrainz.org/"
+"How_to_write_Good_Critiquebrainz_Reviews”\">如何撰写优秀的 CritiqueBrainz 评"
+"论</a>。\n"
+"  如果你只是想阅读意见，那也很好。"
 
 #: critiquebrainz/frontend/templates/index/about.html:28
 msgid ""
 "After reading a review you can mark it as useful or not. This helps other\n"
 "  music and book enthusiasts find good reviews."
 msgstr ""
+"阅读评论后，你可以将其标记为有用或无用。这有助于其他\n"
+"  音乐和书籍爱好者找到好的评论。"
 
 #: critiquebrainz/frontend/templates/index/about.html:32
 msgid "Code of Conduct"
-msgstr ""
+msgstr "行为准则"
 
 #: critiquebrainz/frontend/templates/index/about.html:34
 msgid ""
@@ -1107,10 +1135,12 @@ msgid ""
 " <a href=\"https://metabrainz.org/code-of-conduct\">MetaBrainz code of "
 "conduct</a>."
 msgstr ""
+"CritiqueBrainz 用户应遵守\n"
+" <a href=\"https://metabrainz.org/code-of-conduct\">MetaBrainz 行为准则</a>。"
 
 #: critiquebrainz/frontend/templates/index/about.html:38
 msgid "Guidelines"
-msgstr ""
+msgstr "指南"
 
 #: critiquebrainz/frontend/templates/index/about.html:40
 msgid ""
@@ -1120,6 +1150,9 @@ msgid ""
 "meets this requirement\n"
 " - primarily promotional or SEO content will be hidden."
 msgstr ""
+"内容必须是“评论”，或对实体的其他真实反映。\n"
+" 也欢迎艺术家/唱片公司评论自己的作品，只要符合这一要求。\n"
+" - 以推广或 SEO 为主要目的的内容将被隐藏。"
 
 #: critiquebrainz/frontend/templates/index/about.html:45
 msgid ""
@@ -1131,6 +1164,10 @@ msgid ""
 "aware that obviously\n"
 "  LLM generated content will be removed."
 msgstr ""
+"你的提交必须是你的原创作品。不要提交你没有版权\n"
+"  或不是你自己的内容。这包括剽窃和主要是 LLM（大型语言\n"
+"  模型）或 AI 生成的内容。你可能希望将 LLM 作为工具使用，但要意识到明显\n"
+"  是 LLM 生成的内容将被删除。"
 
 #: critiquebrainz/frontend/templates/index/about.html:51
 msgid ""
@@ -1139,11 +1176,14 @@ msgid ""
 " above, for why this may have happened. For further discussion contact\n"
 " <a href=\"https://metabrainz.org/contact\">MetaBrainz support</a>."
 msgstr ""
+"如果您的评析被隐藏，请查阅上方的行为准则和指南，\n"
+" 了解可能的原因。如需进一步讨论，请联系\n"
+" <a href=\"https://metabrainz.org/contact\">MetaBrainz 支持</a>。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:3
 #: critiquebrainz/frontend/templates/index/guidelines.html:7
 msgid "Review guidelines"
-msgstr ""
+msgstr "评论指南"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:9
 msgid ""
@@ -1154,24 +1194,28 @@ msgid ""
 "that you find. Thanks!\n"
 "  "
 msgstr ""
+"\n"
+"      <strong>请注意，这是风格指南页面的早期版本。</strong>\n"
+"      欢迎对本页面提出改进建议，并报告您发现的任何问题。谢谢！\n"
+"  "
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:14
 msgid "General tips"
-msgstr ""
+msgstr "一般提示"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:16
 msgid "Read some good reviews"
-msgstr ""
+msgstr "读一些好的评论"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:17
 msgid ""
 "You can find a lot of great reviews on CritiqueBrainz and other websites. "
 "Use them for inspiration."
-msgstr ""
+msgstr "你可以在 CritiqueBrainz 和其他网站上找到很多优秀的评论。用它们来获取灵感。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:20
 msgid "Write in a comfortable voice"
-msgstr ""
+msgstr "用舒适的语气写作"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:21
 msgid ""
@@ -1179,10 +1223,12 @@ msgid ""
 "won’t sound like a YouTube\n"
 "                comment, but it should sound like <em>you</em>."
 msgstr ""
+"一篇优秀的评析可能听起来不像学术论文，也不会像 YouTube\n"
+"                评论，但它应该听起来像<em>你自己</em>。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:25
 msgid "Reviews on CritiqueBrainz don’t have to be in English"
-msgstr ""
+msgstr "CritiqueBrainz 上的评论不必是英文"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:26
 msgid ""
@@ -1190,10 +1236,12 @@ msgid ""
 "use. Choose a language in\n"
 "                which you can express your emotions/thoughts freely."
 msgstr ""
+"您完全可以用自己习惯的语言撰写评论。请选择一种能让您自由表达情感与想法的语言"
+"。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:30
 msgid "Formatting"
-msgstr ""
+msgstr "格式化"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:32
 msgid ""
@@ -1203,36 +1251,40 @@ msgid ""
 "emphasize parts of your review, add links to\n"
 "          additional information, insert images when necessary."
 msgstr ""
+"评析可以使用<a href=\"https://en.wikipedia.org/wiki/Markdown\">Markdown</a>标"
+"记语言。这应该\n"
+"           能让撰写评析和排版更容易。您可以用它来强调评析的某些部分、添加\n"
+"           额外信息的链接，并在需要时插入图片。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:37
 msgid "Properly formatted review is easier to read and understand."
-msgstr ""
+msgstr "格式良好的评论更容易阅读和理解。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:40
 msgid "Content tips"
-msgstr ""
+msgstr "内容技巧"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:43
 msgid "Write a short description."
-msgstr ""
+msgstr "写一个简短的描述。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:44
 msgid "Provide a context for the thing that you are reviewing."
-msgstr ""
+msgstr "为您正在评论的事物提供背景。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:47
 msgid "Follow your thinking and feelings."
-msgstr ""
+msgstr "跟随您的思维和感受。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:48
 msgid ""
 "A good reviewer is one who reviews a something based on what <em>they</em> "
 "feel rather than others."
-msgstr ""
+msgstr "好的评论者会根据<em>自己</em>的感受，而不是他人的感受来评论事物。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:51
 msgid "Good reviews are neither too short nor too long"
-msgstr ""
+msgstr "好的评论既不太短也不太长"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:52
 msgid ""
@@ -1241,20 +1293,22 @@ msgid ""
 "            a clear image as to what something is like while not being too "
 "boring."
 msgstr ""
+"评论最好既不太短也不太长。尽量写得能让读者清楚了解所评论的事物，同时又不显得"
+"枯燥。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:56
 msgid "Don’t mention just the factual data."
-msgstr ""
+msgstr "不要只提事实数据。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:57
 msgid ""
 "Sometimes people mention only factual data in their reviews which makes a "
 "review look more like a press release."
-msgstr ""
+msgstr "有时人们在评论中只提事实数据，这使得评论看起来更像一份新闻稿。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:61
 msgid "Specific review types"
-msgstr ""
+msgstr "特定评论类型"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:62
 msgid ""
@@ -1262,21 +1316,23 @@ msgid ""
 "each review type which might\n"
 "           help you to strengthen your review."
 msgstr ""
+"除了上面给出的通用技巧外，这里还有一些针对每种评论类型的特定技巧，可能会帮助"
+"您加强您的评论。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:65
 msgid "Albums (Release Groups)"
-msgstr ""
+msgstr "专辑（发行品组）"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:68
 msgid ""
 "Describing the instrumental arrangement - Mentioning about the rhythmic "
 "effects, describing the variety of\n"
 "      instruments used in the song and how were the digital effects etc."
-msgstr ""
+msgstr "描述乐器编排 —— 提及节奏效果，描述歌曲中使用的乐器种类以及数字效果等。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:72
 msgid "You may tell about lyrics and the recording quality -"
-msgstr ""
+msgstr "您可以谈论歌词和录音质量 ——"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:75
 msgid ""
@@ -1284,6 +1340,8 @@ msgid ""
 "were the lyrics? Was it\n"
 "          meaningful? Did it match the music?"
 msgstr ""
+"歌词是歌曲/专辑的意义所在。您可以谈谈歌词写得如何：是否有意义？是否与音乐相配"
+"？"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:79
 msgid ""
@@ -1292,6 +1350,8 @@ msgid ""
 "          always better to note these things and mention about it in your "
 "review."
 msgstr ""
+"录音质量很重要。好就是好，但若不好，会拖垮整张专辑。最好把这些记下来并在评论"
+"中提及。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:85
 msgid ""
@@ -1302,11 +1362,13 @@ msgid ""
 "      same genre which will give the readers an idea as to what they can "
 "expect."
 msgstr ""
+"结论要明确 —— 如果是必听专辑，就给出一些指引。提一下音乐的流派总是好的。您可"
+"以尝试与同流派中已发行的其他专辑作比较，让读者心里有数。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:91
 #: critiquebrainz/frontend/templates/place/entity.html:134
 msgid "Events"
-msgstr ""
+msgstr "活动"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:94
 msgid ""
@@ -1315,6 +1377,8 @@ msgid ""
 "      Was it sufficient for the crowd? or How well the band/artist sound in "
 "it?"
 msgstr ""
+"描述活动场所 —— 说明场地有多大、是否容得下人群，能让活动评论更出色。\n"
+"      场地有多大？是否足够容纳人群？或者乐队/艺术家在其中的表现如何？"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:98
 msgid ""
@@ -1324,6 +1388,9 @@ msgid ""
 "Were there any things which you didn’t like?\n"
 "      If yes, then why?"
 msgstr ""
+"描述现场音乐 —— 您可以描述活动中演唱了哪些歌曲、最喜欢哪几首，也可以写写乐队"
+"的舞台表现。有没有让您不满意的地方？\n"
+"      如果有，是为什么？"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:103
 msgid ""
@@ -1333,6 +1400,8 @@ msgid ""
 "any) also any special effects in the event\n"
 "      which caught everyone’s attention."
 msgstr ""
+"特别时刻、效果和惊喜 —— 每场活动中通常都有特别时刻，您可以描述这些瞬间。也可"
+"以写写特别嘉宾（如果有），以及活动中引人注目的特效。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:108
 msgid ""
@@ -1341,17 +1410,19 @@ msgid ""
 "      entertain the crowd? Was the crowd exciting or was it a monotonous "
 "atmosphere?"
 msgstr ""
+"描述活动氛围 —— 您可以描述观众：艺术家/乐队是否很好地带动了观众？观众是热情高"
+"涨，还是气氛沉闷？"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:113
 msgid "Places"
-msgstr ""
+msgstr "地点"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:116
 msgid ""
 "Description about the location - You may describe where the place is "
 "located, whether it’s located in the heart\n"
 "      of the city or is it located on the periphery."
-msgstr ""
+msgstr "描述地点 —— 您可以描述该地点所处的位置，是在市中心还是郊区。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:120
 msgid ""
@@ -1360,10 +1431,12 @@ msgid ""
 "      place occupy, how well the artist sounds in each corner of the place "
 "etc."
 msgstr ""
+"描述建筑 —— 如果是音乐体育场，人们会想知道这个地方能容纳多少人、艺术家在场地"
+"各个角落的声音效果如何等。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:126
 msgid "💡 Note:"
-msgstr ""
+msgstr "💡 注意："
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:127
 msgid ""
@@ -1371,28 +1444,30 @@ msgid ""
 "trend. Review the album as to what\n"
 "    you felt. And try to follow active voice."
 msgstr ""
+"撰写评论时，请尽量<strong>诚实</strong>，不要一味跟随潮流。根据您的感受\n"
+"    来评论专辑，并尽量使用主动语态。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:131
 msgid "Common mistakes"
-msgstr ""
+msgstr "常见错误"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:133
 msgid "Writing long reviews that lack specific details."
-msgstr ""
+msgstr "写长篇但缺乏具体细节的评论。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:134
 msgid ""
 "Forgetting to check the factual information in the review after completing "
 "the writing process."
-msgstr ""
+msgstr "在完成写作过程后忘记检查评论中的事实信息。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:135
 msgid "Overlooking proofreading</strong> the review after finishing it."
-msgstr ""
+msgstr "完成评论后忽略校对。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:136
 msgid "Mistakes such as punctuation, typo errors, capitalization etc."
-msgstr ""
+msgstr "标点符号、拼写错误、大小写等错误。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:137
 msgid ""
@@ -1400,18 +1475,20 @@ msgid ""
 "prefer).\n"
 "              It’s better not to write reviews in slangs."
 msgstr ""
+"使用俚语 —— 尽量使用规范的英语（或您喜欢的任何语言）。\n"
+"              最好避免用俚语写评论。"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:141
 msgid "Additional material"
-msgstr ""
+msgstr "附加材料"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:142
 msgid "Some good review websites:"
-msgstr ""
+msgstr "一些好的评论网站："
 
 #: critiquebrainz/frontend/templates/index/index.html:10
 msgid "Welcome to CritiqueBrainz!"
-msgstr ""
+msgstr "欢迎来到 CritiqueBrainz！"
 
 #: critiquebrainz/frontend/templates/index/index.html:12
 msgid ""
@@ -1420,6 +1497,8 @@ msgid ""
 "        Here you can read what other people have written about an album or "
 "event and write your own review!"
 msgstr ""
+"CritiqueBrainz 是收录知识共享许可的音乐与书籍评论的站点。\n"
+"        在这里您可以阅读其他人对专辑或活动的评论，也可以写下自己的评论！"
 
 #: critiquebrainz/frontend/templates/index/index.html:16
 msgid ""
@@ -1427,77 +1506,80 @@ msgid ""
 "and BookBrainz - open book encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
 msgstr ""
+"CritiqueBrainz 基于开放的音乐百科全书 MusicBrainz 和开放的书籍百科全书 "
+"BookBrainz 的数据。\n"
+"        <br>每个人（包括您）都可以参与和贡献。"
 
 #: critiquebrainz/frontend/templates/index/index.html:28
 msgid "Number"
-msgstr ""
+msgstr "数量"
 
 #: critiquebrainz/frontend/templates/index/index.html:33
 msgid "Number of Reviews"
-msgstr ""
+msgstr "评论数量"
 
 #: critiquebrainz/frontend/templates/index/index.html:34
 #, python-format
 msgid "%(review_count)s"
-msgstr ""
+msgstr "%(review_count)s"
 
 #: critiquebrainz/frontend/templates/index/index.html:37
 msgid "Number of Users"
-msgstr ""
+msgstr "用户数量"
 
 #: critiquebrainz/frontend/templates/index/index.html:38
 #, python-format
 msgid "%(user_count)s"
-msgstr ""
+msgstr "%(user_count)s"
 
 #: critiquebrainz/frontend/templates/index/index.html:50
 msgid "Popular reviews"
-msgstr ""
+msgstr "热门评论"
 
 #: critiquebrainz/frontend/templates/index/index.html:77
 msgid "Recent reviews"
-msgstr ""
+msgstr "最新评论"
 
 #: critiquebrainz/frontend/templates/index/index.html:101
 msgid "View all reviews..."
-msgstr ""
+msgstr "查看全部评论…"
 
 #: critiquebrainz/frontend/templates/label/entity.html:68
 msgid "Releases"
-msgstr ""
+msgstr "发行品"
 
 #: critiquebrainz/frontend/templates/label/entity.html:122
 msgid "Label information"
-msgstr ""
+msgstr "标签信息"
 
 #: critiquebrainz/frontend/templates/log/action.html:5
 #: critiquebrainz/frontend/templates/user/reviews.html:33
 msgid "[Unknown release group]"
-msgstr ""
+msgstr "[未知发行组]"
 
 #: critiquebrainz/frontend/templates/log/action.html:12
 #, python-format
 msgid "Hide %(user)s’s review of \"%(rg)s\""
-msgstr ""
+msgstr "隐藏 %(user)s 对 \"%(rg)s\" 的评论"
 
 #: critiquebrainz/frontend/templates/log/action.html:14
 #, python-format
 msgid "Unhide %(user)s’s review of \"%(rg)s\""
-msgstr ""
+msgstr "显示 %(user)s 对 \"%(rg)s\" 的评论"
 
 #: critiquebrainz/frontend/templates/log/action.html:16
 #, python-format
 msgid "Block %(user)s"
-msgstr ""
+msgstr "屏蔽 %(user)s"
 
 #: critiquebrainz/frontend/templates/log/action.html:18
 #, python-format
 msgid "Unblock %(user)s"
-msgstr ""
+msgstr "解除屏蔽 %(user)s"
 
 #: critiquebrainz/frontend/templates/log/action.html:39
 msgid "Please provide a reason for taking this action (required)"
-msgstr ""
+msgstr "请提供采取此操作的原因（必填）"
 
 #: critiquebrainz/frontend/templates/log/action.html:43
 #: critiquebrainz/frontend/templates/mapping/confirm.html:27
@@ -1506,487 +1588,491 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/delete_comment.html:26
 #: critiquebrainz/frontend/templates/review/report.html:33
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: critiquebrainz/frontend/templates/log/browse.html:11
 msgid "Load older logs"
-msgstr ""
+msgstr "加载较旧的日志"
 
 #: critiquebrainz/frontend/templates/log/browse.html:13
 msgid "Loading older logs..."
-msgstr ""
+msgstr "正在加载较旧的日志…"
 
 #: critiquebrainz/frontend/templates/log/browse.html:38
 msgid "Failed to load older logs!"
-msgstr ""
+msgstr "加载较旧的日志失败！"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:6
 msgid "review"
-msgstr ""
+msgstr "评论"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:18
 #, python-format
 msgid "%(admin)s hid a %(review)s written by %(user)s"
-msgstr ""
+msgstr "%(admin)s 隐藏了 %(review)s 写的 %(user)s"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:23
 #, python-format
 msgid "%(admin)s unhid a %(review)s written by %(user)s"
-msgstr ""
+msgstr "%(admin)s 显示了 %(review)s 写的 %(user)s"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:28
 #, python-format
 msgid "%(admin)s blocked %(user)s"
-msgstr ""
+msgstr "%(admin)s 屏蔽了 %(user)s"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:33
 #, python-format
 msgid "%(admin)s unblocked %(user)s"
-msgstr ""
+msgstr "%(admin)s 解除了对 %(user)s 的屏蔽"
 
 #: critiquebrainz/frontend/templates/log/log_results.html:37
 msgid "Reason:"
-msgstr ""
+msgstr "原因："
 
 #: critiquebrainz/frontend/templates/login/index.html:7
 msgid ""
 "To sign in, use your MusicBrainz account, and authorize CritiqueBrainz to "
 "access your profile data."
 msgstr ""
+"登录时，请使用您的 MusicBrainz 账号，并授权 CritiqueBrainz 访问您的个人资料数"
+"据。"
 
 #: critiquebrainz/frontend/templates/login/index.html:11
 msgid "Sign in with MusicBrainz"
-msgstr ""
+msgstr "使用 MusicBrainz 登录"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:4
 msgid "New Spotify mapping confirmation"
-msgstr ""
+msgstr "新的 Spotify 映射确认"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:7
 msgid "Spotify album mapping confirmation"
-msgstr ""
+msgstr "Spotify 专辑映射确认"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:9
 msgid "Are you sure you want to create this mapping?"
-msgstr ""
+msgstr "您确定要创建此映射吗？"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:14
 #: critiquebrainz/frontend/templates/mapping/report.html:14
 #, python-format
 msgid "%(album)s by %(artist)s"
-msgstr ""
+msgstr "%(album)s 由 %(artist)s 提供"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:18
 #: critiquebrainz/frontend/templates/mapping/report.html:18
 msgid "Spotify"
-msgstr ""
+msgstr "Spotify"
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:19
 #: critiquebrainz/frontend/templates/mapping/report.html:19
 msgid "URI:"
-msgstr ""
+msgstr "URI："
 
 #: critiquebrainz/frontend/templates/mapping/confirm.html:26
 msgid "Create"
-msgstr ""
+msgstr "创建"
 
 #: critiquebrainz/frontend/templates/mapping/report.html:4
 #: critiquebrainz/frontend/templates/mapping/report.html:7
 msgid "Incorrect mapping reporting"
-msgstr ""
+msgstr "报告错误映射"
 
 #: critiquebrainz/frontend/templates/mapping/report.html:9
 msgid "Are you sure you want to report incorrect mapping?"
-msgstr ""
+msgstr "您确定要报告错误映射吗？"
 
 #: critiquebrainz/frontend/templates/mapping/report.html:26
 msgid "Report incorrect mapping"
-msgstr ""
+msgstr "报告错误映射"
 
 #: critiquebrainz/frontend/templates/moderators/moderators.html:8
 msgid "These users respond to reports and make sure that spammers don’t spam."
-msgstr ""
+msgstr "这些用户会响应报告，并确保垃圾邮件发送者不会发送垃圾邮件。"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:4
 msgid "OAuth authorization"
-msgstr ""
+msgstr "OAuth 授权"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:7
 #, python-format
 msgid "Do you want to give access to your account to %(name)s?"
-msgstr ""
+msgstr "您要授予 %(name)s 访问您账号的权限吗？"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:9
 msgid "You can revoke access at any time in your profile settings."
-msgstr ""
+msgstr "您可以在个人资料设置中随时撤销访问权限。"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:16
 #: critiquebrainz/frontend/templates/profile/applications/index.html:21
 #: critiquebrainz/frontend/templates/profile/applications/index.html:55
 msgid "Website"
-msgstr ""
+msgstr "网站"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:24
 #, python-format
 msgid ""
 "%(client)s is requesting permission to access the following parts of your "
 "profile:"
-msgstr ""
+msgstr "%(client)s 正在请求访问您个人资料的部分内容："
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:31
 #, python-format
 msgid "%(client)s does not require any special permissions."
-msgstr ""
+msgstr "%(client)s 不需要任何特殊权限。"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:37
 msgid "Allow access"
-msgstr ""
+msgstr "允许访问"
 
 #: critiquebrainz/frontend/templates/oauth/prompt.html:38
 msgid "No thanks"
-msgstr ""
+msgstr "谢谢"
 
 #: critiquebrainz/frontend/templates/place/entity.html:81
 msgid "Place information"
-msgstr ""
+msgstr "地点信息"
 
 #: critiquebrainz/frontend/templates/place/entity.html:106
 msgid "Part of"
-msgstr ""
+msgstr "部分"
 
 #: critiquebrainz/frontend/templates/place/entity.html:116
 msgid "Parts"
-msgstr ""
+msgstr "部分"
 
 #: critiquebrainz/frontend/templates/place/entity.html:137
 msgid "Concerts"
-msgstr ""
+msgstr "音乐会"
 
 #: critiquebrainz/frontend/templates/place/entity.html:140
 msgid "Festivals"
-msgstr ""
+msgstr "音乐节"
 
 #: critiquebrainz/frontend/templates/place/entity.html:143
 msgid "Other Events"
-msgstr ""
+msgstr "其他活动"
 
 #: critiquebrainz/frontend/templates/place/entity.html:147
 msgid "No events found"
-msgstr ""
+msgstr "未找到活动"
 
 #: critiquebrainz/frontend/templates/place/entity.html:152
 #: critiquebrainz/frontend/templates/search/index.html:97
 #: critiquebrainz/frontend/templates/search/index.html:105
 msgid "Title"
-msgstr ""
+msgstr "标题"
 
 #: critiquebrainz/frontend/templates/place/entity.html:153
 msgid "Date"
-msgstr ""
+msgstr "日期"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:3
 #: critiquebrainz/frontend/templates/profile/delete.html:6
 msgid "Delete account"
-msgstr ""
+msgstr "删除账号"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:10
 msgid "Are you sure you want to delete your account?"
-msgstr ""
+msgstr "您确定要删除您的账号吗？"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:11
 msgid ""
 "All your data (i.e. reviews, votes, reports) will be purged. You "
 "<strong>cannot</strong> undo this action."
 msgstr ""
+"您的所有数据（即评析、投票、报告）都将被清除。您<strong>无法</strong>撤销此操"
+"作。"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:14
 msgid "Yes, I want to delete my account"
-msgstr ""
+msgstr "是，我要删除我的账号"
 
 #: critiquebrainz/frontend/templates/profile/delete.html:15
 #: critiquebrainz/frontend/templates/review/entity/base.html:103
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:3
 #: critiquebrainz/frontend/templates/profile/edit.html:6
 #: critiquebrainz/frontend/templates/user/base.html:13
 msgid "Edit profile"
-msgstr ""
+msgstr "编辑个人资料"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:39
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: critiquebrainz/frontend/templates/profile/edit.html:44
 msgid "Delete my account"
-msgstr ""
+msgstr "删除我的账号"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:3
 #: critiquebrainz/frontend/templates/profile/applications/create.html:6
 #: critiquebrainz/frontend/templates/profile/applications/index.html:11
 msgid "Create new application"
-msgstr ""
+msgstr "创建新应用"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:37
 msgid "Create application"
-msgstr ""
+msgstr "创建应用"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:3
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:6
 #, python-format
 msgid "Edit application %(name)s"
-msgstr ""
+msgstr "编辑应用 %(name)s"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:37
 msgid "Save changes"
-msgstr ""
+msgstr "保存更改"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:9
 msgid "Your applications"
-msgstr ""
+msgstr "您的应用"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:15
 msgid "No applications found"
-msgstr ""
+msgstr "未找到应用"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:22
 msgid "Client ID"
-msgstr ""
+msgstr "客户端 ID"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:23
 msgid "Client secret"
-msgstr ""
+msgstr "客户端密钥"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:35
 msgid "Modify"
-msgstr ""
+msgstr "修改"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:36
 #: critiquebrainz/frontend/templates/user/reviews.html:143
 msgid "Delete"
-msgstr ""
+msgstr "删除"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:43
 #, python-format
 msgid "Developer documentation is available at %(link)s."
-msgstr ""
+msgstr "开发者文档位于 %(link)s。"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:47
 msgid "Authorized applications"
-msgstr ""
+msgstr "已授权应用"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:49
 msgid "No authorized applications found"
-msgstr ""
+msgstr "未找到已授权应用"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:56
 msgid "Access"
-msgstr ""
+msgstr "访问"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:75
 msgid "No special requirements"
-msgstr ""
+msgstr "无特殊要求"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:79
 msgid "Revoke access"
-msgstr ""
+msgstr "撤销访问"
 
 #: critiquebrainz/frontend/templates/recording/entity.html:6
 #, python-format
 msgid "Recording \"%(name)s\" by %(artist)s"
-msgstr ""
+msgstr "录音 \"%(name)s\" 由 %(artist)s 提供"
 
 #: critiquebrainz/frontend/templates/recording/entity.html:73
 msgid "Recording information"
-msgstr ""
+msgstr "录音信息"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:3
 #: critiquebrainz/frontend/templates/reports/reports.html:6
 msgid "Recent reports"
-msgstr ""
+msgstr "最新报告"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:25
 msgid "Reported on"
-msgstr ""
+msgstr "报告日期"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:26
 msgid "Reported by"
-msgstr ""
+msgstr "报告者"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:27
 msgid "Reason"
-msgstr ""
+msgstr "原因"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:30
 msgid "Actions"
-msgstr ""
+msgstr "操作"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:38
 msgid "Load older reports"
-msgstr ""
+msgstr "加载较旧的报告"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:40
 msgid "Loading older reports..."
-msgstr ""
+msgstr "正在加载较旧的报告…"
 
 #: critiquebrainz/frontend/templates/reports/reports.html:65
 msgid "Failed to load older reports!"
-msgstr ""
+msgstr "未能加载较旧的报告！"
 
 #: critiquebrainz/frontend/templates/reports/reports_results.html:44
 msgid "Read latest revision"
-msgstr ""
+msgstr "读取最新修订版"
 
 #: critiquebrainz/frontend/templates/review/browse.html:8
 msgid "Ordered by"
-msgstr ""
+msgstr "按顺序"
 
 #: critiquebrainz/frontend/templates/review/browse.html:11
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 #: critiquebrainz/frontend/templates/review/browse.html:14
 msgid "Sort by"
-msgstr ""
+msgstr "排序方式"
 
 #: critiquebrainz/frontend/templates/review/browse.html:27
 msgid "MusicBrainz"
-msgstr ""
+msgstr "MusicBrainz"
 
 #: critiquebrainz/frontend/templates/review/browse.html:45
 msgid "BookBrainz"
-msgstr ""
+msgstr "BookBrainz"
 
 #: critiquebrainz/frontend/templates/review/compare.html:3
 msgid "Difference between revisions"
-msgstr ""
+msgstr "修订版之间的差异"
 
 #: critiquebrainz/frontend/templates/review/compare.html:9
 #: critiquebrainz/frontend/templates/review/compare.html:19
 msgid "Revision"
-msgstr ""
+msgstr "修订"
 
 #: critiquebrainz/frontend/templates/review/compare.html:10
 #: critiquebrainz/frontend/templates/review/compare.html:20
 msgid "as of"
-msgstr ""
+msgstr "截至"
 
 #: critiquebrainz/frontend/templates/review/delete.html:11
 #, python-format
 msgid "Delete review of \"%(entity)s\""
-msgstr ""
+msgstr "删除“%(entity)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/delete.html:15
 msgid "Deleting review"
-msgstr ""
+msgstr "正在删除评论"
 
 #: critiquebrainz/frontend/templates/review/delete.html:19
 #, python-format
 msgid "Are you sure you want to delete your review of \"%(entity)s\"?"
-msgstr ""
+msgstr "您确定要删除您对“%(entity)s”的评论吗？"
 
 #: critiquebrainz/frontend/templates/review/delete.html:20
 #: critiquebrainz/frontend/templates/review/delete_comment.html:22
 msgid "There is no way to undo this action!"
-msgstr ""
+msgstr "无法撤销此操作！"
 
 #: critiquebrainz/frontend/templates/review/delete.html:23
 msgid "Delete review"
-msgstr ""
+msgstr "删除评论"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:11
 #, python-format
 msgid "Edit comment on %(user)s’s review of \"%(entity)s\""
-msgstr ""
+msgstr "编辑“%(user)s”对“%(entity)s”的评论下的留言"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:15
 msgid "Deleting comment!"
-msgstr ""
+msgstr "正在删除留言！"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:19
 #, python-format
 msgid ""
 "Are you sure you want to delete your comment on %(user)s’s review of "
 "\"%(entity)s\"?"
-msgstr ""
+msgstr "您确定要删除您对“%(user)s”关于“%(entity)s”的评论所写的留言吗？"
 
 #: critiquebrainz/frontend/templates/review/delete_comment.html:25
 msgid "Delete comment"
-msgstr ""
+msgstr "删除留言"
 
 #: critiquebrainz/frontend/templates/review/report.html:9
 msgid "Unknown entity"
-msgstr ""
+msgstr "未知实体"
 
 #: critiquebrainz/frontend/templates/review/report.html:12
 #: critiquebrainz/frontend/templates/review/report.html:15
 #, python-format
 msgid "Report %(user)s’s review of \"%(title)s\""
-msgstr ""
+msgstr "报告“%(user)s”对“%(title)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/report.html:29
 msgid "Please provide a description of the violation (required)"
-msgstr ""
+msgstr "请提供违规描述（必填）"
 
 #: critiquebrainz/frontend/templates/review/report.html:32
 msgid "Report review"
-msgstr ""
+msgstr "报告评论"
 
 #: critiquebrainz/frontend/templates/review/revision_results.html:3
 #, python-format
 msgid "Revision %(number)s"
-msgstr ""
+msgstr "修订版%(number)s"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:12
 #, python-format
 msgid "Revisions of Review of \"%(entity)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(entity)s”的评论的修订版"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:16
 #, python-format
 msgid "Revisions of Review by %(user)s"
-msgstr ""
+msgstr "%(user)s 的评论修订版"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:12
 #: critiquebrainz/frontend/templates/review/revisions.html:24
 #: critiquebrainz/frontend/templates/user/reviews.html:16
 msgid "Created on"
-msgstr ""
+msgstr "创建于"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:27
 msgid "Compare"
-msgstr ""
+msgstr "比较"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:34
 msgid "Load older revisions"
-msgstr ""
+msgstr "加载较旧的修订版"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:35
 msgid "Loading older revisions..."
-msgstr ""
+msgstr "正在加载较旧的修订版…"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:61
 msgid "Failed to load older revisions!"
-msgstr ""
+msgstr "未能加载较旧的修订版！"
 
 #: critiquebrainz/frontend/templates/review/revisions.html:74
 msgid "Select two different revisions."
-msgstr ""
+msgstr "选择两个不同的修订版。"
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:8
 #, python-format
 msgid "Review of \"%(artist)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(artist)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:19
 #, python-format
 msgid "%(artist)s"
-msgstr ""
+msgstr "%(artist)s"
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:30
 msgid "MusicBrainz Artist"
-msgstr ""
+msgstr "MusicBrainz 艺术家"
 
 #: critiquebrainz/frontend/templates/review/entity/artist.html:30
 #: critiquebrainz/frontend/templates/review/entity/event.html:61
@@ -1994,240 +2080,240 @@ msgstr ""
 #: critiquebrainz/frontend/templates/review/entity/place.html:56
 #: critiquebrainz/frontend/templates/review/entity/work.html:30
 msgid "View on MusicBrainz"
-msgstr ""
+msgstr "在 MusicBrainz 上查看"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:20
 msgid "<b>This review has not been published yet!</b> Only you can see it."
-msgstr ""
+msgstr "<b>此评论尚未发布！</b>只有您能看到。"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:22
 #, python-format
 msgid "Published on %(date)s"
-msgstr ""
+msgstr "发布于%(date)s"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:24
 #, python-format
 msgid "Written in %(language)s"
-msgstr ""
+msgstr "撰写于%(language)s"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:30
 msgid "This review has not yet been rated"
-msgstr ""
+msgstr "此评论尚未评分"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:74
 #, python-format
 msgid "This review is licensed under a %(name)s license."
-msgstr ""
+msgstr "此评论以 %(name)s 许可证授权发布。"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:76
 #, python-format
 msgid "It was imported from %(source)s."
-msgstr ""
+msgstr "它被导入自%(source)s。"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:84
 #, python-format
 msgid "<a href=\"%(link)s\">Sign in</a> to rate this review"
-msgstr ""
+msgstr "<a href=\"%(link)s\">登录</a>后即可为此评论评分"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:88
 msgid "View older revisions"
-msgstr ""
+msgstr "查看较旧的修订版"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:101
 msgid "Did you find this review useful?"
-msgstr ""
+msgstr "您觉得这个评论有用吗？"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:102
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:106
 msgid "You found this review useful."
-msgstr ""
+msgstr "您觉得这个评论有用。"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:108
 msgid "You didn’t find this review useful."
-msgstr ""
+msgstr "您觉得这个评论没用。"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:110
 msgid "Delete your vote"
-msgstr ""
+msgstr "删除您的评分"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:116
 msgid "Report abuse"
-msgstr ""
+msgstr "举报滥用"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:122
 msgid "Edit this review"
-msgstr ""
+msgstr "编辑此评论"
 
 #: critiquebrainz/frontend/templates/review/entity/base.html:126
 #: critiquebrainz/frontend/templates/review/modify/edit.html:34
 msgid "Delete this review"
-msgstr ""
+msgstr "删除此评论"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:7
 #, python-format
 msgid "Review of \"%(bb_author)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(bb_author)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:13
 #, python-format
 msgid "%(bb_author)s"
-msgstr ""
+msgstr "%(bb_author)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:23
 msgid "BookBrainz Author"
-msgstr ""
+msgstr "BookBrainz 作者"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_author.html:23
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:22
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:23
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:23
 msgid "View on BookBrainz"
-msgstr ""
+msgstr "在 BookBrainz 上查看"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:6
 #, python-format
 msgid "Review of \"%(edition_group)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(edition_group)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:12
 #, python-format
 msgid "%(edition_group)s"
-msgstr ""
+msgstr "%(edition_group)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_edition_group.html:22
 msgid "BookBrainz Edition Group"
-msgstr ""
+msgstr "BookBrainz 版本组"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:7
 #, python-format
 msgid "Review of \"%(literary_work)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(literary_work)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:13
 #, python-format
 msgid "%(bb_literary_work)s"
-msgstr ""
+msgstr "%(bb_literary_work)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_literary_work.html:23
 msgid "BookBrainz Literary Work"
-msgstr ""
+msgstr "BookBrainz 文学作品"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:7
 #, python-format
 msgid "Review of \"%(bb_series)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(bb_series)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:13
 #, python-format
 msgid "%(bb_series)s"
-msgstr ""
+msgstr "%(bb_series)s"
 
 #: critiquebrainz/frontend/templates/review/entity/bb_series.html:23
 msgid "BookBrainz Series"
-msgstr ""
+msgstr "BookBrainz 系列"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:11
 msgid "Delete this comment"
-msgstr ""
+msgstr "删除此留言"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:15
 msgid "Edit this comment"
-msgstr ""
+msgstr "编辑此留言"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:43
 msgid "Add comment"
-msgstr ""
+msgstr "添加留言"
 
 #: critiquebrainz/frontend/templates/review/entity/comments.html:78
 msgid "Update comment"
-msgstr ""
+msgstr "更新留言"
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:7
 #: critiquebrainz/frontend/templates/review/entity/event.html:16
 #: critiquebrainz/frontend/templates/user/reviews.html:40
 msgid "[Unknown event]"
-msgstr ""
+msgstr "[未知活动]"
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:8
 #, python-format
 msgid "Review of \"%(event)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(event)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:19
 #, python-format
 msgid "%(event)s"
-msgstr ""
+msgstr "%(event)s"
 
 #: critiquebrainz/frontend/templates/review/entity/event.html:61
 msgid "MusicBrainz Event"
-msgstr ""
+msgstr "MusicBrainz 活动"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:7
 #: critiquebrainz/frontend/templates/review/entity/label.html:16
 #: critiquebrainz/frontend/templates/user/reviews.html:76
 msgid "[Unknown label]"
-msgstr ""
+msgstr "[未知唱片公司]"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:8
 #, python-format
 msgid "Review of \"%(label)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(label)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:19
 #, python-format
 msgid "%(label)s"
-msgstr ""
+msgstr "%(label)s"
 
 #: critiquebrainz/frontend/templates/review/entity/label.html:30
 msgid "MusicBrainz Label"
-msgstr ""
+msgstr "MusicBrainz 唱片公司"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:12
 #: critiquebrainz/frontend/templates/review/entity/place.html:21
 #: critiquebrainz/frontend/templates/user/reviews.html:51
 msgid "[Unknown place]"
-msgstr ""
+msgstr "[未知地点]"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:13
 #, python-format
 msgid "Review of \"%(place)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(place)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:24
 #, python-format
 msgid "%(place)s"
-msgstr ""
+msgstr "%(place)s"
 
 #: critiquebrainz/frontend/templates/review/entity/place.html:56
 msgid "MusicBrainz Place"
-msgstr ""
+msgstr "MusicBrainz 地点"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:7
 #: critiquebrainz/frontend/templates/review/entity/work.html:16
 #: critiquebrainz/frontend/templates/user/reviews.html:54
 msgid "[Unknown work]"
-msgstr ""
+msgstr "[未知作品]"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:8
 #, python-format
 msgid "Review of \"%(work)s\" by %(user)s"
-msgstr ""
+msgstr "%(user)s 对“%(work)s”的评论"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:19
 #, python-format
 msgid "%(work)s"
-msgstr ""
+msgstr "%(work)s"
 
 #: critiquebrainz/frontend/templates/review/entity/work.html:30
 msgid "MusicBrainz Work"
-msgstr ""
+msgstr "MusicBrainz 作品"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:21
 msgid "Rating:"
-msgstr ""
+msgstr "评分："
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:26
 #, python-format
@@ -2237,92 +2323,96 @@ msgid ""
 "                Furthermore, you can use <a href=\"%(markdown_url)s\" "
 "target=\"_blank\">Markdown</a> syntax to apply custom formatting."
 msgstr ""
+"您可以阅读<a href=\"%(style_guide_url)s\" target=\"_blank\">风格指南</a>，了"
+"解如何撰写优质的 CritiqueBrainz 评析！<br>\n"
+"               此外，您还可以使用 <a href=\"%(markdown_url)s\" "
+"target=\"_blank\">Markdown</a> 语法来应用自定义格式。"
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:34
 msgid "Please, specify language of this review:"
-msgstr ""
+msgstr "请指定此评论的语言："
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:46
 msgid "You cannot change the license after the review is published."
-msgstr ""
+msgstr "评论发布后无法更改许可证。"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:4
 #, python-format
 msgid "Edit review of \"%(entity)s\""
-msgstr ""
+msgstr "编辑 \"%(entity)s\" 的评论"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:8
 msgid "Editing review"
-msgstr ""
+msgstr "正在编辑评论"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:16
 #: critiquebrainz/frontend/templates/user/reviews.html:14
 msgid "Status"
-msgstr ""
+msgstr "状态"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:19
 #: critiquebrainz/frontend/templates/user/reviews.html:115
 msgid "Draft"
-msgstr ""
+msgstr "草稿"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:21
 #: critiquebrainz/frontend/templates/user/reviews.html:117
 msgid "Published"
-msgstr ""
+msgstr "已发布"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:28
 #: critiquebrainz/frontend/templates/review/modify/write.html:31
 msgid "Publish"
-msgstr ""
+msgstr "发布"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:29
 #: critiquebrainz/frontend/templates/review/modify/write.html:32
 msgid "Save draft"
-msgstr ""
+msgstr "保存草稿"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:31
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: critiquebrainz/frontend/templates/review/modify/edit.html:33
 msgid "Discard changes"
-msgstr ""
+msgstr "放弃更改"
 
 #: critiquebrainz/frontend/templates/review/modify/event.html:14
 msgid "Unknown place"
-msgstr ""
+msgstr "未知地点"
 
 #: critiquebrainz/frontend/templates/review/modify/label.html:14
 #: critiquebrainz/frontend/templates/search/index.html:64
 #: critiquebrainz/frontend/templates/search/index.html:92
 msgid "Country"
-msgstr ""
+msgstr "国家"
 
 #: critiquebrainz/frontend/templates/review/modify/place.html:12
 #: critiquebrainz/frontend/templates/search/index.html:71
 #: critiquebrainz/frontend/templates/search/index.html:78
 msgid "Location"
-msgstr ""
+msgstr "位置"
 
 #: critiquebrainz/frontend/templates/review/modify/recording.html:10
 #: critiquebrainz/frontend/templates/search/index.html:106
 #: critiquebrainz/frontend/templates/work/entity.html:98
 msgid "Length"
-msgstr ""
+msgstr "长度"
 
 #: critiquebrainz/frontend/templates/review/modify/work.html:14
 #: critiquebrainz/frontend/templates/search/index.html:98
 msgid "Artists"
-msgstr ""
+msgstr "艺术家"
 
 #: critiquebrainz/frontend/templates/review/modify/write.html:4
 #, python-format
 msgid "Write review of \"%(entity)s\""
-msgstr ""
+msgstr "撰写 \"%(entity)s\" 的评论"
 
 #: critiquebrainz/frontend/templates/review/modify/write.html:8
 msgid "Write review"
-msgstr ""
+msgstr "撰写评论"
 
 #: critiquebrainz/frontend/templates/review/modify/write.html:17
 msgid ""
@@ -2341,337 +2431,347 @@ msgid ""
 "            this content for commercial use outside of Creative Commons "
 "licenses in order to support the operations of the organization."
 msgstr ""
+"您确认并同意：您向 CritiqueBrainz 贡献的评论，按您上述的选择，以\n"
+"            知识共享署名-相同方式共享 3.0 通用或知识共享署名-相同方式共享-非"
+"商业性使用\n"
+"            许可证授权。您同意以此许可证授权您的作品。\n"
+"            您声明并保证：您拥有或控制该作品的全部权利，作品中没有任何内容侵"
+"犯任何第三方\n"
+"            的权利，并且您有权在选定的知识共享许可证下使用并授权该作品。最后"
+"，您授权\n"
+"            MetaBrainz 基金会，为支持本组织的运营，在知识共享许可证之外将该内"
+"容用于商业用途。"
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"
-msgstr ""
+msgstr "搜索结果"
 
 #: critiquebrainz/frontend/templates/search/index.html:17
 msgid "Query"
-msgstr ""
+msgstr "查询"
 
 #: critiquebrainz/frontend/templates/search/index.html:54
 msgid "No results found"
-msgstr ""
+msgstr "未找到结果"
 
 #: critiquebrainz/frontend/templates/search/index.html:62
 msgid "Sort name"
-msgstr ""
+msgstr "按名称排序"
 
 #: critiquebrainz/frontend/templates/search/index.html:145
 msgid "Load more results"
-msgstr ""
+msgstr "加载更多结果"
 
 #: critiquebrainz/frontend/templates/search/index.html:146
 msgid "Loading more results..."
-msgstr ""
+msgstr "正在加载更多结果…"
 
 #: critiquebrainz/frontend/templates/search/index.html:175
 msgid "Failed to load more search results!"
-msgstr ""
+msgstr "加载更多搜索结果失败！"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:14
 msgid "Top 10 Contributors Overall"
-msgstr ""
+msgstr "总体前 10 名贡献者"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:21
 msgid "User"
-msgstr ""
+msgstr "用户"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:23
 #: critiquebrainz/frontend/templates/user/info.html:48
 msgid "Comments"
-msgstr ""
+msgstr "留言"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:24
 #: critiquebrainz/frontend/templates/user/info.html:42
 msgid "Votes"
-msgstr ""
+msgstr "投票"
 
 #: critiquebrainz/frontend/templates/statistics/stats.html:25
 msgid "Total Score"
-msgstr ""
+msgstr "总分"
 
 #: critiquebrainz/frontend/templates/user/base.html:27
 #: critiquebrainz/frontend/templates/user/info.html:3
 msgid "Info"
-msgstr ""
+msgstr "信息"
 
 #: critiquebrainz/frontend/templates/user/info.html:16
 msgid "General information"
-msgstr ""
+msgstr "基本信息"
 
 #: critiquebrainz/frontend/templates/user/info.html:18
 msgid "Member since"
-msgstr ""
+msgstr "加入时间"
 
 #: critiquebrainz/frontend/templates/user/info.html:19
 msgid "User type"
-msgstr ""
+msgstr "用户类型"
 
 #: critiquebrainz/frontend/templates/user/info.html:20
 msgid "Karma"
-msgstr ""
+msgstr "Karma"
 
 #: critiquebrainz/frontend/templates/user/info.html:26
 msgid "Limits"
-msgstr ""
+msgstr "限制"
 
 #: critiquebrainz/frontend/templates/user/info.html:28
 msgid "Reviews/day"
-msgstr ""
+msgstr "每天评论数"
 
 #: critiquebrainz/frontend/templates/user/info.html:29
 msgid "Votes/day"
-msgstr ""
+msgstr "每天投票数"
 
 #: critiquebrainz/frontend/templates/user/info.html:38
 #: critiquebrainz/frontend/templates/user/info.html:44
 #: critiquebrainz/frontend/templates/user/info.html:50
 msgid "Today"
-msgstr ""
+msgstr "今天"
 
 #: critiquebrainz/frontend/templates/user/info.html:39
 #: critiquebrainz/frontend/templates/user/info.html:45
 #: critiquebrainz/frontend/templates/user/info.html:51
 msgid "Last 7 days"
-msgstr ""
+msgstr "过去 7 天"
 
 #: critiquebrainz/frontend/templates/user/info.html:40
 #: critiquebrainz/frontend/templates/user/info.html:46
 #: critiquebrainz/frontend/templates/user/info.html:52
 msgid "This month"
-msgstr ""
+msgstr "本月"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:66
 msgid "[Unknown recording]"
-msgstr ""
+msgstr "[未知录音]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:82
 msgid "[Unknown edition group]"
-msgstr ""
+msgstr "[未知版本组]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:87
 msgid "[Unknown Literary Work]"
-msgstr ""
+msgstr "[未知文学作品]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:93
 msgid "[Unknown Author]"
-msgstr ""
+msgstr "[未知作者]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:99
 msgid "[Unknown series]"
-msgstr ""
+msgstr "[未知系列]"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:123
 msgid "Hidden"
-msgstr ""
+msgstr "隐藏"
 
 #: critiquebrainz/frontend/templates/user/reviews.html:142
 msgid "Edit"
-msgstr ""
+msgstr "编辑"
 
 #: critiquebrainz/frontend/templates/work/entity.html:89
 msgid "Recordings"
-msgstr ""
+msgstr "录音"
 
 #: critiquebrainz/frontend/templates/work/entity.html:91
 msgid "No recordings found"
-msgstr ""
+msgstr "未找到录音"
 
 #: critiquebrainz/frontend/templates/work/entity.html:128
 msgid "Work information"
-msgstr ""
+msgstr "作品信息"
 
 #: critiquebrainz/frontend/views/artist.py:28
 msgid "Sorry, we couldn't find an artist with that MusicBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 MusicBrainz ID 的艺术家。"
 
 #: critiquebrainz/frontend/views/bb_author.py:32
 msgid "Sorry, we couldn't find an author with that BookBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 BookBrainz ID 的作者。"
 
 #: critiquebrainz/frontend/views/bb_edition_group.py:26
 msgid "Sorry, we couldn't find an edition group with that BookBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 BookBrainz ID 的版本组。"
 
 #: critiquebrainz/frontend/views/bb_literary_work.py:26
 msgid "Sorry, we couldn't find a work with that BookBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 BookBrainz ID 的作品。"
 
 #: critiquebrainz/frontend/views/bb_series.py:24
 msgid "Sorry, we couldn't find a series with that BookBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 BookBrainz ID 的系列。"
 
 #: critiquebrainz/frontend/views/comment.py:39
 #, python-format
 msgid "Can't find a comment with ID: %(comment_id)s"
-msgstr ""
+msgstr "找不到 ID 为 %(comment_id)s 的留言"
 
 #: critiquebrainz/frontend/views/comment.py:50
 msgid ""
 "You are not allowed to write new comments because your account has been "
 "blocked by a moderator."
-msgstr ""
+msgstr "由于您的账号已被管理员屏蔽，您无权发表新留言。"
 
 #: critiquebrainz/frontend/views/comment.py:59
 msgid "Comment has been saved!"
-msgstr ""
+msgstr "留言已保存！"
 
 #: critiquebrainz/frontend/views/comment.py:73
 msgid "Only the author can delete this comment."
-msgstr ""
+msgstr "只有作者可以删除此留言。"
 
 #: critiquebrainz/frontend/views/comment.py:76
 msgid "Comment has been deleted."
-msgstr ""
+msgstr "留言已删除。"
 
 #: critiquebrainz/frontend/views/comment.py:88
 msgid "Only the author can edit this comment."
-msgstr ""
+msgstr "只有作者可以编辑此留言。"
 
 #: critiquebrainz/frontend/views/comment.py:90
 msgid ""
 "You are not allowed to edit comments because your account has been blocked "
 "by a moderator."
-msgstr ""
+msgstr "由于您的账号已被管理员屏蔽，您无权编辑留言。"
 
 #: critiquebrainz/frontend/views/comment.py:100
 msgid "Comment has been updated."
-msgstr ""
+msgstr "留言已更新。"
 
 #: critiquebrainz/frontend/views/comment.py:102
 msgid "You must change some content of the comment to update it!"
-msgstr ""
+msgstr "您必须更改留言的部分内容才能更新它！"
 
 #: critiquebrainz/frontend/views/event.py:40
 msgid "Sorry, we couldn't find an event with that MusicBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 MusicBrainz ID 的事件。"
 
 #: critiquebrainz/frontend/views/label.py:20
 msgid "Sorry, we couldn't find a label with that MusicBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 MusicBrainz ID 的唱片公司。"
 
 #: critiquebrainz/frontend/views/log.py:19
 msgid "No logs to display."
-msgstr ""
+msgstr "没有日志可以显示。"
 
 #: critiquebrainz/frontend/views/login.py:36
 #: critiquebrainz/frontend/views/login.py:38
 msgid "Login failed."
-msgstr ""
+msgstr "登录失败。"
 
 #: critiquebrainz/frontend/views/mapping.py:57
 #: critiquebrainz/frontend/views/mapping.py:103
 msgid "Only existing release groups can be mapped to Spotify!"
-msgstr ""
+msgstr "只有现有的发行组可以映射到 Spotify！"
 
 #: critiquebrainz/frontend/views/mapping.py:108
 msgid "You need to select an album from Spotify!"
-msgstr ""
+msgstr "您需要从 Spotify 选择一个专辑！"
 
 #: critiquebrainz/frontend/views/mapping.py:114
 msgid "You need to specify a correct link to this album on Spotify!"
-msgstr ""
+msgstr "您需要指定 Spotify 上此专辑的正确链接！"
 
 #: critiquebrainz/frontend/views/mapping.py:122
 #: critiquebrainz/frontend/views/mapping.py:178
 msgid "You need to specify existing album from Spotify!"
-msgstr ""
+msgstr "您需要指定 Spotify 上的现有专辑！"
 
 #: critiquebrainz/frontend/views/mapping.py:129
 msgid "Spotify mapping has been added!"
-msgstr ""
+msgstr "已添加 Spotify 映射！"
 
 #: critiquebrainz/frontend/views/mapping.py:131
 msgid "Could not add Spotify mapping!"
-msgstr ""
+msgstr "无法添加 Spotify 映射！"
 
 #: critiquebrainz/frontend/views/mapping.py:163
 msgid "This album is not mapped to Spotify yet!"
-msgstr ""
+msgstr "此专辑尚未映射到 Spotify！"
 
 #: critiquebrainz/frontend/views/mapping.py:169
 msgid "Incorrect Spotify mapping has been reported. Thank you!"
-msgstr ""
+msgstr "已报告不正确的 Spotify 映射。谢谢！"
 
 #: critiquebrainz/frontend/views/mapping.py:171
 msgid "Could not report incorrect Spotify mapping!"
-msgstr ""
+msgstr "无法报告不正确的 Spotify 映射！"
 
 #: critiquebrainz/frontend/views/place.py:45
 msgid "Sorry, we couldn't find a place with that MusicBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 MusicBrainz ID 的地点。"
 
 #: critiquebrainz/frontend/views/profile.py:22
 msgid "Profile updated."
-msgstr ""
+msgstr "个人资料已更新。"
 
 #: critiquebrainz/frontend/views/profile_apps.py:37
 msgid "You have created an application!"
-msgstr ""
+msgstr "您已创建一个应用！"
 
 #: critiquebrainz/frontend/views/profile_apps.py:60
 msgid "You have updated an application!"
-msgstr ""
+msgstr "您已更新一个应用！"
 
 #: critiquebrainz/frontend/views/profile_apps.py:81
 msgid "You have deleted an application."
-msgstr ""
+msgstr "您已删除一个应用。"
 
 #: critiquebrainz/frontend/views/rate.py:37
 msgid ""
 "You are not allowed to rate any entity because your account has been blocked "
 "by a moderator."
-msgstr ""
+msgstr "由于您的账号已被管理员屏蔽，您不允许对任何实体进行评分。"
 
 #: critiquebrainz/frontend/views/recording.py:19
 msgid "Sorry, we couldn't find a recording with that MusicBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 MusicBrainz ID 的录音。"
 
 #: critiquebrainz/frontend/views/release.py:19
 msgid "Sorry, we couldn't find a release with that MusicBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 MusicBrainz ID 的发行品。"
 
 #: critiquebrainz/frontend/views/release_group.py:39
 msgid "Sorry, we couldn't find a release group with that MusicBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到具有该 MusicBrainz ID 的发行组。"
 
 #: critiquebrainz/frontend/views/reports.py:46
 msgid "Report has been archived."
-msgstr ""
+msgstr "报告已存档。"
 
 #: critiquebrainz/frontend/views/review.py:38
 #: critiquebrainz/frontend/views/review.py:132
 #, python-format
 msgid "Can't find a review with ID: %(review_id)s!"
-msgstr ""
+msgstr "找不到 ID 为 %(review_id)s 的评论！"
 
 #: critiquebrainz/frontend/views/review.py:55
 msgid "Least Popular"
-msgstr ""
+msgstr "最不受欢迎"
 
 #: critiquebrainz/frontend/views/review.py:56
 msgid "Most Popular"
-msgstr ""
+msgstr "最受欢迎"
 
 #: critiquebrainz/frontend/views/review.py:57
 msgid "Newest"
-msgstr ""
+msgstr "最新"
 
 #: critiquebrainz/frontend/views/review.py:58
 msgid "Oldest"
-msgstr ""
+msgstr "最旧"
 
 #: critiquebrainz/frontend/views/review.py:85
 msgid "No reviews to display."
-msgstr ""
+msgstr "没有评论可以显示。"
 
 #: critiquebrainz/frontend/views/review.py:120
 #: critiquebrainz/frontend/views/review.py:205
 #: critiquebrainz/frontend/views/review.py:373
 msgid "Can't find a review with the specified ID."
-msgstr ""
+msgstr "找不到指定 ID 的评论。"
 
 #: critiquebrainz/frontend/views/review.py:125
 #: critiquebrainz/frontend/views/review.py:207
@@ -2682,156 +2782,156 @@ msgstr ""
 #: critiquebrainz/frontend/views/review.py:496
 #: critiquebrainz/frontend/views/review.py:511
 msgid "Review has been hidden."
-msgstr ""
+msgstr "评论已被隐藏。"
 
 #: critiquebrainz/frontend/views/review.py:128
 msgid "Review has been hidden. You need to be an administrator to view it."
-msgstr ""
+msgstr "评论已被隐藏。您需要成为管理员才能查看它。"
 
 #: critiquebrainz/frontend/views/review.py:148
 msgid ""
 "You are viewing an old revision, the review has been updated since then."
-msgstr ""
+msgstr "您正在查看一个旧的修订版本，评论自那时以来已更新。"
 
 #: critiquebrainz/frontend/views/review.py:150
 #: critiquebrainz/frontend/views/review.py:192
 msgid "The revision you are looking for does not exist."
-msgstr ""
+msgstr "您要查找的修订版本不存在。"
 
 #: critiquebrainz/frontend/views/review.py:221
 #: critiquebrainz/frontend/views/review.py:248
 #: critiquebrainz/frontend/views/review.py:279
 msgid "The revision(s) you are looking for does not exist."
-msgstr ""
+msgstr "您要查找的修订版本不存在。"
 
 #: critiquebrainz/frontend/views/review.py:301
 msgid "Please choose an entity to review."
-msgstr ""
+msgstr "请选择一个实体进行评论。"
 
 #: critiquebrainz/frontend/views/review.py:308
 msgid ""
 "You are not allowed to write new reviews because your account has been "
 "blocked by a moderator."
-msgstr ""
+msgstr "您不允许撰写新的评论，因为您的账号已被版主屏蔽。"
 
 #: critiquebrainz/frontend/views/review.py:322
 msgid "You have already published a review for this entity"
-msgstr ""
+msgstr "您已经为这个实体发布过评论"
 
 #: critiquebrainz/frontend/views/review.py:326
 msgid "You have exceeded your limit of reviews per day."
-msgstr ""
+msgstr "您已超出每日评论限额。"
 
 #: critiquebrainz/frontend/views/review.py:343
 msgid "Review has been saved!"
-msgstr ""
+msgstr "评论已保存！"
 
 #: critiquebrainz/frontend/views/review.py:345
 msgid "Review has been published!"
-msgstr ""
+msgstr "评论已发布！"
 
 #: critiquebrainz/frontend/views/review.py:355
 msgid "You can only write a review for an entity that exists on MusicBrainz!"
-msgstr ""
+msgstr "您只能为 MusicBrainz 上存在的实体撰写评论！"
 
 #: critiquebrainz/frontend/views/review.py:364
 msgid "Please provide some text or a rating for this review."
-msgstr ""
+msgstr "请为这条评论提供文本或评分。"
 
 #: critiquebrainz/frontend/views/review.py:375
 msgid "Only author can edit this review."
-msgstr ""
+msgstr "只有作者可以编辑这条评论。"
 
 #: critiquebrainz/frontend/views/review.py:417
 msgid ""
 "Changing license of a published review                or converting a "
 "published review back to drafts is not allowed."
-msgstr ""
+msgstr "不允许修改已发布的评论的许可，或将已发布的评论转换回草稿。"
 
 #: critiquebrainz/frontend/views/review.py:420
 msgid "Review has been updated."
-msgstr ""
+msgstr "评论已更新。"
 
 #: critiquebrainz/frontend/views/review.py:448
 msgid "Only the author or an admin can delete this review."
-msgstr ""
+msgstr "只有作者或管理员可以删除这条评论。"
 
 #: critiquebrainz/frontend/views/review.py:451
 msgid "Review has been deleted."
-msgstr ""
+msgstr "评论已被删除。"
 
 #: critiquebrainz/frontend/views/review.py:471
 msgid "You cannot rate your own review."
-msgstr ""
+msgstr "您不能给自己的评论评分。"
 
 #: critiquebrainz/frontend/views/review.py:474
 msgid "You have exceeded your limit of votes per day."
-msgstr ""
+msgstr "您已超出每日投票限额。"
 
 #: critiquebrainz/frontend/views/review.py:477
 msgid ""
 "You are not allowed to rate this review because your account has been "
 "blocked by a moderator."
-msgstr ""
+msgstr "您无法对这条评论进行评分，因为您的账号已被版主屏蔽。"
 
 #: critiquebrainz/frontend/views/review.py:487
 msgid "You have rated this review!"
-msgstr ""
+msgstr "您已对这条评论进行评分！"
 
 #: critiquebrainz/frontend/views/review.py:499
 msgid "You have deleted your vote for this review!"
-msgstr ""
+msgstr "您已删除对这条评论的投票！"
 
 #: critiquebrainz/frontend/views/review.py:502
 msgid "This review is not rated yet."
-msgstr ""
+msgstr "这条评论尚未被评分。"
 
 #: critiquebrainz/frontend/views/review.py:513
 msgid "You cannot report your own review."
-msgstr ""
+msgstr "您无法举报自己的评论。"
 
 #: critiquebrainz/frontend/views/review.py:517
 msgid ""
 "You are not allowed to report this review because your account has been "
 "blocked by a moderator."
-msgstr ""
+msgstr "您无法举报这条评论，因为您的账号已被版主屏蔽。"
 
 #: critiquebrainz/frontend/views/review.py:524
 msgid "You have already reported this review."
-msgstr ""
+msgstr "您已举报过这条评论。"
 
 #: critiquebrainz/frontend/views/review.py:535
 msgid "Review has been reported."
-msgstr ""
+msgstr "评论已被举报。"
 
 #: critiquebrainz/frontend/views/review.py:547
 msgid "Review is already hidden."
-msgstr ""
+msgstr "评论已被隐藏。"
 
 #: critiquebrainz/frontend/views/review.py:569
 msgid "Review is not hidden."
-msgstr ""
+msgstr "评论未被隐藏。"
 
 #: critiquebrainz/frontend/views/review.py:577
 msgid "Review is not hidden anymore."
-msgstr ""
+msgstr "评论不再被隐藏。"
 
 #: critiquebrainz/frontend/views/user.py:83
 msgid "This account is already blocked."
-msgstr ""
+msgstr "此账号已被屏蔽。"
 
 #: critiquebrainz/frontend/views/user.py:91
 msgid "This user account has been blocked."
-msgstr ""
+msgstr "此用户账号已被屏蔽。"
 
 #: critiquebrainz/frontend/views/user.py:107
 msgid "This account is not blocked."
-msgstr ""
+msgstr "此账号未被屏蔽。"
 
 #: critiquebrainz/frontend/views/user.py:115
 msgid "This user account has been unblocked."
-msgstr ""
+msgstr "此用户账号已被解除屏蔽。"
 
 #: critiquebrainz/frontend/views/work.py:21
 msgid "Sorry, we couldn't find a work with that MusicBrainz ID."
-msgstr ""
+msgstr "抱歉，我们找不到与该 MusicBrainz ID 相关的作品。"
