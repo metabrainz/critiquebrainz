@@ -9,14 +9,15 @@
 # CatQuest, The Endeavouring Cat, 2017
 # Kurt-Håkon Eilertsen <kurt@kheds.com>, 2014
 # "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2026.
+# Akira Holm <apekattquest_monkeypython@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2026-10-20 23:13+0000\n"
-"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
-"<monkeypython+inst@yepmail.net>\n"
+"PO-Revision-Date: 2026-10-23 08:13+0000\n"
+"Last-Translator: Akira Holm "
+"<apekattquest_monkeypython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/critiquebrainz/frontend/nb/>\n"
 "Language: nb\n"
@@ -121,15 +122,15 @@ msgstr "Visningsnavn"
 
 #: critiquebrainz/frontend/forms/profile.py:9
 msgid "Display name field is empty."
-msgstr "Visningsnavn felt er tomt."
+msgstr "Visningsnavnfelt er tomt."
 
 #: critiquebrainz/frontend/forms/profile.py:10
 msgid "Display name needs to be at least 3 characters long."
-msgstr "Visningsnavn må være minst 3 tegn."
+msgstr "Visningsnavn må være på minst 3 tegn."
 
 #: critiquebrainz/frontend/forms/profile.py:11
 msgid "Display name needs to be at most 64 characters long."
-msgstr "Visningsnavn kan ikke være mer enn 64 tegn."
+msgstr "Visningsnavn kan ikke ha flere enn 64 tegn."
 
 #: critiquebrainz/frontend/forms/profile.py:12
 #: critiquebrainz/frontend/templates/user/info.html:22
@@ -138,7 +139,7 @@ msgstr "E-post"
 
 #: critiquebrainz/frontend/forms/profile.py:14
 msgid "Email field is not a valid email address."
-msgstr "E-post felt er ikke en godkjent e-post adresse."
+msgstr "E-postadressen i feltet er ikke gyldig."
 
 #: critiquebrainz/frontend/forms/profile.py:15
 msgid "Preferred License Choice"
@@ -149,7 +150,7 @@ msgid ""
 "Allow commercial use of my reviews (<a href=\"https://creativecommons.org/"
 "licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 license</a>)"
 msgstr ""
-"Tillat kommersiell bruk av mine anmeldelser (<a href=\"https://"
+"Tillat kommersiell bruk av mine anmeldelser <a href=\"https://"
 "creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0-"
 "lisens</a>)"
 
@@ -159,25 +160,25 @@ msgid ""
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
-"Ikke tillat kommersiell bruk av anmeldelsene mine, med mindre det er "
-"godkjent av MetaBrainz-stiftelsen (<a href=\"https://creativecommons.org/"
-"licenses/by-nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0-lisens</a>)"
+"Ikke tillat kommersiell bruk av anmeldelsene mine, med mindre MetaBrainz-"
+"stiftelsen godkjenner det (<a href=\"https://creativecommons.org/licenses/by-"
+"nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0-lisens</a>)"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
-msgstr "Søknadsnavn"
+msgstr "Programnavn"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:8
 msgid "Application name field is empty."
-msgstr "Applikasjonsnavnet er tomt."
+msgstr "Programnavnet er tomt."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:9
 msgid "Application name needs to be at least 3 characters long."
-msgstr "Applikasjonsnavnet må være på minst 3 tegn."
+msgstr "Programnavnet må være på minst 3 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:10
 msgid "Application name needs to be at most 64 characters long."
-msgstr "Appliasjonsnavnet må være på maksimum 64 tegn."
+msgstr "Programnavnet kan ikke ha flere enn 64 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:11
 #: critiquebrainz/frontend/templates/index/index.html:27
@@ -187,15 +188,15 @@ msgstr "Beskrivelse"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:12
 msgid "Client description field is empty."
-msgstr "Søknadsbeskrivelsen er tom."
+msgstr "Klient beskrivelsesfeltet er tomt."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:13
 msgid "Client description needs to be at least 3 characters long."
-msgstr "Søknadsbeskrivelsen må være på minst 3 bokstaver."
+msgstr "Klientbeskrivelsen må være på minst 3 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:14
 msgid "Client description needs to be at most 512 characters long."
-msgstr "Søknadsbeskrivelsen må være på maksimum 512 tegn."
+msgstr "Klientbeskrivelsen kan ikke ha flere enn 512 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:15
 msgid "Homepage"
@@ -203,11 +204,11 @@ msgstr "Hjemmeside"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:16
 msgid "Homepage field is empty."
-msgstr "Hjemmeside felt er tomt."
+msgstr "Hjemmesidefeltet er tomt."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:17
 msgid "Homepage is not a valid URI."
-msgstr "Hjemmeside er ikke en godkjent URI."
+msgstr "Hjemmesiden er ikke en gyldig nettadresse."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:18
 msgid "Authorization callback URL"
@@ -215,7 +216,7 @@ msgstr "Autorisasjonstilbakekallingsadresse"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:19
 msgid "Authorization callback URL field is empty."
-msgstr "Autorisasjonstilbakekallingsadressen er tom."
+msgstr "Autorisasjonstilbakekallingsadressefeltet er tomt."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:20
 msgid "Authorization callback URL is invalid."
@@ -252,7 +253,7 @@ msgid ""
 msgstr ""
 "Tillat kommersiell bruk av denne anmeldelsen (<a href=\"https://"
 "creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\">CC BY-SA 3.0 "
-"license</a>)"
+"lisens</a>)"
 
 #: critiquebrainz/frontend/forms/review.py:38
 msgid ""
@@ -260,9 +261,9 @@ msgid ""
 "Foundation (<a href=\"https://creativecommons.org/licenses/by-nc-sa/3.0/\" "
 "target=\"_blank\">CC BY-NC-SA 3.0 license</a>)"
 msgstr ""
-"Ikke tillat kommersiell bruk av denne anmeldelsen, med mindre godkjenning "
-"fra MetaBrainz Foundation (<a href=\"https://creativecommons.org/licenses/by-"
-"nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 lisens</a>) foreligger."
+"Ikke tillat kommersiell bruk av denne anmeldelsen, med mindre MetaBrainz-"
+"stiftelsen godkjenner det (<a href=\"https://creativecommons.org/licenses/by-"
+"nc-sa/3.0/\" target=\"_blank\">CC BY-NC-SA 3.0 lisens</a>)"
 
 #: critiquebrainz/frontend/forms/review.py:40
 msgid "You need to choose a license"
@@ -373,7 +374,7 @@ msgstr "Kildekode"
 
 #: critiquebrainz/frontend/templates/footer.html:25
 msgid "Data dumps"
-msgstr "Datadump"
+msgstr "Data-arkiv"
 
 #: critiquebrainz/frontend/templates/footer.html:29
 #: critiquebrainz/frontend/templates/index/about.html:3
@@ -403,7 +404,7 @@ msgstr "Språk"
 #: critiquebrainz/frontend/templates/footer.html:51
 #, python-format
 msgid "Project of the %(metabrainz_fdn)s"
-msgstr "%(metabrainz_fdn)s Prosjekt"
+msgstr "Et prosjekt av %(metabrainz_fdn)s"
 
 #: critiquebrainz/frontend/templates/macros.html:4
 #: critiquebrainz/frontend/templates/reports/reports.html:28
@@ -423,6 +424,7 @@ msgid "Create and modify your reviews."
 msgstr "Opprett og rediger dine anmeldelser."
 
 #: critiquebrainz/frontend/templates/macros.html:30
+#, fuzzy
 msgid "Modify your applications (create, edit, delete)."
 msgstr "Rediger søknadene dine (opprett, endre, slett)."
 
@@ -430,6 +432,7 @@ msgstr "Rediger søknadene dine (opprett, endre, slett)."
 #: critiquebrainz/frontend/templates/navbar.html:35
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
+#, fuzzy
 msgid "Applications"
 msgstr "Søknader"
 
@@ -443,7 +446,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:33
 msgid "Authorization"
-msgstr "Autorisering"
+msgstr "Autorisasjon"
 
 #: critiquebrainz/frontend/templates/macros.html:36
 msgid "Submit and delete your votes."
@@ -576,7 +579,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/macros.html:165
 msgid "Match this!"
-msgstr "Sammenføy denne!"
+msgstr "Koble til denne!"
 
 #: critiquebrainz/frontend/templates/macros.html:191
 msgid "(none)"
@@ -914,9 +917,8 @@ msgid "Date of Birth"
 msgstr "Fødselsdato"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:170
-#, fuzzy
 msgid "Place Founded"
-msgstr "Stiftelsessted"
+msgstr "Sted grunnlagt"
 
 #: critiquebrainz/frontend/templates/bb_author/entity.html:172
 msgid "Place of Birth"
@@ -1094,6 +1096,10 @@ msgid ""
 "  It is based on data from MusicBrainz and BookBrainz, open music and book "
 "encyclopedias."
 msgstr ""
+"<strong>CritiqueBrainz er et arkiv for musikk- og bokanmeldelser med "
+"Creative Commons-lisensiering.</strong>\n"
+"  Den er basert på data fra MusicBrainz og BookBrainz, som er åpne musikk- "
+"og bokleksikon."
 
 #: critiquebrainz/frontend/templates/index/about.html:14
 msgid "What is it for?"
@@ -1107,6 +1113,10 @@ msgid ""
 "opinions.\n"
 "  CritiqueBrainz fills the gap between raw data and music and book critics."
 msgstr ""
+"Prosjekter som Wikipedia, MusicBrainz og BookBrainz er gode på å samle "
+"informasjon\n"
+"  om musikk og bøker, men ikke egnet til å uttrykke meninger om dem.\n"
+"  CritiqueBrainz fyller gapet mellom rå data og musikk- og bokkritikere."
 
 #: critiquebrainz/frontend/templates/index/about.html:21
 msgid ""
@@ -1120,12 +1130,23 @@ msgid ""
 "Reviews</a>.\n"
 "  If you just want to read opinions, that’s fine too."
 msgstr ""
+"Dette er en åpen plattform. Det betyr at alle kan delta og bidra.\n"
+"  Hvis du vil dele din mening, kan du vurdere og/eller anmelde album eller "
+"bøker.\n"
+"  Hvis du vil, kan du lese veiledningen vår\n"
+"  <a href=\"”https://wiki.musicbrainz.org/"
+"How_to_write_Good_Critiquebrainz_Reviews”\">Hvordan skrive gode "
+"CritiqueBrainz-anmeldelser</a>.\n"
+"  Hvis du bare vil lese meninger, er det også helt i orden."
 
 #: critiquebrainz/frontend/templates/index/about.html:28
 msgid ""
 "After reading a review you can mark it as useful or not. This helps other\n"
 "  music and book enthusiasts find good reviews."
 msgstr ""
+"Etter å ha lest en anmeldelse kan du merke den som nyttig eller ikke. Dette "
+"hjelper andre\n"
+"  musikk- og bokantusiaster å finne gode anmeldelser."
 
 #: critiquebrainz/frontend/templates/index/about.html:32
 msgid "Code of Conduct"
@@ -1137,6 +1158,9 @@ msgid ""
 " <a href=\"https://metabrainz.org/code-of-conduct\">MetaBrainz code of "
 "conduct</a>."
 msgstr ""
+"Brukere av CritiqueBrainz forventes å overholde\n"
+" <a href=\"https://metabrainz.org/code-of-conduct\">MetaBrainz' "
+"retningslinjer for good oppførsel</a>."
 
 #: critiquebrainz/frontend/templates/index/about.html:38
 msgid "Guidelines"
@@ -1150,6 +1174,12 @@ msgid ""
 "meets this requirement\n"
 " - primarily promotional or SEO content will be hidden."
 msgstr ""
+"Innholdet må være en «anmeldelse» eller ellers en genuin refleksjon over "
+"objektet.\n"
+" Artister og plateselskaper er også velkomne til å reflektere over deres "
+"eget arbeid, så lenge det oppfyller dette kravet\n"
+" - innhold som primært er ment for markedsføring eller med SEO-formål vil "
+"bli skjult."
 
 #: critiquebrainz/frontend/templates/index/about.html:45
 msgid ""
@@ -1161,6 +1191,13 @@ msgid ""
 "aware that obviously\n"
 "  LLM generated content will be removed."
 msgstr ""
+"Innsendingene dine må være ditt originale arbeid. Ikke send inn innhold du "
+"ikke har.\n"
+"  opphavsretten til, eller som ikke er ditt eget. Dette inkluderer "
+"plagiering og innhold som primært er generert av LLM (Large Language\n"
+"  Modell) eller AI. Du kan ønske å bruke LLM som et verktøy, men vær "
+"oppmerksom på at innhold\n"
+"  som tydelig er generert av LLM vil bli fjernet."
 
 #: critiquebrainz/frontend/templates/index/about.html:51
 msgid ""
@@ -1169,6 +1206,10 @@ msgid ""
 " above, for why this may have happened. For further discussion contact\n"
 " <a href=\"https://metabrainz.org/contact\">MetaBrainz support</a>."
 msgstr ""
+"Har du fått en anmeldelse skjult, vennligst sjekk retningslinjene for god "
+"oppførsel og retningslinjene\n"
+"ovenfor, på hvorfor dette kan ha skjedd. For videre diskusjon, kontakt\n"
+" <a href=\"https://metabrainz.org/contact\">MetaBrainz' brukerstøtte</a>."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:3
 #: critiquebrainz/frontend/templates/index/guidelines.html:7
@@ -1217,6 +1258,9 @@ msgid ""
 "won’t sound like a YouTube\n"
 "                comment, but it should sound like <em>you</em>."
 msgstr ""
+"En god anmeldelse vil nok ikke høres ut som en akademisk artikkel og ei "
+"heller ikke som en YouTubel\n"
+"                kommentar, men de bør høres ut som <em>deg</em>."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:25
 msgid "Reviews on CritiqueBrainz don’t have to be in English"
@@ -1289,6 +1333,9 @@ msgid ""
 "            a clear image as to what something is like while not being too "
 "boring."
 msgstr ""
+"Anmeldelser bør ideelt sett verken være for korte eller for lange. De bør "
+"skrives på en måte som gjør at leserne\n"
+"            tydelig forstår emnet uten at det blir for tørt eller kjedelig."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:56
 msgid "Don’t mention just the factual data."
@@ -1352,6 +1399,10 @@ msgid ""
 "          always better to note these things and mention about it in your "
 "review."
 msgstr ""
+"Innspillingskvaliteten er ofte viktig. Hvis den er bra, er den bra, men hvis "
+"den er dårlig, kan det ødelegge hele albumet. Det er\n"
+"          ofte en good idé å bemerke seg sånne ting og nevne dem i "
+"anmeldelsen."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:85
 msgid ""
@@ -1362,6 +1413,11 @@ msgid ""
 "      same genre which will give the readers an idea as to what they can "
 "expect."
 msgstr ""
+"Konklusjonen bør være tydelig – hvis det er et album man bare må høre på, gi "
+"det en vinkling. Det er alltid lurt å nevne\n"
+"      musikksjangeren. Du kan også prøve å sammenligne det med andre album "
+"som allerede er utgitt i\n"
+"      samme sjanger for å gi leserne en bedre idé om hva de kan forvente."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:91
 #: critiquebrainz/frontend/templates/place/entity.html:134
@@ -1388,6 +1444,11 @@ msgid ""
 "Were there any things which you didn’t like?\n"
 "      If yes, then why?"
 msgstr ""
+"Skriv om musikken som ble spilt der – Beskriv hvilke sanger som ble fremført "
+"på arrangementet. Hvilken av dine\n"
+"      favorittsanger ble spilt, du kan skrive om gruppas sceneopptredelse. "
+"Var det noe du ikke likte?\n"
+"      I så fall, hvorfor?"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:103
 msgid ""
@@ -1397,6 +1458,11 @@ msgid ""
 "any) also any special effects in the event\n"
 "      which caught everyone’s attention."
 msgstr ""
+"Spesielle øyeblikk, effekter og overraskelser - Hvert arrangement har "
+"vanligvis spesielle øyeblikk som du kan beskrive\n"
+"      Du kan også skrive om spesielle gjester (hvis det var noen) og "
+"eventuelle iøynefallende spesialeffekter\n"
+"      som fanget alles oppmerksomhet under arrangementet."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:108
 msgid ""
@@ -1419,6 +1485,9 @@ msgid ""
 "located, whether it’s located in the heart\n"
 "      of the city or is it located on the periphery."
 msgstr ""
+"Beskriv stedet - Du kan skrive om hvor stedet ligger, enten om det er i "
+"sentrum\n"
+"      av byen, eller ligger i utkanten."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:120
 msgid ""
@@ -1427,6 +1496,10 @@ msgid ""
 "      place occupy, how well the artist sounds in each corner of the place "
 "etc."
 msgstr ""
+"Skriv om arkitekturen - Hvis det er et konserthus, vil folk vite hvor mange "
+"mennesker stedet \n"
+"      har plass til, hvor godt artisten låter i de forskjellige hjørnene av "
+"lokalet, osv."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:126
 msgid "💡 Note:"
@@ -1438,6 +1511,9 @@ msgid ""
 "trend. Review the album as to what\n"
 "    you felt. And try to follow active voice."
 msgstr ""
+"Prøv å være så <strong>ærlig</strong> som mulig under anmeldingen, unngå å "
+"blindt følge trender. Anmeld albumet basert på\n"
+"    dine egne følelser. Og prøv å bruke aktiv grammatisk form."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:131
 msgid "Common mistakes"
@@ -1456,8 +1532,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:135
 msgid "Overlooking proofreading</strong> the review after finishing it."
-msgstr ""
-"Å overse skrivefeil</strong> i anmeldelsen etter at den er ferdigskrevet."
+msgstr "Overse å korrekturlese anmeldelsen etter at den er ferdig."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:136
 msgid "Mistakes such as punctuation, typo errors, capitalization etc."
@@ -1469,6 +1544,9 @@ msgid ""
 "prefer).\n"
 "              It’s better not to write reviews in slangs."
 msgstr ""
+"Å bruke slang - Prøv heller å bruke standard engelsk (eller tilsvarende på "
+"språket du bruker).\n"
+"              Det er best å unngå å bruke slang."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:141
 msgid "Additional material"
@@ -1489,6 +1567,10 @@ msgid ""
 "        Here you can read what other people have written about an album or "
 "event and write your own review!"
 msgstr ""
+"CritiqueBrainz er et arkiv for musikk- og bokanmeldelser publisert under "
+"Creative Commons-lisenser.\n"
+"        Her kan du lese hva andre har skrevet om diverse album eller "
+"arrangementer, og ellers skrive dine egne anmeldelser!"
 
 #: critiquebrainz/frontend/templates/index/index.html:16
 msgid ""
@@ -1496,6 +1578,9 @@ msgid ""
 "and BookBrainz - open book encyclopedia.\n"
 "        <br/>Everyone - including you - can participate and contribute."
 msgstr ""
+"CritiqueBrainz er basert på data fra det åpne musikkleksikonet MusicBrainz "
+"og det åpne bokleksikonet BookBrainz.\n"
+"        <br>Alle - også deg! - kan delta og bidra."
 
 #: critiquebrainz/frontend/templates/index/index.html:28
 msgid "Number"
@@ -2315,6 +2400,11 @@ msgid ""
 "                Furthermore, you can use <a href=\"%(markdown_url)s\" "
 "target=\"_blank\">Markdown</a> syntax to apply custom formatting."
 msgstr ""
+"Du kan lese våre <a href=\"%(style_guide_url)s\" target=\"_blank\">"
+"retningslinjer for stil</a> for hjelp til å skrive gode CritiqueBrainz-"
+"anmeldelser!<br/>\n"
+"               I tillegg kan du tilpasse formateringen ved å bruke <a "
+"href=\"%(markdown_url)s\" target=\"_blank\">Markdown</a>-syntaks."
 
 #: critiquebrainz/frontend/templates/review/modify/base.html:34
 msgid "Please, specify language of this review:"
@@ -2419,19 +2509,20 @@ msgid ""
 "            this content for commercial use outside of Creative Commons "
 "licenses in order to support the operations of the organization."
 msgstr ""
-"Du anerkjenner og samtykker til at du har bidratt med anmeldelser til "
-"CritiqueBrains som er lisensiert med en\n"
-"Crative Commons Navngivelse-Del på samme vilkår-Ikkekommersiell\n"
-"-lisens som følge av ditt overnevnte valg. Du samtykker til å lisensiere "
-"ditt arbeide under denne lisensen.\n"
-"Du representerer og garanterer at du eier eller kontrollerer alle "
-"rettigheter i og til verket, og at ingenting i verket\n"
-"krenker rettighetene til noen tredjepart, og at du har tilgang til å bruke "
-"og til å lisensiere verket\n"
-"under valgt Creative Commons-lisens.\n"
-"Til slutt, gir du MetaBrains-stiftelsen tilgang til å lisensiere\n"
-"dette innholdet for kommersiell bruk utenom Creative Commons-lisensene for å "
-"kunne støtte operasjonen av organisasjonen."
+"Du erkjenner og samtykker i at dine bidrag til CritiqueBrainz er lisensiert "
+"under en\n"
+"            Creative Commons Attribution-ShareAlike 3.0 Unported eller "
+"Creative Commons Attribution-ShareAlike-NonCommercial\n"
+"            -lisens i henhold til ditt overnevnte valg. Du samtykker til å "
+"lisensiere ditt arbeide under denne lisensen.\n"
+"            Du erklærer og garanterer at du eier eller kontrollerer alle "
+"rettigheter i og til det du skriver, at ingenting i det skrevne\n"
+"            krenker rettighetene til noen tredjepart og at du har tillatelse "
+"til å bruke og lisensiere innholdet\n"
+"            under den valgte Creative Commons-lisensen. Til slutt, gir du "
+"MetaBrains-stiftelsen tillatelse til å lisensiere\n"
+"            dette innholdet til kommersiell bruk utenfor Creative Commons-"
+"lisenser for å støtte organisasjonens drift."
 
 #: critiquebrainz/frontend/templates/search/index.html:5
 msgid "Search results"

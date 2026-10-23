@@ -6,21 +6,24 @@
 # Henrik Mattsson-Mårn <h@reglage.net>, 2016-2017,2020
 # efef6ec5b435a041fce803c7f8af77d2_2341d43, 2016
 # Staffan Vilcans, 2014-2015
+# Akira Holm <apekattquest_monkeypython@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2021-03-02 10:23+0000\n"
-"Last-Translator: Transifex Bot <>\n"
-"Language-Team: Swedish (http://www.transifex.com/musicbrainz/critiquebrainz/"
-"language/sv/)\n"
+"PO-Revision-Date: 2026-10-23 08:13+0000\n"
+"Last-Translator: Akira Holm "
+"<apekattquest_monkeypython@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: Swedish <https://translations.metabrainz.org/projects/"
+"critiquebrainz/frontend/sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #: critiquebrainz/frontend/external/mbspotify.py:53
 msgid ""
@@ -540,7 +543,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/macros.html:145
 #, python-format
 msgid "Review by %(user)s"
-msgstr "Recension av  %(user)s"
+msgstr "Recension av %(user)s"
 
 #: critiquebrainz/frontend/templates/macros.html:155
 msgid "View Spotify mapping information"
