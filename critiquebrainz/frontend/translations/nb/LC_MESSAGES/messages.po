@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2026-10-23 08:13+0000\n"
+"PO-Revision-Date: 2026-10-27 01:13+0000\n"
 "Last-Translator: Akira Holm "
 "<apekattquest_monkeypython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -704,7 +704,7 @@ msgstr "Ingen anmeldelser funnet"
 #: critiquebrainz/frontend/templates/work/entity.html:28
 #: critiquebrainz/frontend/templates/work/entity.html:67
 msgid "Published on"
-msgstr "Publisert på"
+msgstr "Publisert den"
 
 #: critiquebrainz/frontend/templates/artist/entity.html:68
 #: critiquebrainz/frontend/templates/artist/entity.html:107
@@ -1134,8 +1134,8 @@ msgstr ""
 "  Hvis du vil dele din mening, kan du vurdere og/eller anmelde album eller "
 "bøker.\n"
 "  Hvis du vil, kan du lese veiledningen vår\n"
-"  <a href=\"”https://wiki.musicbrainz.org/"
-"How_to_write_Good_Critiquebrainz_Reviews”\">Hvordan skrive gode "
+"  <a href=\"https://wiki.musicbrainz.org/"
+"How_to_write_Good_Critiquebrainz_Reviews\">Hvordan skrive gode "
 "CritiqueBrainz-anmeldelser</a>.\n"
 "  Hvis du bare vil lese meninger, er det også helt i orden."
 
@@ -1177,7 +1177,7 @@ msgstr ""
 "Innholdet må være en «anmeldelse» eller ellers en genuin refleksjon over "
 "objektet.\n"
 " Artister og plateselskaper er også velkomne til å reflektere over deres "
-"eget arbeid, så lenge det oppfyller dette kravet\n"
+"eget arbeid, så lenge dette kravet er oppfyllet\n"
 " - innhold som primært er ment for markedsføring eller med SEO-formål vil "
 "bli skjult."
 
@@ -1214,7 +1214,7 @@ msgstr ""
 #: critiquebrainz/frontend/templates/index/guidelines.html:3
 #: critiquebrainz/frontend/templates/index/guidelines.html:7
 msgid "Review guidelines"
-msgstr "Gjennomse retningslinjer"
+msgstr "Retningslinjer for anmeldelser"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:9
 msgid ""
@@ -1226,10 +1226,10 @@ msgid ""
 "  "
 msgstr ""
 "\n"
-"      <strong>Merk deg at dette er en tidlig versjon av retningslinjesiden.</"
-"strong>\n"
-"      Foreslå gjerne forbedringer av siden og meld fra om feil du måtte "
-"finne. Takk.\n"
+"      <strong>Vær oppmerksom på at dette er en tidlig versjon av "
+"retningslinjesiden.</strong>\n"
+"      Vi tar gjerne imot forslag til forbedringer og rapporter gjerne "
+"eventuelle problemer du måtte finne. Takk!\n"
 "  "
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:14
@@ -1238,7 +1238,7 @@ msgstr "Generelle tips"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:16
 msgid "Read some good reviews"
-msgstr "Les noen nye anmeldelser"
+msgstr "Les noen gode anmeldelser"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:17
 msgid ""
@@ -1250,7 +1250,7 @@ msgstr ""
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:20
 msgid "Write in a comfortable voice"
-msgstr "Skriv med komfortabel stemme"
+msgstr "Skriv i en behagelig tone"
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:21
 msgid ""
@@ -1272,9 +1272,9 @@ msgid ""
 "use. Choose a language in\n"
 "                which you can express your emotions/thoughts freely."
 msgstr ""
-"Du er velkommen til å skrive en anmeldelse på språket du måtte foretrekke. "
-"Velg et språk der\n"
-"du kan uttrykke følelser og tanker fritt."
+"Du hjertelig velkommen til å skrive anmeldelser på hva enn språk du måtte "
+"foretrekke. Velg det språket\n"
+"hvor du best kan uttrykke følelsene og tankene fritt."
 
 #: critiquebrainz/frontend/templates/index/guidelines.html:30
 msgid "Formatting"
@@ -1288,10 +1288,10 @@ msgid ""
 "emphasize parts of your review, add links to\n"
 "          additional information, insert images when necessary."
 msgstr ""
-"Anmeldelser kan bruke <a href=\"https://en.wikipedia.org/wiki/"
-"Markdown\">Markdown</a> markeringsformatering. Dette bør\n"
-"          gjøre det enkelere å skrive anmeldelser og formatere dem rett. "
-"Bruk det til å trekke frem deler av din anmeldelse, legge til lenker til\n"
+"Anmeldelser kan bruke <a href=\"https://en.wikipedia.org/wiki/Markdown\">"
+"Markdown</a> markeringsformatering. Dette bør\n"
+"          gjøre det enklere å skrive anmeldelser og formatere dem rett. Bruk "
+"det til å trekke frem deler av din anmeldelse, legg lenker til\n"
 "          ytterligere informasjon, og til å sette inn bilder der det måtte "
 "være nødvendig."
 
