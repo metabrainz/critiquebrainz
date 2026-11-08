@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: CritiqueBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-31 13:30+0100\n"
-"PO-Revision-Date: 2026-11-07 00:13+0000\n"
+"PO-Revision-Date: 2026-11-08 13:13+0000\n"
 "Last-Translator: Akira Holm "
 "<apekattquest_monkeypython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -166,19 +166,19 @@ msgstr ""
 
 #: critiquebrainz/frontend/forms/profile_apps.py:7
 msgid "Application name"
-msgstr "Programnavn"
+msgstr "Applikasjonsnavn"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:8
 msgid "Application name field is empty."
-msgstr "Programnavnet er tomt."
+msgstr "Applikasjonsnavnet er tomt."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:9
 msgid "Application name needs to be at least 3 characters long."
-msgstr "Programnavnet må være på minst 3 tegn."
+msgstr "Applikasjonsnavnet må være på minst 3 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:10
 msgid "Application name needs to be at most 64 characters long."
-msgstr "Programnavnet kan ikke ha flere enn 64 tegn."
+msgstr "Applikasjonsnavnet kan ikke ha flere enn 64 tegn."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:11
 #: critiquebrainz/frontend/templates/index/index.html:27
@@ -212,7 +212,7 @@ msgstr "Hjemmesiden er ikke en gyldig nettadresse."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:18
 msgid "Authorization callback URL"
-msgstr "Autorisasjonstilbakekallingsadresse"
+msgstr "Adresse for tilbakekalling av autorisasjon"
 
 #: critiquebrainz/frontend/forms/profile_apps.py:19
 msgid "Authorization callback URL field is empty."
@@ -220,7 +220,7 @@ msgstr "Autorisasjonstilbakekallingsadressefeltet er tomt."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:20
 msgid "Authorization callback URL is invalid."
-msgstr "Autorisasjonstilbakekallingsadressen er ugyldig."
+msgstr "Adresse for tilbakekalling av autorisasjon er ugyldig."
 
 #: critiquebrainz/frontend/forms/profile_apps.py:24
 msgid "Authorization callback URL must use http or https"
@@ -424,16 +424,15 @@ msgid "Create and modify your reviews."
 msgstr "Opprett og rediger dine anmeldelser."
 
 #: critiquebrainz/frontend/templates/macros.html:30
-#, fuzzy
 msgid "Modify your applications (create, edit, delete)."
-msgstr "Rediger søknadene dine (opprett, endre, slett)."
+msgstr "Rediger applikasjonene dine (opprett, endre, slett)."
 
 #: critiquebrainz/frontend/templates/macros.html:30
 #: critiquebrainz/frontend/templates/navbar.html:35
 #: critiquebrainz/frontend/templates/profile/applications/index.html:3
 #: critiquebrainz/frontend/templates/profile/applications/index.html:6
 msgid "Applications"
-msgstr "Bruksområder"
+msgstr "Applikasjoner"
 
 #: critiquebrainz/frontend/templates/macros.html:33
 msgid ""
@@ -453,7 +452,7 @@ msgstr "Send inn eller fjern vurderinger."
 
 #: critiquebrainz/frontend/templates/macros.html:36
 msgid "Review votes"
-msgstr "Anmeldingsstemmer"
+msgstr "Anmeldingsvurderinger"
 
 #: critiquebrainz/frontend/templates/macros.html:46
 #: critiquebrainz/frontend/templates/navbar.html:101
@@ -1882,17 +1881,17 @@ msgstr "Slett min brukerkonto"
 #: critiquebrainz/frontend/templates/profile/applications/create.html:6
 #: critiquebrainz/frontend/templates/profile/applications/index.html:11
 msgid "Create new application"
-msgstr "Opprett ny søknad"
+msgstr "Opprett ny applikasjon"
 
 #: critiquebrainz/frontend/templates/profile/applications/create.html:37
 msgid "Create application"
-msgstr "Opprett søknad"
+msgstr "Opprett applikasjon"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:3
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:6
 #, python-format
 msgid "Edit application %(name)s"
-msgstr "Rediger %(name)s søknaden"
+msgstr "Rediger %(name)s applikasjonen"
 
 #: critiquebrainz/frontend/templates/profile/applications/edit.html:37
 msgid "Save changes"
@@ -1900,11 +1899,11 @@ msgstr "Lagre endringer"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:9
 msgid "Your applications"
-msgstr "Dine søknader"
+msgstr "Dine applikasjoner"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:15
 msgid "No applications found"
-msgstr "Ingen søknader funnet"
+msgstr "Ingen applikasjoner funnet"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:22
 msgid "Client ID"
@@ -1912,7 +1911,7 @@ msgstr "Klient ID"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:23
 msgid "Client secret"
-msgstr "Klient hemmelighet"
+msgstr "Klient-hemmelighet"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:35
 msgid "Modify"
@@ -1930,11 +1929,11 @@ msgstr "Dokumentasjon for utviklere er tilgjengelig på %(link)s."
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:47
 msgid "Authorized applications"
-msgstr "Autoriserte søknader"
+msgstr "Autoriserte applikasjoner"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:49
 msgid "No authorized applications found"
-msgstr "Ingen autoriserte programmer funnet"
+msgstr "Ingen autoriserte applikasjoner funnet"
 
 #: critiquebrainz/frontend/templates/profile/applications/index.html:56
 msgid "Access"
